@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-08-14 14:05+0000\n"
-"PO-Revision-Date: 2024-01-25 01:45\n"
+"POT-Creation-Date: 2025-03-19 07:13+0000\n"
+"PO-Revision-Date: 2025-03-19 07:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -66,14 +66,14 @@ msgstr "Asignar un DOI a un recurso"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:23
-msgid "On the Manage Resources page, under xref:manage-resources#publication[Publication], the table showing the pending version gains additional options to allow managing DOIs.  The {doiicon} button allows assigning a new DOI for a resource.  Assigning a new DOI also increases the major version of the resource."
-msgstr "En la página Gestión de recursos, en xref:manage-resources#publication[Publicación], la tabla que muestra la versión pendiente gana opciones adicionales para permitir la gestión de los DOI.  El botón {doiicon} permite asignar un nuevo DOI a un recurso.  La asignación de un nuevo DOI también aumenta la versión principal del recurso."
+msgid "On the Manage Resources page, under xref:manage-resources#publication[Publication], the table showing the pending version gains additional options to allow managing DOIs. The {doiicon} button allows assigning a new DOI for a resource. Assigning a new DOI also increases the major version of the resource."
+msgstr ""
 
 #. type: Block title
 #: en/modules/ROOT/pages/doi-workflow.adoc:24
 #, no-wrap
-msgid "This demonstrates a major version change since the pending version has been reserved a new DOI:"
-msgstr "Muestra un cambio de versión importante ya que a la versión pendiente se le ha reservado un nuevo DOI:"
+msgid "This demonstrates a page with Reserve DOI button"
+msgstr ""
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/doi-workflow.adoc:25
@@ -83,187 +83,196 @@ msgstr "ipt2/manage/IPTManageResourcePublishTable.png"
 
 #. type: Block title
 #: en/modules/ROOT/pages/doi-workflow.adoc:27
-#: en/modules/ROOT/pages/manage-resources.adoc:569
+#, no-wrap
+msgid "This demonstrates a major version change since the pending version has been reserved a new DOI:"
+msgstr "Muestra un cambio de versión importante ya que a la versión pendiente se le ha reservado un nuevo DOI:"
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/doi-workflow.adoc:28
+#, no-wrap
+msgid "ipt2/manage/IPTManageResourcePublishTable2.png"
+msgstr "ipt2/manage/IPTManageResourcePublishTable2.png"
+
+#. type: Block title
+#: en/modules/ROOT/pages/doi-workflow.adoc:30
 #, no-wrap
 msgid "This demonstrates a minor version change since the DOI assigned to the current and pending versions is the same:"
 msgstr "Muestra un cambio de versión menor ya que el DOI asignado a las versiones actuales y pendientes es el mismo:"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/doi-workflow.adoc:28
-#: en/modules/ROOT/pages/manage-resources.adoc:570
-#: en/modules/ROOT/pages/manage-resources.adoc:575
+#: en/modules/ROOT/pages/doi-workflow.adoc:31
 #, no-wrap
-msgid "ipt2/manage/IPTManageResourcePublishTable2.png"
-msgstr "ipt2/manage/IPTManageResourcePublishTable2.png"
+msgid "ipt2/manage/IPTManageResourcePublishTable3.png"
+msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:31
+#: en/modules/ROOT/pages/doi-workflow.adoc:34
 msgid "Be aware a DOI can be reserved for a private resource, but that DOI cannot be registered until the resource is publicly visible.  Once a resource with a DOI is made public, it can no longer be made private."
 msgstr "Tenga en cuenta que se puede reservar un DOI para un recurso privado, pero ese DOI no se puede registrar hasta que el recurso sea visible públicamente.  Una vez que un recurso con DOI se hace público, ya no puede hacerse privado."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:33
+#: en/modules/ROOT/pages/doi-workflow.adoc:36
 msgid "These fields are shown or have different meaning:"
 msgstr "Estos campos se muestran o tienen un significado diferente:"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:35
+#: en/modules/ROOT/pages/doi-workflow.adoc:38
 #, no-wrap
 msgid "*Version* - the version number tracking the `major_version.minor_version` of the current/pending version. Each time the resource undergoes scientifically significant changes, the resource manager should ensure the pending version has a new major version, done by reserving it a new DOI. A detailed description of the IPT's versioning policy is explained xref:versioning.adoc[Dataset Versioning Policy]. Click the {viewicon} button to see the current version's homepage. In the pending version item, click the {viewicon} button to see a preview of the pending version's homepage. The homepage preview is private to resource managers only, and enables them to make sure the resource is ready to publish.\n"
 msgstr "*Version* - el número de versión que rastrea la `major_version.minor_version` de la versión actual/pendiente. Cada vez que el recurso sufre cambios científicamente significativos, el administrador del recurso debe asegurarse de que la versión pendiente tenga una nueva versión mayor, lo que se hace reservándole un nuevo DOI. Una descripción detallada de la política de versiones del IPT se explica en xref:versioning.adoc[Política de versiones de conjuntos de datos]. Haga clic en el botón {viewicon} para ver la página principal de la versión actual. En el elemento de versión pendiente, haga clic en el botón {viewicon} para ver una vista previa de la página de inicio de la versión pendiente. La vista previa de la página de inicio es privada sólo para los administradores de recursos, y les permite asegurarse de que el recurso está listo para publicarse.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:36
+#: en/modules/ROOT/pages/doi-workflow.adoc:39
 #, no-wrap
 msgid "*DOI* - the DOI of the current/pending version. The DOI of the current version can never be changed. The DOI of the pending version can be reserved or deleted.\n"
 msgstr "*DOI* - el DOI de la versión actual/pendiente. El DOI de la versión actual no puede modificarse nunca. El DOI de la versión pendiente puede reservarse o borrarse.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:38
+#: en/modules/ROOT/pages/doi-workflow.adoc:41
 msgid "When clicking \"Publish\", the usual dialog is extended to inform about the DOI, depending on whether the pending version is a major version change or minor version change:"
 msgstr "Al hacer clic en \"Publicar\", el diálogo habitual se amplía para informar sobre el DOI, dependiendo de si la versión pendiente es un cambio de versión mayor o menor:"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/doi-workflow.adoc:39
+#: en/modules/ROOT/pages/doi-workflow.adoc:42
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishMajor.png"
 msgstr "ipt2/manage/IPTManageResourcePublishMajor.png"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/doi-workflow.adoc:41
+#: en/modules/ROOT/pages/doi-workflow.adoc:44
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishMinor.png"
 msgstr "ipt2/manage/IPTManageResourcePublishMinor.png"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/doi-workflow.adoc:43
+#: en/modules/ROOT/pages/doi-workflow.adoc:46
 #, no-wrap
 msgid "Managing DOIs of resources"
 msgstr "Gestión de los DOI de los recursos"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:46
+#: en/modules/ROOT/pages/doi-workflow.adoc:49
 msgid "Using the {doiicon} button, you can make changes to DOIs assigned to resources."
 msgstr "Con el botón {doiicon} puede realizar cambios en los DOI asignados a los recursos."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:48
+#: en/modules/ROOT/pages/doi-workflow.adoc:51
 #, no-wrap
 msgid "*Reserve*: - a DOI can be reserved for a resource. This operation varies a little depending on whether the resource has already been assigned a DOI or not.\n"
 msgstr "*Reservar*: un DOI puede ser reservado para un recurso. Esta operación varía un poco dependiendo de si al recurso ya se le ha sido asignado un DOI o no.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:49
+#: en/modules/ROOT/pages/doi-workflow.adoc:52
 #, no-wrap
 msgid "*Resource not assigned a DOI*: - a DOI can be reserved for a resource after the mandatory metadata has been entered. To reserve a DOI, press the {doiicon} button in the Published Versions section. To reuse an existing DOI, enter it into the citation identifier field in the resource metadata, and then press the {doiicon} button in the Published Versions section. If a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered. Otherwise if a resource is private and reserved a DOI, the next publication will result in a new minor version of the resource and the DOI will NOT be registered. Be aware that until a DOI is registered it can still be deleted.\n"
 msgstr "*Recurso sin DOI asignado*: - se puede reservar un DOI para un recurso después de haber ingresado los metadatos obligatorios. Para reservar un DOI, pulse el botón {doiicon} en la sección Versiones publicadas. Para reutilizar un DOI existente, ingréselo en el campo del identificador de la cita en los metadatos del recurso y, a continuación, pulse el botón {doiicon} en la sección Versiones publicadas. Si un recurso es público y se ha reservado un DOI, la próxima publicación dará lugar a una nueva versión principal y se registrará el DOI. En caso contrario, si un recurso es privado y se ha reservado un DOI, la siguiente publicación dará lugar a una nueva versión menor del recurso y el DOI NO se registrará. Tenga en cuenta que hasta que no se registre un DOI, éste puede ser eliminado.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:50
+#: en/modules/ROOT/pages/doi-workflow.adoc:53
 #, no-wrap
 msgid "*Resource assigned a DOI*: - another DOI can be reserved for a published resource that has already been assigned a DOI. To reserve another DOI, press the {doiicon} button in the Published Versions section. The DOI will be registered the next time the resource is published, and will resolve to the newly published version's homepage. The former DOI will still resolve to the previous version, but will display a warning the new one superseded it. Be aware that until a DOI is registered it can still be deleted.\n"
 msgstr "*Recurso al que se le asignó un DOI*: - Se puede reservar otro DOI para un recurso publicado al que ya se le asignó un DOI. Para reservar otro DOI, pulse el botón {doiicon} en la sección Versiones publicadas. El DOI se registrará la próxima vez que se publique el recurso, y se enlazará con la página de inicio de la nueva versión publicada. El DOI anterior seguirá remitiendo a la versión anterior, pero mostrará un aviso de que la nueva versión la ha sustituido. Tenga en cuenta que hasta que no se registre un DOI, éste puede ser eliminado.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:51
+#: en/modules/ROOT/pages/doi-workflow.adoc:54
 #, no-wrap
 msgid "*Delete*: - a DOI that is reserved for the resource can be deleted since it was never publicly resolvable. To delete a DOI, press the {doiicon} button in the Published Versions section.\n"
 msgstr "*Borrar*: - un DOI que está reservado para el recurso puede ser borrado ya que nunca fue de acceso público. Para eliminar un DOI, pulse el botón {doiicon} en la sección Versiones publicadas.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:52
+#: en/modules/ROOT/pages/doi-workflow.adoc:55
 #, no-wrap
 msgid "*Register*: - if a resource is publicly available and reserved a DOI, the next publication will result in a new major version and the DOI will be registered.\n"
 msgstr "*Registrar*: si un recurso está disponible públicamente y se ha reservado un DOI, la siguiente publicación dará lugar a una nueva versión principal y se registrará el DOI.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:53
+#: en/modules/ROOT/pages/doi-workflow.adoc:56
 #, no-wrap
 msgid "*Deactivate*: - a DOI that has been registered cannot be deleted, and must continue to resolve. The only way to deactivate a DOI is by deleting the resource itself. Deleting the resource will ensure the data can no longer be downloaded, and the DOI will resolve to a page explaining the resource has been retracted. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
 msgstr "*Desactivar*: un DOI que ha sido registrado no puede ser eliminado y debe seguir direccionando. La única manera de desactivar un DOI es borrando el recurso. Al eliminar el recurso se asegurará que los datos ya no puedan ser descargados y el DOI se dirigirá en una página que explica que el recurso ha sido retirado. Tenga en cuenta que pueden pasar hasta 24 horas hasta que se conozca globalmente la actualización de un DOI.\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:54
+#: en/modules/ROOT/pages/doi-workflow.adoc:57
 #, no-wrap
 msgid "*Reactivate*: - a DOI that has been deactivated resolves to a resource that has been deleted. To reactivate the DOI, the resource must be undeleted. Undeleting a resource makes the data available for download again, and the DOI will resolve to the last published version of this resource. Be aware that it can take up to 24 hours until a DOI update is globally known.\n"
 msgstr "*Reactivar*: un DOI que ha sido desactivado direcciona a un recurso que ha sido eliminado. Para reactivar el DOI, el recurso debe ser anulado. Si se deshace la eliminación de un recurso, los datos vuelven a estar disponibles para su descarga y el DOI direccionará a la última versión publicada de este recurso. Tenga en cuenta que pueden pasar hasta 24 horas hasta que se conozca globalmente una actualización del DOI.\n"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/doi-workflow.adoc:55
+#: en/modules/ROOT/pages/doi-workflow.adoc:58
 #, no-wrap
 msgid "Workflows"
 msgstr "Flujos de trabajo"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/doi-workflow.adoc:57
+#: en/modules/ROOT/pages/doi-workflow.adoc:60
 #, no-wrap
 msgid "Assigning new DOIs to a Dataset"
 msgstr "Asignación de nuevos DOI a un Conjunto de datos"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:60
+#: en/modules/ROOT/pages/doi-workflow.adoc:63
 msgid "Ideally publishers assign a new DOI to a dataset each time it undergoes a scientifically significant change. This differentiates major versions from each other, and allows them to be uniquely cited."
 msgstr "Idealmente, los editores asignan un nuevo DOI a un conjunto de datos cada vez que se somete a un cambio científicamente significativo. Esto diferencia las versiones mayores entre sí y permite que se citen de forma única."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:62
+#: en/modules/ROOT/pages/doi-workflow.adoc:65
 msgid "The first step in assigning a DOI to a dataset, is reserving a DOI.  A publisher may reserve a DOI for a dataset after the mandatory metadata has been entered. The advantage of a reserved DOI is that it can be included in a manuscript prior to a dataset's official release."
 msgstr "El primer paso para asignar un DOI a un conjunto de datos, es reservar un DOI. Un publicador puede reservar un DOI para un conjunto de datos después de que se hayan ingresado los metadatos obligatorios. La ventaja de un DOI reservado es que se puede incluir en un manuscrito antes de la publicación oficial del conjunto de datos."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:64
+#: en/modules/ROOT/pages/doi-workflow.adoc:67
 msgid "The DOI will get registered the next time the resource is published, provided the resource is publicly available. This results in a major version change."
 msgstr "El DOI se registrará la próxima vez que se publique el recurso, siempre que el recurso esté disponible públicamente. Esto da como resultado un cambio en la versión principal."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:66
+#: en/modules/ROOT/pages/doi-workflow.adoc:69
 msgid "Until the reserved DOI gets registered it can still be deleted. A graphical representation of this workflow is below:"
 msgstr "Hasta que el DOI reservado se registre, aún se puede eliminar. A continuación, se muestra una representación gráfica de este flujo de trabajo:"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/doi-workflow.adoc:67
+#: en/modules/ROOT/pages/doi-workflow.adoc:70
 #, no-wrap
 msgid "ipt2/v22/AssignNewDOI.png"
 msgstr "ipt2/v22/AssignNewDOI.png"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/doi-workflow.adoc:69
+#: en/modules/ROOT/pages/doi-workflow.adoc:72
 #, no-wrap
 msgid "Letting the IPT manage an existing DOI for a Dataset"
 msgstr "Dejar que el IPT gestione un DOI existente para un conjunto de datos"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:72
+#: en/modules/ROOT/pages/doi-workflow.adoc:75
 msgid "If a dataset has already been assigned a DOI, publishers have the option of letting the IPT manage the existing DOI for them. This facilitates updating the DOI metadata, since the IPT automatically updates the DOI metadata every time the dataset is (re)published."
 msgstr "Si un conjunto de datos ya tiene un DOI asignado, los editores tienen la opción de dejar que el IPT gestione el DOI existente por ellos. Esto facilita la actualización de los metadatos del DOI, ya que el IPT actualiza automáticamente los metadatos del DOI cada vez que se (re)publica el conjunto de datos."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:74
+#: en/modules/ROOT/pages/doi-workflow.adoc:77
 msgid "_For this to work with existing 'registered' DOIs, you must ensure that the DOI's target URI matches the dataset's homepage URI, and that the dataset is publicly accessible (since an existing DOI must resolve to a publicly accessible page)._"
 msgstr "_Para que esto funcione con los DOIs \"registrados\" existentes, debe asegurarse de que el URI de destino del DOI coincida con el URI de la página de inicio del conjunto de datos, y que el conjunto de datos sea de acceso público (ya que un DOI existente debe hacer referencia a una página de acceso público)._"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:76
+#: en/modules/ROOT/pages/doi-workflow.adoc:79
 msgid "To assign an existing DOI to a dataset, publishers must set the DOI as the citation identifier (in resource metadata). After the mandatory metadata has been entered, the publisher may reserve a DOI. Since the existing DOI has been entered, however, the IPT reuses that instead of minting a new DOI. Of course the IPT's DOI-assigning account must have the rights to manage this DOI, otherwise an error message will appear."
 msgstr "Para asignar un DOI existente a un conjunto de datos, los editores deben establecer el DOI como identificador de la cita (en los metadatos del recurso). Una vez introducidos los metadatos obligatorios, el editor puede reservar un DOI. Sin embargo, dado que se ha introducido el DOI existente, el IPT lo reutiliza en lugar de asignar un nuevo DOI. Por supuesto, la cuenta del IPT que asigna el DOI debe tener los derechos para gestionar este DOI, de lo contrario aparecerá un mensaje de error."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:78
+#: en/modules/ROOT/pages/doi-workflow.adoc:81
 msgid "_If the existing DOI was only reserved, it will be deleted if you try to delete it. If the existing DOI was registered, it will not be deleted if you try to delete it._"
 msgstr "_Si el DOI existente sólo estaba reservado, se borrará si intenta eliminarlo. Si el DOI existente estaba registrado, no se borrará si intenta eliminarlo._"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:80
+#: en/modules/ROOT/pages/doi-workflow.adoc:83
 msgid "The DOI will get updated the next time the resource is published, provided the resource is publicly available. This results in a major version change."
 msgstr "El DOI se actualizará la próxima vez que se publique el recurso, siempre que esté disponible públicamente. Esto supone un cambio de versión importante."
 
 #. type: Plain text
-#: en/modules/ROOT/pages/doi-workflow.adoc:82
+#: en/modules/ROOT/pages/doi-workflow.adoc:85
 msgid "A graphical representation of this workflow is below:"
 msgstr "A continuación se muestra una representación gráfica de este flujo de trabajo:"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/doi-workflow.adoc:83
+#: en/modules/ROOT/pages/doi-workflow.adoc:86
 #, no-wrap
 msgid "ipt2/v22/AssignExistingDOI.png"
 msgstr "ipt2/v22/AssignExistingDOI.png"
