@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2025-03-19 09:32+0000\n"
-"PO-Revision-Date: 2025-03-19 16:49\n"
+"PO-Revision-Date: 2025-03-19 18:12\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -67,7 +67,7 @@ msgstr "xref:index.adoc[Manual del Usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "Addressed https://github.com/gbif/ipt/milestone/66?closed=1[9 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/66?closed=1[9 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
@@ -117,7 +117,7 @@ msgstr "Traducida en 7 idiomas"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
 msgid "This minor release brings improvements and bug fixes related to metadata, Camtrap DP."
-msgstr ""
+msgstr "Eata versión trae mejoras y correcciones de errores relacionados con los metadatos, Camtrap DP."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:25
