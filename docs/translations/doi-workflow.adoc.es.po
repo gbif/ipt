@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2025-03-19 07:13+0000\n"
-"PO-Revision-Date: 2025-03-19 07:18\n"
+"PO-Revision-Date: 2025-03-19 14:28\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -67,13 +67,13 @@ msgstr "Asignar un DOI a un recurso"
 #. type: Plain text
 #: en/modules/ROOT/pages/doi-workflow.adoc:23
 msgid "On the Manage Resources page, under xref:manage-resources#publication[Publication], the table showing the pending version gains additional options to allow managing DOIs. The {doiicon} button allows assigning a new DOI for a resource. Assigning a new DOI also increases the major version of the resource."
-msgstr ""
+msgstr "En la página Administrar Recursos, en xref:manage-resources#publication[Publication], la tabla que muestra la versión pendiente incluye opciones adicionales para gestionar los DOI. El botón {doiicon} permite asignar un nuevo DOI a un recurso. Al asignar un nuevo DOI, también se aumenta la versión principal del recurso."
 
 #. type: Block title
 #: en/modules/ROOT/pages/doi-workflow.adoc:24
 #, no-wrap
 msgid "This demonstrates a page with Reserve DOI button"
-msgstr ""
+msgstr "Esto muestra una página con el botón Reservar DOI"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/doi-workflow.adoc:25
