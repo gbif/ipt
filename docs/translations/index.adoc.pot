@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2023-12-11 09:41+0000\n"
+"POT-Creation-Date: 2025-03-19 07:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,8 +224,9 @@ msgid ""
 "Japanese, and Russian."
 msgstr ""
 
-#. type: Title ==
+#. type: Title ===
 #: en/modules/ROOT/pages/index.adoc:53
+#: en/modules/ROOT/pages/manage-resources.adoc:352
 #, no-wrap
 msgid "Acknowledgements"
 msgstr ""
