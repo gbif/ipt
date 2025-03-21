@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.datapackagemetadata.camtrap.other.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -285,7 +284,9 @@
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
                             <#assign removeRelatedIdentifierLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
+                            <#assign removeRelatedIdentifierLink = removeRelatedIdentifierLink?markup_string>
                             <#assign addRelatedIdentifierLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
+                            <#assign addRelatedIdentifierLink = addRelatedIdentifierLink?markup_string>
 
                             <!-- List of Related identifiers -->
                             <div>
@@ -333,7 +334,9 @@
 
                         <div class="my-md-3 p-3">
                             <#assign removeReferenceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.reference'/></#assign>
+                            <#assign removeReferenceLink = removeReferenceLink?markup_string>
                             <#assign addReferenceLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.reference'/></#assign>
+                            <#assign addReferenceLink = addReferenceLink?markup_string>
 
                             <!-- List of References -->
                             <div>
@@ -419,4 +422,3 @@
     </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

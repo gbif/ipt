@@ -1,8 +1,7 @@
-<#escape x as x?html>
-    <#include "/WEB-INF/pages/inc/header.ftl">
-    <title><@s.text name="admin.vocabulary.title"/></title>
-    <#assign currentMenu = "manage"/>
-    <#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/inc/header.ftl">
+<title><@s.text name="admin.vocabulary.title"/></title>
+<#assign currentMenu = "manage"/>
+<#include "/WEB-INF/pages/inc/menu.ftl">
 
 <div class="container px-0">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -146,5 +145,4 @@
     </div>
 </main>
 
-    <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>
+<#include "/WEB-INF/pages/inc/footer.ftl">

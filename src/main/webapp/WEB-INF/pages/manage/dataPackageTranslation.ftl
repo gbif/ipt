@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="manage.translation.title"/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -643,4 +642,3 @@
     </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

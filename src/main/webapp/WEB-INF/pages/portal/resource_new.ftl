@@ -150,6 +150,7 @@
 <#assign updateFrequencyTitle><@s.text name='eml.updateFrequency'/></#assign>
 <#assign updateFrequencyTitle = updateFrequencyTitle?markup_string>
 <#assign publishedOnText><@s.text name='manage.overview.published.released'/></#assign>
+<#assign publishedOnText = publishedOnText?markup_string>
 <#assign download_dwca_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
 <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>

@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.datapackagemetadata.camtrap.taxonomic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -540,4 +539,3 @@
     </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

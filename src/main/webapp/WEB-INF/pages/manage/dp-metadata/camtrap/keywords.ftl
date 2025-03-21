@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <title><@s.text name='manage.datapackagemetadata.camtrap.keywords.title'/></title>
@@ -144,7 +143,9 @@
                             <p class="mb-4"><@s.text name="datapackagemetadata.keywords.intro"/></p>
 
                             <#assign removeKeywordLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.keyword'/></#assign>
+                            <#assign removeKeywordLink = removeKeywordLink?markup_string>
                             <#assign addKeywordLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.keyword'/></#assign>
+                            <#assign addKeywordLink = addKeywordLink?markup_string>
 
                             <!-- List of Keywords -->
                             <div>
@@ -205,4 +206,3 @@
     </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

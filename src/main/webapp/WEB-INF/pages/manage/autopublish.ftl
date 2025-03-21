@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.autopublish.title'/></title>
 
@@ -263,4 +262,3 @@
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

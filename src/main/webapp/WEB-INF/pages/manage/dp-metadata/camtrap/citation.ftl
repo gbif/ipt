@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.datapackagemetadata.camtrap.citation.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -142,4 +141,3 @@
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

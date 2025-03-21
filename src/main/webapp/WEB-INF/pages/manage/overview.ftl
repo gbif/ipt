@@ -1558,6 +1558,7 @@
                                 <#assign pubLogTitle><@s.text name="portal.publication.log"/></#assign>
                                 <#assign pubLogTitle = pubLogTitle?markup_string>
                                 <#assign pubRepTitle><@s.text name="manage.overview.published.report.show"/></#assign>
+                                <#assign pubRepTitle = pubRepTitle?markup_string>
                                 <#assign downloadTitle><@s.text name='manage.overview.published.download'/></#assign>
                                 <#assign showTitle><@s.text name="basic.show"/></#assign>
                                 <#assign viewTitle><@s.text name='button.view'/></#assign>
