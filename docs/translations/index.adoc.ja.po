@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2023-12-11 09:41+0000\n"
-"PO-Revision-Date: 2024-01-23 09:16\n"
+"POT-Creation-Date: 2025-03-19 07:13+0000\n"
+"PO-Revision-Date: 2025-03-19 07:18\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -159,8 +159,9 @@ msgstr "IPTのユーザーインターフェイスやマニュアルも国際化
 msgid "Thanks to an enormous community effort, and by leveraging the power of the https://crowdin.com/project/gbif-ipt[Crowdin] localization tool, the user interface has already been translated into seven different languages: English, French, Spanish, Traditional Chinese, Brazilian Portuguese, Japanese, and Russian."
 msgstr "コミュニティの多大な努力と、ローカリゼーションツールlink:https://crowdin.com/project/gbif-ipt[Crowdin]の力を借りて、ユーザーインターフェースはすでに7ヶ国語（英語・フランス語・スペイン語・中国語（繁体字）・ポルトガル語（ブラジル）・日本語・ロシア語）に翻訳されています。"
 
-#. type: Title ==
+#. type: Title ===
 #: en/modules/ROOT/pages/index.adoc:53
+#: en/modules/ROOT/pages/manage-resources.adoc:352
 #, no-wrap
 msgid "Acknowledgements"
 msgstr "謝辞"
