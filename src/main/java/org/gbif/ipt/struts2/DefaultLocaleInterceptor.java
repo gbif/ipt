@@ -38,7 +38,7 @@ public class DefaultLocaleInterceptor extends AbstractInterceptor {
                 .filter(cfg::isSupportedLocale)
                 .orElse(Locale.UK);
 
-        invocation.getInvocationContext().setLocale(locale);
+        invocation.getInvocationContext().withLocale(locale);
 
         return invocation.invoke();
     }

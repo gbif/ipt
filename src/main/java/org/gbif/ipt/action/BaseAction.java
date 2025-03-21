@@ -74,7 +74,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   protected HttpServletRequest req;
   protected HttpServletResponse response;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
-  protected String id;
+  public String id;
   protected boolean cancel = false;
 
   protected SimpleTextProvider textProvider;

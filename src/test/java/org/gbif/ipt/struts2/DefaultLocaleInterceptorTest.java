@@ -55,7 +55,7 @@ public class DefaultLocaleInterceptorTest {
 
         interceptor.intercept(invocationMock);
         verify(invocationMock, Mockito.times(1)).getInvocationContext();
-        verify(actionContextMock, Mockito.times(1)).setLocale(LocaleUtils.toLocale(locale));
+        verify(actionContextMock, Mockito.times(1)).withLocale(LocaleUtils.toLocale(locale));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class DefaultLocaleInterceptorTest {
 
         interceptor.intercept(invocationMock);
         verify(invocationMock, Mockito.times(1)).getInvocationContext();
-        verify(actionContextMock, Mockito.times(1)).setLocale(LocaleUtils.toLocale("en_GB"));
+        verify(actionContextMock, Mockito.times(1)).withLocale(LocaleUtils.toLocale("en_GB"));
     }
 
     @ParameterizedTest
@@ -76,6 +76,6 @@ public class DefaultLocaleInterceptorTest {
 
         interceptor.intercept(invocationMock);
         verify(invocationMock, Mockito.times(1)).getInvocationContext();
-        verify(actionContextMock, Mockito.times(1)).setLocale(LocaleUtils.toLocale("en_GB"));
+        verify(actionContextMock, Mockito.times(1)).withLocale(LocaleUtils.toLocale("en_GB"));
     }
 }
