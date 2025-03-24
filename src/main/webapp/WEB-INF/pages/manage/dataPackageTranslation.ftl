@@ -350,9 +350,7 @@
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
     <#macro processDescription description>
-        <#noescape>
-            ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")}
-        </#noescape>
+        ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")}
     </#macro>
 
     <div class="container px-0">
