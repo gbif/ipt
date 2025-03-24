@@ -294,12 +294,8 @@ public class ExtensionManagerImplTest {
     assertEquals(169, ext.getProperties().size());
     assertNotNull(ext.getIssued());
 
-    // verify migration was successful
-    ExtensionMapping migrated = r.getMapping(Constants.DWC_ROWTYPE_OCCURRENCE, 0);
-    assertNotNull(migrated.getExtension().getIssued());
-    // test for example index 3 (rights term should have been replaced by dc:license)
-    PropertyMapping licenseMapping = migrated.getField(DcTerm.license.qualifiedName());
-    assertEquals(0, licenseMapping.getIndex().compareTo(3));
+    // resource migration is now performed in ExtensionsAction#update to get rid of a circular dependency in
+    // ExtensionManager on ResourceManager
   }
 
   @Test
