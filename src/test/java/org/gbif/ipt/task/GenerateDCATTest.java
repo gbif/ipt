@@ -253,6 +253,9 @@ public class GenerateDCATTest {
     ExtensionManager extensionManager = mock(ExtensionManager.class);
     ExtensionsHolder extensionsHolder = mock(ExtensionsHolder.class);
 
+    // mock ExtensionManager returning occurrence core Extension
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
+
     // mock ExtensionHolder returning occurrence core Extension
     when(extensionsHolder.getExtensionsByRowtype())
         .thenReturn(Map.of("http://rs.tdwg.org/dwc/terms/Occurrence", occurrenceCore));
@@ -287,7 +290,7 @@ public class GenerateDCATTest {
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
-        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
+        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
     // create ResourceManagerImpl
