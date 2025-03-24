@@ -59,6 +59,7 @@ This page allows users having managerial permission to make changes to various a
 
 image::ipt2/manage/IPTManageResourceOverview.png[]
 image::ipt2/manage/IPTManageResourceOverview-2.png[]
+image::ipt2/manage/IPTManageResourceOverview-3.png[]
 
 === Source Data
 This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:
@@ -274,29 +275,38 @@ image::ipt2/manage/IPTManageResourceMetadataPagesList.png[width=168]
 Following is a list of the metadata pages and their contents:
 
 === Basic Metadata
-All metadata fields on this page are required. Please note for each contact you must supply at least a last name, a position or an organization.
+Most of the metadata fields on this page are required.
 
 image::ipt2/manage/IPTManageResourceMetadataBasicMetadata.png[]
+image::ipt2/manage/IPTManageResourceMetadataBasicMetadata-2.png[]
 
 * *Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  "Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)" is a good title, "aves_tz_snm" is not! Avoid using filenames or acronyms known only within your organization.
+* *Short Name* -  the short name field provides a concise name that describes the resource.
 * *Publishing Organization* - the organization responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource's rights holder and publishing organization when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. If the desired organization does not appear in the list it may be added by the IPT Administrator (see the information under the "Configure Organizations" heading in the "Administration Menu" section). Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
-* *Update Frequency* - the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.
 * *Type* - the type of resource. The value of this field depends on the core mapping of the resource and is no longer editable if the Darwin Core mapping has already been made. If a desired type is not found in the list, the field "other" can be selected. Review the information under the "Configure Core Types and Extensions" heading of the "Administration Menu" section.
 * *Subtype* - the subtype of the resource. The options for this field depend on the Type field. If a desired subtype is not found in the list, the field can be left with the default selection.
 * *Metadata Language* - the language in which the metadata are written.
 * *Resource Language* - the language in which the data for the resource are written.
 * *Data License* - the licence that you apply to the resource. The license provides a standardized way to define appropriate uses of your work. GBIF encourages publishers to adopt the least restrictive licence possible from among three (default) machine-readable options (CC0 1.0, CC-BY 4.0 or CC-BY-NC 4.0) to encourage the widest possible use and application of data. Learn more about GBIF's policy http://www.gbif.org/terms/licences[here]. If you feel unable to select one of the three options, please contact the GBIF Secretariat at participation@gbif.org. To find out how to apply a license at the record-level, refer to the xref:applying-license.adoc[How To Apply a License To a Dataset] section. To find out how to change the IPT's default set of licenses, refer to the xref:applying-license.adoc[Applying a License to a Dataset] page in the IPT wiki.
 * *Description* - a brief overview of the resource broken into paragraphs. This should provide enough information to help potential users of the data to understand if it may be of interest.
+* *Update Frequency* - the frequency with which changes are made to the resource after the initial resource has been published. For convenience, its value will default to the auto-publishing interval (if auto-publishing has been turned on), however, it can always be overridden later. Please note a description of the maintenance frequency of the resource can also be entered on the Additional Metadata page.
+* *Maintenance Description* - a description of the maintenance frequency of the resource. This description compliments the update frequency.
+
+=== Contacts
+Please note for each contact you must supply at least a last name, a position or an organization.
+
 * *Resource Contacts* - the list of people and organizations that should be contacted to get more information about the resource, that curate the resource or to whom putative problems with the resource or its data should be addressed. The contacts in the list can be rearranged by simply dragging the elements and placing them in the right place.
 +
 --
 image::ipt2/manage/IPTManageResourceMetadataResourceContact.png[]
+
 
 * *Copy from another* - click on this link to copy contact data from any resource. A modal window is displayed with options to choose the resource and the contact.
 * *Add new resource contact* - click on this link to initiate a form for an additional resource contact.
 * *Remove this resource contact* - click on this link to remove the resource contact that follows immediately below the link.
 * *First Name* - the first or given name of the resource contact.
 * *Last Name* (required if Position and Organization are empty, required if the first name is not empty) - the last or surname of the resource contact.
+* *Salutation* -  hte information to specify a person's title or greeting, such as "Dr.," "Prof.," "Mr.," or "Ms."
 * *Position* (required if Last Name and Organization are empty) - the relevant title or position held by the resource contact.
 * *Organization* (required if Last Name and Position are empty) - the organization or institution with which the resource contact is associated. Though the organization may be one of those registered in the GBIF Registry, this is not required. Thus, the organization must be entered in the text box rather than selected from a list of registered organizations.
 * *Address* - the physical street or building address of the resource contact.
@@ -316,6 +326,35 @@ image::ipt2/manage/IPTManageResourceMetadataResourceContact.png[]
 NOTE: the person(s) or organization(s) responsible for the creation of the resource as it appears in the IPT and for effectively publishing the resource can add themselves as an associated party with role 'publisher'.
 
 * *Metadata Providers* - the people and organizations responsible for producing the resource metadata. If this person or organization is the same as the first resource contact, all of the details of the latter can be copied into the equivalent fields for the resource creator by clicking on the link labelled "copy details from resource contact". The metadata provider has all of the same fields and requirements as the resource contact. Refer to the field explanations under Resource Contacts, above.
+
+* *Associated Parties* - contains information about one or more people or organizations associated with the resource in addition to those already covered on the Contacts, Crators and Metadata Providers. All of the controls on this page are in common with those for the Resource Contacts except one new field:
+
+* *Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.
+** *Author*: an agent associated with authoring a publication that used the data set, or of a data paper
+** *Content Provider*: an agent who contributed content to a data set (data set being described may be a composite)
+** *Custodian Steward*: an agent who is responsible for/takes care of the data set
+** *Distributor*: an agent involved in the publishing/distribution chain of a data set
+** *Editor*: an agent associated with editing a publication that used the data set, or of a data paper
+** *Metadata Provider*: an agent responsible for providing the metadata (the same as metadata provider from basic metadata page
+** *Originator*: an agent who originally gathered/prepared the data set (the same as creator from basic metadata page)
+** *Owner*: an agent who owns the data set (may or may not be the custodian)
+** *Point Of Contact*: an agent to contact for further information about the data set
+** *Principal Investigator*: a primary scientific contact associated with the data set
+** *Processor*: an agent responsible for any post-collection processing of the data set
+** *Publisher*: the agent associated with publishing a publication that used the data set, or of a data paper
+** *User*: an agent that makes use of the dataset
+** *Programmer*: an agent providing informatics/programming support related to the data set
+** *Curator*: an agent that maintains and documents the specimens in a collection. Some of their duties include preparing and labelling specimens, so they are ready for identification, and protecting the specimens
+** *Reviewer*: person assigned to review the dataset and verify its data and/or metadata quality. This role is analogous to the role played by peer reviewers in the scholarly publication process.
+* *Add new associated party* - click on this link to initiate a form for an additional associated party.
+
+
+=== Acknowledgements
+
+Information that acknowledges funders and other key contributors to the study (excluding the dataset authors listed in the creator field). Note that funding awards are also listed by award number in the award section, which provides a structured list of funders, award numbers, and award URIs for the dataset.
+
+image::ipt2/manage/IPTManageResourceMetadataAcknowledgements.png[]
+
 
 === Geographic Coverage
 
@@ -386,6 +425,18 @@ image::ipt2/manage/IPTManageResourceMetadataTemporalCoverageFormationPeriod.png[
 +
 image::ipt2/manage/IPTManageResourceMetadataTemporalCoverageLivingTimePeriod.png[]
 
+
+=== Additional Description
+
+The Additional description page includes three text inputs for purpose, introduction and getting started.
+
+** *Purpose* - A synopsis of the purpose of this dataset. It may include one or more paragraphs, including a summary of key findings if appropriate.
+** *Introduction* - One to many paragraphs that provide background and context for the dataset with appropriate figures and references. This is similar to the introduction for a journal article, and would include, for example, project objectives, hypotheses being addressed, what is known about the pattern or process under study, how the data have been used to date (including references), and how they could be used in the future.
+** *Getting started* - One or more paragraphs describing the dataset's overall interpretation, content and structure. For example, the number and names of data files, the types of measurements that they contain, how those data files fit together in an overall design, and how they relate to the data collection methods, experimental design, and sampling design described in other EML sections. One might describe any specialized software that is available and/or may be necessary for analyzing or interpreting the data, and possibly include a high-level description of data formats if they are unusual.
+
+image::ipt2/manage/IPTManageResourceMetadataAdditionalDescription.png[]
+
+
 === Keywords
 
 This metadata page allows the user to create one or more sets of keywords about the resource. Each set of keywords can be associated with a thesaurus/vocabulary that governs the terms in the list.
@@ -397,32 +448,6 @@ image::ipt2/manage/IPTManageResourceMetadataKeywords.png[]
 * *Keyword List* - enter a list of keywords, separated by commas that describe or are related to the resource.
 * *Add new keyword set* - click on this link to initiate a form for an additional keyword set.
 
-=== Associated Parties
-
-This metadata pages contains information about one or more people or organizations associated with the resource in addition to those already covered on the Basic Metadata page. Many of the controls on this page are in common with those for the Resource Contacts on the <<Basic Metadata>> page. Explanations for the remainder of the controls are given below.
-
-image::ipt2/manage/IPTManageResourceMetadataAssociatedParties.png[]
-
-* *Copy from another* - if this person or organization is the same as the other contact of any resource, all of the details can be copied into the equivalent fields for the associated party by clicking on this link.
-* *Remove this associated party* - click on this link to remove the associated party that follows immediately below the link.
-* *Role* - this select box contains a https://rs.gbif.org/vocabulary/gbif/agent_role.xml[list of possible roles] that the associated party might have in relation to the resource. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role for the associated party in the select box.
-** *Author*: an agent associated with authoring a publication that used the data set, or of a data paper
-** *Content Provider*: an agent who contributed content to a data set (data set being described may be a composite)
-** *Custodian Steward*: an agent who is responsible for/takes care of the data set
-** *Distributor*: an agent involved in the publishing/distribution chain of a data set
-** *Editor*: an agent associated with editing a publication that used the data set, or of a data paper
-** *Metadata Provider*: an agent responsible for providing the metadata (the same as metadata provider from basic metadata page
-** *Originator*: an agent who originally gathered/prepared the data set (the same as creator from basic metadata page)
-** *Owner*: an agent who owns the data set (may or may not be the custodian)
-** *Point Of Contact*: an agent to contact for further information about the data set
-** *Principal Investigator*: a primary scientific contact associated with the data set
-** *Processor*: an agent responsible for any post-collection processing of the data set
-** *Publisher*: the agent associated with publishing a publication that used the data set, or of a data paper
-** *User*: an agent that makes use of the dataset
-** *Programmer*: an agent providing informatics/programming support related to the data set
-** *Curator*: an agent that maintains and documents the specimens in a collection. Some of their duties include preparing and labelling specimens, so they are ready for identification, and protecting the specimens
-** *Reviewer*: person assigned to review the dataset and verify its data and/or metadata quality. This role is analogous to the role played by peer reviewers in the scholarly publication process.
-* *Add new associated party* - click on this link to initiate a form for an additional associated party.
 
 === Project Data
 
@@ -442,6 +467,16 @@ image::ipt2/manage/IPTManageResourceMetadataProjectData.png[]
 ** *Personnel Directory* - the URL of the personnel directory system to which the personnel identifier belongs. There are four default directories to choose from: ORCID, ResearchID, LinkedIn, and Google Scholar. If you'd like to change the IPT's default set of directories, refer to the xref:user-id.adoc[Add a New User ID Directory] page in the IPT wiki.
 ** *Personnel Identifier* - a 16-digit ORCID ID (e.g. 0000-0002-1825-0097) or another identifier that links this person to the personnel directory specified.
 ** *Personnel Role* - the role of the person associated with the project. Click on the information icon to the left of the select box to see descriptions of the possible roles. Choose the most appropriate role in the select box for the person named above.
+
+image::ipt2/manage/IPTManageResourceMetadataProjectDataPersonnel.png[]
+
+** *Project Award* - the award is used to provide specific information about the funding awards for a project in a structured format. Sub-fields are provided for the name of the funding agency, the Open Funder Registry identifiers for the agency and program that made the award, the award number assigned, the title of the award, and the URL to the award page describing the award. In general, the funding agency should be listed with a cross-reference to the appropriate identifier from the Open Funder Registry (included in the EML distribution but updated periodically from the Open Funder Registry).
+
+image::ipt2/manage/IPTManageResourceMetadataProjectDataAward.png[]
+
+** *Related projects* - a link to another project. This allows projects to be nested under one another in the case where one project spawns another.
+
+image::ipt2/manage/IPTManageResourceMetadataProjectDataRelatedProjects.png[]
 
 === Sampling Methods
 
@@ -544,8 +579,6 @@ image::ipt2/manage/IPTManageResourceMetadataAdditionalMetadata.png[]
 * *Date Created* - the date on which the first version of the resource was published. It will be used to formulate the publication year in the auto-generated resource citation. This value is set automatically when publishing and cannot be edited.
 * *Date Published* - the date when the resource was last published. This value is set automatically when publishing (see the <<Publication>> section).
 * *Resource logo URL* - a logo representing the resource. The logo URL can be used to upload the resource. It may also be uploaded from an image file selected from your disk.
-* *Purpose* - a summary of the intentions for which the data set was developed. Includes objectives for creating the data set and what the data set is to support.
-* *Maintenance Description* - a description of the maintenance frequency of this resource. This description compliments the update frequency selected on the Basic Metadata page.
 * *Additional Information* - any information that is not characterized by the other resource metadata fields, e.g. history of the project, publications that have used the current data, information on related data published elsewhere, etc.
 * *Alternative Identifiers* - this section contains a list of additional or alternative identifiers for the resource. When the resource is published, the IPT's URL to the resource is added to the list of identifiers. If a resource is assigned a new DOI xref:doi-workflow.adoc[using the IPT], the IPT ensures this DOI is placed first in the list of identifiers. When a resource is registered with the GBIF Registry, the Registry's unique resource key is also added to the list of identifiers. If the resource represents an existing registered resource in the GBIF Registry, the existing registered resource UUID can be added to the list of identifiers. This will enable the IPT resource to update the existing resource during registration, instead of registering a brand new resource. For more information on how to migrate a resource, see <<Migrate a Resource,this>> section.
 ** *Add new alternative identifier* -  click on this link to add a text box for an alternative identifier for the resource.

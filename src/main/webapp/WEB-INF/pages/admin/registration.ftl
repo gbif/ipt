@@ -2,6 +2,7 @@
     <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
 
     <script>
@@ -343,7 +344,7 @@
                     <p><@s.text name="admin.registration.test1"/></p>
 
                     <div class="row g-3">
-                        <div class="col-12">
+                        <div class="col-md-6">
                             <@input name="registration.baseURL" i18nkey="admin.registration.baseURL" type="text" value="${baseURL}" size=70 disabled=true requiredField=true/>
                         </div>
 

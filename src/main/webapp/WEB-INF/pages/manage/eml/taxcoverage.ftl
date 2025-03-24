@@ -500,7 +500,14 @@
                                 <div id="list" class="mt-2" style="display:none">
                                     <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
                                     <div class="buttons taxon-list my-2">
-                                        <input type="submit" value='<@s.text name="button.add"/>' id="add-button" name="add-button" class="metadata-action-link custom-link">
+                                        <a href="" id="add-button" class="metadata-action-link custom-link">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                                </svg>
+                                            </span>
+                                            <span><@s.text name="button.add"/></span>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="row g-3">
