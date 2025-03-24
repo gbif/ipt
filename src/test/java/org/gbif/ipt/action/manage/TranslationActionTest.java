@@ -76,7 +76,6 @@ public class TranslationActionTest {
     ResourceManager mockResourceManager = mock(ResourceManager.class);
     SourceManager mockSourceManager = mock(SourceManager.class);
     VocabulariesManager mockVocabManager = mock(VocabulariesManager.class);
-    TranslationAction.Translation translation = new TranslationAction.Translation();
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     Container container = mock(Container.class);
 
@@ -154,7 +153,7 @@ public class TranslationActionTest {
     // create mock Action
     action =
       new TranslationAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockSourceManager,
-        mockVocabManager, translation);
+        mockVocabManager);
     action.setContainer(container);
 
     // initialize ExtensionProperty representing BasisOfRecord field on Occurrence core Extension

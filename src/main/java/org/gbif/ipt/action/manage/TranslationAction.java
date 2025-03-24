@@ -15,6 +15,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
@@ -39,7 +40,6 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.context.annotation.SessionScope;
 
 import freemarker.ext.beans.SimpleMapModel;
 
@@ -50,7 +50,6 @@ public class TranslationAction extends ManagerBaseAction {
   // logging
   private static final Logger LOG = LogManager.getLogger(TranslationAction.class);
 
-  @SessionScope
   static class Translation {
 
     private String rowType;
@@ -84,19 +83,6 @@ public class TranslationAction extends ManagerBaseAction {
       return translatedValues;
     }
 
-    /**
-     * Check whether the translation has been loaded already. Call to prevent reloading original source values each
-     * time translation page gets loaded, for example.
-     *
-     * @param rowType to which Term belongs
-     * @param term Term
-     * @return true if the translation has been loaded already, false otherwise
-     */
-    public boolean isLoaded(String rowType, Term term) {
-      return this.rowType != null && this.rowType.equals(rowType) && this.term != null && this.term.equals(term)
-        && sourceValues != null;
-    }
-
     public void setTmap(String rowType, Term term, TreeMap<String, String> sourceValues,
       TreeMap<String, String> translatedValues) {
       this.sourceValues = sourceValues;
@@ -108,7 +94,7 @@ public class TranslationAction extends ManagerBaseAction {
 
   private SourceManager sourceManager;
   private VocabulariesManager vocabManager;
-  private Translation trans;
+  private Translation trans = new Translation();
 
   protected static final String REQ_PARAM_TERM = "term";
   protected static final String REQ_PARAM_ROWTYPE = "rowtype";
@@ -127,12 +113,10 @@ public class TranslationAction extends ManagerBaseAction {
       RegistrationManager registrationManager,
       ResourceManager resourceManager,
       SourceManager sourceManager,
-      VocabulariesManager vocabManager,
-      Translation trans) {
+      VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.sourceManager = sourceManager;
     this.vocabManager = vocabManager;
-    this.trans = trans;
     defaultResult = SUCCESS;
   }
 
@@ -220,7 +204,7 @@ public class TranslationAction extends ManagerBaseAction {
               vocabManager.getI18nVocab(property.getVocabulary().getUriString(), getLocaleLanguage(), true);
           vocabTerms = new SimpleMapModel(vocabTermsRawData, null);
         }
-        if (!trans.isLoaded(mapping.getExtension().getRowType(), field.getTerm())) {
+        if (!isLoaded(mapping.getExtension().getRowType(), field.getTerm())) {
           reloadSourceValues();
         }
 
@@ -256,6 +240,9 @@ public class TranslationAction extends ManagerBaseAction {
         mapping = resource.getMapping(req.getParameter(REQ_PARAM_ROWTYPE), mid);
       }
       // reinitialize translation, including maps
+      if (trans == null) {
+        trans = new Translation();
+      }
       trans.setTmap(this.mapping.getExtension().getRowType(), property, new TreeMap<>(), new TreeMap<>());
       // reload new values
       int i = 1;
@@ -365,5 +352,23 @@ public class TranslationAction extends ManagerBaseAction {
    */
   public void setExtensionMapping(ExtensionMapping mapping) {
     this.mapping = mapping;
+  }
+
+  /**
+   * Check whether the translation has been loaded already. Call to prevent reloading original source values each
+   * time translation page gets loaded, for example.
+   *
+   * @param rowType to which Term belongs
+   * @param term Term
+   * @return true if the translation has been loaded already, false otherwise
+   */
+  public boolean isLoaded(String rowType, Term term) {
+    trans = (Translation) session.get(Constants.SESSION_DWC_TRANSLATION);
+    return trans != null
+        && trans.rowType != null
+        && trans.rowType.equals(rowType)
+        && trans.term != null
+        && trans.term.equals(term)
+        && trans.sourceValues != null;
   }
 }
