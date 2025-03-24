@@ -17,6 +17,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,9 @@ import com.opensymphony.xwork2.LocaleProviderFactory;
 import com.opensymphony.xwork2.inject.Container;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class BaseActionTest {
@@ -38,7 +41,7 @@ public class BaseActionTest {
   @Test
   public void testGetLocaleOnNoneActionContext() {
     BaseAction action = new BaseAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class));
-    assertEquals(null, action.getLocale());
+    assertNull(action.getLocale());
   }
 
   /**
@@ -46,22 +49,24 @@ public class BaseActionTest {
    */
   @Test
   public void testGetLocaleOnActionContext() {
-
-    //Simple mocked ActionContext
-    ActionContext mockActionContext = mock(ActionContext.class);
+    // Create a real ActionContext with a test ValueStack
+    HashMap<String, Object> contextMap = new HashMap<>();
     Container mockContainer = mock(Container.class);
+
+    // Mocking only the required objects inside the container
     LocaleProviderFactory mockLocaleProviderFactory = mock(LocaleProviderFactory.class);
     LocaleProvider mockLocaleProvider = mock(LocaleProvider.class);
-
     when(mockLocaleProvider.getLocale()).thenReturn(Locale.JAPANESE);
     when(mockLocaleProviderFactory.createLocaleProvider()).thenReturn(mockLocaleProvider);
     when(mockContainer.getInstance(LocaleProviderFactory.class)).thenReturn(mockLocaleProviderFactory);
-    when(mockActionContext.getContainer()).thenReturn(mockContainer);
 
-    //Set threadLocal ActionContext
-    ActionContext.bind(mockActionContext);
+    // Set up a real ActionContext
+    ActionContext testActionContext = ActionContext.of(contextMap);
+    testActionContext.withContainer(mockContainer);
 
-    //TEST
+    // Bind this new ActionContext to the current thread
+    ActionContext.bind(testActionContext);
+
     BaseAction action = new BaseAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class));
     assertEquals(Locale.JAPANESE, action.getLocale());
   }
