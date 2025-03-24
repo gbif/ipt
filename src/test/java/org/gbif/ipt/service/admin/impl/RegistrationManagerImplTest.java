@@ -26,7 +26,6 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -76,6 +75,8 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   private RegistrationManager registrationManager;
   private DataDir mockDataDir;
 
+  private List<Resource> resourcesList = new ArrayList<>();
+
   @BeforeEach
   public void setup() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock instances
@@ -87,9 +88,6 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     HttpClient mockHttpClient;
     HttpResponse mockResponse;
     ExtendedResponse extResponse;
-
-    // mock instance of ResourceManager: returns list of Resource that has one associated to Academy of Natural Sciences
-    ResourceManager mockResourceManager = mock(ResourceManager.class);
 
     // create Resource associated to Organisation
     Resource r1 = new Resource();
@@ -109,10 +107,9 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     r2.setDoi(new DOI("doi:10.1594/PANGAEA.726855"));
 
     // mock list() to return list with the mocked Resource - notable its organisation name is the old version
-    List<Resource> resourcesList = new ArrayList<>();
+    resourcesList = new ArrayList<>();
     resourcesList.add(r1);
     resourcesList.add(r2);
-    when(mockResourceManager.list()).thenReturn(resourcesList);
 
     // mock returning registration.xml file
     File registrationXML = FileUtils.getClasspathFile("config/registration.xml");
@@ -154,7 +151,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // try deleting the Academy of Natural Sciences - it will throw a DeletionNotAllowedException since there is a
     // resource associated to it
     try {
-      registrationManager.delete(RESOURCE1_ORGANISATION_KEY, Collections.emptyList());
+      registrationManager.delete(RESOURCE1_ORGANISATION_KEY, resourcesList);
     } catch (DeletionNotAllowedException e) {
       assertEquals(DeletionNotAllowedException.Reason.RESOURCE_REGISTERED_WITH_ORGANISATION, e.getReason());
     }

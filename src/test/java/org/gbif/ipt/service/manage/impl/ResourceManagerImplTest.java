@@ -233,6 +233,15 @@ public class ResourceManagerImplTest {
     DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
 
     // mock ExtensionManager returning different Extensions
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence"))
+        .thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event"))
+        .thenReturn(eventCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
+        .thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.gbif.org/terms/1.0/Image"))
+        .thenReturn(simpleImage);
+
     when(extensionsHolder.getExtensionsByRowtype()).thenReturn(
         Map.ofEntries(
             Map.entry("http://rs.tdwg.org/dwc/terms/Occurrence", occurrenceCore),
@@ -245,7 +254,7 @@ public class ResourceManagerImplTest {
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
-        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
+        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
     // mock finding dwca.zip file that does not exist

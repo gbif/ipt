@@ -156,6 +156,9 @@ public class TranslationActionTest {
         mockVocabManager);
     action.setContainer(container);
 
+    // empty session params
+    action.setSession(new HashMap<>());
+
     // initialize ExtensionProperty representing BasisOfRecord field on Occurrence core Extension
     ExtensionProperty property = mapping.getExtension().getProperty(field.getTerm());
 
