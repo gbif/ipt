@@ -373,6 +373,10 @@ public class GenerateDwcaEventTest {
       "/extensions/dwc_occurrence_2015-04-24.xml");
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
 
+    // mock ExtensionManager returning occurrence core Extension
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event")).thenReturn(eventCore);
+
     // mock ExtensionHolder returning Occurrence and Event
     when(extensionsHolder.getExtensionsByRowtype()).thenReturn(
         Map.ofEntries(
@@ -412,7 +416,7 @@ public class GenerateDwcaEventTest {
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
-        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
+        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
     // create ResourceManagerImpl

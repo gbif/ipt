@@ -475,6 +475,12 @@ public class GenerateDwcaTest {
     InputStream eventCoreIs = GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_event_2015-04-24.xml");
     Extension eventCore = extensionFactory.build(eventCoreIs);
 
+    // mock ExtensionManager returning occurrence core Extension
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event")).thenReturn(eventCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
+        .thenReturn(occurrenceCore);
+
     // mock ExtensionHolder returning Occurrence and Event
     when(extensionsHolder.getExtensionsByRowtype()).thenReturn( Map.ofEntries(
         Map.entry("http://rs.tdwg.org/dwc/terms/Occurrence", occurrenceCore),
@@ -506,7 +512,7 @@ public class GenerateDwcaTest {
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
-        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
+        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
     // create ResourceManagerImpl
