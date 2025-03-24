@@ -82,7 +82,7 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
   }
 
   public String formattedFileSize(String locale) {
-    return FileUtils.formatSize(fileSize, 1, locale, true);
+    return FileUtils.formatSize(fileSize, 1, locale, false);
   }
 
   public void setFieldsEnclosedByEscaped(String fieldsEnclosedBy) {

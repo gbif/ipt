@@ -69,7 +69,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   protected Date lastModified;
 
   public String formattedFileSize(String locale) {
-    return FileUtils.formatSize(fileSize, 1, locale, true);
+    return FileUtils.formatSize(fileSize, 1, locale, false);
   }
 
   private Workbook openBook() {
