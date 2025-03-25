@@ -40,7 +40,9 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -149,6 +151,11 @@ public class TranslationActionTest {
 
     // mock a locale provider
     when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
+
+    // mock textProvider getTexts
+    ResourceBundle mockResourceBundle = mock(ResourceBundle.class);
+    when(mockTextProvider.getTexts(any())).thenReturn(mockResourceBundle);
+    when(mockResourceBundle.getLocale()).thenReturn(Locale.ENGLISH);
 
     // create mock Action
     action =
