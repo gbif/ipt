@@ -1577,12 +1577,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
         if (emlFile.exists()) {
           try {
-            LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+            LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
             InputStream in = new FileInputStream(emlFile);
             Eml eml = EmlFactory.build(in);
-            if (eml.parseLicenseUrl() != null) {
-              LOG.debug("Checking if license (URL=" + eml.parseLicenseUrl() + ") is supported by GBIF..");
-              return Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+            String licenseUrlString = eml.parseLicenseUrl();
+            if (licenseUrlString != null) {
+              LOG.debug("Checking if license (URL={}) is supported by GBIF..", licenseUrlString);
+              boolean isSupported = Constants.GBIF_SUPPORTED_LICENSES.stream()
+                  .anyMatch(supportedLicense -> supportedLicense.contains(licenseUrlString));
+              if (isSupported) {
+                LOG.debug("License URL {} is supported", licenseUrlString);
+              } else {
+                LOG.debug("License URL {} is not supported", licenseUrlString);
+              }
+
+              return isSupported;
             }
           } catch (Exception e) {
             LOG.error(
