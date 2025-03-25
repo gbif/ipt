@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2025-03-19 07:13+0000\n"
-"PO-Revision-Date: 2025-03-25 15:36\n"
+"PO-Revision-Date: 2025-03-25 17:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1688,13 +1688,13 @@ msgstr "*Introducción*: De uno a varios párrafos que presentan los antecedente
 #: en/modules/ROOT/pages/manage-resources.adoc:436
 #, no-wrap
 msgid "*Getting started* - One or more paragraphs describing the dataset's overall interpretation, content and structure. For example, the number and names of data files, the types of measurements that they contain, how those data files fit together in an overall design, and how they relate to the data collection methods, experimental design, and sampling design described in other EML sections. One might describe any specialized software that is available and/or may be necessary for analyzing or interpreting the data, and possibly include a high-level description of data formats if they are unusual.\n"
-msgstr ""
+msgstr "*Comenzando*: Uno o más párrafos que describan la interpretación, el contenido y la estructura general del conjunto de datos. Por ejemplo, el número y los nombres de los archivos de datos, los tipos de mediciones que contienen, cómo se integran en un diseño general y cómo se relacionan con los métodos de recopilación de datos, el diseño experimental y el diseño de muestreo descritos en otras secciones de EML. Se podría describir cualquier software especializado disponible o necesario para analizar o interpretar los datos, y posiblemente incluir una descripción detallada de los formatos de datos si son inusuales.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:437
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataAdditionalDescription.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataAdditionalDescription.png"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:440
@@ -1812,31 +1812,31 @@ msgstr "*Rol*: el rol de la persona asociada al proyecto. Haga clic en el ícono
 #: en/modules/ROOT/pages/manage-resources.adoc:471
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataProjectDataPersonnel.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataProjectDataPersonnel.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:474
 #, no-wrap
 msgid "*Project Award* - the award is used to provide specific information about the funding awards for a project in a structured format. Sub-fields are provided for the name of the funding agency, the Open Funder Registry identifiers for the agency and program that made the award, the award number assigned, the title of the award, and the URL to the award page describing the award. In general, the funding agency should be listed with a cross-reference to the appropriate identifier from the Open Funder Registry (included in the EML distribution but updated periodically from the Open Funder Registry).\n"
-msgstr ""
+msgstr "*Financiamiento del Proyecto*: Se utiliza para proporcionar información específica sobre las subvenciones de un proyecto en un formato estructurado. Se proporcionan subcampos para el nombre de la agencia financiadora, los identificadores del Registro Abierto de Financiadores (Open Funder Registry) de la agencia y el programa que otorgó la subvención, el número de subvención asignado, el título de la subvención y la URL de la página donde se describe. En general, la agencia financiadora debe figurar con una referencia cruzada al identificador correspondiente del Registro Abierto de Financiadores (incluido en la distribución de EML, pero actualizado periódicamente desde el Registro Abierto de Financiadores).\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:475
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataProjectDataAward.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataProjectDataAward.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:478
 #, no-wrap
 msgid "*Related projects* - a link to another project. This allows projects to be nested under one another in the case where one project spawns another.\n"
-msgstr ""
+msgstr "*Proyectos relacionados*: un enlace a otro proyecto. Esto permite anidar proyectos uno debajo de otro en caso de que un proyecto genere otro.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:479
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataProjectDataRelatedProjects.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataProjectDataRelatedProjects.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:484
