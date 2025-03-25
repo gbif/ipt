@@ -134,7 +134,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     this.http = client;
     this.gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
     this.warnings = warnings;
-    // TODO: use null for registrationManager to avoid circular dependency
     baseAction = new BaseAction(textProvider, cfg, null);
   }
 
