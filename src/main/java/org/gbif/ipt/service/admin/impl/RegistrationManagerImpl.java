@@ -97,10 +97,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
           "Multiple DOI accounts activated in registration information - only one is allowed.");
       }
 
-      LOG.debug("Adding/updating associated organisation " + organisation.getKey() + " - " + organisation.getName());
+      LOG.debug("Adding/updating associated organisation {} - {}", organisation.getKey(), organisation.getName());
       registration.getAssociatedOrganisations().put(organisation.getKey().toString(), organisation);
-
-      // TODO: Test an make sure it works #1971 Update organisation name and alias for resources when changed
     }
     return organisation;
   }
