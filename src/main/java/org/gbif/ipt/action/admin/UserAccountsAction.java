@@ -106,8 +106,6 @@ public class UserAccountsAction extends POSTAction {
   private void checkUserResourcesBeforeDeletion(String email) throws DeletionNotAllowedException {
     User remUser = userManager.get(email);
 
-    // TODO: check remUser not null?
-
     Set<String> resourcesCreatedByUser = new HashSet<>();
     for (Resource r : resourceManager.list()) {
       User creator = userManager.get(r.getCreator().getEmail());
