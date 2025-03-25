@@ -34,7 +34,6 @@ public class IptI18nInterceptor extends I18nInterceptor {
 
   private AppConfig appConfig;
 
-  @Override
   protected Locale getLocaleFromParam(Object requestedLocale) {
     Locale locale = null;
     try {
@@ -42,7 +41,7 @@ public class IptI18nInterceptor extends I18nInterceptor {
         locale = (requestedLocale instanceof Locale) ? (Locale) requestedLocale
             : LocaleUtils.toLocale(requestedLocale.toString());
         if (locale != null && LOG.isDebugEnabled()) {
-          LOG.debug("Applied request locale: " + locale.getLanguage());
+          LOG.debug("Applied request locale: {}", locale.getLanguage());
         }
       }
     } catch (IllegalArgumentException e) {
