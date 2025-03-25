@@ -2708,7 +2708,7 @@
                                 <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                             </p>
                         <#elseif resource.dataPackage && resource.coreType != "camtrap-dp" && resource.coreType != "coldp">
-                            <!-- Show warning: Interaction DP, Material DP, ColDP - registration is not available now -->
+                            <!-- Show warning: registration is not available now -->
                             <p>
                                 <@s.text name="manage.resource.status.registration.forbiddenTypes"/>
                             </p>

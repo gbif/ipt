@@ -21,33 +21,6 @@
             minimumResultsForSearch: 15,
             theme: 'bootstrap4'
         });
-
-        $('body').bind('DOMSubtreeModified', function(e) {
-            if (e.target.innerHTML.length > 0 && e.target.classList.contains("select2-results__options")) {
-                if (e.target.innerText === "Searching…") {
-                    setTimeout(() => {
-                        addBetaBadge(e);
-                    }, 500);
-                } else {
-                    addBetaBadge(e);
-                }
-            }
-        });
-
-        function addBetaBadge(e) {
-            var optionsUl = e.target;
-            var options = optionsUl.querySelectorAll("li");
-            options.forEach(function (item, index) {
-                var subOptions = item.querySelectorAll("ul li");
-
-                subOptions.forEach(function (ii, index) {
-                    var text = ii.innerText;
-                    if (text.indexOf("Beta") === -1 && (text.indexOf("Interaction DP") !== -1 || text.indexOf("Material DP") !== -1)) {
-                        ii.innerHTML = text + ' <span class="badge rounded-pill fs-smaller-2 fw-400 bg-gbif-primary">Beta</span>';
-                    }
-                });
-            });
-        }
     });
 </script>
 
