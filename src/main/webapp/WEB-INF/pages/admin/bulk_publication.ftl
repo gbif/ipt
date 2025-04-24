@@ -1,13 +1,69 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script>
-    $(document).ready(function(){
-        $('.confirmPublishAll').jConfirmAction({
-            titleQuestion : "<@s.text name="basic.confirm"/>",
-            yesAnswer : "<@s.text name='basic.yes'/>",
-            cancelAnswer : "<@s.text name='basic.no'/>",
-            buttonType: "primary",
-            processing: true
+    <#--$(document).ready(function(){-->
+    <#--    $('.confirmPublishAll').jConfirmAction({-->
+    <#--        titleQuestion : "<@s.text name="basic.confirm"/>",-->
+    <#--        yesAnswer : "<@s.text name='basic.yes'/>",-->
+    <#--        cancelAnswer : "<@s.text name='basic.no'/>",-->
+    <#--        buttonType: "primary",-->
+    <#--        processing: false-->
+    <#--    });-->
+    <#--});-->
+
+    $(document).ready(function () {
+        loadReport();
+        var reporter = setInterval(loadReport, 1000);
+
+        function loadReport() {
+            $("#bulkReport").load("${baseURL}/admin/bulkReport.do?", function () {
+                if ($(".completed").length > 0) {
+                    clearInterval(reporter);
+                }
+            });
+        }
+
+        $('#modalback, #closeModal').on('click', function () {
+            $('#modalbox').hide();
+        });
+
+        // Delegate to handle clicks on dynamically loaded "Show logs" links
+        $(document).on('click', '.show-log-link', function (e) {
+            e.preventDefault();
+
+            var resourceName = $(this).data('resource'); // Get the resource name from the data attribute
+
+            if (!resourceName) {
+                console.log("No resource name provided.");
+                return;
+            }
+
+            // Show loading indicator while fetching logs
+            $('#modalcontent').html('<p>Loading logs...</p>');
+            $('#modalbox').show();
+
+            // Fetch the logs for the specific resource
+            $.getJSON('/admin-api/publication-report', {r: resourceName}, function (data) {
+                if (!data || !data.messages || data.messages.length === 0) {
+                    $('#modalcontent').html('<p>No logs found for this resource.</p>');
+                    return;
+                }
+
+                // Process and display the logs
+                var content = '<ul>';
+                for (var i = 0; i < data.messages.length; i++) {
+                    var msg = data.messages[i];
+                    var level = msg.level && msg.level.standardLevel ? msg.level.standardLevel : 'INFO';
+                    var time = new Date(msg.timestamp).toLocaleTimeString();
+                    content += '<li class="list-unstyled">[' + time + '] <strong>' + level + ':</strong> ' + msg.message + '</li>';
+                }
+                content += '</ul>';
+
+                // Insert the logs into the modal content
+                $('#modalcontent').html(content);
+            }).fail(function () {
+                $('#modalcontent').html('<p>Failed to load logs. Please try again later.</p>');
+            });
         });
     });
 </script>
@@ -55,6 +111,10 @@
             <p>
                 <@s.text name="admin.config.publishResources.details"/>
             </p>
+        </div>
+
+        <div class="my-3 p-3">
+            <div id="bulkReport"></div>
         </div>
     </main>
 </@s.form>

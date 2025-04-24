@@ -143,7 +143,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
     // wait around for all resources to finish publishing
     // PublishingMonitor thread is running in the background completing asynchronous publishing tasks
-    while (resourceManager.getProcessFutures().size() > 0) {
+    while (!resourceManager.getProcessFutures().isEmpty()) {
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
