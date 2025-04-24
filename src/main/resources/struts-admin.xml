@@ -8,6 +8,24 @@
 	These will be accessible only by the users with administrative level privileges
  -->
 <struts>
+  <package name="ipt-admin-api" extends="ipt-api,ipt-default" namespace="/admin-api">
+    <default-interceptor-ref name="adminStack"/>
+
+    <action name="publication-report" class="org.gbif.ipt.action.admin.PublishingStatusApiAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">report</param>
+      </result>
+    </action>
+
+    <action name="publication-reports" class="org.gbif.ipt.action.admin.PublishingStatusApiAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">reports</param>
+      </result>
+    </action>
+  </package>
+
   <!-- The entry to the administration section -->
   <package name="admin" extends="ipt-default" namespace="/admin">
     <default-interceptor-ref name="adminStack"/>

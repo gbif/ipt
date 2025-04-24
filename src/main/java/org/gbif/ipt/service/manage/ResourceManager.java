@@ -395,6 +395,13 @@ public interface ResourceManager {
   ListValuedMap<String, Date> getProcessFailures();
 
   /**
+   * Return the report map.
+   *
+   * @return map of publication reports
+   */
+  Map<String, StatusReport> getProcessReports();
+
+  /**
    * Check if the maximum number of publish event failures has occurred for a resource.
    *
    * @param resource resource

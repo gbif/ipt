@@ -3974,7 +3974,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       resource.setNextPublished(null);
-      LOG.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
+      LOG.debug("Resource: {} has not been configured to use auto-publishing", resource.getShortname());
     }
   }
 
@@ -4035,12 +4035,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
+  public Map<String, StatusReport> getProcessReports() {
+    return processReports;
+  }
+
+  @Override
   public boolean hasMaxProcessFailures(Resource resource) {
     if (processFailures.containsKey(resource.getShortname())) {
       List<Date> failures = processFailures.get(resource.getShortname());
 
-      LOG.debug("Publication has failed " + failures.size() + " time(s) for resource: " + resource
-        .getTitleAndShortname());
+      LOG.debug("Publication has failed {} time(s) for resource: {}", failures.size(), resource
+          .getTitleAndShortname());
       return failures.size() >= MAX_PROCESS_FAILURES;
     }
     return false;
@@ -4058,15 +4063,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public void removeVersion(Resource resource, BigDecimal version) {
     // Cannot remove the most recent version, only archived versions
     if ((version != null) && !version.equals(resource.getMetadataVersion())) {
-      LOG.debug("Removing version "+version+" for resource: "+resource.getShortname());
+      LOG.debug("Removing version {} for resource: {}", version, resource.getShortname());
       try {
         removeVersion(resource.getShortname(), version);
         resource.removeVersionHistory(version);
         save(resource);
-        LOG.debug("Version "+version+" has been removed for resource: "+resource.getShortname());
+        LOG.debug("Version {} has been removed for resource: {}", version, resource.getShortname());
       }
       catch(IOException e) {
-        LOG.error("Cannot remove version "+version+" for resource: "+resource.getShortname(), e);
+        LOG.error("Cannot remove version {} for resource: {}", version, resource.getShortname(), e);
       }
     }
   }
@@ -4082,7 +4087,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (dwcaFile != null && dwcaFile.exists()) {
       boolean deleted = FileUtils.deleteQuietly(dwcaFile);
       if (deleted) {
-        LOG.debug(dwcaFile.getAbsolutePath() + " has been successfully deleted.");
+        LOG.debug("{} has been successfully deleted.", dwcaFile.getAbsolutePath());
       }
     }
   }
