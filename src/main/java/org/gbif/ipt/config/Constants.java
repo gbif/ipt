@@ -114,8 +114,6 @@ public final class Constants {
   public static final BigDecimal INITIAL_RESOURCE_VERSION_DATA_PACKAGE = new BigDecimal("1");
 
   public static final String CAMTRAP_DP = "camtrap-dp";
-  public static final String MATERIAL_DP = "material-dp";
-  public static final String INTERACTION_DP = "interaction-dp";
   public static final String COL_DP = "coldp";
   public static final String CAMTRAP_DP_OBSERVATIONS = "observations";
   public static final String DWC_ARCHIVE_NAME = "dwca";
