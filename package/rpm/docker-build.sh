@@ -3,8 +3,15 @@
 gitTag=$(git describe --tags --abbrev=0)
 nr_ver=$(echo $gitTag | sed s/ipt-//)
 echo "Building version $nr_ver"
-sed -i "s|%define nr_ver .*|%define nr_ver $nr_ver|" SPECS/ipt.spec
 
+OS_TYPE=$(uname)
+if [[ "$OS_TYPE" == "Darwin" ]]; then
+  echo "OS type is $OS_TYPE (MacOS)"
+  sed -i '' "s|%define nr_ver .*|%define nr_ver $nr_ver|" SPECS/ipt.spec
+else
+  echo "OS type is $OS_TYPE (Linux)"
+  sed -i "s|%define nr_ver .*|%define nr_ver $nr_ver|" SPECS/ipt.spec
+fi
 CURRENT_DIR="$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
 mkdir -p $CURRENT_DIR/RPMS
