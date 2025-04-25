@@ -1,17 +1,21 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <script>
-    <#--$(document).ready(function(){-->
-    <#--    $('.confirmPublishAll').jConfirmAction({-->
-    <#--        titleQuestion : "<@s.text name="basic.confirm"/>",-->
-    <#--        yesAnswer : "<@s.text name='basic.yes'/>",-->
-    <#--        cancelAnswer : "<@s.text name='basic.no'/>",-->
-    <#--        buttonType: "primary",-->
-    <#--        processing: false-->
-    <#--    });-->
-    <#--});-->
+    $(document).ready(function(){
+        $('.confirmPublishAll').jConfirmAction({
+            titleQuestion : "<@s.text name="basic.confirm"/>",
+            yesAnswer : "<@s.text name='basic.yes'/>",
+            cancelAnswer : "<@s.text name='basic.no'/>",
+            buttonType: "primary",
+            processing: false,
+            closeModal: true
+        });
 
-    $(document).ready(function () {
+        // button is not created right away, set click on document
+        $(document).on('click','#yes-button', function(){
+            $("#dialog-confirm").modal('hide');
+        })
+
         loadReport();
         var reporter = setInterval(loadReport, 1000);
 
