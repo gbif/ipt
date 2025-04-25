@@ -402,6 +402,11 @@ public interface ResourceManager {
   Map<String, StatusReport> getProcessReports();
 
   /**
+   * Clear the report map.
+   */
+  void clearProcessReports();
+
+  /**
    * Check if the maximum number of publish event failures has occurred for a resource.
    *
    * @param resource resource
