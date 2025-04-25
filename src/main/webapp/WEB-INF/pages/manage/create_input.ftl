@@ -38,6 +38,13 @@
             const file = event.target.files[0];
             if (!file) return;
 
+            var filename = file.name.toLowerCase();
+            var shortnameMatch = filename.match(/^(dwca|datapackage|eml)-([a-z0-9_-]+)-[^\/\\]+$/i);
+
+            if (shortnameMatch && shortnameMatch[2]) {
+                $('#shortname').val(shortnameMatch[2]);
+            }
+
             if (file.name.endsWith('.zip')) {
                 JSZip.loadAsync(file).then(function (zip) {
                     const jsonFile = zip.file('datapackage.json');
@@ -117,6 +124,7 @@
                 $('#resourceType').val(datasetType).trigger('change');
             } else {
                 console.log('No matching dataset type found.');
+                $('#resourceType').val('other').trigger('change');
             }
         }
     });
