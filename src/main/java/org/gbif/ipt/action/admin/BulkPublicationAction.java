@@ -15,17 +15,25 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.Getter;
 
 public class BulkPublicationAction extends BaseAction {
 
   private static final long serialVersionUID = -8016332755710954222L;
 
   private final ResourceManager resourceManager;
+
+  @Getter
+  private List<Resource> resources = new ArrayList<>();
 
   @Inject
   public BulkPublicationAction(
@@ -40,6 +48,7 @@ public class BulkPublicationAction extends BaseAction {
   @Override
   public String execute() throws Exception {
     resourceManager.clearProcessReports();
+    resources = resourceManager.list();
 
     return SUCCESS;
   }

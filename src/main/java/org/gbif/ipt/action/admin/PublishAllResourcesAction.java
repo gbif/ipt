@@ -31,10 +31,14 @@ import org.gbif.ipt.validation.EmlValidator;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class PublishAllResourcesAction extends BaseAction {
 
@@ -47,6 +51,14 @@ public class PublishAllResourcesAction extends BaseAction {
   protected RegistryManager registryManager;
   private final EmlValidator emlValidator;
   private final DataPackageMetadataValidator dpMetadataValidator;
+  @Getter
+  private List<Resource> resources;
+  @Setter
+  private List<String> selectedResources;
+  @Setter
+  private List<String> excludedResources;
+  @Setter
+  private BulkPublicationType publishMode;
 
   @Inject
   public PublishAllResourcesAction(
@@ -70,6 +82,8 @@ public class PublishAllResourcesAction extends BaseAction {
       return cancel();
     }
 
+    resources = resourceManager.list();
+
     // start with IPT registration update, provided the IPT has been registered already
     try {
       Ipt ipt = registrationManager.getIpt();
@@ -84,7 +98,21 @@ public class PublishAllResourcesAction extends BaseAction {
       LOG.error(msg);
     }
 
-    List<Resource> resources = resourceManager.list();
+    List<Resource> allResources = resourceManager.list();
+    List<Resource> resources;
+
+    if (publishMode == BulkPublicationType.SELECTED) {
+      resources = allResources.stream()
+          .filter(res -> selectedResources.contains(res.getShortname()))
+          .collect(Collectors.toList());
+    } else if (publishMode == BulkPublicationType.EXCLUDED) {
+      resources = allResources.stream()
+          .filter(res -> !excludedResources.contains(res.getShortname()))
+          .collect(Collectors.toList());
+    } else {
+      resources = allResources;
+    }
+
     if (resources.isEmpty()) {
       this.addActionWarning(getText("admin.config.updateMetadata.none"));
       return SUCCESS;
@@ -169,5 +197,9 @@ public class PublishAllResourcesAction extends BaseAction {
       }
       LOG.info("Resource registrations updated successfully!");
     }
+  }
+
+  public enum BulkPublicationType {
+    ALL, SELECTED, EXCLUDED, CHANGED
   }
 }
