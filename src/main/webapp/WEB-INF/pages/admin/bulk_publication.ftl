@@ -10,9 +10,12 @@
             titleQuestion : "<@s.text name="basic.confirm"/>",
             yesAnswer : "<@s.text name='basic.yes'/>",
             cancelAnswer : "<@s.text name='basic.no'/>",
+            question: "Are you sure you want to start bulk publication?",
             buttonType: "primary",
             processing: false,
-            closeModal: true
+            closeModal: true,
+            baseURL: "${baseURL}",
+            logo: "warning"
         });
 
         $('select#selectedResources').select2({

@@ -1739,26 +1739,40 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 /* Modal windows START */
 .modal-confirm .modal-content {
-    padding: 20px;
-    border-radius: 5px;
+    padding: 0;
     border: none;
     text-align: center;
     font-size: 16px;
 }
 
+#dialog-confirm .modal-dialog {
+    max-width: 450px !important;
+}
+
+.modal-image {
+    width: 150px;
+    margin: 0 auto;
+    display: block;
+}
+
 .modal-confirm h5 {
     text-align: center;
-    font-size: 20px;
-    margin: 30px 0 -10px;
+    font-size: 16px;
+    margin: 0 0 1rem 0;
+}
+
+.modal-confirm .modal-header button {
+    display: none;
 }
 
 .modal-confirm .btn {
-    min-width: 100px;
+    min-width: 85px;
+    font-weight: 500 !important;
 }
 
 .modal-confirm .icon-box {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     margin: 0 auto;
     border-radius: 50%;
     z-index: 9;
@@ -1772,9 +1786,9 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 
 .modal-confirm .icon-box i {
     color: rgb(var(--color-gbif-danger));
-    font-size: 46px;
+    font-size: 40px;
     display: inline-block;
-    margin-top: 13px;
+    margin-top: 8px;
 }
 
 .modal-confirm .icon-box-warning i {
@@ -1798,8 +1812,8 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
 }
 
 .modal-confirm .modal-header {
-    border-bottom: none;
     position: relative;
+    background: #fefdfa;
 }
 
 .modal-confirm .modal-footer {
@@ -1807,13 +1821,20 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     text-align: center;
     border-radius: 5px;
     font-size: 13px;
-    padding: 10px 15px 25px;
+    padding: 1.25rem;
 }
 
 .modal-confirm .close {
     position: absolute;
     top: -5px;
     right: -2px;
+}
+
+.modal-confirm .modal-body {
+    padding: 1rem 1.5rem;
+    font-size: 14px;
+    color: #666666;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .modal-header .close {
