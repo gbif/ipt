@@ -158,21 +158,21 @@
 
         <div class="my-3 p-3">
             <fieldset>
-                <legend class="text-gbif-header-2">Bulk Publication Options</legend>
+                <legend class="text-gbif-header-2"><@s.text name="admin.config.publish.options"/></legend>
 
                 <label class="py-1">
                     <input class="form-check-input" type="radio" name="publishMode" value="ALL" checked>
-                    Publish <strong>all</strong> resources
+                    <@s.text name="admin.config.publish.all"/>
                 </label><br>
 
                 <label class="py-1">
                     <input class="form-check-input" type="radio" name="publishMode" value="CHANGED">
-                    Publish all resources <strong>changed</strong> since last publication
+                    <@s.text name="admin.config.publish.changed"/>
                 </label><br>
 
                 <label class="py-1">
                     <input class="form-check-input" type="radio" name="publishMode" value="SELECTED">
-                    Publish only <strong>selected</strong> resources
+                    <@s.text name="admin.config.publish.selected"/>
                 </label><br>
 
                 <div id="selectedDatasets" class="dataset-dropdown ms-3 mb-2" style="display: none;">
@@ -185,7 +185,7 @@
 
                 <label class="py-1">
                     <input class="form-check-input" type="radio" name="publishMode" value="EXCLUDED">
-                    Publish all <strong>excluding</strong> selected resources
+                    <@s.text name="admin.config.publish.excluded"/>
                 </label><br>
 
                 <div id="excludedDatasets" class="dataset-dropdown" style="display: none; margin-left: 20px;">
