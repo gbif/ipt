@@ -150,6 +150,7 @@ import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.MessageDigest;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -172,6 +173,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
+import java.util.zip.ZipFile;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -226,6 +228,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
   private Map<String, StatusReport> processReports = new HashMap<>();
+  private List<String> resourcesToSkip = new ArrayList<>();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
@@ -1490,13 +1493,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Resource resource = get(shortname);
       BigDecimal version = resource.getMetadataVersion();
 
-      // is listed as locked but task might be finished, check
+      // is listed as locked, but the task might be finished, check
       Future<Map<String, Integer>> f = processFutures.get(shortname);
       // if this task finished
       if (f.isDone()) {
-        // remove process from locking list immediately! Fixes Issue 1141
+        // remove the process from the locking list immediately! Fixes Issue 1141
         processFutures.remove(shortname);
         boolean succeeded = false;
+        boolean checksumChanged = true;
+        boolean skipIfNotChanged = resourcesToSkip.contains(shortname);
         String reasonFailed = null;
         Throwable cause = null;
         try {
@@ -1520,10 +1525,57 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           }
 
           resource.setRecordsPublished(recordCount == null ? 0 : recordCount);
-          // finish publication (update registration, persist resource changes)
-          publishEnd(resource, action, version);
-          // important: indicate publishing finished successfully!
-          succeeded = true;
+
+          // TODO: what about Metadata-Only? what about Data packages?
+
+          if (skipIfNotChanged) {
+            getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Checking if data has been changed since last published"));
+          }
+
+          File resourceDwcaFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
+          LOG.debug("Calculating checksum for DwC-A: {}", resourceDwcaFile.getName());
+          try {
+            String archiveChecksum = calculateArchiveChecksum(resourceDwcaFile);
+            String lastPublishedArchiveChecksum = resource.getLastPublishedArchiveChecksum();
+
+            if (lastPublishedArchiveChecksum == null) {
+              LOG.debug("No checksum found for the resource {}", resource.getShortname());
+              resource.setLastPublishedArchiveChecksum(archiveChecksum);
+
+              // do not log additional info about checksum if it is disabled
+              if (skipIfNotChanged) {
+                getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "No checksum found for comparison, skipping."));
+              }
+            } else if (lastPublishedArchiveChecksum.equals(archiveChecksum)) {
+              LOG.debug("New checksum [{}] matches the stored one [{}] for the resource {}",
+                  archiveChecksum, lastPublishedArchiveChecksum, resource.getShortname());
+              checksumChanged = false;
+
+              if (skipIfNotChanged) {
+                getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Checksum has not changed since last published"));
+              }
+            } else {
+              LOG.debug("New checksum [{}] for the resource {}", archiveChecksum, resource.getShortname());
+              resource.setLastPublishedArchiveChecksum(archiveChecksum);
+
+              if (skipIfNotChanged) {
+                getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "✓ Checksum has changed since last published"));
+              }
+            }
+          } catch (Exception e) {
+            LOG.error("Failed to calculate checksum for DwC-A: {}", resourceDwcaFile.getName(), e);
+
+            if (skipIfNotChanged) {
+              getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Failed to calculate checksum"));
+            }
+          }
+
+          if (checksumChanged || !skipIfNotChanged) {
+            // finish publication (update registration, persist resource changes)
+            publishEnd(resource, action, version);
+            // important: indicate publishing finished successfully!
+            succeeded = true;
+          }
         } catch (ExecutionException e) {
           // getCause holds the actual exception our callable (GenerateDwca) threw
           cause = e.getCause();
@@ -1543,7 +1595,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // this type of exception happens outside GenerateDwca - so add reason to StatusReport
           getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
         } finally {
-          // if publication was successful..
+          // if publication was successful
           if (succeeded) {
             // update StatusReport on publishing page
             String msg =
@@ -1551,6 +1603,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
             processReports.put(shortname, updated);
           } else {
+            boolean failedDueToDataNotChanged = !checksumChanged && skipIfNotChanged;
+
+            if (failedDueToDataNotChanged) {
+              reasonFailed = action.getText("publishing.dataNotChanged");
+            }
+
             // alert user publication failed
             String msg =
               action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, reasonFailed});
@@ -1562,11 +1620,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               processReports.put(shortname, updated);
             }
 
+            if (failedDueToDataNotChanged) {
+              String dataNotChanged = action.getText("publishing.dataNotChanged.revert");
+              StatusReport updated = new StatusReport(true, dataNotChanged, getTaskMessages(shortname));
+              processReports.put(shortname, updated);
+            }
+
             // the previous version needs to be rolled back
             restoreVersion(resource, version, action);
 
-            // keep track of how many failures on auto publication have happened
-            processFailures.put(resource.getShortname(), new Date());
+            // do not count "data not changed" as an actual failure
+            if (!failedDueToDataNotChanged) {
+              // keep track of how many failures on auto publication have happened
+              processFailures.put(resource.getShortname(), new Date());
+            }
+
+            resourcesToSkip.remove(resource.getShortname());
           }
         }
         return false;
@@ -2460,6 +2529,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public boolean publish(Resource resource, BigDecimal version, BaseAction action)
+      throws PublicationException, InvalidConfigException {
+    return publish(resource, version, action, false);
+  }
+
+  @Override
+  public boolean publish(Resource resource, BigDecimal version, BaseAction action, boolean skipIfNotChanged)
     throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
     if (action == null) {
@@ -2488,6 +2563,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // (re)generate dwca asynchronously
       boolean dwca = false;
       if (resource.hasMappedData()) {
+        if (skipIfNotChanged) {
+          resourcesToSkip.add(resource.getShortname());
+        }
         generateDwca(resource);
         dwca = true;
       } else {
@@ -2500,6 +2578,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else { // Data Package archive
       boolean dataPackage = false;
       if (resource.hasSchemaMappedData()) {
+        if (skipIfNotChanged) {
+          resourcesToSkip.add(resource.getShortname());
+        }
         generateDataPackage(resource);
         dataPackage = true;
       } else {
@@ -4113,5 +4194,68 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (versionedDwcaFile.exists()) {
       FileUtils.forceDelete(versionedDwcaFile);
     }
+  }
+
+  public String calculateChecksum(File file) throws Exception {
+    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    InputStream fis = new FileInputStream(file);
+
+    byte[] byteArray = new byte[1024];
+    int bytesCount = 0;
+
+    while ((bytesCount = fis.read(byteArray)) != -1) {
+      digest.update(byteArray, 0, bytesCount);
+    };
+    fis.close();
+
+    byte[] bytes = digest.digest();
+
+    // Convert to hex string
+    StringBuilder sb = new StringBuilder();
+    for (byte b : bytes) {
+      sb.append(String.format("%02x", b));
+    }
+
+    return sb.toString();
+  }
+
+  /**
+   * Calculates a checksum of the DwC archive or the data package.
+   *
+   * @param archive archive
+   * @return checksum of the archive
+   */
+  public String calculateArchiveChecksum(File archive) throws Exception {
+    // Create a MessageDigest instance for SHA-256
+    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+    try (ZipFile zipFile = new ZipFile(archive)) {
+      // Iterate through the files in the DwCA
+      zipFile.stream().forEach(entry -> {
+        // Skip the EML metadata file
+        if (entry.getName().endsWith(".xml") && entry.getName().toLowerCase().contains("eml")) {
+          return;
+        }
+
+        // If it's a data file, calculate its checksum
+        try (InputStream is = zipFile.getInputStream(entry)) {
+          byte[] buffer = new byte[4096];
+          int bytesRead;
+          while ((bytesRead = is.read(buffer)) != -1) {
+            digest.update(buffer, 0, bytesRead);
+          }
+        } catch (IOException e) {
+          LOG.error("Failed to read data", e);
+        }
+      });
+    }
+
+    // Convert the final checksum to a hex string
+    byte[] hashBytes = digest.digest();
+    StringBuilder hexString = new StringBuilder();
+    for (byte b : hashBytes) {
+      hexString.append(String.format("%02x", b));
+    }
+    return hexString.toString();
   }
 }

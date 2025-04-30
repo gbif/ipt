@@ -98,8 +98,10 @@ public class PublishAllResourcesAction extends BaseAction {
       LOG.error(msg);
     }
 
+    resourceManager.clearProcessReports();
     List<Resource> allResources = resourceManager.list();
     List<Resource> resources;
+    boolean skipIfNotChanged = false;
 
     if (publishMode == BulkPublicationType.SELECTED) {
       resources = allResources.stream()
@@ -109,6 +111,9 @@ public class PublishAllResourcesAction extends BaseAction {
       resources = allResources.stream()
           .filter(res -> !excludedResources.contains(res.getShortname()))
           .collect(Collectors.toList());
+    } else if (publishMode == BulkPublicationType.CHANGED){
+      resources = allResources;
+      skipIfNotChanged = true;
     } else {
       resources = allResources;
     }
@@ -136,7 +141,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
           if (isValidMetadata) {
             // publish a new version of the resource - dwca gets published asynchronously
-            resourceManager.publish(resource, nextVersion, this);
+            resourceManager.publish(resource, nextVersion, this, skipIfNotChanged);
           } else {
             // alert user publication failed
             addActionError(getText("publishing.failed",

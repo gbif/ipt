@@ -166,6 +166,11 @@
                 </label><br>
 
                 <label class="py-1">
+                    <input class="form-check-input" type="radio" name="publishMode" value="CHANGED">
+                    Publish all resources <strong>changed</strong> since last publication
+                </label><br>
+
+                <label class="py-1">
                     <input class="form-check-input" type="radio" name="publishMode" value="SELECTED">
                     Publish only <strong>selected</strong> resources
                 </label><br>

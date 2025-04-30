@@ -148,6 +148,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   private IdentifierStatus identifierStatus = IdentifierStatus.UNRESERVED;
   private DOI doi;
   private UUID doiOrganisationKey;
+  private String lastPublishedArchiveChecksum;
 
   public void addManager(User manager) {
     if (manager != null) {
@@ -1854,5 +1855,13 @@ public class Resource implements Serializable, Comparable<Resource> {
     setInferGeocoverageAutomatically(param);
     setInferTaxonomicCoverageAutomatically(param);
     setInferTemporalCoverageAutomatically(param);
+  }
+
+  public String getLastPublishedArchiveChecksum() {
+    return lastPublishedArchiveChecksum;
+  }
+
+  public void setLastPublishedArchiveChecksum(String lastPublishedArchiveChecksum) {
+    this.lastPublishedArchiveChecksum = lastPublishedArchiveChecksum;
   }
 }

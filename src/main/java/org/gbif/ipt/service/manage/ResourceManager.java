@@ -238,7 +238,8 @@ public interface ResourceManager {
   int load(File resourcesDir, @Nullable User creator);
 
   /**
-   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
+   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
+   * DwC resources or a data package archive and a metadata file for data package resources.
    *
    * @param resource Resource
    * @param version version number of eml/rft/archive to be published
@@ -250,6 +251,22 @@ public interface ResourceManager {
    * @throws InvalidConfigException if resource or metadata could not be saved
    */
   boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action) throws PublicationException;
+
+  /**
+   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
+   * DwC resources or a data package acrhive and a metadata file for data package resources.
+   *
+   * @param resource Resource
+   * @param version version number of eml/rft/archive to be published
+   * @param action   the action to use for logging messages to
+   * @param skipIfNotChanged do not publish a new version if it hasn't changed since last publication
+   *
+   * @return true if a new asynchronous DwC-A generation job has been issued which requires some mapped data
+   *
+   * @throws PublicationException if resource was already registered
+   * @throws InvalidConfigException if resource or metadata could not be saved
+   */
+  boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action, boolean skipIfNotChanged) throws PublicationException;
 
   /**
    * Registers the resource with the GBIF Registry. Instead of registering a new resource, the resource can instead
