@@ -1517,10 +1517,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Checking if data has been changed since last published"));
           }
 
-          File resourceDwcaFile = dataDir.resourceDwcaFile(resource.getShortname(), version);
-          LOG.debug("Calculating checksum for DwC-A: {}", resourceDwcaFile.getName());
+          File resourceArchiveFile = dataDir.resourceArchiveFile(resource, version);
+          LOG.debug("Calculating checksum for archive: {}", resourceArchiveFile.getName());
           try {
-            String archiveChecksum = calculateArchiveChecksum(resourceDwcaFile);
+            String archiveChecksum = calculateArchiveChecksum(resourceArchiveFile);
             String lastPublishedArchiveChecksum = resource.getLastPublishedArchiveChecksum();
 
             if (lastPublishedArchiveChecksum == null) {
@@ -1548,7 +1548,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               }
             }
           } catch (Exception e) {
-            LOG.error("Failed to calculate checksum for DwC-A: {}", resourceDwcaFile.getName(), e);
+            LOG.error("Failed to calculate checksum for DwC-A: {}", resourceArchiveFile.getName(), e);
 
             if (skipIfNotChanged) {
               getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Failed to calculate checksum"));
@@ -4268,6 +4268,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       zipFile.stream().forEach(entry -> {
         // Skip the EML metadata file
         if (entry.getName().endsWith(".xml") && entry.getName().toLowerCase().contains("eml")) {
+          return;
+        }
+
+        // Skip the data package metadata file
+        if (entry.getName().endsWith(".json") && entry.getName().toLowerCase().contains("datapackage")) {
           return;
         }
 

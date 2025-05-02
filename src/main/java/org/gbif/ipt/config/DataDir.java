@@ -248,6 +248,17 @@ public class DataDir {
   }
 
   /**
+   * Retrieves published DwC-A file or data package for a specific version of a resource.
+   */
+  public File resourceArchiveFile(@NotNull Resource resource, @NotNull BigDecimal version) {
+    if (resource.isDataPackage()) {
+      return resourceDataPackageFile(resource.getShortname(), version);
+    } else {
+      return resourceDwcaFile(resource.getShortname(), version);
+    }
+  }
+
+  /**
    * Retrieves published data package file for a specific version of a resource.
    *
    * @param resourceName resource short name
