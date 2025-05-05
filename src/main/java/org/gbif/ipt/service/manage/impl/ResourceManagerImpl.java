@@ -1301,6 +1301,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  // Generic method for DwC-A and data packages
+  private void generateArchive(Resource resource) {
+    if (resource.isDataPackage()) {
+      generateDataPackage(resource);
+    } else {
+      generateDwca(resource);
+    }
+  }
+
   /**
    * @see #isLocked(String, BaseAction) for removing jobs from internal maps
    */
@@ -1313,6 +1322,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     worker.report();
   }
 
+  /**
+   * @see #isLocked(String, BaseAction) for removing jobs from internal maps
+   */
   private void generateDataPackage(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDataPackage worker = dataPackageFactory.create(resource, this);
@@ -1500,7 +1512,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // remove the process from the locking list immediately! Fixes Issue 1141
         processFutures.remove(shortname);
         boolean succeeded = false;
-        boolean checksumChanged = true;
+        boolean dataOrMetadataChanged = true;
         boolean skipIfNotChanged = resourcesToSkip.contains(shortname);
         String reasonFailed = null;
         Throwable cause = null;
@@ -1510,8 +1522,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // populate record count
           Integer recordCount = getResourceRecordsCount(resource);
           resource.setRecordsPublished(recordCount);
-
-          // TODO: what about Metadata-Only? what about Data packages?
 
           if (skipIfNotChanged) {
             getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Checking if data has been changed since last published"));
@@ -1534,10 +1544,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             } else if (lastPublishedArchiveChecksum.equals(archiveChecksum)) {
               LOG.debug("New checksum [{}] matches the stored one [{}] for the resource {}",
                   archiveChecksum, lastPublishedArchiveChecksum, resource.getShortname());
-              checksumChanged = false;
 
               if (skipIfNotChanged) {
                 getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Checksum has not changed since last published"));
+              }
+
+              // check metadata if data hasn't changed
+              Date lastPublished = resource.getLastPublished();
+              Date metadataLastModified = resource.getMetadataModified();
+              boolean metadataChanged = metadataLastModified.after(lastPublished);
+
+              if (skipIfNotChanged && !metadataChanged) {
+                getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Metadata has not changed since last published"));
+                dataOrMetadataChanged = false;
               }
             } else {
               LOG.debug("New checksum [{}] for the resource {}", archiveChecksum, resource.getShortname());
@@ -1555,7 +1574,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             }
           }
 
-          if (checksumChanged || !skipIfNotChanged) {
+          if (dataOrMetadataChanged) {
             // finish publication (update registration, persist resource changes)
             publishEnd(resource, action, version);
             // important: indicate publishing finished successfully!
@@ -1588,7 +1607,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
             processReports.put(shortname, updated);
           } else {
-            boolean failedDueToDataNotChanged = !checksumChanged && skipIfNotChanged;
+            boolean failedDueToDataNotChanged = !dataOrMetadataChanged;
 
             if (failedDueToDataNotChanged) {
               reasonFailed = action.getText("publishing.dataNotChanged");
@@ -2539,6 +2558,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public boolean publish(Resource resource, BigDecimal version, BaseAction action, boolean skipIfNotChanged)
     throws PublicationException, InvalidConfigException {
+    String shortname = resource.getShortname();
+
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
@@ -2547,53 +2568,45 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     addOrUpdateVersionHistory(resource, version, false, action);
 
     // remove StatusReport from previous publishing round
-    StatusReport report = status(resource.getShortname());
+    StatusReport report = status(shortname);
     if (report != null) {
-      processReports.remove(resource.getShortname());
+      processReports.remove(shortname);
     }
 
-    if (resource.isDataPackage()) {
-      publishMetadata(resource, version);
+    // Abort further publication for Metadata Only - no changes (if skipIfNotChanged activated)
+    if (resource.isMetadataOnly() && skipIfNotChanged) {
+      Date lastPublished = resource.getLastPublished();
+      Date metadataLastModified = resource.getMetadataModified();
+
+      boolean metadataChanged = metadataLastModified.after(lastPublished);
+
+      if (!metadataChanged) {
+        String metadataNotChangedStatus = action.getText("publishing.metadataNotChanged");
+        StatusReport updated = new StatusReport(true, metadataNotChangedStatus, getTaskMessages(shortname));
+        processReports.put(shortname, updated);
+
+        return false;
+      }
+    }
+
+    publishMetadata(resource, version, action);
+    publishRtf(resource, version);
+
+    // (re)generate archive (DwC-A/DP) asynchronously
+    boolean archive = false;
+    if (resource.hasAnyMappedData()) {
+      if (skipIfNotChanged) {
+        resourcesToSkip.add(shortname);
+      }
+      generateArchive(resource);
+      archive = true;
     } else {
-      // publish EML
-      publishEml(resource, version, action);
-
-      // publish RTF
-      publishRtf(resource, version);
+      // set number of records published
+      resource.setRecordsPublished(0);
+      // finish publication now
+      publishEnd(resource, action, version);
     }
-
-    if (!resource.isDataPackage()) { // DwC archive
-      // (re)generate dwca asynchronously
-      boolean dwca = false;
-      if (resource.hasMappedData()) {
-        if (skipIfNotChanged) {
-          resourcesToSkip.add(resource.getShortname());
-        }
-        generateDwca(resource);
-        dwca = true;
-      } else {
-        // set number of records published
-        resource.setRecordsPublished(0);
-        // finish publication now
-        publishEnd(resource, action, version);
-      }
-      return dwca;
-    } else { // Data Package archive
-      boolean dataPackage = false;
-      if (resource.hasSchemaMappedData()) {
-        if (skipIfNotChanged) {
-          resourcesToSkip.add(resource.getShortname());
-        }
-        generateDataPackage(resource);
-        dataPackage = true;
-      } else {
-        // set number of records published
-        resource.setRecordsPublished(0);
-        // finish publication now
-        publishEnd(resource, action, version);
-      }
-      return dataPackage;
-    }
+    return archive;
   }
 
   /**
@@ -3113,6 +3126,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
+  private void publishMetadata(Resource resource, BigDecimal version, BaseAction action) throws PublicationException {
+    if (resource.isDataPackage()) {
+      publishDataPackageMetadata(resource, version);
+    } else {
+      publishEml(resource, version, action);
+    }
+  }
+
   /**
    * Publishes a new version of the EML file for the given resource.
    *
@@ -3130,7 +3151,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         "Resource " + shortname + " is currently locked by another process");
     }
 
-    if (METADATA.toString().equalsIgnoreCase(resource.getCoreType())) {
+    if (resource.isMetadataOnly()) {
       StatusReport report = new StatusReport("Started publishing EML #" + version, new ArrayList<>());
       processReports.put(shortname, report);
       getTaskMessages(shortname).add(
@@ -3236,7 +3257,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public void publishMetadata(Resource resource, BigDecimal version) {
+  public void publishDataPackageMetadata(Resource resource, BigDecimal version) {
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
@@ -3394,6 +3415,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
   private void publishRtf(Resource resource, BigDecimal version) throws PublicationException {
+    // Skip RTF for data packages
+    if (resource.isDataPackage()) {
+      return;
+    }
+
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,

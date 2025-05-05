@@ -1012,6 +1012,14 @@ public class Resource implements Serializable, Comparable<Resource> {
     return Objects.hashCode(shortname);
   }
 
+  public boolean hasAnyMappedData() {
+    if (isDataPackage()) {
+      return hasSchemaMappedData();
+    } else {
+      return hasMappedData();
+    }
+  }
+
   public boolean hasMappedData() {
     for (ExtensionMapping cm : getCoreMappings()) {
       // test each core mapping if there is at least one field mapped
@@ -1849,6 +1857,10 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public boolean isDataPackage() {
     return dataPackageIdentifier != null;
+  }
+
+  public boolean isMetadataOnly() {
+    return coreType != null && CoreRowType.METADATA.toString().equalsIgnoreCase(coreType);
   }
 
   public void inferCoverageMetadataAutomatically(boolean param) {
