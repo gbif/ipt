@@ -612,11 +612,10 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <h5 class="modal-title w-100"
-                        id="staticBackdropLabel"><@s.text name="manage.translation.title"/></h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
                 </div>
                 <div class="modal-body">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.translation.title"/></h5>
                     <div>
                         <select name="addNewTranslation" id="addNewTranslation" class="form-select">
                             <option value="" disabled selected><@s.text name="manage.translation.select"/></option>
@@ -632,8 +631,8 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button id="add-button" type="button"
-                            class="btn btn-outline-gbif-primary"><@s.text name="button.add"/></button>
+                    <button id="add-button" type="button" class="btn btn-sm btn-outline-gbif-primary"><@s.text name="button.add"/></button>
+                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                 </div>
             </div>
         </div>
