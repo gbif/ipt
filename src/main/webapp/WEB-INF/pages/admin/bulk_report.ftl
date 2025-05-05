@@ -5,10 +5,10 @@
         <div class="report">
             <h5 class="fs-regular"><a href="${baseURL}/manage/resource?r=${shortname}">${shortname}</a></h5>
             <p class="fs-smaller">
-                <strong>Status:</strong> ${(runningPublications[shortname].state)!?no_esc}<br>
-                <strong>Time:</strong> ${.now?time?string}<br>
-                <strong>Result:</strong>
-                <i class="bi bi-hourglass-split text-gbif-header"></i>In progress
+                <strong><@s.text name="admin.config.publish.status"/>:</strong> ${(runningPublications[shortname].state)!?no_esc}<br>
+                <strong><@s.text name="admin.config.publish.time"/>:</strong> ${.now?time?string}<br>
+                <strong><@s.text name="admin.config.publish.result"/>:</strong>
+                <i class="bi bi-hourglass-split text-gbif-header"></i><@s.text name="admin.config.publish.inProgress"/>
             </p>
             <ul class="list-unstyled fs-smaller">
                 <#list runningPublications[shortname].messages as msg>
@@ -22,23 +22,23 @@
 </#if>
 <#if completedPublications?has_content>
     <div id="publishingStatusCompleted">
-        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">Recently Published</h4>
+        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400"><@s.text name="admin.config.publish.recentlyPublished"/></h4>
         <#list completedPublications?keys as shortname>
             <div class="report">
                 <h5 class="fs-regular"><a href="${baseURL}/manage/resource?r=${shortname}">${shortname}</a></h5>
                 <p class="fs-smaller">
-                    <strong>Status:</strong> ${(completedPublications[shortname].state)!?no_esc}<br>
+                    <strong><@s.text name="admin.config.publish.status"/>:</strong> ${(completedPublications[shortname].state)!?no_esc}<br>
                     <#if completedPublications[shortname].exception?has_content>
-                        <strong>Result:</strong>
+                        <strong><@s.text name="admin.config.publish.result"/>:</strong>
                         <i class="bi bi-x-circle-fill text-gbif-danger"></i>
-                        Failed<br>
+                        <@s.text name="admin.config.publish.failed"/><br>
                     <#else>
-                        <strong>Result:</strong>
+                        <strong><@s.text name="admin.config.publish.result"/>:</strong>
                         <i class="bi bi-check-circle-fill text-gbif-primary"></i>
-                        Completed<br>
+                        <@s.text name="admin.config.publish.completed"/><br>
                     </#if>
                     <#if completedPublications[shortname].messages?size gt 0>
-                        <a href="#" class="show-log-link" data-resource='${shortname}'>Show logs</a>
+                        <a href="#" class="show-log-link" data-resource='${shortname}'><@s.text name="admin.config.publish.showLogs"/></a>
                     </#if>
                 </p>
                 <ul class="list-unstyled report-messages" style="display: none;">
