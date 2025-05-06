@@ -2262,6 +2262,10 @@
                         <@s.text name="manage.overview.visibility.warning.deleted"/>
                     <#elseif resource.status == "REGISTERED">
                         <@s.text name="manage.overview.visibility.warning.registered"/>
+                    <#elseif resource.identifierStatus?has_content && (resource.identifierStatus == "PUBLIC" || resource.identifierStatus == "UNAVAILABLE")>
+                        <@s.text name="manage.overview.visibility.warning.identifier"/>
+                    <#else>
+                        <@s.text name="manage.overview.visibility.warning.general"/>
                     </#if>
                 </div>
 
