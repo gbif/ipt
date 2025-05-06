@@ -14,6 +14,7 @@
 package org.gbif.ipt.config;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.model.PublicationOptions;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
@@ -41,7 +42,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class PublishingMonitor {
 
-  // 10 second interval
+  // 10-seconds interval
   public static final int MONITOR_INTERVAL_MS = 10000;
   private static Thread monitorThread;
   private static final Logger LOG = LogManager.getLogger(PublishingMonitor.class);
@@ -77,7 +78,7 @@ public class PublishingMonitor {
           Map<String, Future<Map<String, Integer>>> processFutures = resourceManager.getProcessFutures();
           Set<String> shortNames = new HashSet<>();
           if (!processFutures.isEmpty()) {
-            // copy futures into new set, to avoid concurrent modification exception
+            // copy futures into the new set, to avoid concurrent modification exception
             shortNames.addAll(processFutures.keySet());
             // in order for publishing to finish entirely, resourceManager.isLocked() must be called
             for (String shortName : shortNames) {
@@ -95,7 +96,7 @@ public class PublishingMonitor {
                 Date next = resource.getNextPublished();
                 BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
                 if (next != null) {
-                  // ensure resource is due to be auto-published
+                  // ensure resource is due to auto-publication
                   if (next.before(now)) {
                     // ensure resource isn't already being published
                     if (!shortNames.contains(resource.getShortname())) {
@@ -105,20 +106,23 @@ public class PublishingMonitor {
                           // reset version change summary
                           resource.setChangeSummary(null);
 
-                          LOG.debug("Monitor: " + resource.getTitleAndShortname() + " v# " + nextVersion.toPlainString()
-                                  + " due to be auto-published: " + next);
-                          resourceManager.publish(resource, nextVersion, null);
+                          PublicationOptions options = PublicationOptions.builder()
+                              .skipPublicationIfNotChanged(resource.isSkipPublicationIfNotChanged())
+                              .skipPublicationIfRecordsDrop(resource.isSkipPublicationIfRecordsDrop())
+                              .recordsDropThreshold(resource.getRecordsDropThreshold())
+                              .build();
+
+                          LOG.debug("Monitor: {} v#{} due to be auto-published: {}",
+                              resource.getTitleAndShortname(), nextVersion.toPlainString(), next);
+                          resourceManager.publish(resource, nextVersion, null, options);
                         } catch (PublicationException e) {
                           if (PublicationException.TYPE.LOCKED == e.getType()) {
-                            LOG.error("Monitor: " + resource.getTitleAndShortname()
-                                    + " cannot be auto-published, because "
-                                    + "it is currently being published");
+                            LOG.error("Monitor: {} cannot be auto-published, because it is currently being published",
+                                resource.getTitleAndShortname());
                           } else {
                             // alert user publication failed
-                            LOG.error(
-                                    "Publishing version #" + nextVersion.toPlainString() + " of resource "
-                                            + resource.getTitleAndShortname()
-                                            + " failed: " + e.getMessage());
+                            LOG.error("Publishing version #{} of resource {} failed: {}",
+                                nextVersion.toPlainString(), resource.getTitleAndShortname(), e.getMessage());
                             // restore the previous version since publication was unsuccessful
                             resourceManager.restoreVersion(resource, nextVersion, null);
                             // keep track of how many failures on auto publication have happened
@@ -126,19 +130,18 @@ public class PublishingMonitor {
                           }
                         } catch (InvalidConfigException e) {
                           // with this type of error, the version cannot be rolled back - just alert user it failed
-                          LOG.error(
-                                  "Publishing version #" + nextVersion.toPlainString() + "of resource " + resource.getShortname()
-                                          + "failed:" + e.getMessage(), e);
+                          LOG.error("Publishing version #{} of resource {} failed: {}",
+                              nextVersion.toPlainString(), resource.getShortname(), e.getMessage(), e);
                         }
 
                       } else {
-                        LOG.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
-                                + "] since it has exceeded the maximum number of failed publish attempts. Please try "
-                                + "to publish this resource individually to fix the problem(s)");
+                        LOG.debug("Skipping auto-publication for [{}] since it has exceeded the maximum number of failed publish attempts. " +
+                            "Please try to publish this resource individually to fix the problem(s)",
+                            resource.getTitleAndShortname());
                       }
                     } else {
-                      LOG.debug("Skipping auto-publication for [" + resource.getTitleAndShortname()
-                              + "] since it is already in progress");
+                      LOG.debug("Skipping auto-publication for [{}] since it is already in progress",
+                          resource.getTitleAndShortname());
                     }
                   }
                 }
@@ -149,13 +152,14 @@ public class PublishingMonitor {
                 try {
                   resourceManager.visibilityToPublic(resource, null);
                 } catch (Exception e) {
-                  LOG.error("Resource " + resource.getShortname() + " failed to go public automatically", e);
+                  LOG.error("Resource {} failed to go public automatically",
+                      resource.getShortname(), e);
                 }
               }
             }
           }
 
-          // just poll once every 'interval' milliseconds
+          // just poll once every 'interval' millisecond
           Thread.sleep(MONITOR_INTERVAL_MS);
         } catch (InterruptedException e) {
           // should the thread have been interrupted, encountered when trying to sleep

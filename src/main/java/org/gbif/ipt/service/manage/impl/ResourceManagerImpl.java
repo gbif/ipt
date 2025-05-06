@@ -1514,72 +1514,103 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         processFutures.remove(shortname);
         boolean succeeded = false;
         boolean dataOrMetadataChanged = true;
-        boolean skipIfNotChanged = resourcesToSkip.contains(shortname);
+        boolean skipIfNotChanged = resourcesToSkip.contains(shortname) || resource.isSkipPublicationIfNotChanged();
+        boolean noSignificantRecordsDrop = true;
+        double dropPercentage;
         String reasonFailed = null;
         Throwable cause = null;
         try {
-          // store record counts by extension
-          resource.setRecordsByExtension(f.get());
-          // populate record count
-          Integer recordCount = getResourceRecordsCount(resource);
-          resource.setRecordsPublished(recordCount);
+          if (resource.isSkipPublicationIfRecordsDrop()) {
+            // check the number of records after publishing
+            int newRecordCount = getResourceRecordsCount(resource, f.get());
+            int previousRecordCount = resource.getRecordsPublished();
+            int dropThreshold = resource.getRecordsDropThreshold();
 
-          if (skipIfNotChanged) {
-            getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Checking if data has been changed since last published"));
+            int dropAmount = previousRecordCount - newRecordCount;
+            dropPercentage = previousRecordCount == 0 ? 0 : (dropAmount * 100.0) / previousRecordCount;
+
+            if (dropPercentage > dropThreshold) {
+              // drop is too big, prevent publication
+              noSignificantRecordsDrop = false;
+              String message = String.format(
+                  "The number of records dropped more than allowed %d%%: %.2f%%.",
+                  dropThreshold,
+                  dropPercentage
+              );
+              LOG.error(message);
+              getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, message));
+            } else {
+              LOG.debug("No significant drop in records detected.");
+              getTaskMessages(shortname).add(new TaskMessage(Level.ERROR,
+                  "No significant drop in records detected."));
+            }
           }
 
-          File resourceArchiveFile = dataDir.resourceArchiveFile(resource, version);
-          LOG.debug("Calculating checksum for archive: {}", resourceArchiveFile.getName());
-          try {
-            String archiveChecksum = calculateArchiveChecksum(resourceArchiveFile);
-            String lastPublishedArchiveChecksum = resource.getLastPublishedArchiveChecksum();
-
-            if (lastPublishedArchiveChecksum == null) {
-              LOG.debug("No checksum found for the resource {}", resource.getShortname());
-              resource.setLastPublishedArchiveChecksum(archiveChecksum);
-
-              // do not log additional info about checksum if it is disabled
-              if (skipIfNotChanged) {
-                getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "No checksum found for comparison, skipping."));
-              }
-            } else if (lastPublishedArchiveChecksum.equals(archiveChecksum)) {
-              LOG.debug("New checksum [{}] matches the stored one [{}] for the resource {}",
-                  archiveChecksum, lastPublishedArchiveChecksum, resource.getShortname());
-
-              if (skipIfNotChanged) {
-                getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Checksum has not changed since last published"));
-              }
-
-              // check metadata if data hasn't changed
-              Date lastPublished = resource.getLastPublished();
-              Date metadataLastModified = resource.getMetadataModified();
-              boolean metadataChanged = metadataLastModified.after(lastPublished);
-
-              if (skipIfNotChanged && !metadataChanged) {
-                getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Metadata has not changed since last published"));
-                dataOrMetadataChanged = false;
-              }
-            } else {
-              LOG.debug("New checksum [{}] for the resource {}", archiveChecksum, resource.getShortname());
-              resource.setLastPublishedArchiveChecksum(archiveChecksum);
-
-              if (skipIfNotChanged) {
-                getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "✓ Checksum has changed since last published"));
-              }
-            }
-          } catch (Exception e) {
-            LOG.error("Failed to calculate checksum for DwC-A: {}", resourceArchiveFile.getName(), e);
+          // if no significant drop (or it's switched off) - proceed with the publication
+          if (noSignificantRecordsDrop) {
+            // store record counts by extension
+            resource.setRecordsByExtension(f.get());
+            // populate record count
+            Integer recordCount = getResourceRecordsCount(resource);
+            resource.setRecordsPublished(recordCount);
 
             if (skipIfNotChanged) {
-              getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Failed to calculate checksum"));
+              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Checking if data has been changed since last published"));
             }
-          }
 
-          if (dataOrMetadataChanged) {
-            // finish publication (update registration, persist resource changes)
-            publishEnd(resource, action, version);
-            // important: indicate publishing finished successfully!
-            succeeded = true;
+            File resourceArchiveFile = dataDir.resourceArchiveFile(resource, version);
+            LOG.debug("Calculating checksum for the resource: {}", shortname);
+            try {
+              String archiveChecksum = calculateArchiveChecksum(resourceArchiveFile);
+              String lastPublishedArchiveChecksum = resource.getLastPublishedArchiveChecksum();
+
+              if (lastPublishedArchiveChecksum == null) {
+                LOG.debug("No checksum found for the resource {}", shortname);
+                resource.setLastPublishedArchiveChecksum(archiveChecksum);
+
+                // do not log additional info about checksum if it is disabled
+                if (skipIfNotChanged) {
+                  getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "No checksum found for comparison, skipping."));
+                }
+              } else if (lastPublishedArchiveChecksum.equals(archiveChecksum)) {
+                LOG.debug("New checksum [{}] matches the stored one [{}] for the resource {}",
+                    archiveChecksum, lastPublishedArchiveChecksum, resource.getShortname());
+
+                if (skipIfNotChanged) {
+                  getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Checksum has not changed since last published"));
+                }
+
+                // check metadata if data hasn't changed
+                Date lastPublished = resource.getLastPublished();
+                Date metadataLastModified = resource.getMetadataModified();
+                boolean metadataChanged = metadataLastModified.after(lastPublished);
+
+                if (skipIfNotChanged && !metadataChanged) {
+                  getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Metadata has not changed since last published"));
+                  dataOrMetadataChanged = false;
+                }
+              } else {
+                LOG.debug("New checksum [{}] for the resource {}", archiveChecksum, resource.getShortname());
+                resource.setLastPublishedArchiveChecksum(archiveChecksum);
+
+                if (skipIfNotChanged) {
+                  getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "✓ Checksum has changed since last published"));
+                }
+              }
+            } catch (Exception e) {
+              LOG.error("Failed to calculate checksum for DwC-A: {}", resourceArchiveFile.getName(), e);
+
+              if (skipIfNotChanged) {
+                getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Failed to calculate checksum"));
+              }
+            }
+
+            if (dataOrMetadataChanged) {
+              // finish publication (update registration, persist resource changes)
+              publishEnd(resource, action, version);
+              // important: indicate publishing finished successfully!
+              succeeded = true;
+            }
           }
         } catch (ExecutionException e) {
           // getCause holds the actual exception our callable (GenerateDwca) threw
@@ -1609,9 +1640,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             processReports.put(shortname, updated);
           } else {
             boolean failedDueToDataNotChanged = !dataOrMetadataChanged;
+            boolean failedDueToRecordsDrop = !noSignificantRecordsDrop;
 
             if (failedDueToDataNotChanged) {
               reasonFailed = action.getText("publishing.dataNotChanged");
+            }
+
+            if (failedDueToRecordsDrop) {
+              reasonFailed = action.getText("publishing.dropInRecords");
             }
 
             // alert user publication failed
@@ -1629,6 +1665,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               String dataNotChanged = action.getText("publishing.dataNotChanged.revert");
               StatusReport updated = new StatusReport(true, dataNotChanged, getTaskMessages(shortname));
               processReports.put(shortname, updated);
+              updateNextPublishedDate(new Date(), resource);
+            }
+
+            if (failedDueToRecordsDrop) {
+              String dropInRecords = action.getText("publishing.dropInRecords.revert");
+              StatusReport updated = new StatusReport(true, dropInRecords, getTaskMessages(shortname));
+              processReports.put(shortname, updated);
+              updateNextPublishedDate(new Date(), resource);
             }
 
             // the previous version needs to be rolled back
@@ -1664,6 +1708,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
+    }
+    return recordCount != null ? recordCount : 0;
+  }
+
+  private Integer getResourceRecordsCount(Resource resource, Map<String, Integer> publishedRecordsByExtension) {
+    Integer recordCount;
+    if (resource.isDataPackage()) {
+      // take number of observations as number of records for Camtrap
+      // for the rest data packages - total number of all records
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        recordCount = publishedRecordsByExtension.get(CAMTRAP_DP_OBSERVATIONS);
+      } else {
+        recordCount = publishedRecordsByExtension.values().stream()
+            .mapToInt(Integer::intValue)
+            .sum();
+      }
+    } else {
+      recordCount = publishedRecordsByExtension.get(StringUtils.trimToEmpty(resource.getCoreRowType()));
     }
     return recordCount != null ? recordCount : 0;
   }
@@ -2603,6 +2665,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // (re)generate archive (DwC-A/DP) asynchronously
     boolean archive = false;
     if (resource.hasAnyMappedData()) {
+      // for bulk publication keep resources to be skipped
       if (options.isSkipPublicationIfNotChanged()) {
         resourcesToSkip.add(shortname);
       }
@@ -4015,7 +4078,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   protected void updateNextPublishedDate(Date currentDate, Resource resource) throws PublicationException {
     if (resource.usesAutoPublishing()) {
       try {
-        LOG.debug("Updating next published date of resource: " + resource.getShortname());
+        LOG.debug("Updating next published date of resource: {}", resource.getShortname());
 
         Date nextPublished = null;
 
@@ -4113,7 +4176,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.setNextPublished(nextPublished);
 
         // log
-        LOG.debug("The next publication date is: " + nextPublished);
+        LOG.debug("The next publication date is: {}", nextPublished);
       } catch (Exception e) {
         resource.setNextPublished(null);
         // add error message that explains the consequence of the error to user
