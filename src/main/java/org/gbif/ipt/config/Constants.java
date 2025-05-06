@@ -56,6 +56,9 @@ public final class Constants {
   public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_HOUR = "updateFrequencyHour";
   public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_MINUTE = "updateFrequencyMinute";
   public static final String REQ_PARAM_AUTO_PUBLISH_FREQUENCY_TIME = "updateFrequencyTime";
+  public static final String REQ_PARAM_AUTO_PUBLISH_SKIP_DROP = "skipDrop";
+  public static final String REQ_PARAM_AUTO_PUBLISH_SKIP_UNCHANGED = "skipUnchanged";
+  public static final String REQ_PARAM_AUTO_PUBLISH_DROP_THRESHOLD = "recordsDropThreshold";
   public static final String DWC_ROWTYPE_OCCURRENCE = DwcTerm.Occurrence.qualifiedName();
   public static final String DWC_ROWTYPE_TAXON = DwcTerm.Taxon.qualifiedName();
   public static final String DWC_ROWTYPE_EVENT = DwcTerm.Event.qualifiedName();

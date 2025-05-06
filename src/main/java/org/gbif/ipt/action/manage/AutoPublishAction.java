@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.action.manage;
 
-import java.util.Optional;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.BiMonthEnum;
@@ -29,9 +28,11 @@ import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,6 +44,7 @@ public class AutoPublishAction extends ManagerBaseAction {
   private static final String OFF_FREQUENCY = "off";
   private static final String COLON = ":";
   private static final String DEFAULT_TIME = "12:00";
+  private static final String DEFAULT_THRESHOLD = "10";
 
   private final VocabulariesManager vocabManager;
 
@@ -90,6 +92,15 @@ public class AutoPublishAction extends ManagerBaseAction {
     int updateFrequencyHour = Integer.parseInt(hoursAndMinutes[0]);
     int updateFrequencyMinute = Integer.parseInt(hoursAndMinutes[1]);
 
+    // auto-publication options
+    boolean skipUnchanged = Boolean.parseBoolean(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_SKIP_UNCHANGED));
+    boolean skipDrop = Boolean.parseBoolean(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_SKIP_DROP));
+
+    String recordsDropThresholdRaw = Optional.ofNullable(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_DROP_THRESHOLD))
+        .map(StringUtils::trimToNull)
+        .orElse(DEFAULT_THRESHOLD);
+    int recordsDropThreshold = Integer.parseInt(recordsDropThresholdRaw);
+
     if (OFF_FREQUENCY.equals(updateFrequency)) {
       LOG.debug("Turning off auto-publishing for [{}]", resource.getShortname());
       resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
@@ -111,6 +122,10 @@ public class AutoPublishAction extends ManagerBaseAction {
         resource.getShortname(), updateFrequency);
       return ERROR;
     }
+
+    resource.setSkipPublicationIfNotChanged(skipUnchanged);
+    resource.setSkipPublicationIfRecordsDrop(skipDrop);
+    resource.setRecordsDropThreshold(recordsDropThreshold);
 
     // update next published date
     resourceManager.updatePublicationMode(resource);
@@ -200,5 +215,17 @@ public class AutoPublishAction extends ManagerBaseAction {
       String savedTime = String.format("%02d:%02d", savedHour, savedMinute);
       req.setAttribute("updateFrequencyTime", savedTime);
     }
+  }
+
+  public boolean isSkipUnchanged() {
+    return resource.isSkipPublicationIfNotChanged();
+  }
+
+  public boolean isSkipDrop() {
+    return resource.isSkipPublicationIfRecordsDrop();
+  }
+
+  public int getRecordsDropThreshold() {
+    return resource.getRecordsDropThreshold();
   }
 }

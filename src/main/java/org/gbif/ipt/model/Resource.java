@@ -149,6 +149,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   private DOI doi;
   private UUID doiOrganisationKey;
   private String lastPublishedArchiveChecksum;
+  private boolean skipPublicationIfNotChanged = false;
+  private boolean skipPublicationIfRecordsDrop = false;
+  private int recordsDropThreshold = 10;
 
   public void addManager(User manager) {
     if (manager != null) {
@@ -1875,5 +1878,29 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setLastPublishedArchiveChecksum(String lastPublishedArchiveChecksum) {
     this.lastPublishedArchiveChecksum = lastPublishedArchiveChecksum;
+  }
+
+  public boolean isSkipPublicationIfNotChanged() {
+    return skipPublicationIfNotChanged;
+  }
+
+  public void setSkipPublicationIfNotChanged(boolean skipPublicationIfNotChanged) {
+    this.skipPublicationIfNotChanged = skipPublicationIfNotChanged;
+  }
+
+  public boolean isSkipPublicationIfRecordsDrop() {
+    return skipPublicationIfRecordsDrop;
+  }
+
+  public void setSkipPublicationIfRecordsDrop(boolean skipPublicationIfRecordsDrop) {
+    this.skipPublicationIfRecordsDrop = skipPublicationIfRecordsDrop;
+  }
+
+  public int getRecordsDropThreshold() {
+    return recordsDropThreshold;
+  }
+
+  public void setRecordsDropThreshold(int recordsDropThreshold) {
+    this.recordsDropThreshold = recordsDropThreshold;
   }
 }
