@@ -57,6 +57,7 @@ import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.PublicationOptions;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.SimplifiedResource;
@@ -2557,6 +2558,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public boolean publish(Resource resource, BigDecimal version, BaseAction action, boolean skipIfNotChanged)
+      throws PublicationException, InvalidConfigException {
+    PublicationOptions options = PublicationOptions.builder().skipPublicationIfNotChanged(skipIfNotChanged).build();
+    return publish(resource, version, action, options);
+  }
+
+  @Override
+  public boolean publish(Resource resource, BigDecimal version, BaseAction action, PublicationOptions options)
     throws PublicationException, InvalidConfigException {
     String shortname = resource.getShortname();
 
@@ -2574,7 +2582,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     // Abort further publication for Metadata Only - no changes (if skipIfNotChanged activated)
-    if (resource.isMetadataOnly() && skipIfNotChanged) {
+    if (resource.isMetadataOnly() && options.isSkipPublicationIfNotChanged()) {
       Date lastPublished = resource.getLastPublished();
       Date metadataLastModified = resource.getMetadataModified();
 
@@ -2595,7 +2603,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // (re)generate archive (DwC-A/DP) asynchronously
     boolean archive = false;
     if (resource.hasAnyMappedData()) {
-      if (skipIfNotChanged) {
+      if (options.isSkipPublicationIfNotChanged()) {
         resourcesToSkip.add(shortname);
       }
       generateArchive(resource);

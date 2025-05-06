@@ -16,6 +16,7 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.PublicationOptions;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.datatable.DatatableRequest;
@@ -245,7 +246,7 @@ public interface ResourceManager {
    * @param version version number of eml/rft/archive to be published
    * @param action   the action to use for logging messages to
    *
-   * @return true if a new asynchronous DwC-A generation job has been issued which requires some mapped data
+   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
    *
    * @throws PublicationException if resource was already registered
    * @throws InvalidConfigException if resource or metadata could not be saved
@@ -261,12 +262,28 @@ public interface ResourceManager {
    * @param action   the action to use for logging messages to
    * @param skipIfNotChanged do not publish a new version if it hasn't changed since last publication
    *
-   * @return true if a new asynchronous DwC-A generation job has been issued which requires some mapped data
+   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
    *
    * @throws PublicationException if resource was already registered
    * @throws InvalidConfigException if resource or metadata could not be saved
    */
   boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action, boolean skipIfNotChanged) throws PublicationException;
+
+  /**
+   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
+   * DwC resources or a data package acrhive and a metadata file for data package resources.
+   *
+   * @param resource Resource
+   * @param version version number of eml/rft/archive to be published
+   * @param action   the action to use for logging messages to
+   * @param options advanced publication options
+   *
+   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
+   *
+   * @throws PublicationException if resource was already registered
+   * @throws InvalidConfigException if resource or metadata could not be saved
+   */
+  boolean publish(Resource resource, BigDecimal version, BaseAction action, PublicationOptions options) throws PublicationException;
 
   /**
    * Registers the resource with the GBIF Registry. Instead of registering a new resource, the resource can instead
