@@ -42,15 +42,15 @@
 
 <!-- The short form of the license for display in the versions table -->
 <#macro shortLicense licenseUrl="">
-    <#if licenseUrl == "http://creativecommons.org/publicdomain/zero/1.0/legalcode" || licenseUrl == "https://creativecommons.org/publicdomain/zero/1.0/legalcode">
+    <#if licenseUrl?contains("creativecommons.org/publicdomain/zero/1.0")>
         CC0 1.0
-    <#elseif licenseUrl == "http://creativecommons.org/licenses/by/4.0/legalcode" || licenseUrl == "https://creativecommons.org/licenses/by/4.0/legalcode">
+    <#elseif licenseUrl?contains("creativecommons.org/licenses/by/4.0")>
         CC-BY 4.0
-    <#elseif licenseUrl == "http://creativecommons.org/licenses/by-nc/4.0/legalcode" || licenseUrl == "https://creativecommons.org/licenses/by-nc/4.0/legalcode">
+    <#elseif licenseUrl?contains("creativecommons.org/licenses/by-nc/4.0")>
         CC-BY-NC 4.0
-    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/pddl/1.0" || licenseUrl == "https://www.opendatacommons.org/licenses/pddl/1.0">
+    <#elseif licenseUrl?contains("http://www.opendatacommons.org/licenses/pddl/1.0")>
         ODC PDDL 1.0
-    <#elseif licenseUrl == "http://www.opendatacommons.org/licenses/by/1.0" || licenseUrl == "https://www.opendatacommons.org/licenses/by/1.0">
+    <#elseif licenseUrl?contains("http://www.opendatacommons.org/licenses/by/1.0")>
         ODC-By 1.0
     <#elseif licenseUrl?has_content>
         <@s.text name='manage.overview.noGBIFLicense'/>
@@ -1316,7 +1316,7 @@
                                 </span>
                             </#if>
                         </div>
-                        <div>
+                        <div class="mt-2">
                             <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.name)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
                         </div>
                     </div>
@@ -2708,7 +2708,7 @@
                                 <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                             </p>
                         <#elseif resource.dataPackage && resource.coreType != "camtrap-dp" && resource.coreType != "coldp">
-                            <!-- Show warning: Interaction DP, Material DP, ColDP - registration is not available now -->
+                            <!-- Show warning: registration is not available now -->
                             <p>
                                 <@s.text name="manage.resource.status.registration.forbiddenTypes"/>
                             </p>

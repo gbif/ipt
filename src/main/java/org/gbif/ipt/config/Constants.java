@@ -66,8 +66,6 @@ public final class Constants {
   public static final String DWC_DATASET_ID = "http://rs.tdwg.org/dwc/terms/datasetID";
   public static final String DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/camtrap-dp";
   public static final String DATA_PACKAGE_COLDP_IDENTIFIER = "http://rs.gbif.org/data-packages/coldp";
-  public static final String DATA_PACKAGE_MATERIAL_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/material-dp";
-  public static final String DATA_PACKAGE_INTERACTION_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/interaction-dp";
   public static final String DATA_PACKAGE_DWC_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/dwc-dp";
   public static final String VOCAB_URI_DATASET_TYPE = "http://rs.gbif.org/vocabulary/gbif/datasetType";
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-2";
@@ -117,8 +115,6 @@ public final class Constants {
   public static final BigDecimal INITIAL_RESOURCE_VERSION_DATA_PACKAGE = new BigDecimal("1");
 
   public static final String CAMTRAP_DP = "camtrap-dp";
-  public static final String MATERIAL_DP = "material-dp";
-  public static final String INTERACTION_DP = "interaction-dp";
   public static final String DWC_DP = "dwc-dp";
   public static final String COL_DP = "coldp";
   public static final String CAMTRAP_DP_OBSERVATIONS = "observations";

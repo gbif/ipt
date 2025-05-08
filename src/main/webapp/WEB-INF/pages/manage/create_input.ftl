@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
+<script src="${baseURL}/js/jszip/jszip-3.10.1.min.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -22,31 +23,109 @@
             theme: 'bootstrap4'
         });
 
-        $('body').bind('DOMSubtreeModified', function(e) {
-            if (e.target.innerHTML.length > 0 && e.target.classList.contains("select2-results__options")) {
-                if (e.target.innerText === "Searching…") {
-                    setTimeout(() => {
-                        addBetaBadge(e);
-                    }, 500);
-                } else {
-                    addBetaBadge(e);
-                }
+        const datasetTypeMap = {
+            "Occurrence": "occurrence",
+            "Checklist": "checklist",
+            "Samplingevent": "samplingevent",
+            "Material entity": "materialentity",
+            "Metadata": "metadata",
+            "Other": "other",
+            "camtrap-dp": "camtrap-dp",
+            "coldp": "coldp"
+        };
+
+        $('#file').on('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            var filename = file.name.toLowerCase();
+            var shortnameMatch = filename.match(/^(dwca|datapackage|eml)-([a-z0-9_-]+)-[^\/\\]+$/i);
+
+            if (shortnameMatch && shortnameMatch[2]) {
+                $('#shortname').val(shortnameMatch[2]);
+            }
+
+            if (file.name.endsWith('.zip')) {
+                JSZip.loadAsync(file).then(function (zip) {
+                    const jsonFile = zip.file('datapackage.json');
+                    const emlFile = zip.file('eml.xml');
+
+                    if (jsonFile) {
+                        jsonFile.async('string').then(processDatapackageJson);
+                    } else if (emlFile) {
+                        emlFile.async('string').then(processEmlXml);
+                    } else {
+                        console.log('Neither datapackage.json nor eml.xml found in archive.');
+                    }
+                }).catch(function (err) {
+                    console.log('Error reading ZIP: ' + err);
+                });
+            } else if (file.name === 'datapackage.json') {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    processDatapackageJson(e.target.result);
+                };
+                reader.readAsText(file);
+            } else if (file.name.endsWith('.xml')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    processEmlXml(e.target.result);
+                };
+                reader.readAsText(file);
+            } else {
+                console.log('Unsupported file type. Please upload datapackage.json, eml.xml, or a ZIP archive.');
             }
         });
 
-        function addBetaBadge(e) {
-            var optionsUl = e.target;
-            var options = optionsUl.querySelectorAll("li");
-            options.forEach(function (item, index) {
-                var subOptions = item.querySelectorAll("ul li");
+        function processDatapackageJson(jsonText) {
+            try {
+                const json = JSON.parse(jsonText);
+                const profile = (json.profile || '').toLowerCase();
+                const resources = (json.resources || []);
 
-                subOptions.forEach(function (ii, index) {
-                    var text = ii.innerText;
-                    if (text.indexOf("Beta") === -1 && (text.indexOf("Interaction DP") !== -1 || text.indexOf("Material DP") !== -1)) {
-                        ii.innerHTML = text + ' <span class="badge rounded-pill fs-smaller-2 fw-400 bg-gbif-primary">Beta</span>';
-                    }
-                });
-            });
+                let datasetType = '';
+                if (profile.includes('camtrap-dp')) {
+                    datasetType = datasetTypeMap['camtrap-dp'];
+                } else if (profile.includes('coldp')) {
+                    datasetType = datasetTypeMap['coldp'];
+                } else if (profile.includes('data-package')) {
+                    resources.forEach(function(item) {
+                        if (item.schema.includes('coldp')) {
+                            datasetType = datasetTypeMap['coldp'];
+                        }
+                    });
+                }
+
+                applyDatasetType(datasetType);
+            } catch (e) {
+                console.log('Invalid datapackage.json: ' + e.message);
+            }
+        }
+
+        function processEmlXml(xmlText) {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+            const keywords = xmlDoc.getElementsByTagName('keyword');
+            let datasetType = '';
+
+            for (let i = 0; i < keywords.length; i++) {
+                const keyword = keywords[i].textContent.trim();
+                if (datasetTypeMap[keyword]) {
+                    datasetType = datasetTypeMap[keyword];
+                    break;
+                }
+            }
+
+            applyDatasetType(datasetType);
+        }
+
+        function applyDatasetType(datasetType) {
+            if (datasetType && $('#resourceType').find('option[value="' + datasetType + '"]').length) {
+                $('#resourceType').val(datasetType).trigger('change');
+            } else {
+                console.log('No matching dataset type found.');
+                $('#resourceType').val('other').trigger('change');
+            }
         }
     });
 </script>

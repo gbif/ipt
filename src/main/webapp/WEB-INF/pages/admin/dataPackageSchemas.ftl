@@ -9,13 +9,7 @@
                 <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
                     <div class="me-2">
                         <h4 class="d-flex fs-regular mt-1 mb-0">
-                            <#if ds.title?contains("Interaction") || ds.title?contains("Material")>
-                                <span>
-                                    ${ds.title} <span class="badge rounded-pill fs-smaller-2 fw-400 bg-gbif-primary"><@s.text name="admin.home.beta"/></span>
-                                </span>
-                            <#else>
-                                ${ds.title}
-                            </#if>
+                            ${ds.title}
                         </h4>
                         <p class="color-fg-muted mb-0 fs-smaller-2">
                             ${ds.issued?date?string["d MMMM yyyy"]}

@@ -18,16 +18,12 @@ import lombok.Getter;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_COLDP_IDENTIFIER;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER;
-import static org.gbif.ipt.config.Constants.DATA_PACKAGE_INTERACTION_DP_IDENTIFIER;
-import static org.gbif.ipt.config.Constants.DATA_PACKAGE_MATERIAL_DP_IDENTIFIER;
 
 @Getter
 public enum SupportedDataPackageType {
 
   CAMTRAP_DP(Constants.CAMTRAP_DP, DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER, "1.0", "prod"),
   COLDP(Constants.COL_DP, DATA_PACKAGE_COLDP_IDENTIFIER, "1.1", "prod"),
-  MATERIAL_DP(Constants.MATERIAL_DP, DATA_PACKAGE_MATERIAL_DP_IDENTIFIER, "0.1", "dev"),
-  INTERACTION_DP(Constants.INTERACTION_DP, DATA_PACKAGE_INTERACTION_DP_IDENTIFIER, "0.1", "dev"),
   DWC_DP(Constants.DWC_DP, DATA_PACKAGE_DWC_DP_IDENTIFIER, "0.1", "dev");
 
   private final String name;
