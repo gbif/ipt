@@ -230,7 +230,7 @@
             <#if resource.dataPackageIdentifier?has_content>
                 <div class="details">
                     <div class="row g-2">
-                        <#list resource.getDataPackageMappings() as m>
+                        <#list resource.dataPackageMappings! as m>
                             <div class="col-xl-6">
                                 <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item">
                                     <div class="d-flex my-auto mapping-item-icon ps-2">
@@ -308,7 +308,7 @@
             <div class="text-smaller">
                 <small>
                     <#if mappingsModifiedSinceLastPublication>
-                        <@s.text name='manage.home.last.modified'/> ${resource.getMappingsModified()?datetime?string.medium!}
+                        <@s.text name='manage.home.last.modified'/> ${resource.mappingsModified?datetime?string.medium!}
                     <#elseif resource.lastPublished??>
                         <@s.text name="manage.overview.notModified"/>
                     </#if>
