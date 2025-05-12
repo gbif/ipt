@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-06-25 11:53+0000\n"
-"PO-Revision-Date: 2024-06-25 16:14\n"
+"POT-Creation-Date: 2025-05-12 10:54+0000\n"
+"PO-Revision-Date: 2025-05-12 12:47\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -190,8 +190,8 @@ msgstr "Tomcat"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:74
-msgid "The IPT has been tested and works well with recent releases of Tomcat 9.  Tomcat 10 and later versions are currently not supported.  The minimum supported version is Tomcat 8, but this is likely to change as it is no longer supported by Apache or leading Linux distributions. The Apache Tomcat documentation can be found on https://tomcat.apache.org/."
-msgstr "El IPT ha sido probado y funciona bien con las últimas versiones de Tomcat 9. Tomcat 10 y versiones posteriores no son compatibles actualmente.  La versión mínima soportada es Tomcat 8, pero es probable que esto cambie porque ya no es soportada por Apache ni por las principales distribuciones de Linux. La documentación de Apache Tomcat se puede encontrar en https://tomcat.apache.org/."
+msgid "The IPT has been tested and works well with recent releases of Tomcat 9.  Tomcat 10 and later versions are currently not supported.  Tomcat 8 is not supported by the IPT as it is no longer supported by Apache or leading Linux distributions. The Apache Tomcat documentation can be found on https://tomcat.apache.org/."
+msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/installation.adoc:76
