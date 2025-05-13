@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2024-06-25 11:53+0000\n"
+"POT-Creation-Date: 2025-05-12 10:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -240,10 +240,10 @@ msgstr ""
 #: en/modules/ROOT/pages/installation.adoc:74
 msgid ""
 "The IPT has been tested and works well with recent releases of Tomcat 9.  "
-"Tomcat 10 and later versions are currently not supported.  The minimum "
-"supported version is Tomcat 8, but this is likely to change as it is no "
-"longer supported by Apache or leading Linux distributions. The Apache Tomcat "
-"documentation can be found on https://tomcat.apache.org/."
+"Tomcat 10 and later versions are currently not supported.  Tomcat 8 is not "
+"supported by the IPT as it is no longer supported by Apache or leading Linux "
+"distributions. The Apache Tomcat documentation can be found on https://"
+"tomcat.apache.org/."
 msgstr ""
 
 #. type: Plain text

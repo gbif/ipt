@@ -70,7 +70,7 @@ The most common servlet containers used to deploy the IPT are Tomcat, Jetty and 
 
 === Tomcat
 
-The IPT has been tested and works well with recent releases of Tomcat 9.  Tomcat 10 and later versions are currently not supported.  The minimum supported version is Tomcat 8, but this is likely to change as it is no longer supported by Apache or leading Linux distributions. The Apache Tomcat documentation can be found on https://tomcat.apache.org/.
+The IPT has been tested and works well with recent releases of Tomcat 9.  Tomcat 10 and later versions are currently not supported.  Tomcat 8 is not supported by the IPT as it is no longer supported by Apache or leading Linux distributions. The Apache Tomcat documentation can be found on https://tomcat.apache.org/.
 
 . Install Tomcat — see our guide for xref:tomcat-installation-linux.adoc[installing Tomcat on Linux] or refer to the https://tomcat.apache.org/[Tomcat documentation].
 
