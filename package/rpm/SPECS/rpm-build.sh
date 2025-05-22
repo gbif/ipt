@@ -20,5 +20,5 @@ yum-builddep -y ${spec_file}
 # download all source and patch files
 spectool -g -R --define "nr_ver $nr_ver" ${spec_file}
 
-# build it
-rpmbuild -bb --define="nr_ver $nr_ver" ${spec_file}
+# build it (noarch)
+rpmbuild -bb --target=noarch --define="nr_ver $nr_ver" ${spec_file}
