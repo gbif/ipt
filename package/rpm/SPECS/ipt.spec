@@ -24,7 +24,6 @@ Summary: GBIF Integrated Publishing Toolkit (IPT)
 BuildArch: noarch
 
 BuildRequires: systemd-rpm-macros
-%define _unitdir /usr/lib/systemd/system
 
 %if 0%{?el7}
 Requires: java >= 1:1.8.0
