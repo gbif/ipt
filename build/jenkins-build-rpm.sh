@@ -9,10 +9,10 @@ nr_ver=$(cd package/rpm && ./docker-build.sh | grep 'Building version' | sed 's/
 
 echo "Version: $nr_ver"
 
-#echo "Uploading RPMs"
-#scp -p RPMS/noarch/ipt*.el8.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el8/rpm/
-#scp -p RPMS/noarch/ipt*.el9.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el9/rpm/
-#ssh jenkins-deploy@apache.gbif.org /var/www/html/packages/reindex
-#
-#git add SPECS/ipt.spec
-#git commit -m "Update RPM version to $nr_ver" && git push origin $(git rev-parse --abbrev-ref HEAD) || echo "Nothing changed."
+echo "Uploading RPMs"
+scp -p RPMS/noarch/ipt*.el8.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el8/rpm/
+scp -p RPMS/noarch/ipt*.el9.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el9/rpm/
+ssh jenkins-deploy@apache.gbif.org /var/www/html/packages/reindex
+
+git add SPECS/ipt.spec
+git commit -m "Update RPM version to $nr_ver" && git push origin $(git rev-parse --abbrev-ref HEAD) || echo "Nothing changed."
