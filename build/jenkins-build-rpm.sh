@@ -9,14 +9,11 @@ nr_ver=$(cd package/rpm && ./docker-build.sh | grep 'Building version' | sed 's/
 
 echo "Version: $nr_ver"
 
+echo
 echo "Uploading RPMs"
-echo "Current working directory: $(pwd)"
-echo "RPM files to upload:"
-ls -l package/rpm/RPMS/noarch/ipt*.rpm || echo "No RPM files found"
-
 scp -p package/rpm/RPMS/noarch/ipt*.el8.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el8/rpm/
 scp -p package/rpm/RPMS/noarch/ipt*.el9.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el9/rpm/
 ssh jenkins-deploy@apache.gbif.org /var/www/html/packages/reindex
 
-git add SPECS/ipt.spec
+git add package/rpm/SPECS/ipt.spec
 git commit -m "Update RPM version to $nr_ver" && git push origin $(git rev-parse --abbrev-ref HEAD) || echo "Nothing changed."
