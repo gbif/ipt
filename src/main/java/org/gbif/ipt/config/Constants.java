@@ -66,7 +66,8 @@ public final class Constants {
   public static final String DWC_DATASET_ID = "http://rs.tdwg.org/dwc/terms/datasetID";
   public static final String DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/camtrap-dp";
   public static final String DATA_PACKAGE_COLDP_IDENTIFIER = "http://rs.gbif.org/data-packages/coldp";
-  public static final String DATA_PACKAGE_DWC_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/dwc-dp";
+  public static final String DATA_PACKAGE_DWC_DP_IDENTIFIER = "http://rs.tdwg.org/dwc/dwc-dp";
+  public static final String DATA_PACKAGE_DWC_DP_IDENTIFIER_2 = "http://rs.gbif.org/data-packages/dwc-dp";
   public static final String VOCAB_URI_DATASET_TYPE = "http://rs.gbif.org/vocabulary/gbif/datasetType";
   public static final String VOCAB_URI_LANGUAGE = "http://iso.org/639-2";
   public static final String VOCAB_URI_COUNTRY = "http://iso.org/iso3166-1/alpha2";

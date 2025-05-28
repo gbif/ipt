@@ -47,4 +47,24 @@ public class StringUtils {
 
     return result.toString();
   }
+
+  public static boolean equalsWithoutProtocol(String url1, String url2) {
+    if (url1 == null || url2 == null) {
+      return false;
+    }
+
+    String stripped1 = stripProtocol(url1);
+    String stripped2 = stripProtocol(url2);
+
+    return stripped1.equals(stripped2);
+  }
+
+  public static String stripProtocol(String url) {
+    if (url.startsWith("http://")) {
+      return url.substring(7);
+    } else if (url.startsWith("https://")) {
+      return url.substring(8);
+    }
+    return url;
+  }
 }

@@ -16,6 +16,7 @@ package org.gbif.ipt.service.admin.impl;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.SupportedDataPackageType;
 import org.gbif.ipt.model.DataPackageSchema;
@@ -48,6 +49,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -84,6 +86,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   private List<DataPackageSchema> dataPackageSchemas = new ArrayList<>();
   private Map<String, DataPackageSchema> dataPackageSchemasByIdentifiers = new HashMap<>();
   private Map<String, String> dataPackageSchemaRawContentByName = new HashMap<>();
+  private Map<String, Set<String>> alternativeIdentifiers = new HashMap<>();
 
   @Inject
   public DataPackageSchemaManagerImpl(AppConfig cfg, DataDir dataDir, ConfigWarnings warnings, DataSchemaFactory factory,
@@ -97,6 +100,8 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     this.downloader = downloader;
     this.baseAction = new BaseAction(textProvider, cfg, registrationManager);
     this.gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd").create();
+    // TODO: store in properties somewhere
+    this.alternativeIdentifiers.put(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER, Set.of(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER_2));
   }
 
   @Override
@@ -176,23 +181,46 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
   @Override
   public DataPackageSchema get(String identifier) {
-    DataPackageSchema result = dataPackageSchemasByIdentifiers.get(identifier);
+    if (identifier == null) {
+      return null;
+    }
 
-    // try name
-    if (result == null) {
-      if (dataPackageSchemas.isEmpty()) {
-        load();
-      }
+    // load data packages if empty
+    if (dataPackageSchemas.isEmpty()) {
+      load();
+    }
 
-      for (DataPackageSchema ds : dataPackageSchemas) {
-        if (identifier.equals(ds.getName()) || identifier.equals(ds.getIdentifier())) {
-          result = ds;
-          break;
-        }
+    return Optional.ofNullable(dataPackageSchemasByIdentifiers.get(identifier))
+        .or(() -> getWithoutProtocol(identifier))
+        .or(() -> getByAlternativeIdentifiers(identifier))
+        .or(() -> getByName(identifier))
+        .orElse(null);
+  }
+
+  private Optional<DataPackageSchema> getWithoutProtocol(String identifier) {
+    return dataPackageSchemasByIdentifiers.entrySet().stream()
+        .filter(e -> org.gbif.ipt.utils.StringUtils.equalsWithoutProtocol(e.getKey(), identifier))
+        .map(Map.Entry::getValue)
+        .findFirst();
+  }
+
+  private Optional<DataPackageSchema> getByAlternativeIdentifiers(String identifier) {
+    Optional<String> baseIdentifier = alternativeIdentifiers.entrySet().stream()
+        .filter(e -> e.getValue().contains(identifier))
+        .map(Map.Entry::getKey)
+        .findFirst();
+
+    return baseIdentifier.map(i -> dataPackageSchemasByIdentifiers.get(i));
+  }
+
+  private Optional<DataPackageSchema> getByName(String identifier) {
+    for (DataPackageSchema ds : dataPackageSchemas) {
+      if (identifier.equals(ds.getName()) || identifier.equals(ds.getIdentifier())) {
+        return Optional.of(ds);
       }
     }
 
-    return result;
+    return Optional.empty();
   }
 
   @Override
