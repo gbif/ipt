@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2025-05-21 13:32+0000\n"
-"PO-Revision-Date: 2025-05-21 15:18\n"
+"PO-Revision-Date: 2025-05-29 22:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -383,7 +383,7 @@ msgstr "Idealmente, organización publicadora del recurso no debe cambiarse desp
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:151
 msgid "That being said, there are several ways to change the publishing organization."
-msgstr "Dicho esto, hay dos formas de cambiar la organización publicadora."
+msgstr "Dicho esto, hay varias formas de cambiar la organización publicadora."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:153
