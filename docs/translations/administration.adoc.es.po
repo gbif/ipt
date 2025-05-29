@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2025-03-19 07:13+0000\n"
-"PO-Revision-Date: 2025-03-19 14:28\n"
+"PO-Revision-Date: 2025-05-29 22:04\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -162,7 +162,7 @@ msgstr "*Ubicación del servidor IPT*: esta área de la página permite al admin
 #: en/modules/ROOT/pages/administration.adoc:41
 #, no-wrap
 msgid "*Logo redirect URL* - Enable redirection from the main logo to another location, with the default set to the IPT public URL.\n"
-msgstr "*URL de redireccionamiento del logotipo*: habilita la redirección del logotipo principal a otra ubicación, con el valor predeterminado establecido en la URL pública del IPT.\n"
+msgstr "*URL de redirección del logotipo*: Habilita la redirección del logotipo principal a otra ubicación, con el valor predeterminado establecido en la URL pública del IPT.\n"
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:42
