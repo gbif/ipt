@@ -1,5 +1,5 @@
 # Use this section for releases
-%define nr_ver 3.1.5
+%define nr_ver 3.1.6
 %define nr_ver_extra 1
 %define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
 # Use this section for release candidates
@@ -24,7 +24,6 @@ Summary: GBIF Integrated Publishing Toolkit (IPT)
 BuildArch: noarch
 
 BuildRequires: systemd-rpm-macros
-%define _unitdir /usr/lib/systemd/system
 
 %if 0%{?el7}
 Requires: java >= 1:1.8.0

@@ -9,7 +9,7 @@ uid=$(stat -c %u $spec_file)
 gid=$(stat -c %g $spec_file)
 
 function finish {
-	echo "Setting ownership."
+	echo "Setting ownership to $uid:$gid"
 	chown -R $uid:$gid rpmbuild
 }
 trap finish EXIT

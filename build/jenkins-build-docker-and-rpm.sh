@@ -47,12 +47,15 @@ if [[ "${IS_M2RELEASEBUILD:-false}" == "true" ]]; then
   # Run docker-build.sh, extract the line containing 'Building version', and grab the version number
   nr_ver=$(cd package/rpm && ./docker-build.sh | grep 'Building version' | sed 's/Building version //')
 
+  echo "Version: $nr_ver"
+
+  echo
   echo "Uploading RPMs"
-  scp -p RPMS/noarch/ipt*.el8.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el8/rpm/
-  scp -p RPMS/noarch/ipt*.el9.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el9/rpm/
+  scp -p package/rpm/RPMS/noarch/ipt*.el8.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el8/rpm/
+  scp -p package/rpm/RPMS/noarch/ipt*.el9.noarch.rpm jenkins-deploy@apache.gbif.org:/var/www/html/packages/el9/rpm/
   ssh jenkins-deploy@apache.gbif.org /var/www/html/packages/reindex
 
-  git add SPECS/ipt.spec
+  git add package/rpm/SPECS/ipt.spec
   git commit -m "Update RPM version to $nr_ver" && git push origin $(git rev-parse --abbrev-ref HEAD) || echo "Nothing changed."
 else
   echo "Not a release build, value of IS_M2RELEASEBUILD is ${IS_M2RELEASEBUILD:-unset}"
