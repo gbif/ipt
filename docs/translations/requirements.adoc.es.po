@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-05 12:28+0000\n"
-"PO-Revision-Date: 2024-02-06 22:35\n"
+"POT-Creation-Date: 2025-06-03 10:41+0000\n"
+"PO-Revision-Date: 2025-06-03 10:43\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -74,8 +74,8 @@ msgstr "Espacio en disco"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:17
-msgid "The space required by the IPT application is around 100MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space."
-msgstr "El espacio requerido por la aplicación del IPT es de unos 100MB. El contenido del directorio de datos del IPT después de la instalación requiere menos de 1MB de almacenamiento en disco con permiso de escritura para el IPT. Sin embargo, el contenido del directorio de datos crecerá a medida que se creen recursos y requerirá un espacio equivalente al tamaño de los archivos o tablas importados que contienen los conjuntos de datos. Una estimación razonable del tamaño de un conjunto de datos de registros biológicos relativamente rico es de un kilobyte por registro. El uso normal del IPT anexa información a los archivos de registro que crecerán con el tiempo, pero que generalmente requieren un espacio mínimo en el disco."
+msgid "The space required by the IPT application is around 250MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:18
@@ -88,19 +88,30 @@ msgstr "Versión de Java"
 msgid "The current version of the IPT is tested to run on Java 11 and 17. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported."
 msgstr "Se ha probado que la versión actual de IPT se ejecuta en Java 11 y 17. Consulte https://adoptopenjdk.net/support.html#roadmap[hoja de ruta de lanzamiento de OpenJDK], https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Hoja de ruta de la versión Java de Oracle] o la documentación de su distribución de Linux para obtener una descripción general de cuánto tiempo será compatible su versión Java."
 
+#. type: Title ==
+#: en/modules/ROOT/pages/requirements.adoc:22
+#, no-wrap
+msgid "Operating system"
+msgstr ""
+
 #. type: Plain text
-#: en/modules/ROOT/pages/requirements.adoc:23
-msgid "See the installation instructions for notes on operating system and servlet container versions."
-msgstr "Consulte las instrucciones de instalación para obtener información sobre las versiones del sistema operativo y del contenedor de servlets."
+#: en/modules/ROOT/pages/requirements.adoc:25
+msgid "The IPT is a Java web application, and can run on Linux or Windows.  We provide RPM packages (Red Hat, CentOS, etc.), APT packages (Debian, Ubuntu, etc.), a Docker image, and a WAR file for a servlet container (Tomcat etc)."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/requirements.adoc:27
+msgid "In most cases, the appropriate OS is one supported by the organization's IT department.  GBIF cannot provide technical support for OS installation, maintenance, backups, HTTPS certficates etc."
+msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/requirements.adoc:24
+#: en/modules/ROOT/pages/requirements.adoc:28
 #, no-wrap
 msgid "Technical support"
 msgstr "Soporte técnico"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/requirements.adoc:25
+#: en/modules/ROOT/pages/requirements.adoc:29
 msgid "Running an IPT is a commitment.  Data should be backed up regularly, and security updates (for the operating system or the IPT) must be applied soon after they become available."
 msgstr "Ejecutar un IPT es un compromiso. Hay que hacer copias de seguridad de los datos regularmente y las actualizaciones de seguridad (para el sistema operativo o la IPT) deben aplicarse poco después de que estén disponibles."
 
