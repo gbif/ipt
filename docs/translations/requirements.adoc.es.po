@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2025-06-03 10:41+0000\n"
-"PO-Revision-Date: 2025-06-03 10:43\n"
+"PO-Revision-Date: 2025-06-03 17:25\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -75,7 +75,7 @@ msgstr "Espacio en disco"
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:17
 msgid "The space required by the IPT application is around 250MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space."
-msgstr ""
+msgstr "El espacio requerido por la aplicación del IPT es de unos 250MB. El contenido del directorio de datos del IPT después de la instalación requiere menos de 1MB de almacenamiento en disco, con permisos de escritura para el IPT. Sin embargo, el contenido del directorio de datos crecerá a medida que se creen recursos y requerirá un espacio equivalente al tamaño de los archivos o tablas importados que contienen los conjuntos de datos. Una estimación razonable del tamaño de un conjunto de datos de registros biológicos relativamente rico es de 1 kilobyte por registro. El uso normal del IPT anexa información a los archivos de registro que crecerán con el tiempo, pero que generalmente requieren un espacio mínimo en el disco."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:18
@@ -92,17 +92,17 @@ msgstr "Se ha probado que la versión actual de IPT se ejecuta en Java 11 y 17. 
 #: en/modules/ROOT/pages/requirements.adoc:22
 #, no-wrap
 msgid "Operating system"
-msgstr ""
+msgstr "Sistema operativo"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:25
 msgid "The IPT is a Java web application, and can run on Linux or Windows.  We provide RPM packages (Red Hat, CentOS, etc.), APT packages (Debian, Ubuntu, etc.), a Docker image, and a WAR file for a servlet container (Tomcat etc)."
-msgstr ""
+msgstr "El IPT es una aplicación web en Java, y puede ejecutarse en Linux o Windows.  Proporcionamos paquetes RPM (Red Hat, CentOS, etc.), paquetes APT (Debian, Ubuntu, etc.), una imagen Docker y un archivo WAR para un contenedor de servlets (Tomcat, etc.)."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:27
 msgid "In most cases, the appropriate OS is one supported by the organization's IT department.  GBIF cannot provide technical support for OS installation, maintenance, backups, HTTPS certficates etc."
-msgstr ""
+msgstr "En la mayoría de los casos, el Sistema Operativo apropiado es aquel soportado por el departamento de TI de la organización.  GBIF no puede proporcionar soporte técnico para la instalación del Sistema Operativo, mantenimiento, copias de seguridad, certificados HTTPS, etc."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/requirements.adoc:28
