@@ -17,11 +17,11 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.Archive;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.UnsupportedArchiveException;
+import org.gbif.ipt.BaseTest;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.mock.MockAppConfig;
@@ -84,7 +84,6 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -103,6 +102,7 @@ import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -120,7 +120,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-public class ResourceManagerImplTest {
+public class ResourceManagerImplTest extends BaseTest {
 
   // Mock classes
   private final AppConfig mockAppConfig = MockAppConfig.buildMock();
@@ -146,9 +146,10 @@ public class ResourceManagerImplTest {
   private Organisation organisation;
   private JdbcSupport support;
 
-  private File resourceDir;
-  private File logDir;
-  private File tmpDataDir;
+  @TempDir
+  File resourceDir;
+  @TempDir
+  File tmpDataDir;
 
   private static final String DATASET_TYPE_OCCURRENCE_IDENTIFIER = "occurrence";
   private static final String DATASET_SUBTYPE_SPECIMEN_IDENTIFIER = "specimen";
@@ -168,11 +169,7 @@ public class ResourceManagerImplTest {
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORTNAME);
 
-    // resource directory
-    resourceDir = FileUtils.createTempDir();
-
     // tmp directory
-    tmpDataDir = FileUtils.createTempDir();
     when(mockedDataDir.tmpDir()).thenReturn(tmpDataDir);
 
     organisation = new Organisation();
@@ -297,6 +294,8 @@ public class ResourceManagerImplTest {
 
     // mock finding inferredMetadata.xml file
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
+
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -495,7 +494,8 @@ public class ResourceManagerImplTest {
     fileSource.setFieldsTerminatedByEscaped("/t");
     fileSource.setName("singleTxt");
 
-    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString()))
+        .thenReturn(fileSource);
 
     // create a new resource.
     resourceManager.create("res-single-gz", null, dwca, creator, baseAction);
@@ -545,6 +545,8 @@ public class ResourceManagerImplTest {
 
     // mock inferredMetadata.xml file
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
+
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -625,6 +627,8 @@ public class ResourceManagerImplTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_nonexistent_ext.xml");
     // mock finding resource.xml file
     when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -825,6 +829,7 @@ public class ResourceManagerImplTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_auto_ids.xml");
     // mock finding resource.xml file
     when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // create a new resource from zipped resource folder, but using the mocked resource.xml above
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
@@ -1484,6 +1489,7 @@ public class ResourceManagerImplTest {
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
     ResourceManager resourceManager = getResourceManagerImpl();
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
     resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
@@ -1513,6 +1519,7 @@ public class ResourceManagerImplTest {
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
     ResourceManager resourceManager = getResourceManagerImpl();
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
     resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
