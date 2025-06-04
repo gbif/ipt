@@ -3543,7 +3543,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // so we also try with the default eml.xml name
         emlFile = new File(archive.getLocation(), EML_XML_FILENAME);
       }
-      if (emlFile.exists()) {
+      if (emlFile.exists() && emlFile.getName().endsWith(EML_XML_FILENAME)) {
         // read metadata and populate Eml instance
         eml = copyMetadata(shortname, emlFile);
         alog.info("manage.resource.read.eml.metadata");
