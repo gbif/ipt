@@ -2302,7 +2302,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.setInferredMetadata(new InferredCamtrapMetadata());
       }
     } else {
-      if (!inferredMetadataFile.exists()) {
+      if (inferredMetadataFile == null || !inferredMetadataFile.exists()) {
         resource.setInferredMetadata(new InferredEmlMetadata());
         return;
       }
