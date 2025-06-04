@@ -102,7 +102,6 @@ import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -148,6 +147,8 @@ public class ResourceManagerImplTest {
   private JdbcSupport support;
 
   private File resourceDir;
+  private File logDir;
+  private File tmpDataDir;
 
   private static final String DATASET_TYPE_OCCURRENCE_IDENTIFIER = "occurrence";
   private static final String DATASET_SUBTYPE_SPECIMEN_IDENTIFIER = "specimen";
@@ -171,7 +172,7 @@ public class ResourceManagerImplTest {
     resourceDir = FileUtils.createTempDir();
 
     // tmp directory
-    File tmpDataDir = FileUtils.createTempDir();
+    tmpDataDir = FileUtils.createTempDir();
     when(mockedDataDir.tmpDir()).thenReturn(tmpDataDir);
 
     organisation = new Organisation();
@@ -292,7 +293,7 @@ public class ResourceManagerImplTest {
     // retrieve sample zipped resource folder
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+    when(mockedDataDir.resourceEmlFile(anyString())).thenReturn(emlXML);
 
     // mock finding inferredMetadata.xml file
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
@@ -781,8 +782,9 @@ public class ResourceManagerImplTest {
     fileSourceOccurrence.setFile(uncompressedOccurrence);
     fileSourceOccurrence.setName("occurrence.txt");
 
-    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSourceEvent)
-      .thenReturn(fileSourceOccurrence);
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString()))
+        .thenReturn(fileSourceEvent)
+        .thenReturn(fileSourceOccurrence);
 
     // create a new resource.
     Resource resource = resourceManager.create("res-differentcoreidtermindex", null, dwca, creator, baseAction);
@@ -862,7 +864,6 @@ public class ResourceManagerImplTest {
   /**
    * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
    */
-  @Disabled("floating behaviour, only fails when all the test launched")
   @Test
   public void testLoadFromDir() throws Exception {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
@@ -943,7 +944,7 @@ public class ResourceManagerImplTest {
     assertEquals("DanBIFUser", persistedSource.getUsername());
     assertEquals(44, persistedSource.getColumns());
     assertEquals("SELECT * FROM occurrence_record where datasetID=1", persistedSource.getSql());
-    assertEquals("com.mysql.jdbc.Driver", persistedSource.getJdbcDriver());
+    assertEquals("com.mysql.cj.jdbc.Driver", persistedSource.getJdbcDriver());
     assertEquals("UTF-8", persistedSource.getEncoding());
     assertEquals("YYYY-MM-DD", persistedSource.getDateFormat());
     assertTrue(persistedSource.isReadable());
@@ -989,8 +990,8 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class)))
-      .thenReturn(File.createTempFile("eml", "xml"));
+    when(mockedDataDir.resourceEmlFile(anyString()))
+        .thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
     Resource resource = new Resource();
@@ -1065,7 +1066,7 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class)))
+    when(mockedDataDir.resourceEmlFile(anyString()))
       .thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
