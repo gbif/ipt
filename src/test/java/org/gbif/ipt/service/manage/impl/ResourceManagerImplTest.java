@@ -17,7 +17,7 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.Archive;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.UnsupportedArchiveException;
-import org.gbif.ipt.BaseTest;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -120,7 +120,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-public class ResourceManagerImplTest extends BaseTest {
+public class ResourceManagerImplTest extends IptBaseTest {
 
   // Mock classes
   private final AppConfig mockAppConfig = MockAppConfig.buildMock();

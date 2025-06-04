@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.FileSource;
@@ -42,7 +43,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SourceManagerImplTest {
+public class SourceManagerImplTest extends IptBaseTest {
 
   private SourceManagerImpl manager;
   private Resource resource;

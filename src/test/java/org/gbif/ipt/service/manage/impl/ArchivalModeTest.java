@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
@@ -51,7 +52,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ArchivalModeTest {
+public class ArchivalModeTest extends IptBaseTest {
 
   private DataDir mockDataDir = mock(DataDir.class);
 

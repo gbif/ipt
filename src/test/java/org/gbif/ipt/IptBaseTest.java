@@ -16,25 +16,18 @@ package org.gbif.ipt;
 import org.gbif.ipt.config.LoggingConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 
 import java.io.File;
 import java.nio.file.Files;
 
-public class BaseTest {
+public class IptBaseTest {
 
   @BeforeAll
   static void setupLogging() {
     LoggingConfiguration.logDirectory = System.getProperty("java.io.tmpdir") + "/testlogs/";
     // Make sure the directory exists
     new File(LoggingConfiguration.logDirectory).mkdirs();
-  }
-
-  @BeforeEach
-  void logTestInfo(TestInfo testInfo) {
-    System.out.printf("Running: %s%n", testInfo.getDisplayName());
-    System.out.printf("CWD: %s%n", new File(".").getAbsolutePath());
   }
 
   @AfterEach
@@ -44,7 +37,7 @@ public class BaseTest {
     for (String name : junkDirs) {
       File f = new File(name);
       if (f.exists()) {
-        System.err.printf("⚠️  Test '%s' created junk directory: '%s'%n",
+        System.err.printf("Test '%s' created junk directory: '%s'%n",
             testInfo.getDisplayName(), name);
 
         // Delete it to keep the environment clean
