@@ -934,6 +934,8 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEml().getEmlVersion());
     assertEquals(0, persistedResource.getRecordsPublished());
     // should be 1 KeywordSet corresponding to Dataset Type vocabulary
+    System.out.println(persistedResource.getEml().getKeywords());
+    persistedResource.getEml().getKeywords().forEach(k -> System.out.println(k.getKeywordsString() + ": " + k.getKeywords() + ", " + k.getKeywordThesaurus()));
     assertEquals(2, persistedResource.getEml().getKeywords().size());
     assertEquals(StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
       persistedResource.getEml().getKeywords().get(0).getKeywordsString());
