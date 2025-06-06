@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -33,7 +34,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-public class BaseActionTest {
+public class BaseActionTest extends IptBaseTest {
 
   /**
    * Test getLocale on none Struts action context.

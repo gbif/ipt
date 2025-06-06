@@ -14,6 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
@@ -47,7 +48,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MappingActionTest {
+public class MappingActionTest extends IptBaseTest {
 
   private MappingAction action;
   private static final String RESOURCE_SHORT_NAME = "myResource";

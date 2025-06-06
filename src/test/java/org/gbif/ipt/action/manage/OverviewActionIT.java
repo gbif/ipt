@@ -17,6 +17,7 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -74,7 +75,7 @@ import static org.mockito.Mockito.when;
 /**
  * WARNING! This requires live DataCite service.
  */
-public class OverviewActionIT {
+public class OverviewActionIT extends IptBaseTest {
 
   private static final Logger LOG = LogManager.getLogger(OverviewActionIT.class);
   private static final UUID ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5");

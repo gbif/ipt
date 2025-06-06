@@ -14,6 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
@@ -65,7 +66,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TranslationActionTest {
+public class TranslationActionTest extends IptBaseTest {
 
   TranslationAction action;
 

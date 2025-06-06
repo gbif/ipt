@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.utils;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.TestBeanProvider;
@@ -22,7 +23,7 @@ import org.gbif.utils.HttpClient;
 
 import javax.xml.parsers.SAXParserFactory;
 
-public abstract class IptMockBaseTest {
+public abstract class IptMockBaseTest extends IptBaseTest {
 
   protected DataDir dataDir;
   protected AppConfig cfg;

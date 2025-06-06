@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.portal;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Organisation;
@@ -49,7 +50,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class HomeActionTest {
+public class HomeActionTest extends IptBaseTest {
 
   private HomeAction action;
   private static final Date MODIFIED = new Date();

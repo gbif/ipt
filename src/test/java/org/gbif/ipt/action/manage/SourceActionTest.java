@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
@@ -32,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class SourceActionTest {
+public class SourceActionTest extends IptBaseTest {
 
   private SourceAction action;
 

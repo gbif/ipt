@@ -17,6 +17,7 @@ import org.gbif.dwc.terms.DcTerm;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -73,7 +74,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("HttpUrlsUsage")
-public class ExtensionManagerImplTest {
+public class ExtensionManagerImplTest extends IptBaseTest {
 
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   private ExtensionManager extensionManager;

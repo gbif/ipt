@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
@@ -36,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class UserAccountManagerImplTest {
+public class UserAccountManagerImplTest extends IptBaseTest {
 
   private static File userFile;
   private User admin, manager, publisher, user;

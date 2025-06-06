@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -56,7 +57,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class VocabulariesManagerImplTest {
+public class VocabulariesManagerImplTest extends IptBaseTest {
 
   private static File TMP_DIR;
   private VocabulariesManager manager;

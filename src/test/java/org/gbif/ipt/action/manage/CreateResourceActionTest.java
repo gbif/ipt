@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
@@ -42,7 +43,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CreateResourceActionTest {
+public class CreateResourceActionTest extends IptBaseTest {
   private static final Logger LOG = LogManager.getLogger(CreateResourceActionTest.class);
   private static final String SHORTNAME = "bugs";
   private CreateResourceAction action;
