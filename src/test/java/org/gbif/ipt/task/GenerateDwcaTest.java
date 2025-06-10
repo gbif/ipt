@@ -24,7 +24,6 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.mock.MockAppConfig;
@@ -77,9 +76,9 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -103,12 +102,16 @@ public class GenerateDwcaTest extends IptBaseTest {
   private DataDir mockDataDir = MockDataDir.buildMock();
   private AppConfig mockAppConfig = MockAppConfig.buildMock();
   private SourceManager mockSourceManager;
-  private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
+  private VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
+  @TempDir
   private File tmpDataDir;
+  @TempDir
   private File resourceDir;
 
-  @BeforeAll
-  public static void init() {
+  @BeforeEach
+  public void init() {
+    when(mockDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
+
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
     Map<String, String> basisOfRecords = new HashMap<>();
     basisOfRecords.put("preservedspecimen", "Preserved Specimen");
@@ -122,10 +125,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     when(
       mockVocabulariesManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false))
       .thenReturn(basisOfRecords);
-  }
 
-  @BeforeEach
-  public void setup() throws IOException {
     // create resource, version 3.0
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORTNAME);
@@ -142,14 +142,12 @@ public class GenerateDwcaTest extends IptBaseTest {
 
     mockHandler = mock(ResourceManagerImpl.class);
 
-    resourceDir = FileUtils.createTempDir();
     File publicationLogFile = new File(resourceDir, DataDir.PUBLICATION_LOG_FILENAME);
 
     // publication log file
     when(mockDataDir.resourcePublicationLogFile(RESOURCE_SHORTNAME)).thenReturn(publicationLogFile);
 
     // tmp directory
-    tmpDataDir = FileUtils.createTempDir();
     when(mockDataDir.tmpDir()).thenReturn(tmpDataDir);
 
     // archival mode on
