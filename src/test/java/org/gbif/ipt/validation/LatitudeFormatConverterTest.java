@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.validation;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.struts2.converter.LatitudeFormatConverter;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Unit test for the convertFromString method in LatitudeFormatConverter class.
  */
-public class LatitudeFormatConverterTest {
+public class LatitudeFormatConverterTest extends IptBaseTest {
 
   public static Stream<Arguments> getTestParameters() {
     // Object list in which each object contains: A expected value (double) and an incoming value to test (String[]).

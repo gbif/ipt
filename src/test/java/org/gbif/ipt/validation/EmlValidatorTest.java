@@ -14,6 +14,7 @@
 package org.gbif.ipt.validation;
 
 import org.gbif.api.vocabulary.Language;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Organisation;
@@ -53,7 +54,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class EmlValidatorTest {
+public class EmlValidatorTest extends IptBaseTest {
   private EmlValidator validator;
   private Resource resource;
   private Eml eml;

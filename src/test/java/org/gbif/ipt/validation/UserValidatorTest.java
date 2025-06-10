@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.validation;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.User;
@@ -33,7 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class UserValidatorTest {
+public class UserValidatorTest extends IptBaseTest {
+
   private static UserValidator USER_VALIDATOR = new UserValidator();
   private static BaseAction BASE_ACTION = new BaseAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(
     RegistrationManager.class));
