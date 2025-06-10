@@ -67,7 +67,7 @@ import java.util.UUID;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -86,21 +86,22 @@ import static org.mockito.Mockito.when;
 public class GenerateDCATTest extends IptBaseTest {
 
   private static final String RESOURCE_SHORTNAME = "res1";
-  private static AppConfig mockAppConfig = MockAppConfig.buildMock();
-  private static GenerateDCAT mockGenerateDCAT;
+  private AppConfig mockAppConfig = MockAppConfig.buildMock();
+  private GenerateDCAT mockGenerateDCAT;
   private DataDir mockDataDir = MockDataDir.buildMock();
-  private static RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
+  private RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
 
   @TempDir
   File resourceDir;
 
-  @BeforeAll
-  public static void init() {
+  @BeforeEach
+  public void init() {
+    when(mockDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
     when(mockAppConfig.getResourceArchiveUrl(RESOURCE_SHORTNAME)).thenReturn("distributionURL");
     when(mockAppConfig.getResourceUrl(RESOURCE_SHORTNAME)).thenReturn("resourceURL");
     when(mockAppConfig.getBaseUrl()).thenReturn("baseURL");
 
-    //create IPT
+    // create IPT
     Ipt ipt = new Ipt();
     ipt.setDescription("Test IPT for testing");
     ipt.setName("Test IPT");
@@ -257,8 +258,6 @@ public class GenerateDCATTest extends IptBaseTest {
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
     ExtensionManager extensionManager = mock(ExtensionManager.class);
     ExtensionsHolder extensionsHolder = mock(ExtensionsHolder.class);
-
-    when(mockDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // mock ExtensionManager returning occurrence core Extension
     when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
