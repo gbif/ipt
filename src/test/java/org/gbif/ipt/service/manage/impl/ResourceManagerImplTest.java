@@ -961,10 +961,14 @@ public class ResourceManagerImplTest extends IptBaseTest {
             + "Values: \n"
             + actualKeywords);
 
-    assertEquals(StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
-      persistedResource.getEml().getKeywords().get(0).getKeywordsString());
-    assertEquals(StringUtils.capitalize(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER),
-      persistedResource.getEml().getKeywords().get(1).getKeywordsString());
+    assertEquals(
+        StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
+        persistedResource.getEml().getKeywords().get(0).getKeywordsString(),
+        () -> "actual keys: " + persistedResource.getEml().getKeywords());
+    assertEquals(
+        StringUtils.capitalize(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER),
+        persistedResource.getEml().getKeywords().get(1).getKeywordsString(),
+        () -> "actual keys: " + persistedResource.getEml().getKeywords());
 
     // make some assertions about SQL source
     SqlSource persistedSource = (SqlSource) persistedResource.getSources().get(0);
