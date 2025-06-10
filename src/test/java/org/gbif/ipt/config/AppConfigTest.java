@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.ServletContext;
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AppConfigTest {
+public class AppConfigTest extends IptBaseTest {
 
   ServletContext mockServletContext = new MockServletContext();
   DataDir dd = TestBeanProvider.provideDataDir(mockServletContext);

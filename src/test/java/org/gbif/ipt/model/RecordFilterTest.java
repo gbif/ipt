@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.model.RecordFilter.Comparator;
 
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RecordFilterTest {
+public class RecordFilterTest extends IptBaseTest {
 
   @Test
   public void testEquals() {

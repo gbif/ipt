@@ -15,12 +15,13 @@ package org.gbif.ipt.config;
 
 import java.util.regex.Pattern;
 
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IPTContextListenerTest {
+public class IPTContextListenerTest extends IptBaseTest {
   Pattern regex = Pattern.compile("^(?!.*/(manage|admin)/).*");
 
   /**

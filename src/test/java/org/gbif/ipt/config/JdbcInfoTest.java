@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.config;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.JdbcSupport.JdbcInfo;
 import org.gbif.ipt.config.JdbcSupport.LIMIT_TYPE;
 
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JdbcInfoTest {
+public class JdbcInfoTest extends IptBaseTest {
 
   @Test
   public void testSql() {

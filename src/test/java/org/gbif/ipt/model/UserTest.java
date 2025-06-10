@@ -16,12 +16,13 @@ package org.gbif.ipt.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class UserTest {
+public class UserTest extends IptBaseTest {
 
   @Test
   public void testHash() {
