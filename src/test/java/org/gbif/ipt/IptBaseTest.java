@@ -35,7 +35,7 @@ public class IptBaseTest {
 
   @AfterEach
   void checkForStrayDirsAndFiles(TestInfo testInfo) throws Exception {
-    String[] expectedJunk = { "res1", "amphibians", "${test.datadir}", "admin.log", "debug.log" };
+    String[] expectedJunk = { "event", "res1", "amphibians", "${test.datadir}", "admin.log", "debug.log" };
     boolean junkFound = false;
     List<String> junk = new ArrayList<>();
 

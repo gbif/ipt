@@ -23,7 +23,6 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.mock.MockAppConfig;
@@ -67,7 +66,6 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -76,8 +74,9 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -100,12 +99,15 @@ public class GenerateDwcaEventTest extends IptBaseTest {
   private DataDir mockDataDir = MockDataDir.buildMock();
   private SourceManager mockSourceManager;
   private Resource resource;
+  @TempDir
   private File resourceDir;
   private ReportHandler mockHandler;
-  private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
+  private VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
 
-  @BeforeAll
-  public static void init() {
+  @BeforeEach
+  public void init() {
+    when(mockDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
+
     // populate HashMap from basisOfRecord vocabulary, with lowercase keys (used in basisOfRecord validation)
     Map<String, String> basisOfRecords = new HashMap<>();
     basisOfRecords.put("preservedspecimen", "Preserved Specimen");
@@ -350,7 +352,6 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     mockHandler = mock(ResourceManagerImpl.class);
-    resourceDir = FileUtils.createTempDir();
     BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
 
     // construct ExtensionFactory using injected parameters
