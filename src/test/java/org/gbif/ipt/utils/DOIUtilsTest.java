@@ -14,6 +14,7 @@
 package org.gbif.ipt.utils;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DOIUtilsTest {
+public class DOIUtilsTest extends IptBaseTest {
 
   @Test
   public void testMintDoiDataCite() {

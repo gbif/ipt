@@ -16,6 +16,7 @@ package org.gbif.ipt.utils;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test cases for class {@link URLUtils}.
  */
-public class URLUtilsTest {
+public class URLUtilsTest extends IptBaseTest {
 
   @Test
   public void isLocalhostTest() throws MalformedURLException {

@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.task;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.mock.MockVocabulariesManager;
 import org.gbif.ipt.model.Resource;
@@ -40,7 +41,7 @@ import com.lowagie.text.rtf.RtfWriter2;
 
 import static org.mockito.Mockito.mock;
 
-public class Eml2RtfTest {
+public class Eml2RtfTest extends IptBaseTest {
 
   private AppConfig mockedAppConfig;
   private VocabulariesManager mockedVocabManager;

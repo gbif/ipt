@@ -13,12 +13,13 @@
  */
 package org.gbif.ipt.utils;
 
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.gbif.ipt.utils.StringUtils.camelToSnake;
 import static org.junit.jupiter.api.Assertions.*;
 
-class StringUtilsTest {
+class StringUtilsTest extends IptBaseTest {
 
   @Test
   public void testCamelToSnake() {

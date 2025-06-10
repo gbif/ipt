@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.task;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
@@ -82,7 +83,8 @@ import static org.mockito.Mockito.when;
 /**
  * Test class for the DCAT generation.
  */
-public class GenerateDCATTest {
+public class GenerateDCATTest extends IptBaseTest {
+
   private static final String RESOURCE_SHORTNAME = "res1";
   private static AppConfig mockAppConfig = MockAppConfig.buildMock();
   private static GenerateDCAT mockGenerateDCAT;

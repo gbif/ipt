@@ -13,13 +13,14 @@
  */
 package org.gbif.ipt.utils;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.IPTModule;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PBEEncryptTest {
+public class PBEEncryptTest extends IptBaseTest {
 
   /**
    * Since we're using symmetric encryption with a fixed salt (defined in IPTModule),

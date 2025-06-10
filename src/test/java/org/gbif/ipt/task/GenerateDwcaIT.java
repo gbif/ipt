@@ -18,6 +18,7 @@ import org.gbif.dwc.ArchiveFile;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.record.Record;
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -92,7 +93,7 @@ import static org.mockito.Mockito.when;
 
 // TODO: temporarily disabled because of connection to builds.gbif.org/clb
 @Disabled("Temporarily disabled because of connection to builds.gbif.org/clb")
-public class GenerateDwcaIT {
+public class GenerateDwcaIT extends IptBaseTest {
 
   private static final String RESOURCE_SHORTNAME = "res1";
   private static final String VERSIONED_ARCHIVE_FILENAME = "dwca-3.0.zip";
