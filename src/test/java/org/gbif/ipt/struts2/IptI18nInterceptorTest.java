@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.struts2;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 
 import java.util.Locale;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(MockitoExtension.class)
-public class IptI18nInterceptorTest {
+public class IptI18nInterceptorTest extends IptBaseTest {
 
   @InjectMocks
   private IptI18nInterceptor interceptor = new IptI18nInterceptor();

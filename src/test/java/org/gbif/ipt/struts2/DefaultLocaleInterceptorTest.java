@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.struts2;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 
 import java.util.HashMap;
@@ -37,7 +38,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultLocaleInterceptorTest {
+public class DefaultLocaleInterceptorTest extends IptBaseTest {
 
     @InjectMocks
     private DefaultLocaleInterceptor interceptor = new DefaultLocaleInterceptor();
