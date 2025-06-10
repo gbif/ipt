@@ -20,9 +20,12 @@ import org.junit.jupiter.api.TestInfo;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IptBaseTest {
 
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   @BeforeAll
   static void setupLogging() {
     LoggingConfiguration.logDirectory = System.getProperty("java.io.tmpdir") + "/testlogs/";
@@ -31,27 +34,37 @@ public class IptBaseTest {
   }
 
   @AfterEach
-  void checkForStrayDirs(TestInfo testInfo) throws Exception {
-    String[] junkDirs = { "res1", "amphibians" };
+  void checkForStrayDirsAndFiles(TestInfo testInfo) throws Exception {
+    String[] expectedJunk = { "res1", "amphibians", "${test.datadir}", "admin.log", "debug.log" };
+    boolean junkFound = false;
+    List<String> junk = new ArrayList<>();
 
-    for (String name : junkDirs) {
+    for (String name : expectedJunk) {
       File f = new File(name);
       if (f.exists()) {
-        System.err.printf("Test '%s' created junk directory: '%s'%n",
+        System.err.printf("Test '%s' created junk " + (f.isDirectory() ? "directory" : "file") + ": '%s'%n",
             testInfo.getDisplayName(), name);
 
         // Delete it to keep the environment clean
         deleteRecursively(f);
 
-        throw new AssertionError("Stray directory found: " + name);
+        junk.add(name);
+        junkFound = true;
       }
+    }
+
+    if (junkFound) {
+      throw new AssertionError("Stray directories or files found: " + junk);
     }
   }
 
   private void deleteRecursively(File file) throws Exception {
     if (file.isDirectory()) {
-      for (File sub : file.listFiles()) {
-        deleteRecursively(sub);
+      File[] files = file.listFiles();
+      if (files != null) {
+        for (File sub : files) {
+          deleteRecursively(sub);
+        }
       }
     }
     Files.deleteIfExists(file.toPath());
