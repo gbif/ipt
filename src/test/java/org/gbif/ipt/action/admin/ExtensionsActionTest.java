@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.admin;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -61,7 +62,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("HttpUrlsUsage")
-public class ExtensionsActionTest {
+public class ExtensionsActionTest extends IptBaseTest {
 
   ExtensionsAction action;
   List<Extension> extensions;
