@@ -77,6 +77,7 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.KeywordSet;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
@@ -94,12 +95,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AssertionFailureBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -933,10 +936,30 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEmlVersion());
     assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEml().getEmlVersion());
     assertEquals(0, persistedResource.getRecordsPublished());
-    // should be 1 KeywordSet corresponding to Dataset Type vocabulary
-    System.out.println(persistedResource.getEml().getKeywords());
-    persistedResource.getEml().getKeywords().forEach(k -> System.out.println(k.getKeywordsString() + ": " + k.getKeywords() + ", " + k.getKeywordThesaurus()));
-    assertEquals(2, persistedResource.getEml().getKeywords().size());
+
+    assertKeywordsContain(
+        "GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml",
+        List.of("Occurrence"),
+        persistedResource.getEml().getKeywords()
+    );
+    assertKeywordsContain(
+        "GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml",
+        List.of("Specimen"),
+        persistedResource.getEml().getKeywords()
+    );
+    int expectedAmountOfKeywords = 2;
+
+    String actualKeywords = persistedResource.getEml().getKeywords()
+        .stream()
+        .map(k -> k.getKeywordsString() + ": " + k.getKeywords() + ", " + k.getKeywordThesaurus())
+        .collect(Collectors.joining("\n"));
+
+    assertEquals(expectedAmountOfKeywords,
+        persistedResource.getEml().getKeywords().size(),
+        () -> "Amount of keywords do not match expected.\n"
+            + "Values: \n"
+            + actualKeywords);
+
     assertEquals(StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
       persistedResource.getEml().getKeywords().get(0).getKeywordsString());
     assertEquals(StringUtils.capitalize(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER),
@@ -956,6 +979,28 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertEquals("YYYY-MM-DD", persistedSource.getDateFormat());
     assertTrue(persistedSource.isReadable());
 
+  }
+
+  public static void assertKeywordsContain(String expectedKeywordThesaurus, List<String> expectedKeywords, List<KeywordSet> actual) {
+    boolean contain = false;
+
+    for (KeywordSet item : actual) {
+      if (expectedKeywordThesaurus.equals(item.getKeywordThesaurus()) && expectedKeywords.equals(item.getKeywords())) {
+        contain = true;
+      }
+    }
+
+    if (!contain) {
+      AssertionFailureBuilder.assertionFailure()
+          .message("Keywords do not contain provided values")
+          .expected("thesaurus \"" +  expectedKeywordThesaurus + "\", keywords " + expectedKeywords + ".")
+          .actual(
+              actual.stream()
+                  .map(k -> "thesaurus \"" +  k.getKeywordThesaurus() + "\", keywords " + k.getKeywords())
+                  .collect(Collectors.joining("; "))
+          )
+          .buildAndThrow();
+    }
   }
 
   @Test
