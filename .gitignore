@@ -4,6 +4,7 @@ target/
 .idea/
 .DS_Store
 .java-version
+datadirs/
 
 # Package Files #
 *.jar
