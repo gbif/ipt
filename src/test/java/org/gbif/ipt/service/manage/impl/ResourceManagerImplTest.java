@@ -939,12 +939,12 @@ public class ResourceManagerImplTest extends IptBaseTest {
 
     assertKeywordsContain(
         "GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml",
-        List.of("Occurrence"),
+        StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
         persistedResource.getEml().getKeywords()
     );
     assertKeywordsContain(
         "GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml",
-        List.of("Specimen"),
+        StringUtils.capitalize(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER),
         persistedResource.getEml().getKeywords()
     );
     int expectedAmountOfKeywords = 2;
@@ -960,15 +960,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
         () -> "Amount of keywords do not match expected.\n"
             + "Values: \n"
             + actualKeywords);
-
-    assertEquals(
-        StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
-        persistedResource.getEml().getKeywords().get(0).getKeywordsString(),
-        () -> "actual keys: " + persistedResource.getEml().getKeywords());
-    assertEquals(
-        StringUtils.capitalize(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER),
-        persistedResource.getEml().getKeywords().get(1).getKeywordsString(),
-        () -> "actual keys: " + persistedResource.getEml().getKeywords());
 
     // make some assertions about SQL source
     SqlSource persistedSource = (SqlSource) persistedResource.getSources().get(0);
@@ -986,11 +977,11 @@ public class ResourceManagerImplTest extends IptBaseTest {
 
   }
 
-  public static void assertKeywordsContain(String expectedKeywordThesaurus, List<String> expectedKeywords, List<KeywordSet> actual) {
+  public static void assertKeywordsContain(String expectedKeywordThesaurus, String expectedKeyword, List<KeywordSet> actual) {
     boolean contain = false;
 
     for (KeywordSet item : actual) {
-      if (expectedKeywordThesaurus.equals(item.getKeywordThesaurus()) && expectedKeywords.equals(item.getKeywords())) {
+      if (expectedKeywordThesaurus.equals(item.getKeywordThesaurus()) && List.of(expectedKeyword).equals(item.getKeywords())) {
         contain = true;
       }
     }
@@ -998,7 +989,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     if (!contain) {
       AssertionFailureBuilder.assertionFailure()
           .message("Keywords do not contain provided values")
-          .expected("thesaurus \"" +  expectedKeywordThesaurus + "\", keywords " + expectedKeywords + ".")
+          .expected("thesaurus \"" +  expectedKeywordThesaurus + "\", keywords [\"" + expectedKeyword + "\"].")
           .actual(
               actual.stream()
                   .map(k -> "thesaurus \"" +  k.getKeywordThesaurus() + "\", keywords " + k.getKeywords())
