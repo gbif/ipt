@@ -1,0 +1,29 @@
+= Requerimientos
+
+== Conexión a internet
+El IPT está diseñado bajo el supuesto de que el servidor desde el cual se ejecuta cuenta con una conexión constante a internet. Aunque muchas de las funciones del IPT continuan funcionando aún cuando no hay conexión, algunos de sus elementos (el registro en GBIF, la instalación de extensiones, vocabularios controlados y bases de datos externas como fuentes de datos), requieren comunicación con recursos externos de internet. Desde el punto de vista de la administración del IPT, la velocidad de la conexión a internet afecta sólo a este tipo de comunicaciones. El acceso a la aplicación web del IPT y a sus servicios desde fuera de una intranet local también requiere conexión constante, y una conexión lenta puede tener efectos adversos sobre estos elementos, especialmente cuando se transfieren grandes conjuntos de datos.
+
+== URL estable
+Aunque puede utilizarse simplemente como una herramienta para generar http://rs.tdwg.org/dwc/terms/guides/text/[archivos Darwin Core], el IPT fue diseñado para ser una aplicación y un servicio basados en internet fáciles de encontrar y accesibles. Para mantener esta funcionalidad, el servidor en el que se instala el IPT debe ser capaz de soportar el acceso a la aplicación y los servicios a través de una URL estable.
+
+== TLS
+Aunque no es requerido por el IPT, GBIF recomienda ejecutar el IPT sobre un HTTPS seguro (TLS, que reemplazó a SSL) si es posible.
+
+== Memoria
+El servidor que aloja la instalación del IPT debe tener como mínimo 256 MB de memoria RAM disponibles para la aplicación.
+
+== Espacio en disco
+The space required by the IPT application is around 250MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space.
+
+== Versión de Java
+
+Se ha probado que la versión actual de IPT se ejecuta en Java 11 y 17. Consulte https://adoptopenjdk.net/support.html#roadmap[hoja de ruta de lanzamiento de OpenJDK], https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Hoja de ruta de la versión Java de Oracle] o la documentación de su distribución de Linux para obtener una descripción general de cuánto tiempo será compatible su versión Java.
+
+== Operating system
+
+The IPT is a Java web application, and can run on Linux or Windows. We provide RPM packages (Red Hat, CentOS, etc.), APT packages (Debian, Ubuntu, etc.), a Docker image, and a WAR file for a servlet container (Tomcat etc).
+
+In most cases, the appropriate OS is one supported by the organization's IT department. GBIF cannot provide technical support for OS installation, maintenance, backups, HTTPS certficates etc.
+
+== Soporte técnico
+Ejecutar un IPT es un compromiso. Hay que hacer copias de seguridad de los datos regularmente y las actualizaciones de seguridad (para el sistema operativo o la IPT) deben aplicarse poco después de que estén disponibles.
