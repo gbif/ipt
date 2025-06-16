@@ -163,16 +163,41 @@ The other way to proceed is to work directly in the IPT directory. Before you st
 In addition to that, *please contact the GBIF Help Desk and ask that the organization be updated in the GBIF Registry* (this part is very important).
 
 
-=== How do I change the type of an existing resource?
+=== How do I change the type of existing resource?
 
-The type of a resource is derived from its core mapping:
+The type of resource is derived from its core mapping:
 
 * If the core mapping is to the {latest-dwc-occurrence}[Occurrence extension], the type is equal to "occurrence".
 * If the core mapping is to the {latest-dwc-taxon}[Taxon extension], the type is equal to "checklist".
 * If the core mapping is to the {latest-dwc-event}[Event extension], the type is equal to "sampling-event".
 * If the core mapping is not equal to one of the IPT's default cores (Occurrence, Taxon, or Event) the type is equal to "other".
 
-Therefore to change the type of a resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.
+Therefore, to change the type of resource, you need to change its core mapping. To change an occurrence resource to type checklist, for example, simply delete all core mappings to the Occurrence extension, and then recreate new core mappings to the Taxon extension. A new version of the resource should be published in order to finalize the change. If the resource has been registered with GBIF, its type will be automatically updated after it has been re-published.
+
+=== How do I change the existing Occurrence dataset to Camtrap DP?
+
+You cannot directly convert an Occurrence dataset to Camtrap DP one.
+However, it is possible to associate an existing GBIF dataset with a new resource in the IPT.
+
+Steps:
+
+* Delete the current version of the resource from the IPT (Delete from IPT only option).
+Make sure the resource is backed up.
+* Create a Camtrap DP version of the resource.
+You can use the same shortname if you deleted the resource in the previous step.
+Otherwise, use another shortname.
+* Add related identifier to the new Camtrap DP resource.
+Fill the related identifier field with your GBIF URL and select the related identifier type as URL.
+The relation type can be any.
+See the image below.
+
+image::ipt2/faq/add-related-identifier.png[]
+
+* Publish the new Camtrap DP resource.
+* Register the new Camtrap DP resource.
+You should see a confirmation message, like:
+"Resource matched an existing registered resource (UUID=...) owned by ...
+Consequently, this resource will be associated to the existing registered resource, instead of registering a new resource."
 
 === What are some tricks to simplify the authoring and maintenance of metadata?
 Datasets can change over time. Keeping the dataset metadata up to date can be a burden, as inconsistencies can begin to creep in over time. Below is a list of tricks you can use to simplify the authoring of metadata and make it easier to maintain over time:
