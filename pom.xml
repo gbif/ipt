@@ -62,8 +62,8 @@
     <commons-text.version>1.13.1</commons-text.version>
     <excel-streaming-reader.version>4.4.0</excel-streaming-reader.version>
     <freemarker.version>2.3.34</freemarker.version>
-    <frictionless.datapackage-java.version>0.9.2.1-gbif-SNAPSHOT</frictionless.datapackage-java.version>
-    <frictionless.tableschema-java.version>0.9.2-gbif</frictionless.tableschema-java.version>
+    <frictionless.datapackage-java.version>0.9.2.1-gbif</frictionless.datapackage-java.version>
+    <frictionless.tableschema-java.version>0.9.2.1-gbif</frictionless.tableschema-java.version>
     <gson.version>2.13.1</gson.version>
     <guava.version>20.0</guava.version>
     <guice.version>4.2.3</guice.version>
