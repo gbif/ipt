@@ -291,13 +291,7 @@
                                 <div class="mt-3">
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <#assign observationLevel = (metadata.gbifIngestion.observationLevel)!>
-                                            <@label i18nkey="datapackagemetadata.other.gbifIngestion.observationLevel" help="i18n" />
-                                            <select name="metadata.gbifIngestion.observationLevel" id="metadata.gbifIngestion.observationLevel" class="form-select">
-                                                <option value=""></option>
-                                                <option value="event" <#if observationLevel == "event">selected</#if>>event</option>
-                                                <option value="media" <#if observationLevel == "media">selected</#if>>media</option>
-                                            </select>
+                                            <@select name="metadata.gbifIngestion.observationLevel" help="i18n" includeEmpty=true compareValues=true options=observationLevels i18nkey="datapackagemetadata.other.gbifIngestion.observationLevel" value="${(metadata.gbifIngestion.observationLevel)!}" />
                                         </div>
                                     </div>
                                 </div>
