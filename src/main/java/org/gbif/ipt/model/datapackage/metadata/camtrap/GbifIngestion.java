@@ -17,9 +17,11 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 public class GbifIngestion {
 
+  @JsonDeserialize(using = ObservationLevel.ObservationLevelDeserializer.class)
   @JsonProperty("observationLevel")
   private ObservationLevel observationLevel = ObservationLevel.EVENT;
 
