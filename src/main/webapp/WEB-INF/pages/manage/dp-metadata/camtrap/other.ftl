@@ -284,6 +284,27 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
+                            <!-- GBIF Ingestion -->
+                            <div>
+                                <@textinline name="datapackagemetadata.other.gbifIngestion" help="i18n"/>
+
+                                <div class="mt-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <#assign observationLevel = (metadata.gbifIngestion.observationLevel)!>
+                                            <@label i18nkey="datapackagemetadata.other.gbifIngestion.observationLevel" help="i18n" />
+                                            <select name="metadata.gbifIngestion.observationLevel" id="metadata.gbifIngestion.observationLevel" class="form-select">
+                                                <option value=""></option>
+                                                <option value="event" <#if observationLevel == "event">selected</#if>>event</option>
+                                                <option value="media" <#if observationLevel == "media">selected</#if>>media</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="my-md-3 p-3">
                             <#assign removeRelatedIdentifierLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
                             <#assign addRelatedIdentifierLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
 
