@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public enum ObservationLevel {
 
@@ -57,6 +58,14 @@ public enum ObservationLevel {
   @JsonCreator
   public static ObservationLevel fromValue(String value) {
     return CONSTANTS.get(value);
+  }
+
+  public static class ObservationLevelDeserializer extends JsonDeserializer<ObservationLevel> {
+    @Override
+    public ObservationLevel deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
+      JsonNode node = jsonParser.readValueAsTree();
+      return jsonParser.getCodec().treeToValue(node, ObservationLevel.class);
+    }
   }
 
   public static class ObservationLevelSetDeserializer extends JsonDeserializer<Set<ObservationLevel>> {
