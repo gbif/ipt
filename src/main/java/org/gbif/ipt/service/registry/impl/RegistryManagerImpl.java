@@ -83,7 +83,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
-import static org.gbif.ipt.config.Constants.DWC_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
 
