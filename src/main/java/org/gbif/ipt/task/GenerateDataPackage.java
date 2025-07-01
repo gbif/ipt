@@ -47,6 +47,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -69,6 +70,8 @@ import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
 import io.frictionlessdata.tableschema.exception.ValidationException;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
+import io.frictionlessdata.tableschema.field.Field;
+import io.frictionlessdata.tableschema.fk.ForeignKey;
 import io.frictionlessdata.tableschema.schema.Schema;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -253,7 +256,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while bundling data package", e);
     } finally {
-      // cleanup zip directory, if compression was incomplete for example due to Exception
+      // cleanup zip directory, if compression was incomplete, for example, due to Exception
       // if moving zip to data dir was successful, it won't exist any more and cleanup will be skipped
       if (zip != null && zip.exists()) {
         FileUtils.deleteQuietly(zip);
@@ -364,6 +367,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     DataPackageSchema dataPackageSchema = resource.getDataPackageMappings().get(0).getDataPackageSchema();
     currSchema = dataPackageSchema.getName();
 
+    // For DwC DP use only mapped fields in the resources, for the rest (Camtrap etc.) all the fields.
+    boolean filterMapped = DWC_DP.equals(currSchema);
+
     // before starting to add a table schema, check all required schemas mapped
     checkRequiredTableSchemasMapped(mappedTableSchemas, dataPackageSchema);
 
@@ -375,7 +381,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       report();
       try {
-        addDataResource(currSchema, tableSchema, allMappings);
+        addDataResource(currSchema, tableSchema, allMappings, filterMapped);
       } catch (IOException | IllegalArgumentException e) {
         throw new GeneratorException("Problem occurred while writing Data Resource", e);
       }
@@ -413,7 +419,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws IOException if problems occurred while persisting new data resources
    * @throws GeneratorException if any problem was encountered writing data resources
    */
-  public void addDataResource(String schemaName, DataPackageTableSchema tableSchema, List<DataPackageMapping> allMappings) throws IOException,
+  public void addDataResource(String schemaName, DataPackageTableSchema tableSchema,
+                              List<DataPackageMapping> allMappings, boolean filterMapped) throws IOException,
       IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (tableSchema == null || CollectionUtils.isEmpty(allMappings)) {
@@ -426,14 +433,41 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     currTableSchema = tableSchema.getName();
 
     List<DataPackageField> fields = tableSchema.getFields();
-
+    Set<String> mappedFieldNames = new HashSet<>();
     // file header
-    String header = fields.stream()
-        .map(DataPackageField::getName)
-        .collect(Collectors.joining(",", "", "\n"));
-
+    String header;
     // total column count (number of fields in the tableSchema)
-    int totalColumns = fields.size();
+    int totalColumns;
+
+    if (filterMapped) {
+      for (DataPackageMapping dataPackageMapping : allMappings) {
+        if (dataPackageMapping.getDataPackageTableSchemaName().getName().equals(tableSchema.getName())) {
+          // filter those that are mapped or have a default value
+          dataPackageMapping.getFields().stream()
+              .filter(dpfm -> dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))
+              .forEach(dpfm -> {
+                if (dpfm.getField() != null && dpfm.getField().getName() != null) {
+                  mappedFieldNames.add(dpfm.getField().getName());
+                } else {
+                  log.error("Null field mapping for tables schema {}: {}", tableSchema.getName(), dpfm.getField());
+                }
+              });
+        }
+      }
+
+      header = fields.stream()
+          .map(DataPackageField::getName)
+          .filter(mappedFieldNames::contains)
+          .collect(Collectors.joining(",", "", "\n"));
+
+       totalColumns = mappedFieldNames.size();
+    } else {
+      header = fields.stream()
+          .map(DataPackageField::getName)
+          .collect(Collectors.joining(",", "", "\n"));
+
+      totalColumns = fields.size();
+    }
 
     String fn = tableSchema.getName() + ".csv";
     File dataFile = new File(dataPackageFolder, fn);
@@ -451,7 +485,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             headerWritten = true;
           }
 
-          dumpData(writer, dataPackageMapping, dataPackageMapping.getFields(), totalColumns);
+          dumpData(writer, dataPackageMapping, dataPackageMapping.getFields(), totalColumns, filterMapped);
 
           // store record number by extension rowType
           recordsByTableSchema.put(tableSchema.getName(), currRecords);
@@ -466,7 +500,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     // create resource from file
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes"})
     io.frictionlessdata.datapackage.resource.Resource packageResource =
         new FilebasedResource(
             tableSchema.getName(),
@@ -480,6 +514,15 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
     try {
       Schema schema = Schema.fromJson(tableSchema.getUrl(), true);
+
+      // for example, for DwC DP add only mapped fields, not all the schema
+      if (filterMapped) {
+        schema.getFields().removeIf(f -> isUnusedField(f, mappedFieldNames));
+        schema.getForeignKeys().removeIf(f -> isUnusedForeignKey(f, mappedFieldNames));
+        packageResource.setShouldSerializeSchemaToFile(false);
+        packageResource.setShouldSerializeFullSchema(true);
+      }
+
       packageResource.setSchema(schema);
     } catch (ValidationException e) {
       log.error("Failed to validate schema {}. Errors: {}", tableSchema.getName(), e.getMessages(), e);
@@ -519,20 +562,35 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param schemaMapping schema mapping
    * @param tableSchemaFieldMappings field mappings
    * @param dataFileRowSize number of columns in data resource
+   * @param filterMapped leave only those fields that are mapped
    * @throws GeneratorException if there was an error writing data resource for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, DataPackageMapping schemaMapping,
-                        List<DataPackageFieldMapping> tableSchemaFieldMappings, int dataFileRowSize)
+                        List<DataPackageFieldMapping> tableSchemaFieldMappings, int dataFileRowSize, boolean filterMapped)
       throws GeneratorException, InterruptedException {
     RecordFilter filter = schemaMapping.getFilter();
+    int fieldsMapped = schemaMapping.getFieldsMapped();
+    DataPackageTableSchemaName resourceName = schemaMapping.getDataPackageTableSchemaName();
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
     int emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
     int line = 0;
-    Optional<Integer> maxMappedColumnIndexOpt = tableSchemaFieldMappings.stream()
+    List<DataPackageFieldMapping> mappedTableSchemaFieldMappings = tableSchemaFieldMappings.stream()
+        .filter(dpfm -> dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))
+        .collect(Collectors.toList());
+    List<DataPackageFieldMapping> usedMappings;
+    Optional<Integer> maxColumnIndexOpt;
+
+    if (filterMapped) {
+      usedMappings = mappedTableSchemaFieldMappings;
+    } else {
+      usedMappings = tableSchemaFieldMappings;
+    }
+
+    maxColumnIndexOpt = usedMappings.stream()
         .map(DataPackageFieldMapping::getIndex)
         .filter(Objects::nonNull)
         .max(Comparator.naturalOrder());
@@ -566,19 +624,19 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
           currRecordsSkipped++;
         } else {
 
-          if (maxMappedColumnIndexOpt.isPresent() && in.length <= maxMappedColumnIndexOpt.get()) {
+          if (maxColumnIndexOpt.isPresent() && in.length <= maxColumnIndexOpt.get()) {
             writePublicationLogMessage("Line with fewer columns than mapped. SourceBase:"
                 + schemaMapping.getSource().getName()
                 + " Line #" + line + " has " + in.length + " Columns: " + printLine(in));
             // input row is smaller than the highest mapped column. Resize array by adding nulls
-            String[] in2 = new String[maxMappedColumnIndexOpt.get() + 1];
+            String[] in2 = new String[maxColumnIndexOpt.get() + 1];
             System.arraycopy(in, 0, in2, 0, in.length);
             in = in2;
             linesWithWrongColumnNumber++;
           }
 
           // initialize translated values and add id column
-          String[] translated = new String[dataFileRowSize];
+          String[] translated = new String[usedMappings.size()];
 
           // filter this record?
           boolean alreadyTranslated = false;
@@ -587,7 +645,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             boolean matchesFilter;
             if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
               // need to apply translations first
-              applyTranslations(tableSchemaFieldMappings, in, translated);
+              applyTranslations(usedMappings, in, translated);
               matchesFilter = filter.matches(in);
               alreadyTranslated = true;
             } else {
@@ -603,7 +661,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
           // apply translations and default values
           if (!alreadyTranslated) {
-            applyTranslations(tableSchemaFieldMappings, in, translated);
+            applyTranslations(usedMappings, in, translated);
           }
 
           // concatenate values
@@ -617,13 +675,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         }
       }
     } catch (InterruptedException e) {
-      // set last error report!
+      // set the last error report!
       setState(e);
       throw e;
     } catch (Exception e) {
       // some error writing this file, report
       log.error("Fatal Data Package Generator Error encountered", e);
-      // set last error report!
+      // set the last error report!
       setState(e);
       throw new GeneratorException("Error writing Data Resource for mapping " + currTableSchema
           + " in source " + schemaMapping.getSource().getName() + ", line " + line, e);
@@ -644,28 +702,28 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // common message part used in constructing all reporting messages below
     String mp = " for mapping " + schemaMapping.getDataPackageSchema().getTitle() + " in source " + schemaMapping.getSource().getName();
 
-    // add lines incomplete message
+    // add a "lines incomplete" message
     if (recordsWithError > 0) {
       addMessage(Level.WARN, recordsWithError + " record(s) skipped due to errors" + mp);
     } else {
       writePublicationLogMessage("No lines were skipped due to errors" + mp);
     }
 
-    // add empty lines message
+    // add an "empty lines" message
     if (emptyLines > 0) {
       addMessage(Level.WARN, emptyLines + " empty line(s) skipped" + mp);
     } else {
       writePublicationLogMessage("No lines were skipped due to errors" + mp);
     }
 
-    // add wrong lines user message
+    // add a "wrong lines" user message
     if (linesWithWrongColumnNumber > 0) {
       addMessage(Level.WARN, linesWithWrongColumnNumber + " line(s) with fewer columns than mapped" + mp);
     } else {
       writePublicationLogMessage("No lines with fewer columns than mapped" + mp);
     }
 
-    // add filter message
+    // add a "filter" message
     if (recordsFiltered > 0) {
       addMessage(Level.INFO, recordsFiltered
         + " line(s) did not match the filter criteria and got skipped " + mp);
@@ -885,5 +943,21 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     if (property != null && !property.isEmpty()) {
       dataPackage.setProperty(name, property);
     }
+  }
+
+  private boolean isUnusedField(Field field, Set<String> mappedFieldNames) {
+    return !mappedFieldNames.contains(field.getName());
+  }
+
+  private boolean isUnusedForeignKey(ForeignKey fk, Set<String> mappedFieldNames) {
+    boolean result;
+
+    if (!fk.getFieldNames().isEmpty()) {
+      result = !mappedFieldNames.contains(fk.getFieldNames().get(0));
+    } else {
+      result = true;
+    }
+
+    return result;
   }
 }
