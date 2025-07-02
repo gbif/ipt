@@ -4282,7 +4282,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if ((version != null) && !version.equals(resource.getMetadataVersion())) {
       LOG.debug("Removing version {} for resource: {}", version, resource.getShortname());
       try {
-        removeVersion(resource.getShortname(), version);
+        removeVersionInternal(resource, version);
         resource.removeVersionHistory(version);
         save(resource);
         LOG.debug("Version {} has been removed for resource: {}", version, resource.getShortname());
@@ -4309,21 +4309,39 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public void removeVersion(String shortname, BigDecimal version) throws IOException {
-    // delete eml-1.1.xml if it exists (eml.xml must remain)
+  public void removeVersionInternal(Resource resource, BigDecimal version) throws IOException {
+    String shortname = resource.getShortname();
+
+    // delete eml-*.xml if it exists (eml.xml must remain)
     File versionedEMLFile = dataDir.resourceEmlFile(shortname, version);
     if (versionedEMLFile.exists()) {
       FileUtils.forceDelete(versionedEMLFile);
     }
-    // delete shortname-1.1.rtf if it exists
+
+    // TODO: coreType not gonna work!
+    // delete datapackage-*.json if it exists (datapackage.json must remain)
+    File versionedDataPackageMetadataFile =
+        dataDir.resourceDatapackageMetadataFile(shortname, resource.getCoreType(), version);
+    if (versionedDataPackageMetadataFile.exists()) {
+      FileUtils.forceDelete(versionedDataPackageMetadataFile);
+    }
+
+    // delete shortname-*.rtf if it exists
     File versionedRTFFile = dataDir.resourceRtfFile(shortname, version);
     if (versionedRTFFile.exists()) {
       FileUtils.forceDelete(versionedRTFFile);
     }
-    // delete dwca-1.1.zip if it exists
+
+    // delete dwca-*.zip if it exists
     File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, version);
     if (versionedDwcaFile.exists()) {
       FileUtils.forceDelete(versionedDwcaFile);
+    }
+
+    // delete datapackage-*.zip if it exists
+    File versionedDataPackageArchiveFile = dataDir.resourceDataPackageFile(shortname, version);
+    if (versionedDataPackageArchiveFile.exists()) {
+      FileUtils.forceDelete(versionedDataPackageArchiveFile);
     }
   }
 
