@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2025-03-19 07:13+0000\n"
-"PO-Revision-Date: 2025-03-25 17:35\n"
+"PO-Revision-Date: 2025-06-20 23:58\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -1085,7 +1085,7 @@ msgstr "*Título*: el título del recurso. Este título aparecerá como el nombr
 #: en/modules/ROOT/pages/manage-resources.adoc:285
 #, no-wrap
 msgid "*Short Name* -  the short name field provides a concise name that describes the resource.\n"
-msgstr "*Nombre Corto*: el campo de nombre corto proporciona un nombre conciso que describe el recurso.\n"
+msgstr "*Nombre corto*: el campo de nombre corto proporciona un nombre conciso que describe el recurso.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:286
@@ -1150,7 +1150,7 @@ msgstr "Contactos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:297
 msgid "Please note for each contact you must supply at least a last name, a position or an organization."
-msgstr "Tenga en cuenta que para cada contacto debe proporcionar al menos un apellido, un cargo o una organización."
+msgstr "Tenga en cuenta que para cada contacto debe proporcionar al menos un apellido, una posición o una organización."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:299
@@ -1295,7 +1295,7 @@ msgstr "*Proveedor de los Metadatos* : el proveedor de los metadatos es la perso
 #: en/modules/ROOT/pages/manage-resources.adoc:331
 #, no-wrap
 msgid "*Associated Parties* - contains information about one or more people or organizations associated with the resource in addition to those already covered on the Contacts, Crators and Metadata Providers. All of the controls on this page are in common with those for the Resource Contacts except one new field:\n"
-msgstr "*Partes Asociadas*: contiene información sobre una o más personas u organizaciones asociadas con el recurso, además de la ya incluida en Contactos, Creadores y Proveedores de Metadatos. Todos los controles de esta página son comunes a los de Contactos del Recurso, excepto un nuevo campo:\n"
+msgstr "*Partes asociadas*: contiene información sobre una o más personas u organizaciones asociadas con el recurso, además de la ya incluida en Contactos, Creadores y Proveedores de Metadatos. Todos los controles de esta página son comunes a los de Contactos del Recurso, excepto un nuevo campo:\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:333
@@ -1670,7 +1670,7 @@ msgstr "Descripción adicional"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:432
 msgid "The Additional description page includes three text inputs for purpose, introduction and getting started."
-msgstr "La página de descripción adicional incluye tres entradas de texto para el propósito, la introducción y el inicio."
+msgstr "La página de Descripción adicional incluye tres entradas de texto para el propósito, la introducción y el inicio."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:434
@@ -1682,13 +1682,13 @@ msgstr "*Propósito* - Una sinopsis del propósito de este conjunto de datos. Pu
 #: en/modules/ROOT/pages/manage-resources.adoc:435
 #, no-wrap
 msgid "*Introduction* - One to many paragraphs that provide background and context for the dataset with appropriate figures and references. This is similar to the introduction for a journal article, and would include, for example, project objectives, hypotheses being addressed, what is known about the pattern or process under study, how the data have been used to date (including references), and how they could be used in the future.\n"
-msgstr "*Introducción*: De uno a varios párrafos que presentan los antecedentes y el contexto del conjunto de datos, con las figuras y referencias pertinentes. Es similar a la introducción de un artículo de revista e incluye, por ejemplo, los objetivos del proyecto, las hipótesis que se abordan, lo que se sabe sobre el patrón o proceso en estudio, cómo se han utilizado los datos hasta la fecha (incluidas las referencias) y cómo podrían utilizarse en el futuro.\n"
+msgstr "*Introducción*: De uno a varios párrafos que presenten los antecedentes y el contexto del conjunto de datos, con las figuras y referencias pertinentes. Es similar a la introducción de un artículo de revista e incluye, por ejemplo, los objetivos del proyecto, las hipótesis que se abordan, lo que se sabe sobre el patrón o proceso en estudio, cómo se han utilizado los datos hasta la fecha (incluidas las referencias) y cómo podrían utilizarse en el futuro.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:436
 #, no-wrap
 msgid "*Getting started* - One or more paragraphs describing the dataset's overall interpretation, content and structure. For example, the number and names of data files, the types of measurements that they contain, how those data files fit together in an overall design, and how they relate to the data collection methods, experimental design, and sampling design described in other EML sections. One might describe any specialized software that is available and/or may be necessary for analyzing or interpreting the data, and possibly include a high-level description of data formats if they are unusual.\n"
-msgstr "*Comenzando*: Uno o más párrafos que describan la interpretación, el contenido y la estructura general del conjunto de datos. Por ejemplo, el número y los nombres de los archivos de datos, los tipos de mediciones que contienen, cómo se integran en un diseño general y cómo se relacionan con los métodos de recopilación de datos, el diseño experimental y el diseño de muestreo descritos en otras secciones de EML. Se podría describir cualquier software especializado disponible o necesario para analizar o interpretar los datos, y posiblemente incluir una descripción detallada de los formatos de datos si son inusuales.\n"
+msgstr "*Inicio*: Uno o más párrafos que describan la interpretación, el contenido y la estructura general del conjunto de datos. Por ejemplo, el número y los nombres de los archivos de datos, los tipos de mediciones que contienen, cómo se integran en un diseño general y cómo se relacionan con los métodos de recopilación de datos, el diseño experimental y el diseño de muestreo descritos en otras secciones de EML. Se podría describir cualquier software especializado disponible o necesario para analizar o interpretar los datos, y posiblemente incluir una descripción detallada de los formatos de datos si son inusuales.\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:437
@@ -1818,7 +1818,7 @@ msgstr "ipt2/manage/IPTManageResourceMetadataProjectDataPersonnel.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:474
 #, no-wrap
 msgid "*Project Award* - the award is used to provide specific information about the funding awards for a project in a structured format. Sub-fields are provided for the name of the funding agency, the Open Funder Registry identifiers for the agency and program that made the award, the award number assigned, the title of the award, and the URL to the award page describing the award. In general, the funding agency should be listed with a cross-reference to the appropriate identifier from the Open Funder Registry (included in the EML distribution but updated periodically from the Open Funder Registry).\n"
-msgstr "*Financiamiento del Proyecto*: Se utiliza para proporcionar información específica sobre las subvenciones de un proyecto en un formato estructurado. Se proporcionan subcampos para el nombre de la agencia financiadora, los identificadores del Registro Abierto de Financiadores (Open Funder Registry) de la agencia y el programa que otorgó la subvención, el número de subvención asignado, el título de la subvención y la URL de la página donde se describe. En general, la agencia financiadora debe figurar con una referencia cruzada al identificador correspondiente del Registro Abierto de Financiadores (incluido en la distribución de EML, pero actualizado periódicamente desde el Registro Abierto de Financiadores).\n"
+msgstr "*Financiamiento del proyecto*: Se utiliza para proporcionar información específica sobre las subvenciones de un proyecto en un formato estructurado. Se proporcionan subcampos para el nombre de la agencia financiadora, los identificadores del Registro Abierto de Financiadores (Open Funder Registry) de la agencia y el programa que otorgó la subvención, el número de subvención asignado, el título de la subvención y la URL de la página donde se describe. En general, la agencia financiadora debe figurar con una referencia cruzada al identificador correspondiente del Registro Abierto de Financiadores (incluido en la distribución de EML, pero actualizado periódicamente desde el Registro Abierto de Financiadores).\n"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:475

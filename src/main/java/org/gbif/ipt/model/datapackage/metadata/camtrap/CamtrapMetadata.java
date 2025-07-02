@@ -127,6 +127,9 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Valid
   private List<String> references = new ArrayList<>();
 
+  @JsonProperty("gbifIngestion")
+  private GbifIngestion gbifIngestion = new GbifIngestion();
+
   /**
    * See <a href="https://specs.frictionlessdata.io/data-package/#profile">Data Package specification</a>.
    * Camtrap DP further requires this to be the URL of the used Camtrap DP Profile version
@@ -555,6 +558,16 @@ public class CamtrapMetadata extends FrictionlessMetadata {
     this.references = references;
   }
 
+  @JsonProperty("gbifIngestion")
+  public GbifIngestion getGbifIngestion() {
+    return gbifIngestion;
+  }
+
+  @JsonProperty("gbifIngestion")
+  public void setGbifIngestion(GbifIngestion gbifIngestion) {
+    this.gbifIngestion = gbifIngestion;
+  }
+
   // Accepts both arrays and plain strings
   public static class DescriptionDeserializer extends JsonDeserializer<String> {
 
@@ -586,6 +599,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
         .add("taxonomic=" + taxonomic)
         .add("relatedIdentifiers=" + relatedIdentifiers)
         .add("references=" + references)
+        .add("gbifIngestion=" + gbifIngestion)
         .toString();
   }
 }

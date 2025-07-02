@@ -897,13 +897,6 @@ public class MetadataAction extends ManagerBaseAction {
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
 
     if (resource != null && resource.getEml() != null) {
-
-      // create Agent equal to current user
-      Agent current = new Agent();
-      current.setFirstName(getCurrentUser().getFirstname());
-      current.setLastName(getCurrentUser().getLastname());
-      current.setEmail(Collections.singletonList(getCurrentUser().getEmail()));
-
       // contacts list
       Agent firstContact = null;
       if (!resource.getEml().getContacts().isEmpty()) {
@@ -953,11 +946,6 @@ public class MetadataAction extends ManagerBaseAction {
         }
       }
 
-      // auto-populate user with current user if associated parties list is empty, and eml.xml hasn't been written yet
-      if (!resourceManager.isEmlExisting(resource.getShortname()) && resource.getEml().getAssociatedParties().isEmpty()) {
-        current.setRole("user");
-        resource.getEml().getAssociatedParties().add(current);
-      }
       // otherwise, ensure associated parties' country value get converted into 2-letter iso code for proper display
       else if (!resource.getEml().getAssociatedParties().isEmpty()) {
         for (Agent party : resource.getEml().getAssociatedParties()) {

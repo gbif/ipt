@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2024-02-05 12:28+0000\n"
+"POT-Creation-Date: 2025-06-03 10:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,7 +94,7 @@ msgstr ""
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:17
 msgid ""
-"The space required by the IPT application is around 100MB. The contents of "
+"The space required by the IPT application is around 250MB. The contents of "
 "the IPT data directory after installation require less than 1MB of disc "
 "storage, writable by the IPT. However, the content of the data directory "
 "will grow as resources are created, and will require space roughly equal to "
@@ -121,21 +121,36 @@ msgid ""
 "distribution for an overview of how long your Java version will be supported."
 msgstr ""
 
+#. type: Title ==
+#: en/modules/ROOT/pages/requirements.adoc:22
+#, no-wrap
+msgid "Operating system"
+msgstr ""
+
 #. type: Plain text
-#: en/modules/ROOT/pages/requirements.adoc:23
+#: en/modules/ROOT/pages/requirements.adoc:25
 msgid ""
-"See the installation instructions for notes on operating system and servlet "
-"container versions."
+"The IPT is a Java web application, and can run on Linux or Windows.  We "
+"provide RPM packages (Red Hat, CentOS, etc.), APT packages (Debian, Ubuntu, "
+"etc.), a Docker image, and a WAR file for a servlet container (Tomcat etc)."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/requirements.adoc:27
+msgid ""
+"In most cases, the appropriate OS is one supported by the organization's IT "
+"department.  GBIF cannot provide technical support for OS installation, "
+"maintenance, backups, HTTPS certficates etc."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/requirements.adoc:24
+#: en/modules/ROOT/pages/requirements.adoc:28
 #, no-wrap
 msgid "Technical support"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/requirements.adoc:25
+#: en/modules/ROOT/pages/requirements.adoc:29
 msgid ""
 "Running an IPT is a commitment.  Data should be backed up regularly, and "
 "security updates (for the operating system or the IPT) must be applied soon "

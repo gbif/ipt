@@ -283,6 +283,21 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
+                            <!-- GBIF Ingestion -->
+                            <div>
+                                <@textinline name="datapackagemetadata.other.gbifIngestion" help="i18n"/>
+
+                                <div class="mt-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <@select name="metadata.gbifIngestion.observationLevel" help="i18n" includeEmpty=true compareValues=true options=observationLevels i18nkey="datapackagemetadata.other.gbifIngestion.observationLevel" value="${(metadata.gbifIngestion.observationLevel)!}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="my-md-3 p-3">
                             <#assign removeRelatedIdentifierLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
                             <#assign removeRelatedIdentifierLink = removeRelatedIdentifierLink?markup_string>
                             <#assign addRelatedIdentifierLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
