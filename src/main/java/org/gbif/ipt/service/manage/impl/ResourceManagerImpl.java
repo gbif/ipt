@@ -2435,7 +2435,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           syncEmlWithResource(resource);
         }
 
-        LOG.debug("Read resource configuration for " + shortname);
+        // clean up data package mappings (remove dangling field mappings)
+        cleanUpDataPackageMappings(resource);
+
+        LOG.debug("Read resource configuration for {}", shortname);
         return resource;
       } catch (Exception e) {
         LOG.error("Cannot read resource configuration for " + shortname, e);
@@ -2444,6 +2447,29 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
     return null;
+  }
+
+  /**
+   * Remove field mappings from mappings that do not reference any actual fields.
+   * <ol>
+   *   <li>Only index is present, but references no field</li>
+   *   <li>Both index and field are absent</li>
+   * </ol>
+   *
+   * @param resource resource
+   */
+  private void cleanUpDataPackageMappings(Resource resource) {
+    for (DataPackageMapping dpm : resource.getDataPackageMappings()) {
+      dpm.getFields().removeIf(f -> onlyFieldIndexPresent(f) || emptyMapping(f));
+    }
+  }
+
+  private boolean onlyFieldIndexPresent(DataPackageFieldMapping dpfm) {
+    return dpfm.getIndex() != null && dpfm.getField() == null && StringUtils.isEmpty(dpfm.getDefaultValue());
+  }
+
+  private boolean emptyMapping(DataPackageFieldMapping dpfm) {
+    return dpfm.getIndex() == null && dpfm.getField() == null && StringUtils.isEmpty(dpfm.getDefaultValue());
   }
 
   /**
