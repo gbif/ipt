@@ -3829,18 +3829,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public synchronized void cleanArchiveVersions(Resource resource) {
     if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
-      LOG.info("Archival mode is ON with a limit of "+ cfg.getArchivalLimit()+" elements)");
-      LOG.info("Clean archive versions, if needed, for resource: " + resource.getShortname());
+      LOG.info("Archival mode is ON with a limit of {} elements)", cfg.getArchivalLimit());
+      LOG.info("Clean archive versions, if needed, for resource: {}", resource.getShortname());
       List<VersionHistory> history = resource.getVersionHistory();
       if (history.size() > cfg.getArchivalLimit()) {
-        for (int i=cfg.getArchivalLimit(); i<history.size(); i++) {
+        for (int i = cfg.getArchivalLimit(); i < history.size(); i++) {
           VersionHistory oldVersion = history.get(i);
           try {
             BigDecimal version = new BigDecimal(oldVersion.getVersion());
-            LOG.info("Deleting archive version " + version + " for resource: " + resource.getShortname());
+            LOG.info("Deleting archive version {} for resource: {}", version, resource.getShortname());
             removeArchiveVersion(resource.getShortname(), version);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             LOG.error("Cannot delete old archive versions for resource: " + resource.getShortname(), e);
             return;
           }
@@ -4307,6 +4306,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         LOG.debug("{} has been successfully deleted.", dwcaFile.getAbsolutePath());
       }
     }
+
+    File dpArchiveFile = dataDir.resourceDataPackageFile(shortname, version);
+    if (dpArchiveFile != null && dpArchiveFile.exists()) {
+      boolean deleted = FileUtils.deleteQuietly(dpArchiveFile);
+      if (deleted) {
+        LOG.debug("{} has been successfully deleted.", dpArchiveFile.getAbsolutePath());
+      }
+    }
   }
 
   public void removeVersionInternal(Resource resource, BigDecimal version) throws IOException {
@@ -4318,7 +4325,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.forceDelete(versionedEMLFile);
     }
 
-    // TODO: coreType not gonna work!
     // delete datapackage-*.json if it exists (datapackage.json must remain)
     File versionedDataPackageMetadataFile =
         dataDir.resourceDatapackageMetadataFile(shortname, resource.getCoreType(), version);
