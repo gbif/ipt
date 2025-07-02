@@ -13,18 +13,22 @@
  */
 package org.gbif.ipt.action.portal;
 
-import com.google.inject.Inject;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+
+import javax.inject.Inject;
 
 public class FallbackAction extends BaseAction {
 
   private static final long serialVersionUID = 5075091500212058562L;
 
   @Inject
-  public FallbackAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
+  public FallbackAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager) {
     super(textProvider, cfg, registrationManager);
   }
 

@@ -15,7 +15,6 @@ package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -25,7 +24,6 @@ import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.PBEEncrypt;
 
@@ -37,17 +35,14 @@ import java.io.ObjectOutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
@@ -56,7 +51,6 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 /**
  * Reads user accounts from a simple XStream managed xml file.
  */
-@Singleton
 public class UserAccountManagerImpl extends BaseManager implements UserAccountManager {
 
   public static final String PERSISTENCE_FILE = "users.xml";
@@ -64,15 +58,16 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private boolean allowSimplifiedAdminLogin = true;
   private String onlyAdminEmail;
   private final XStream xstream = new XStream();
-  private final ResourceManager resourceManager;
-  private final PBEEncrypt encrypter;
+  private PBEEncrypt encrypter;
 
   private User setupUser;
 
   @Inject
-  public UserAccountManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager, PBEEncrypt encrypter) {
+  public UserAccountManagerImpl(
+      AppConfig cfg,
+      DataDir dataDir,
+      PBEEncrypt encrypter) {
     super(cfg, dataDir);
-    this.resourceManager = resourceManager;
     this.encrypter = encrypter;
     defineXstreamMapping();
   }
@@ -141,7 +136,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   }
 
   @Override
-  public User delete(String email) throws DeletionNotAllowedException, IOException {
+  public boolean delete(String email) throws DeletionNotAllowedException, IOException {
     if (email != null) {
       User remUser = get(email);
       if (remUser != null) {
@@ -161,53 +156,16 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           }
         }
 
-        Set<String> resourcesCreatedByUser = new HashSet<>();
-        for (Resource r : resourceManager.list()) {
-          User creator = get(r.getCreator().getEmail());
-          if (creator != null && creator.equals(remUser)) {
-            resourcesCreatedByUser.add(r.getShortname());
-          }
+        boolean remove = remove(email);
+
+        if (remove) {
+          save();
         }
 
-        Set<String> resourcesManagedOnlyByUser = new HashSet<>();
-        for (Resource r : resourceManager.list(remUser)) {
-          Set<User> managers = new HashSet<>();
-          // add creator to list of managers, but only if creator has manager rights!
-          User creator = get(r.getCreator().getEmail());
-          if (creator != null && creator.hasManagerRights()) {
-            managers.add(creator);
-          }
-          for (User m : r.getManagers()) {
-            User manager = get(m.getEmail());
-            if (manager != null && !managers.contains(manager)) {
-              managers.add(manager);
-            }
-          }
-          // lastly, exclude user to be deleted, then check if at least one user with manager rights remains for resource
-          managers.remove(remUser);
-          if (managers.isEmpty()) {
-            resourcesManagedOnlyByUser.add(r.getShortname());
-          }
-        }
-
-        if (!resourcesManagedOnlyByUser.isEmpty()) {
-          // Check #1, is user the only manager that exists for or more resources? If yes, prevent deletion!
-          throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesManagedOnlyByUser.toString());
-        } else if (!resourcesCreatedByUser.isEmpty()) {
-          // Check #2, is user the creator of one or more resources? If yes, prevent deletion!
-          throw new DeletionNotAllowedException(Reason.IS_RESOURCE_CREATOR, resourcesCreatedByUser.toString());
-        } else if (remove(email)) {
-          // and remove user from each resource's list of managers
-          for (Resource r : resourceManager.list(remUser)) {
-            r.getManagers().remove(remUser);
-            resourceManager.save(r);
-          }
-          save(); // persist changes to users.xml
-          return remUser;
-        }
+        return remove;
       }
     }
-    return null;
+    return false;
   }
 
   /**

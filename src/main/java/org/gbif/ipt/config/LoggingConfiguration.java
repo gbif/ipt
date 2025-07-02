@@ -43,15 +43,15 @@ public class LoggingConfiguration extends XmlConfiguration {
     final Layout layout = PatternLayout.newBuilder().withPattern("%-5p %d{dd-MMM-yyyy HH:mm:ss} [%c] - %m%n").build();
 
     final CompositeTriggeringPolicy policy = CompositeTriggeringPolicy.createPolicy(
-      OnStartupTriggeringPolicy.createPolicy(1),
-      SizeBasedTriggeringPolicy.createPolicy("10MB")
+        OnStartupTriggeringPolicy.createPolicy(1),
+        SizeBasedTriggeringPolicy.createPolicy("10MB")
     );
 
     final Appender debugAppender = RollingFileAppender.newBuilder()
         .setName("LOGFILE")
         .setLayout(layout)
-        .withFileName(logDirectory+"debug.log")
-        .withFilePattern(logDirectory+"debug.log.%i")
+        .withFileName(logDirectory + "debug.log")
+        .withFilePattern(logDirectory + "debug.log.%i")
         .withPolicy(policy)
         .withStrategy(DefaultRolloverStrategy.newBuilder().build())
         .build();
@@ -62,8 +62,8 @@ public class LoggingConfiguration extends XmlConfiguration {
     final Appender adminAppender = RollingFileAppender.newBuilder()
         .setName("ADMINFILE")
         .setLayout(layout)
-        .withFileName(logDirectory+"admin.log")
-        .withFilePattern(logDirectory+"admin.log.%i")
+        .withFileName(logDirectory + "admin.log")
+        .withFilePattern(logDirectory + "admin.log.%i")
         .withPolicy(policy)
         .withStrategy(DefaultRolloverStrategy.newBuilder().build())
         .build();

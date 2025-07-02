@@ -13,17 +13,17 @@
  */
 package org.gbif.ipt.validation;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.struts2.converter.LatitudeFormatConverter;
 
 import java.util.HashMap;
 import java.util.stream.Stream;
 
+import org.apache.struts2.conversion.TypeConversionException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import com.opensymphony.xwork2.conversion.TypeConversionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Unit test for the convertFromString method in LatitudeFormatConverter class.
  */
-public class LatitudeFormatConverterTest {
+public class LatitudeFormatConverterTest extends IptBaseTest {
 
   public static Stream<Arguments> getTestParameters() {
     // Object list in which each object contains: A expected value (double) and an incoming value to test (String[]).

@@ -14,6 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
@@ -37,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class MetadataActionTest {
+public class MetadataActionTest extends IptBaseTest {
 
   MetadataAction action;
   Map<String, String> datasetSubtypes;

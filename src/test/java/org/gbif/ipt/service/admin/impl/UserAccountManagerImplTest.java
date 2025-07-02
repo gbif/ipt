@@ -13,25 +13,19 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.mock.MockDataDir;
-import org.gbif.ipt.mock.MockResourceManager;
-import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.PBEEncrypt;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,12 +36,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
-public class UserAccountManagerImplTest {
+public class UserAccountManagerImplTest extends IptBaseTest {
 
-  private ResourceManager mockedResourceManager = MockResourceManager.buildMock();
   private static File userFile;
   private User admin, manager, publisher, user;
   private PBEEncrypt encrypt;
@@ -82,7 +73,7 @@ public class UserAccountManagerImplTest {
   private UserAccountManager getUserAccountManager() {
     AppConfig mockedCfg = MockAppConfig.buildMock();
     DataDir mockedDataDir = MockDataDir.buildMock();
-    return new UserAccountManagerImpl(mockedCfg, mockedDataDir, mockedResourceManager, encrypt);
+    return new UserAccountManagerImpl(mockedCfg, mockedDataDir, encrypt);
   }
 
   @BeforeEach
@@ -119,7 +110,6 @@ public class UserAccountManagerImplTest {
     this.user.setFirstname("José");
     this.user.setLastname("Cuadra");
     this.user.setPassword("user");
-
   }
 
   /**
@@ -135,7 +125,6 @@ public class UserAccountManagerImplTest {
     userManager.create(manager);
     userManager.create(publisher);
     userManager.create(user);
-
 
     assertEquals(admin, userManager.authenticate("admin@ipt.gbif.org", "admin"));
     assertEquals(manager, userManager.authenticate("manager@ipt.gbif.org", "manager"));
@@ -173,7 +162,6 @@ public class UserAccountManagerImplTest {
     }
 
     assertEquals(4, userManager.list().size());
-
   }
 
   /**
@@ -191,11 +179,11 @@ public class UserAccountManagerImplTest {
     userManager.create(user);
 
     // Case #1. Ensure user with no linkages to any resource can be deleted
-    User deletedUser = userManager.delete("user@ipt.gbif.org");
+    boolean result = userManager.delete("user@ipt.gbif.org");
 
     // test if user was deleted
     assertEquals(3, userManager.list().size());
-    assertEquals(user, deletedUser);
+    assertTrue(result);
 
     // Case #2. Ensure at least one Admin always remains
     try {
@@ -206,42 +194,10 @@ public class UserAccountManagerImplTest {
     }
 
     // Case #3. Ensure the last manager of a resource cannot be deleted
-    List<Resource> resources = new ArrayList<>();
-
-    Resource res1 = new Resource();
-    res1.setShortname("res1");
-    res1.setCreator(manager);
-    Set<User> managers1 = new HashSet<>();
-    managers1.add(manager);
-    res1.setManagers(managers1);
-    resources.add(res1);
-    when(mockedResourceManager.list(any(User.class))).thenReturn(resources);
-    try {
-      userManager.delete("manager@ipt.gbif.org");
-      fail("Last manager for resource res1 cannot be deleted");
-    } catch (DeletionNotAllowedException e) {
-      assertEquals(DeletionNotAllowedException.Reason.LAST_RESOURCE_MANAGER, e.getReason());
-    }
+    // TODO: It is now scope of UserAccountsAction
 
     // Case #4. Ensure user CAN be deleted when they are not last manager of a resource
-    res1.setCreator(publisher);
-    deletedUser = userManager.delete("manager@ipt.gbif.org");
-    assertEquals(2, userManager.list().size());
-    assertEquals(manager, deletedUser);
-
-    // Case #5. Ensure the creator of resources cannot be deleted
-    userManager.create(manager);
-    assertEquals(3, userManager.list().size());
-    managers1 = new HashSet<>();
-    managers1.add(manager);
-    res1.setManagers(managers1);
-    when(mockedResourceManager.list()).thenReturn(resources);
-    try {
-      userManager.delete("publisher@ipt.gbif.org");
-      fail("Creator for resource res1 cannot be deleted");
-    } catch (DeletionNotAllowedException e) {
-      assertEquals(DeletionNotAllowedException.Reason.IS_RESOURCE_CREATOR, e.getReason());
-    }
+    // TODO: It is now scope of UserAccountsAction
 
     // Case #6. Ensure admin CAN be deleted when they are not last admin in IPT
     User admin2 = new User();
@@ -252,22 +208,13 @@ public class UserAccountManagerImplTest {
     admin2.setPassword("admin2");
     userManager.create(admin2);
     assertEquals(4, userManager.list().size());
-    deletedUser = userManager.delete("admin@ipt.gbif.org");
+    result = userManager.delete("admin@ipt.gbif.org");
     assertEquals(3, userManager.list().size());
-    assertEquals(admin, deletedUser);
+    assertTrue(result);
 
     // Case #7. Ensure admin cannot be deleted when they created a resource
-    userManager.create(admin);
-    assertEquals(4, userManager.list().size());
-    res1.setCreator(admin);
-    try {
-      userManager.delete("admin@ipt.gbif.org");
-      fail("Secondary admin cannot be deleted, because it is creator for resource res1");
-    } catch (DeletionNotAllowedException e) {
-      assertEquals(DeletionNotAllowedException.Reason.IS_RESOURCE_CREATOR, e.getReason());
-    }
+    // TODO: It is now scope of UserAccountsAction
   }
-
 
   /**
    * Test get user.

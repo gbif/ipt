@@ -20,21 +20,17 @@ import org.gbif.ipt.model.Extension;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-@Singleton
 public class ConceptTermConverter implements Converter {
 
   private static final Logger LOG = LogManager.getLogger(ConceptTermConverter.class);
   private final ExtensionRowTypeConverter extConverter;
 
-  @Inject
   public ConceptTermConverter(ExtensionRowTypeConverter extConverter) {
     this.extConverter = extConverter;
   }

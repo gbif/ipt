@@ -19,15 +19,16 @@ import org.gbif.dwc.terms.DwcTerm;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ExtensionMappingTest {
+public class ExtensionMappingTest extends IptBaseTest {
 
   @Test
   public void testFieldsOrderedAlphabetically() {
-    Set<PropertyMapping> fields = new TreeSet<PropertyMapping>();
+    Set<PropertyMapping> fields = new TreeSet<>();
 
     // initialize PropertyMapping for DwC month term
     PropertyMapping field0 = new PropertyMapping();

@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.utils;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.Constants;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.KeywordSet;
@@ -25,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EmlUtilsTest {
+public class EmlUtilsTest extends IptBaseTest {
 
   private Eml eml;
 

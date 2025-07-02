@@ -16,13 +16,14 @@ package org.gbif.ipt.model;
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.dwc.terms.TermFactory;
 
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PropertyMappingTest {
+public class PropertyMappingTest extends IptBaseTest {
 
   @Test
   public void testEquals() {

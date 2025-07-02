@@ -14,6 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
@@ -35,13 +36,11 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
 
 import freemarker.ext.beans.SimpleMapModel;
 import lombok.Getter;
@@ -50,9 +49,8 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
   private static final long serialVersionUID = -5414310011336523439L;
   // logging
-  private static final Logger LOG = LogManager.getLogger(TranslationAction.class);
+  private static final Logger LOG = LogManager.getLogger(DataPackageFieldTranslationAction.class);
 
-  @SessionScoped
   static class Translation {
 
     private String tableSchema;
@@ -73,14 +71,6 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       return m;
     }
 
-    public boolean isLoaded(String tableSchema, DataPackageField field) {
-      return this.tableSchema != null
-        && this.tableSchema.equals(tableSchema)
-        && this.field != null
-        && this.field.equals(field.getName())
-        && sourceValues != null;
-    }
-
     public void setTmap(String tableSchema, String field, TreeMap<String, String> sourceValues,
                         TreeMap<String, String> translatedValues) {
       this.sourceValues = sourceValues;
@@ -92,7 +82,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
   private final SourceManager sourceManager;
   @Getter
-  private Translation trans;
+  private Translation trans = new Translation();
 
   protected static final String REQ_PARAM_MAPPINGID = "mid";
   protected static final String REQ_FIELD = "field";
@@ -110,11 +100,14 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
   private Integer mid;
 
   @Inject
-  public DataPackageFieldTranslationAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                           ResourceManager resourceManager, SourceManager sourceManager, Translation trans) {
+  public DataPackageFieldTranslationAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      SourceManager sourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.sourceManager = sourceManager;
-    this.trans = trans;
     defaultResult = SUCCESS;
   }
 
@@ -211,7 +204,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
           vocabTerms = new SimpleMapModel(vocabRawData, null);
         }
 
-        if (!trans.isLoaded(mapping.getDataPackageTableSchemaName().getName(), fieldMapping.getField())) {
+        if (!isLoaded(mapping.getDataPackageTableSchemaName().getName(), fieldMapping.getField())) {
           reloadSourceValues();
         }
 
@@ -247,6 +240,9 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
         mapping = resource.getDataPackageMapping(mid);
       }
 
+      if (trans == null) {
+        trans = new Translation();
+      }
       // reinitialize translation, including maps
       trans.setTmap(mapping.getDataPackageTableSchemaName().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
 
@@ -326,5 +322,15 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
    */
   public void setTmap(TreeMap<String, String> translatedValues) {
     this.trans.translatedValues = translatedValues;
+  }
+
+  public boolean isLoaded(String tableSchema, DataPackageField field) {
+    trans = (Translation) session.get(Constants.SESSION_DP_TRANSLATION);
+    return trans != null
+        && trans.tableSchema != null
+        && trans.tableSchema.equals(tableSchema)
+        && trans.field != null
+        && trans.field.equals(field.getName())
+        && trans.sourceValues != null;
   }
 }

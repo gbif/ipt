@@ -16,6 +16,7 @@ package org.gbif.ipt.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SourceTest {
+public class SourceTest extends IptBaseTest {
 
   @Test
   public void testEquals() {

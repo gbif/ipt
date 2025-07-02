@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
@@ -31,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DataPackageTableSchemaRequirementTest {
+class DataPackageTableSchemaRequirementTest extends IptBaseTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
   private final File requirementsJson = FileUtils.getClasspathFile("schemas/requirements.json");

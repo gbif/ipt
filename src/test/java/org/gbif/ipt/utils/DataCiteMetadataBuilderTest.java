@@ -22,6 +22,7 @@ import org.gbif.doi.metadata.datacite.NameIdentifier;
 import org.gbif.doi.metadata.datacite.RelatedIdentifierType;
 import org.gbif.doi.metadata.datacite.RelationType;
 import org.gbif.doi.service.InvalidMetadataException;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -55,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DataCiteMetadataBuilderTest {
+public class DataCiteMetadataBuilderTest extends IptBaseTest {
 
   @Test
   public void testBuilder() throws InvalidMetadataException {

@@ -26,7 +26,6 @@ import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -40,6 +39,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -75,6 +75,8 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   private RegistrationManager registrationManager;
   private DataDir mockDataDir;
 
+  private List<Resource> resourcesList = new ArrayList<>();
+
   @BeforeEach
   public void setup() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
     // mock instances
@@ -86,9 +88,6 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     HttpClient mockHttpClient;
     HttpResponse mockResponse;
     ExtendedResponse extResponse;
-
-    // mock instance of ResourceManager: returns list of Resource that has one associated to Academy of Natural Sciences
-    ResourceManager mockResourceManager = mock(ResourceManager.class);
 
     // create Resource associated to Organisation
     Resource r1 = new Resource();
@@ -108,10 +107,9 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     r2.setDoi(new DOI("doi:10.1594/PANGAEA.726855"));
 
     // mock list() to return list with the mocked Resource - notable its organisation name is the old version
-    List<Resource> resourcesList = new ArrayList<>();
+    resourcesList = new ArrayList<>();
     resourcesList.add(r1);
     resourcesList.add(r2);
-    when(mockResourceManager.list()).thenReturn(resourcesList);
 
     // mock returning registration.xml file
     File registrationXML = FileUtils.getClasspathFile("config/registration.xml");
@@ -134,14 +132,14 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
-        mockSimpleTextProvider, mock(RegistrationManager.class), mock(ResourceManager.class));
+        mockSimpleTextProvider);
 
     // make sure the list of organisations is fully populated
     assertNotNull(mockRegistryManager.getRegisteredOrganisation(RESOURCE1_ORGANISATION_KEY));
 
     // create instance of manager
     registrationManager =
-      new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockResourceManager, mockRegistryManager,
+      new RegistrationManagerImpl(mockAppConfig, mockDataDir, mockRegistryManager,
         mock(PasswordEncrypter.class));
 
     // load associatedOrganisations, hostingOrganisation, etc
@@ -153,7 +151,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // try deleting the Academy of Natural Sciences - it will throw a DeletionNotAllowedException since there is a
     // resource associated to it
     try {
-      registrationManager.delete(RESOURCE1_ORGANISATION_KEY);
+      registrationManager.delete(RESOURCE1_ORGANISATION_KEY, resourcesList);
     } catch (DeletionNotAllowedException e) {
       assertEquals(DeletionNotAllowedException.Reason.RESOURCE_REGISTERED_WITH_ORGANISATION, e.getReason());
     }
@@ -197,7 +195,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   @Test
   public void testDeleteOrganizationAssociatedToResourceDoi() {
     try {
-      registrationManager.delete(RESOURCE2_ORGANISATION_KEY);
+      registrationManager.delete(RESOURCE2_ORGANISATION_KEY, Collections.emptyList());
     } catch (DeletionNotAllowedException e) {
       assertEquals(DeletionNotAllowedException.Reason.RESOURCE_DOI_REGISTERED_WITH_ORGANISATION, e.getReason());
     }

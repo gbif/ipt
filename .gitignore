@@ -3,6 +3,9 @@
 target/
 .idea/
 .DS_Store
+.java-version
+datadirs/
+package/rpm/RPMS/noarch/*
 
 # Package Files #
 *.jar

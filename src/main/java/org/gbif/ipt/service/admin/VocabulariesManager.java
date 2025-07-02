@@ -16,19 +16,15 @@ package org.gbif.ipt.service.admin;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.ImplementedBy;
-
 /**
  * This interface details ALL methods associated with the vocabularies within the IPT.
  */
-@ImplementedBy(VocabulariesManagerImpl.class)
 public interface VocabulariesManager {
 
   /**

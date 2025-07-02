@@ -22,9 +22,7 @@ import java.io.Writer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.inject.Singleton;
 
-@Singleton
 public class YamlServiceImpl implements YamlService {
 
   private final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));

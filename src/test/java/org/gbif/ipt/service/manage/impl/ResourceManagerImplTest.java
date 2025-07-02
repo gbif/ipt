@@ -17,12 +17,13 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.dwc.Archive;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.UnsupportedArchiveException;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.JdbcSupport;
+import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
@@ -62,6 +63,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -75,6 +77,7 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.KeywordSet;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
@@ -82,7 +85,6 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -93,20 +95,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AssertionFailureBuilder;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.servlet.ServletModule;
-import com.google.inject.struts2.Struts2GuicePluginModule;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -124,7 +123,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-public class ResourceManagerImplTest {
+public class ResourceManagerImplTest extends IptBaseTest {
 
   // Mock classes
   private final AppConfig mockAppConfig = MockAppConfig.buildMock();
@@ -150,7 +149,10 @@ public class ResourceManagerImplTest {
   private Organisation organisation;
   private JdbcSupport support;
 
-  private File resourceDir;
+  @TempDir
+  File resourceDir;
+  @TempDir
+  File tmpDataDir;
 
   private static final String DATASET_TYPE_OCCURRENCE_IDENTIFIER = "occurrence";
   private static final String DATASET_SUBTYPE_SPECIMEN_IDENTIFIER = "specimen";
@@ -170,11 +172,7 @@ public class ResourceManagerImplTest {
     resource = new Resource();
     resource.setShortname(RESOURCE_SHORTNAME);
 
-    // resource directory
-    resourceDir = FileUtils.createTempDir();
-
     // tmp directory
-    File tmpDataDir = FileUtils.createTempDir();
     when(mockedDataDir.tmpDir()).thenReturn(tmpDataDir);
 
     organisation = new Organisation();
@@ -211,13 +209,12 @@ public class ResourceManagerImplTest {
 //        .thenReturn(FileUtils.getClasspathFile("resources/res2/eml.xml"));
 
     // construct ExtensionFactory using injected parameters
-    Injector injector = Guice.createInjector(new ServletModule(), new Struts2GuicePluginModule(), new IPTModule());
-    HttpClient httpClient = injector.getInstance(HttpClient.class);
+    HttpClient httpClient = TestBeanProvider.provideHttpClient();
     ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
-    SAXParserFactory saxf = injector.getInstance(SAXParserFactory.class);
+    SAXParserFactory saxf = TestBeanProvider.provideNsAwareSaxParserFactory();
     ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
-    support = injector.getInstance(JdbcSupport.class);
-    PasswordEncrypter passwordEncrypter = injector.getInstance(PasswordEncrypter.class);
+    support = TestBeanProvider.provideJdbcSupport();
+    PasswordEncrypter passwordEncrypter = new PasswordEncrypter(TestBeanProvider.providePasswordEncryption());
     JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
 
     // construct occurrence core Extension
@@ -233,21 +230,32 @@ public class ResourceManagerImplTest {
     Extension simpleImage = extensionFactory.build(simpleImageIs);
 
     ExtensionManager extensionManager = mock(ExtensionManager.class);
+    ExtensionsHolder extensionsHolder = mock(ExtensionsHolder.class);
     DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
 
     // mock ExtensionManager returning different Extensions
-    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence")).thenReturn(occurrenceCore);
-    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event")).thenReturn(eventCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence"))
+        .thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event"))
+        .thenReturn(eventCore);
     when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
-      .thenReturn(occurrenceCore);
-    when(extensionManager.get("http://rs.gbif.org/terms/1.0/Image")).thenReturn(simpleImage);
+        .thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.gbif.org/terms/1.0/Image"))
+        .thenReturn(simpleImage);
 
-    ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionManager);
+    when(extensionsHolder.getExtensionsByRowtype()).thenReturn(
+        Map.ofEntries(
+            Map.entry("http://rs.tdwg.org/dwc/terms/Occurrence", occurrenceCore),
+            Map.entry("http://rs.tdwg.org/dwc/terms/Event", eventCore),
+            Map.entry("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord", occurrenceCore),
+            Map.entry("http://rs.gbif.org/terms/1.0/Image", simpleImage)));
+
+    ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionsHolder);
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
-        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
+        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
     // mock finding dwca.zip file that does not exist
@@ -285,10 +293,12 @@ public class ResourceManagerImplTest {
     // retrieve sample zipped resource folder
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
+    when(mockedDataDir.resourceEmlFile(anyString())).thenReturn(emlXML);
 
     // mock finding inferredMetadata.xml file
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
+
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -487,7 +497,8 @@ public class ResourceManagerImplTest {
     fileSource.setFieldsTerminatedByEscaped("/t");
     fileSource.setName("singleTxt");
 
-    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString()))
+        .thenReturn(fileSource);
 
     // create a new resource.
     resourceManager.create("res-single-gz", null, dwca, creator, baseAction);
@@ -537,6 +548,8 @@ public class ResourceManagerImplTest {
 
     // mock inferredMetadata.xml file
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
+
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -617,6 +630,8 @@ public class ResourceManagerImplTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_nonexistent_ext.xml");
     // mock finding resource.xml file
     when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // create instance of manager
     ResourceManager resourceManager = getResourceManagerImpl();
@@ -774,8 +789,9 @@ public class ResourceManagerImplTest {
     fileSourceOccurrence.setFile(uncompressedOccurrence);
     fileSourceOccurrence.setName("occurrence.txt");
 
-    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSourceEvent)
-      .thenReturn(fileSourceOccurrence);
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString()))
+        .thenReturn(fileSourceEvent)
+        .thenReturn(fileSourceOccurrence);
 
     // create a new resource.
     Resource resource = resourceManager.create("res-differentcoreidtermindex", null, dwca, creator, baseAction);
@@ -816,6 +832,7 @@ public class ResourceManagerImplTest {
     File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_auto_ids.xml");
     // mock finding resource.xml file
     when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
 
     // create a new resource from zipped resource folder, but using the mocked resource.xml above
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
@@ -855,7 +872,6 @@ public class ResourceManagerImplTest {
   /**
    * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
    */
-  @Disabled("floating behaviour, only fails when all the test launched")
   @Test
   public void testLoadFromDir() throws Exception {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
@@ -920,12 +936,30 @@ public class ResourceManagerImplTest {
     assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEmlVersion());
     assertEquals(BigDecimal.valueOf(1.0), persistedResource.getEml().getEmlVersion());
     assertEquals(0, persistedResource.getRecordsPublished());
-    // should be 1 KeywordSet corresponding to Dataset Type vocabulary
-    assertEquals(2, persistedResource.getEml().getKeywords().size());
-    assertEquals(StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
-      persistedResource.getEml().getKeywords().get(0).getKeywordsString());
-    assertEquals(StringUtils.capitalize(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER),
-      persistedResource.getEml().getKeywords().get(1).getKeywordsString());
+
+    assertKeywordsContain(
+        "GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type_2015-07-10.xml",
+        StringUtils.capitalize(DATASET_TYPE_OCCURRENCE_IDENTIFIER),
+        persistedResource.getEml().getKeywords()
+    );
+    assertKeywordsContain(
+        "GBIF Dataset Subtype Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_subtype.xml",
+        StringUtils.capitalize(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER),
+        persistedResource.getEml().getKeywords()
+    );
+    int expectedAmountOfKeywords = 2;
+
+    String actualKeywords = persistedResource.getEml().getKeywords()
+        .stream()
+        .map(k -> k.getKeywordsString() + ": " + k.getKeywords() + ", " + k.getKeywordThesaurus())
+        .collect(Collectors.joining("\n"));
+
+    // sometimes contains Samplingevent: [Samplingevent], GBIF Dataset Type Vocabulary: http://rs.gbif.org/vocabulary/gbif/dataset_type.xml
+    // check contains two required ones
+    assertTrue(persistedResource.getEml().getKeywords().size() >= expectedAmountOfKeywords,
+        () -> "Amount of keywords do not match expected.\n"
+            + "Values: \n"
+            + actualKeywords);
 
     // make some assertions about SQL source
     SqlSource persistedSource = (SqlSource) persistedResource.getSources().get(0);
@@ -936,11 +970,33 @@ public class ResourceManagerImplTest {
     assertEquals("DanBIFUser", persistedSource.getUsername());
     assertEquals(44, persistedSource.getColumns());
     assertEquals("SELECT * FROM occurrence_record where datasetID=1", persistedSource.getSql());
-    assertEquals("com.mysql.jdbc.Driver", persistedSource.getJdbcDriver());
+    assertEquals("com.mysql.cj.jdbc.Driver", persistedSource.getJdbcDriver());
     assertEquals("UTF-8", persistedSource.getEncoding());
     assertEquals("YYYY-MM-DD", persistedSource.getDateFormat());
     assertTrue(persistedSource.isReadable());
 
+  }
+
+  public static void assertKeywordsContain(String expectedKeywordThesaurus, String expectedKeyword, List<KeywordSet> actual) {
+    boolean contain = false;
+
+    for (KeywordSet item : actual) {
+      if (expectedKeywordThesaurus.equals(item.getKeywordThesaurus()) && List.of(expectedKeyword).equals(item.getKeywords())) {
+        contain = true;
+      }
+    }
+
+    if (!contain) {
+      AssertionFailureBuilder.assertionFailure()
+          .message("Keywords do not contain provided values")
+          .expected("thesaurus \"" +  expectedKeywordThesaurus + "\", keywords [\"" + expectedKeyword + "\"].")
+          .actual(
+              actual.stream()
+                  .map(k -> "thesaurus \"" +  k.getKeywordThesaurus() + "\", keywords " + k.getKeywords())
+                  .collect(Collectors.joining("; "))
+          )
+          .buildAndThrow();
+    }
   }
 
   @Test
@@ -982,8 +1038,8 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class)))
-      .thenReturn(File.createTempFile("eml", "xml"));
+    when(mockedDataDir.resourceEmlFile(anyString()))
+        .thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
     Resource resource = new Resource();
@@ -1058,7 +1114,7 @@ public class ResourceManagerImplTest {
     ResourceManagerImpl manager = getResourceManagerImpl();
 
     // mock finding eml.xml file
-    when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class)))
+    when(mockedDataDir.resourceEmlFile(anyString()))
       .thenReturn(File.createTempFile("eml", "xml"));
 
     // create PRIVATE test resource
@@ -1476,6 +1532,7 @@ public class ResourceManagerImplTest {
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
     ResourceManager resourceManager = getResourceManagerImpl();
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
     resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
@@ -1505,6 +1562,7 @@ public class ResourceManagerImplTest {
     File emlXML = FileUtils.getClasspathFile("resources/res1/eml.xml");
     when(mockedDataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(emlXML);
     when(mockedDataDir.resourceInferredMetadataFile(anyString())).thenReturn(new File(DataDir.INFERRED_METADATA_FILENAME));
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
     ResourceManager resourceManager = getResourceManagerImpl();
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
     resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);

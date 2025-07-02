@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
@@ -44,7 +45,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class AutoPublishedTest {
+public class AutoPublishedTest extends IptBaseTest {
 
   private AppConfig mockAppConfig = MockAppConfig.buildMock();
 

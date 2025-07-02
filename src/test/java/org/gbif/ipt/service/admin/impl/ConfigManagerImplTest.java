@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.admin.impl;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
@@ -45,7 +46,7 @@ import static org.mockito.Mockito.mock;
 /**
  * This class tests the relevant methods of the ConfigManagerImpl class.
  */
-public class ConfigManagerImplTest {
+public class ConfigManagerImplTest extends IptBaseTest {
 
   private HttpClient client;
   private AppConfig appConfig;

@@ -23,9 +23,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.inject.Singleton;
 
-@Singleton
 public class JsonServiceImpl implements JsonService {
 
   private final ObjectMapper objectMapper = new ObjectMapper();

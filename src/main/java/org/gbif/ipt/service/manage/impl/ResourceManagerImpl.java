@@ -57,6 +57,7 @@ import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.PublicationOptions;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.SimplifiedResource;
@@ -150,6 +151,7 @@ import java.math.RoundingMode;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.MessageDigest;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -172,6 +174,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
+import java.util.zip.ZipFile;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -188,8 +191,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.xml.sax.SAXException;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
@@ -209,7 +210,6 @@ import static org.gbif.ipt.model.Resource.CoreRowType.METADATA;
 import static org.gbif.ipt.utils.FileUtils.getFileExtension;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
-@Singleton
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
 
   // key=shortname in lower case, value=resource
@@ -230,6 +230,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
   private Map<String, StatusReport> processReports = new HashMap<>();
+  private List<String> resourcesToSkip = new ArrayList<>();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
@@ -241,7 +242,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-  @Inject
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, ResourceConvertersManager resourceConvertersManager,
                              SourceManager sourceManager, ExtensionManager extensionManager,
                              DataPackageSchemaManager schemaManager, RegistryManager registryManager,
@@ -281,6 +281,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (Exception e) {
       LOG.error("Failed to reconstruct resource's last published version", e);
     }
+  }
+
+  @Override
+  public void updateOrganisationNameForResources(Organisation organisation) {
+    updateOrganisationNameForResources(organisation.getKey(), organisation.getName(), organisation.getAlias());
   }
 
   @Override
@@ -1259,7 +1264,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // persist only schema identifier, table schema name and field name
     xstream.registerConverter(resourceConvertersManager.getDataSchemaConverter());
     xstream.registerConverter(resourceConvertersManager.getTableSchemaNameConverter());
-    xstream.registerConverter(resourceConvertersManager.getDataSchemaFieldConverter());
+    xstream.registerConverter(resourceConvertersManager.getDataPackageFieldConverter());
     // encrypt passwords
     xstream.registerConverter(passwordEncrypter);
 
@@ -1298,6 +1303,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
+  // Generic method for DwC-A and data packages
+  private void generateArchive(Resource resource) {
+    if (resource.isDataPackage()) {
+      generateDataPackage(resource);
+    } else {
+      generateDwca(resource);
+    }
+  }
+
   /**
    * @see #isLocked(String, BaseAction) for removing jobs from internal maps
    */
@@ -1310,6 +1324,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     worker.report();
   }
 
+  /**
+   * @see #isLocked(String, BaseAction) for removing jobs from internal maps
+   */
   private void generateDataPackage(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDataPackage worker = dataPackageFactory.create(resource, this);
@@ -1490,40 +1507,112 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Resource resource = get(shortname);
       BigDecimal version = resource.getMetadataVersion();
 
-      // is listed as locked but task might be finished, check
+      // is listed as locked, but the task might be finished, check
       Future<Map<String, Integer>> f = processFutures.get(shortname);
       // if this task finished
       if (f.isDone()) {
-        // remove process from locking list immediately! Fixes Issue 1141
+        // remove the process from the locking list immediately! Fixes Issue 1141
         processFutures.remove(shortname);
         boolean succeeded = false;
+        boolean dataOrMetadataChanged = true;
+        boolean skipIfNotChanged = resourcesToSkip.contains(shortname) || resource.isSkipPublicationIfNotChanged();
+        boolean noSignificantRecordsDrop = true;
+        double dropPercentage;
         String reasonFailed = null;
         Throwable cause = null;
         try {
-          // store record counts by extension
-          resource.setRecordsByExtension(f.get());
-          // populate core record count
-          Integer recordCount = null;
+          if (resource.isSkipPublicationIfRecordsDrop()) {
+            // check the number of records after publishing
+            int newRecordCount = getResourceRecordsCount(resource, f.get());
+            int previousRecordCount = resource.getRecordsPublished();
+            int dropThreshold = resource.getRecordsDropThreshold();
 
-          if (resource.isDataPackage()) {
-            // take number of observations as number of records for Camtrap
-            // for the rest data packages - total number of all records
-            if (CAMTRAP_DP.equals(resource.getCoreType())) {
-              recordCount = resource.getRecordsByExtension().get(CAMTRAP_DP_OBSERVATIONS);
+            int dropAmount = previousRecordCount - newRecordCount;
+            dropPercentage = previousRecordCount == 0 ? 0 : (dropAmount * 100.0) / previousRecordCount;
+
+            if (dropPercentage > dropThreshold) {
+              // drop is too big, prevent publication
+              noSignificantRecordsDrop = false;
+              String message = String.format(
+                  "The number of records dropped more than allowed %d%%: %.2f%%.",
+                  dropThreshold,
+                  dropPercentage
+              );
+              LOG.error(message);
+              getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, message));
             } else {
-              recordCount = resource.getRecordsByExtension().values().stream()
-                  .mapToInt(Integer::intValue)
-                  .sum();
+              LOG.debug("No significant drop in records detected.");
+              getTaskMessages(shortname).add(new TaskMessage(Level.ERROR,
+                  "No significant drop in records detected."));
             }
-          } else {
-            recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
           }
 
-          resource.setRecordsPublished(recordCount == null ? 0 : recordCount);
-          // finish publication (update registration, persist resource changes)
-          publishEnd(resource, action, version);
-          // important: indicate publishing finished successfully!
-          succeeded = true;
+          // if no significant drop (or it's switched off) - proceed with the publication
+          if (noSignificantRecordsDrop) {
+            // store record counts by extension
+            resource.setRecordsByExtension(f.get());
+            // populate record count
+            Integer recordCount = getResourceRecordsCount(resource);
+            resource.setRecordsPublished(recordCount);
+
+            if (skipIfNotChanged) {
+              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Checking if data has been changed since last published"));
+            }
+
+            File resourceArchiveFile = dataDir.resourceArchiveFile(resource, version);
+            LOG.debug("Calculating checksum for the resource: {}", shortname);
+            try {
+              String archiveChecksum = calculateArchiveChecksum(resourceArchiveFile);
+              String lastPublishedArchiveChecksum = resource.getLastPublishedArchiveChecksum();
+
+              if (lastPublishedArchiveChecksum == null) {
+                LOG.debug("No checksum found for the resource {}", shortname);
+                resource.setLastPublishedArchiveChecksum(archiveChecksum);
+
+                // do not log additional info about checksum if it is disabled
+                if (skipIfNotChanged) {
+                  getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "No checksum found for comparison, skipping."));
+                }
+              } else if (lastPublishedArchiveChecksum.equals(archiveChecksum)) {
+                LOG.debug("New checksum [{}] matches the stored one [{}] for the resource {}",
+                    archiveChecksum, lastPublishedArchiveChecksum, resource.getShortname());
+
+                if (skipIfNotChanged) {
+                  getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Checksum has not changed since last published"));
+                }
+
+                // check metadata if data hasn't changed
+                Date lastPublished = resource.getLastPublished();
+                Date metadataLastModified = resource.getMetadataModified();
+                boolean metadataChanged = metadataLastModified.after(lastPublished);
+
+                if (skipIfNotChanged && !metadataChanged) {
+                  getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Metadata has not changed since last published"));
+                  dataOrMetadataChanged = false;
+                }
+              } else {
+                LOG.debug("New checksum [{}] for the resource {}", archiveChecksum, resource.getShortname());
+                resource.setLastPublishedArchiveChecksum(archiveChecksum);
+
+                if (skipIfNotChanged) {
+                  getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "✓ Checksum has changed since last published"));
+                }
+              }
+            } catch (Exception e) {
+              LOG.error("Failed to calculate checksum for DwC-A: {}", resourceArchiveFile.getName(), e);
+
+              if (skipIfNotChanged) {
+                getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Failed to calculate checksum"));
+              }
+            }
+
+            if (dataOrMetadataChanged) {
+              // finish publication (update registration, persist resource changes)
+              publishEnd(resource, action, version);
+              // important: indicate publishing finished successfully!
+              succeeded = true;
+            }
+          }
         } catch (ExecutionException e) {
           // getCause holds the actual exception our callable (GenerateDwca) threw
           cause = e.getCause();
@@ -1543,7 +1632,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // this type of exception happens outside GenerateDwca - so add reason to StatusReport
           getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
         } finally {
-          // if publication was successful..
+          // if publication was successful
           if (succeeded) {
             // update StatusReport on publishing page
             String msg =
@@ -1551,6 +1640,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
             processReports.put(shortname, updated);
           } else {
+            boolean failedDueToDataNotChanged = !dataOrMetadataChanged;
+            boolean failedDueToRecordsDrop = !noSignificantRecordsDrop;
+
+            if (failedDueToDataNotChanged) {
+              reasonFailed = action.getText("publishing.dataNotChanged");
+            }
+
+            if (failedDueToRecordsDrop) {
+              reasonFailed = action.getText("publishing.dropInRecords");
+            }
+
             // alert user publication failed
             String msg =
               action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, reasonFailed});
@@ -1562,11 +1662,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               processReports.put(shortname, updated);
             }
 
+            if (failedDueToDataNotChanged) {
+              String dataNotChanged = action.getText("publishing.dataNotChanged.revert");
+              StatusReport updated = new StatusReport(true, dataNotChanged, getTaskMessages(shortname));
+              processReports.put(shortname, updated);
+              updateNextPublishedDate(new Date(), resource);
+            }
+
+            if (failedDueToRecordsDrop) {
+              String dropInRecords = action.getText("publishing.dropInRecords.revert");
+              StatusReport updated = new StatusReport(true, dropInRecords, getTaskMessages(shortname));
+              processReports.put(shortname, updated);
+              updateNextPublishedDate(new Date(), resource);
+            }
+
             // the previous version needs to be rolled back
             restoreVersion(resource, version, action);
 
-            // keep track of how many failures on auto publication have happened
-            processFailures.put(resource.getShortname(), new Date());
+            // do not count "data not changed" as an actual failure
+            if (!failedDueToDataNotChanged) {
+              // keep track of how many failures on auto publication have happened
+              processFailures.put(resource.getShortname(), new Date());
+            }
+
+            resourcesToSkip.remove(resource.getShortname());
           }
         }
         return false;
@@ -1574,6 +1693,42 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       return true;
     }
     return false;
+  }
+
+  private Integer getResourceRecordsCount(Resource resource) {
+    Integer recordCount;
+    if (resource.isDataPackage()) {
+      // take number of observations as number of records for Camtrap
+      // for the rest data packages - total number of all records
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        recordCount = resource.getRecordsByExtension().get(CAMTRAP_DP_OBSERVATIONS);
+      } else {
+        recordCount = resource.getRecordsByExtension().values().stream()
+            .mapToInt(Integer::intValue)
+            .sum();
+      }
+    } else {
+      recordCount = resource.getRecordsByExtension().get(StringUtils.trimToEmpty(resource.getCoreRowType()));
+    }
+    return recordCount != null ? recordCount : 0;
+  }
+
+  private Integer getResourceRecordsCount(Resource resource, Map<String, Integer> publishedRecordsByExtension) {
+    Integer recordCount;
+    if (resource.isDataPackage()) {
+      // take number of observations as number of records for Camtrap
+      // for the rest data packages - total number of all records
+      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+        recordCount = publishedRecordsByExtension.get(CAMTRAP_DP_OBSERVATIONS);
+      } else {
+        recordCount = publishedRecordsByExtension.values().stream()
+            .mapToInt(Integer::intValue)
+            .sum();
+      }
+    } else {
+      recordCount = publishedRecordsByExtension.get(StringUtils.trimToEmpty(resource.getCoreRowType()));
+    }
+    return recordCount != null ? recordCount : 0;
   }
 
   @Override
@@ -2151,7 +2306,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.setInferredMetadata(new InferredCamtrapMetadata());
       }
     } else {
-      if (!inferredMetadataFile.exists()) {
+      if (inferredMetadataFile == null || !inferredMetadataFile.exists()) {
         resource.setInferredMetadata(new InferredEmlMetadata());
         return;
       }
@@ -2463,7 +2618,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public boolean publish(Resource resource, BigDecimal version, BaseAction action)
+      throws PublicationException, InvalidConfigException {
+    return publish(resource, version, action, false);
+  }
+
+  @Override
+  public boolean publish(Resource resource, BigDecimal version, BaseAction action, boolean skipIfNotChanged)
+      throws PublicationException, InvalidConfigException {
+    PublicationOptions options = PublicationOptions.builder().skipPublicationIfNotChanged(skipIfNotChanged).build();
+    return publish(resource, version, action, options);
+  }
+
+  @Override
+  public boolean publish(Resource resource, BigDecimal version, BaseAction action, PublicationOptions options)
     throws PublicationException, InvalidConfigException {
+    String shortname = resource.getShortname();
+
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
@@ -2471,48 +2641,47 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // add new version history
     addOrUpdateVersionHistory(resource, version, false, action);
 
-    if (resource.isDataPackage()) {
-      publishMetadata(resource, version);
-    } else {
-      // publish EML
-      publishEml(resource, version);
-
-      // publish RTF
-      publishRtf(resource, version);
-    }
-
     // remove StatusReport from previous publishing round
-    StatusReport report = status(resource.getShortname());
+    StatusReport report = status(shortname);
     if (report != null) {
-      processReports.remove(resource.getShortname());
+      processReports.remove(shortname);
     }
 
-    if (!resource.isDataPackage()) { // DwC archive
-      // (re)generate dwca asynchronously
-      boolean dwca = false;
-      if (resource.hasMappedData()) {
-        generateDwca(resource);
-        dwca = true;
-      } else {
-        // set number of records published
-        resource.setRecordsPublished(0);
-        // finish publication now
-        publishEnd(resource, action, version);
+    // Abort further publication for Metadata Only - no changes (if skipIfNotChanged activated)
+    if (resource.isMetadataOnly() && options.isSkipPublicationIfNotChanged()) {
+      Date lastPublished = resource.getLastPublished();
+      Date metadataLastModified = resource.getMetadataModified();
+
+      boolean metadataChanged = metadataLastModified.after(lastPublished);
+
+      if (!metadataChanged) {
+        String metadataNotChangedStatus = action.getText("publishing.metadataNotChanged");
+        StatusReport updated = new StatusReport(true, metadataNotChangedStatus, getTaskMessages(shortname));
+        processReports.put(shortname, updated);
+
+        return false;
       }
-      return dwca;
-    } else { // Data Package archive
-      boolean dataPackage = false;
-      if (resource.hasSchemaMappedData()) {
-        generateDataPackage(resource);
-        dataPackage = true;
-      } else {
-        // set number of records published
-        resource.setRecordsPublished(0);
-        // finish publication now
-        publishEnd(resource, action, version);
-      }
-      return dataPackage;
     }
+
+    publishMetadata(resource, version, action);
+    publishRtf(resource, version);
+
+    // (re)generate archive (DwC-A/DP) asynchronously
+    boolean archive = false;
+    if (resource.hasAnyMappedData()) {
+      // for bulk publication keep resources to be skipped
+      if (options.isSkipPublicationIfNotChanged()) {
+        resourcesToSkip.add(shortname);
+      }
+      generateArchive(resource);
+      archive = true;
+    } else {
+      // set number of records published
+      resource.setRecordsPublished(0);
+      // finish publication now
+      publishEnd(resource, action, version);
+    }
+    return archive;
   }
 
   /**
@@ -3032,6 +3201,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return resource;
   }
 
+  private void publishMetadata(Resource resource, BigDecimal version, BaseAction action) throws PublicationException {
+    if (resource.isDataPackage()) {
+      publishDataPackageMetadata(resource, version);
+    } else {
+      publishEml(resource, version, action);
+    }
+  }
+
   /**
    * Publishes a new version of the EML file for the given resource.
    *
@@ -3040,11 +3217,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
-  private void publishEml(Resource resource, BigDecimal version) throws PublicationException {
+  private void publishEml(Resource resource, BigDecimal version, BaseAction action) throws PublicationException {
+    String shortname = resource.getShortname();
+
     // check if publishing task is already running
-    if (isLocked(resource.getShortname())) {
+    if (isLocked(shortname)) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
-        "Resource " + resource.getShortname() + " is currently locked by another process");
+        "Resource " + shortname + " is currently locked by another process");
+    }
+
+    if (resource.isMetadataOnly()) {
+      StatusReport report = new StatusReport("Started publishing EML #" + version, new ArrayList<>());
+      processReports.put(shortname, report);
+      getTaskMessages(shortname).add(
+          new TaskMessage(Level.INFO, "EML generation started for version #" + version));
     }
 
     // ensure alternate identifier for Registry UUID is set - if resource is registered
@@ -3061,7 +3247,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // update resource citation with auto generated citation (if auto-generation has been turned on)
     if (resource.isCitationAutoGenerated()) {
-      URI homepage = cfg.getResourceVersionUri(resource.getShortname(), version); // potential citation identifier
+      URI homepage = cfg.getResourceVersionUri(shortname, version); // potential citation identifier
       String citation = resource.generateResourceCitation(version, homepage);
       if (resource.getEml().getCitation() != null) {
         resource.getEml().getCitation().setCitation(citation);
@@ -3097,20 +3283,42 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     saveEml(resource);
 
     // create versioned eml file
-    File trunkFile = dataDir.resourceEmlFile(resource.getShortname());
+    File trunkFile = dataDir.resourceEmlFile(shortname);
 
     // validate EML (only for metadata-only resources, otherwise it will be validated afterward)
     if (METADATA.toString().equalsIgnoreCase(resource.getCoreType())) {
       try {
         EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
         String emlString = FileUtils.readFileToString(trunkFile, StandardCharsets.UTF_8);
+
+        getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Validating EML file"));
         emlValidator.validate(emlString);
+        getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "✓ Validated EML file"));
+        StatusReport report = new StatusReport(
+            true,
+            action.getText("publishing.success", new String[] {version.toPlainString(), shortname}),
+            getTaskMessages(shortname));
+        processReports.put(shortname, report);
       } catch (IOException | SAXException e) {
-        throw new PublicationException(PublicationException.TYPE.EML,
-            "Can't publish eml file for resource " + resource.getShortname() + ". Failed to validate EML", e);
+        getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, "Failed to validate EML"));
+        PublicationException exception = new PublicationException(PublicationException.TYPE.EML,
+            "Can't publish eml file for resource " + shortname + ". Failed to validate EML", e);
+        StatusReport errorReport = new StatusReport(
+            exception,
+            action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, "Failed to validate EML"}),
+            getTaskMessages(shortname));
+        processReports.put(shortname, errorReport);
+        throw exception;
       } catch (InvalidEmlException e) {
-        throw new PublicationException(PublicationException.TYPE.EML,
+        getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, "Invalid EML:  " + e.getMessage()));
+        PublicationException exception = new PublicationException(PublicationException.TYPE.EML,
             "Can't publish eml file for resource " + resource.getShortname() + ". Invalid EML", e);
+        StatusReport errorReport = new StatusReport(
+            exception,
+            action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, "Invalid EML"}),
+            getTaskMessages(shortname));
+        processReports.put(shortname, errorReport);
+        throw exception;
       }
     }
 
@@ -3124,7 +3332,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
   }
 
-  public void publishMetadata(Resource resource, BigDecimal version) {
+  public void publishDataPackageMetadata(Resource resource, BigDecimal version) {
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
@@ -3282,6 +3490,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
   private void publishRtf(Resource resource, BigDecimal version) throws PublicationException {
+    // Skip RTF for data packages
+    if (resource.isDataPackage()) {
+      return;
+    }
+
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
@@ -3334,7 +3547,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // so we also try with the default eml.xml name
         emlFile = new File(archive.getLocation(), EML_XML_FILENAME);
       }
-      if (emlFile.exists()) {
+      if (emlFile.exists() && emlFile.getName().endsWith(EML_XML_FILENAME)) {
         // read metadata and populate Eml instance
         eml = copyMetadata(shortname, emlFile);
         alog.info("manage.resource.read.eml.metadata");
@@ -3869,7 +4082,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   protected void updateNextPublishedDate(Date currentDate, Resource resource) throws PublicationException {
     if (resource.usesAutoPublishing()) {
       try {
-        LOG.debug("Updating next published date of resource: " + resource.getShortname());
+        LOG.debug("Updating next published date of resource: {}", resource.getShortname());
 
         Date nextPublished = null;
 
@@ -3967,7 +4180,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.setNextPublished(nextPublished);
 
         // log
-        LOG.debug("The next publication date is: " + nextPublished);
+        LOG.debug("The next publication date is: {}", nextPublished);
       } catch (Exception e) {
         resource.setNextPublished(null);
         // add error message that explains the consequence of the error to user
@@ -3977,7 +4190,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       resource.setNextPublished(null);
-      LOG.debug("Resource: " + resource.getShortname() + " has not been configured to use auto-publishing");
+      LOG.debug("Resource: {} has not been configured to use auto-publishing", resource.getShortname());
     }
   }
 
@@ -4038,12 +4251,22 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
+  public Map<String, StatusReport> getProcessReports() {
+    return processReports;
+  }
+
+  @Override
+  public void clearProcessReports() {
+    processReports.clear();
+  }
+
+  @Override
   public boolean hasMaxProcessFailures(Resource resource) {
     if (processFailures.containsKey(resource.getShortname())) {
       List<Date> failures = processFailures.get(resource.getShortname());
 
-      LOG.debug("Publication has failed " + failures.size() + " time(s) for resource: " + resource
-        .getTitleAndShortname());
+      LOG.debug("Publication has failed {} time(s) for resource: {}", failures.size(), resource
+          .getTitleAndShortname());
       return failures.size() >= MAX_PROCESS_FAILURES;
     }
     return false;
@@ -4061,15 +4284,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public void removeVersion(Resource resource, BigDecimal version) {
     // Cannot remove the most recent version, only archived versions
     if ((version != null) && !version.equals(resource.getMetadataVersion())) {
-      LOG.debug("Removing version "+version+" for resource: "+resource.getShortname());
+      LOG.debug("Removing version {} for resource: {}", version, resource.getShortname());
       try {
         removeVersion(resource.getShortname(), version);
         resource.removeVersionHistory(version);
         save(resource);
-        LOG.debug("Version "+version+" has been removed for resource: "+resource.getShortname());
+        LOG.debug("Version {} has been removed for resource: {}", version, resource.getShortname());
       }
       catch(IOException e) {
-        LOG.error("Cannot remove version "+version+" for resource: "+resource.getShortname(), e);
+        LOG.error("Cannot remove version {} for resource: {}", version, resource.getShortname(), e);
       }
     }
   }
@@ -4085,7 +4308,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (dwcaFile != null && dwcaFile.exists()) {
       boolean deleted = FileUtils.deleteQuietly(dwcaFile);
       if (deleted) {
-        LOG.debug(dwcaFile.getAbsolutePath() + " has been successfully deleted.");
+        LOG.debug("{} has been successfully deleted.", dwcaFile.getAbsolutePath());
       }
     }
   }
@@ -4106,5 +4329,73 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (versionedDwcaFile.exists()) {
       FileUtils.forceDelete(versionedDwcaFile);
     }
+  }
+
+  public String calculateChecksum(File file) throws Exception {
+    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    InputStream fis = new FileInputStream(file);
+
+    byte[] byteArray = new byte[1024];
+    int bytesCount = 0;
+
+    while ((bytesCount = fis.read(byteArray)) != -1) {
+      digest.update(byteArray, 0, bytesCount);
+    };
+    fis.close();
+
+    byte[] bytes = digest.digest();
+
+    // Convert to hex string
+    StringBuilder sb = new StringBuilder();
+    for (byte b : bytes) {
+      sb.append(String.format("%02x", b));
+    }
+
+    return sb.toString();
+  }
+
+  /**
+   * Calculates a checksum of the DwC archive or the data package.
+   *
+   * @param archive archive
+   * @return checksum of the archive
+   */
+  public String calculateArchiveChecksum(File archive) throws Exception {
+    // Create a MessageDigest instance for SHA-256
+    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+    try (ZipFile zipFile = new ZipFile(archive)) {
+      // Iterate through the files in the DwCA
+      zipFile.stream().forEach(entry -> {
+        // Skip the EML metadata file
+        if (entry.getName().endsWith(".xml") && entry.getName().toLowerCase().contains("eml")) {
+          return;
+        }
+
+        // Skip the data package metadata file
+        if (entry.getName().endsWith(".json") && entry.getName().toLowerCase().contains("datapackage")) {
+          return;
+        }
+
+        // If it's a data file, calculate its checksum
+        try (InputStream is = zipFile.getInputStream(entry)) {
+          byte[] buffer = new byte[4096];
+          int bytesRead;
+          while ((bytesRead = is.read(buffer)) != -1) {
+            digest.update(buffer, 0, bytesRead);
+          }
+        } catch (IOException e) {
+          LOG.error("Failed to read data", e);
+        }
+      });
+    }
+
+    // Convert the final checksum to a hex string
+    byte[] hashBytes = digest.digest();
+    StringBuilder hexString = new StringBuilder();
+    for (byte b : hashBytes) {
+      hexString.append(String.format("%02x", b));
+    }
+    return hexString.toString();
   }
 }

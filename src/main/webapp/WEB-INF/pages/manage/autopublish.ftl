@@ -1,4 +1,4 @@
-<#escape x as x?html>
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.AutoPublishAction" -->
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.autopublish.title'/></title>
 
@@ -42,6 +42,7 @@
                     $('#updateFrequencyDayWrapper').show();
                     $('#frequencyDetailsAt').show();
                     $('#updateFrequencyTimeWrapper').show();
+                    $('#options').show();
                 } else if (str === "biannually") {
                     $('#introBiAnnually').show();
                     $('#helpBiAnnually').show();
@@ -50,6 +51,7 @@
                     $('#updateFrequencyDayWrapper').show();
                     $('#frequencyDetailsAt').show();
                     $('#updateFrequencyTimeWrapper').show();
+                    $('#options').show();
                 } else if (str === "monthly") {
                     $('#introMonthly').show();
                     $('#helpMonthly').show();
@@ -57,6 +59,7 @@
                     $('#updateFrequencyDayWrapper').show();
                     $('#frequencyDetailsAt').show();
                     $('#updateFrequencyTimeWrapper').show();
+                    $('#options').show();
                 } else if (str === "weekly") {
                     $('#introWeekly').show();
                     $('#helpWeekly').show();
@@ -64,15 +67,37 @@
                     $('#updateFrequencyDayOfWeekWrapper').show();
                     $('#frequencyDetailsAt').show();
                     $('#updateFrequencyTimeWrapper').show();
+                    $('#options').show();
                 } else if (str === "daily") {
                     $('#introDaily').show();
                     $('#frequencyDetailsAt').show();
                     $('#updateFrequencyTimeWrapper').show();
+                    $('#options').show();
                 } else {
                     $('#introOff').show();
+                    $('#options').hide();
                 }
 
             }).change();
+
+            function toggleThreshold() {
+                const skipDropChecked = $('#skipDrop').is(':checked');
+
+                if (skipDropChecked) {
+                    $('#dropThresholdContainer').show();
+                } else {
+                    $('#dropThresholdContainer').hide();
+                }
+            }
+
+            toggleThreshold();
+
+            $('#skipDrop').on('change', function () {
+                toggleThreshold();
+                if (!this.checked) {
+                    $('#recordsDropThreshold').val('');
+                }
+            });
         });
 
     </script>
@@ -104,7 +129,7 @@
                     </div>
 
                     <div class="mt-2">
-                        <@s.submit form="autopublish" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
+                        <input type="submit" value="Save" id="save" name="save" class="btn btn-sm btn-outline-gbif-primary top-button" form="autopublishForm">
                         <@s.submit form="autopublish" cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel"  key="button.cancel"/>
                     </div>
                 </div>
@@ -114,15 +139,15 @@
 
     <main class="container main-content-container">
         <div class="my-3 p-3">
-            <p class="text-center"><@s.text name='manage.autopublish.intro'/></p>
+            <p class=""><@s.text name='manage.autopublish.intro'/></p>
 
-            <p id="timezone" class="text-center">
+            <p id="timezone" class="">
                 <@s.text name="manage.autopublish.help.timezone">
                     <@s.param>${serverTimeZone}</@s.param>
                 </@s.text>
             </p>
 
-            <form id="autopublish" class="topForm" action="auto-publish.do" method="post">
+            <form id="autopublishForm" action="auto-publish.do" method="post">
                 <#if resource.isDeprecatedAutoPublishingConfiguration()>
                     <div class="callout callout-warning text-smaller">
                         <@s.text name='manage.overview.autopublish.deprecated.warning.description'/>
@@ -166,7 +191,7 @@
                     <#assign updateFrequencyMinute=resource.updateFrequencyMinute>
                 </#if>
 
-                <div class="row justify-content-center">
+                <div class="row">
                     <div class="form-group col-md-6 col-lg-4">
                         <label for="updateFrequency" class="form-label">
                             <@s.text name="manage.autopublish.frequency"/>
@@ -181,33 +206,33 @@
                     </div>
                 </div>
 
-                <p id="introAnnually" class="text-center">
+                <p id="introAnnually" class="">
                     <br/>
                     <@s.text name="manage.autopublish.intro.annually"/>
                 </p>
-                <p id="introDaily" class="text-center">
+                <p id="introDaily" class="">
                     <br/>
                     <@s.text name="manage.autopublish.intro.daily"/>
                 </p>
-                <p id="introBiAnnually" class="text-center">
+                <p id="introBiAnnually" class="">
                     <br/>
                     <@s.text name="manage.autopublish.intro.biannually"/>
                 </p>
-                <p id="introMonthly" class="text-center">
+                <p id="introMonthly" class="">
                     <br/>
                     <@s.text name="manage.autopublish.intro.monthly"/>
                 </p>
-                <p id="introWeekly" class="text-center">
+                <p id="introWeekly" class="">
                     <br/>
                     <@s.text name="manage.autopublish.intro.weekly"/>
                 </p>
-                <p id="introOff" class="text-center">
+                <p id="introOff" class="">
                     <br/>
                     <@s.text name="manage.autopublish.intro.off"/>
                 </p>
 
                 <div id="frequencyDetails" class="mt-2">
-                    <div class="row g-2 justify-content-center">
+                    <div class="row g-2 ">
                         <div id="updateFrequencyDayOfWeekWrapper" class="col col-sm-3 col-lg-2">
                             <select id="updateFrequencyDayOfWeek" class="form-select" name="updateFrequencyDayOfWeek" size="1">
                                 <#list daysOfWeek?keys as val>
@@ -257,10 +282,26 @@
 
                     </div>
                 </div>
+
+                <div id="options" class="mt-5">
+                    <legend class="text-gbif-header-2"><@s.text name="manage.autopublish.options"/></legend>
+
+                    <@checkbox name="skipUnchanged" value="${skipUnchanged?c}" i18nkey="manage.autopublish.options.skipUnchanged"/>
+
+                    <@checkbox name="skipDrop" value="${skipDrop?c}" i18nkey="manage.autopublish.options.skipDrop"/>
+
+                    <div id="dropThresholdContainer" class="mt-2" style="display: none;">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="recordsDropThreshold" class="form-label"><@s.text name="manage.autopublish.options.dropThreshold"/></label>
+                                <input type="number" class="form-control" name="recordsDropThreshold" id="recordsDropThreshold" min="0" max="100" step="1" value="${recordsDropThreshold!}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
 
         </div>
     </main>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

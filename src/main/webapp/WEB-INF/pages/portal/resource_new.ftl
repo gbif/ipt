@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.portal.ResourceAction" -->
-<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title>${eml.title!"IPT"}</title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -136,6 +135,7 @@
     <#if ext?? && ext.name?has_content>
         <#if ext.description?has_content>
             <#assign coreText><@s.text name='manage.overview.DwC.Mappings.cores.select'/></#assign>
+            <#assign coreText = coreText?markup_string>
             <div class="col-lg-3 ps-0 ext-tooltip" title="${ext.description}">${ext.name}&nbsp;<#if isCore>&#40;${coreText?lower_case}&#41;</#if></div>
         <#else>
             <div class="col-lg-3 ps-0">${ext.name}</div>
@@ -148,7 +148,9 @@
 <#assign anchor_citation>#anchor-citation</#assign>
 <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
 <#assign updateFrequencyTitle><@s.text name='eml.updateFrequency'/></#assign>
+<#assign updateFrequencyTitle = updateFrequencyTitle?markup_string>
 <#assign publishedOnText><@s.text name='manage.overview.published.released'/></#assign>
+<#assign publishedOnText = publishedOnText?markup_string>
 <#assign download_dwca_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
 <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
 <#assign download_rtf_url>${baseURL}/rtf.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
@@ -397,7 +399,7 @@
                                                     <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                                     <@s.text name='portal.resource.download'/>
                                                 </a>
-                                                <#if !resource.dataPackageIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                                <#if !resource.dataPackageIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?c?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                             </td>
                                         </#if>
                                     </tr>
@@ -627,13 +629,13 @@
                                     <@s.text name='portal.resource.rights.organisation'><@s.param>${resource.organisation.name}</@s.param></@s.text>
                                 </#if>
                                 <#if eml.intellectualRights.contains("CC-BY-NC")>
-                                    <#noescape><@s.text name='eml.intellectualRights.licence.ccbync'/></#noescape>
+                                    <@s.text name='eml.intellectualRights.licence.ccbync'/>
                                 <#elseif eml.intellectualRights.contains("CC-BY")>
-                                    <#noescape><@s.text name='eml.intellectualRights.licence.ccby'/></#noescape>
+                                    <@s.text name='eml.intellectualRights.licence.ccby'/>
                                 <#elseif eml.intellectualRights.contains("CC0")>
-                                    <#noescape><@s.text name='eml.intellectualRights.licence.cczero'/></#noescape>
+                                    <@s.text name='eml.intellectualRights.licence.cczero'/>
                                 <#else>
-                                    <#noescape>${eml.intellectualRights!}</#noescape>
+                                    ${eml.intellectualRights!}
                                 </#if>
                             </p>
                         </div>
@@ -775,7 +777,7 @@
                                                     <#if k.rank?lower_case == "class">
                                                         <th class="col-4">Class</th>
                                                     <#else>
-                                                        <th class="col-4">${ranks[k.rank?html]!?cap_first}</th>
+                                                        <th class="col-4">${ranks[k.rank]!?cap_first}</th>
                                                     </#if>
                                                     <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
                                                     <td>
@@ -1169,4 +1171,3 @@
 
 </script>
 
-</#escape>

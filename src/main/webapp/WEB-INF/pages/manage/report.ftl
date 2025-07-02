@@ -15,11 +15,11 @@
         <#if report.completed>
             <#if !report.hasException() >
                 <div class="alert alert-success" role="alert">
-                    ${report.state}
+                    ${report.state?no_esc}
                 </div>
             <#else>
                 <div class="alert alert-danger" role="alert">
-                    ${report.state}
+                    ${report.state?no_esc}
                 </div>
             </#if>
 
@@ -37,7 +37,7 @@
                 <@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?id=${resource.shortname}</@s.param></@s.text>
             </p>
             <div class="alert alert-warning" role="alert">
-                ${report.state}
+                ${report.state?no_esc}
             </div>
             <p>
                 <a href="cancel.do?r=${resource.shortname}"><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>.

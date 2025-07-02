@@ -1,6 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMappingAction" -->
-
-<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.mapping.title'/></title>
 <#assign currentMenu = "manage"/>
@@ -194,4 +192,3 @@
 </form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

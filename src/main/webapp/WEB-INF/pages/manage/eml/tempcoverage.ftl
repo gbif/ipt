@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#setting number_format="#####.##">
 
@@ -636,4 +635,3 @@
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

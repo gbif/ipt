@@ -16,6 +16,7 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.PublicationOptions;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.datatable.DatatableRequest;
@@ -28,7 +29,6 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.InvalidMetadataException;
 import org.gbif.ipt.service.PublicationException;
-import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.metadata.eml.InvalidEmlException;
 
@@ -48,14 +48,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.collections4.ListValuedMap;
 import org.xml.sax.SAXException;
 
-import com.google.inject.ImplementedBy;
-
 /**
  * This interface details ALL methods associated with the main resource entity.
  * The manager keeps a map of the basic metadata and authorisation information in memory, but further details like the
  * full EML or mapping configuration is stored in files and loaded into manager sessions when needed.
  */
-@ImplementedBy(ResourceManagerImpl.class)
 public interface ResourceManager {
 
   /**
@@ -242,18 +239,51 @@ public interface ResourceManager {
   int load(File resourcesDir, @Nullable User creator);
 
   /**
-   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version.
+   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
+   * DwC resources or a data package archive and a metadata file for data package resources.
    *
    * @param resource Resource
    * @param version version number of eml/rft/archive to be published
    * @param action   the action to use for logging messages to
    *
-   * @return true if a new asynchronous DwC-A generation job has been issued which requires some mapped data
+   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
    *
    * @throws PublicationException if resource was already registered
    * @throws InvalidConfigException if resource or metadata could not be saved
    */
   boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action) throws PublicationException;
+
+  /**
+   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
+   * DwC resources or a data package acrhive and a metadata file for data package resources.
+   *
+   * @param resource Resource
+   * @param version version number of eml/rft/archive to be published
+   * @param action   the action to use for logging messages to
+   * @param skipIfNotChanged do not publish a new version if it hasn't changed since last publication
+   *
+   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
+   *
+   * @throws PublicationException if resource was already registered
+   * @throws InvalidConfigException if resource or metadata could not be saved
+   */
+  boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action, boolean skipIfNotChanged) throws PublicationException;
+
+  /**
+   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
+   * DwC resources or a data package acrhive and a metadata file for data package resources.
+   *
+   * @param resource Resource
+   * @param version version number of eml/rft/archive to be published
+   * @param action   the action to use for logging messages to
+   * @param options advanced publication options
+   *
+   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
+   *
+   * @throws PublicationException if resource was already registered
+   * @throws InvalidConfigException if resource or metadata could not be saved
+   */
+  boolean publish(Resource resource, BigDecimal version, BaseAction action, PublicationOptions options) throws PublicationException;
 
   /**
    * Registers the resource with the GBIF Registry. Instead of registering a new resource, the resource can instead
@@ -399,6 +429,18 @@ public interface ResourceManager {
   ListValuedMap<String, Date> getProcessFailures();
 
   /**
+   * Return the report map.
+   *
+   * @return map of publication reports
+   */
+  Map<String, StatusReport> getProcessReports();
+
+  /**
+   * Clear the report map.
+   */
+  void clearProcessReports();
+
+  /**
    * Check if the maximum number of publish event failures has occurred for a resource.
    *
    * @param resource resource
@@ -433,4 +475,9 @@ public interface ResourceManager {
    * Update organisation name and alias for published resources.
    */
   void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias);
+
+  /**
+   * Update organisation name and alias for published resources.
+   */
+  void updateOrganisationNameForResources(Organisation organisation);
 }

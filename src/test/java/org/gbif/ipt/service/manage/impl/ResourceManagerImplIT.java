@@ -20,6 +20,7 @@ import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -90,7 +91,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ResourceManagerImplIT {
+public class ResourceManagerImplIT extends IptBaseTest {
 
   private static final Logger LOG = LogManager.getLogger(ResourceManagerImplIT.class);
   private static DataDir MOCK_DATA_DIR = mock(DataDir.class);

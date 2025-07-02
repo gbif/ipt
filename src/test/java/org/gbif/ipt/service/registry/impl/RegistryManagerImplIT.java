@@ -23,7 +23,6 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -74,13 +73,11 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
   public void setup() throws SAXException, ParserConfigurationException {
     ConfigWarnings mockConfigWarnings = mock(ConfigWarnings.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
-    RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
-    resourceManager = mock(ResourceManager.class);
 
     // manager that issues real http requests
     manager =
       new RegistryManagerImpl(cfg, dataDir, buildHttpClient(), buildSaxFactory(), mockConfigWarnings,
-        mockSimpleTextProvider, mockRegistrationManager, resourceManager);
+        mockSimpleTextProvider);
   }
 
   @Test
@@ -156,6 +153,7 @@ public class RegistryManagerImplIT extends IptMockBaseTest {
       registeredResources.add(res);
       when(resourceManager.list(PublicationStatus.REGISTERED)).thenReturn(registeredResources);
 
+      // TODO: resources are now updated separately!
       // update IPT, which updates IPT registration and all registered resources registrations also
       manager.updateIpt(ipt);
     } catch (Exception e) {

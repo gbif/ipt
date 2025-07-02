@@ -9,21 +9,17 @@
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>3.1.8-dwc-dp-SNAPSHOT</version>
+  <version>3.2.0-dwc-dp-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
   <description>The GBIF Integrated Publishing Toolkit</description>
   <url>https://github.com/gbif/ipt</url>
 
-  <!--
-   Default settings used mainly for development.
-   To build a release please use -P release
-   -->
   <properties>
-      <maven.compiler.source>11</maven.compiler.source>
-      <maven.compiler.target>11</maven.compiler.target>
-      <java.version>11</java.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <java.version>11</java.version>
 
     <!--
       maven treats properties as strings only, so we cannot negate a boolean devMode value.
@@ -38,7 +34,7 @@
     <google.maps.key />
     <ipt.baseURL />
 
-    <!-- The datadir for tests that use a guice injected DataDir object -->
+    <!-- The datadir for tests that use an injected DataDir object -->
     <test.datadir>/tmp/test-datadir</test.datadir>
 
     <!-- GBIF dependencies -->
@@ -65,14 +61,14 @@
     <frictionless.datapackage-java.version>0.9.2.2-gbif-SNAPSHOT</frictionless.datapackage-java.version>
     <frictionless.tableschema-java.version>0.9.2.2-gbif-SNAPSHOT</frictionless.tableschema-java.version>
     <gson.version>2.13.1</gson.version>
-    <guava.version>20.0</guava.version>
-    <guice.version>4.2.3</guice.version>
+    <guava.version>31.0.1-jre</guava.version>
     <httpclient.version>4.5.14</httpclient.version>
     <httpcore.version>4.4.16</httpcore.version>
     <jackson.version>2.15.1</jackson.version> <!-- Fixed to the version used in tableschema-java -->
     <jackson-dataformat-yaml.version>2.14.0</jackson-dataformat-yaml.version> <!-- Fixed to 2.14.0 for now because of issues with jackson-datatype-jts -->
     <jackson-datatype-jts.version>2.14</jackson-datatype-jts.version>
     <javassist.version>3.12.1.GA</javassist.version>
+    <javax.inject.version>1</javax.inject.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.19.4</jersey.version>
     <jetty-maven-plugin.version>9.4.57.v20241219</jetty-maven-plugin.version>
@@ -83,8 +79,8 @@
     <mockito.version>4.11.0</mockito.version>
     <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
-    <servlet-api.version>3.0.1</servlet-api.version>
-    <struts2.version>2.5.33</struts2.version>
+    <servlet-api.version>3.1.0</servlet-api.version>
+    <struts2.version>6.7.4</struts2.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
     <jakarta.el.version>3.0.4</jakarta.el.version>
@@ -424,13 +420,6 @@
       <groupId>org.apache.struts</groupId>
       <artifactId>struts2-core</artifactId>
       <version>${struts2.version}</version>
-      <exclusions>
-        <!-- not needed - we use guice -->
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-test</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <!-- serializes actions into JSON, and used for inventory -->
     <dependency>
@@ -451,46 +440,13 @@
       <version>${freemarker.version}</version>
     </dependency>
 
-    <!-- Guice provides the code based (not XML based) injection dependency framework -->
+    <!-- Spring DI -->
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>${guice.version}</version>
-      <exclusions>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts2-spring-plugin</artifactId>
+      <version>${struts2.version}</version>
+    </dependency>
 
-        <!-- superseded by guava and causing exceptions under tomcat6 -->
-        <!--
-          java.lang.NoSuchMethodError com.google.common.collect.ImmutableList.copyOf(Ljava/util/Collection;)
-        -->
-        <exclusion>
-          <groupId>com.google.code.google-collections</groupId>
-          <artifactId>google-collect</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <!-- connector to use guice natively with struts2 -->
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-struts2</artifactId>
-      <version>${guice.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-assistedinject</artifactId>
-      <version>${guice.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-servlet</artifactId>
-      <version>${guice.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -508,6 +464,11 @@
       <artifactId>javax.servlet-api</artifactId>
       <version>${servlet-api.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>${javax.inject.version}</version>
     </dependency>
 
     <!-- Accessing different external databases to suck in data alternatively to text files -->

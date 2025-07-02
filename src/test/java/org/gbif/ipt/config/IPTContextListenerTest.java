@@ -15,13 +15,14 @@ package org.gbif.ipt.config;
 
 import java.util.regex.Pattern;
 
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class IPTContextListenerTest {
-  Pattern regex = Pattern.compile(IPTContextListener.ALL_BUT_AUTHENTICATED);
+public class IPTContextListenerTest extends IptBaseTest {
+  Pattern regex = Pattern.compile("^(?!.*/(manage|admin)/).*");
 
   /**
    * Make sure the regex used to apply the xss filter only fires on all urls not having manage or admin in the path.

@@ -57,13 +57,15 @@ public class StatusReport {
   }
 
   public String getExceptionMessage() {
-    return exception.getMessage();
+    return exception != null ? exception.getMessage() : null;
   }
 
   public List<String> getExceptionStacktrace() {
-    List<String> trace = new ArrayList<String>();
-    for (StackTraceElement el : exception.getStackTrace()) {
-      trace.add(el.toString());
+    List<String> trace = new ArrayList<>();
+    if (exception != null) {
+      for (StackTraceElement el : exception.getStackTrace()) {
+        trace.add(el.toString());
+      }
     }
     return trace;
   }

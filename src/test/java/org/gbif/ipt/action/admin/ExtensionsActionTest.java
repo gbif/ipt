@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.admin;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
@@ -61,7 +62,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("HttpUrlsUsage")
-public class ExtensionsActionTest {
+public class ExtensionsActionTest extends IptBaseTest {
 
   ExtensionsAction action;
   List<Extension> extensions;
@@ -82,8 +83,7 @@ public class ExtensionsActionTest {
     // create instance of RegistryManager
     RegistryManager registryManager =
       new RegistryManagerImpl(mock(AppConfig.class), mock(DataDir.class), mockHttpClient, mock(SAXParserFactory.class),
-        mock(ConfigWarnings.class), mock(SimpleTextProvider.class), mock(RegistrationManager.class), mock(
-        ResourceManager.class));
+        mock(ConfigWarnings.class), mock(SimpleTextProvider.class));
 
     // load list of all registered extensions
     extensions = registryManager.getExtensions();
@@ -91,7 +91,7 @@ public class ExtensionsActionTest {
     // create instance of action
     action = new ExtensionsAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
       mock(RegistrationManager.class), mock(ExtensionManager.class), mock(VocabulariesManager.class),
-      registryManager, mock(ConfigWarnings.class));
+      registryManager, mock(ConfigWarnings.class), mock(ResourceManager.class));
   }
 
   @Test

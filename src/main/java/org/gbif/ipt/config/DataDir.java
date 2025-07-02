@@ -34,8 +34,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Singleton;
-
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
@@ -46,7 +44,6 @@ import static org.gbif.ipt.config.Constants.DWC_ARCHIVE_NAME;
  * A very simple utility class to encapsulate the basic layout of the data directory and to configure & persist the
  * path for that directory and make it available to the entire application.
  */
-@Singleton
 public class DataDir {
 
   public static final String LOGGING_DIR = "logs";
@@ -248,6 +245,17 @@ public class DataDir {
   public File resourceDwcaFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = DWC_ARCHIVE_NAME + "-" + version.toPlainString() + DWC_ARCHIVE_EXTENSION;
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + fn);
+  }
+
+  /**
+   * Retrieves published DwC-A file or data package for a specific version of a resource.
+   */
+  public File resourceArchiveFile(@NotNull Resource resource, @NotNull BigDecimal version) {
+    if (resource.isDataPackage()) {
+      return resourceDataPackageFile(resource.getShortname(), version);
+    } else {
+      return resourceDwcaFile(resource.getShortname(), version);
+    }
   }
 
   /**

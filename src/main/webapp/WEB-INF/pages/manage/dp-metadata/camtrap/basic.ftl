@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.datapackagemetadata.camtrap.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -589,7 +588,9 @@
 
                         <div class="my-md-3 p-3">
                             <#assign removeContributorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.contributor'/></#assign>
+                            <#assign removeContributorLink = removeContributorLink?markup_string>
                             <#assign addContributorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.contributor'/></#assign>
+                            <#assign addContributorLink = addContributorLink?markup_string>
 
                             <!-- List of Contributors -->
                             <div>
@@ -710,7 +711,9 @@
 
                         <div class="my-md-3 p-3">
                             <#assign removeSourceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.source'/></#assign>
+                            <#assign removeSourceLink = removeSourceLink?markup_string>
                             <#assign addSourceLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.source'/></#assign>
+                            <#assign addSourceLink = addSourceLink?markup_string>
 
                             <!-- List of Sources -->
                             <div>
@@ -842,4 +845,3 @@
     </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

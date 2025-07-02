@@ -14,6 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
@@ -40,7 +41,9 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -63,7 +66,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TranslationActionTest {
+public class TranslationActionTest extends IptBaseTest {
 
   TranslationAction action;
 
@@ -76,7 +79,6 @@ public class TranslationActionTest {
     ResourceManager mockResourceManager = mock(ResourceManager.class);
     SourceManager mockSourceManager = mock(SourceManager.class);
     VocabulariesManager mockVocabManager = mock(VocabulariesManager.class);
-    TranslationAction.Translation translation = new TranslationAction.Translation();
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     Container container = mock(Container.class);
 
@@ -151,11 +153,19 @@ public class TranslationActionTest {
     // mock a locale provider
     when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
+    // mock textProvider getTexts
+    ResourceBundle mockResourceBundle = mock(ResourceBundle.class);
+    when(mockTextProvider.getTexts(any())).thenReturn(mockResourceBundle);
+    when(mockResourceBundle.getLocale()).thenReturn(Locale.ENGLISH);
+
     // create mock Action
     action =
       new TranslationAction(mockTextProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockSourceManager,
-        mockVocabManager, translation);
+        mockVocabManager);
     action.setContainer(container);
+
+    // empty session params
+    action.setSession(new HashMap<>());
 
     // initialize ExtensionProperty representing BasisOfRecord field on Occurrence core Extension
     ExtensionProperty property = mapping.getExtension().getProperty(field.getTerm());

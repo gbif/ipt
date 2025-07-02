@@ -24,11 +24,11 @@ import org.gbif.ipt.service.manage.ResourceManager;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.dispatcher.Parameter;
 
-import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
@@ -40,7 +40,6 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
 
   private static final long serialVersionUID = 2340800191217429210L;
 
-  @Inject
   private ResourceManager resourceManager;
 
   @Override
@@ -132,5 +131,10 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
     }
 
     return version;
+  }
+
+  @Inject
+  public void setResourceManager(ResourceManager resourceManager) {
+    this.resourceManager = resourceManager;
   }
 }

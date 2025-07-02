@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.validation;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.admin.OrganisationsAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -34,14 +35,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class OrganisationSupportTest {
+public class OrganisationSupportTest extends IptBaseTest {
 
   private static final String ORGANISATION_KEY = UUID.fromString("dce7a3c9-ea78-4be7-9abc-e3838de70dc5").toString();
   private static final String VALID_ORGANISATION_PASSWORD = "password";
   private static final OrganisationsAction action =
     new OrganisationsAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-      mock(OrganisationSupport.class), mock(OrganisationsAction.RegisteredOrganisations.class),
-      mock(ResourceManager.class));
+      mock(OrganisationSupport.class), mock(ResourceManager.class), mock(RegistryManager.class));
 
   public static Stream<Arguments> data() {
     // config in production mode

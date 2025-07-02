@@ -14,19 +14,15 @@
 package org.gbif.ipt.service.admin;
 
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.ConfigManagerImpl;
 
 import java.io.File;
 import java.net.URL;
-
-import com.google.inject.ImplementedBy;
 
 /**
  * This interface details ALL methods associated with an IPT configuration.
  * This includes configuration such as the deployment URL, the data directory
  * etc.
  */
-@ImplementedBy(ConfigManagerImpl.class)
 public interface ConfigManager {
 
   /**

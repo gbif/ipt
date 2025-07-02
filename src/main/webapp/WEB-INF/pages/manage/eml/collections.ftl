@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.collections.title'/></title>
@@ -190,9 +189,13 @@
 
                             <!-- retrieve some link names one time -->
                             <#assign removeCollectionLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.collection'/></#assign>
+                            <#assign removeCollectionLink = removeCollectionLink?markup_string>
                             <#assign addCollectionLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.collection'/></#assign>
+                            <#assign addCollectionLink = addCollectionLink?markup_string>
                             <#assign removeSpecimenPreservationMethodLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.specimenPreservationMethod.short'/></#assign>
+                            <#assign removeSpecimenPreservationMethodLink = removeSpecimenPreservationMethodLink?markup_string>
                             <#assign addSpecimenPreservationMethodLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.specimenPreservationMethod.short'/></#assign>
+                            <#assign addSpecimenPreservationMethodLink = addSpecimenPreservationMethodLink?markup_string>
 
                         </div>
 
@@ -443,4 +446,3 @@
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

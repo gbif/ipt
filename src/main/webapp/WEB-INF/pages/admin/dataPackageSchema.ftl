@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.admin.DataPackageSchemaAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageDataPackageSchemas"/></title>
     <script>
@@ -86,9 +85,7 @@
 <#--    1. Interpret backticked text as code-->
 <#--    2. Interpret text like []() as a link-->
     <#macro processDescription description>
-        <#noescape>
-            ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")}
-        </#noescape>
+       ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")}
     </#macro>
 
     <div class="container px-0">
@@ -293,4 +290,3 @@
     </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

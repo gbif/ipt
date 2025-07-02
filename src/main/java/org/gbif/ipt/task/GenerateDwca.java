@@ -77,8 +77,6 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import org.xml.sax.SAXException;
 
 public class GenerateDwca extends ReportingTask implements Callable<Map<String, Integer>> {
@@ -141,9 +139,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     DWC_MULTI_VALUE_TERMS = Collections.unmodifiableSet(dwcTermsInternal);
   }
 
-  @Inject
-  public GenerateDwca(@Assisted Resource resource, @Assisted ReportHandler handler, DataDir dataDir,
-    SourceManager sourceManager, AppConfig cfg, VocabulariesManager vocabManager) throws IOException {
+  public GenerateDwca(Resource resource, ReportHandler handler, DataDir dataDir,
+    SourceManager sourceManager, AppConfig cfg, VocabulariesManager vocabManager) {
     super(1000, resource.getShortname(), handler, dataDir);
     this.resource = resource;
     this.sourceManager = sourceManager;

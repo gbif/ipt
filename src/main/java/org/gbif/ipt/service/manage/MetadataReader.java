@@ -13,15 +13,10 @@
  */
 package org.gbif.ipt.service.manage;
 
-import org.gbif.ipt.service.manage.impl.MetadataReaderImpl;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.google.inject.ImplementedBy;
-
-@ImplementedBy(MetadataReaderImpl.class)
 public interface MetadataReader {
 
   /**

@@ -1,5 +1,4 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMetadataAction" -->
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -24,7 +23,6 @@
 
             $("#plus-source").click(function (event) {
                 event.preventDefault();
-                console.log("plus source triggered")
                 addNewSourceItem(true);
             });
 
@@ -48,7 +46,6 @@
             }
 
             function addNewSourceItem(effects) {
-                console.log("add new source triggered")
                 var newItem = $('#baseItem-source').clone();
                 if (effects) newItem.hide();
                 newItem.appendTo('#source-items');
@@ -526,4 +523,3 @@
     </div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

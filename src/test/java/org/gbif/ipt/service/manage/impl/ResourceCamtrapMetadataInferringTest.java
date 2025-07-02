@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
@@ -50,7 +51,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ResourceCamtrapMetadataInferringTest {
+public class ResourceCamtrapMetadataInferringTest extends IptBaseTest {
 
   @Mock
   private SourceManager sourceManagerMock;

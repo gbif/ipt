@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.portal;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
 
@@ -22,7 +23,7 @@ import java.net.URL;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class ResourceFileActionTest {
+public class ResourceFileActionTest extends IptBaseTest {
 
   /**
    * Manual test to tryout the conditional get archive download

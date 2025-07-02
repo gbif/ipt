@@ -41,6 +41,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
@@ -52,10 +53,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configuration;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
-@Singleton
 public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   private final UserAccountManager userManager;
@@ -73,11 +70,18 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private static final String DEPRECATED_VOCAB_PERSISTENCE_FILE = "vocabularies.xml";
 
   @Inject
-  public ConfigManagerImpl(DataDir dataDir, AppConfig cfg, UserAccountManager userManager,
-                           ResourceManager resourceManager, ExtensionManager extensionManager,
-                           VocabulariesManager vocabManager, DataPackageSchemaManager schemaManager,
-                           RegistrationManager registrationManager, ConfigWarnings warnings, HttpClient client,
-                           PublishingMonitor publishingMonitor) {
+  public ConfigManagerImpl(
+      DataDir dataDir,
+      AppConfig cfg,
+      UserAccountManager userManager,
+      ResourceManager resourceManager,
+      ExtensionManager extensionManager,
+      VocabulariesManager vocabManager,
+      DataPackageSchemaManager schemaManager,
+      RegistrationManager registrationManager,
+      ConfigWarnings warnings,
+      HttpClient client,
+      PublishingMonitor publishingMonitor) {
     super(cfg, dataDir);
     this.userManager = userManager;
     this.resourceManager = resourceManager;

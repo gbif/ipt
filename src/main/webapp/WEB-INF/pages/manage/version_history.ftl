@@ -1,4 +1,3 @@
-<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.history.title'/></title>
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
@@ -55,11 +54,17 @@
                 </p>
 
                 <#assign versionTitle><@s.text name="manage.overview.published.version"/></#assign>
+                <#assign versionTitle = versionTitle?markup_string>
                 <#assign releasedTitle><@s.text name="manage.overview.published.released"/></#assign>
+                <#assign releasedTitle = releasedTitle?markup_string>
                 <#assign recordsTitle><@s.text name="portal.home.records"/></#assign>
+                <#assign recordsTitle = recordsTitle?markup_string>
                 <#assign modifiedTitle><@s.text name="portal.home.modifiedBy"/></#assign>
+                <#assign modifiedTitle = modifiedTitle?markup_string>
                 <#assign summaryTitle><@s.text name="portal.home.summary"/></#assign>
+                <#assign summaryTitle = summaryTitle?markup_string>
                 <#assign doiTitle><@s.text name="portal.home.doi"/></#assign>
+                <#assign doiTitle = doiTitle?markup_string>
                 <#assign none><@s.text name="basic.none"/></#assign>
                 <#assign emptyPlaceholder="-"/>
 
@@ -121,4 +126,3 @@
 </main>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

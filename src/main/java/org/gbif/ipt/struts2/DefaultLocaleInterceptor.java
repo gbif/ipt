@@ -19,14 +19,15 @@ import java.util.Locale;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import com.google.inject.Inject;
+
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+
+import javax.inject.Inject;
 
 public class DefaultLocaleInterceptor extends AbstractInterceptor {
 
     private static final long serialVersionUID = -5106569324133156303L;
-    @Inject
     private AppConfig cfg;
 
     @Override
@@ -37,8 +38,13 @@ public class DefaultLocaleInterceptor extends AbstractInterceptor {
                 .filter(cfg::isSupportedLocale)
                 .orElse(Locale.UK);
 
-        invocation.getInvocationContext().setLocale(locale);
+        invocation.getInvocationContext().withLocale(locale);
 
         return invocation.invoke();
+    }
+
+    @Inject
+    public void setCfg(AppConfig cfg) {
+        this.cfg = cfg;
     }
 }

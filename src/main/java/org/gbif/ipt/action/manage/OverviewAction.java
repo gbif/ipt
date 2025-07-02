@@ -83,7 +83,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,8 +98,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -112,7 +111,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import com.google.inject.Inject;
+import lombok.Getter;
+import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
@@ -133,47 +133,83 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private static final String PUBLISHING = "publishing";
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
 
+  @Getter
   private List<User> potentialManagers;
   private List<KeyNamePair> allNetworks = new ArrayList<>();
+  @Getter
   private List<KeyNamePair> potentialNetworks = new ArrayList<>();
+  @Getter
   private List<Extension> potentialCores;
+  @Getter
   private List<Extension> potentialExtensions;
+  @Getter
   private List<Organisation> organisations;
   private Organisation doiAccount;
+  @Setter
+  @Getter
   private String publishingOrganizationKey;
   private final EmlValidator emlValidator;
   private final DataPackageMetadataValidator dataPackageMetadataValidator;
+  @Getter
   private boolean missingMetadata;
   private boolean missingRegistrationMetadata;
+
+  // true if resource is missing valid publishing organisation, false otherwise.
+  @Getter
   private boolean missingValidPublishingOrganisation;
+  // true if metadata has been modified since last publication, false otherwise
+  @Getter
   private boolean metadataModifiedSinceLastPublication;
+  // true if source mappings has been modified since last publication, false otherwise.
+  @Getter
   private boolean mappingsModifiedSinceLastPublication;
+  // true if sources have been modified since last publication, false otherwise.
+  @Getter
   private boolean sourcesModifiedSinceLastPublication;
+  @Getter
   private Map<String, String> autoPublishFrequencies;
+  @Getter
   private StatusReport report;
+  @Getter
   private Date now;
+  @Setter
+  @Getter
   private File emlFile;
+  @Setter
   private File datapackageMetadataFile;
+  @Getter
   private String datapackageMetadataRaw;
   private boolean unpublish = false;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
   private boolean undelete = false;
   private boolean publish = false;
+  @Setter
+  @Getter
   private boolean validateEml = false;
+  @Getter
   private boolean networksAvailable = true;
-
+  @Setter
+  @Getter
   private boolean validateDatapackageMetadata = false;
   private String summary;
+  @Setter
+  @Getter
   private String makePublicDateTime;
+  @Getter
   private long usableSpace;
+  @Getter
   private String freeDiscSpaceReadable;
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
   private GenerateDataPackageFactory dataPackageFactory;
+  @Getter
   private List<String> columns;
+  @Getter
   private List<String[]> peek;
+  @Setter
+  @Getter
   private Integer mid;
   private static final int PEEK_ROWS = 100;
 
@@ -184,10 +220,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final DataPackageSchemaManager schemaManager;
 
   @Inject
-  public OverviewAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, UserAccountManager userAccountManager, ExtensionManager extensionManager,
-    GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory, VocabulariesManager vocabManager,
-    RegistryManager registryManager, DataPackageSchemaManager schemaManager) {
+  public OverviewAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      UserAccountManager userAccountManager,
+      ExtensionManager extensionManager,
+      GenerateDwcaFactory dwcaFactory,
+      GenerateDataPackageFactory dataPackageFactory,
+      VocabulariesManager vocabManager,
+      RegistryManager registryManager,
+      DataPackageSchemaManager schemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
@@ -736,37 +780,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return missingRegistrationMetadata;
   }
 
-  /**
-   * @return true if resource is missing valid publishing organisation, false otherwise.
-   */
-  public boolean isMissingValidPublishingOrganisation() {
-    return missingValidPublishingOrganisation;
-  }
-
-  public Date getNow() {
-    return now;
-  }
-
-  public List<Organisation> getOrganisations() {
-    return organisations;
-  }
-
-  public List<Extension> getPotentialCores() {
-    return potentialCores;
-  }
-
-  public List<Extension> getPotentialExtensions() {
-    return potentialExtensions;
-  }
-
-  public List<User> getPotentialManagers() {
-    return potentialManagers;
-  }
-
-  public List<KeyNamePair> getPotentialNetworks() {
-    return potentialNetworks;
-  }
-
   public List<Network> getResourceNetworks() {
     try {
       return registryManager.getResourceNetworks(resource);
@@ -774,10 +787,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error("Failed to display resource's networks");
       return Collections.emptyList();
     }
-  }
-
-  public StatusReport getReport() {
-    return report;
   }
 
   /**
@@ -805,10 +814,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource.getOrganisation() == null) {
       return false;
     } else return !resource.getOrganisation().getKey().equals(Constants.DEFAULT_ORG_KEY);
-  }
-
-  public boolean isMissingMetadata() {
-    return missingMetadata;
   }
 
   public String locked() throws Exception {
@@ -1615,7 +1620,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
       if (emlFile.exists()) {
         try {
-          LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+          LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
           InputStream in = new FileInputStream(emlFile);
           Eml eml = EmlFactory.build(in);
           return eml.parseLicenseUrl();
@@ -1672,30 +1677,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    */
   public void setPublish(String publish) {
     this.publish = StringUtils.trimToNull(publish) != null;
-  }
-
-  public boolean isValidateEml() {
-    return validateEml;
-  }
-
-  public void setValidateEml(boolean validateEml) {
-    this.validateEml = validateEml;
-  }
-
-  public boolean isValidateDatapackageMetadata() {
-    return validateDatapackageMetadata;
-  }
-
-  public void setValidateDatapackageMetadata(boolean validateDatapackageMetadata) {
-    this.validateDatapackageMetadata = validateDatapackageMetadata;
-  }
-
-  public void setEmlFile(File emlFile) {
-    this.emlFile = emlFile;
-  }
-
-  public void setDatapackageMetadataFile(File datapackageMetadataFile) {
-    this.datapackageMetadataFile = datapackageMetadataFile;
   }
 
   public String replaceEml() {
@@ -1769,37 +1750,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       sb.append("0 failed publications");
     }
     LOG.debug(sb.toString());
-  }
-
-  /**
-   * Called from manage resource page.
-   *
-   * @return true if metadata has been modified since last publication, false otherwise
-   */
-  public boolean isMetadataModifiedSinceLastPublication() {
-    return metadataModifiedSinceLastPublication;
-  }
-
-  /**
-   * Called from manage resource page.
-   *
-   * @return true if source mappings has been modified since last publication, false otherwise.
-   */
-  public boolean isMappingsModifiedSinceLastPublication() {
-    return mappingsModifiedSinceLastPublication;
-  }
-
-  /**
-   * Called from manage resource page.
-   *
-   * @return true if sources have been modified since last publication, false otherwise.
-   */
-  public boolean isSourcesModifiedSinceLastPublication() {
-    return sourcesModifiedSinceLastPublication;
-  }
-
-  public Map<String, String> getAutoPublishFrequencies() {
-    return autoPublishFrequencies;
   }
 
   /**
@@ -1883,22 +1833,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return SUCCESS;
   }
 
-  public List<String[]> getPeek() {
-    return peek;
-  }
-
-  public List<String> getColumns() {
-    return columns;
-  }
-
-  public Integer getMid() {
-    return mid;
-  }
-
-  public void setMid(Integer mid) {
-    this.mid = mid;
-  }
-
   @Override
   public void report(String resourceShortname, StatusReport report) {
     this.report = report;
@@ -1928,44 +1862,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return StringUtils.trimToNull(summary);
   }
 
-  public String getMakePublicDateTime() {
-    return makePublicDateTime;
-  }
-
-  public void setMakePublicDateTime(String makePublicDateTime) {
-    this.makePublicDateTime = makePublicDateTime;
-  }
-
-  public long getUsableSpace() {
-    return usableSpace;
-  }
-
-  public String getFreeDiscSpaceReadable() {
-    return freeDiscSpaceReadable;
-  }
-
   public boolean isDataPackageResource() {
     return resource.getDataPackageIdentifier() != null;
   }
 
   public boolean isDataPackageMappingsMissing() {
-    return resource.getDataPackageMappings().size() == 0;
-  }
-
-  public String getPublishingOrganizationKey() {
-    return publishingOrganizationKey;
-  }
-
-  public void setPublishingOrganizationKey(String publishingOrganizationKey) {
-    this.publishingOrganizationKey = publishingOrganizationKey;
-  }
-
-  public boolean isNetworksAvailable() {
-    return networksAvailable;
-  }
-
-  public String getDatapackageMetadataRaw() {
-    return datapackageMetadataRaw;
+    return resource.getDataPackageMappings().isEmpty();
   }
 
   /**

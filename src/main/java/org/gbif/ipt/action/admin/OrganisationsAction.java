@@ -31,16 +31,17 @@ import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
-import com.google.inject.servlet.SessionScoped;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * The Action responsible for all user input relating to the organisations allowed in the IPT.
@@ -50,55 +51,18 @@ public class OrganisationsAction extends POSTAction {
   // logging
   private static final Logger LOG = LogManager.getLogger(OrganisationsAction.class);
 
-  /**
-   * A session scoped cache of the organisations from the GBIF registry.
-   */
-  @SessionScoped
-  public static class RegisteredOrganisations {
-
-    private List<Organisation> organisations = new ArrayList<>();
-    private final RegistryManager registryManager;
-
-    @Inject
-    public RegisteredOrganisations(RegistryManager registryManager) {
-      this.registryManager = registryManager;
-    }
-
-    public boolean isLoaded() {
-      return !organisations.isEmpty();
-    }
-
-    /**
-     * Invalidates the session scoped cache of organisations.
-     */
-    public void clearCache() {
-      organisations = new ArrayList<>();
-    }
-
-    public void load() throws RuntimeException {
-      LOG.debug("getting list of organisations from registry");
-
-      List<Organisation> tempOrganisations;
-      tempOrganisations = registryManager.getOrganisations();
-
-      // empty <option></option> needed by Select2 jquery library, to be able to display placeholder "Select an org.."
-      Organisation o = new Organisation();
-      o.setName("");
-      organisations.add(o);
-
-      organisations.addAll(tempOrganisations);
-      LOG.debug("organisations returned: " + organisations.size());
-    }
-  }
-
   private static final long serialVersionUID = 7297470324204084809L;
 
+  private static final String SESSION_ORGANISATIONS_KEY = "organisations";
+  private static final String SESSION_ORGANISATIONS_LAST_UPDATED_KEY = "organisations.lastUpdated";
+
+  private RegistryManager registryManager;
   private ResourceManager resourceManager;
   private final OrganisationSupport organisationValidation;
 
   private Organisation organisation;
+  private List<Organisation> organisations = new ArrayList<>();
   private List<Organisation> linkedOrganisations;
-  private final RegisteredOrganisations orgSession;
   private Boolean synchronise = false;
   private boolean organisationWithDoiRegistrationAgencyPresent = false;
 
@@ -109,13 +73,45 @@ public class OrganisationsAction extends POSTAction {
   }
 
   @Inject
-  public OrganisationsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                             OrganisationSupport organisationValidation, RegisteredOrganisations orgSession,
-                             ResourceManager resourceManager) {
+  public OrganisationsAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      OrganisationSupport organisationValidation,
+      ResourceManager resourceManager,
+      RegistryManager registryManager) {
     super(textProvider, cfg, registrationManager);
     this.organisationValidation = organisationValidation;
-    this.orgSession = orgSession;
     this.resourceManager = resourceManager;
+    this.registryManager = registryManager;
+  }
+
+  private void loadOrganisations() {
+    HttpSession session = ServletActionContext.getRequest().getSession();
+    List<Organisation> sessionOrganisations = (List<Organisation>) session.getAttribute(SESSION_ORGANISATIONS_KEY);
+
+    if (sessionOrganisations == null) {
+      LOG.debug("Fetching list of organisations from registry");
+      try {
+        organisations = registryManager.getOrganisations();
+        LOG.debug("Organisations returned from the Registry: {}", organisations.size());
+
+        // empty <option></option> needed by Select2 jquery library, to be able to display placeholder "Select an org.."
+        Organisation o = new Organisation();
+        o.setName("");
+        organisations.add(0, o);
+        session.setAttribute(SESSION_ORGANISATIONS_KEY, organisations);
+        session.setAttribute(SESSION_ORGANISATIONS_LAST_UPDATED_KEY, new Date());
+      } catch (RegistryException e) {
+        LOG.error("Failed to load organisations", e);
+        addActionError("Failed to load organisations");
+        organisations = new ArrayList<>();
+      }
+    }
+  }
+
+  private void clearCache() {
+    organisations = new ArrayList<>();
   }
 
   /**
@@ -128,12 +124,13 @@ public class OrganisationsAction extends POSTAction {
   @Override
   public String delete() {
     try {
-      Organisation removedOrganisation = registrationManager.delete(id);
+      List<Resource> resources = resourceManager.list();
+      Organisation removedOrganisation = registrationManager.delete(id, resources);
       if (removedOrganisation == null) {
         return NOT_FOUND;
       }
       // force a reload of the cached organisation
-      orgSession.clearCache();
+      clearCache();
       registrationManager.save();
       addActionMessage(getText("admin.organisation.deleted"));
       return SUCCESS;
@@ -168,11 +165,11 @@ public class OrganisationsAction extends POSTAction {
    * @return all non-deleted registered organisations in GBIF Registry, excluding those already associated to the IPT.
    */
   public List<Organisation> getOrganisations() {
-    List<Organisation> allOrganisations = orgSession.organisations;
-    for (Organisation linkedOrganisation : getLinkedOrganisations()) {
-      allOrganisations.remove(linkedOrganisation);
-    }
-    return allOrganisations;
+    loadOrganisations();
+    List<Organisation> filteredOrganisations = new ArrayList<>(organisations);
+    filteredOrganisations.removeAll(linkedOrganisations);
+
+    return filteredOrganisations;
   }
 
   public String getRegistryURL() {
@@ -194,14 +191,12 @@ public class OrganisationsAction extends POSTAction {
   public void prepare() {
     super.prepare();
     // load orgs from registry if not done yet
-    if (!orgSession.isLoaded()) {
-      try {
-        orgSession.load();
-      } catch (RegistryException e) {
-        String msg = getText("admin.registration.error.registry");
-        LOG.error(msg, e);
-        addActionError(msg);
-      }
+    try {
+      loadOrganisations();
+    } catch (RegistryException e) {
+      String msg = getText("admin.registration.error.registry");
+      LOG.error(msg, e);
+      addActionError(msg);
     }
     linkedOrganisations = registrationManager.listAll();
 
@@ -241,10 +236,12 @@ public class OrganisationsAction extends POSTAction {
           return INPUT;
         }
         registrationManager.addAssociatedOrganisation(organisation);
+        resourceManager.updateOrganisationNameForResources(organisation);
         addActionMessage(getText("admin.organisation.associated.ipt"));
       } else {
         // update associated organisations
         registrationManager.addAssociatedOrganisation(organisation);
+        resourceManager.updateOrganisationNameForResources(organisation);
         addActionMessage(getText("admin.organisation.updated.ipt"));
       }
       registrationManager.save();

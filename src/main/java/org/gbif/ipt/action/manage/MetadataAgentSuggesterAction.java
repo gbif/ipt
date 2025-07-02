@@ -26,11 +26,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.json.annotations.JSON;
-
-import com.google.inject.Inject;
 
 public class MetadataAgentSuggesterAction extends ManagerBaseAction {
 
@@ -40,8 +39,11 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
   public Map<String, Agent> suggestedAgents = new HashMap<>();
 
   @Inject
-  public MetadataAgentSuggesterAction(SimpleTextProvider textProvider, AppConfig cfg,
-                                      RegistrationManager registrationManager, ResourceManager resourceManager) {
+  public MetadataAgentSuggesterAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
   }
 

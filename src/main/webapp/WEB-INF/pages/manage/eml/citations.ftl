@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
@@ -158,7 +157,9 @@
 
                             <!-- retrieve some link names one time -->
                             <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.citations.item'/></#assign>
+                            <#assign removeLink = removeLink?markup_string>
                             <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.citations.item'/></#assign>
+                            <#assign addLink = addLink?markup_string>
 
                             <div class="row g-3">
                                 <div class="mt-4 d-flex justify-content-end">
@@ -256,4 +257,3 @@
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

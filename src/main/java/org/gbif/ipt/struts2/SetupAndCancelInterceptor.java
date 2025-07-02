@@ -20,13 +20,13 @@ import org.gbif.ipt.service.admin.ConfigManager;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
 
-import com.google.inject.Inject;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 
@@ -46,9 +46,7 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
 
   public static final String SETUP_RESULTNAME = "setupIncomplete";
 
-  @Inject
   private ConfigManager configManager;
-  @Inject
   private ConfigWarnings warnings;
 
   @Override
@@ -104,5 +102,15 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
     }
 
     return invocation.invoke();
+  }
+
+  @Inject
+  public void setConfigManager(ConfigManager configManager) {
+    this.configManager = configManager;
+  }
+
+  @Inject
+  public void setWarnings(ConfigWarnings warnings) {
+    this.warnings = warnings;
   }
 }

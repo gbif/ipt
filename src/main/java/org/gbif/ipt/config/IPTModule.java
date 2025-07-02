@@ -13,15 +13,6 @@
  */
 package org.gbif.ipt.config;
 
-import org.gbif.ipt.model.factory.ExtensionFactory;
-import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
-import org.gbif.ipt.model.factory.VocabularyFactory;
-import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.task.GenerateDataPackage;
-import org.gbif.ipt.task.GenerateDataPackageFactory;
-import org.gbif.ipt.task.GenerateDwca;
-import org.gbif.ipt.task.GenerateDwcaFactory;
-import org.gbif.ipt.task.ReportingTask;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.PBEEncrypt;
 import org.gbif.ipt.utils.PBEEncrypt.EncryptionException;
@@ -36,17 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.Scopes;
-import com.google.inject.Singleton;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
@@ -54,9 +40,9 @@ import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 
 /**
- * A guice module containing wiring used for both test and production.
+ * A Spring bean containing wiring used for both test and production.
  */
-public class IPTModule extends AbstractModule {
+public class IPTModule {
 
   private static final Logger LOG = LogManager.getLogger(IPTModule.class);
 
@@ -66,29 +52,14 @@ public class IPTModule extends AbstractModule {
   protected static final int MAX_CONNECTIONS = 100;
   protected static final int MAX_PER_ROUTE = 10;
 
-  @Override
-  protected void configure() {
-    // singletons
-    bind(AppConfig.class);
-    bind(InputStreamUtils.class).in(Scopes.SINGLETON);
-    bind(SimpleTextProvider.class).in(Scopes.SINGLETON);
-    bind(ExtensionFactory.class);
-    bind(VocabularyFactory.class).in(Scopes.SINGLETON);
+  private ServletContext servletContext;
 
-    // prototypes
-    bind(ThesaurusHandlingRule.class).in(Scopes.NO_SCOPE);
-
-    // assisted inject factories
-    install(
-      new FactoryModuleBuilder().implement(ReportingTask.class, GenerateDwca.class).build(GenerateDwcaFactory.class));
-    install(
-        new FactoryModuleBuilder().implement(ReportingTask.class, GenerateDataPackage.class).build(GenerateDataPackageFactory.class));
-
+  @Inject
+  public void setServletContext(ServletContext servletContext) {
+    this.servletContext = servletContext;
   }
 
-  @Provides
-  @Singleton
-  public DataDir provideDataDir(ServletContext ctx) {
+  public DataDir provideDataDir() {
     DataDir dd;
 
     /*
@@ -98,7 +69,7 @@ public class IPTModule extends AbstractModule {
      * </Context>
      * typically in $CATALINA_BASE/conf/Catalina/localhost/ipt2.xml
      */
-    String dataDirectoryLocationParam = ctx.getInitParameter(DATA_DIR_ENV_VAR);
+    String dataDirectoryLocationParam = servletContext.getInitParameter(DATA_DIR_ENV_VAR);
 
     /*
      * System environment variable
@@ -114,7 +85,7 @@ public class IPTModule extends AbstractModule {
         " for data directory location: " + dataDirectoryLocationEnv);
       dd = DataDir.buildFromString(dataDirectoryLocationEnv);
     } else {
-      File dataDirSettingFile = new File(ctx.getRealPath("/") + "/WEB-INF/datadir.location");
+      File dataDirSettingFile = new File(servletContext.getRealPath("/") + "/WEB-INF/datadir.location");
       LOG.info("Using file " + dataDirSettingFile.getAbsolutePath() +
         " for data directory location.");
       dd = DataDir.buildFromLocationFile(dataDirSettingFile);
@@ -133,8 +104,6 @@ public class IPTModule extends AbstractModule {
    * Provides a freemarker template loader as a singleton to be used anywhere needed. It is configured to access the
    * utf8 templates folder on the classpath, i.e. /src/resources/templates
    */
-  @Provides
-  @Singleton
   public Configuration provideFreemarker(DataDir datadir) {
     Configuration fm = new Configuration(Configuration.VERSION_2_3_31);
     List<TemplateLoader> tLoader = new ArrayList<>();
@@ -152,8 +121,6 @@ public class IPTModule extends AbstractModule {
     return fm;
   }
 
-  @Provides
-  @Singleton
   public HttpClient provideHttpClient() {
     // new threadsafe, multithreaded http client with support for HTTP and HTTPS.
     String version = "unknown";
@@ -184,8 +151,6 @@ public class IPTModule extends AbstractModule {
         new PreemptiveAuthenticationInterceptor());
   }
 
-  @Provides
-  @Singleton
   public JdbcSupport provideJdbcSupport() {
     JdbcSupport jdbcs = new JdbcSupport();
     InputStreamUtils streamUtils = new InputStreamUtils();
@@ -205,8 +170,6 @@ public class IPTModule extends AbstractModule {
     return jdbcs;
   }
 
-  @Provides
-  @Singleton
   public SAXParserFactory provideNsAwareSaxParserFactory() {
     SAXParserFactory saxf = null;
     try {
@@ -219,8 +182,6 @@ public class IPTModule extends AbstractModule {
     return saxf;
   }
 
-  @Provides
-  @Singleton
   public PBEEncrypt providePasswordEncryption() {
     final byte[] salt = {0x00, 0x05, 0x02, 0x05, 0x04, 0x25, 0x06, 0x17};
     PBEEncrypt enc = null;

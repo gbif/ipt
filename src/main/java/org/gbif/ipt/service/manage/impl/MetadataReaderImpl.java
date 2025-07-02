@@ -23,16 +23,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
-@Singleton
 public class MetadataReaderImpl implements MetadataReader {
 
   private final JsonService jsonService;
   private final YamlService yamlService;
 
-  @Inject
   public MetadataReaderImpl(JsonService jsonService, YamlService yamlService) {
     this.jsonService = jsonService;
     this.yamlService = yamlService;

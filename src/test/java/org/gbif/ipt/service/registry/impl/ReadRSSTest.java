@@ -29,8 +29,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
-import com.google.inject.Singleton;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -108,7 +106,6 @@ public class ReadRSSTest {
     return rss;
   }
 
-  @Singleton
   private static SAXParserFactory provideNsAwareSaxParserFactory() {
     SAXParserFactory saxf = null;
     try {

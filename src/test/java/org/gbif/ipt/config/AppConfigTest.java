@@ -17,20 +17,20 @@ import java.math.BigDecimal;
 
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import javax.servlet.ServletContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AppConfigTest {
+public class AppConfigTest extends IptBaseTest {
 
-  Injector injector = Guice.createInjector(new IPTTestModule());
-  AppConfig cfg = injector.getInstance(AppConfig.class);
-  DataDir dd = injector.getInstance(DataDir.class);
+  ServletContext mockServletContext = new MockServletContext();
+  DataDir dd = TestBeanProvider.provideDataDir(mockServletContext);
+  AppConfig cfg = TestBeanProvider.provideAppConfig(dd);
 
   @Test
   public void testTestConfig() {

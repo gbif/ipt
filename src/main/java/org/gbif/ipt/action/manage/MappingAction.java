@@ -46,12 +46,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
 import com.opensymphony.xwork2.interceptor.ValidationErrorAware;
 
 import static org.gbif.ipt.config.Constants.CANCEL;
@@ -101,9 +101,14 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   private boolean doiUsedForDatasetId;
 
   @Inject
-  public MappingAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, ExtensionManager extensionManager, SourceManager sourceManager,
-    VocabulariesManager vocabManager) {
+  public MappingAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      ExtensionManager extensionManager,
+      SourceManager sourceManager,
+      VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.extensionManager = extensionManager;
     this.sourceManager = sourceManager;

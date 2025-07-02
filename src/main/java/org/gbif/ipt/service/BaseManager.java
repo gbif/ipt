@@ -28,7 +28,7 @@ public abstract class BaseManager {
   protected AppConfig cfg;
   protected DataDir dataDir;
 
-  private BaseManager() {
+  public BaseManager() {
   }
 
   public BaseManager(AppConfig cfg, DataDir dataDir) {

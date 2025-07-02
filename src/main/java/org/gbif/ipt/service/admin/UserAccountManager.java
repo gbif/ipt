@@ -18,17 +18,13 @@ import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 
 import java.io.IOException;
 import java.util.List;
 
-import com.google.inject.ImplementedBy;
-
 /**
  * This interface details ALL methods associated with the User accounts within the IPT.
  */
-@ImplementedBy(UserAccountManagerImpl.class)
 public interface UserAccountManager {
 
   /**
@@ -51,11 +47,11 @@ public interface UserAccountManager {
    * It also removes the specified user from resources' list of managers (where applicable) and persists the change.
    * Warning: resources linked to the specified user must be deleted before it can be deleted.
    *
-   * @return user that has been removed or null if not existing
+   * @return true if use was removed and false otherwise
    *
    * @throws DeletionNotAllowedException if it's the last admin account, or if it's still linked to a resource
    */
-  User delete(String email) throws DeletionNotAllowedException, IOException;
+  boolean delete(String email) throws DeletionNotAllowedException, IOException;
 
   /**
    * Get a user object by its unique, case insensitive email.

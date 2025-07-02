@@ -14,7 +14,6 @@
 package org.gbif.ipt.struts2;
 
 import java.io.IOException;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -24,13 +23,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.inject.Singleton;
-
 /**
  * Request filter that forces application to handle all requests and responses as UTF-8 encoded.
  */
-@Singleton
 public class CharacterEncodingFilter implements Filter {
+
   private static final String UTF8 = "UTF-8";
 
   @Override

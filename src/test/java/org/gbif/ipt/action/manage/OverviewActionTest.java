@@ -16,6 +16,7 @@ package org.gbif.ipt.action.manage;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.service.DoiService;
 import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -67,7 +68,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class OverviewActionTest {
+public class OverviewActionTest extends IptBaseTest {
 
   private OverviewAction action;
   private File emlFile;

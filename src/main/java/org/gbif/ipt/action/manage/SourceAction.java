@@ -39,17 +39,15 @@ import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.activation.MimeTypeParseException;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-
-import com.google.inject.Inject;
-
-import javax.activation.MimeTypeParseException;
-import javax.servlet.http.HttpServletResponse;
 
 public class SourceAction extends ManagerBaseAction {
 
@@ -83,8 +81,14 @@ public class SourceAction extends ManagerBaseAction {
   private String sourceType;
 
   @Inject
-  public SourceAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager, SourceManager sourceManager, JdbcSupport jdbcSupport, DataDir dataDir) {
+  public SourceAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      SourceManager sourceManager,
+      JdbcSupport jdbcSupport,
+      DataDir dataDir) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.sourceManager = sourceManager;
     this.jdbcSupport = jdbcSupport;

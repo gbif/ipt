@@ -79,7 +79,7 @@ public class TextFileSource extends SourceBase implements FileSource {
   }
 
   public String formattedFileSize(String locale) {
-    return FileUtils.formatSize(fileSize, 1, locale, true);
+    return FileUtils.formatSize(fileSize, 1, locale, false);
   }
 
   @Override

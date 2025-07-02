@@ -13,11 +13,15 @@
  */
 package org.gbif.ipt.action.admin;
 
+import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -25,24 +29,27 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 /**
  * The Action responsible for all user input relating to extension management.
@@ -65,22 +72,38 @@ public class ExtensionsAction extends POSTAction {
   private Date lastSynchronised;
   private List<Extension> newExtensions;
   private ConfigWarnings configWarnings;
+  private ResourceManager resourceManager;
   private boolean upToDate = true;
 
   @Inject
-  public ExtensionsAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ExtensionManager extensionManager, VocabulariesManager vocabManager, RegistryManager registryManager,
-    ConfigWarnings configWarnings) {
+  public ExtensionsAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ExtensionManager extensionManager,
+      VocabulariesManager vocabManager,
+      RegistryManager registryManager,
+      ConfigWarnings configWarnings,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.extensionManager = extensionManager;
     this.vocabManager = vocabManager;
     this.registryManager = registryManager;
     this.configWarnings = configWarnings;
+    this.resourceManager = resourceManager;
   }
 
   @Override
   public String delete() throws Exception {
     try {
+      // check if its used by some resources
+      for (Resource r : resourceManager.list()) {
+        if (!r.getMappings(id).isEmpty()) {
+          LOG.warn("Extension mapped in resource {}", r.getShortname());
+          String msg = getText("admin.extension.delete.error.mapped", new String[] {r.getShortname()});
+          throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.EXTENSION_MAPPED, msg);
+        }
+      }
       extensionManager.uninstallSafely(id);
       addActionMessage(getText("admin.extension.delete.success", new String[] {id}));
     } catch (DeletionNotAllowedException e) {
@@ -101,8 +124,31 @@ public class ExtensionsAction extends POSTAction {
    */
   public String update() throws Exception {
     try {
-      LOG.info("Updating extension " + id + " to latest version...");
-      extensionManager.update(id);
+      LOG.info("Updating extension {} to latest version...", id);
+      Extension installed = extensionManager.get(id);
+      Extension latestVersion = extensionManager.update(id);
+      if (installed != null && latestVersion != null) {
+        if (latestVersion.getUrl() != null) {
+          // check if there are any associated resource mappings
+          List<Resource> resourcesToMigrate = new ArrayList<>();
+          for (Resource r : resourceManager.list()) {
+            if (!r.getMappings(id).isEmpty()) {
+              resourcesToMigrate.add(r);
+            }
+          }
+
+          // if there are mappings to this extension - do migrations to latest version, save resources
+          if (!resourcesToMigrate.isEmpty()) {
+            for (Resource r : resourcesToMigrate) {
+              LOG.info("Updating {} mappings for resource: {}...", id, r.getTitleAndShortname());
+              extensionManager.migrateResourceToNewExtensionVersion(r, installed, latestVersion);
+              resourceManager.save(r);
+              LOG.info("Updated {} mappings successfully for resource: {}", id, r.getTitleAndShortname());
+            }
+          }
+        }
+      }
+
       addActionMessage(getText("admin.extension.update.success", new String[] {id}));
     } catch (Exception e) {
       LOG.error(e);

@@ -16,12 +16,12 @@ package org.gbif.ipt.struts2;
 import org.gbif.ipt.config.AppConfig;
 
 import java.util.Locale;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.I18nInterceptor;
-import com.google.inject.Inject;
 
 /**
  * An interceptor that ensures that all Locales supported by the IPT can be handled properly. Needed because
@@ -32,10 +32,8 @@ public class IptI18nInterceptor extends I18nInterceptor {
   private static final long serialVersionUID = -177385481327691899L;
   private static final Logger LOG = LogManager.getLogger(IptI18nInterceptor.class);
 
-  @Inject
   private AppConfig appConfig;
 
-  @Override
   protected Locale getLocaleFromParam(Object requestedLocale) {
     Locale locale = null;
     try {
@@ -43,7 +41,7 @@ public class IptI18nInterceptor extends I18nInterceptor {
         locale = (requestedLocale instanceof Locale) ? (Locale) requestedLocale
             : LocaleUtils.toLocale(requestedLocale.toString());
         if (locale != null && LOG.isDebugEnabled()) {
-          LOG.debug("Applied request locale: " + locale.getLanguage());
+          LOG.debug("Applied request locale: {}", locale.getLanguage());
         }
       }
     } catch (IllegalArgumentException e) {
@@ -57,5 +55,10 @@ public class IptI18nInterceptor extends I18nInterceptor {
       locale = Locale.getDefault();
     }
     return locale;
+  }
+
+  @Inject
+  public void setAppConfig(AppConfig appConfig) {
+    this.appConfig = appConfig;
   }
 }

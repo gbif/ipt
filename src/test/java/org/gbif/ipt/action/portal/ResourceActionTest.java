@@ -14,6 +14,7 @@
 package org.gbif.ipt.action.portal;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -65,7 +66,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ResourceActionTest {
+public class ResourceActionTest extends IptBaseTest {
 
   private ResourceAction action;
   private Resource resource;

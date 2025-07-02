@@ -34,9 +34,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
 /**
  * Building from XML definitions. Because an extension can reference thesauri, this is a 2 pass parsing process.
  * <p/>
@@ -46,7 +43,6 @@ import com.google.inject.Singleton;
  * - this map is then used to get the Vocabulary in the second pass of parsing
  * </pre>
  */
-@Singleton
 public class ExtensionFactory {
 
   private static final Logger LOG = LogManager.getLogger(ExtensionFactory.class);
@@ -55,7 +51,6 @@ public class ExtensionFactory {
   private final SAXParserFactory saxf;
   private final HttpClient client;
 
-  @Inject
   public ExtensionFactory(ThesaurusHandlingRule thesaurusRule, SAXParserFactory factory, org.gbif.utils.HttpClient client) {
     this.thesaurusRule = thesaurusRule;
     this.saxf = factory;

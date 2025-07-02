@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
@@ -229,12 +228,19 @@
 
                             <!-- retrieve some link names one time -->
                             <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
+                            <#assign copyLink = copyLink?markup_string>
                             <#assign removeLink><@s.text name='manage.metadata.removethis'/> <@s.text name='rtf.project.personnel'/></#assign>
+                            <#assign removeLink = removeLink?markup_string>
                             <#assign removeRelatedProjectLink><@s.text name='manage.metadata.removethis'/> <@s.text name='rtf.project.relatedProject'/></#assign>
+                            <#assign removeRelatedProjectLink = removeRelatedProjectLink?markup_string>
                             <#assign removeAwardLink><@s.text name='manage.metadata.removethis'/> <@s.text name='rtf.project.award'/></#assign>
+                            <#assign removeAwardLink = removeAwardLink?markup_string>
                             <#assign addLink><@s.text name='manage.metadata.addnew'/> <@s.text name='rtf.project.personnel'/></#assign>
+                            <#assign addLink = addLink?markup_string>
                             <#assign addRelatedProjectLink><@s.text name='manage.metadata.addnew'/> <@s.text name='rtf.project.relatedProject'/></#assign>
+                            <#assign addRelatedProjectLink = addRelatedProjectLink?markup_string>
                             <#assign addAwardLink><@s.text name='manage.metadata.addnew'/> <@s.text name='rtf.project.award'/></#assign>
+                            <#assign addAwardLink = addAwardLink?markup_string>
 
                             <div class="row g-3 mt-1 mb-2">
                                 <@input name="eml.project.title" requiredField=true/>
@@ -770,4 +776,3 @@
 
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

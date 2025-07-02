@@ -19,9 +19,8 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import javax.inject.Inject;
 import java.util.UUID;
-
-import com.google.inject.Inject;
 
 public class AboutAction extends BaseAction {
 
@@ -34,7 +33,10 @@ public class AboutAction extends BaseAction {
   private String hostingOrganisationName;
 
   @Inject
-  public AboutAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
+  public AboutAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager) {
     super(textProvider, cfg, registrationManager);
     this.cfg = cfg;
   }

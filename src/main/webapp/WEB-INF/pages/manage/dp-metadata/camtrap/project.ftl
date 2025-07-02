@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name='manage.datapackagemetadata.camtrap.project.title'/></title>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
@@ -188,4 +187,3 @@
     </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
@@ -289,4 +288,3 @@
         </div>
     </form>
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

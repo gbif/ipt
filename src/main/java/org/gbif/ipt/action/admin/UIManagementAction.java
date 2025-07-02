@@ -23,13 +23,12 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.File;
 import java.io.IOException;
+import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 public class UIManagementAction extends POSTAction {
 
@@ -46,8 +45,11 @@ public class UIManagementAction extends POSTAction {
   private boolean removeLogo;
 
   @Inject
-  public UIManagementAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                            DataDir dataDir) {
+  public UIManagementAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      DataDir dataDir) {
     super(textProvider, cfg, registrationManager);
     this.dataDir = dataDir;
   }

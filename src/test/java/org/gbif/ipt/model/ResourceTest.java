@@ -14,6 +14,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -40,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ResourceTest {
+public class ResourceTest extends IptBaseTest {
   private static final Logger LOG = LogManager.getLogger(ResourceTest.class);
   private static final BigDecimal LATEST_RESOURCE_VERSION = new BigDecimal("3.0");
   private static final BigDecimal RESOURCE_VERSION_TWO = new BigDecimal("2.0");

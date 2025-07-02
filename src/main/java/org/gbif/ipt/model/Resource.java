@@ -148,6 +148,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   private IdentifierStatus identifierStatus = IdentifierStatus.UNRESERVED;
   private DOI doi;
   private UUID doiOrganisationKey;
+  private String lastPublishedArchiveChecksum;
+  private boolean skipPublicationIfNotChanged = false;
+  private boolean skipPublicationIfRecordsDrop = false;
+  private int recordsDropThreshold = 10;
 
   public void addManager(User manager) {
     if (manager != null) {
@@ -1011,6 +1015,14 @@ public class Resource implements Serializable, Comparable<Resource> {
     return Objects.hashCode(shortname);
   }
 
+  public boolean hasAnyMappedData() {
+    if (isDataPackage()) {
+      return hasSchemaMappedData();
+    } else {
+      return hasMappedData();
+    }
+  }
+
   public boolean hasMappedData() {
     for (ExtensionMapping cm : getCoreMappings()) {
       // test each core mapping if there is at least one field mapped
@@ -1850,9 +1862,45 @@ public class Resource implements Serializable, Comparable<Resource> {
     return dataPackageIdentifier != null;
   }
 
+  public boolean isMetadataOnly() {
+    return coreType != null && CoreRowType.METADATA.toString().equalsIgnoreCase(coreType);
+  }
+
   public void inferCoverageMetadataAutomatically(boolean param) {
     setInferGeocoverageAutomatically(param);
     setInferTaxonomicCoverageAutomatically(param);
     setInferTemporalCoverageAutomatically(param);
+  }
+
+  public String getLastPublishedArchiveChecksum() {
+    return lastPublishedArchiveChecksum;
+  }
+
+  public void setLastPublishedArchiveChecksum(String lastPublishedArchiveChecksum) {
+    this.lastPublishedArchiveChecksum = lastPublishedArchiveChecksum;
+  }
+
+  public boolean isSkipPublicationIfNotChanged() {
+    return skipPublicationIfNotChanged;
+  }
+
+  public void setSkipPublicationIfNotChanged(boolean skipPublicationIfNotChanged) {
+    this.skipPublicationIfNotChanged = skipPublicationIfNotChanged;
+  }
+
+  public boolean isSkipPublicationIfRecordsDrop() {
+    return skipPublicationIfRecordsDrop;
+  }
+
+  public void setSkipPublicationIfRecordsDrop(boolean skipPublicationIfRecordsDrop) {
+    this.skipPublicationIfRecordsDrop = skipPublicationIfRecordsDrop;
+  }
+
+  public int getRecordsDropThreshold() {
+    return recordsDropThreshold;
+  }
+
+  public void setRecordsDropThreshold(int recordsDropThreshold) {
+    this.recordsDropThreshold = recordsDropThreshold;
   }
 }

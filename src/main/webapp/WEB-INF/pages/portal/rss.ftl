@@ -5,7 +5,6 @@
 	xmlns:ipt="http://ipt.gbif.org/"
   xmlns:atom="http://www.w3.org/2005/Atom"
 	xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#">
-<#escape x as x?xml>
   <channel>
     <title>${ipt.name!}</title>
     <link>${baseURL!}</link>
@@ -74,5 +73,4 @@
       </#if>
  	  </#list>
   </channel>
-</#escape>
 </rss>

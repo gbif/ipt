@@ -14,6 +14,7 @@
 package org.gbif.ipt.validation;
 
 import org.gbif.datacite.rest.client.configuration.ClientConfiguration;
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.action.admin.OrganisationsAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -43,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class OrganisationSupportIT {
+public class OrganisationSupportIT extends IptBaseTest {
 
   private static final Logger LOG = LogManager.getLogger(OrganisationSupportIT.class);
 
@@ -54,8 +55,8 @@ public class OrganisationSupportIT {
       mock(AppConfig.class),
       mock(RegistrationManager.class),
       mock(OrganisationSupport.class),
-      mock(OrganisationsAction.RegisteredOrganisations.class),
-      mock(ResourceManager.class));
+      mock(ResourceManager.class),
+      mock(RegistryManager.class));
 
   private static AppConfig mockCfg;
   private static RegistryManager mockRegistryManager;

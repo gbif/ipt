@@ -20,7 +20,6 @@ import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.CoordinateUtils;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.BBox;
@@ -52,8 +51,6 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.lowagie.text.Anchor;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -69,7 +66,6 @@ import com.lowagie.text.Phrase;
 /**
  * Populates a RTF document with a resources metadata, mainly derived from its EML.
  */
-@Singleton
 public class Eml2Rtf {
 
   private final Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.NORMAL, Color.BLACK);
@@ -81,12 +77,13 @@ public class Eml2Rtf {
   private static final String DEFAULT_LANGUAGE = Locale.ENGLISH.getLanguage();
   private ResourceBundle resourceBundle;
 
-  @Inject
-  private VocabulariesManager vocabManager;
-  @Inject
   private AppConfig appConfig;
-  @Inject
-  private ResourceManager resourceManager;
+  private VocabulariesManager vocabManager;
+
+  public Eml2Rtf(AppConfig appConfig, VocabulariesManager vocabManager) {
+    this.appConfig = appConfig;
+    this.vocabManager = vocabManager;
+  }
 
   /**
    * Add abstract section. This corresponds to resource's description, broken into one or more paragraphs.

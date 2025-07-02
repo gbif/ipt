@@ -1,4 +1,3 @@
-<#escape x as x?html>
     <#include "/WEB-INF/pages/inc/header.ftl">
 <title xmlns="http://www.w3.org/1999/html"><@s.text name='manage.metadata.geocoverage.title'/></title>
     <#assign currentMetadataPage = "geocoverage"/>
@@ -630,4 +629,3 @@
 </form>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>

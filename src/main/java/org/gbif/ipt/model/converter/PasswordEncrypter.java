@@ -20,8 +20,6 @@ import org.gbif.ipt.utils.PBEEncrypt.EncryptionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -33,14 +31,12 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
  * <br>
  * Note this is not appropriate for user passwords, which should be hashed instead.
  */
-@Singleton
 public class PasswordEncrypter implements Converter {
 
   private static final Logger LOG = LogManager.getLogger(PasswordEncrypter.class);
 
   private final PBEEncrypt encrypter;
 
-  @Inject
   public PasswordEncrypter(PBEEncrypt cipher) {
     this.encrypter = cipher;
   }

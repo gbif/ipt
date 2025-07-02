@@ -24,12 +24,11 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.math.BigDecimal;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
 
 /**
  * The base of all portal actions.
@@ -43,8 +42,11 @@ public class PortalBaseAction extends BaseAction {
   private static final Logger LOG = LogManager.getLogger(PortalBaseAction.class);
 
   @Inject
-  public PortalBaseAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-    ResourceManager resourceManager) {
+  public PortalBaseAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
   }

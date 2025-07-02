@@ -1,4 +1,3 @@
-<#escape x as x?html>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.mapping.title'/></title>
 <#assign currentMenu = "manage"/>
@@ -87,5 +86,4 @@
     </form>
 </main>
 
-    <#include "/WEB-INF/pages/inc/footer.ftl">
-</#escape>
+<#include "/WEB-INF/pages/inc/footer.ftl">

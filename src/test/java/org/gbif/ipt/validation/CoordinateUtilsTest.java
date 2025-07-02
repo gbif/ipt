@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.validation;
 
+import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.utils.CoordinateUtils;
 
 import java.util.stream.Stream;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Unit test for decToDms method in CoordinateUtils class.
  */
-public class CoordinateUtilsTest {
+public class CoordinateUtilsTest extends IptBaseTest {
 
   private static String degreeSign = "\u00B0";
 

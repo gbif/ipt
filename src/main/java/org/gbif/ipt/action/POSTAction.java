@@ -17,9 +17,9 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.inject.Inject;
 
-import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 
 public class POSTAction extends BaseAction {
 
@@ -30,7 +30,10 @@ public class POSTAction extends BaseAction {
   protected String defaultResult = INPUT;
 
   @Inject
-  public POSTAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager) {
+  public POSTAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager) {
     super(textProvider, cfg, registrationManager);
   }
 

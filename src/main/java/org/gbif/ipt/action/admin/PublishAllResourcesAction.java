@@ -15,7 +15,9 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
@@ -29,11 +31,14 @@ import org.gbif.ipt.validation.EmlValidator;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
+import lombok.Getter;
+import lombok.Setter;
 
 public class PublishAllResourcesAction extends BaseAction {
 
@@ -46,11 +51,23 @@ public class PublishAllResourcesAction extends BaseAction {
   protected RegistryManager registryManager;
   private final EmlValidator emlValidator;
   private final DataPackageMetadataValidator dpMetadataValidator;
+  @Getter
+  private List<Resource> resources;
+  @Setter
+  private List<String> selectedResources;
+  @Setter
+  private List<String> excludedResources;
+  @Setter
+  private BulkPublicationType publishMode;
 
   @Inject
-  public PublishAllResourcesAction(SimpleTextProvider textProvider, AppConfig cfg,
-                                   RegistrationManager registrationManager, ResourceManager resourceManager,
-                                   RegistryManager registryManager, DataPackageMetadataValidator dpMetadataValidator) {
+  public PublishAllResourcesAction(
+      SimpleTextProvider textProvider,
+      AppConfig cfg,
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager,
+      RegistryManager registryManager,
+      DataPackageMetadataValidator dpMetadataValidator) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.registryManager = registryManager;
@@ -65,10 +82,14 @@ public class PublishAllResourcesAction extends BaseAction {
       return cancel();
     }
 
+    resources = resourceManager.list();
+
     // start with IPT registration update, provided the IPT has been registered already
     try {
-      if (registrationManager.getIpt() != null) {
-        registryManager.updateIpt(registrationManager.getIpt());
+      Ipt ipt = registrationManager.getIpt();
+      if (ipt != null) {
+        registryManager.updateIpt(ipt);
+        updateResources(ipt);
       }
     } catch (RegistryException e) {
       // log as specific error message as possible about why the Registry error occurred
@@ -77,7 +98,26 @@ public class PublishAllResourcesAction extends BaseAction {
       LOG.error(msg);
     }
 
-    List<Resource> resources = resourceManager.list();
+    resourceManager.clearProcessReports();
+    List<Resource> allResources = resourceManager.list();
+    List<Resource> resources;
+    boolean skipIfNotChanged = false;
+
+    if (publishMode == BulkPublicationType.SELECTED) {
+      resources = allResources.stream()
+          .filter(res -> selectedResources.contains(res.getShortname()))
+          .collect(Collectors.toList());
+    } else if (publishMode == BulkPublicationType.EXCLUDED) {
+      resources = allResources.stream()
+          .filter(res -> !excludedResources.contains(res.getShortname()))
+          .collect(Collectors.toList());
+    } else if (publishMode == BulkPublicationType.CHANGED){
+      resources = allResources;
+      skipIfNotChanged = true;
+    } else {
+      resources = allResources;
+    }
+
     if (resources.isEmpty()) {
       this.addActionWarning(getText("admin.config.updateMetadata.none"));
       return SUCCESS;
@@ -101,7 +141,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
           if (isValidMetadata) {
             // publish a new version of the resource - dwca gets published asynchronously
-            resourceManager.publish(resource, nextVersion, this);
+            resourceManager.publish(resource, nextVersion, this, skipIfNotChanged);
           } else {
             // alert user publication failed
             addActionError(getText("publishing.failed",
@@ -136,7 +176,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
     // wait around for all resources to finish publishing
     // PublishingMonitor thread is running in the background completing asynchronous publishing tasks
-    while (resourceManager.getProcessFutures().size() > 0) {
+    while (!resourceManager.getProcessFutures().isEmpty()) {
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
@@ -147,5 +187,24 @@ public class PublishAllResourcesAction extends BaseAction {
     clearMessages();
     addActionMessage(getText("admin.config.updateMetadata.summary"));
     return SUCCESS;
+  }
+
+  private void updateResources(Ipt ipt) {
+    List<Resource> resources = resourceManager.list(PublicationStatus.REGISTERED);
+    if (!resources.isEmpty()) {
+      LOG.info("Next, update {} resource registrations...", resources.size());
+      for (Resource resource : resources) {
+        try {
+          registryManager.updateResource(resource, ipt.getKey().toString());
+        } catch (IllegalArgumentException e) {
+          LOG.error(e.getMessage());
+        }
+      }
+      LOG.info("Resource registrations updated successfully!");
+    }
+  }
+
+  public enum BulkPublicationType {
+    ALL, SELECTED, EXCLUDED, CHANGED
   }
 }

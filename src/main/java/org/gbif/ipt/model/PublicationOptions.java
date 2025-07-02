@@ -11,25 +11,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.config;
+package org.gbif.ipt.model;
 
-import javax.servlet.ServletContext;
+import lombok.Builder;
+import lombok.Data;
 
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+@Data
+@Builder
+public class PublicationOptions {
 
-/**
- * This guice module provides objects only for true IPTs running in a servlet environment. The module is replaced by a
- * test module when using guice for unit tests.
- */
-public class IPTTestModule extends IPTModule {
-
-  /**
-   * provide a test datadir based on classpath.
-   */
-  @Provides
-  @Singleton
-  ServletContext provideMockServlet() {
-    return new MockServletContext();
-  }
+  private boolean skipPublicationIfNotChanged;
+  private boolean skipPublicationIfRecordsDrop;
+  private int recordsDropThreshold = 10;
 }
