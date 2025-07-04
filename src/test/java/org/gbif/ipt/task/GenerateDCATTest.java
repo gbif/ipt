@@ -30,6 +30,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
+import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -295,7 +296,7 @@ public class GenerateDCATTest extends IptBaseTest {
     when(mockDataDir.tmpDir()).thenReturn(tmpDataDir);
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
+        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
         conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 

@@ -86,6 +86,7 @@
   <bean id="resourceConverterManager" class="org.gbif.ipt.service.manage.impl.ResourceConvertersManager" lazy-init="true">
     <property name="userConverter" ref="userEmailConverter"/>
     <property name="orgConverter" ref="organisationKeyConverter"/>
+    <property name="extensionMappingConverter" ref="extensionMappingConverter"/>
     <property name="extensionConverter" ref="extensionRowTypeConverter"/>
     <property name="conceptTermConverter" ref="conceptTermConverter"/>
     <property name="dataSchemaConverter" ref="dataPackageIdentifierConverter"/>
