@@ -32,6 +32,7 @@ public class ExtensionMapping implements Serializable {
   public static final Integer NO_ID = -3;
 
   private Source source;
+  private transient String extensionVerbatim;
   private Extension extension; // persist only the rowType
   // TreeSet will ensure set of PropertyMappings remain ordered
   private Set<PropertyMapping> fields = new TreeSet<>();
@@ -73,6 +74,10 @@ public class ExtensionMapping implements Serializable {
 
   public Extension getExtension() {
     return extension;
+  }
+
+  public String getExtensionVerbatim() {
+    return extensionVerbatim;
   }
 
   public PropertyMapping getField(String qname) {
@@ -138,6 +143,10 @@ public class ExtensionMapping implements Serializable {
 
   public void setExtension(Extension extension) {
     this.extension = extension;
+  }
+
+  public void setExtensionVerbatim(String extensionVerbatim) {
+    this.extensionVerbatim = extensionVerbatim;
   }
 
   public void setFields(Set<PropertyMapping> fields) {
