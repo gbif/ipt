@@ -266,8 +266,15 @@
     <constructor-arg ref="simpleTextProvider"/>
   </bean>
 
+  <bean id="xstreamMapper" class="com.thoughtworks.xstream.mapper.DefaultMapper">
+    <constructor-arg value="#{T(java.lang.Thread).currentThread().getContextClassLoader()}" />
+  </bean>
+
+  <bean id="xstreamReflectionProvider" class="com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider"/>
+
   <bean id="extensionMappingConverter" class="org.gbif.ipt.model.converter.ExtensionMappingConverter">
-    <constructor-arg ref="extensionManager"/>
+    <constructor-arg ref="xstreamMapper"/>
+    <constructor-arg ref="xstreamReflectionProvider"/>
   </bean>
 
   <bean id="defaultLocaleInterceptor" class="org.gbif.ipt.struts2.DefaultLocaleInterceptor">
