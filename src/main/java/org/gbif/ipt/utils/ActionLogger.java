@@ -76,7 +76,7 @@ public class ActionLogger {
   public void info(String message, String[] args) {
     if (message != null) {
       action.addActionMessage(action.getText(message, args));
-      log.info(action.getText(message) == null ? message : action.getText(message));
+      log.info(action.getText(message) == null ? message : action.getText(message, args));
     }
   }
 
@@ -85,7 +85,7 @@ public class ActionLogger {
       info(t);
     } else {
       action.addActionMessage(action.getText(message, args));
-      log.info(action.getText(message) == null ? message : action.getText(message), t);
+      log.info(action.getText(message) == null ? message : action.getText(message, args), t);
     }
   }
 
@@ -115,7 +115,7 @@ public class ActionLogger {
   public void warn(String message, String[] args) {
     if (message != null) {
       action.addActionWarning(action.getText(message, args));
-      log.warn(action.getText(message) == null ? message : action.getText(message));
+      log.warn(action.getText(message) == null ? message : action.getText(message, args));
     }
   }
 
