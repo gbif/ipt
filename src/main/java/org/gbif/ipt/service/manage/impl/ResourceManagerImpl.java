@@ -1256,6 +1256,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // persist only emails for users
     xstream.registerConverter(resourceConvertersManager.getUserConverter());
+    // custom converter for ExtensionMapping
+    xstream.registerConverter(resourceConvertersManager.getExtensionMappingConverter());
     // persist only rowtype
     xstream.registerConverter(resourceConvertersManager.getExtensionConverter());
     // persist only qualified concept name
