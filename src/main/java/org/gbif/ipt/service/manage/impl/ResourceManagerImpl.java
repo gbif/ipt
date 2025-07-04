@@ -2358,11 +2358,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // 1. Non-existent Extension end up being NULL
         // E.g. a user is trying to import a resource from one IPT to another without all required exts installed.
         // 2. Auto-generating IDs is only available for Taxon core extension since IPT v2.1,
-        // therefore if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
+        // therefore, if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
         for (ExtensionMapping ext : resource.getMappings()) {
           Extension x = ext.getExtension();
           if (x == null) {
-            alog.warn("manage.resource.create.extension.null");
+            alog.warn("manage.resource.create.extension.null", new String[] {ext.getExtensionVerbatim()});
             throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-existent extension");
           } else if (extensionManager.get(x.getRowType()) == null) {
             alog.warn("manage.resource.create.rowType.null", new String[] {x.getRowType()});
