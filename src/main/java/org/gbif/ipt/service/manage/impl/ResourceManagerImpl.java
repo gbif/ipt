@@ -906,6 +906,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     return resource;
   }
+
   private Resource createFromDwcArchive(String shortname, File dwca, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
@@ -926,6 +927,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (arch.getCore().getRowType() == null) {
         alog.error("manage.resource.create.core.invalid.rowType");
         throw new ImportException("Darwin Core Archive is invalid, core mapping has no rowType");
+      }
+
+      Set<String> installedExtensionRowTypes = extensionManager.list().stream()
+          .map(Extension::getRowType)
+          .collect(Collectors.toSet());
+
+      List<String> missingExtensionRowTypes = arch.getExtensions().stream()
+          .map(e -> e.getRowType().qualifiedName())
+          .filter(qName -> !installedExtensionRowTypes.contains(qName))
+          .collect(Collectors.toList());
+
+      if (!missingExtensionRowTypes.isEmpty()) {
+        alog.error("manage.resource.create.rowTypes.null", new String[]{String.join("<br>", missingExtensionRowTypes)});
+        throw new ImportException("Resource references non-installed extension(s)");
       }
 
       // keep track of source files as a dwca might refer to the same source file multiple times
