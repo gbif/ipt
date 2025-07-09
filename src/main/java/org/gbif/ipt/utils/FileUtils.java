@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.utils;
 
+import org.gbif.ipt.model.UrlMetadata;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,6 +28,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -192,5 +196,20 @@ public class FileUtils {
       return "";
     }
     return fileName.substring(lastIndexOfDot + 1);
+  }
+
+  public static UrlMetadata fetchUrlMetadata(String url) throws IOException {
+    URL remoteUrl = new URL(url);
+    HttpURLConnection conn = (HttpURLConnection) remoteUrl.openConnection();
+    conn.setRequestMethod("HEAD");
+    conn.connect();
+
+    int status = conn.getResponseCode();
+    String contentType = conn.getContentType();
+    long contentLength = conn.getContentLengthLong();
+    String lastModified = conn.getHeaderField("Last-Modified");
+    String acceptRanges = conn.getHeaderField("Accept-Ranges");
+
+    return new UrlMetadata(status, contentType, contentLength, lastModified, acceptRanges);
   }
 }
