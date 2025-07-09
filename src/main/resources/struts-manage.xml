@@ -305,5 +305,7 @@
       <result>/WEB-INF/pages/manage/peek.ftl</result>
     </action>
 
+    <action name="urlMetadata" class="org.gbif.ipt.action.manage.UrlMetadataAction" />
+
   </package>
 </struts>
