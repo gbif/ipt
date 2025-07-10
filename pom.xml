@@ -56,7 +56,7 @@
     <bcrypt.version>0.10.2</bcrypt.version>
     <commons-digester.version>2.1</commons-digester.version>
     <commons-io.version>2.19.0</commons-io.version>
-    <commons-lang3.version>3.17.0</commons-lang3.version>
+    <commons-lang3.version>3.18.0</commons-lang3.version>
     <commons-collections4.version>4.5.0</commons-collections4.version>
     <commons-validator.version>1.10.0</commons-validator.version>
     <commons-text.version>1.13.1</commons-text.version>
