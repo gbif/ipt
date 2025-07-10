@@ -2379,7 +2379,7 @@
                                                     </div>
                                                     <div class="simpleCalloutMeta">
                                                         <div class="simpleCalloutMessage">
-                                                            You can upload multiple files at once, including text files, spreadsheets, or compressed archives.
+                                                            <@s.text name="manage.source.file.multipleUpload"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2443,20 +2443,20 @@
                                     <div id="url-source-info-block" style="display: none;">
                                         <div id="url-source-info-block-inner" class="d-flex justify-content-start fs-smaller-2">
                                             <div id="url-source-check-link-wrapper" class="me-3" style="display: none;">
-                                                <a id="check-url-source-link" class="smaller-action-link-button action-link-button-primary" href="#">Check URL</a>
+                                                <a id="check-url-source-link" class="smaller-action-link-button action-link-button-primary" href="#"><@s.text name="manage.source.url.checkUrl"/></a>
                                             </div>
                                             <div id="url-source-check-status-wrapper" class="me-3" style="display: none;">
                                                 <i id="url-source-check-status-fail" class="bi bi-x-circle-fill text-gbif-danger" style="display: none;"></i>
                                                 <i id="url-source-check-status-success" class="bi bi-check-circle-fill text-gbif-primary" style="display: none;"></i>
                                             </div>
                                             <div id="url-source-size-wrapper" class="me-3" style="display: none;">
-                                                <strong>Size:</strong> <span id="url-source-size">?</span>
+                                                <strong><@s.text name="manage.source.url.checkUrl.size"/>:</strong> <span id="url-source-size">?</span>
                                             </div>
                                             <div id="url-source-content-type-wrapper" style="display: none;">
-                                                <strong>Type:</strong> <span id="url-source-content-type">?</span>
+                                                <strong><@s.text name="manage.source.url.checkUrl.type"/>:</strong> <span id="url-source-content-type">?</span>
                                             </div>
                                             <div id="url-source-error-message-wrapper" class="text-gbif-danger" style="display: none;">
-                                                Failed to retrieve metadata from the provider URL
+                                                <@s.text name="manage.source.url.checkUrl.failed"/>
                                             </div>
                                         </div>
                                     </div>
