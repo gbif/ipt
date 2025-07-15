@@ -300,6 +300,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   // Allowed characters in file names: alphanumeric characters, plus ".", "-", "_", ")", "(", and " "
   private Pattern acceptedPattern = Pattern.compile(ACCEPTED_FILE_NAMES);
+  private final List<ResourceUpdateListener> listeners = new ArrayList<>();
 
   public SourceManagerImpl(AppConfig cfg, DataDir dataDir) {
     super(cfg, dataDir);
@@ -880,6 +881,17 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     } catch (Exception e) {
       LOG.error("Exception while reading source " + source.getName(), e);
       throw new SourceException("Can't build iterator for source " + source.getName() + " :" + e.getMessage());
+    }
+  }
+
+  @Override
+  public void addListener(ResourceUpdateListener listener) {
+    listeners.add(listener);
+  }
+
+  private void notifyListeners(Resource resource) {
+    for (ResourceUpdateListener listener : listeners) {
+      listener.onSourceUpdated(resource);
     }
   }
 }

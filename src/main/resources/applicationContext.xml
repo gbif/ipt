@@ -83,6 +83,11 @@
     <constructor-arg ref="dataDir"/>
   </bean>
 
+  <bean id="resourceCoordinator" class="org.gbif.ipt.service.manage.impl.ResourceCoordinator">
+    <constructor-arg ref="sourceManager" />
+    <constructor-arg ref="resourceManager" />
+  </bean>
+
   <bean id="resourceConverterManager" class="org.gbif.ipt.service.manage.impl.ResourceConvertersManager" lazy-init="true">
     <property name="userConverter" ref="userEmailConverter"/>
     <property name="orgConverter" ref="organisationKeyConverter"/>
