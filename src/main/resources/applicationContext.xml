@@ -81,6 +81,7 @@
   <bean id="sourceManager" class="org.gbif.ipt.service.manage.impl.SourceManagerImpl">
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="fileStoreManager"/>
   </bean>
 
   <bean id="resourceCoordinator" class="org.gbif.ipt.service.manage.impl.ResourceCoordinator">

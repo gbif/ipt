@@ -26,13 +26,18 @@ import org.gbif.ipt.model.RowIterable;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlMetadata;
 import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.SourceException;
+import org.gbif.ipt.service.file.DataFile;
+import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.service.manage.ResourceUpdateListener;
+import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.csv.UnknownDelimitersException;
@@ -40,11 +45,10 @@ import org.gbif.utils.file.csv.UnknownDelimitersException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -55,10 +59,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -298,12 +306,15 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   private static final String ACCEPTED_FILE_NAMES = "[\\w.\\-\\s\\)\\(]+";
 
+  private FileStoreManager fileStoreManager;
+
   // Allowed characters in file names: alphanumeric characters, plus ".", "-", "_", ")", "(", and " "
   private Pattern acceptedPattern = Pattern.compile(ACCEPTED_FILE_NAMES);
   private final List<ResourceUpdateListener> listeners = new ArrayList<>();
 
-  public SourceManagerImpl(AppConfig cfg, DataDir dataDir) {
+  public SourceManagerImpl(AppConfig cfg, DataDir dataDir, FileStoreManager fileStoreManager) {
     super(cfg, dataDir);
+    this.fileStoreManager = fileStoreManager;
   }
 
   // TODO: 24/04/2023 implement
@@ -417,7 +428,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
   @Override
   public UrlSource add(Resource resource, URI url, String sourceName) throws ImportException {
-    LOG.debug("ADDING URL SOURCE " + url);
+    LOG.debug("ADDING URL SOURCE {}", url);
 
     UrlSource src;
     String filename = FilenameUtils.getName(url.toString());
@@ -433,29 +444,20 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     src = new UrlSource();
     File file = dataDir.sourceFile(resource, filename);
+    src.setFile(file);
 
-    try (InputStream in = url.toURL().openStream()) {
-      if (url.toString().endsWith("zip")) {
-        Files.copy(UrlSource.decompressInputStream(in), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-      } else {
-        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-      }
-      src.setFile(file);
-      // analyze individual files using the dwca reader
-      Archive arch = DwcFiles.fromLocation(file.toPath());
-      copyArchiveFileProperties(arch.getCore(), src);
-    } catch (IOException e) {
-      // this file is invalid
-      LOG.warn(e.getMessage());
-      throw new ImportException(e);
-    } catch (UnsupportedArchiveException e) {
-      // fine, can't read it with dwca library, but might still be a valid file for manual setup
-      LOG.warn(e.getMessage());
-    }
+    downloadDataFromUrlAsync(resource, url, sourceName);
 
     src.setName(finalSourceName);
     src.setUrl(url);
     src.setResource(resource);
+
+    try {
+      UrlMetadata urlMetadata = org.gbif.ipt.utils.FileUtils.fetchUrlMetadata(url.toString());
+      src.setFileSize(urlMetadata.getContentLength());
+    } catch (IOException e) {
+      LOG.error("Failed to read URL metadata from {}: {}", url.toString(), e.getMessage());
+    }
 
     try {
       src.setLastModified(new Date());
@@ -465,8 +467,91 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       throw new ImportException(e);
     }
 
-    analyze(src);
     return src;
+  }
+
+  private void downloadDataFromUrlAsync(Resource resource, URI url, String sourceName) throws ImportException {
+    try {
+      LOG.info("Staring asynchronous download data from the URL {}", url);
+      UUID key = UUID.randomUUID();
+      String encodedFileURL = url.toString();
+
+      Optional<String> redirectedUrl = URLUtils.getRedirectedUrl(encodedFileURL);
+      if (redirectedUrl.isPresent()) {
+        encodedFileURL = redirectedUrl.get();
+      }
+
+      FileStoreManager.AsyncDownloadResult downloadResult =
+          fileStoreManager.downloadDataFile(
+              encodedFileURL,
+              dataDir.tmpFile(key.toString()).getAbsolutePath(),
+              resultDataFile -> {
+                LOG.info(
+                    "File has been downloaded and decompressed from URL {}, key {}", url, key);
+                processSuccessfulDownload(key, resource, sourceName, resultDataFile);
+              },
+              err -> {
+                LOG.error("Error processing file", err);
+                processFailedDownload(key, resource, sourceName, err.getMessage());
+              });
+
+      LOG.info("Asynchronous download {}", downloadResult);
+    } catch (IOException ex) {
+      LOG.error("Can't download submitted file", ex);
+      throw new ImportException(ex);
+    }
+  }
+
+  private void processSuccessfulDownload(UUID key, Resource resource, String sourceName, DataFile dataFile) {
+    LOG.info("Processing successful download {}", key);
+    LOG.info("Data file: {}", dataFile);
+
+    // TODO: make sure it's of UrlSource type!
+    UrlSource src = (UrlSource) resource.getSource(sourceName);
+
+    File downloadDir = dataDir.tmpFile(key.toString());
+    try (Stream<Path> paths = Files.list(downloadDir.toPath()).filter(Files::isRegularFile)) {
+      Iterator<Path> iterator = paths.iterator();
+
+      if (iterator.hasNext()) {
+        Path firstFile = iterator.next();
+        // Process the first file
+        LOG.info("Processing: {}", firstFile.getFileName());
+        File sourceFile = dataDir.sourceFile(resource, firstFile.getFileName().toString());
+
+        // TODO: check the result?
+        boolean newSourceFileCreated = sourceFile.createNewFile();
+
+        FileUtils.copyFile(firstFile.toFile(), sourceFile);
+        LOG.info("Filed {} copied to resource {} sources",  firstFile.getFileName(), resource.getShortname());
+
+        src.setFile(sourceFile);
+        // analyze individual files using the dwca reader
+        Archive arch = DwcFiles.fromLocation(sourceFile.toPath());
+        copyArchiveFileProperties(arch.getCore(), src);
+
+        LOG.info("Start analyzing source file {}", sourceFile);
+        src.analyze();
+      }
+
+      // Log the rest as skipped
+      while (iterator.hasNext()) {
+        Path skippedFile = iterator.next();
+        LOG.info("Skipped: {}", skippedFile.getFileName());
+      }
+
+      FileUtils.deleteDirectory(downloadDir);
+
+      notifyListeners(resource);
+    } catch (IOException e) {
+      LOG.error("Failed to process downloaded file(s) {}", key, e);
+    }
+
+  }
+
+  private void processFailedDownload(UUID key, Resource resource, String sourceName, String errorMessage) {
+    LOG.error("Error processing source {} with key {} for resource {}: {}",
+        sourceName, key, resource.getShortname(), errorMessage);
   }
 
   @Override

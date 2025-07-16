@@ -46,6 +46,7 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
+import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
@@ -289,7 +290,7 @@ public class GenerateDCATTest extends IptBaseTest {
     when(mockDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
     // create SourceManagerImpl
-    SourceManager mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir);
+    SourceManager mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir, mock(FileStoreManager.class));
 
     // create temp directory
     File tmpDataDir = FileUtils.createTempDir();
