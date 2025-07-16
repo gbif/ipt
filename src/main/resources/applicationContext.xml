@@ -338,4 +338,10 @@
   </bean>
 
   <bean id="iptValidator" class="org.gbif.ipt.validation.IptValidator"/>
+
+  <bean id="downloadFileManager" class="org.gbif.ipt.service.file.DownloadFileManager"/>
+
+  <bean id="fileStoreManager" class="org.gbif.ipt.service.file.FileStoreManager">
+    <constructor-arg ref="downloadFileManager"/>
+  </bean>
 </beans>
