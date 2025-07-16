@@ -45,6 +45,8 @@ public interface Source {
 
   boolean isReadable();
 
+  boolean isProcessing();
+
   SourceType getSourceType();
 
   void setColumns(int columns);
@@ -58,6 +60,8 @@ public interface Source {
   void setName(String name);
 
   void setReadable(boolean readable);
+
+  void setProcessing(boolean processing);
 
   void setResource(Resource resource);
 

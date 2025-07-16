@@ -445,6 +445,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     src = new UrlSource();
     File file = dataDir.sourceFile(resource, filename);
     src.setFile(file);
+    src.setProcessing(true);
 
     downloadDataFromUrlAsync(resource, url, sourceName);
 
@@ -519,8 +520,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         LOG.info("Processing: {}", firstFile.getFileName());
         File sourceFile = dataDir.sourceFile(resource, firstFile.getFileName().toString());
 
-        // TODO: check the result?
-        boolean newSourceFileCreated = sourceFile.createNewFile();
+        sourceFile.createNewFile();
 
         FileUtils.copyFile(firstFile.toFile(), sourceFile);
         LOG.info("Filed {} copied to resource {} sources",  firstFile.getFileName(), resource.getShortname());
@@ -545,13 +545,19 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       notifyListeners(resource);
     } catch (IOException e) {
       LOG.error("Failed to process downloaded file(s) {}", key, e);
+    } finally {
+      src.setProcessing(false);
     }
-
   }
 
   private void processFailedDownload(UUID key, Resource resource, String sourceName, String errorMessage) {
     LOG.error("Error processing source {} with key {} for resource {}: {}",
         sourceName, key, resource.getShortname(), errorMessage);
+    Source source = resource.getSource(sourceName);
+    if (source != null) {
+      source.setProcessing(false);
+    }
+    notifyListeners(resource);
   }
 
   @Override
