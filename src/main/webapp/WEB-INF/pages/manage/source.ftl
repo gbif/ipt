@@ -185,7 +185,9 @@
                                             <th class="col-lg-2 col-md-3"><@s.text name='manage.source.readable'/></th>
                                             <td>
                                                 <div>
-                                                    <#if source.readable>
+                                                    <#if source.processing>
+                                                        <span class="text-gbif-primary"><@s.text name="manage.source.processing.info"/></span>
+                                                    <#elseif source.readable>
                                                         <i class="bi bi-circle-fill text-gbif-primary"></i>
                                                         <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
                                                     <#else>
