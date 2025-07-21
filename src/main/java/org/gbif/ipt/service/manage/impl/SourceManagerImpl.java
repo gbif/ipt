@@ -57,9 +57,9 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -386,7 +386,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   @Override
   public FileSource add(Resource resource, File file, String fileName) throws ImportException,
     InvalidFilenameException {
-    LOG.debug("ADDING SOURCE " + fileName + " FROM " + file.getAbsolutePath());
+    LOG.debug("ADDING SOURCE {} FROM {}", fileName, file.getAbsolutePath());
 
     if (acceptableFileName(fileName)) {
       FileSource src;
@@ -507,37 +507,56 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     LOG.info("Processing successful download {}", key);
     LOG.info("Data file: {}", dataFile);
 
-    // TODO: make sure it's of UrlSource type!
     UrlSource src = (UrlSource) resource.getSource(sourceName);
 
     File downloadDir = dataDir.tmpFile(key.toString());
     try (Stream<Path> paths = Files.list(downloadDir.toPath()).filter(Files::isRegularFile)) {
-      Iterator<Path> iterator = paths.iterator();
+      List<Path> files = paths.collect(Collectors.toList());
 
-      if (iterator.hasNext()) {
-        Path firstFile = iterator.next();
-        // Process the first file
-        LOG.info("Processing: {}", firstFile.getFileName());
-        File sourceFile = dataDir.sourceFile(resource, firstFile.getFileName().toString());
+      // look for occurrence
+      Optional<Path> targetFile;
+      Optional<Path> matchingOccurrence = files.stream()
+          .filter(path -> {
+            String name = path.getFileName().toString().toLowerCase();
+            return name.contains("occurrence");
+          })
+          .findFirst();
+      targetFile = matchingOccurrence;
 
-        sourceFile.createNewFile();
+      if (matchingOccurrence.isEmpty()) {
+        // look for event
+        Optional<Path> matchingEvent = files.stream()
+            .filter(path -> {
+              String name = path.getFileName().toString().toLowerCase();
+              return name.contains("event");
+            })
+            .findFirst();
+        targetFile = matchingEvent;
 
-        FileUtils.copyFile(firstFile.toFile(), sourceFile);
-        LOG.info("Filed {} copied to resource {} sources",  firstFile.getFileName(), resource.getShortname());
-
-        src.setFile(sourceFile);
-        // analyze individual files using the dwca reader
-        Archive arch = DwcFiles.fromLocation(sourceFile.toPath());
-        copyArchiveFileProperties(arch.getCore(), src);
-
-        LOG.info("Start analyzing source file {}", sourceFile);
-        src.analyze();
+        if (matchingEvent.isEmpty()) {
+          // take largest
+          targetFile = files.stream()
+              .max(Comparator.comparingLong(path -> {
+                try {
+                  return Files.size(path);
+                } catch (IOException e) {
+                  return -1L;
+                }
+              }));
+        }
       }
 
-      // Log the rest as skipped
-      while (iterator.hasNext()) {
-        Path skippedFile = iterator.next();
-        LOG.info("Skipped: {}", skippedFile.getFileName());
+      if (targetFile.isPresent()) {
+        processFile(resource, targetFile.get(), src);
+
+        // Log the rest as skipped
+        for (Path file : files) {
+          if (!targetFile.get().equals(file)) {
+            LOG.info("Skipped: {}", file.getFileName());
+          }
+        }
+      } else {
+        LOG.error("Failed to get file for processing. Resource {}, source {}", resource.getShortname(), sourceName);
       }
 
       FileUtils.deleteDirectory(downloadDir);
@@ -548,6 +567,25 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     } finally {
       src.setProcessing(false);
     }
+  }
+
+  private void processFile(Resource resource, Path targetFile, UrlSource src) throws IOException {
+    // Process the target file
+    LOG.info("Processing: {}", targetFile.getFileName());
+    File sourceFile = dataDir.sourceFile(resource, targetFile.getFileName().toString());
+
+    sourceFile.createNewFile();
+
+    FileUtils.copyFile(targetFile.toFile(), sourceFile);
+    LOG.info("Filed {} copied to resource {} sources",  targetFile.getFileName(), resource.getShortname());
+
+    src.setFile(sourceFile);
+    // analyze individual files using the dwca reader
+    Archive arch = DwcFiles.fromLocation(sourceFile.toPath());
+    copyArchiveFileProperties(arch.getCore(), src);
+
+    LOG.info("Start analyzing source file {}", sourceFile);
+    src.analyze();
   }
 
   private void processFailedDownload(UUID key, Resource resource, String sourceName, String errorMessage) {
