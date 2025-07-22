@@ -8,7 +8,7 @@
 
   <Appenders>
     <Console name="CONSOLE" target="SYSTEM_OUT">
-      <PatternLayout pattern="%-5p [%c] - %m%n"/>
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5p [%c] - %m%n"/>
     </Console>
   </Appenders>
 
