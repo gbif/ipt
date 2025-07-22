@@ -374,8 +374,8 @@
                         $('#url-source-check-status-fail').hide();
                         $('#url-source-size-wrapper').show();
                         $('#url-source-content-type-wrapper').show();
-                        $("#url-source-size").text(contentLength ? formatFileSize(contentLength) : "?");
-                        $("#url-source-content-type").text(contentType ? contentType : "?");
+                        $("#url-source-size").text(Number.isFinite(contentLength) && contentLength >= 0 ? formatFileSize(contentLength) : "?");
+                        $("#url-source-content-type").text(contentType ? contentType.split(";")[0].trim() : "?");
                     } else {
                         $('#url-source-check-status-wrapper').show();
                         $('#url-source-check-status-fail').show();
