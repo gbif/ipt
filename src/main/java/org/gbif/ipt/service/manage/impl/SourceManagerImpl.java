@@ -594,6 +594,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     Source source = resource.getSource(sourceName);
     if (source != null) {
       source.setProcessing(false);
+      source.setReadable(false);
     }
     notifyListeners(resource);
   }
