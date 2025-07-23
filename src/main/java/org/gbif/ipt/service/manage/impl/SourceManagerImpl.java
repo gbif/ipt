@@ -604,10 +604,24 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (source instanceof SqlSource) {
       return analyze((SqlSource) source);
     } else if (source instanceof UrlSource) {
-      return analyze((UrlSource) source);
+      return analyzeAsync((UrlSource) source);
     } else {
       return analyze((FileSource) source);
     }
+  }
+
+  private String analyzeAsync(UrlSource src) {
+    // skip already in process
+    if (src.isProcessing()) {
+      LOG.info("URL source {} is already processing", src.getName());
+      return null;
+    }
+
+    src.setProcessing(true);
+
+    // download data from the URL and analyze it
+    downloadDataFromUrlAsync(src.getResource(), src.getUrl(), src.getName());
+    return null;
   }
 
   private String analyze(UrlSource src) {
