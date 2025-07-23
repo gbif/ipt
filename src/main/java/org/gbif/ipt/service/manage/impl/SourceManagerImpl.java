@@ -471,10 +471,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return src;
   }
 
-  private void downloadDataFromUrlAsync(Resource resource, URI url, String sourceName) throws ImportException {
+  private void downloadDataFromUrlAsync(Resource resource, URI url, String sourceName) {
+    LOG.info("Staring asynchronous download data from the URL {}", url);
+    UUID key = UUID.randomUUID();
+
     try {
-      LOG.info("Staring asynchronous download data from the URL {}", url);
-      UUID key = UUID.randomUUID();
       String encodedFileURL = url.toString();
 
       Optional<String> redirectedUrl = URLUtils.getRedirectedUrl(encodedFileURL);
@@ -495,11 +496,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
                 LOG.error("Error processing file", err);
                 processFailedDownload(key, resource, sourceName, err.getMessage());
               });
-
       LOG.info("Asynchronous download {}", downloadResult);
-    } catch (IOException ex) {
-      LOG.error("Can't download submitted file", ex);
-      throw new ImportException(ex);
+    } catch (Exception e) {
+      LOG.error("Failed to download data from URL {}", url);
+      processFailedDownload(key, resource, sourceName, e.getMessage());
     }
   }
 
