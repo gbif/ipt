@@ -13,6 +13,9 @@
  */
 package org.gbif.ipt.service.file;
 
+import org.gbif.ipt.model.UrlMetadata;
+import org.gbif.ipt.utils.FileUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
@@ -21,7 +24,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -34,19 +36,10 @@ public class DownloadFileManager {
 
   private static final Logger LOG = LogManager.getLogger(DownloadFileManager.class);
 
-  private static final Set<String> SUPPORTED_CONTENT_TYPES =
-      Set.of("application/zip", "application/xml", "text/csv");
-
   public static boolean isAvailable(String url) {
     try {
-      HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
-      con.setRequestMethod("HEAD");
-
-      int responseCode = con.getResponseCode();
-      String content = con.getHeaderField("Content-Type");
-
-      return responseCode == HttpURLConnection.HTTP_OK
-          && SUPPORTED_CONTENT_TYPES.stream().anyMatch(content::contains);
+      UrlMetadata urlMetadata = FileUtils.fetchUrlMetadata(url);
+      return urlMetadata.getStatus() == HttpURLConnection.HTTP_OK;
     } catch (Exception e) {
       LOG.warn("Error getting file information", e);
       return false;
