@@ -828,6 +828,18 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
 
     resource.deleteSource(source);
+
+    if (source instanceof UrlSource) {
+      // also delete the local data file
+      UrlSource us = (UrlSource) source;
+      boolean delete = us.getFile().delete();
+
+      if (!delete) {
+        LOG.error("Failed to delete the local file {} for the URL source {} of the resource {}",
+            us.getFile().getAbsolutePath(), source.getName(), resource.getShortname());
+      }
+    }
+
     if (source instanceof TextFileSource) {
       // also delete source data file
       TextFileSource fs = (TextFileSource) source;
