@@ -2676,6 +2676,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
 
+    preventPublicationForSourcesInProcessingState(resource);
+
     publishMetadata(resource, version, action);
     publishRtf(resource, version);
 
@@ -2695,6 +2697,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       publishEnd(resource, action, version);
     }
     return archive;
+  }
+
+  private void preventPublicationForSourcesInProcessingState(Resource resource) {
+    Optional<Source> sourceBeingProcessed = resource.getMappings().stream()
+        .map(ExtensionMapping::getSource)
+        .filter(Source::isProcessing)
+        .findAny();
+
+    if (sourceBeingProcessed.isPresent()) {
+      throw new PublicationException(PublicationException.TYPE.LOCKED,
+          "Resource's " + resource.getShortname() + " source " + sourceBeingProcessed.get() + " is currently being processed");
+    }
   }
 
   /**
