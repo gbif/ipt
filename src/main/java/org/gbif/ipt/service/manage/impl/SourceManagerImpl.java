@@ -843,8 +843,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (source instanceof TextFileSource) {
       // also delete source data file
       TextFileSource fs = (TextFileSource) source;
-      fs.getFile().delete();
+      boolean delete = fs.getFile().delete();
+
+      if (!delete) {
+        LOG.error("Failed to delete the file {} for the Text file source {} of the resource {}",
+            fs.getFile().getAbsolutePath(), source.getName(), resource.getShortname());
+      }
     }
+
     if (source instanceof ExcelFileSource) {
       // also delete source data file if no further source uses it
       ExcelFileSource es = (ExcelFileSource) source;
@@ -857,7 +863,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         }
       }
       if (del) {
-        es.getFile().delete();
+        del = es.getFile().delete();
+
+        if (!del) {
+          LOG.error("Failed to delete the file {} for the Excel file source {} of the resource {}",
+              es.getFile().getAbsolutePath(), source.getName(), resource.getShortname());
+        }
       }
     }
     return true;
