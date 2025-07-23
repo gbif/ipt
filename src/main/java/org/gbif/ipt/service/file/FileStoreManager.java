@@ -55,12 +55,6 @@ public class FileStoreManager {
     this.downloadFileManager = downloadFileManager;
   }
 
-  public CompletableFuture<DataFile> extractAndGetFileInfoAsync(
-      Path dataFilePath, Path destinationFolder, String fileName) {
-    return CompletableFuture.supplyAsync(
-        () -> extractAndGetFileInfo(dataFilePath, destinationFolder, fileName));
-  }
-
   @SneakyThrows
   public DataFile extractAndGetFileInfo(
       Path dataFilePath, Path destinationFolder, String fileName) {
@@ -103,8 +97,7 @@ public class FileStoreManager {
       String url,
       String targetDirectory,
       Consumer<DataFile> resultCallback,
-      Consumer<Throwable> errorCallback)
-      throws IOException {
+      Consumer<Throwable> errorCallback) {
 
     if (!isAvailable(url)) {
       throw new IllegalArgumentException(
