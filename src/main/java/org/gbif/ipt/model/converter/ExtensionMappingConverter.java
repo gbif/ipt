@@ -15,49 +15,78 @@ package org.gbif.ipt.model.converter;
 
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
-import org.gbif.ipt.model.ExtensionProperty;
-import org.gbif.ipt.service.admin.ExtensionManager;
 
-import javax.inject.Inject;
+import java.lang.reflect.Field;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
+import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.mapper.Mapper;
 
 public class ExtensionMappingConverter implements Converter {
 
-  private final ExtensionManager extManager;
+  private final ReflectionConverter reflectionConverter;
 
-  @Inject
-  public ExtensionMappingConverter(ExtensionManager extManager) {
-    this.extManager = extManager;
+  public ExtensionMappingConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
+    this.reflectionConverter = new ReflectionConverter(mapper, reflectionProvider);
   }
 
   @Override
-  public boolean canConvert(Class clazz) {
-    return clazz.equals(ExtensionMapping.class);
-  }
-
-  @Override
-  public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-    ExtensionMapping e = (ExtensionMapping) value;
-    // serialise whole object
-    writer.startNode("mapping");
-    // ...
-    writer.endNode();
+  public boolean canConvert(Class type) {
+    return ExtensionMapping.class.equals(type);
   }
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    ExtensionMapping map = new ExtensionMapping();
-    // read whole object, looking up the extension and its properties
-    String term = reader.getValue();
-    for (Extension e : extManager.list()) {
-      ExtensionProperty prop = e.getProperty(term);
+    ExtensionMapping mapping = new ExtensionMapping();
+
+    while (reader.hasMoreChildren()) {
+      reader.moveDown();
+      String nodeName = reader.getNodeName();
+
+      if ("extension".equals(nodeName)) {
+        Extension extension = (Extension) context.convertAnother(mapping, Extension.class);
+        mapping.setExtension(extension);
+        mapping.setExtensionVerbatim(reader.getValue());
+      } else {
+        // Delegate all other fields to XStream’s default mechanism
+        Field field = findField(ExtensionMapping.class, nodeName);
+        if (field != null) {
+          field.setAccessible(true);
+          Object value = context.convertAnother(mapping, field.getType());
+          try {
+            field.set(mapping, value);
+          } catch (IllegalAccessException e) {
+            throw new RuntimeException("Failed to set field: " + nodeName, e);
+          }
+        }
+      }
+
+      reader.moveUp();
     }
-    return map;
+
+    return mapping;
   }
 
+  private Field findField(Class<?> clazz, String name) {
+    while (clazz != null) {
+      for (Field field : clazz.getDeclaredFields()) {
+        if (field.getName().equals(name)) {
+          return field;
+        }
+      }
+      clazz = clazz.getSuperclass();
+    }
+    return null;
+  }
+
+  @Override
+  public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
+    // Delegate entirely to default reflection-based serialization
+    reflectionConverter.marshal(source, writer, context);
+  }
 }

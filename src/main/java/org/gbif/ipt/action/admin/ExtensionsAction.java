@@ -196,6 +196,7 @@ public class ExtensionsAction extends POSTAction {
 
     // retrieve all extensions that have been installed already
     extensions = extensionManager.list();
+    extensions.sort(Comparator.comparing(Extension::getTitle));
 
     // update each installed extension indicating whether it is the latest version (for its rowType) or not
     updateIsLatest(extensions);
@@ -205,6 +206,8 @@ public class ExtensionsAction extends POSTAction {
     for (Extension e : extensions) {
       newExtensions.remove(e);
     }
+
+    newExtensions.sort(Comparator.comparing(Extension::getTitle));
 
     // find date extensions were last synchronised
     for (Extension ex : extensions) {

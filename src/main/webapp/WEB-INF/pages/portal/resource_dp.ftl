@@ -46,6 +46,7 @@
     <#assign anchor_citation>#anchor-citation</#assign>
     <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
     <#assign publishedOnText><@s.text name='manage.overview.published.released'/></#assign>
+    <#assign publishedOnText = publishedOnText?markup_string>
     <#assign download_dp_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
     <#assign download_metadata_url>${baseURL}/metadata.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.metadataVersion.toPlainString()}</#if></#assign>
     <#assign isPreviewPage = action.isPreview() />

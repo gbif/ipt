@@ -130,7 +130,7 @@
 
                     <div class="mt-2">
                         <input type="submit" value="Save" id="save" name="save" class="btn btn-sm btn-outline-gbif-primary top-button" form="autopublishForm">
-                        <@s.submit form="autopublish" cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel"  key="button.cancel"/>
+                        <input type="submit" value="Cancel" id="cancel" name="cancel" class="btn btn-sm btn-outline-secondary top-button" form="autopublishForm">
                     </div>
                 </div>
             </div>

@@ -85,7 +85,7 @@
 <#--    1. Interpret backticked text as code-->
 <#--    2. Interpret text like []() as a link-->
     <#macro processDescription description>
-       ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")}
+       ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")?no_esc}
     </#macro>
 
     <div class="container px-0">

@@ -208,19 +208,33 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
       }
     }
 
-    try {
-      InputStream in = url.toURL().openStream();
-      if (url.toString().endsWith("zip")) {
-        Files.copy(decompressInputStream(in), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-      } else {
-        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-      }
-      setFile(file);
-    } catch (IOException e) {
-      LOG.error("URL not readable {}. Error: {}", url, e.getMessage());
-      setReadable(false);
-      return emptyLines;
-    }
+//    try {
+//      InputStream in = url.toURL().openStream();
+//      if (url.toString().endsWith("zip")) {
+//        File decompressedFile = new File(file.getParentFile(), name + ".txt");
+//        if (!decompressedFile.exists()) {
+//          boolean decompressedFileCreated = decompressedFile.createNewFile();
+//
+//          if (!decompressedFileCreated) {
+//            LOG.error("Failed to create decompressed file {}", decompressedFile);
+//            setReadable(false);
+//            return emptyLines;
+//          }
+//        }
+//
+//        Files.copy(decompressInputStream(in), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//        setFile(decompressedFile);
+//      } else {
+//        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//        setFile(file);
+//      }
+//    } catch (IOException e) {
+//      LOG.error("URL not readable {}. Error: {}", url, e.getMessage());
+//      setReadable(false);
+//      return emptyLines;
+//    }
+
+    setFile(file);
 
     setFileSize(file.length());
 

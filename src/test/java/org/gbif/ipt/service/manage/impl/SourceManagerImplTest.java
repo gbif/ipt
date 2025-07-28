@@ -24,6 +24,7 @@ import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
@@ -58,7 +59,7 @@ public class SourceManagerImplTest extends IptBaseTest {
     when(mockDataDir.sourceFile(any(Resource.class), any(FileSource.class))).thenReturn(ddFile);
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(logFile);
     // create instance of SourceManager, using mocked AppConfig and DataDir
-    manager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir);
+    manager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir, mock(FileStoreManager.class));
     // create test Resource
     resource = new Resource();
     resource.setShortname("testResource");

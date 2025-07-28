@@ -298,6 +298,11 @@
             // values
             var sourceNameValue = sourceNameInput.val();
 
+            // "check url" elements
+            var urlSourceInfoBlock = $("#url-source-info-block");
+            var urlSourceCheckLinkWrapper = $("#url-source-check-link-wrapper");
+            var urlSourceCheckLink = $("#check-url-source-link");
+
             // remove "selected" from all tabs
             $(".sources-tab-root").removeClass("tab-selected");
             // hide all indicators
@@ -318,6 +323,8 @@
                 clearButton.hide();
                 addButton.attr("value", '<@s.text name="button.add"/>');
                 addButton.hide();
+                urlSourceInfoBlock.hide();
+
                 sourceNameInput.removeClass("is-invalid");
                 urlInput.removeClass("is-invalid");
                 $("#callout-source-exists").hide();
@@ -333,6 +340,49 @@
                 clearButton.show();
                 addButton.attr("value", '<@s.text name="button.add"/>');
                 addButton.show();
+
+                // display "Check URL"
+                urlInput.on('input', function () {
+                    urlSourceInfoBlock.show();
+                    const value = $(this).val().trim();
+
+                    $('#url-source-size-wrapper').hide();
+                    $('#url-source-content-type-wrapper').hide();
+                    $('#url-source-check-status-wrapper').hide();
+                    $('#url-source-error-message-wrapper').hide();
+
+                    if (value) {
+                        urlSourceCheckLinkWrapper.show();
+                    } else {
+                        urlSourceCheckLinkWrapper.hide();
+                    }
+                });
+
+                // "Check URL" button
+                urlSourceCheckLink.on('click', async function (e) {
+                    e.preventDefault();
+                    const url = urlInput.val().trim();
+                    const urlMetadata = await checkUrlMetadata(url);
+
+                    const status = urlMetadata.status;
+                    const contentLength = urlMetadata.contentLength;
+                    const contentType = urlMetadata.contentType;
+
+                    if (status === 200) {
+                        $('#url-source-check-status-wrapper').show();
+                        $('#url-source-check-status-success').show();
+                        $('#url-source-check-status-fail').hide();
+                        $('#url-source-size-wrapper').show();
+                        $('#url-source-content-type-wrapper').show();
+                        $("#url-source-size").text(Number.isFinite(contentLength) && contentLength >= 0 ? formatFileSize(contentLength) : "?");
+                        $("#url-source-content-type").text(contentType ? contentType.split(";")[0].trim() : "?");
+                    } else {
+                        $('#url-source-check-status-wrapper').show();
+                        $('#url-source-check-status-fail').show();
+                        $('#url-source-check-status-success').hide();
+                        $('#url-source-error-message-wrapper').show();
+                    }
+                });
 
                 fileItems.forEach(function(item) {
                     item.remove();
@@ -363,6 +413,7 @@
                 sourceNameInput.show();
                 sendButton.hide();
                 fileInput.prop("value", "");
+                urlSourceInfoBlock.hide();
                 urlInput.hide();
                 urlInput.prop("value", "");
                 clearButton.hide();
@@ -469,6 +520,7 @@
             }
 
             $("#url").prop("value", "");
+            $("#url-source-info-block").hide();
             $("#sourceName").prop("value", "");
             $("#callout-source-exists").hide();
             $("#add").show();
@@ -552,6 +604,11 @@
 
             $(this).submit();
         });
+
+        async function checkUrlMetadata(url) {
+            const res = await fetch('/manage/urlMetadata?url=' + encodeURIComponent(url));
+            return await res.json();
+        }
 
         // validate add source form (for URL and SQL) and submit data
         $("#add").on("click", function (e) {
@@ -2322,7 +2379,7 @@
                                                     </div>
                                                     <div class="simpleCalloutMeta">
                                                         <div class="simpleCalloutMessage">
-                                                            You can upload multiple files at once, including text files, spreadsheets, or compressed archives.
+                                                            <@s.text name="manage.source.file.multipleUpload"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2381,6 +2438,27 @@
                                                 <@s.text name="validation.required"><@s.param><@s.text name="manage.source.url"/></@s.param></@s.text>
                                             </li>
                                         </ul>
+                                    </div>
+
+                                    <div id="url-source-info-block" style="display: none;">
+                                        <div id="url-source-info-block-inner" class="d-flex justify-content-start fs-smaller-2">
+                                            <div id="url-source-check-link-wrapper" class="me-3" style="display: none;">
+                                                <a id="check-url-source-link" class="smaller-action-link-button action-link-button-primary" href="#"><@s.text name="manage.source.url.checkUrl"/></a>
+                                            </div>
+                                            <div id="url-source-check-status-wrapper" class="me-3" style="display: none;">
+                                                <i id="url-source-check-status-fail" class="bi bi-x-circle-fill text-gbif-danger" style="display: none;"></i>
+                                                <i id="url-source-check-status-success" class="bi bi-check-circle-fill text-gbif-primary" style="display: none;"></i>
+                                            </div>
+                                            <div id="url-source-size-wrapper" class="me-3" style="display: none;">
+                                                <strong><@s.text name="manage.source.url.checkUrl.size"/>:</strong> <span id="url-source-size">?</span>
+                                            </div>
+                                            <div id="url-source-content-type-wrapper" style="display: none;">
+                                                <strong><@s.text name="manage.source.url.checkUrl.type"/>:</strong> <span id="url-source-content-type">?</span>
+                                            </div>
+                                            <div id="url-source-error-message-wrapper" class="text-gbif-danger" style="display: none;">
+                                                <@s.text name="manage.source.url.checkUrl.failed"/>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <input id="sourceType" type="hidden" name="sourceType" value="source-sql"/>

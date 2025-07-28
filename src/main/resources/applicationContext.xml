@@ -81,11 +81,18 @@
   <bean id="sourceManager" class="org.gbif.ipt.service.manage.impl.SourceManagerImpl">
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="fileStoreManager"/>
+  </bean>
+
+  <bean id="resourceCoordinator" class="org.gbif.ipt.service.manage.impl.ResourceCoordinator">
+    <constructor-arg ref="sourceManager" />
+    <constructor-arg ref="resourceManager" />
   </bean>
 
   <bean id="resourceConverterManager" class="org.gbif.ipt.service.manage.impl.ResourceConvertersManager" lazy-init="true">
     <property name="userConverter" ref="userEmailConverter"/>
     <property name="orgConverter" ref="organisationKeyConverter"/>
+    <property name="extensionMappingConverter" ref="extensionMappingConverter"/>
     <property name="extensionConverter" ref="extensionRowTypeConverter"/>
     <property name="conceptTermConverter" ref="conceptTermConverter"/>
     <property name="dataSchemaConverter" ref="dataPackageIdentifierConverter"/>
@@ -266,8 +273,15 @@
     <constructor-arg ref="simpleTextProvider"/>
   </bean>
 
+  <bean id="xstreamMapper" class="com.thoughtworks.xstream.mapper.DefaultMapper">
+    <constructor-arg value="#{T(java.lang.Thread).currentThread().getContextClassLoader()}" />
+  </bean>
+
+  <bean id="xstreamReflectionProvider" class="com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider"/>
+
   <bean id="extensionMappingConverter" class="org.gbif.ipt.model.converter.ExtensionMappingConverter">
-    <constructor-arg ref="extensionManager"/>
+    <constructor-arg ref="xstreamMapper"/>
+    <constructor-arg ref="xstreamReflectionProvider"/>
   </bean>
 
   <bean id="defaultLocaleInterceptor" class="org.gbif.ipt.struts2.DefaultLocaleInterceptor">
@@ -325,4 +339,10 @@
   </bean>
 
   <bean id="iptValidator" class="org.gbif.ipt.validation.IptValidator"/>
+
+  <bean id="downloadFileManager" class="org.gbif.ipt.service.file.DownloadFileManager"/>
+
+  <bean id="fileStoreManager" class="org.gbif.ipt.service.file.FileStoreManager">
+    <constructor-arg ref="downloadFileManager"/>
+  </bean>
 </beans>

@@ -689,13 +689,14 @@ footer a {
 
 
 /* Links color with exception for some classes START */
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .resource-table-link, .footer-link, .custom-link) {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button,
+.action-link, .action-link-button, .smaller-action-link-button, .resource-table-link, .footer-link, .custom-link) {
     color: rgb(var(--link-color)) !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .smaller-action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .smaller-action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link):hover {
     color: rgb(var(--link-color)) !important;
     filter: brightness(0.85);
     text-decoration: underline !important;
@@ -1240,7 +1241,9 @@ div.dataTables_processing>div:last-child>div {
 }
 
 /* Extensions */
-.extension-action-button, .action-link-button {
+.extension-action-button,
+.action-link-button,
+.smaller-action-link-button {
     font-weight: 500;
     padding: 4px;
     border-radius: 10px;
@@ -1254,7 +1257,8 @@ div.dataTables_processing>div:last-child>div {
     box-shadow: 0 1px 1px hsla(0, 0%, 0%, .06), 0 2px 1px hsla(0, 0%, 0%, .06);
 }
 
-.extension-action-button {
+.extension-action-button,
+.smaller-action-link-button {
     font-size: 0.75rem !important;
 }
 
@@ -1262,38 +1266,45 @@ div.dataTables_processing>div:last-child>div {
     font-size: 0.875rem !important;
 }
 
-.extension-action-button-primary, .action-link-button-primary {
+.extension-action-button-primary,
+.action-link-button-primary {
     color: rgb(var(--color-gbif-primary));
 }
 
-.extension-action-button-danger, .action-link-button-danger {
+.extension-action-button-danger,
+.action-link-button-danger {
     color: rgb(var(--color-gbif-danger)) !important;
     fill: rgb(var(--color-gbif-danger)) !important;
 }
 
-.extension-action-button-primary:hover, .action-link-button-primary:hover {
+.extension-action-button-primary:hover,
+.action-link-button-primary:hover {
     background-color: rgba(var(--color-gbif-primary), 0.05);
     color: rgb(var(--color-gbif-primary)) !important;
     filter: brightness(0.85);
 }
 
-.extension-action-button-danger:hover, .action-link-button-danger:hover {
+.extension-action-button-danger:hover,
+.action-link-button-danger:hover {
     background-color: rgba(var(--color-gbif-danger), 0.05);
     color: rgb(var(--color-gbif-danger)) !important;
     filter: brightness(0.85);
 }
 
-.extension-action-button-icon, .action-link-button-icon {
+.extension-action-button-icon,
+.action-link-button-icon {
     height: 1em;
     vertical-align: -0.125em !important;
     margin-right: 0.2rem;
 }
 
-.extension-action-button-primary .extension-action-button-icon, .action-link-button-primary .action-link-button-icon {
+.extension-action-button-primary .extension-action-button-icon,
+.action-link-button-primary .action-link-button-icon {
     fill: rgb(var(--color-gbif-primary));
 }
 
-.extension-action-button-danger .extension-action-button-icon, .action-link-button-danger .action-link-button-icon {
+.extension-action-button-danger .extension-action-button-icon,
+.action-link-button-danger .action-link-button-icon {
     fill: rgb(var(--color-gbif-danger)) !important;
 }
 

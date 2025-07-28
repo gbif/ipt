@@ -34,6 +34,7 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   protected String dateFormat = "YYYY-MM-DD";
   protected int columns;
   protected boolean readable = false;
+  protected boolean processing = false;
 
   /**
    * This method normalises a file name by removing certain reserved characters and converting all file name characters
@@ -151,6 +152,11 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   }
 
   @Override
+  public boolean isProcessing() {
+    return processing;
+  }
+
+  @Override
   public void setColumns(int columns) {
     this.columns = columns;
   }
@@ -178,6 +184,11 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   @Override
   public void setReadable(boolean readable) {
     this.readable = readable;
+  }
+
+  @Override
+  public void setProcessing(boolean processing) {
+    this.processing = processing;
   }
 
   @Override

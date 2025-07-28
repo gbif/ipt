@@ -38,12 +38,12 @@
     <test.datadir>/tmp/test-datadir</test.datadir>
 
     <!-- GBIF dependencies -->
-    <dwc-api.version>2.0.1</dwc-api.version>
+    <dwc-api.version>2.1.4</dwc-api.version>
     <dwca-io.version>3.0.0</dwca-io.version>
-    <gbif-api.version>2.1.8</gbif-api.version>
+    <gbif-api.version>2.1.13</gbif-api.version>
     <gbif-common.version>0.60</gbif-common.version>
     <gbif-doi.version>2.21</gbif-doi.version>
-    <gbif-metadata-profile.version>2.7</gbif-metadata-profile.version>
+    <gbif-metadata-profile.version>2.8</gbif-metadata-profile.version>
     <gbif-parsers.version>0.67</gbif-parsers.version>
     <gbif-httputils.version>1.4</gbif-httputils.version>
 
@@ -51,11 +51,11 @@
     <apache-poi.version>5.4.1</apache-poi.version>
     <bcrypt.version>0.10.2</bcrypt.version>
     <commons-digester.version>2.1</commons-digester.version>
-    <commons-io.version>2.19.0</commons-io.version>
-    <commons-lang3.version>3.17.0</commons-lang3.version>
+    <commons-io.version>2.20.0</commons-io.version>
+    <commons-lang3.version>3.18.0</commons-lang3.version>
     <commons-collections4.version>4.5.0</commons-collections4.version>
-    <commons-validator.version>1.9.0</commons-validator.version>
-    <commons-text.version>1.13.1</commons-text.version>
+    <commons-validator.version>1.10.0</commons-validator.version>
+    <commons-text.version>1.14.0</commons-text.version>
     <excel-streaming-reader.version>4.4.0</excel-streaming-reader.version>
     <freemarker.version>2.3.34</freemarker.version>
     <frictionless.datapackage-java.version>0.9.2.2-gbif-SNAPSHOT</frictionless.datapackage-java.version>
@@ -74,13 +74,14 @@
     <jetty-maven-plugin.version>9.4.57.v20241219</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <junit.version>5.13.1</junit.version>
-    <log4j.version>2.24.3</log4j.version>
+    <junit.version>5.13.4</junit.version>
+    <log4j.version>2.25.1</log4j.version>
     <mockito.version>4.11.0</mockito.version>
     <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.1.0</servlet-api.version>
     <struts2.version>6.7.4</struts2.version>
+    <tika.version>2.9.4</tika.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
     <jakarta.el.version>3.0.4</jakarta.el.version>
@@ -635,6 +636,11 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commons-io.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tika</groupId>
+      <artifactId>tika-core</artifactId>
+      <version>${tika.version}</version>
     </dependency>
 
     <!-- RTF generation -->

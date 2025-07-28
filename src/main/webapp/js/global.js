@@ -100,3 +100,28 @@ function makeSureResourceParameterIsPresentInURL(resourceShortname) {
         window.history.replaceState({}, '', url.toString());
     }
 }
+
+function formatFileSize(longSize, decimalPos = 2, strLocale = 'en-GB', inseparableDelimiter = false) {
+    const delimiter = inseparableDelimiter ? '\u00A0' : ' '; // &nbsp;
+
+    const formatter = new Intl.NumberFormat(strLocale, {
+        maximumFractionDigits: decimalPos >= 0 ? decimalPos : undefined
+    });
+
+    let val = longSize / 1_000_000_000;
+    if (val > 1) {
+        return formatter.format(val) + delimiter + 'GB';
+    }
+
+    val = longSize / 1_000_000;
+    if (val > 1) {
+        return formatter.format(val) + delimiter + 'MB';
+    }
+
+    val = longSize / 1_000;
+    if (val > 1) {
+        return formatter.format(val) + delimiter + 'KB';
+    }
+
+    return formatter.format(longSize) + delimiter + 'bytes';
+}

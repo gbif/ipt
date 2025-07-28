@@ -127,4 +127,10 @@ public interface SourceManager {
    */
   ClosableReportingIterator<String[]> rowIterator(Source source) throws SourceException;
 
+  /**
+   * Add a listener to a pool.
+   *
+   * @param listener listener
+   */
+  void addListener(ResourceUpdateListener listener);
 }

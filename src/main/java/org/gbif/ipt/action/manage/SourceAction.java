@@ -457,7 +457,11 @@ public class SourceAction extends ManagerBaseAction {
         problem = sourceManager.analyze(source);
         result = "analyze";
         if (problem == null) {
-          addActionMessage(getText("manage.source.analyzed"));
+          if (source instanceof UrlSource) {
+            addActionMessage(getText("manage.source.analyze.inProcess"));
+          } else {
+            addActionMessage(getText("manage.source.analyzed"));
+          }
         } else {
           addActionError(getText("manage.source.analyzed.problem", new String[] {problem}));
         }

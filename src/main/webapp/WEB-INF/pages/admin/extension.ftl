@@ -36,7 +36,7 @@
 </script>
 
 <#macro processSurroundedWithBackticksAsCode examples>
-    ${examples?replace("`(.*?)`", "<code>$1</code>", "r")}
+    ${examples?replace("`(.*?)`", "<code>$1</code>", "r")?no_esc}
 </#macro>
 
 <div class="container px-0">

@@ -907,6 +907,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     return resource;
   }
+
   private Resource createFromDwcArchive(String shortname, File dwca, User creator, ActionLogger alog)
     throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
@@ -927,6 +928,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (arch.getCore().getRowType() == null) {
         alog.error("manage.resource.create.core.invalid.rowType");
         throw new ImportException("Darwin Core Archive is invalid, core mapping has no rowType");
+      }
+
+      Set<String> installedExtensionRowTypes = extensionManager.list().stream()
+          .map(Extension::getRowType)
+          .collect(Collectors.toSet());
+
+      List<String> missingExtensionRowTypes = arch.getExtensions().stream()
+          .map(e -> e.getRowType().qualifiedName())
+          .filter(qName -> !installedExtensionRowTypes.contains(qName))
+          .collect(Collectors.toList());
+
+      if (!missingExtensionRowTypes.isEmpty()) {
+        alog.error("manage.resource.create.rowTypes.null", new String[]{String.join("<br>", missingExtensionRowTypes)});
+        throw new ImportException("Resource references non-installed extension(s)");
       }
 
       // keep track of source files as a dwca might refer to the same source file multiple times
@@ -1257,6 +1272,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // persist only emails for users
     xstream.registerConverter(resourceConvertersManager.getUserConverter());
+    // custom converter for ExtensionMapping
+    xstream.registerConverter(resourceConvertersManager.getExtensionMappingConverter());
     // persist only rowtype
     xstream.registerConverter(resourceConvertersManager.getExtensionConverter());
     // persist only qualified concept name
@@ -2360,11 +2377,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // 1. Non-existent Extension end up being NULL
         // E.g. a user is trying to import a resource from one IPT to another without all required exts installed.
         // 2. Auto-generating IDs is only available for Taxon core extension since IPT v2.1,
-        // therefore if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
+        // therefore, if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
         for (ExtensionMapping ext : resource.getMappings()) {
           Extension x = ext.getExtension();
           if (x == null) {
-            alog.warn("manage.resource.create.extension.null");
+            alog.warn("manage.resource.create.extension.null", new String[] {ext.getExtensionVerbatim()});
             throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-existent extension");
           } else if (extensionManager.get(x.getRowType()) == null) {
             alog.warn("manage.resource.create.rowType.null", new String[] {x.getRowType()});
@@ -2689,6 +2706,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     }
 
+    preventPublicationForSourcesInProcessingState(resource);
+
     publishMetadata(resource, version, action);
     publishRtf(resource, version);
 
@@ -2708,6 +2727,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       publishEnd(resource, action, version);
     }
     return archive;
+  }
+
+  private void preventPublicationForSourcesInProcessingState(Resource resource) {
+    Optional<Source> sourceBeingProcessed = resource.getMappings().stream()
+        .map(ExtensionMapping::getSource)
+        .filter(Source::isProcessing)
+        .findAny();
+
+    if (sourceBeingProcessed.isPresent()) {
+      throw new PublicationException(PublicationException.TYPE.LOCKED,
+          "Resource's " + resource.getShortname() + " source " + sourceBeingProcessed.get() + " is currently being processed");
+    }
   }
 
   /**
@@ -3859,18 +3890,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public synchronized void cleanArchiveVersions(Resource resource) {
     if (cfg.isArchivalMode() && cfg.getArchivalLimit() != null && cfg.getArchivalLimit() > 0) {
-      LOG.info("Archival mode is ON with a limit of "+ cfg.getArchivalLimit()+" elements)");
-      LOG.info("Clean archive versions, if needed, for resource: " + resource.getShortname());
+      LOG.info("Archival mode is ON with a limit of {} elements)", cfg.getArchivalLimit());
+      LOG.info("Clean archive versions, if needed, for resource: {}", resource.getShortname());
       List<VersionHistory> history = resource.getVersionHistory();
       if (history.size() > cfg.getArchivalLimit()) {
-        for (int i=cfg.getArchivalLimit(); i<history.size(); i++) {
+        for (int i = cfg.getArchivalLimit(); i < history.size(); i++) {
           VersionHistory oldVersion = history.get(i);
           try {
             BigDecimal version = new BigDecimal(oldVersion.getVersion());
-            LOG.info("Deleting archive version " + version + " for resource: " + resource.getShortname());
+            LOG.info("Deleting archive version {} for resource: {}", version, resource.getShortname());
             removeArchiveVersion(resource.getShortname(), version);
-          }
-          catch (Exception e) {
+          } catch (Exception e) {
             LOG.error("Cannot delete old archive versions for resource: " + resource.getShortname(), e);
             return;
           }
@@ -4312,7 +4342,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if ((version != null) && !version.equals(resource.getMetadataVersion())) {
       LOG.debug("Removing version {} for resource: {}", version, resource.getShortname());
       try {
-        removeVersion(resource.getShortname(), version);
+        removeVersionInternal(resource, version);
         resource.removeVersionHistory(version);
         save(resource);
         LOG.debug("Version {} has been removed for resource: {}", version, resource.getShortname());
@@ -4337,23 +4367,48 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         LOG.debug("{} has been successfully deleted.", dwcaFile.getAbsolutePath());
       }
     }
+
+    File dpArchiveFile = dataDir.resourceDataPackageFile(shortname, version);
+    if (dpArchiveFile != null && dpArchiveFile.exists()) {
+      boolean deleted = FileUtils.deleteQuietly(dpArchiveFile);
+      if (deleted) {
+        LOG.debug("{} has been successfully deleted.", dpArchiveFile.getAbsolutePath());
+      }
+    }
   }
 
-  public void removeVersion(String shortname, BigDecimal version) throws IOException {
-    // delete eml-1.1.xml if it exists (eml.xml must remain)
+  public void removeVersionInternal(Resource resource, BigDecimal version) throws IOException {
+    String shortname = resource.getShortname();
+
+    // delete eml-*.xml if it exists (eml.xml must remain)
     File versionedEMLFile = dataDir.resourceEmlFile(shortname, version);
     if (versionedEMLFile.exists()) {
       FileUtils.forceDelete(versionedEMLFile);
     }
-    // delete shortname-1.1.rtf if it exists
+
+    // delete datapackage-*.json if it exists (datapackage.json must remain)
+    File versionedDataPackageMetadataFile =
+        dataDir.resourceDatapackageMetadataFile(shortname, resource.getCoreType(), version);
+    if (versionedDataPackageMetadataFile.exists()) {
+      FileUtils.forceDelete(versionedDataPackageMetadataFile);
+    }
+
+    // delete shortname-*.rtf if it exists
     File versionedRTFFile = dataDir.resourceRtfFile(shortname, version);
     if (versionedRTFFile.exists()) {
       FileUtils.forceDelete(versionedRTFFile);
     }
-    // delete dwca-1.1.zip if it exists
+
+    // delete dwca-*.zip if it exists
     File versionedDwcaFile = dataDir.resourceDwcaFile(shortname, version);
     if (versionedDwcaFile.exists()) {
       FileUtils.forceDelete(versionedDwcaFile);
+    }
+
+    // delete datapackage-*.zip if it exists
+    File versionedDataPackageArchiveFile = dataDir.resourceDataPackageFile(shortname, version);
+    if (versionedDataPackageArchiveFile.exists()) {
+      FileUtils.forceDelete(versionedDataPackageArchiveFile);
     }
   }
 
