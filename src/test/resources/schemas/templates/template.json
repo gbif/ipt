@@ -1,0 +1,529 @@
+{
+  "name": "first-test-template-dwc-dp",
+  "description": "Test template",
+  "keywords": ["occurrence"],
+  "schema": {
+    "identifier": "http://rs.tdwg.org/dwc/dwc-dp",
+    "name": "dwc-dp",
+    "version": "0.1",
+    "issuedDate": "2025-06-10"
+  },
+  "tables": [
+    {
+      "name": "occurrence",
+      "identifier": "http://rs.tdwg.org/dwc/dwc-dp/occurrence",
+      "url": "https://rs.gbif.org/sandbox/experimental/data-packages/dwc-dp/0.1/table-schemas/occurrence.json",
+      "title": "Occurrence",
+      "description": "A state of a dwc:Organism in a dwc:Event.",
+      "fields": [
+        {
+          "name": "occurrenceID",
+          "title": "Occurrence ID",
+          "description": "An identifier for a dwc:Occurrence.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a persistent, globally unique identifier. In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make a dwc:occurrenceID globally unique.",
+          "examples": "`http://arctos.database.museum/guid/MSB:Mamm:233627`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/occurrenceID",
+          "constraints": {
+            "required": true,
+            "unique": true
+          }
+        },
+        {
+          "name": "eventID",
+          "title": "Event ID",
+          "description": "An identifier for a dwc:Event.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a globally unique identifier.",
+          "examples": "",
+          "namespace": "dwcdp",
+          "iri": "http://rs.tdwg.org/dwc/terms/eventID",
+          "constraints": {
+            "required": true,
+            "unique": false
+          }
+        },
+        {
+          "name": "surveyTargetID",
+          "title": "Survey Target ID",
+          "description": "An identifier for a SurveyTarget.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a globally unique identifier.",
+          "examples": "",
+          "namespace": "dwcdp",
+          "iri": ""
+        },
+        {
+          "name": "recordedBy",
+          "title": "Recorded By",
+          "description": "A list (concatenated and separated) of names of Agents responsible for recording a dwc:Occurrence.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to separate the values in a list with space vertical bar space ( | ).",
+          "examples": "`José E. Crespo`; `Oliver P. Pearson | Anita K. Pearson`; `FMNH`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/recordedBy"
+        },
+        {
+          "name": "recordedByID",
+          "title": "Recorded By ID",
+          "description": "An identifier for the Agent responsible for recording a dwc:Occurrence.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a globally unique identifier.",
+          "examples": "`https://orcid.org/0000-0002-1825-0097`; `https://ror.org/00mh9zx15`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/recordedByID"
+        },
+        {
+          "name": "organismQuantity",
+          "title": "Organism Quantity",
+          "description": "A number or enumeration value for the quantity of dwc:Organisms.",
+          "type": "string",
+          "format": "default",
+          "comments": "A dwc:organismQuantity must have a corresponding dwc:organismQuantityType.",
+          "examples": "`27` (organismQuantity) with `individuals` (organismQuantityType); `12.5` (organismQuantity) with `% biomass` (organismQuantityType); `r` (organismQuantity) with `Braun-Blanquet Scale` (organismQuantityType); `many` (organismQuantity) with `individuals` (organismQuantityType)",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/organismQuantity"
+        },
+        {
+          "name": "organismQuantityType",
+          "title": "Organism Quantity Type",
+          "description": "A type of quantification system used for the quantity of dwc:Organisms.",
+          "type": "string",
+          "format": "default",
+          "comments": "A dwc:organismQuantityType must have a corresponding dwc:organismQuantity. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`27` (organismQuantity) with `individuals` (organismQuantityType); `12.5` (organismQuantity) with `% biomass` (organismQuantityType); `r` (organismQuantity) with `Braun-Blanquet Scale` (organismQuantityType); `many` (organismQuantity) with `individuals` (organismQuantityType)",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/organismQuantity"
+        },
+        {
+          "name": "sex",
+          "title": "Sex",
+          "description": "A sex of a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a controlled vocabulary. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`male`; `female`; `hermaphrodite`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/sex"
+        },
+        {
+          "name": "lifeStage",
+          "title": "Life Stage",
+          "description": "An age class or life stage of a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a controlled vocabulary. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`zygote`; `larva`; `juvenile`; `adult`; `seedling`; `flowering`; `fruiting`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/lifeStage"
+        },
+        {
+          "name": "reproductiveCondition",
+          "title": "Reproductive Condition",
+          "description": "A reproductive condition of a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a controlled vocabulary. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`non-reproductive`; `pregnant`; `in bloom`; `fruit-bearing`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/reproductiveCondition"
+        },
+        {
+          "name": "caste",
+          "title": "Caste",
+          "description": "A social caste of a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a controlled vocabulary that aligns best with a dwc:Taxon. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`queen`; `male alate`; `intercaste`; `soldier`; `ergatoid`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/caste"
+        },
+        {
+          "name": "behavior",
+          "title": "Behavior",
+          "description": "A behavior shown by a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`roosting`; `foraging`; `running`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/behavior"
+        },
+        {
+          "name": "vitality",
+          "title": "Vitality",
+          "description": "An indication of whether a dwc:Organism was alive or dead at the time of collection or observation.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a controlled vocabulary. Intended to be used with records having a dwc:basisOfRecord of 'PreservedSpecimen', 'MaterialEntity', 'MaterialSample', 'HumanObservation', or 'MachineObservation'. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`alive`; `dead`; `mixedLot`; `uncertain`; `notAssessed`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/vitality"
+        },
+        {
+          "name": "establishmentMeans",
+          "title": "Establishment Means",
+          "description": "Statement about whether a dwc:Organism has been introduced to a given place and time through the direct or indirect activity of modern humans.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use controlled value strings from the controlled vocabulary designated for use with this term, listed at http://rs.tdwg.org/dwc/doc/em/. For details, refer to https://doi.org/10.3897/biss.3.38084. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`native`; `nativeIntroduced`; `introduced`; `introducedAssistedColinisation`; `vagrant`; `uncertain`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/establishmentMeans"
+        },
+        {
+          "name": "degreeOfEstablishment",
+          "title": "Degree Of Establishment",
+          "description": "The degree to which a dwc:Organism survives, reproduces, and expands its range at a given place and time.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use controlled value strings from the controlled vocabulary designated for use with this term, listed at http://rs.tdwg.org/dwc/doc/doe/. For details, refer to https://doi.org/10.3897/biss.3.38084. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`native`; `captive`; `cultivated`; `released`; `failing`; `casual`; `reproducing`; `established`; `colonising`; `invasive`; `widespreadInvasive`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/degreeOfEstablishment"
+        },
+        {
+          "name": "pathway",
+          "title": "Pathway",
+          "description": "A process by which a dwc:Organism came to be in a given place at a given time.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use controlled value strings from the controlled vocabulary designated for use with this term, listed at http://rs.tdwg.org/dwc/doc/pw/. For details, refer to https://doi.org/10.3897/biss.3.38084. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`releasedForUse`; `otherEscape`; `transportContaminant`; `transportStowaway`; `corridor`; `unaided`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/pathway"
+        },
+        {
+          "name": "substrate",
+          "title": "Substrate",
+          "description": "A biotic or abiotic material to which an dwc:Organism is attached when a dwc:Event occurs.",
+          "type": "string",
+          "format": "default",
+          "comments": "This may or may not imply that the organism influenced/took resources from the substrate (such as during parasitization or decomposition). Declaration of a host-parasite relationship is better expressed as an organism interaction.",
+          "examples": "`stone`; `wall`; `decaying wood`; `wooden board fence`; `animal bones`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/substrate"
+        },
+        {
+          "name": "occurrenceStatus",
+          "title": "Occurrence Status",
+          "description": "A statement about the detection or non-detection of a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "For dwc:Occurrences, the default vocabulary is recommended to consist of 'detected' and 'notDetected', but can be extended by implementers with good justification. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value.",
+          "examples": "`detected`; `notDetected`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/occurrenceStatus",
+          "default": "detected"
+        },
+        {
+          "name": "occurrenceReferences",
+          "title": "Occurrence References",
+          "description": "A list (concatenated and separated) of identifiers (publication, bibliographic reference, global unique identifier, URI) of literature associated with a dwc:Occurrence.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to separate the values in a list with space vertical bar space (` | `).",
+          "examples": "`Christopher J. Conroy, Jennifer L. Neuwald. 2008. Phylogeographic study of the California vole, Microtus californicus Journal of Mammalogy, 89(3):755-767.`; `Steven R. Hoofer and Ronald A. Van Den Bussche. 2001. Phylogenetic Relationships of Plecotine Bats and Allies Based on Mitochondrial Ribosomal Sequences. Journal of Mammalogy 82(1):131-137. | Walker, Faith M., Jeffrey T. Foster, Kevin P. Drees, Carol L. Chambers. 2014. Spotted bat (Euderma maculatum) microsatellite discovery using illumina sequencing. Conservation Genetics Resources.`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/associatedReferences"
+        },
+        {
+          "name": "informationWithheld",
+          "title": "Information Withheld",
+          "description": "Additional information that exists, but that has not been shared in the given record.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "`location information not given for endangered species`; `collector identities withheld | ask about tissue samples`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/informationWithheld"
+        },
+        {
+          "name": "dataGeneralizations",
+          "title": "Data Generalizations",
+          "description": "Actions taken to make the shared data less specific or complete than in its original form. Suggests that alternative data of higher quality may be available on request.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "`coordinates generalized from original GPS coordinates to the nearest half degree grid cell`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/dataGeneralizations"
+        },
+        {
+          "name": "occurrenceRemarks",
+          "title": "Occurrence Remarks",
+          "description": "Comments or notes about a dwc:Occurrence.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "`found dead on road`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/occurrenceRemarks"
+        },
+        {
+          "name": "organismID",
+          "title": "Organism ID",
+          "description": "An identifier for a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/organismID"
+        },
+        {
+          "name": "organismScope",
+          "title": "Organism Scope",
+          "description": "A description of the type of dwc:Organism instance.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a controlled vocabulary. Can be used to indicate whether a dwc:Organism instance represents a discrete organism or if it represents a particular type of aggregation.",
+          "examples": "`multicellular organism`; `virus`; `clone`; `pack`; `colony`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/organismScope"
+        },
+        {
+          "name": "organismName",
+          "title": "Organism Name",
+          "description": "A name or label assigned to a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "`Huberta`; `Boab Prison Tree`; `J pod`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/organismName"
+        },
+        {
+          "name": "causeOfDeath",
+          "title": "Cause Of Death",
+          "description": "An indication of the known or suspected cause of death of a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "The cause may be due to natural causes (e.g., disease, predation), human-related activities (e.g., roadkill, pollution), or other environmental factors (e.g., extreme weather events).",
+          "examples": "`trapped`; `poisoned`; `starved`; `drowned`; `shot`; `old age`; `roadkill`; `disease`; `herbicide`; `burned`; `infanticide`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/causeOfDeath"
+        },
+        {
+          "name": "organismRemarks",
+          "title": "Organism Remarks",
+          "description": "Comments or notes about a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/organismRemarks"
+        },
+        {
+          "name": "verbatimIdentification",
+          "title": "Verbatim Identification",
+          "description": "A string representing a taxonomic identification as it appeared in the original record.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
+        },
+        {
+          "name": "taxonFormula",
+          "title": "Taxon Formula",
+          "description": "A string representing the pattern to use to construct a dwc:Identification from dwc:Taxon names and identification qualifiers.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a controlled vocabulary such as https://arctos.database.museum/info/ctDocumentation.cfm?table=cttaxa_formula.",
+          "examples": "`A`; `A ?`; `A or B`; `A and B`; `A x B`; `A cf.`; `A aff.`",
+          "namespace": "dwcdp",
+          "iri": "",
+          "default": "A"
+        },
+        {
+          "name": "identifiedBy",
+          "title": "Identified By",
+          "description": "A list (concatenated and separated) of names of Agents responsible for making a taxonomic determination of a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "When used in the context of a Survey, the subject consists of all of the dwc:Identifications related to the Event. Recommended best practice is to separate the values in a list with space vertical bar space ( | ).",
+          "examples": "`James L. Patton`; `Theodore Pappenfuss | Robert Macey`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/identifiedBy"
+        },
+        {
+          "name": "identifiedByID",
+          "title": "Identified By ID",
+          "description": "An identifier for the Agent responsible for making a taxonomic determination of a dwc:Organism.",
+          "type": "string",
+          "format": "default",
+          "comments": "When used in the context of a Survey, the subject consists of all of the dwc:Identifications related to the Survey. Recommended best practice is to provide a single identifier that disambiguates the details of the identifying agent. If a list is used, the order of the identifiers on the list should not be assumed to convey any semantics. Recommended best practice is to separate the values in a list with space vertical bar space (` | `).",
+          "examples": "`https://orcid.org/0000-0002-1825-0097`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/identifiedByID"
+        },
+        {
+          "name": "dateIdentified",
+          "title": "Date Identified",
+          "description": "A date on which the subject was determined as representing a dwc:Taxon.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a date that conforms to ISO 8601-1:2019.",
+          "examples": "`2023-05-04`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/dateIdentified"
+        },
+        {
+          "name": "identificationReferences",
+          "title": "Identification References",
+          "description": "A list (concatenated and separated) of identifiers for References (publication, bibliographic reference, global unique identifier, URI, metabarcoding reference database) used in a dwc:Identification.",
+          "type": "string",
+          "format": "default",
+          "comments": "When used in the context of a Survey, the subject consists of all of the dwc:Identifications related to the Survey. Recommended best practice is to separate the values in a list with space vertical bar space (` | `).",
+          "examples": "`Aves del Noroeste Patagonico. Christie et al. 2004.`; `Stebbins, R. Field Guide to Western Reptiles and Amphibians. 3rd Edition. 2003. | Irschick, D.J. and Shaffer, H.B. (1997). The polytypic species revisited: Morphological differentiation among tiger salamanders (Ambystoma tigrinum) (Amphibia: Caudata). Herpetologica, 53(1), 30-49.`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/identificationReferences"
+        },
+        {
+          "name": "identificationVerificationStatus",
+          "title": "Identification Verification Status",
+          "description": "A categorical indicator of the extent to which a taxonomic determination has been verified to be correct.",
+          "type": "string",
+          "format": "default",
+          "comments": "Recommended best practice is to use a controlled vocabulary such as that used in HISPID and ABCD.",
+          "examples": "`0` ('unverified' in HISPID/ABCD)",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/identificationVerificationStatus"
+        },
+        {
+          "name": "identificationRemarks",
+          "title": "Identification Remarks",
+          "description": "Comments or notes about a dwc:Identification.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "`Distinguished between Anthus correndera and Anthus hellmayri based on the comparative lengths of the uñas.`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/identificationRemarks"
+        },
+        {
+          "name": "taxonID",
+          "title": "Taxon ID",
+          "description": "An identifier for a dwc:Taxon.",
+          "type": "string",
+          "format": "default",
+          "comments": "In DwC-DP, the taxonID is always an external link to a taxon record. As such, if present, it should be a resolvable globally unique identifier. See the Identifiers section of https://github.com/CatalogueOfLife/coldp/blob/master/README.md.",
+          "examples": "`col:6W3C4`; `worms:212808`; `ipni:320035-2`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/taxonID"
+        },
+        {
+          "name": "higherClassificationName",
+          "title": "Higher Classification Name",
+          "description": "A full scientific name at a higher rank than the taxonRank of a dwc:scientificName.",
+          "type": "string",
+          "format": "default",
+          "comments": "A higherClassificationName must have a corresponding higherClassificationRank.",
+          "examples": "`Animalia` (higherClassificationName) with `kingdom` (higherClassificationRank); `Laphriinae`  (higherClassificationName) with `subfamily` (higherClassificationRank)",
+          "namespace": "dwcdp",
+          "iri": ""
+        },
+        {
+          "name": "higherClassificationRank",
+          "title": "Higher Classification Rank",
+          "description": "A taxonomic rank of a higherClassificationName.",
+          "type": "string",
+          "format": "default",
+          "comments": "A higherClassificationRank must have a corresponding higherClassificationName.",
+          "examples": "`Acanthaceae` (higherClassificationName) with `family` (higherClassificationRank); `Pyrenomycetes` (higherClassificationName) with `class` (higherClassificationRank",
+          "namespace": "dwcdp",
+          "iri": ""
+        },
+        {
+          "name": "scientificName",
+          "title": "Scientific Name",
+          "description": "A full scientific name, with authorship and date information if known. When forming part of a dwc:Identification, this should be the name in lowest level taxonomic rank that can be determined. This term should not contain identification qualifications, which should instead be supplied in dwc:verbatimIdentification.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/scientificName"
+        },
+        {
+          "name": "taxonRank",
+          "title": "Taxon Rank",
+          "description": "A taxonomic rank of the most specific name in a dwc:scientificName.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/taxonRank"
+        },
+        {
+          "name": "taxonRemarks",
+          "title": "Taxon Remarks",
+          "description": "Comments or notes about a dwc:Taxon.",
+          "type": "string",
+          "format": "default",
+          "comments": "",
+          "examples": "`this name is a misspelling in common use`",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/taxonRemarks"
+        },
+        {
+          "name": "feedbackURL",
+          "title": "Feedback URL",
+          "description": "",
+          "type": "string",
+          "format": "default",
+          "comments": "A uniform resource locator (URL) that points to a webpage on which a form may be submitted to gather feedback about the record.",
+          "examples": "",
+          "namespace": "dwc",
+          "iri": "http://rs.tdwg.org/dwc/terms/feedbackURL"
+        }
+      ],
+      "primaryKey": "occurrenceID",
+      "foreignKeys": [
+        {
+          "fields": "eventID",
+          "reference": {
+            "resource": "event",
+            "fields": "eventID"
+          }
+        },
+        {
+          "fields": "surveyTargetID",
+          "reference": {
+            "resource": "survey-target",
+            "fields": "surveyTargetID"
+          }
+        },
+        {
+          "fields": "recordedByID",
+          "reference": {
+            "resource": "agent",
+            "fields": "agentID"
+          }
+        },
+        {
+          "fields": "identifiedByID",
+          "reference": {
+            "resource": "agent",
+            "fields": "agentID"
+          }
+        }
+      ]
+    }
+  ],
+  "createdBy": "",
+  "created": "",
+  "modifiedBy": "",
+  "modified": ""
+}
