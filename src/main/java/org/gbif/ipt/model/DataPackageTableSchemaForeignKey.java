@@ -15,11 +15,15 @@ package org.gbif.ipt.model;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DataPackageTableSchemaForeignKey implements Serializable {
 
   private static final long serialVersionUID = 5858994392171274432L;

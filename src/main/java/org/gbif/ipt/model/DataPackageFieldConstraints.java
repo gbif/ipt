@@ -18,14 +18,18 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Field constraints.
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DataPackageFieldConstraints implements Serializable {
 
   private static final long serialVersionUID = 3098053774204591658L;

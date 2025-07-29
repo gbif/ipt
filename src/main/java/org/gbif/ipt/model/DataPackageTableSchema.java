@@ -17,14 +17,18 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * A single table schema of {@link DataPackageSchema}
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DataPackageTableSchema implements Serializable {
 
   private static final long serialVersionUID = 3929428113035839253L;
