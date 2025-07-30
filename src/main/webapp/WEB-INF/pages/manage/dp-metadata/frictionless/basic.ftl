@@ -312,7 +312,9 @@
 
                         <div class="my-md-3 p-3">
                             <#assign removeContributorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.contributor'/></#assign>
+                            <#assign removeContributorLink = removeContributorLink?markup_string>
                             <#assign addContributorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.contributor'/></#assign>
+                            <#assign addContributorLink = addContributorLink?markup_string>
 
                             <!-- List of Contributors -->
                             <div>
@@ -363,7 +365,9 @@
 
                         <div class="my-md-3 p-3">
                             <#assign removeLicenseLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.license'/></#assign>
+                            <#assign removeLicenseLink = removeLicenseLink?markup_string>
                             <#assign addLicenseLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.license'/></#assign>
+                            <#assign addLicenseLink = addLicenseLink?markup_string>
 
                             <!-- List of Licenses -->
                             <div>
@@ -405,7 +409,9 @@
 
                         <div class="my-md-3 p-3">
                             <#assign removeSourceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.source'/></#assign>
+                            <#assign removeSourceLink = removeSourceLink?markup_string>
                             <#assign addSourceLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.source'/></#assign>
+                            <#assign addSourceLink = addSourceLink?markup_string>
 
                             <!-- List of Sources -->
                             <div>
