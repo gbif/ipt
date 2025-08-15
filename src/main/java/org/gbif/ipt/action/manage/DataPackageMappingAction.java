@@ -43,6 +43,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.ActionInvocation;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -257,7 +259,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       notFound = true;
     }
 
-    if (!cancel && mapping != null && mapping.getDataPackageSchema() != null) {
+    if (!isPrepareBeforeDelete() && !cancel && mapping != null && mapping.getDataPackageSchema() != null) {
       dataPackageSchema = mapping.getDataPackageSchema();
 
       // reload schema if sub-schemas are empty
@@ -496,5 +498,11 @@ public class DataPackageMappingAction extends ManagerBaseAction {
     List<String> nonMapped = new ArrayList<>(columns);
     nonMapped.removeAll(mapped);
     return nonMapped;
+  }
+
+  private boolean isPrepareBeforeDelete() {
+    ActionInvocation invocation = ActionContext.getContext().getActionInvocation();
+    String actionMethod = invocation.getProxy().getMethod();
+    return "delete".equals(actionMethod);
   }
 }
