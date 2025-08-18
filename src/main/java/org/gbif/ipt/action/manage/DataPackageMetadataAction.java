@@ -24,6 +24,7 @@ import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
@@ -240,6 +241,17 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
     if (resource != null && CAMTRAP_DP.equals(resource.getCoreType())) {
       prepareCamtrap();
+    } else{
+      prepareFrictionless();
+    }
+  }
+
+  private void prepareFrictionless() {
+    FrictionlessMetadata metadata = (FrictionlessMetadata) resource.getDataPackageMetadata();
+    if (isHttpPost()) {
+      metadata.getContributors().clear();
+      metadata.getLicenses().clear();
+      metadata.getSources().clear();
     }
   }
 
