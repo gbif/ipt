@@ -238,7 +238,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       return;
     }
 
-    if (CAMTRAP_DP.equals(resource.getCoreType())) {
+    if (resource != null && CAMTRAP_DP.equals(resource.getCoreType())) {
       prepareCamtrap();
     }
   }
