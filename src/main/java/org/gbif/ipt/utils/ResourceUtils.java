@@ -18,6 +18,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
@@ -43,6 +44,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.DWC_DP;
 
 public class ResourceUtils {
 
@@ -148,6 +150,8 @@ public class ResourceUtils {
   private static Class<? extends DataPackageMetadata> getDataPackageClass(String dataPackageIdentifier) {
     if (dataPackageIdentifier.contains(CAMTRAP_DP)) {
       return CamtrapMetadata.class;
+    } else if (dataPackageIdentifier.contains(DWC_DP)) {
+      return FrictionlessMetadata.class;
     } else {
       return FrictionlessColMetadata.class;
     }
