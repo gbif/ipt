@@ -347,6 +347,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
+  @Element(FrictionlessContributor.class)
   public List<Contributor> getContributors() {
     return contributors;
   }
