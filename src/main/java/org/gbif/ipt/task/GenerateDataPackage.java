@@ -237,6 +237,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
       if (DWC_DP.equals(resource.getCoreType())) {
+        checkRelationsAndPrimaryKeys();
         dataPackage.write(zip, this::writeEMLMetadata, true);
       } else if (COL_DP.equals(resource.getCoreType())) {
         dataPackage.write(zip, this::writeCustomColDPMetadata, true);
@@ -960,5 +961,12 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     return result;
+  }
+
+  private void checkRelationsAndPrimaryKeys() throws Exception {
+    for (io.frictionlessdata.datapackage.resource.Resource dataPackageResource : dataPackage.getResources()) {
+      dataPackageResource.checkRelations(dataPackage);
+      dataPackageResource.checkPrimaryKeys();
+    }
   }
 }
