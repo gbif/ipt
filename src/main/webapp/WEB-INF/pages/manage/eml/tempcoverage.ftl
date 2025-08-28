@@ -437,6 +437,7 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
+                            <#if resource.dataPackage==false>
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
                                     <@checkbox name="inferTemporalCoverageAutomatically" value="${inferTemporalCoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
@@ -466,6 +467,7 @@
                                     </div>
                                 </div>
                             </div>
+                            </#if>
 
                             <p class="mb-0 my-3 intro">
                                 <@s.text name='manage.metadata.tempcoverage.intro'/>
