@@ -114,7 +114,10 @@
                     <div class="bd-content">
                         <div class="mb-md-3 ps-3 py-3">
                             <div class="mt-4">
-                                <@checkbox name="resource.inferTemporalCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="datapackagemetadata.infer.automatically.short.help" value="${resource.inferTemporalCoverageAutomatically?c}" />
+                                <#assign inferAutomaticallyPopupInfo>
+                                    <@s.text name='datapackagemetadata.infer.automatically.short.help'/>
+                                </#assign>
+                                <@checkbox name="resource.inferTemporalCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="${inferAutomaticallyPopupInfo}" value="${resource.inferTemporalCoverageAutomatically?c}" />
                             </div>
 
                             <div id="actual-metadata-block" class="mt-3">
