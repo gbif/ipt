@@ -1491,7 +1491,7 @@
                                     <#assign overviewTitleInfo>
                                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                                             <@s.text name="manage.overview.published.description.metadataOnly"/>
-                                        <#elseif resource.dataPackage??>
+                                        <#elseif resource.dataPackage==true>
                                             <@s.text name="manage.overview.published.description.dp"/>
                                         <#else>
                                             <@s.text name="manage.overview.published.description"/>
