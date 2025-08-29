@@ -83,7 +83,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -162,6 +161,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean publish = false;
   private boolean validateEml = false;
   private boolean networksAvailable = true;
+  private boolean outdatedExtensions = false;
 
   private boolean validateDatapackageMetadata = false;
   private String summary;
@@ -1165,6 +1165,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // refresh archive report
       updateReport();
 
+      // check all extensions are up to date
+      outdatedExtensions = resource.getMappings().stream()
+          .map(ExtensionMapping::getExtension)
+          .anyMatch(e -> !e.isLatest());
+
       try {
         if (COL_DP.equals(resource.getCoreType())) {
           File metadataFile = cfg.getDataDir().resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
@@ -1962,6 +1967,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public boolean isNetworksAvailable() {
     return networksAvailable;
+  }
+
+  public boolean isOutdatedExtensions() {
+    return outdatedExtensions;
   }
 
   public String getDatapackageMetadataRaw() {
