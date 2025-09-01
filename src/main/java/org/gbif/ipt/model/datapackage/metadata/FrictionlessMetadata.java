@@ -124,6 +124,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
+  @JsonDeserialize(contentAs = FrictionlessContributor.class)
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
   private List<Contributor> contributors = new ArrayList<>();
@@ -347,6 +348,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
+  @JsonDeserialize(contentAs = FrictionlessContributor.class)
   @Element(FrictionlessContributor.class)
   public List<Contributor> getContributors() {
     return contributors;
