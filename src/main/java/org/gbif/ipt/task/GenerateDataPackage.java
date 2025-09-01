@@ -229,6 +229,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     File zip = null;
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
+      // check keys first
+      checkRelationsAndPrimaryKeys();
+
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
       if (COL_DP.equals(resource.getCoreType())) {
@@ -856,6 +859,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private void setDataPackageCollectionProperty(String name, Collection property) {
     if (property != null && !property.isEmpty()) {
       dataPackage.setProperty(name, property);
+    }
+  }
+
+  private void checkRelationsAndPrimaryKeys() throws Exception {
+    for (io.frictionlessdata.datapackage.resource.Resource dataPackageResource : dataPackage.getResources()) {
+      dataPackageResource.checkRelations(dataPackage);
+      dataPackageResource.checkPrimaryKeys();
     }
   }
 }
