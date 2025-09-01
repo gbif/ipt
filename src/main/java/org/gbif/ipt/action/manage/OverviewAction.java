@@ -85,6 +85,8 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -136,7 +138,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   @Getter
   private List<User> potentialManagers;
   private List<KeyNamePair> allNetworks = new ArrayList<>();
-  @Getter
   private List<KeyNamePair> potentialNetworks = new ArrayList<>();
   @Getter
   private List<Extension> potentialCores;
@@ -1186,20 +1187,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         LOG.error("Failed to read ColDP metadata", e);
       }
 
-      // get potential new networks
-      try {
-        allNetworks = registryManager.getNetworksBrief();
-        potentialNetworks = new ArrayList<>(allNetworks);
-        for (Network net : getResourceNetworks()) {
-          potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
-        }
-        networksAvailable = true;
-      } catch (RegistryException e) {
-        String msg = RegistryException.logRegistryException(e, this);
-        addActionWarning(getText("manage.overview.networks.registryAccessUrl", new String[] {cfg.getRegistryUrl()}) + msg);
-        networksAvailable = false;
-      }
-
       // get potential new managers
       potentialManagers = userManager.list(Role.Publisher);
       potentialManagers.addAll(userManager.list(Role.Manager));
@@ -1892,5 +1879,36 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
 
     return false;
+  }
+
+  // Lazy getter
+  public List<KeyNamePair> getAllNetworks() {
+    if (allNetworks == null) {
+      try {
+        allNetworks = registryManager.getNetworksBrief();
+        networksAvailable = true;
+      } catch (RegistryException e) {
+        String msg = RegistryException.logRegistryException(e, this);
+        addActionWarning(getText(
+            "manage.overview.networks.registryAccessUrl",
+            new String[] {cfg.getRegistryUrl()}
+        ) + msg);
+        networksAvailable = false;
+        allNetworks = Collections.emptyList();
+      }
+    }
+    return allNetworks;
+  }
+
+  // Lazy getter
+  public List<KeyNamePair> getPotentialNetworks() {
+    if (potentialNetworks == null) {
+      List<KeyNamePair> networksCopy = new ArrayList<>(getAllNetworks());
+      for (Network net : getResourceNetworks()) {
+        networksCopy.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
+      }
+      potentialNetworks = networksCopy;
+    }
+    return potentialNetworks;
   }
 }

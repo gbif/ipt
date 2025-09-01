@@ -13,6 +13,9 @@
  */
 package org.gbif.ipt.task;
 
+import io.frictionlessdata.datapackage.exceptions.DataPackageValidationException;
+import io.frictionlessdata.tableschema.exception.ForeignKeyException;
+import io.frictionlessdata.tableschema.exception.PrimaryKeyException;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
@@ -252,6 +255,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       }
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while bundling data package", e);
+    } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
+      throw new GeneratorException(e.getMessage());
     } finally {
       // cleanup zip directory, if compression was incomplete for example due to Exception
       // if moving zip to data dir was successful, it won't exist any more and cleanup will be skipped
