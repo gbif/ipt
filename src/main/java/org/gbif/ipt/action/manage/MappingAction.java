@@ -371,6 +371,11 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
       } else {
         List<ExtensionMapping> maps = resource.getMappings(id);
         mapping = maps.get(mid);
+
+        Extension ext = extensionManager.get(id);
+        if (!ext.isLatest()) {
+          addActionWarning(getText("manage.overview.mappings.extension.outdated"));
+        }
       }
     } else {
       // worst case, just redirect to resource not found page

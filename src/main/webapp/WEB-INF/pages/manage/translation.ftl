@@ -123,7 +123,7 @@
         function showAddNewTranslationModal() {
             var dialogWindow = $("#dialog");
 
-            $("#add-button").on("click", function () {
+            $("#add-button").off('click').on("click", function () {
                 addNewTranslation();
             });
 

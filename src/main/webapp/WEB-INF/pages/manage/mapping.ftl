@@ -521,6 +521,12 @@
                         <@s.param><a href="${baseURL}/admin/extension.do?id=${mapping.extension.rowType!}" target="_blank">${mapping.extension.title!}</a></@s.param>
                     </@s.text>
                 </p>
+<#--                <#if (mapping.extension.latest)==false>-->
+<#--                <p class="mt-3 mb-0 text-smaller fst-italic text-gbif-danger">-->
+<#--                    The version installed is out-of-date. Please update to the latest version of this extension in order to take advantage of any new terms and new vocabularies.-->
+<#--&lt;#&ndash;                    There is a newer version of ${mapping.extension.title!}&ndash;&gt;-->
+<#--                </p>-->
+<#--                </#if>-->
             </div>
         </div>
     </div>

@@ -189,6 +189,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean validateEml = false;
   @Getter
   private boolean networksAvailable = true;
+  @Getter
+  private boolean outdatedExtensions = false;
   @Setter
   @Getter
   private boolean validateDatapackageMetadata = false;
@@ -1169,6 +1171,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (resource != null) {
       // refresh archive report
       updateReport();
+
+      // check all extensions are up to date
+      outdatedExtensions = resource.getMappings().stream()
+          .map(ExtensionMapping::getExtension)
+          .anyMatch(e -> !e.isLatest());
 
       try {
         if (COL_DP.equals(resource.getCoreType())) {
