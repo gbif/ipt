@@ -243,6 +243,8 @@ public class ResourceManagerImplTest extends IptBaseTest {
         .thenReturn(occurrenceCore);
     when(extensionManager.get("http://rs.gbif.org/terms/1.0/Image"))
         .thenReturn(simpleImage);
+    when(extensionManager.list())
+        .thenReturn(List.of(occurrenceCore, eventCore, simpleImage));
 
     when(extensionsHolder.getExtensionsByRowtype()).thenReturn(
         Map.ofEntries(
