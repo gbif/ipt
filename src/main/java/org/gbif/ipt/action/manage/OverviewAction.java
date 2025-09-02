@@ -678,7 +678,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       registryManager.removeResourceFromNetwork(resource, id);
       saveResource();
 
-      Optional<KeyNamePair> keyNameNetwork = allNetworks.stream().filter(n -> n.getKey().equals(id)).findFirst();
+      Optional<KeyNamePair> keyNameNetwork = getAllNetworks().stream().filter(n -> n.getKey().equals(id)).findFirst();
       if (keyNameNetwork.isPresent()) {
         addActionMessage(getText("manage.overview.networks.delete.success", new String[]{keyNameNetwork.get().getName()}));
       } else {
@@ -686,7 +686,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
 
       Optional<KeyNamePair> potentialNetwork =
-          allNetworks.stream().filter(n -> Objects.equals(n.getKey(), id)).findFirst();
+          getAllNetworks().stream().filter(n -> Objects.equals(n.getKey(), id)).findFirst();
       potentialNetwork.ifPresent(potentialNetworks::add);
     } catch (IllegalArgumentException e) {
       addActionError(getText("manage.overview.networks.delete.failed"));
