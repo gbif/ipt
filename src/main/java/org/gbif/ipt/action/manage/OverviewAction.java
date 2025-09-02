@@ -1883,7 +1883,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   // Lazy getter
   public List<KeyNamePair> getAllNetworks() {
-    if (allNetworks == null) {
+    if (allNetworks == null || allNetworks.isEmpty()) {
       try {
         allNetworks = registryManager.getNetworksBrief();
         networksAvailable = true;
@@ -1902,7 +1902,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   // Lazy getter
   public List<KeyNamePair> getPotentialNetworks() {
-    if (potentialNetworks == null) {
+    if (potentialNetworks == null || potentialNetworks.isEmpty()) {
       List<KeyNamePair> networksCopy = new ArrayList<>(getAllNetworks());
       for (Network net : getResourceNetworks()) {
         networksCopy.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
