@@ -2768,7 +2768,7 @@
                 </div>
 
                 <div class="modal-footer justify-content-center">
-                    <input type="submit" form="addNetworkForm" value="Add" id="add-network" name="add" class="btn btn-sm btn-outline-primary" style="display: none;">
+                    <input type="submit" form="addNetworkForm" value="Add" id="add-network" name="add" class="btn btn-sm btn-outline-gbif-primary" style="display: none;">
                     <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                         <@s.text name="button.cancel"/>
                     </button>
