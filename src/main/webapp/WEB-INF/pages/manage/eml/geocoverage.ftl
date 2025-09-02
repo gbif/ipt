@@ -489,7 +489,9 @@
 
                 <div class="text-center mt-2">
                     <input type="submit" value="<@s.text name='button.save'/>" id="top-save" name="save" class="button btn btn-sm btn-outline-gbif-primary top-button">
-                    <input type="submit" value="<@s.text name='button.back'/>" id="top-cancel" name="cancel" class="button btn btn-sm btn-outline-secondary top-button">
+                    <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                        <@s.text name="button.back"/>
+                    </button>
                 </div>
             </div>
         </div>
