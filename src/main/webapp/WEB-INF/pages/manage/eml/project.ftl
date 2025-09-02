@@ -245,7 +245,7 @@
                             <#assign addAwardLink = addAwardLink?markup_string>
 
                             <div class="row g-3 mt-1 mb-2">
-                                <@input name="eml.project.title" requiredField=true/>
+                                <@input name="eml.project.title" />
                                 <@input name="eml.project.identifier" help="i18n"/>
                                 <@text name="eml.project.description" help="i18n"/>
                                 <@text name="eml.project.funding" help="i18n"/>
@@ -427,7 +427,7 @@
                         <div class="my-md-3 p-3">
                             <!-- List of personnel -->
                             <div class="listBlock">
-                                <@textinline name="eml.project.personnel" help="i18n" requiredField=true />
+                                <@textinline name="eml.project.personnel" help="i18n" />
 
                                 <div id="personnel-items">
                                     <#list eml.project.personnel as item>

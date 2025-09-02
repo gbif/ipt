@@ -127,11 +127,11 @@
 
                             <div id="sampling" class="row g-3 mt-1">
                                 <div class="col-lg-12">
-                                    <@text name="eml.studyExtent"  i18nkey="eml.studyExtent" help="i18n" requiredField=true />
+                                    <@text name="eml.studyExtent"  i18nkey="eml.studyExtent" help="i18n" />
                                 </div>
 
                                 <div class="col-lg-12">
-                                    <@text name="eml.sampleDescription" i18nkey="eml.sampleDescription" help="i18n" requiredField=true />
+                                    <@text name="eml.sampleDescription" i18nkey="eml.sampleDescription" help="i18n" />
                                 </div>
                             </div>
 
@@ -156,7 +156,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-12">
-                                                <@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n" requiredField=true/>
+                                                <@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n" />
                                             </div>
                                         </div>
                                     </#list>
@@ -189,7 +189,7 @@
                                     </a>
                                 </div>
                                 <div class="col-lg-12">
-                                    <@text name="" i18nkey="eml.methodSteps" help="i18n" requiredField=true />
+                                    <@text name="" i18nkey="eml.methodSteps" help="i18n" />
                                 </div>
                             </div>
 
