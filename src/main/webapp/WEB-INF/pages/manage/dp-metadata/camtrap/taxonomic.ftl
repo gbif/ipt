@@ -366,9 +366,13 @@
                     <div class="bd-content">
                         <div class="mb-md-3 ps-3 py-3">
                             <#assign removeTaxonLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
+                            <#assign removeTaxonLink = removeTaxonLink?markup_string>
                             <#assign addTaxonLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
+                            <#assign addTaxonLink = addTaxonLink?markup_string>
                             <#assign removeVernacularNameLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
+                            <#assign removeVernacularNameLink = removeVernacularNameLink?markup_string>
                             <#assign addVernacularNameLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
+                            <#assign addVernacularNameLink = addVernacularNameLink?markup_string>
 
                             <div class="mt-4">
                                 <#assign inferAutomaticallyPopupInfo>

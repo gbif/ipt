@@ -661,7 +661,9 @@
 
                         <div class="my-md-3 p-3">
                             <#assign removeLicenseLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.license'/></#assign>
+                            <#assign removeLicenseLink = removeLicenseLink?markup_string>
                             <#assign addLicenseLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.license'/></#assign>
+                            <#assign addLicenseLink = addLicenseLink?markup_string>
 
                             <#assign dataLicenseItemIndex = -1 />
                             <#assign mediaLicenseItemIndex = -1 />
