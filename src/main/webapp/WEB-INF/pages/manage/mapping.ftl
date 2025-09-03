@@ -382,12 +382,16 @@
     <div class="row py-1 g-1 mappingRow border-bottom text-smaller">
             <div class="col-lg-4 pt-1">
                 <#assign fieldPopoverInfo>
-                    <#if p.description?has_content><@processSurroundedWithBackticksAsCode p.description /><br/><br/></#if>
-                    <#if p.comments?has_content><@processSurroundedWithBackticksAsCode p.comments/><br/><br/></#if>
+                    <strong>${p.qualifiedName()!p.name}</strong><br/><br/>
+                    <#if (p.translations[currentLocale].description)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].description/><br/><br/><#elseif p.description?has_content>${p.description}<br/><br/></#if>
+                    <#if (p.translations[currentLocale].comments)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].comments/><br/><br/></#if>
                     <#if p.vocabulary??><@s.text name="extension.vocabulary"/> <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">${p.vocabulary.title!}</a><br/><br/></#if>
                     <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
                     <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><br/><br/></#if>
-                    <#if p.examples?has_content>
+                    <#if (p.translations[currentLocale].examples)?has_content>
+                        <em><@s.text name="basic.examples"/></em>:
+                        <@processSurroundedWithBackticksAsCode p.translations[currentLocale].examples />
+                    <#elseif p.examples?has_content>
                         <em><@s.text name="basic.examples"/></em>:
                         <@processSurroundedWithBackticksAsCode p.examples />
                     </#if>
@@ -395,13 +399,7 @@
                 <@popoverTextInfo fieldPopoverInfo />
 
                 <strong>
-                    <#if !p.namespace()?starts_with("http://purl.org/dc/")>
-                        ${p.name}
-                    <#elseif p.namespace()?starts_with("http://purl.org/dc/terms")>
-                        dcterms:${p.name}
-                    <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>
-                        dc:${p.name}
-                    </#if>
+                    ${(p.translations[currentLocale].label)!p.name}
                     <span class="text-gbif-danger"><#if p.required>&#42;</#if></span>
                 </strong>
             </div>
@@ -490,7 +488,6 @@
                 </div>
 
                 <h5 property="dc:title" class="rtitle pt-2 text-gbif-header fs-2 fw-400 text-center">
-<#--                    <@popoverPropertyInfo "manage.mapping.intro"/>-->
                     <@s.text name='manage.mapping.title'/>
                 </h5>
 

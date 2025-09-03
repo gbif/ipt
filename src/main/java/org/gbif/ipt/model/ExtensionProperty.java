@@ -18,7 +18,11 @@ import org.gbif.dwc.terms.Term;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A single property of an extension. Often also known as concept or term.
@@ -42,6 +46,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
   private String description;
   private boolean required;
   private Vocabulary vocabulary;
+  private Map<String, ExtensionPropertyTranslation> translations = new HashMap<>();
 
   public ExtensionProperty() {
   }
@@ -235,4 +240,19 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
   public boolean isClass() {
     return false;
   }
+
+  public Map<String, ExtensionPropertyTranslation> getTranslations() {
+    return translations;
+  }
+
+  public void setTranslations(Map<String, ExtensionPropertyTranslation> translations) {
+    this.translations = translations;
+  }
+
+  public void addTranslation(ExtensionPropertyTranslation translation) {
+    if (StringUtils.isNotEmpty(translation.getLanguage())) {
+      translations.put(translation.getLanguage(), translation);
+    }
+  }
+
 }

@@ -15,6 +15,7 @@ package org.gbif.ipt.model.factory;
 
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.ExtensionPropertyTranslation;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 
@@ -155,6 +156,43 @@ public class ExtensionFactory {
 
     digester.addCallMethod("*/property", "setType", 1);
     digester.addCallParam("*/property", 0, "type");
+
+    // build translations
+    digester.addObjectCreate("*/property/translation", ExtensionPropertyTranslation.class);
+
+    // Set ALL non-namespaced attributes (label, comments, etc.)
+    digester.addSetProperties("*/property/translation");
+
+    // Robustly set xml:lang regardless of namespace-awareness
+    digester.addRule("*/property/translation", new org.apache.commons.digester.Rule() {
+      @Override
+      public void begin(String ns, String name, org.xml.sax.Attributes attrs) {
+        ExtensionPropertyTranslation t =
+            (ExtensionPropertyTranslation) getDigester().peek();
+
+        // try qName first (e.g. "xml:lang")
+        String lang = attrs.getValue("xml:lang");
+        if (lang == null) {
+          // try namespace-aware form
+          lang = attrs.getValue("http://www.w3.org/XML/1998/namespace", "lang");
+        }
+        if (lang == null) {
+          // final fallback: scan attributes for *:lang
+          for (int i = 0; i < attrs.getLength(); i++) {
+            String qn = attrs.getQName(i);
+            if (qn != null && (qn.equals("xml:lang") || qn.endsWith(":lang"))) {
+              lang = attrs.getValue(i);
+              break;
+            }
+          }
+        }
+        if (lang != null) {
+          t.setLanguage(lang);
+        }
+      }
+    });
+
+    digester.addSetNext("*/property/translation", "addTranslation");
 
     // This is a special rule that will use the url2ThesaurusMap
     // to set the Vocabulary based on the attribute "thesaurus"
