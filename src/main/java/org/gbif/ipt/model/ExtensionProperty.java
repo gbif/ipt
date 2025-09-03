@@ -38,6 +38,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
   private DataType type = DataType.string;
   private String link;
   private String examples;
+  private String comments;
   private String description;
   private boolean required;
   private Vocabulary vocabulary;
@@ -88,6 +89,10 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
 
   public String getExamples() {
     return examples;
+  }
+
+  public String getComments() {
+    return comments;
   }
 
   public Extension getExtension() {
@@ -146,6 +151,10 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
 
   public void setExamples(String examples) {
     this.examples = examples;
+  }
+
+  public void setComments(String comments) {
+    this.comments = comments;
   }
 
   public void setExtension(Extension extension) {

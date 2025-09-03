@@ -150,6 +150,9 @@ public class ExtensionFactory {
     digester.addCallMethod("*/property", "setExamples", 1);
     digester.addCallParam("*/property", 0, "examples");
 
+    digester.addCallMethod("*/property", "setComments", 1);
+    digester.addCallParam("*/property", 0, "comments");
+
     digester.addCallMethod("*/property", "setType", 1);
     digester.addCallParam("*/property", 0, "type");
 
