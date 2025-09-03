@@ -599,11 +599,11 @@
                         <div class="col-lg-4 pt-1" id="coreID">
                             <#if coreid??>
                                 <#assign text1>
-                                    <#if coreid.description?has_content>${coreid.description}</#if>
-                                    <#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}" target="_blank">${coreid.link}</a></#if>
+                                    <#if coreid.description?has_content>${coreid.description}<br/><br/></#if>
+                                    <#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}" target="_blank">${coreid.link}</a><br/><br/></#if>
                                     <span class="idSuffix">
-                                    <@s.text name='manage.mapping.info.linenumbers'/>
-                                </span>
+                                        <@s.text name='manage.mapping.info.linenumbers'/>
+                                    </span>
                                     <#if coreid.examples?has_content>
                                         <em><@s.text name="basic.examples"/></em>: <code>${coreid.examples}</code>
                                     </#if>
