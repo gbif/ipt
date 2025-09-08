@@ -1203,7 +1203,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // indicate the resource hasCore is true
       for (ExtensionMapping em : resource.getCoreMappings()) {
         if (em.getFields().isEmpty()) {
-          resource.deleteMapping(em);
+          LOG.debug("Deletion is temporarily disabled");
+//          resource.deleteMapping(em);
         }
       }
 
