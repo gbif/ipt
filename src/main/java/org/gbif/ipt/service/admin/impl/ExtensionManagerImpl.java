@@ -200,6 +200,12 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
         // uninstall and install new version
         uninstall(rowType);
         finishInstall(tmpFile, extension);
+
+        // set missing fields
+        latestVersion.setProperties(extension.getProperties());
+        latestVersion.setName(extension.getName());
+        latestVersion.setNamespace(extension.getNamespace());
+        latestVersion.setLink(extension.getLink());
       } else {
         latestVersion = null;
       }
