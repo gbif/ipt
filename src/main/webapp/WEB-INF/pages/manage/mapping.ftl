@@ -399,7 +399,7 @@
                 <@popoverTextInfo fieldPopoverInfo />
 
                 <strong>
-                    ${(p.translations[currentLocale].label)!p.name}
+                    ${(p.translations[currentLocale].label)!p.label!p.name}
                     <span class="text-gbif-danger"><#if p.required>&#42;</#if></span>
                 </strong>
             </div>
@@ -613,7 +613,7 @@
                                 </#assign>
                                 <@popoverTextInfo text1/>
                             </#if>
-                            <strong>${coreid.name!"Record ID"}</strong>
+                            <strong>${(coreid.translations[currentLocale].label)!coreid.label!coreid.name!"Record ID"}</strong>
                         </div>
 
                         <div class="col-lg-4">
