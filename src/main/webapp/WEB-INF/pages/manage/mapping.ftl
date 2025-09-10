@@ -384,7 +384,7 @@
                 <#assign fieldPopoverInfo>
                     <#if p.qualifiedName()?has_content><a href="${p.qualifiedName()}">${p.qualifiedName()}</a><#else>${p.name!}</#if><br/><br/>
                     <#if (p.translations[currentLocale].description)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].description/><br/><br/><#elseif p.description?has_content>${p.description}<br/><br/></#if>
-                    <#if (p.translations[currentLocale].comments)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].comments/><br/><br/></#if>
+                    <#if (p.translations[currentLocale].comments)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].comments/><br/><br/><#elseif p.comments?has_content>${p.comments}<br/><br/></#if>
                     <#if p.vocabulary??><@s.text name="extension.vocabulary"/> <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">${p.vocabulary.title!}</a><br/><br/></#if>
                     <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
                     <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><br/><br/></#if>
