@@ -664,4 +664,27 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       return new ArrayList<>();
     }
   }
+
+  @Override
+  public boolean isLatest(Extension extension, List<Extension> latestExtensions) {
+    for (Extension rExtension : latestExtensions) {
+      // check if registered extension is latest, and if it is, try to use it in comparison
+      if (extension.getRowType().equalsIgnoreCase(rExtension.getRowType())) {
+        Date installedExtensionIssuedDate = extension.getIssued();
+        Date latestExtensionIssuedDate = rExtension.getIssued();
+        if (installedExtensionIssuedDate == null && latestExtensionIssuedDate != null) {
+          LOG.debug("Installed extension with rowType {} has no issued date. A newer version issued {} exists.", extension.getRowType(), latestExtensionIssuedDate);
+          return false;
+        } else if (latestExtensionIssuedDate != null && latestExtensionIssuedDate.compareTo(installedExtensionIssuedDate) > 0) {
+          LOG.debug("Installed extension with rowType {} was issued {}. A newer version issued {} exists.", extension.getRowType(), installedExtensionIssuedDate, latestExtensionIssuedDate);
+          return false;
+        } else {
+          LOG.debug("Installed extension with rowType {} is the latest version", extension.getRowType());
+          return true;
+        }
+      }
+    }
+
+    return true;
+  }
 }

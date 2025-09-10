@@ -133,4 +133,9 @@ public interface ExtensionManager {
    * @return list of redundant groups in an extension
    */
   List<String> getRedundantGroups(Extension extension, Extension core);
+
+  /**
+   * Checks whether the extension is the latest.
+   */
+  boolean isLatest(Extension extension, List<Extension> latestExtensions);
 }
