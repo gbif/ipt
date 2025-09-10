@@ -145,6 +145,9 @@ public class ExtensionFactory {
     digester.addCallMethod("*/property", "setLink", 1);
     digester.addRule("*/property", new CallParamNoNSRule(0, "relation"));
 
+    digester.addCallMethod("*/property", "setLabel", 1);
+    digester.addCallParam("*/property", 0, "label");
+
     digester.addCallMethod("*/property", "setDescription", 1);
     digester.addRule("*/property", new CallParamNoNSRule(0, "description"));
 

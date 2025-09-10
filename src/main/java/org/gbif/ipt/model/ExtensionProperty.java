@@ -43,6 +43,7 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
   private String link;
   private String examples;
   private String comments;
+  private String label;
   private String description;
   private boolean required;
   private Vocabulary vocabulary;
@@ -86,6 +87,10 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
     }
     ExtensionProperty o = (ExtensionProperty) other;
     return Objects.equals(extension, o.extension) && Objects.equals(qualname, o.qualname);
+  }
+
+  public String getLabel() {
+    return label;
   }
 
   public String getDescription() {
@@ -148,6 +153,10 @@ public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, S
   @Override
   public String qualifiedName() {
     return qualname;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
   }
 
   public void setDescription(String description) {
