@@ -38,7 +38,16 @@ public interface RegistryManager {
   void deregister(Resource resource) throws RegistryException;
 
   /**
-   * Gets list of all registered extensions from the Registry.
+   * Gets a list of all latest registered extensions from the Registry.
+   *
+   * @return list of the latest extensions, or an empty list if none were retrieved from valid response
+   *
+   * @throws RegistryException if the list of extensions couldn't be populated
+   */
+  List<Extension> getLatestExtensions() throws RegistryException;
+
+  /**
+   * Gets a list of all registered extensions from the Registry.
    *
    * @return list of extensions, or an empty list if none were retrieved from valid response
    *

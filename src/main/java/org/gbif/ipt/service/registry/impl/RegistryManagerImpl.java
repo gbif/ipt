@@ -61,6 +61,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.xml.parsers.ParserConfigurationException;
@@ -345,6 +346,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getDeleteResourceUri(String resourceKey) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/ipt/resource/", resourceKey);
+  }
+
+  @Override
+  public List<Extension> getLatestExtensions() throws RegistryException {
+    Map<String, List<Extension>> jSONExtensions = gson
+        .fromJson(requestHttpGetFromRegistry(getExtensionsURL(true)).getContent(),
+            new TypeToken<Map<String, List<Extension>>>() {
+            }.getType());
+
+    List<Extension> allExtensions = (jSONExtensions.get("extensions") == null) ? new ArrayList<>() : jSONExtensions.get("extensions");
+
+    return allExtensions.stream()
+        .filter(Extension::isLatest)
+        .collect(Collectors.toList());
   }
 
   /**
