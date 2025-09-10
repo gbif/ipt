@@ -557,6 +557,15 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   public int load() {
     File extensionDir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;
+
+    List<Extension> allRegisteredExtensions;
+    try {
+      allRegisteredExtensions = registryManager.getLatestExtensions();
+    } catch (Exception e) {
+      LOG.error("Failed to load extensions from the Registry. Cannot check the latest extensions", e);
+      allRegisteredExtensions = Collections.emptyList();
+    }
+
     if (extensionDir.isDirectory()) {
       List<File> extensionFiles = new ArrayList<>();
       FilenameFilter ff = new SuffixFileFilter(EXTENSION_FILE_SUFFIX, IOCase.INSENSITIVE);
@@ -564,6 +573,9 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
       for (File ef : extensionFiles) {
         try {
           Extension extension = loadFromFile(ef);
+          // update isLatest
+          extension.setLatest(isLatest(extension, allRegisteredExtensions));
+
           // keep extension in local lookup: allowed one installed extension per rowType
           extensionsHolder.getExtensionsByRowtype().put(extension.getRowType(), extension);
           counter++;
