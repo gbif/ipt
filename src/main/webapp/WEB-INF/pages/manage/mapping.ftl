@@ -596,13 +596,19 @@
                         <div class="col-lg-4 pt-1" id="coreID">
                             <#if coreid??>
                                 <#assign text1>
-                                    <#if coreid.description?has_content>${coreid.description}<br/><br/></#if>
+                                    <#if coreid.qualifiedName()?has_content><a href="${coreid.qualifiedName()}">${coreid.qualifiedName()}</a><#else>${coreid.name!}</#if><br/><br/>
+                                    <#if (coreid.translations[currentLocale].description)?has_content><@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].description/><br/><br/><#elseif coreid.description?has_content>${coreid.description}<br/><br/></#if>
+                                    <#if (coreid.translations[currentLocale].comments)?has_content><@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].comments/><br/><br/><#elseif coreid.comments?has_content>${coreid.comments}<br/><br/></#if>
                                     <#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}" target="_blank">${coreid.link}</a><br/><br/></#if>
                                     <span class="idSuffix">
                                         <@s.text name='manage.mapping.info.linenumbers'/>
                                     </span>
-                                    <#if coreid.examples?has_content>
-                                        <em><@s.text name="basic.examples"/></em>: <code>${coreid.examples}</code>
+                                    <#if (coreid.translations[currentLocale].examples)?has_content>
+                                        <em><@s.text name="basic.examples"/></em>:
+                                        <@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].examples />
+                                    <#elseif coreid.examples?has_content>
+                                        <em><@s.text name="basic.examples"/></em>:
+                                        <@processSurroundedWithBackticksAsCode coreid.examples />
                                     </#if>
                                 </#assign>
                                 <@popoverTextInfo text1/>
