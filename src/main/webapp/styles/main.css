@@ -1523,24 +1523,24 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 
 
 /* Licence logos styling START */
+.cc_main_container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin: 2rem auto;
+    gap: 1rem;
+}
+
 .cc_logo {
     display: block;
-    float: left;
-    margin-right: 18px;
-    height: 31px;
-    width: 88px;
+    max-width: 100px;
+    height: auto;
 }
 
-.cc_by {
-    background: url('../images/icons/cc-by.svg');
-}
-
-.cc_by_nc {
-    background: url('../images/icons/cc-by-nc.svg');
-}
-
-.cc_zero {
-    background: url('../images/icons/cc-zero.svg');
+.cc_text {
+    flex: 1;
 }
 /* Licence logos styling END */
 

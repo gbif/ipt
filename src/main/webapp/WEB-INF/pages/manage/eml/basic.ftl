@@ -359,8 +359,6 @@
 
                 <div class="text-center mt-2">
                     <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-<#--                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>-->
-<#--                    <@s.submit cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.cancel"/>-->
                     <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
                         <@s.text name="button.back"/>
                     </button>
@@ -436,20 +434,24 @@
                             <div class="col-12">
                                 <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" requiredField=true/>
 
-                                <div id="intellectualRightsDiv" class="mt-3 p-3 fs-smaller">
-                                    <@licenseLogoClass eml.intellectualRights!/>
+                                <div id="intellectualRightsDiv" class="mt-3 p-3 fs-smaller cc_main_container">
+                                    <div class="cc_logo">
+                                        <@licenseLogoClass eml.intellectualRights!/>
+                                    </div>
 
-                                    <#if eml.intellectualRights?has_content>
-                                        <#if eml.intellectualRights.contains("CC-BY-NC")>
-                                            <@s.text name='eml.intellectualRights.licence.ccbync'/>
-                                        <#elseif eml.intellectualRights.contains("CC-BY")>
-                                            <@s.text name='eml.intellectualRights.licence.ccby'/>
-                                        <#elseif eml.intellectualRights.contains("CC0")>
-                                            <@s.text name='eml.intellectualRights.licence.cczero'/>
-                                        <#else>
-                                            ${eml.intellectualRights!}
+                                    <div class="cc_text">
+                                        <#if eml.intellectualRights?has_content>
+                                            <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                                <@s.text name='eml.intellectualRights.licence.ccbync'/>
+                                            <#elseif eml.intellectualRights.contains("CC-BY")>
+                                                <@s.text name='eml.intellectualRights.licence.ccby'/>
+                                            <#elseif eml.intellectualRights.contains("CC0")>
+                                                <@s.text name='eml.intellectualRights.licence.cczero'/>
+                                            <#else>
+                                                ${eml.intellectualRights!}
+                                            </#if>
                                         </#if>
-                                    </#if>
+                                    </div>
                                 </div>
                                 <!-- internal parameter -->
                                 <input id="eml.intellectualRights" name="eml.intellectualRights" type="hidden" value="${eml.intellectualRights!}" />
