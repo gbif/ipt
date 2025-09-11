@@ -26,6 +26,11 @@
         .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
              line-height: 1.5;
         }
+
+        .popover {
+            width: 50%;
+            max-width: 600px;
+        }
     </style>
     <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
     <script>
