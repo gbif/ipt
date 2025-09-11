@@ -64,7 +64,7 @@
     <freemarker.version>2.3.34</freemarker.version>
     <frictionless.datapackage-java.version>0.9.2.1-gbif</frictionless.datapackage-java.version>
     <frictionless.tableschema-java.version>0.9.2.1-gbif</frictionless.tableschema-java.version>
-    <gson.version>2.13.1</gson.version>
+    <gson.version>2.13.2</gson.version>
     <guava.version>20.0</guava.version>
     <guice.version>4.2.3</guice.version>
     <httpclient.version>4.5.14</httpclient.version>
