@@ -2945,6 +2945,15 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="modal-title w-100" id="change-publishing-organization-modal-title"><@s.text name="eml.publishingOrganisation"/></h5>
+
+                    <#if resource.isRegistered()>
+                        <div class="simple-alert">
+                            <span><@s.text name="manage.overview.publishing.organisation.registeredResource">
+                                <@s.param><a href="mailto:helpdesk@gbif.org" class="custom-link text-gbif-danger fw-bold">Help Desk</a></@s.param>
+                            </@s.text></span>
+                        </div>
+                    <br>
+                    </#if>
                     <form id="changePublishingOrganizationForm" action='resource-changePublishingOrganization.do' method='post'>
                         <input name="r" type="hidden" value="${resource.shortname}"/>
                         <@selectList name="publishingOrganizationKey" options=organisations objValue="key" objTitle="name" withLabel=false />
