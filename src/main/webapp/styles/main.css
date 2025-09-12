@@ -854,6 +854,17 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 }
 
 /* Custom alerts colors START */
+.simple-alert {
+    color: rgb(var(--color-gbif-danger)) !important;
+    font-style: italic !important
+}
+
+.simple-alert a, .simple-alert a:hover, .simple-alert a:focus {
+    color: rgb(var(--color-gbif-danger)) !important;
+    font-weight: 500;
+    text-decoration: underline !important;
+}
+
 .alert-green-2 {
     color: rgb(var(--alert-success-icon-color));
 }
