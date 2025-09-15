@@ -246,6 +246,7 @@
     <constructor-arg ref="configWarnings"/>
     <constructor-arg ref="httpClient"/>
     <constructor-arg ref="publishingMonitor"/>
+    <constructor-arg ref="extensionMonitor"/>
   </bean>
 
   <bean id="publishingMonitor" class="org.gbif.ipt.config.PublishingMonitor">
@@ -253,6 +254,11 @@
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="resourceManager"/>
+  </bean>
+
+  <bean id="extensionMonitor" class="org.gbif.ipt.config.ExtensionMonitor">
+    <constructor-arg ref="extensionManager"/>
+    <constructor-arg ref="registryManager"/>
   </bean>
 
   <bean id="iptI18nInterceptor" class="org.gbif.ipt.struts2.IptI18nInterceptor">

@@ -17,6 +17,7 @@ import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.config.ExtensionMonitor;
 import org.gbif.ipt.config.PublishingMonitor;
 import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistrationManager;
@@ -64,13 +65,14 @@ public class ConfigManagerImplTest extends IptBaseTest {
     UserAccountManager mockedUserManager = MockUserAccountManager.buildMock();
     ConfigWarnings warnings = new ConfigWarnings();
     PublishingMonitor mockPublishingMonitor = mock(PublishingMonitor.class);
+    ExtensionMonitor mockExtensionMonitor = mock(ExtensionMonitor.class);
 
     client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     appConfig = new AppConfig(mockedDataDir);
 
     return new ConfigManagerImpl(mockedDataDir, appConfig, mockedUserManager, mockedResourceManager,
         mockedExtensionManager, mockedVocabularies, mockedSchemaManager, mockedRegistrationManager, warnings, client,
-        mockPublishingMonitor);
+        mockPublishingMonitor, mockExtensionMonitor);
   }
 
   /**

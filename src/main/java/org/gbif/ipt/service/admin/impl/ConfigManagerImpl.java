@@ -16,6 +16,7 @@ package org.gbif.ipt.service.admin.impl;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.config.ExtensionMonitor;
 import org.gbif.ipt.config.LoggingConfigFactory;
 import org.gbif.ipt.config.LoggingConfiguration;
 import org.gbif.ipt.config.PublishingMonitor;
@@ -64,6 +65,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   private final ConfigWarnings warnings;
   private final HttpClient client;
   private final PublishingMonitor publishingMonitor;
+  private final ExtensionMonitor extensionMonitor;
   private static final String PATH_TO_CSS = "/styles/main.css";
 
   private static final int DEFAULT_TO = 4000; // Default time out
@@ -81,7 +83,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       RegistrationManager registrationManager,
       ConfigWarnings warnings,
       HttpClient client,
-      PublishingMonitor publishingMonitor) {
+      PublishingMonitor publishingMonitor,
+      ExtensionMonitor extensionMonitor) {
     super(cfg, dataDir);
     this.userManager = userManager;
     this.resourceManager = resourceManager;
@@ -92,6 +95,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     this.warnings = warnings;
     this.client = client;
     this.publishingMonitor = publishingMonitor;
+    this.extensionMonitor = extensionMonitor;
     if (dataDir.isConfigured()) {
       LOG.info("IPT DataDir configured - loading its configuration");
       try {
@@ -249,6 +253,10 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     // start publishing monitor
     LOG.info("Starting Publishing Monitor...");
     publishingMonitor.start();
+
+    // start extension monitor
+    LOG.info("Starting Extension Monitor...");
+    extensionMonitor.start();
   }
 
   private void checkResourcesDirAtStartup(File resourcesDir) {
