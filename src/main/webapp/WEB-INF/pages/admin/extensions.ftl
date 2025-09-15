@@ -302,10 +302,6 @@
                 <@s.text name="extension.further.title"/>
             </h5>
 
-            <p class="mb-0">
-                <@s.text name="extension.further.title.help"/>
-            </p>
-
             <#if !newExtensions?has_content>
                 <div class="callout callout-info">
                     <@s.text name="extension.already.installed"/>
