@@ -69,6 +69,47 @@
         </div>
     </#macro>
 
+    <#macro installedVocabularyItem vocab>
+        <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
+            <div class="extension-item border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
+                <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
+                    <div>
+                        <h4 class="d-flex fs-regular mt-1 mb-0">
+                            ${vocab.title}
+                        </h4>
+                        <p class="color-fg-muted mb-0 fs-smaller-2">
+                            ${vocab.uriString}
+                        </p>
+                        <#if vocab.isLatest()>
+                            <p class="text-gbif-primary mb-0 fs-smaller-2">
+                                <#if vocab.issued??>${vocab.issued?date?string["d MMMM yyyy"]}<#else>-</#if>
+                            </p>
+                        <#else>
+                            <p class="text-gbif-danger mb-0 fs-smaller-2">
+                                <#if vocab.issued??>${vocab.issued?date?string["d MMMM yyyy"]}<#else>-</#if>
+                            </p>
+                        </#if>
+                    </div>
+                </div>
+                <div class="d-flex flex-column flex-auto flex-justify-between">
+                    <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
+                        <div>
+                            <#if !vocab.isLatest()>
+                                <span class="text-gbif-danger"><@s.text name="admin.extension.version.warning.short"/></span><br>
+                            </#if>
+                            ${vocab.description!?truncate(300)}
+                        </div>
+                    </div>
+                    <div class="d-flex pt-2 pb-4 px-4">
+                        <a href="vocabulary.do?id=${vocab.uriString?url}" title="" class="action-link-button action-link-button-primary">
+                            <@s.text name="button.view"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </#macro>
+
     <#macro newExtensionItem ext>
         <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
             <div class="extension-item border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
@@ -229,14 +270,28 @@
                 </div>
             </#if>
         </div>
-
-        <div class="">
+        <div>
             <div class="flex-auto">
                 <div class="d-flex flex-items-stretch flex-wrap">
                     <#list extensions as ext>
                         <#if !ext.core>
                             <@installedExtensionItem ext/>
                         </#if>
+                    </#list>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-3 p-3">
+            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                <@s.text name="admin.extension.vocabularies"/>
+            </h5>
+        </div>
+        <div>
+            <div class="flex-auto">
+                <div class="d-flex flex-items-stretch flex-wrap">
+                    <#list vocabularies as vocab>
+                        <@installedVocabularyItem vocab/>
                     </#list>
                 </div>
             </div>

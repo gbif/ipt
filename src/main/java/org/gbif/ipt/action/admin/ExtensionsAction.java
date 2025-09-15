@@ -13,14 +13,11 @@
  */
 package org.gbif.ipt.action.admin;
 
-import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
-import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -33,17 +30,14 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
@@ -65,6 +59,7 @@ public class ExtensionsAction extends POSTAction {
   // list of the latest registered extension versions
   private List<Extension> latestExtensionVersions;
   private List<Extension> extensions;
+  private List<Vocabulary>  vocabularies;
   private Map<String, List<ExtensionProperty>> propertiesByGroup = new HashMap<>();
   private Extension extension;
   private String url;
@@ -165,6 +160,10 @@ public class ExtensionsAction extends POSTAction {
     return extensions;
   }
 
+  public List<Vocabulary> getVocabularies() {
+    return vocabularies;
+  }
+
   public List<Extension> getNewExtensions() {
     return newExtensions;
   }
@@ -197,6 +196,10 @@ public class ExtensionsAction extends POSTAction {
     // retrieve all extensions that have been installed already
     extensions = extensionManager.list();
     extensions.sort(Comparator.comparing(Extension::getTitle));
+
+    // retrieve all vocabularies
+    vocabularies = vocabManager.list();
+    vocabularies.sort(Comparator.comparing(Vocabulary::getTitle));
 
     // update each installed extension indicating whether it is the latest version (for its rowType) or not
     updateIsLatest(extensions);
@@ -378,13 +381,13 @@ public class ExtensionsAction extends POSTAction {
 
     LOG.info("Updating content of all installed vocabularies...");
     for (Vocabulary v : vocabManager.list()) {
-      LOG.debug("Updating vocabulary " + v.getUriString());
+      LOG.debug("Updating vocabulary {}", v.getUriString());
       vocabManager.updateIfChanged(v.getUriString());
     }
 
     LOG.info("Updating content of all installed extensions...");
     for (Extension ex : extensionManager.list()) {
-      LOG.debug("Updating extension " + ex.getRowType());
+      LOG.debug("Updating extension {}", ex.getRowType());
       extensionManager.updateIfChanged(ex.getRowType());
     }
   }
