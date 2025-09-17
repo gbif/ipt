@@ -44,7 +44,7 @@
     <!-- GBIF dependencies -->
     <dwc-api.version>2.1.6</dwc-api.version>
     <dwca-io.version>3.0.0</dwca-io.version>
-    <gbif-api.version>2.1.15</gbif-api.version>
+    <gbif-api.version>2.1.17</gbif-api.version>
     <gbif-common.version>0.60</gbif-common.version>
     <gbif-doi.version>2.21</gbif-doi.version>
     <gbif-metadata-profile.version>2.8</gbif-metadata-profile.version>
