@@ -214,26 +214,37 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return latestVersion;
   }
 
+  // TODO: make sure registry is not called every time!
   @Override
   public synchronized boolean updateIfChanged(String rowType) throws IOException, RegistryException {
     // identify installed extension by rowType
     Extension installed = get(rowType);
+
     if (installed != null) {
       // match extension by rowType and issued date
       Extension matched = null;
       for (Extension ex : registryManager.getExtensions()) {
         if (ex.getRowType() != null && ex.getRowType().equalsIgnoreCase(rowType)
-            && installed.getIssued() != null && ex.getIssued() != null && installed.getIssued().compareTo(ex.getIssued()) == 0) {
+            && installed.getIssued() != null && ex.getIssued() != null && installed.getIssued().compareTo(ex.getIssued()) < 0) {
           matched = ex;
           break;
         }
       }
+
       // verify the version was updated
       if (matched != null && matched.getUrl() != null) {
         File extensionFile = getExtensionFile(rowType);
-        return downloader.downloadIfChanged(matched.getUrl(), extensionFile);
+        boolean downloadResult = downloader.downloadIfChanged(matched.getUrl(), extensionFile);
+
+        if (downloadResult) {
+          Extension result = loadFromFile(extensionFile);
+          extensionsHolder.getExtensionsByRowtype().replace(rowType, result);
+        }
+
+        return downloadResult;
       }
     }
+
     return false;
   }
 

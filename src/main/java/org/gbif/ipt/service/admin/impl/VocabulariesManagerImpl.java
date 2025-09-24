@@ -566,9 +566,17 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // verify the version was updated
       if (matched != null && matched.getUriResolvable() != null) {
         File vocabFile = getVocabFile(matched.getUriResolvable());
-        return downloader.downloadIfChanged(matched.getUriResolvable().toURL(), vocabFile);
-      }
+        boolean downloadResult = downloader.downloadIfChanged(matched.getUriResolvable().toURL(), vocabFile);
 
+        if (downloadResult) {
+          Vocabulary result = loadFromFile(vocabFile);
+
+          // update vocabulary in local lookup
+          vocabulariesById.replace(result.getUriString(), result);
+        }
+
+        return downloadResult;
+      }
     }
     return false;
   }
