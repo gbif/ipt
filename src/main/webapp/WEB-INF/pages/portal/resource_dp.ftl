@@ -545,22 +545,28 @@
                             <#list dpMetadata.taxonomic as tx>
                                 <div class="table-responsive">
                                     <table class="text-smaller table table-sm table-borderless">
-                                        <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonId"/></th>
-                                            <td>${tx.taxonID!}</td>
-                                        </tr>
+                                        <#if tx.taxonID?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonId"/></th>
+                                                <td>${tx.taxonID!}</td>
+                                            </tr>
+                                        </#if>
                                         <tr>
                                             <th class="col-4"><@s.text name="portal.resource.taxonomic.scientificName"/></th>
                                             <td>${tx.scientificName!}</td>
                                         </tr>
-                                        <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonRank"/></th>
-                                            <td>${tx.taxonRank!}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.vernacularNames"/></th>
-                                            <td><#if tx.vernacularNames?has_content><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></#if></td>
-                                        </tr>
+                                        <#if tx.taxonRank?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonRank"/></th>
+                                                <td>${tx.taxonRank!}</td>
+                                            </tr>
+                                        </#if>
+                                        <#if tx.vernacularNames?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.taxonomic.vernacularNames"/></th>
+                                                <td><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></td>
+                                            </tr>
+                                        </#if>
                                     </table>
                                 </div>
                             </#list>
