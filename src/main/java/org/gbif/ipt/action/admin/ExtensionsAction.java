@@ -203,6 +203,7 @@ public class ExtensionsAction extends POSTAction {
 
     // update each installed extension indicating whether it is the latest version (for its rowType) or not
     updateIsLatest(extensions);
+    updateIsLatestVocabularies(vocabularies);
 
     // populate list of uninstalled extensions, removing extensions installed already, showing only latest versions
     newExtensions = getLatestExtensionVersions();
@@ -290,6 +291,47 @@ public class ExtensionsAction extends POSTAction {
 
         // add startup error message that explains the consequence of the Registry error
         msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
+        configWarnings.addStartupError(msg);
+        LOG.error(msg);
+      }
+    }
+  }
+
+  protected void updateIsLatestVocabularies(List<Vocabulary> vocabularies) {
+    if (!vocabularies.isEmpty()) {
+      try {
+        // complete list of registered vocabularies (latest and non-latest versions)
+        List<Vocabulary> registered = registryManager.getVocabularies();
+        for (Vocabulary vocabulary : vocabularies) {
+          vocabulary.setLatest(true);
+          for (Vocabulary rVocabulary : registered) {
+            // check if registered vocabulary is latest, and if it is, try to use it in comparison
+            if (rVocabulary.isLatest() && vocabulary.getUriString().equalsIgnoreCase(rVocabulary.getUriString())) {
+              Date issuedOne = vocabulary.getIssued();
+              Date issuedTwo = rVocabulary.getIssued();
+              if (issuedOne == null && issuedTwo != null) {
+                setUpToDate(false);
+                vocabulary.setLatest(false);
+                LOG.debug("Installed vocabulary {} has no issued date. A newer version issued {} exists.", vocabulary.getUriString(), issuedTwo);
+              } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
+                setUpToDate(false);
+                vocabulary.setLatest(false);
+                LOG.debug("Installed vocabulary {} was issued {}. A newer version issued {} exists.", vocabulary.getUriString(), issuedOne, issuedTwo);
+              } else {
+                LOG.debug("Installed vocabulary {} is the latest version", vocabulary.getUriString());
+              }
+              break;
+            }
+          }
+        }
+      } catch (RegistryException e) {
+        // add startup error message about Registry error
+        String msg = RegistryException.logRegistryException(e, this);
+        configWarnings.addStartupError(msg);
+        LOG.error(msg);
+
+        // add startup error message that explains the consequence of the Registry error
+        msg = getText("admin.extensions.vocabularies.couldnt.load", new String[] {cfg.getRegistryUrl()});
         configWarnings.addStartupError(msg);
         LOG.error(msg);
       }
