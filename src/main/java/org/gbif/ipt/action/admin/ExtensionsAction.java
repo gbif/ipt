@@ -396,6 +396,10 @@ public class ExtensionsAction extends POSTAction {
     this.extension = extension;
   }
 
+  public boolean getSynchronise() {
+    return synchronise;
+  }
+
   /**
    * To hold the state transition request, so the same request triggered purely by a URL will not work.
    *
