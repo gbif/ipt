@@ -154,6 +154,7 @@ import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -169,6 +170,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -228,6 +230,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private GenerateDataPackageFactory dataPackageFactory;
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
+  private Map<String, LocalDate> lastLoggedFailures = new ConcurrentHashMap<>();
   private Map<String, StatusReport> processReports = new HashMap<>();
   private List<String> resourcesToSkip = new ArrayList<>();
   private Eml2Rtf eml2Rtf;
@@ -4288,12 +4291,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public boolean hasMaxProcessFailures(Resource resource) {
-    if (processFailures.containsKey(resource.getShortname())) {
-      List<Date> failures = processFailures.get(resource.getShortname());
+    String resourceShortname = resource.getShortname();
 
-      LOG.debug("Publication has failed {} time(s) for resource: {}", failures.size(), resource
-          .getTitleAndShortname());
-      return failures.size() >= MAX_PROCESS_FAILURES;
+    if (processFailures.containsKey(resourceShortname)) {
+      List<Date> failures = processFailures.get(resourceShortname);
+      int count = failures.size();
+
+      LocalDate today = LocalDate.now();
+      LocalDate last = lastLoggedFailures.get(resourceShortname);
+
+      if (count < MAX_PROCESS_FAILURES) { // always log if count is below max
+        LOG.debug("Publication has failed {} time(s) for resource: {}",
+            count, resource.getTitleAndShortname());
+      } else if (last == null || !last.equals(today)) { // once the limit is reached, only log once per day
+        LOG.debug("Publication has failed {} time(s) for resource: {} (max amount of failures)",
+            count, resource.getTitleAndShortname());
+        lastLoggedFailures.put(resourceShortname, today);
+      }
+
+      return count >= MAX_PROCESS_FAILURES;
     }
     return false;
   }
