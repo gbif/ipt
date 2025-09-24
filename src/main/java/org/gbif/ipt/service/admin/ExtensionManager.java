@@ -45,13 +45,9 @@ public interface ExtensionManager {
   void migrateResourceToNewExtensionVersion(Resource r, Extension current, Extension newer);
 
   /**
-   * Update extension if it changed since last time it was updated.
-   *
-   * @param rowType the rowType of the extension
-   *
-   * @return true if the update happened, false otherwise
+   * Update all extensions if they changed since the last time they were updated.
    */
-  boolean updateIfChanged(String rowType) throws IOException, RegistryException;
+  void updateIfChanged() throws IOException, RegistryException;
 
   /**
    * Get a locally installed extension by its rowType.

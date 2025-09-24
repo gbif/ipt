@@ -548,36 +548,55 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
   }
 
   @Override
-  public synchronized boolean updateIfChanged(String identifier) throws IOException, RegistryException {
-    // identify installed vocabulary by identifier
-    Vocabulary installed = get(identifier);
-    if (installed != null) {
-      // match vocabulary by identifier and issued date
-      Vocabulary matched = null;
-      for (Vocabulary v : registryManager.getVocabularies()) {
-        if (v.getUriString() != null && v.getUriString().equalsIgnoreCase(identifier)) {
-          if (installed.getIssued() == null
-              || (installed.getIssued() != null && v.getIssued() != null && installed.getIssued().compareTo(v.getIssued()) < 0)) {
-            matched = v;
-            break;
+  public synchronized void updateIfChanged() throws IOException, RegistryException {
+    List<Vocabulary> installedVocabularies = list();
+    List<Vocabulary> registryVocabularies = registryManager.getVocabularies();
+
+    for (Vocabulary installed : installedVocabularies) {
+      if (installed == null || installed.getUriString() == null) {
+        LOG.error("Installed vocabulary is null ot does not have an ID");
+      } else {
+        LOG.debug("Updating vocabulary {}", installed.getUriString());
+
+        // match vocabulary by identifier and issued date
+        Vocabulary matched = null;
+        boolean isMatched = false;
+
+        for (Vocabulary rVocab : registryVocabularies) {
+          if (rVocab.getUriString() != null
+              && rVocab.getUriString().equalsIgnoreCase(installed.getUriString())) {
+            isMatched = true;
+            if (installed.getIssued() == null
+                || (installed.getIssued() != null && rVocab.getIssued() != null && installed.getIssued().compareTo(rVocab.getIssued()) < 0)) {
+              matched = rVocab;
+              break;
+            }
+          }
+        }
+
+        // verify the version was updated
+        if (!isMatched) {
+          LOG.error("No matching vocabulary found for {}", installed.getUriString());
+        } else if (matched == null) {
+          LOG.debug("Vocabulary {} is already up-to-date", installed.getUriString());
+        } else if (matched.getUriResolvable() == null) {
+          LOG.error("Matched vocabulary {} doesn't have a URI", installed.getUriString());
+        } else {
+          LOG.debug("Found matching vocabulary {}", matched.getUriString());
+          File vocabFile = getVocabFile(matched.getUriResolvable());
+          boolean downloadResult = downloader.downloadIfChanged(matched.getUriResolvable().toURL(), vocabFile);
+
+          if (downloadResult) {
+            LOG.debug("Downloaded vocabulary {}", matched.getUriString());
+            Vocabulary result = loadFromFile(vocabFile);
+
+            // update vocabulary in local lookup
+            vocabulariesById.replace(result.getUriString(), result);
+          } else {
+            LOG.error("Failed to download vocabulary {} from {}", matched.getUriString(), matched.getUriResolvable());
           }
         }
       }
-      // verify the version was updated
-      if (matched != null && matched.getUriResolvable() != null) {
-        File vocabFile = getVocabFile(matched.getUriResolvable());
-        boolean downloadResult = downloader.downloadIfChanged(matched.getUriResolvable().toURL(), vocabFile);
-
-        if (downloadResult) {
-          Vocabulary result = loadFromFile(vocabFile);
-
-          // update vocabulary in local lookup
-          vocabulariesById.replace(result.getUriString(), result);
-        }
-
-        return downloadResult;
-      }
     }
-    return false;
   }
 }

@@ -129,11 +129,7 @@ public interface VocabulariesManager {
   void installOrUpdateDefaults() throws InvalidConfigException;
 
   /**
-   * Update vocabulary if it changed since last time it was updated.
-   *
-   * @param uri the identifier of the vocabulary
-   *
-   * @return true if the update happened, false otherwise
+   * Update vocabularies if they changed since the last time they were updated.
    */
-  boolean updateIfChanged(String uri) throws IOException, RegistryException;
+  void updateIfChanged() throws IOException, RegistryException;
 }

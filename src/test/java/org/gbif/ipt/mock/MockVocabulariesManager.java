@@ -153,9 +153,7 @@ public class MockVocabulariesManager extends IptMockBaseTest implements Vocabula
   public void installOrUpdateDefaults() throws InvalidConfigException {
   }
 
-
   @Override
-  public boolean updateIfChanged(String uri) throws IOException, InvalidConfigException {
-    return false;
+  public void updateIfChanged() throws IOException, InvalidConfigException {
   }
 }

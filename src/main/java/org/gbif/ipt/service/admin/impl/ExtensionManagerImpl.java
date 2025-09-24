@@ -214,38 +214,57 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     return latestVersion;
   }
 
-  // TODO: make sure registry is not called every time!
   @Override
-  public synchronized boolean updateIfChanged(String rowType) throws IOException, RegistryException {
-    // identify installed extension by rowType
-    Extension installed = get(rowType);
+  public synchronized void updateIfChanged() throws IOException, RegistryException {
+    List<Extension> installedExtensions = list();
+    List<Extension> registryExtensions = registryManager.getExtensions();
 
-    if (installed != null) {
-      // match extension by rowType and issued date
-      Extension matched = null;
-      for (Extension ex : registryManager.getExtensions()) {
-        if (ex.getRowType() != null && ex.getRowType().equalsIgnoreCase(rowType)
-            && installed.getIssued() != null && ex.getIssued() != null && installed.getIssued().compareTo(ex.getIssued()) < 0) {
-          matched = ex;
-          break;
+    for (Extension installed : installedExtensions) {
+      if (installed == null || installed.getRowType() == null) {
+        LOG.error("Installed extension is null or rowType is null");
+      } else {
+        String rowType = installed.getRowType();
+        LOG.debug("Updating extension {}", rowType);
+        // match extension by rowType and issued date
+        Extension matched = null;
+        boolean isMatched = false;
+
+        for (Extension ex : registryExtensions) {
+          if (ex.getRowType() != null && ex.getRowType().equalsIgnoreCase(rowType)) {
+            isMatched = true;
+            if (installed.getIssued() != null && ex.getIssued() != null
+                && installed.getIssued().compareTo(ex.getIssued()) < 0
+                && ex.isLatest()) {
+              matched = ex;
+              break;
+            }
+          }
         }
-      }
 
-      // verify the version was updated
-      if (matched != null && matched.getUrl() != null) {
-        File extensionFile = getExtensionFile(rowType);
-        boolean downloadResult = downloader.downloadIfChanged(matched.getUrl(), extensionFile);
+        // verify the version was updated
+        if (!isMatched) {
+          LOG.error("No matching extension found for {}", rowType);
+        } else if (matched == null) {
+          LOG.debug("Extension {} is already up-to-date", rowType);
+        } else if (matched.getUrl() == null) {
+          LOG.error("Matched extension {} doesn't have a URL", rowType);
+        } else {
+          LOG.debug("Found matching extension {}", matched.getUrl());
+          File extensionFile = getExtensionFile(rowType);
+          boolean downloadResult = downloader.downloadIfChanged(matched.getUrl(), extensionFile);
 
-        if (downloadResult) {
-          Extension result = loadFromFile(extensionFile);
-          extensionsHolder.getExtensionsByRowtype().replace(rowType, result);
+          if (downloadResult) {
+            LOG.debug("Downloaded extension {}", matched.getUrl());
+            Extension result = loadFromFile(extensionFile);
+
+            // update extension in local lookup
+            extensionsHolder.getExtensionsByRowtype().replace(rowType, result);
+          } else {
+            LOG.error("Failed to download extension {} from {}", rowType, matched.getUrl());
+          }
         }
-
-        return downloadResult;
       }
     }
-
-    return false;
   }
 
   /**

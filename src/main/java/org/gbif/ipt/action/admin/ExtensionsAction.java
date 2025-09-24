@@ -422,16 +422,10 @@ public class ExtensionsAction extends POSTAction {
     vocabManager.installOrUpdateDefaults();
 
     LOG.info("Updating content of all installed vocabularies...");
-    for (Vocabulary v : vocabManager.list()) {
-      LOG.debug("Updating vocabulary {}", v.getUriString());
-      vocabManager.updateIfChanged(v.getUriString());
-    }
+    vocabManager.updateIfChanged();
 
     LOG.info("Updating content of all installed extensions...");
-    for (Extension ex : extensionManager.list()) {
-      LOG.debug("Updating extension {}", ex.getRowType());
-      extensionManager.updateIfChanged(ex.getRowType());
-    }
+    extensionManager.updateIfChanged();
   }
 
   public void setExtension(Extension extension) {
