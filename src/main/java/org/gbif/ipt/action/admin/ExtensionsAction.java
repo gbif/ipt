@@ -270,13 +270,13 @@ public class ExtensionsAction extends POSTAction {
               if (issuedOne == null && issuedTwo != null) {
                 setUpToDate(false);
                 extension.setLatest(false);
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " has no issued date. A newer version issued " + issuedTwo + " exists.");
+                LOG.debug("Installed extension with rowType {} has no issued date. A newer version issued {} exists.", extension.getRowType(), issuedTwo);
               } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
                 setUpToDate(false);
                 extension.setLatest(false);
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " was issued " + issuedOne + ". A newer version issued " + issuedTwo + " exists.");
+                LOG.debug("Installed extension with rowType {} was issued {}. A newer version issued {} exists.", extension.getRowType(), issuedOne, issuedTwo);
               } else {
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " is the latest version");
+                LOG.debug("Installed extension with rowType {} is the latest version", extension.getRowType());
               }
               break;
             }
