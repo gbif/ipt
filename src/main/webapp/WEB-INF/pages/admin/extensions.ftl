@@ -239,6 +239,7 @@
             </p>
 
             <form action='extensions.do' method='post'>
+                <input type="hidden" name="synchronise" value="true"/>
                 <div class="col-12 mt-2">
                     <button id="synchronise" name="synchronise" type="submit" class="action-link-button action-link-button-primary">
                         <svg class="overview-action-button-icon" viewBox="0 0 24 24">
