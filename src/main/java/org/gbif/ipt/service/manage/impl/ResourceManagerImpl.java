@@ -2412,6 +2412,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // add proper source file pointer
         for (Source src : resource.getSources()) {
           src.setResource(resource);
+          src.setProcessing(false);
           if (src instanceof FileSource) {
             FileSource frSrc = (FileSource) src;
             frSrc.setFile(dataDir.sourceFile(resource, frSrc));
