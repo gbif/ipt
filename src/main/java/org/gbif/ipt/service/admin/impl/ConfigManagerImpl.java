@@ -299,7 +299,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   private void reloadLogger() {
-    LoggingConfiguration.logDirectory = dataDir.loggingDir().getAbsolutePath()+"/";
+    LoggingConfiguration.logDirectory = dataDir.loggingDir().getAbsolutePath() + "/";
     LOG.info("Changing logging directory to {}", LoggingConfiguration.logDirectory);
 
     LoggingConfigFactory.useDebug = cfg.debug();

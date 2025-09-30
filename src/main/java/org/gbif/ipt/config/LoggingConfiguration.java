@@ -40,7 +40,7 @@ public class LoggingConfiguration extends XmlConfiguration {
   protected void doConfigure() {
     super.doConfigure();
 
-    final Layout layout = PatternLayout.newBuilder().withPattern("%-5p %d{dd-MMM-yyyy HH:mm:ss} [%c] - %m%n").build();
+    final Layout<?> layout = PatternLayout.newBuilder().withPattern("%-5p %d{dd-MMM-yyyy HH:mm:ss} [%c] - %m%n").build();
 
     final CompositeTriggeringPolicy policy = CompositeTriggeringPolicy.createPolicy(
         OnStartupTriggeringPolicy.createPolicy(1),
