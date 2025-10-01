@@ -228,57 +228,274 @@
             </p>
 
             <#if resource.dataPackageIdentifier?has_content>
-                <div class="details">
-                    <div class="row g-2">
-                        <#list resource.dataPackageMappings! as m>
-                            <div class="col-xl-6">
-                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item">
-                                    <div class="d-flex my-auto mapping-item-icon ps-2">
-                                        <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
-                                    </div>
-                                    <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataPackageSchema.identifier?url}" data-ipt-mapping="${m_index}">
-                                        <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
-                                        <i class="bi bi-arrow-right"></i>
-                                        <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
-                                        <br>
-                                        <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
-                                    </div>
-                                    <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
-                                        <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
-                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                            </svg>
-                                        </a>
-                                        <a title="<@s.text name="button.delete"/>" class="delete-mapping icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
-                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                            </svg>
-                                        </a>
+                <#if resource.dataPackageIdentifier?contains("dwc-dp")>
+                    <div class="details">
+                        <#-- Events -->
+                        <div class="mapping_head">Events</div>
+                        <div class="row g-2">
+                            <#list resource.dataPackageMappings! as m>
+                                <#if dwcDpEvents?seq_contains(m.dataPackageTableSchemaName.name)>
+                                    <div class="col-xl-6">
+                                        <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item mapping-item-dwc-dp-event">
+                                            <div class="d-flex my-auto mapping-item-icon ps-2">
+                                                <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
+                                            </div>
+                                            <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataPackageSchema.identifier?url}" data-ipt-mapping="${m_index}">
+                                                <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
+                                                <i class="bi bi-arrow-right"></i>
+                                                <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
+                                                <br>
+                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                            </div>
+                                            <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
+                                                <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                    </svg>
+                                                </a>
+                                                <a title="<@s.text name="button.delete"/>" class="delete-mapping icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </a>
 
-                                        <div class="dropdown d-sm-none">
-                                            <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <div class="dropdown d-sm-none">
+                                                    <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
+                                                        <li>
+                                                            <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                </svg>
+                                                                <@s.text name="button.delete"/>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </#if>
+                            </#list>
+                        </div>
+                        <#-- Entities -->
+                        <div class="mapping_head mt-2">Entities</div>
+                        <div class="row g-2">
+                            <#list resource.dataPackageMappings! as m>
+                                <#if dwcDpEntities?seq_contains(m.dataPackageTableSchemaName.name)>
+                                    <div class="col-xl-6">
+                                        <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item mapping-item-dwc-dp-entity">
+                                            <div class="d-flex my-auto mapping-item-icon ps-2">
+                                                <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
+                                            </div>
+                                            <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataPackageSchema.identifier?url}" data-ipt-mapping="${m_index}">
+                                                <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
+                                                <i class="bi bi-arrow-right"></i>
+                                                <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
+                                                <br>
+                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                            </div>
+                                            <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
+                                                <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                    </svg>
+                                                </a>
+                                                <a title="<@s.text name="button.delete"/>" class="delete-mapping icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </a>
+
+                                                <div class="dropdown d-sm-none">
+                                                    <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
+                                                        <li>
+                                                            <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                </svg>
+                                                                <@s.text name="button.delete"/>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </#if>
+                            </#list>
+                        </div>
+                        <#-- Agents -->
+                        <div class="mapping_head mt-2">Agents</div>
+                        <div class="row g-2">
+                            <#list resource.dataPackageMappings! as m>
+                                <#if dwcDpAgents?seq_contains(m.dataPackageTableSchemaName.name)>
+                                    <div class="col-xl-6">
+                                        <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item mapping-item-dwc-dp-agent">
+                                            <div class="d-flex my-auto mapping-item-icon ps-2">
+                                                <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
+                                            </div>
+                                            <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataPackageSchema.identifier?url}" data-ipt-mapping="${m_index}">
+                                                <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
+                                                <i class="bi bi-arrow-right"></i>
+                                                <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
+                                                <br>
+                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                            </div>
+                                            <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
+                                                <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                    </svg>
+                                                </a>
+                                                <a title="<@s.text name="button.delete"/>" class="delete-mapping icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </a>
+
+                                                <div class="dropdown d-sm-none">
+                                                    <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
+                                                        <li>
+                                                            <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                </svg>
+                                                                <@s.text name="button.delete"/>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </#if>
+                            </#list>
+                        </div>
+                        <#-- Joins -->
+                        <div class="mapping_head mt-2">Joins</div>
+                        <div class="row g-2">
+                            <#list resource.dataPackageMappings! as m>
+                                <#if dwcDpJoins?seq_contains(m.dataPackageTableSchemaName.name)>
+                                    <div class="col-xl-6">
+                                        <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item mapping-item-dwc-dp-join">
+                                            <div class="d-flex my-auto mapping-item-icon ps-2">
+                                                <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
+                                            </div>
+                                            <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataPackageSchema.identifier?url}" data-ipt-mapping="${m_index}">
+                                                <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
+                                                <i class="bi bi-arrow-right"></i>
+                                                <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
+                                                <br>
+                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                            </div>
+                                            <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
+                                                <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                    </svg>
+                                                </a>
+                                                <a title="<@s.text name="button.delete"/>" class="delete-mapping icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                    </svg>
+                                                </a>
+
+                                                <div class="dropdown d-sm-none">
+                                                    <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
+                                                        <li>
+                                                            <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                                <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                                </svg>
+                                                                <@s.text name="button.delete"/>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </#if>
+                            </#list>
+                        </div>
+                    </div>
+                <#else>
+                    <div class="details">
+                        <div class="row g-2">
+                            <#list resource.dataPackageMappings! as m>
+                                <div class="col-xl-6">
+                                    <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item">
+                                        <div class="d-flex my-auto mapping-item-icon ps-2">
+                                            <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
+                                        </div>
+                                        <div class="fs-smaller-2 text-truncate schema-mapping-item-link ps-2 me-auto" data-ipt-resource="${resource.shortname}" data-ipt-extension="${m.dataPackageSchema.identifier?url}" data-ipt-mapping="${m_index}">
+                                            <strong class="fs-smaller">${(m.source.name)!"?"}</strong>
+                                            <i class="bi bi-arrow-right"></i>
+                                            <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
+                                            <br>
+                                            <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                        </div>
+                                        <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
+                                            <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
                                                 <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                </svg>
+                                            </a>
+                                            <a title="<@s.text name="button.delete"/>" class="delete-mapping icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                 </svg>
                                             </a>
 
-                                            <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
-                                                <li>
-                                                    <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
-                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                        <@s.text name="button.delete"/>
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                            <div class="dropdown d-sm-none">
+                                                <a class="icon-button icon-material-actions mapping-item-action" type="button" href="#" id="dropdown-mapping-item-actions-${m_index}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                                                    </svg>
+                                                </a>
+
+                                                <ul class="dropdown-menu" aria-labelledby="dropdown-mapping-item-actions-${m_index}">
+                                                    <li>
+                                                        <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
+                                                            <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                            </svg>
+                                                            <@s.text name="button.delete"/>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </#list>
+                            </#list>
+                        </div>
                     </div>
-                </div>
+                </#if>
             </#if>
         </div>
     <#else>

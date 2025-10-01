@@ -523,6 +523,26 @@ table {
     box-shadow: 0 1px 1px hsla(0, 0%, 0%, .06), 0 2px 1px hsla(0, 0%, 0%, .06);
 }
 
+.mapping-item-dwc-dp-event {
+    border-left-color: #aacbe6ff !important;
+    border-left-width: 0.25rem !important;
+}
+
+.mapping-item-dwc-dp-entity {
+    border-left-color: #b6d7a8ff !important;
+    border-left-width: 0.25rem !important;
+}
+
+.mapping-item-dwc-dp-agent {
+    border-left-color: #edb386ff !important;
+    border-left-width: 0.25rem !important;
+}
+
+.mapping-item-dwc-dp-join {
+    border-left-color: #f7db9bff !important;
+    border-left-width: 0.25rem !important;
+}
+
 @media (max-width: 576px) {
     .mapping-item-link, .source-item-link {
         max-width: 80% !important;
