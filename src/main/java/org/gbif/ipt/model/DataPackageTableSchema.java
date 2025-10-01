@@ -39,6 +39,8 @@ public class DataPackageTableSchema implements Serializable {
   private String name;
   private String title;
   private String description;
+  private String comments;
+  private String examples;
   private List<DataPackageField> fields;
   private String primaryKey;
   private List<DataPackageTableSchemaForeignKey> foreignKeys;

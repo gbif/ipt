@@ -75,10 +75,12 @@
             </#list>
         ];
 
+        var tables;
+
         fetch('${baseURL}/js/dwc-dp/dwc-dp-types-minimal.json')
             .then(response => response.json())
             .then(dataPackageTypes => {
-                const tables = dataPackageTables.map(schema => ({
+                tables = dataPackageTables.map(schema => ({
                     id: schema.name,
                     text: schema.title,
                     name: schema.name,
@@ -184,6 +186,28 @@
             }
 
             setMappingItemIndex(newItem, mappingItems);
+
+            <#if dataPackageSchema.name == 'dwc-dp'>
+            $("#newTableSchemas\\[" + mappingItems + "\\]").select2({
+                data: tables,
+                placeholder: 'Select a table schema',
+                templateResult: formatDataPackage,
+                templateSelection: formatDataPackageSelection,
+                width: "100%",
+                theme: 'bootstrap4'
+            });
+
+            $("#newSources\\[" + mappingItems + "\\]").select2({
+                placeholder: 'Select a source',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                theme: 'bootstrap4'
+            });
+            </#if>
         }
 
         $(".removeMappingLink").click(function (event) {
@@ -280,10 +304,10 @@
             <div id="mappings">
                 <div class="row">
                     <div class="col-sm-6">
-                    <#if dataPackageSchema.name=="dwc-dp">
-                        <@selectList name="newTableSchemas[0]" options="" objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                        <#if dataPackageSchema.name=="dwc-dp">
+                            <@selectList name="newTableSchemas[0]" options="" objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
                         <#else>
-                        <@selectList name="newTableSchemas[0]" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                            <@selectList name="newTableSchemas[0]" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
                         </#if>
                     </div>
                     <div class="col-sm-6">
@@ -318,7 +342,11 @@
                     </a>
                 </div>
                 <div class="col-sm-6">
-                    <@selectList name="newTableSchemasBase" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                    <#if dataPackageSchema.name=="dwc-dp">
+                        <@selectList name="newTableSchemasBase" options="" objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                    <#else>
+                        <@selectList name="newTableSchemasBase" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                    </#if>
                 </div>
                 <div class="col-sm-6">
                     <@selectList name="newSourcesBase" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
