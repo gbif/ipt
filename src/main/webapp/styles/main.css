@@ -777,6 +777,22 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: rgb(var(--color-gbif-warning));
 }
 
+.color-dwc-dp-Event {
+    color: #aacbe6ff;
+}
+
+.color-dwc-dp-Entity {
+    color: #b6d7a8ff
+}
+
+.color-dwc-dp-Join {
+    color: #f7db9bff
+}
+
+.color-dwc-dp-Agent {
+    color: #edb386ff;
+}
+
 .text-gbif-header {
     color: #4E565F;
 }

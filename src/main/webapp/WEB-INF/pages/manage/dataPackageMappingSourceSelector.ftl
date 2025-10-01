@@ -2,12 +2,145 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name='manage.mapping.title'/></title>
 <#assign currentMenu = "manage"/>
+<link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 
+<style>
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: rgba(0, 0, 0, .08) !important;
+    }
+
+    .select2-results__option--highlighted .select2-result__title {
+        color: #575757 !important;
+    }
+
+    .select2-result__title {
+        color: #575757;
+        font-weight: 700;
+        word-wrap: break-word;
+        line-height: 1.1;
+        margin-bottom: 4px;
+    }
+
+    .select2-results__option--highlighted .select2-result__title {
+        color: white;
+    }
+
+    .select2-result {
+        padding-top: 4px;
+        padding-bottom: 3px;
+    }
+
+    .select2-result__meta {
+        margin-left: 10px;
+    }
+
+    .select2-result__description, .select2-result__comments {
+        font-size: 13px;
+        color: #777;
+        margin-top: 4px;
+    }
+
+    .select2-result__comments {
+        font-style: italic;
+    }
+
+    .select2-result__type {
+        display: inline-block;
+        color: #777;
+        font-size: 11px;
+    }
+
+    .select2-result__type {
+        margin-right: 1em;
+    }
+</style>
+
 <script>
     $(document).ready(function () {
+        <#if dataPackageSchema.name == "dwc-dp">
+        const dataPackageTables = [
+            <#list dataPackageSchema.tableSchemas as tableSchema>
+            {
+                "identifier": "${tableSchema.identifier?js_string}",
+                "name": "${tableSchema.name?js_string}",
+                "title": "${tableSchema.title?js_string}",
+                "description": "${tableSchema.description?js_string}",
+                "comments": "${tableSchema.comments?js_string}",
+                "examples": "${tableSchema.examples?js_string}",
+                "totalFields": ${tableSchema.fields?size}
+            }<#if tableSchema_has_next>, </#if>
+            </#list>
+        ];
+
+        fetch('${baseURL}/js/dwc-dp/dwc-dp-types-minimal.json')
+            .then(response => response.json())
+            .then(dataPackageTypes => {
+                const tables = dataPackageTables.map(schema => ({
+                    id: schema.name,
+                    text: schema.title,
+                    name: schema.name,
+                    description: schema.description,
+                    totalFields: schema.totalFields,
+                    comments: schema.comments,
+                    examples: schema.examples,
+                    type: dataPackageTypes[schema.name]?.type || ""
+                }));
+
+                $("#newTableSchemas\\[0\\]").select2({
+                    data: tables,
+                    placeholder: 'Select a table schema',
+                    templateResult: formatDataPackage,
+                    templateSelection: formatDataPackageSelection,
+                    width: "100%",
+                    theme: 'bootstrap4'
+                });
+            });
+
+        $("#newSources\\[0\\]").select2({
+            placeholder: 'Select a source',
+            language: {
+                noResults: function () {
+                    return '${selectNoResultsFound}';
+                }
+            },
+            width: "100%",
+            theme: 'bootstrap4'
+        });
+
+        function formatDataPackage (schema) {
+            var $container = $(
+                "<div class='select2-result clearfix'>" +
+                "<div class='select2-result__meta'>" +
+                "<div class='select2-result__title'></div>" +
+                "<div class='select2-result__description'></div>" +
+                "<div class='select2-result__comments'></div>" +
+                "<div class='select2-result__statistics'>" +
+                "<div class='select2-result__type'>" +
+                "<i class='bi bi-circle-fill fs-smaller-2 color-dwc-dp-" + schema.type + "'></i>" +
+                "<span class='ms-1'>" + schema.type + "</span>" +
+                "<span class='ms-1'>|</span>" +
+                "<span class='ms-1'>" + schema.totalFields + " fields</span>" +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                "</div>"
+            );
+
+            $container.find(".select2-result__title").text(schema.text);
+            $container.find(".select2-result__description").text(schema.description);
+            $container.find(".select2-result__comments").text(schema.comments);
+
+            return $container;
+        }
+
+        function formatDataPackageSelection (repo) {
+            return repo.full_name || repo.text;
+        }
+        </#if>
+
         $("#schemaFile").select2({
             placeholder: '',
             language: {
@@ -147,7 +280,11 @@
             <div id="mappings">
                 <div class="row">
                     <div class="col-sm-6">
+                    <#if dataPackageSchema.name=="dwc-dp">
+                        <@selectList name="newTableSchemas[0]" options="" objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                        <#else>
                         <@selectList name="newTableSchemas[0]" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
+                        </#if>
                     </div>
                     <div class="col-sm-6">
                         <@selectList name="newSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />

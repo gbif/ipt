@@ -1,0 +1,233 @@
+{
+  "agent": {
+    "type": "Agent"
+  },
+  "agent-agent-role": {
+    "type": "Join"
+  },
+  "agent-identifier": {
+    "type": "Entity"
+  },
+  "agent-media": {
+    "type": "Join"
+  },
+  "bibliographic-resource": {
+    "type": "Entity"
+  },
+  "chronometric-age": {
+    "type": "Entity"
+  },
+  "chronometric-age-agent-role": {
+    "type": "Join"
+  },
+  "chronometric-age-assertion": {
+    "type": "Entity"
+  },
+  "chronometric-age-media": {
+    "type": "Join"
+  },
+  "chronometric-age-protocol": {
+    "type": "Join"
+  },
+  "chronometric-age-reference": {
+    "type": "Join"
+  },
+  "event": {
+    "type": "Event"
+  },
+  "event-agent-role": {
+    "type": "Join"
+  },
+  "event-assertion": {
+    "type": "Entity"
+  },
+  "event-identifier": {
+    "type": "Entity"
+  },
+  "event-media": {
+    "type": "Join"
+  },
+  "event-protocol": {
+    "type": "Join"
+  },
+  "event-provenance": {
+    "type": "Join"
+  },
+  "event-reference": {
+    "type": "Join"
+  },
+  "geological-context": {
+    "type": "Entity"
+  },
+  "geological-context-media": {
+    "type": "Join"
+  },
+  "identification": {
+    "type": "Entity"
+  },
+  "identification-agent-role": {
+    "type": "Join"
+  },
+  "identification-reference": {
+    "type": "Join"
+  },
+  "identification-taxon": {
+    "type": "Entity"
+  },
+  "material": {
+    "type": "Entity"
+  },
+  "material-agent-role": {
+    "type": "Join"
+  },
+  "material-assertion": {
+    "type": "Entity"
+  },
+  "material-geological-context": {
+    "type": "Join"
+  },
+  "material-identifier": {
+    "type": "Entity"
+  },
+  "material-media": {
+    "type": "Join"
+  },
+  "material-protocol": {
+    "type": "Join"
+  },
+  "material-provenance": {
+    "type": "Join"
+  },
+  "material-reference": {
+    "type": "Join"
+  },
+  "material-usage-policy": {
+    "type": "Join"
+  },
+  "media": {
+    "type": "Entity"
+  },
+  "media-agent-role": {
+    "type": "Join"
+  },
+  "media-assertion": {
+    "type": "Entity"
+  },
+  "media-identifier": {
+    "type": "Entity"
+  },
+  "media-provenance": {
+    "type": "Join"
+  },
+  "media-usage-policy": {
+    "type": "Join"
+  },
+  "molecular-protocol": {
+    "type": "Entity"
+  },
+  "molecular-protocol-agent-role": {
+    "type": "Join"
+  },
+  "molecular-protocol-assertion": {
+    "type": "Entity"
+  },
+  "molecular-protocol-reference": {
+    "type": "Join"
+  },
+  "nucleotide-analysis": {
+    "type": "Entity"
+  },
+  "nucleotide-analysis-assertion": {
+    "type": "Entity"
+  },
+  "nucleotide-sequence": {
+    "type": "Entity"
+  },
+  "occurrence": {
+    "type": "Event"
+  },
+  "occurrence-agent-role": {
+    "type": "Join"
+  },
+  "occurrence-assertion": {
+    "type": "Entity"
+  },
+  "occurrence-identifier": {
+    "type": "Entity"
+  },
+  "occurrence-media": {
+    "type": "Join"
+  },
+  "occurrence-protocol": {
+    "type": "Join"
+  },
+  "occurrence-reference": {
+    "type": "Join"
+  },
+  "organism": {
+    "type": "Entity"
+  },
+  "organism-assertion": {
+    "type": "Entity"
+  },
+  "organism-identifier": {
+    "type": "Entity"
+  },
+  "organism-interaction": {
+    "type": "Event"
+  },
+  "organism-interaction-agent-role": {
+    "type": "Join"
+  },
+  "organism-interaction-assertion": {
+    "type": "Entity"
+  },
+  "organism-interaction-media": {
+    "type": "Join"
+  },
+  "organism-interaction-reference": {
+    "type": "Join"
+  },
+  "organism-reference": {
+    "type": "Join"
+  },
+  "organism-relationship": {
+    "type": "Entity"
+  },
+  "protocol": {
+    "type": "Entity"
+  },
+  "protocol-reference": {
+    "type": "Join"
+  },
+  "provenance": {
+    "type": "Entity"
+  },
+  "resource-relationship": {
+    "type": "Entity"
+  },
+  "survey": {
+    "type": "Event"
+  },
+  "survey-agent-role": {
+    "type": "Join"
+  },
+  "survey-assertion": {
+    "type": "Entity"
+  },
+  "survey-identifier": {
+    "type": "Entity"
+  },
+  "survey-protocol": {
+    "type": "Join"
+  },
+  "survey-reference": {
+    "type": "Join"
+  },
+  "survey-target": {
+    "type": "Entity"
+  },
+  "usage-policy": {
+    "type": "Entity"
+  }
+}
