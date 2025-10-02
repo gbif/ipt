@@ -31,7 +31,8 @@
             "Metadata": "metadata",
             "Other": "other",
             "camtrap-dp": "camtrap-dp",
-            "coldp": "coldp"
+            "coldp": "coldp",
+            "dwc-dp": "dwc-dp"
         };
 
         $('#file').on('change', function (event) {
@@ -43,6 +44,9 @@
 
             if (shortnameMatch && shortnameMatch[2]) {
                 $('#shortname').val(shortnameMatch[2]);
+            } else {
+                var filenameWithoutExt = filename.replace(/\.[^/.]+$/, "");
+                $('#shortname').val(filenameWithoutExt);
             }
 
             if (file.name.endsWith('.zip')) {
@@ -84,14 +88,18 @@
                 const resources = (json.resources || []);
 
                 let datasetType = '';
-                if (profile.includes('camtrap-dp')) {
+                if (profile.includes('dwc-dp')) {
+                    datasetType = datasetTypeMap['dwc-dp'];
+                } else if (profile.includes('camtrap-dp')) {
                     datasetType = datasetTypeMap['camtrap-dp'];
                 } else if (profile.includes('coldp')) {
                     datasetType = datasetTypeMap['coldp'];
                 } else if (profile.includes('data-package')) {
                     resources.forEach(function(item) {
-                        if (item.schema.includes('coldp')) {
+                        if (item.schema && typeof item.schema === 'string' && item.schema.includes('coldp')) {
                             datasetType = datasetTypeMap['coldp'];
+                        } else if (item.schema && item.schema.identifier && item.schema.identifier.includes('dwc-dp')) {
+                            datasetType = datasetTypeMap['dwc-dp'];
                         }
                     });
                 }
