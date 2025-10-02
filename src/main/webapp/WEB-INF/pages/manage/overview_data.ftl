@@ -243,7 +243,8 @@
                         <#if eventMappings?size &gt; 0>
                             <div class="mapping_head">Events</div>
                             <div class="row g-2">
-                                <#list eventMappings as m>
+                                <#list resource.dataPackageMappings as m>
+                                    <#if dwcDpEvents?seq_contains(m.dataPackageTableSchemaName.name)>
                                     <div class="col-xl-6">
                                         <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item mapping-item-dwc-dp-event">
                                             <div class="d-flex my-auto mapping-item-icon ps-2">
@@ -289,6 +290,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </#if>
                                 </#list>
                             </div>
                         </#if>
@@ -296,7 +298,8 @@
                         <#if entityMappings?size &gt; 0>
                         <div class="mapping_head mt-2">Entities</div>
                         <div class="row g-2">
-                            <#list entityMappings as m>
+                            <#list resource.dataPackageMappings as m>
+                                <#if dwcDpEntities?seq_contains(m.dataPackageTableSchemaName.name)>
                                 <div class="col-xl-6">
                                     <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item mapping-item-dwc-dp-entity">
                                         <div class="d-flex my-auto mapping-item-icon ps-2">
@@ -342,6 +345,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                </#if>
                             </#list>
                         </div>
                         </#if>
@@ -349,7 +353,8 @@
                         <#if agentMappings?size &gt; 0>
                             <div class="mapping_head mt-2">Agents</div>
                             <div class="row g-2">
-                                <#list agentMappings as m>
+                                <#list resource.dataPackageMappings as m>
+                                    <#if dwcDpAgents?seq_contains(m.dataPackageTableSchemaName.name)>
                                     <div class="col-xl-6">
                                         <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item mapping-item-dwc-dp-agent">
                                             <div class="d-flex my-auto mapping-item-icon ps-2">
@@ -395,6 +400,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </#if>
                                 </#list>
                             </div>
                         </#if>
@@ -402,7 +408,8 @@
                         <#if joinMappings?size &gt; 0>
                             <div class="mapping_head mt-2">Joins</div>
                             <div class="row g-2">
-                                <#list joinMappings as m>
+                                <#list resource.dataPackageMappings as m>
+                                    <#if dwcDpJoins?seq_contains(m.dataPackageTableSchemaName.name)>
                                     <div class="col-xl-6">
                                         <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item mapping-item-dwc-dp-join">
                                             <div class="d-flex my-auto mapping-item-icon ps-2">
@@ -448,6 +455,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </#if>
                                 </#list>
                             </div>
                         </#if>
