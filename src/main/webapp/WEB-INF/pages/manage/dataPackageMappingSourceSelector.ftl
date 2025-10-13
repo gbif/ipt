@@ -303,16 +303,21 @@
 
             <div id="mappings">
                 <div class="row">
-                    <div class="col-sm-6">
-                        <#if dataPackageSchema.name=="dwc-dp">
+                    <#if dataPackageSchema.name=="dwc-dp">
+                        <div class="col-sm-6">
+                            <@selectList name="newSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
+                        </div>
+                        <div class="col-sm-6">
                             <@selectList name="newTableSchemas[0]" options="" objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
-                        <#else>
+                        </div>
+                    <#else>
+                        <div class="col-sm-6">
                             <@selectList name="newTableSchemas[0]" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
-                        </#if>
-                    </div>
-                    <div class="col-sm-6">
-                        <@selectList name="newSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
-                    </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <@selectList name="newSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
+                        </div>
+                    </#if>
                 </div>
             </div>
 
@@ -341,16 +346,21 @@
                         <span><@s.text name="manage.mapping.delete"/></span>
                     </a>
                 </div>
-                <div class="col-sm-6">
-                    <#if dataPackageSchema.name=="dwc-dp">
+                <#if dataPackageSchema.name=="dwc-dp">
+                    <div class="col-sm-6">
+                        <@selectList name="newSourcesBase" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
+                    </div>
+                    <div class="col-sm-6">
                         <@selectList name="newTableSchemasBase" options="" objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
-                    <#else>
+                    </div>
+                <#else>
+                    <div class="col-sm-6">
                         <@selectList name="newTableSchemasBase" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
-                    </#if>
-                </div>
-                <div class="col-sm-6">
-                    <@selectList name="newSourcesBase" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
-                </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <@selectList name="newSourcesBase" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
+                    </div>
+                </#if>
             </div>
         </div>
     </div>
