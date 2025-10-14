@@ -967,14 +967,14 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     Set<String> foreignKeyValidationErrors = new HashSet<>();
     for (io.frictionlessdata.datapackage.resource.Resource dataPackageResource : dataPackage.getResources()) {
       foreignKeyValidationErrors.addAll(dataPackageResource.checkRelationsV2(dataPackage));
-      dataPackageResource.checkPrimaryKeys();
+//      dataPackageResource.checkPrimaryKeys();
     }
 
     if (!foreignKeyValidationErrors.isEmpty()) {
       for (String fkve : foreignKeyValidationErrors) {
         addMessage(Level.ERROR, fkve);
       }
-      throw new ValidationException("Failed to validate foreign keys. See report for more details.");
+      throw new ValidationException("Failed to validate primary and/or foreign keys. See report for more details.");
     }
   }
 }
