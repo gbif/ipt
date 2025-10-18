@@ -487,7 +487,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             headerWritten = true;
           }
 
-          dumpData(writer, dataPackageMapping, dataPackageMapping.getFields(), totalColumns, filterMapped);
+          // Build a lookup map of field name -> index for quick ordering
+          Map<String, Integer> allTableFieldsInOrder = new HashMap<>();
+          for (int i = 0; i < fields.size(); i++) {
+            allTableFieldsInOrder.put(fields.get(i).getName(), i);
+          }
+
+          dumpData(writer, allTableFieldsInOrder, dataPackageMapping, dataPackageMapping.getFields(), totalColumns, filterMapped);
 
           // store record number by extension rowType
           recordsByTableSchema.put(tableSchema.getName(), currRecords);
@@ -561,6 +567,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * Write data resource for mappings.
    *
    * @param writer file writer for single data resource
+   * @param allTableFieldsInOrder all fields of the table schema in order
    * @param schemaMapping schema mapping
    * @param tableSchemaFieldMappings field mappings
    * @param dataFileRowSize number of columns in data resource
@@ -568,7 +575,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws GeneratorException if there was an error writing data resource for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
-  private void dumpData(Writer writer, DataPackageMapping schemaMapping,
+  private void dumpData(Writer writer, Map<String, Integer> allTableFieldsInOrder, DataPackageMapping schemaMapping,
                         List<DataPackageFieldMapping> tableSchemaFieldMappings, int dataFileRowSize, boolean filterMapped)
       throws GeneratorException, InterruptedException {
     RecordFilter filter = schemaMapping.getFilter();
@@ -580,9 +587,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     int emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
     int line = 0;
-    List<DataPackageFieldMapping> mappedTableSchemaFieldMappings = tableSchemaFieldMappings.stream()
+    List<DataPackageFieldMapping> mappedTableSchemaFieldMappings = tableSchemaFieldMappings
+        .stream()
         .filter(dpfm -> dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))
-        .collect(Collectors.toList());
+        .sorted(Comparator.comparingInt(m -> {
+          String fieldName = m.getField().getName();
+          return allTableFieldsInOrder.getOrDefault(fieldName, Integer.MAX_VALUE);
+        })).collect(Collectors.toList());
     List<DataPackageFieldMapping> usedMappings;
     Optional<Integer> maxColumnIndexOpt;
 
@@ -745,7 +756,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param in values array, of all columns in row
    * @param translated translated values
    */
-  private void applyTranslations(List<DataPackageFieldMapping> inCols, String[] in, String[] translated) {
+  private void applyTranslations(List<DataPackageFieldMapping> inCols,
+                                 String[] in, String[] translated) {
     for (int i = 0; i < inCols.size(); i++) {
       DataPackageFieldMapping mapping = inCols.get(i);
       String val = null;
