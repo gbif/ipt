@@ -261,6 +261,13 @@
                                                             </#list>
                                                         </p>
                                                     </#if>
+                                                    <#list tableSchema.foreignKeys! as fk>
+                                                        <#if field.name == fk.fields>
+                                                            <p class="overflow-x-auto">
+                                                            References <#if fk.reference.resource?has_content>${fk.reference.resource}<#else>${tableSchema.name}</#if>/${fk.reference.fields}
+                                                            </p>
+                                                        </#if>
+                                                    </#list>
                                                 </div>
                                             </div>
                                         </div>
