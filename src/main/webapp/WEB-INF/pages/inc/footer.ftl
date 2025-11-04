@@ -37,6 +37,67 @@
 <script src="${baseURL}/js/form-validation.js"></script>
 <script src='${baseURL}/js/sortable/html5sortable-0.13.3.js'></script>
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modalEl = document.getElementById('unsavedChangesModal');
+        const stayButton = document.getElementById('stayButton');
+        const leaveButton = document.getElementById('leaveButton');
+
+        if (!modalEl || !leaveButton) {
+            console.warn("Unsaved changes modal not found.");
+            return;
+        }
+
+        const bsModal = new bootstrap.Modal(modalEl);
+        let hasUnsavedChanges = false;
+        let redirectUrl = null;
+
+        // Track form changes
+        const form = document.querySelector('.track-unsaved');
+        if (form) {
+            form.addEventListener('input', () => {
+                hasUnsavedChanges = true;
+            });
+        }
+
+        // Warn before browser unload (refresh, close tab)
+        window.addEventListener('beforeunload', (e) => {
+            if (hasUnsavedChanges) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // Intercept internal link clicks
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // ignore anchors or JS links
+                if (!link.href || link.href.startsWith('javascript:') || link.target === '_blank' || link.href.includes('#')) return;
+
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    redirectUrl = link.href;
+                    bsModal.show();
+                }
+            });
+        });
+
+        // Stay -> close modal only
+        if (stayButton) {
+            stayButton.addEventListener('click', () => {
+                redirectUrl = null;
+            });
+        }
+
+        // Leave -> proceed to stored URL
+        leaveButton.addEventListener('click', () => {
+            if (redirectUrl) {
+                hasUnsavedChanges = false; // avoid triggering beforeunload again
+                window.location.href = redirectUrl;
+            }
+        });
+    });
+</script>
+<script>
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)

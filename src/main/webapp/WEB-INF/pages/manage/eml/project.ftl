@@ -179,7 +179,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form id="project-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <form id="project-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -729,6 +729,7 @@
         </div>
     </form>
 
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
     <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
@@ -775,6 +776,5 @@
             </div>
         </div>
     </div>
-
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -323,7 +323,7 @@
     </div>
 </div>
 
-<form id="basic-metadata-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+<form id="basic-metadata-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
     <input type="hidden" name="r" value="${resource.shortname}" />
 
     <div class="container-fluid bg-body border-bottom">
@@ -502,4 +502,6 @@
     </div>
 </form>
 
-    <#include "/WEB-INF/pages/inc/footer.ftl">
+<#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
+
+<#include "/WEB-INF/pages/inc/footer.ftl">
