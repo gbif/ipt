@@ -2784,6 +2784,8 @@
                     <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
                 </div>
 
+                <#assign hasToBePublishedFirst=false/>
+
                 <div class="modal-body">
                     <h5 class="modal-title w-100" id="registration-modal-title"><@s.text name="manage.overview.registration"/></h5>
 
@@ -2834,6 +2836,7 @@
                             <p class="mb-0">
                                 <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
                             </p>
+                            <#assign hasToBePublishedFirst=true/>
                         <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                             <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
                             <p class="mb-0">
@@ -2844,6 +2847,11 @@
                 </div>
 
                 <div class="modal-footer justify-content-center">
+                    <#if hasToBePublishedFirst>
+                        <button id="publish-button" type="button" class="btn btn-sm btn-outline-gbif-primary ${buttonClass!"confirmPublishMinorVersion"}" data-bs-dismiss="modal">
+                            <@s.text name="button.publish"/>
+                        </button>
+                    </#if>
                     <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                         <@s.text name="button.cancel"/>
                     </button>
