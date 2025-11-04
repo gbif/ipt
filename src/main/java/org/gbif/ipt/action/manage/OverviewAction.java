@@ -32,6 +32,7 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
@@ -1204,7 +1205,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       for (ExtensionMapping em : resource.getCoreMappings()) {
         if (em.getFields().isEmpty()) {
           LOG.debug("Deleting mapping {}→{} for resource {}: no mapped fields",
-              em.getSource().getName(), em.getExtension().getName(), resource.getShortname());
+              Optional.ofNullable(em.getSource()).map(Source::getName).orElse("NULL"),
+              Optional.ofNullable(em.getExtension()).map(Extension::getName).orElse("NULL"),
+              resource.getShortname());
           resource.deleteMapping(em);
         }
       }
