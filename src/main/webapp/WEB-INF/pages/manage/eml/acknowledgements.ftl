@@ -11,17 +11,30 @@
             var docBookAcknowledgements = `${eml.acknowledgements!}`;
             var htmlAcknowledgements = convertToHtml(docBookAcknowledgements);
 
-            $('#acknowledgements-editor').summernote({
+            const acknowledgementsEditor = $('#acknowledgements-editor');
+            acknowledgementsEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: true,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        acknowledgementsEditor.summernote('focus');
+                        acknowledgementsEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
-            $('#acknowledgements-editor').summernote('code', htmlAcknowledgements);
+            acknowledgementsEditor.summernote('code', htmlAcknowledgements);
 
             // Form submission event
             $('#acknowledgements-form').submit(function(event) {

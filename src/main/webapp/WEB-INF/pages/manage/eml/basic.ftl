@@ -230,14 +230,27 @@
             var docBookDescription = `${eml.description!}`;
             var htmlDescription = convertToHtml(docBookDescription);
 
-            $('#description-editor').summernote({
+            const descriptionEditor = $('#description-editor');
+            descriptionEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        descriptionEditor.summernote('focus');
+                        descriptionEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
             $('#description-editor').summernote('code', htmlDescription);

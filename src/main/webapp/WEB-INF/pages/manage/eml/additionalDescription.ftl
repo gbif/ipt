@@ -28,41 +28,80 @@
             var docBookIntroduction = `${eml.introduction!}`;
             var htmlIntroduction = convertToHtml(docBookIntroduction);
 
-            $('#purpose-editor').summernote({
+            const purposeEditor = $('#purpose-editor');
+            purposeEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        purposeEditor.summernote('focus');
+                        purposeEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
-            $('#purpose-editor').summernote('code', htmlPurpose);
+            purposeEditor.summernote('code', htmlPurpose);
 
-            $('#gettingStarted-editor').summernote({
+            const gettingStartedEditor = $('#gettingStarted-editor');
+            gettingStartedEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        gettingStartedEditor.summernote('focus');
+                        gettingStartedEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
-            $('#gettingStarted-editor').summernote('code', htmlGettingStarted);
+            gettingStartedEditor.summernote('code', htmlGettingStarted);
 
-            $('#introduction-editor').summernote({
+            const introductionEditor = $('#introduction-editor');
+            introductionEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        introductionEditor.summernote('focus');
+                        introductionEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
-            $('#introduction-editor').summernote('code', htmlIntroduction);
+            introductionEditor.summernote('code', htmlIntroduction);
 
             // Form submission events
             $('#additional-description-form').submit(function(event) {
