@@ -50,6 +50,7 @@
         const bsModal = new bootstrap.Modal(modalEl);
         let hasUnsavedChanges = false;
         let redirectUrl = null;
+        let isIntentionalUnload = false;
 
         // Track form changes
         const form = document.querySelector('.track-unsaved');
@@ -57,11 +58,17 @@
             form.addEventListener('input', () => {
                 hasUnsavedChanges = true;
             });
+
+            // Disable warning before submitting the form
+            form.addEventListener('submit', () => {
+                isIntentionalUnload = true;
+                hasUnsavedChanges = false;
+            });
         }
 
         // Warn before browser unload (refresh, close tab)
         window.addEventListener('beforeunload', (e) => {
-            if (hasUnsavedChanges) {
+            if (hasUnsavedChanges && !isIntentionalUnload) {
                 e.preventDefault();
                 e.returnValue = '';
             }
@@ -91,7 +98,8 @@
         // Leave -> proceed to stored URL
         leaveButton.addEventListener('click', () => {
             if (redirectUrl) {
-                hasUnsavedChanges = false; // avoid triggering beforeunload again
+                isIntentionalUnload = true;
+                hasUnsavedChanges = false;
                 window.location.href = redirectUrl;
             }
         });
