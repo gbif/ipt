@@ -215,6 +215,12 @@
     </action>
   </package>
 
+  <package name="inventory-v2" namespace="/inventory/v2" extends="json-default">
+    <action name="dataset" class="org.gbif.ipt.action.portal.InventoryV2Action">
+      <result name="success" type="json"/>
+    </action>
+  </package>
+
   <package name="ipt-api" namespace="/api" extends="json-default">
     <action name="resources" class="org.gbif.ipt.action.portal.HomeAction">
       <result name="success" type="json">
