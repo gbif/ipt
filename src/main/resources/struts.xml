@@ -217,7 +217,10 @@
 
   <package name="inventory-v2" namespace="/inventory/v2" extends="json-default">
     <action name="dataset" class="org.gbif.ipt.action.portal.InventoryV2Action">
-      <result name="success" type="json"/>
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
+      </result>
     </action>
   </package>
 
