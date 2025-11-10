@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -58,6 +59,10 @@ public class InventoryV2Action extends ActionSupport {
   private final ResourceManager resourceManager;
   @Setter
   private List<DatasetItemV2> inventory = new ArrayList<>();
+  @Setter
+  private String status;
+  @Setter
+  private String type;
 
   @Inject
   public InventoryV2Action(
@@ -71,12 +76,54 @@ public class InventoryV2Action extends ActionSupport {
   public String execute() {
     List<Resource> resources;
 
-    resources = resourceManager.list(PublicationStatus.PUBLIC);
+    PublicationStatus parsedStatus =
+        Optional.ofNullable(status)
+            .flatMap(s -> {
+              try {
+                return Optional.of(PublicationStatus.valueOf(s));
+              } catch (IllegalArgumentException e) {
+                return Optional.empty();
+              }
+            })
+            .orElse(PublicationStatus.PUBLIC);
+
+    resources = resourceManager.list(parsedStatus);
+
+    if (StringUtils.isNotEmpty(type)) {
+      resources = resources.stream()
+          .filter(r -> filterByType(r, type))
+          .collect(Collectors.toList());
+    }
 
     if (!resources.isEmpty()) {
       populateInventory(resources);
     }
     return SUCCESS;
+  }
+
+  private boolean filterByType(Resource resource, String type) {
+    String archiveType = resource.getCoreType();
+    String dp = resource.getDataPackageIdentifier();
+    String t = type.toLowerCase();
+
+    switch (t) {
+      case "camtrap":
+      case "camtrapdp":
+      case "camtrap-dp":
+        return "camtrap-dp".equalsIgnoreCase(archiveType);
+
+      case "coldp":
+        return "coldp".equalsIgnoreCase(archiveType);
+
+      case "dwca":
+        return dp == null && resource.getCoreRowType() != null;
+
+      case "datapackage":
+        return "camtrap-dp".equalsIgnoreCase(dp) || "coldp".equalsIgnoreCase(dp);
+
+      default:
+        return false;
+    }
   }
 
   @JSON(name = "resources")
