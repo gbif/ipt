@@ -85,9 +85,11 @@ public class InventoryV2Action extends ActionSupport {
                 return Optional.empty();
               }
             })
-            .orElse(PublicationStatus.PUBLIC);
+            .orElse(null);
 
-    resources = resourceManager.list(parsedStatus);
+    boolean statusIsPresent = parsedStatus != null;
+
+    resources = statusIsPresent? resourceManager.list(parsedStatus) : resourceManager.listPublishedPublicVersions();
 
     if (StringUtils.isNotEmpty(type)) {
       resources = resources.stream()
