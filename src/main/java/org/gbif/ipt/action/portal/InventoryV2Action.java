@@ -110,10 +110,10 @@ public class InventoryV2Action extends ActionSupport {
     private int records;
     @Getter
     @Setter
-    private InventoryArchiveInfo archive;
+    private List<InventoryArchiveInfo> archive = new ArrayList<>();
     @Getter
     @Setter
-    private InventoryMetadataInfo metadata;
+    private List<InventoryMetadataInfo> metadata = new ArrayList<>();
     @Getter
     @Setter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -209,17 +209,21 @@ public class InventoryV2Action extends ActionSupport {
         .map(UUID::toString)
         .ifPresent(item::setGbifKey);
 
+    List<InventoryArchiveInfo> archives = new ArrayList<>();
     InventoryArchiveInfo archiveInfo = new InventoryArchiveInfo();
     if (!ResourceFormatType.METADATA.toString().equalsIgnoreCase(r.getCoreType())) {
       archiveInfo.setType(ArchiveFormatType.DWCA);
       archiveInfo.setUrl(cfg.getResourceArchiveUrl(shortname));
-      item.setArchive(archiveInfo);
+      archives.add(archiveInfo);
+      item.setArchive(archives);
     }
 
+    List<InventoryMetadataInfo> metadataList = new ArrayList<>();
     InventoryMetadataInfo metadata = new InventoryMetadataInfo();
     metadata.setType(MetadataFormatType.EML);
     metadata.setUrl(cfg.getResourceEmlUrl(shortname));
-    item.setMetadata(metadata);
+    metadataList.add(metadata);
+    item.setMetadata(metadataList);
 
     item.setVersion(version);
 
@@ -262,25 +266,30 @@ public class InventoryV2Action extends ActionSupport {
         .map(UUID::toString)
         .ifPresent(item::setGbifKey);
 
+    List<InventoryArchiveInfo> archives = new ArrayList<>();
     InventoryArchiveInfo archiveInfo = new InventoryArchiveInfo();
     if (Constants.CAMTRAP_DP.equalsIgnoreCase(r.getCoreType())) {
       archiveInfo.setType(ArchiveFormatType.CAMTRAP_DP);
       archiveInfo.setUrl(cfg.getResourceArchiveUrl(shortname));
-      item.setArchive(archiveInfo);
+      archives.add(archiveInfo);
+      item.setArchive(archives);
       item.setFormat(ResourceFormatType.CAMTRAP_DP);
     } else if (Constants.COL_DP.equalsIgnoreCase(r.getCoreType())) {
       archiveInfo.setType(ArchiveFormatType.COLDP);
       archiveInfo.setUrl(cfg.getResourceArchiveUrl(shortname));
-      item.setArchive(archiveInfo);
+      archives.add(archiveInfo);
+      item.setArchive(archives);
       item.setFormat(ResourceFormatType.COLDP);
     } else {
       LOG.warn("Unsupported archive type {}", r.getCoreType());
     }
 
+    List<InventoryMetadataInfo> metadataList = new ArrayList<>();
     InventoryMetadataInfo metadata = new InventoryMetadataInfo();
     metadata.setType(MetadataFormatType.FRICTIONLESS);
     metadata.setUrl(cfg.getResourceDataPackageMetadataUrl(shortname));
-    item.setMetadata(metadata);
+    metadataList.add(metadata);
+    item.setMetadata(metadataList);
 
     item.setVersion(version);
 
