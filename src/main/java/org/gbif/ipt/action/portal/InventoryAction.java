@@ -35,6 +35,8 @@ import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.json.annotations.JSON;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -43,6 +45,8 @@ import com.opensymphony.xwork2.ActionSupport;
  * Action serialized into JSON - used to get a simple JSON inventory of registered resources.
  */
 public class InventoryAction extends ActionSupport {
+
+  private static final Logger LOG = LogManager.getLogger(InventoryAction.class);
 
   private final AppConfig cfg;
   private final ResourceManager resourceManager;
@@ -214,32 +218,50 @@ public class InventoryAction extends ActionSupport {
   public void populateInventory(List<Resource> resources) {
     List<DatasetItem> items = new ArrayList<>();
     for (Resource r : resources) {
-      DatasetItem item = new DatasetItem();
-
       // reconstruct the last published version of the resource
       BigDecimal version = r.getLastPublishedVersionsVersion();
-      String shortname = r.getShortname();
-      VersionHistory versionHistory = r.getLastPublishedVersion();
-      DOI doi = versionHistory.getDoi();
-      File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, version);
-      UUID gbifKey = r.getKey();
-      Resource lastPublished = ResourceUtils.reconstructVersion(
-          version, shortname, r.getCoreType(), r.getDataPackageIdentifier(), doi, r.getOrganisation(),
-          versionHistory, versionEmlFile, gbifKey
-      );
 
-      // populate DatasetItem representing last published version of the registered dataset
-      item.setTitle(StringUtils.trimToNull(lastPublished.getTitle()));
-      item.setRecords(lastPublished.getRecordsPublished());
-      item.setLastPublished(lastPublished.getLastPublished());
-      item.setGbifKey(lastPublished.getKey().toString());
-      item.setRecordsByExtension(lastPublished.getRecordsByExtension());
-      item.setEml(cfg.getResourceEmlUrl(shortname));
-      item.setDwca(cfg.getResourceArchiveUrl(shortname));
-      item.setVersion(version);
-      item.setType(StringUtils.trimToNull(r.getCoreType()));
-      items.add(item);
+      // skip resources that has never been published
+      // skip data packages - use inventory v2
+      if (version == null || r.isDataPackage()) {
+        continue;
+      }
+
+      try {
+        DatasetItem item = convertToDatasetItem(r);
+        items.add(item);
+      } catch (Exception e) {
+        LOG.error("Failed to populate inventory (v1). Resource {}, type {}. Error: {}",
+            r.getShortname(), r.getCoreType(), e.getMessage());
+      }
     }
     setInventory(items);
+  }
+
+  private DatasetItem convertToDatasetItem(Resource r) {
+    DatasetItem item = new DatasetItem();
+    BigDecimal version = r.getLastPublishedVersionsVersion();
+    String shortname = r.getShortname();
+    VersionHistory versionHistory = r.getLastPublishedVersion();
+    DOI doi = versionHistory.getDoi();
+    File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, version);
+    UUID gbifKey = r.getKey();
+    Resource lastPublished = ResourceUtils.reconstructVersion(
+        version, shortname, r.getCoreType(), r.getDataPackageIdentifier(), doi, r.getOrganisation(),
+        versionHistory, versionEmlFile, gbifKey
+    );
+
+    // populate DatasetItem representing last published version of the registered dataset
+    item.setTitle(StringUtils.trimToNull(lastPublished.getTitle()));
+    item.setRecords(lastPublished.getRecordsPublished());
+    item.setLastPublished(lastPublished.getLastPublished());
+    item.setGbifKey(lastPublished.getKey().toString());
+    item.setRecordsByExtension(lastPublished.getRecordsByExtension());
+    item.setEml(cfg.getResourceEmlUrl(shortname));
+    item.setDwca(cfg.getResourceArchiveUrl(shortname));
+    item.setVersion(version);
+    item.setType(StringUtils.trimToNull(r.getCoreType()));
+
+    return item;
   }
 }
