@@ -13,12 +13,9 @@
  */
 package org.gbif.ipt.action.portal;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -34,13 +31,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.json.annotations.JSON;
 
 import com.opensymphony.xwork2.ActionSupport;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Action serialized into JSON - used to get a simple JSON inventory of registered resources.
@@ -48,6 +51,8 @@ import com.opensymphony.xwork2.ActionSupport;
 public class InventoryV2Action extends ActionSupport {
 
   private static final long serialVersionUID = 2207415310987539257L;
+
+  private static final Logger LOG = LogManager.getLogger(InventoryV2Action.class);
 
   private final AppConfig cfg;
   private final ResourceManager resourceManager;
@@ -79,31 +84,39 @@ public class InventoryV2Action extends ActionSupport {
     return inventory;
   }
 
-  // TODO: make a proper class?
   /**
    * Class representing dataset item returned in inventory response serialized into JSON.
    */
   public static class DatasetItemV2 {
-    @Getter @Setter
+    @Getter
+    @Setter
     private String id;
-    @Getter @Setter
+    @Getter
+    @Setter
     private String gbifKey;
-    @Getter @Setter
+    @Getter
+    @Setter
     private String title;
-    @Getter @Setter
-    private FormatType format;
-    @Getter @Setter
+    @Getter
+    @Setter
+    private ResourceFormatType format;
+    @Getter
+    @Setter
     private BigDecimal version;
     @Setter
     private Date lastPublished;
-    @Getter @Setter
+    @Getter
+    @Setter
     private int records;
-    @Getter @Setter
+    @Getter
+    @Setter
     private InventoryArchiveInfo archive;
-    @Getter @Setter
+    @Getter
+    @Setter
     private InventoryMetadataInfo metadata;
-    @Getter @Setter
-    private Map<String, Object> metrics = new HashMap<>();
+    @Getter
+    @Setter
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     /**
      * @return the date the dataset was last published
@@ -114,8 +127,16 @@ public class InventoryV2Action extends ActionSupport {
     }
   }
 
-  public enum FormatType {
+  public enum ResourceFormatType {
     DWCA, METADATA, CAMTRAP_DP, COLDP
+  }
+
+  public enum ArchiveFormatType {
+    DWCA, CAMTRAP_DP, COLDP
+  }
+
+  public enum MetadataFormatType {
+    EML, FRICTIONLESS
   }
 
   @Setter
@@ -123,7 +144,7 @@ public class InventoryV2Action extends ActionSupport {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class InventoryArchiveInfo {
-    private String type;  // DWCA, CAMTRAP_DP, COLDP
+    private ArchiveFormatType type;
     private String url;
   }
 
@@ -132,7 +153,7 @@ public class InventoryV2Action extends ActionSupport {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class InventoryMetadataInfo {
-    private String type;
+    private MetadataFormatType type;
     private String url;
   }
 
@@ -145,70 +166,128 @@ public class InventoryV2Action extends ActionSupport {
   public void populateInventory(List<Resource> resources) {
     List<DatasetItemV2> items = new ArrayList<>();
     for (Resource r : resources) {
-      DatasetItemV2 item = new DatasetItemV2();
-
-      // TODO: what if it was never published???
       // reconstruct the last published version of the resource
       BigDecimal version = r.getLastPublishedVersionsVersion();
 
+      // skip resources that has never been published
       if (version == null) {
         continue;
       }
 
-      String shortname = r.getShortname();
-      VersionHistory versionHistory = r.getLastPublishedVersion();
-      DOI doi = Optional.ofNullable(versionHistory).map(VersionHistory::getDoi).orElse(null);
-      File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, version);
-      UUID gbifKey = r.getKey();
-
       try {
-        Resource lastPublished = ResourceUtils.reconstructVersion(
-            version, shortname, r.getCoreType(), r.getDataPackageIdentifier(), doi, r.getOrganisation(),
-            versionHistory, versionEmlFile, gbifKey
-        );
-
-        // populate DatasetItem representing last published version of the registered dataset
-        item.setId(shortname);
-        item.setTitle(StringUtils.trimToNull(lastPublished.getTitle()));
-        item.setRecords(lastPublished.getRecordsPublished());
-        item.setLastPublished(lastPublished.getLastPublished());
-        Optional.of(lastPublished)
-            .map(Resource::getKey)
-            .map(UUID::toString)
-            .ifPresent(item::setGbifKey);
-
-        InventoryArchiveInfo archiveInfo = new InventoryArchiveInfo();
-        archiveInfo.setType(r.getCoreType());
-        if (!"metadata".equalsIgnoreCase(r.getCoreType())) {
-          archiveInfo.setUrl(cfg.getResourceArchiveUrl(shortname));
-        }
-        item.setArchive(archiveInfo);
-
-        InventoryMetadataInfo metadata = new InventoryMetadataInfo();
-        if (!lastPublished.isDataPackage()) {
-          metadata.setType("EML");
-        }
-        metadata.setUrl(cfg.getResourceEmlUrl(shortname));
-        item.setMetadata(metadata);
-
-        item.setVersion(version);
-
-        // TODO: properly set format
-        if ("metadata".equalsIgnoreCase(r.getCoreType())) {
-          item.setFormat(FormatType.METADATA);
-        } else if (!lastPublished.isDataPackage()) {
-          item.setFormat(FormatType.DWCA);
-
-          Map<String, Object> metrics = new HashMap<>();
-          metrics.put("recordsByExtension", lastPublished.getRecordsByExtension());
-          item.setMetrics(metrics);
-        }
-
+        DatasetItemV2 item = r.isDataPackage() ? convertToFrictionlessDatasetItem(r) : convertToDwcaDatasetItem(r);
         items.add(item);
       } catch (Exception e) {
-        // TODO: process
+        LOG.error("Failed to populate inventory. Resource {}, type {}", r.getShortname(), r.getCoreType());
       }
     }
     setInventory(items);
+  }
+
+  private DatasetItemV2 convertToDwcaDatasetItem(Resource r) {
+    DatasetItemV2 item = new DatasetItemV2();
+
+    BigDecimal version = r.getLastPublishedVersionsVersion();
+    String shortname = r.getShortname();
+    VersionHistory versionHistory = r.getLastPublishedVersion();
+    DOI doi = Optional.ofNullable(versionHistory).map(VersionHistory::getDoi).orElse(null);
+    File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, version);
+    UUID gbifKey = r.getKey();
+
+    Resource lastPublished = ResourceUtils.reconstructVersion(
+        version, shortname, r.getCoreType(), r.getDataPackageIdentifier(), doi, r.getOrganisation(),
+        versionHistory, versionEmlFile, gbifKey
+    );
+
+    // populate DatasetItem representing last published version of the registered dataset
+    item.setId(shortname);
+    item.setTitle(StringUtils.trimToNull(lastPublished.getTitle()));
+    item.setRecords(lastPublished.getRecordsPublished());
+    item.setLastPublished(lastPublished.getLastPublished());
+    Optional.of(lastPublished)
+        .map(Resource::getKey)
+        .map(UUID::toString)
+        .ifPresent(item::setGbifKey);
+
+    InventoryArchiveInfo archiveInfo = new InventoryArchiveInfo();
+    if (!ResourceFormatType.METADATA.toString().equalsIgnoreCase(r.getCoreType())) {
+      archiveInfo.setType(ArchiveFormatType.DWCA);
+      archiveInfo.setUrl(cfg.getResourceArchiveUrl(shortname));
+      item.setArchive(archiveInfo);
+    }
+
+    InventoryMetadataInfo metadata = new InventoryMetadataInfo();
+    metadata.setType(MetadataFormatType.EML);
+    metadata.setUrl(cfg.getResourceEmlUrl(shortname));
+    item.setMetadata(metadata);
+
+    item.setVersion(version);
+
+    if (ResourceFormatType.METADATA.toString().equalsIgnoreCase(r.getCoreType())) {
+      item.setFormat(ResourceFormatType.METADATA);
+    } else if (!lastPublished.isDataPackage()) {
+      item.setFormat(ResourceFormatType.DWCA);
+
+      Map<String, Object> metrics = new HashMap<>();
+      metrics.put("recordsByExtension", lastPublished.getRecordsByExtension());
+      metrics.put("core", r.getCoreType());
+      item.setAdditionalProperties(metrics);
+    }
+
+    return item;
+  }
+
+  private DatasetItemV2 convertToFrictionlessDatasetItem(Resource r) {
+    DatasetItemV2 item = new DatasetItemV2();
+
+    BigDecimal version = r.getLastPublishedVersionsVersion();
+    String shortname = r.getShortname();
+    VersionHistory versionHistory = r.getLastPublishedVersion();
+    DOI doi = Optional.ofNullable(versionHistory).map(VersionHistory::getDoi).orElse(null);
+    File versionedDatapackageFile = cfg.getDataDir().resourceDatapackageMetadataFile(shortname, r.getCoreType(), version);
+    UUID gbifKey = r.getKey();
+
+    Resource lastPublished = ResourceUtils.reconstructVersion(
+        version, shortname, r.getCoreType(), r.getDataPackageIdentifier(), doi, r.getOrganisation(),
+        versionHistory, versionedDatapackageFile, gbifKey
+    );
+
+    // populate DatasetItem representing last published version of the registered dataset
+    item.setId(shortname);
+    item.setTitle(StringUtils.trimToNull(lastPublished.getTitle()));
+    item.setRecords(lastPublished.getRecordsPublished());
+    item.setLastPublished(lastPublished.getLastPublished());
+    Optional.of(lastPublished)
+        .map(Resource::getKey)
+        .map(UUID::toString)
+        .ifPresent(item::setGbifKey);
+
+    InventoryArchiveInfo archiveInfo = new InventoryArchiveInfo();
+    if (Constants.CAMTRAP_DP.equalsIgnoreCase(r.getCoreType())) {
+      archiveInfo.setType(ArchiveFormatType.CAMTRAP_DP);
+      archiveInfo.setUrl(cfg.getResourceArchiveUrl(shortname));
+      item.setArchive(archiveInfo);
+      item.setFormat(ResourceFormatType.CAMTRAP_DP);
+    } else if (Constants.COL_DP.equalsIgnoreCase(r.getCoreType())) {
+      archiveInfo.setType(ArchiveFormatType.COLDP);
+      archiveInfo.setUrl(cfg.getResourceArchiveUrl(shortname));
+      item.setArchive(archiveInfo);
+      item.setFormat(ResourceFormatType.COLDP);
+    } else {
+      LOG.warn("Unsupported archive type {}", r.getCoreType());
+    }
+
+    InventoryMetadataInfo metadata = new InventoryMetadataInfo();
+    metadata.setType(MetadataFormatType.FRICTIONLESS);
+    metadata.setUrl(cfg.getResourceDataPackageMetadataUrl(shortname));
+    item.setMetadata(metadata);
+
+    item.setVersion(version);
+
+    Map<String, Object> metrics = new HashMap<>();
+    metrics.put("recordsByTable", lastPublished.getRecordsByExtension());
+    item.setAdditionalProperties(metrics);
+
+    return item;
   }
 }
