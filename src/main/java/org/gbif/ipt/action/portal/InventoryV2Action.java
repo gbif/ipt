@@ -80,7 +80,7 @@ public class InventoryV2Action extends ActionSupport {
         Optional.ofNullable(status)
             .flatMap(s -> {
               try {
-                return Optional.of(PublicationStatus.valueOf(s));
+                return Optional.of(PublicationStatus.valueOf(s.toUpperCase()));
               } catch (IllegalArgumentException e) {
                 return Optional.empty();
               }
