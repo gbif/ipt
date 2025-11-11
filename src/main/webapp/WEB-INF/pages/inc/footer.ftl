@@ -77,8 +77,33 @@
         // Intercept internal link clicks
         document.querySelectorAll('a[href]').forEach(link => {
             link.addEventListener('click', (e) => {
-                // ignore anchors or JS links
-                if (!link.href || link.href.startsWith('javascript:') || link.target === '_blank' || link.href.includes('#')) return;
+                // Skip links that should not trigger the unsaved-changes modal
+                if (link.id === 're-infer-link') return;
+
+                const href = link.getAttribute('href');
+
+                // Ignore non-links and JS links
+                if (!href ||
+                    href === '#' ||
+                    href.startsWith('#') ||
+                    href.startsWith('javascript:') ||
+                    link.target === '_blank') {
+                    return;
+                }
+
+                // Compute resolved URL
+                const targetUrl = new URL(link.href);
+                const currentUrl = new URL(window.location.href);
+
+                // Only warn if the target is a DIFFERENT page
+                const isRealNavigation =
+                    targetUrl.pathname !== currentUrl.pathname ||
+                    targetUrl.search !== currentUrl.search ||
+                    targetUrl.hash === '' && currentUrl.hash !== '';
+
+                if (!isRealNavigation) {
+                    return;
+                }
 
                 if (hasUnsavedChanges) {
                     e.preventDefault();
