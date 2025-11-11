@@ -109,31 +109,30 @@
             $("#eml\\.intellectualRights\\.license").change(function() {
                 $('.confirm').unbind('click');
 
-                var nameRights=$("#eml\\.intellectualRights\\.license").val();
+                var nameRights = $("#eml\\.intellectualRights\\.license").val();
                 $("#eml\\.intellectualRights\\.license").val(nameRights);
 
-                if(nameRights) {
-
+                if (nameRights) {
                     var licenseText=$("input:text#" + nameRights).val();
 
                     if (licenseText) {
-                        $("#intellectualRightsDiv").html(licenseText);
+                        $("#intellectualRightsDiv .cc_text").html(licenseText);
                         $("#intellectualRightsDiv").show();
                         $("#intellectualRights").val(licenseText);
                         $("#eml\\.intellectualRights").val(licenseText);
 
-                        $("#disclaimerRigths").css('display', '');
+                        $("#disclaimerRights").css('display', '');
                     }
-
                 } else {
-                    $("#intellectualRightsDiv").html('');
+                    $("#intellectualRightsDiv .cc_text").html('');
                     $("#intellectualRightsDiv").hide();
 
                     $("#intellectualRights").val('');
-                    $("#disclaimerRigths").css('display', 'none');
+                    $("#disclaimerRights").css('display', 'none');
                     $("#eml\\.intellectualRights").val('');
                 }
-            });// end intellectual rights
+            });
+            // end intellectual rights
 
             $('#metadata-section').change(function () {
                 var metadataSection = $('#metadata-section').find(':selected').val()
@@ -474,7 +473,7 @@
                                     <input type="text" id="${k}" value="${licenseTexts[k]}" style="display: none"/>
                                 </#list>
 
-                                <div id='disclaimerRigths' style='display: none'>
+                                <div id='disclaimerRights' style='display: none'>
                                     <p class="mt-3">
                                         <@s.text name='eml.intellectualRights.license.disclaimer'/>
                                     </p>
