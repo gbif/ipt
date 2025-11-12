@@ -4,7 +4,7 @@
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script src="${baseURL}/js/docbook/docbook.js"></script>
+    <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">

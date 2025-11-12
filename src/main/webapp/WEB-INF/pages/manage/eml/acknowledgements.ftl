@@ -5,7 +5,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
     <title><@s.text name='manage.metadata.acknowledgements.title'/></title>
-    <script src="${baseURL}/js/docbook/docbook.js"></script>
+    <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <script>
         $(document).ready(function() {
             var docBookAcknowledgements = `${eml.acknowledgements!}`;
