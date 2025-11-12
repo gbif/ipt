@@ -1,4 +1,4 @@
-function convertToDocBook(html) {
+﻿function convertToDocBook(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(`<body>${html}</body>`, "text/html");
     const body = doc.body;
