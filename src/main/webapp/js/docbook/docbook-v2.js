@@ -1,4 +1,5 @@
-﻿function convertToDocBook(html) {
+﻿// Function to convert HTML to EML DocBook
+function convertToDocBook(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(`<body>${html}</body>`, "text/html");
     const body = doc.body;
@@ -176,10 +177,9 @@
 }
 
 
-// Function to convert DocBook to HTML
+// Function to convert EML DocBook to HTML
 function convertToHtml(docBook) {
-    // If docBook looks HTML-escaped, decode minimal common entities (optional)
-    // Only do this if you need it; otherwise ensure docBook is proper XML.
+    // If DocBook looks HTML-escaped, decode minimal common entities (optional)
     if (typeof docBook !== "string") return "";
     if (docBook.includes("&lt;")) {
         // minimal safe decode for common entities (don't decode arbitrary input)
@@ -203,7 +203,7 @@ function convertToHtml(docBook) {
     // Lowercase keys
     const TAG_MAP = {
         para: "p",
-        emphasis: "b",
+        emphasis: "em",
         subscript: "sub",
         superscript: "sup",
         literallayout: "pre",   // lowercase
@@ -285,7 +285,8 @@ function convertToHtml(docBook) {
         if (converted) result += serializer.serializeToString(converted);
     });
 
-    return result;
+    // Replace xmlns namespace
+    return result.replace(/\s+xmlns="[^"]*"/g, "");
 }
 
 
@@ -297,7 +298,7 @@ function validateHTML(html) {
         'div',
         'h1', 'h2', 'h3', 'h4', 'h5',
         'ul', 'ol', 'li',
-        'p', 'b', 'sub', 'sup', 'pre', 'a',
+        'p', 'em', 'b', 'sub', 'sup', 'pre', 'a',
         'br'
     ];
 
