@@ -59,6 +59,11 @@
                 hasUnsavedChanges = true;
             });
 
+            // copy agent button
+            document.getElementById('copy-agent-button')?.addEventListener('click', () => {
+                hasUnsavedChanges = true;
+            });
+
             // Disable warning before submitting the form
             form.addEventListener('submit', () => {
                 isIntentionalUnload = true;
