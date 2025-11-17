@@ -734,10 +734,10 @@
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header flex-column">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
+                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
                 </div>
                 <div class="modal-body" style="text-align: left !important;">
+                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
                     <div class="row g-3">
                         <div class="col-12">
                             <label for="resource" class="form-label">
@@ -768,10 +768,15 @@
                                 <option value=""></option>
                             </select>
                         </div>
-                        <div class="text-center">
-                            <button id="copy-agent-button" type="button" class="btn btn-outline-gbif-primary" style="display: none;"><@s.text name="button.copy"/></button>
-                        </div>
                     </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button id="copy-agent-button" type="button" class="btn btn-sm btn-outline-gbif-primary" style="display: none;">
+                        <@s.text name="button.copy"/>
+                    </button>
+                    <button id="copy-agent-cancel" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
                 </div>
             </div>
         </div>
