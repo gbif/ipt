@@ -55,8 +55,16 @@
         // Track form changes
         const form = document.querySelector('.track-unsaved');
         if (form) {
+            // inputs
             form.addEventListener('input', () => {
                 hasUnsavedChanges = true;
+            });
+
+            // dropdowns (select2)
+            $(document).on('select2:select select2:unselect change', 'select', function () {
+                if ($(this).data('select2')) {
+                    hasUnsavedChanges = true;
+                }
             });
 
             // copy agent button
