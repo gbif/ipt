@@ -307,7 +307,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   private void reloadLogger() {
-    LoggingConfiguration.logDirectory = dataDir.loggingDir().getAbsolutePath()+"/";
+    try {
+      LoggingConfiguration.logDirectory = dataDir.loggingDir().getCanonicalFile().toPath();
+    } catch (IOException e) {
+      throw new InvalidConfigException(TYPE.LOGGING_CONFIG, e.getMessage(), e);
+    }
     LOG.info("Changing logging directory to {}", LoggingConfiguration.logDirectory);
 
     LoggingConfigFactory.useDebug = cfg.debug();
@@ -317,7 +321,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     context.setConfiguration(newConfig);
     context.reconfigure();
 
-    LOG.info("Reloaded Log4J2 for {}", (cfg.debug() ? "debugging" : "production"));
+    LOG.info("Reloaded Log4J2 for {}", cfg.debug() ? "debugging" : "production");
     LOG.info("Logging to {}", LoggingConfiguration.logDirectory);
     LOG.info("IPT Data Directory: {}", dataDir.dataFile(".").getAbsolutePath());
   }
