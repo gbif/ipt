@@ -13,8 +13,6 @@
  */
 package org.gbif.ipt.config;
 
-import java.nio.file.Path;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Layout;
@@ -32,7 +30,7 @@ import org.apache.logging.log4j.core.layout.PatternLayout;
  * Set up RollingFileAppenders, initially in the default directory, then in the data directory.
  */
 public class LoggingConfiguration extends XmlConfiguration {
-  public static Path logDirectory;
+  public static String logDirectory = "";
 
   public LoggingConfiguration(final LoggerContext loggerContext, final ConfigurationSource configSource) {
     super(loggerContext, configSource);
@@ -42,7 +40,7 @@ public class LoggingConfiguration extends XmlConfiguration {
   protected void doConfigure() {
     super.doConfigure();
 
-    final Layout<String> layout = PatternLayout.newBuilder().withPattern("%-5p %d{dd-MMM-yyyy HH:mm:ss} [%c] - %m%n").build();
+    final Layout layout = PatternLayout.newBuilder().withPattern("%-5p %d{dd-MMM-yyyy HH:mm:ss} [%c] - %m%n").build();
 
     final CompositeTriggeringPolicy policy = CompositeTriggeringPolicy.createPolicy(
         OnStartupTriggeringPolicy.createPolicy(1),
@@ -52,8 +50,8 @@ public class LoggingConfiguration extends XmlConfiguration {
     final Appender debugAppender = RollingFileAppender.newBuilder()
         .setName("LOGFILE")
         .setLayout(layout)
-        .withFileName(logDirectory.resolve("debug.log").toString())
-        .withFilePattern(logDirectory.resolve("debug.log.%i").toString())
+        .withFileName(logDirectory + "debug.log")
+        .withFilePattern(logDirectory + "debug.log.%i")
         .withPolicy(policy)
         .withStrategy(DefaultRolloverStrategy.newBuilder().build())
         .build();
@@ -64,8 +62,8 @@ public class LoggingConfiguration extends XmlConfiguration {
     final Appender adminAppender = RollingFileAppender.newBuilder()
         .setName("ADMINFILE")
         .setLayout(layout)
-        .withFileName(logDirectory.resolve("admin.log").toString())
-        .withFilePattern(logDirectory.resolve("admin.log.%i").toString())
+        .withFileName(logDirectory + "admin.log")
+        .withFilePattern(logDirectory + "admin.log.%i")
         .withPolicy(policy)
         .withStrategy(DefaultRolloverStrategy.newBuilder().build())
         .build();

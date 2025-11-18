@@ -115,11 +115,7 @@ public class InvalidConfigException extends RuntimeException {
     /**
      * A properties file has been configured wrong.
      */
-    INVALID_PROPERTIES_FILE,
-    /**
-     * The logging configuration has been configured wrong.
-     */
-    LOGGING_CONFIG
+    INVALID_PROPERTIES_FILE
   }
 
   protected TYPE type;

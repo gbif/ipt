@@ -19,10 +19,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInfo;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +27,10 @@ public class IptBaseTest {
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
   @BeforeAll
-  static void setupLogging() throws IOException {
-    Path tmp = Paths.get(System.getProperty("java.io.tmpdir"));
-    Path dir = tmp.resolve("testlogs").toAbsolutePath().normalize();
-
-    // Create directories if they don't exist
-    Files.createDirectories(dir);
-
-    // Assign the Path directly
-    LoggingConfiguration.logDirectory = dir;
+  static void setupLogging() {
+    LoggingConfiguration.logDirectory = System.getProperty("java.io.tmpdir") + "/testlogs/";
+    // Make sure the directory exists
+    new File(LoggingConfiguration.logDirectory).mkdirs();
   }
 
   @AfterEach
