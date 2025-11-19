@@ -1459,10 +1459,11 @@ public class EmlValidator extends BaseValidator {
       int uncertainty = (unit.getUncertaintyMeasure() == null) ? 0 : unit.getUncertaintyMeasure();
       int mean = (unit.getRangeMean() == null) ? 0 : unit.getRangeMean();
 
-      return (StringUtils.isBlank(unitType) &&
-        rangeEnd == 0 &&
-        rangeStart == 0 &&
-        uncertainty == 0 && mean == 0);
+      return unitType == null
+          && rangeEnd == 0
+          && rangeStart == 0
+          && uncertainty == 0
+          && mean == 0;
     }
     return true;
   }
