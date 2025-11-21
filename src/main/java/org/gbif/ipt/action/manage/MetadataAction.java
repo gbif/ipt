@@ -1000,11 +1000,7 @@ public class MetadataAction extends ManagerBaseAction {
     List<Organisation> associatedOrganisations = registrationManager.list();
     organisations = new LinkedHashMap<>();
     if (!associatedOrganisations.isEmpty()) {
-
-      // add placeholder if there is more than the default organisation "No organisation"
-      if (associatedOrganisations.size() > 1) {
-        organisations.put("", getText("admin.organisation.name.select"));
-      }
+      organisations.put("", getText("admin.organisation.name.select"));
 
       // add default organisation "No organisation" as first option
       Organisation noOrganisation = getDefaultOrganisation();
