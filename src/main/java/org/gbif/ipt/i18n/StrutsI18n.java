@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.validation;
+package org.gbif.ipt.i18n;
 
 import org.gbif.ipt.action.BaseAction;
 
