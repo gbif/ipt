@@ -36,8 +36,10 @@ import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.validation.ActionErrorCollector;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
+import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.metadata.eml.ipt.model.Address;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
@@ -541,7 +543,7 @@ public class MetadataAction extends ManagerBaseAction {
   public String save() throws Exception {
     // before saving, the minimum amount of mandatory metadata must have been provided, and the current metadata section
     // must be valid, otherwise an error is displayed
-    if (emlValidator.isSectionValid(this, resource, section)) {
+    if (emlValidator.isSectionValid(resource, section, new ActionErrorCollector(this), new StrutsI18n(this))) {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
       // save date metadata was last modified
@@ -607,7 +609,7 @@ public class MetadataAction extends ManagerBaseAction {
   @Override
   public void validateHttpPostOnly() {
     validatorRes.validate(this, resource);
-    emlValidator.validate(this, resource, section);
+    emlValidator.validate(resource, section, new ActionErrorCollector(this), new StrutsI18n(this));
   }
 
   /**

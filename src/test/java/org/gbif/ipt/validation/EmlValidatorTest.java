@@ -20,6 +20,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
+import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.EmlFactory;
@@ -730,6 +731,6 @@ public class EmlValidatorTest extends IptBaseTest {
     empty.addCreator(agent);
     empty.addMetadataProvider(agent);
 
-    assertTrue(validator.areAllSectionsValid(action, resource));
+    assertTrue(validator.areAllSectionsValid(resource, new ActionErrorCollector(action), new StrutsI18n(action)));
   }
 }

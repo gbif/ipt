@@ -69,6 +69,9 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
+import org.gbif.ipt.i18n.I18n;
+import org.gbif.ipt.validation.SectionErrorCollector;
+import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Citation;
@@ -86,8 +89,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -154,6 +155,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final DataPackageMetadataValidator dataPackageMetadataValidator;
   @Getter
   private boolean missingMetadata;
+  @Getter
+  private SectionErrorCollector errorCollector;
   private boolean missingRegistrationMetadata;
 
   // true if resource is missing valid publishing organisation, false otherwise.
@@ -1245,7 +1248,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       // check metadata
       if (!isDataPackageResource()) {
-        missingMetadata = !emlValidator.isValid(resource, null);
+        errorCollector = new SectionErrorCollector();
+        I18n i18n = new StrutsI18n(this);
+        missingMetadata = !emlValidator.areAllSectionsValid(resource, errorCollector, i18n);
       } else {
         missingMetadata = !dataPackageMetadataValidator.isValid(resource);
       }
