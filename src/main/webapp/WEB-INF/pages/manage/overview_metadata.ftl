@@ -98,9 +98,9 @@
     <div class="row mt-4">
         <p class="mb-0">
             <#if missingMetadata>
-                <span title="<@s.text name='manage.overview.missing.metadata'/>" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-incomplete"><@s.text name="manage.overview.metadata.incomplete"/></span>
+                <span id="show-metadata-validation-result" title="<@s.text name='manage.overview.missing.metadata'/>" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-incomplete"><@s.text name="manage.overview.metadata.incomplete"/></span>
             <#else>
-                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-complete"><@s.text name="manage.overview.metadata.complete"/></span>
+                <span id="show-metadata-validation-result" class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-complete"><@s.text name="manage.overview.metadata.complete"/></span>
             </#if>
             <#if resource.coreType?has_content && resource.coreType == "coldp">
                 <@s.text name="manage.overview.metadata.coldp.description"/>

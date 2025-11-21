@@ -1312,6 +1312,11 @@
             var dialogWindow = $("#datapackage-metadata-modal");
             dialogWindow.modal('show');
         });
+
+        $('#show-metadata-validation-result').on('click', function () {
+            var dialogWindow = $("#metadata-validation-result-modal");
+            dialogWindow.modal('show');
+        });
     });
 </script>
 
@@ -3032,6 +3037,91 @@
                 <div class="modal-body" style="text-align: left !important;">
                     <h5 class="modal-title w-100" id="datapackage-metadata-modal-title">Metadata</h5>
                     <pre id="json-raw-data" class="fs-smaller-2">${datapackageMetadataRaw!}</pre>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="metadata-validation-result-modal" class="modal fade" tabindex="-1" aria-labelledby="metadata-validation-result-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <#assign isMetadataValid=!errorCollector.hasErrors() />
+
+                <div class="modal-header flex-column">
+                    <#if isMetadataValid>
+                        <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
+                    <#else>
+                        <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
+                    </#if>
+                </div>
+                <div class="modal-body" style="text-align: left !important;">
+                    <h5 class="modal-title w-100 mb-0" id="metadata-validation-result-modal">
+                        Metadata validation result:
+                        <#if isMetadataValid>
+                            <span class="text-gbif-primary">VALID</span>
+                        <#else>
+                            <span class="text-gbif-danger">INVALID</span>
+                        </#if>
+                    </h5>
+
+                    <#assign metadataSections = {
+                    "BASIC_SECTION": "basic",
+                    "CONTACTS_SECTION": "contacts",
+                    "ACKNOWLEDGEMENTS_SECTION": "acknowledgements",
+                    "GEOGRAPHIC_COVERAGE_SECTION": "geocoverage",
+                    "TAXANOMIC_COVERAGE_SECTION": "taxcoverage",
+                    "TEMPORAL_COVERAGE_SECTION": "tempcoverage",
+                    "ADDITIONAL_DESCRIPTION_SECTION": "additionalDescription",
+                    "PROJECT_SECTION": "project",
+                    "METHODS_SECTION": "methods",
+                    "CITATIONS_SECTION": "citations",
+                    "COLLECTIONS_SECTION": "collections",
+                    "PHYSICAL_SECTION": "physical",
+                    "KEYWORDS_SECTION": "keywords",
+                    "ADDITIONAL_SECTION": "additional"
+                    }/>
+
+
+                    <#if !isMetadataValid>
+                        <div class="mt-2">
+                            <#list errorCollector.result?keys as key>
+                                <#if errorCollector.result[key].hasErrors()>
+                                    <div>
+                                        <div>
+                                            <i class="bi bi-x text-gbif-danger"></i>
+                                            <span class="text-gbif-danger me-2">
+                                                <b><@s.text name="submenu.${metadataSections[key]!key}"/></b>
+                                            </span>
+                                            <a class="metadata-action-link custom-link" type="button" href="${baseURL}/manage/metadata-${metadataSections[key]!key}.do?r=${resource.shortname}">
+                                                <span>
+                                                <svg class="link-icon link-icon-primary" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                </svg>
+                                                    </span>
+                                                <span>
+                                                <@s.text name="button.edit"/>
+                                                    </span>
+                                            </a>
+                                        </div>
+
+                                        <ul>
+                                            <#list (errorCollector.result[key].fieldErrors)! as fe>
+                                                <li>${fe}</li>
+                                            </#list>
+                                            <#list (errorCollector.result[key].actionErrors)! as ae>
+                                                <li>${ae}</li>
+                                            </#list>
+                                        </ul>
+                                    </div>
+                                </#if>
+                            </#list>
+                        </div>
+                    </#if>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
