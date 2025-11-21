@@ -407,11 +407,7 @@
                             </div>
 
                             <div class="col-lg-6">
-                                <#if resource.organisation??>
-                                    <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations value="${resource.organisation.key!''}" requiredField=true />
-                                <#else>
-                                    <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations requiredField=true />
-                                </#if>
+                                <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations value="${(resource.organisation.key)!''}" requiredField=true />
                             </div>
                         </div>
                     </div>
