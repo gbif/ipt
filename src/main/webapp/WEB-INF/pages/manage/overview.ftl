@@ -2640,15 +2640,27 @@
 
                         <!-- resources cannot be published if the mandatory metadata is missing -->
                     <#elseif missingBasicMetadata>
-                        <p class="mb-0">
+                        <p>
                             <@s.text name="manage.overview.published.missing.metadata"/>
                         </p>
 
+                        <#if !isDataPackage>
+                            <p class="mb-0">
+                                <@s.text name="manage.overview.published.metadata.validation.report"/>
+                            </p>
+                        </#if>
+
                         <!-- resources cannot be published if the metadata is invalid -->
                     <#elseif !validMetadata>
-                        <p class="mb-0">
+                        <p>
                             <@s.text name="manage.overview.published.metadata.invalid"/>
                         </p>
+
+                        <#if !isDataPackage>
+                        <p class="mb-0">
+                            <@s.text name="manage.overview.published.metadata.validation.report"/>
+                        </p>
+                        </#if>
 
                       <!-- resources cannot be published if mappings are missing (for DPs) -->
                     <#elseif dataPackageResource && dataPackageMappingsMissing>
@@ -3053,6 +3065,7 @@
         </div>
     </div>
 
+    <#if !isDataPackage>
     <div id="metadata-validation-result-modal" class="modal fade" tabindex="-1" aria-labelledby="metadata-validation-result-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
@@ -3137,5 +3150,6 @@
             </div>
         </div>
     </div>
+    </#if>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
