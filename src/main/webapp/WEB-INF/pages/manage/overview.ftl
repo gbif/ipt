@@ -1313,7 +1313,7 @@
             dialogWindow.modal('show');
         });
 
-        $('#show-metadata-validation-result').on('click', function () {
+        $('.show-metadata-validation-result').on('click', function () {
             var dialogWindow = $("#metadata-validation-result-modal");
             dialogWindow.modal('show');
         });
@@ -1676,7 +1676,7 @@
                                                     <#if resource.isAlreadyAssignedDoi()>
                                                         <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-current mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                     </#if>
-                                                    <#if !resource.isDataPackage()>
+                                                    <#if !isDataPackage>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
                                                     <#else>
                                                         <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
@@ -1801,13 +1801,13 @@
                                                 <#if resource.doi??>
                                                     <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-next mt-2 mb-1"><strong>DOI</strong> ${resource.doi!}</span>
                                                 </#if>
-                                                <#if (resource.eml)?has_content && !resource.isDataPackage()>
+                                                <#if (resource.eml)?has_content && !isDataPackage>
                                                     <#if resource.getEml().parseLicenseUrl()?has_content>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
                                                     <#else>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                     </#if>
-                                                <#elseif resource.isDataPackage()>
+                                                <#elseif isDataPackage>
                                                     <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                     <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
