@@ -15,7 +15,7 @@
     <#if resource.identifierStatus == "UNRESERVED">
         <form id="doiForm" action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingBasicMetadata?string}"/>
             <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                 <@s.text name="button.cancel"/>
             </button>
@@ -23,7 +23,7 @@
     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
         <form id="doiForm" action='resource-deleteDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingBasicMetadata?string}"/>
             <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                 <@s.text name="button.cancel"/>
             </button>
@@ -31,7 +31,7 @@
     <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
         <form id="doiForm" action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingBasicMetadata?string}"/>
             <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                 <@s.text name="button.cancel"/>
             </button>
@@ -1823,7 +1823,7 @@
                                             </div>
 
                                             <div class="d-flex justify-content-end my-auto version-item-actions">
-                                                <#if !missingMetadata>
+                                                <#if validMetadata>
                                                     <a title="<@s.text name="button.preview"/>" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
                                                         <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
@@ -1840,7 +1840,7 @@
                                                     </a>
 
                                                     <ul class="dropdown-menu" aria-labelledby="dropdown-version-item-actions-pending">
-                                                        <#if !missingMetadata>
+                                                        <#if validMetadata>
                                                             <li>
                                                                 <a class="dropdown-item action-link" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
                                                                     <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -2639,9 +2639,15 @@
                         </p>
 
                         <!-- resources cannot be published if the mandatory metadata is missing -->
-                    <#elseif missingMetadata>
+                    <#elseif missingBasicMetadata>
                         <p class="mb-0">
                             <@s.text name="manage.overview.published.missing.metadata"/>
+                        </p>
+
+                        <!-- resources cannot be published if the metadata is invalid -->
+                    <#elseif !validMetadata>
+                        <p class="mb-0">
+                            <@s.text name="manage.overview.published.metadata.invalid"/>
                         </p>
 
                       <!-- resources cannot be published if mappings are missing (for DPs) -->
@@ -3061,11 +3067,11 @@
                 </div>
                 <div class="modal-body" style="text-align: left !important;">
                     <h5 class="modal-title w-100 mb-0" id="metadata-validation-result-modal">
-                        Metadata validation result:
+                        <@s.text name="manage.overview.metadata.modal.result"/>:
                         <#if isMetadataValid>
-                            <span class="text-gbif-primary">VALID</span>
+                            <span class="text-gbif-primary"><@s.text name="manage.overview.metadata.modal.valid"/></span>
                         <#else>
-                            <span class="text-gbif-danger">INVALID</span>
+                            <span class="text-gbif-danger"><@s.text name="manage.overview.metadata.modal.invalid"/></span>
                         </#if>
                     </h5>
 
@@ -3099,13 +3105,13 @@
                                             </span>
                                             <a class="metadata-action-link custom-link" type="button" href="${baseURL}/manage/metadata-${metadataSections[key]!key}.do?r=${resource.shortname}">
                                                 <span>
-                                                <svg class="link-icon link-icon-primary" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                </svg>
-                                                    </span>
+                                                    <svg class="link-icon link-icon-primary" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                    </svg>
+                                                </span>
                                                 <span>
-                                                <@s.text name="button.edit"/>
-                                                    </span>
+                                                    <@s.text name="button.edit"/>
+                                                </span>
                                             </a>
                                         </div>
 

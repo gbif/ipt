@@ -41,6 +41,7 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
@@ -67,6 +68,7 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.validation.ActionValidationResult;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.i18n.I18n;
@@ -154,7 +156,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private final EmlValidator emlValidator;
   private final DataPackageMetadataValidator dataPackageMetadataValidator;
   @Getter
-  private boolean missingMetadata;
+  private boolean missingBasicMetadata;
+  @Getter
+  private boolean validMetadata;
   @Getter
   private SectionErrorCollector errorCollector;
   private boolean missingRegistrationMetadata;
@@ -804,7 +808,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @return true if the resource meets the minimum requirements to be published
    */
   private boolean hasMinimumRegistryInfo(Resource resource) {
-    if (missingMetadata) {
+    if (missingBasicMetadata) {
       return false;
     }
     return resource.isPublished();
@@ -1250,9 +1254,17 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       if (!isDataPackageResource()) {
         errorCollector = new SectionErrorCollector();
         I18n i18n = new StrutsI18n(this);
-        missingMetadata = !emlValidator.areAllSectionsValid(resource, errorCollector, i18n);
+        validMetadata = emlValidator.areAllSectionsValid(resource, errorCollector, i18n);
+
+        ActionValidationResult basicMetadataValidationResult
+            = errorCollector.getResult().get(MetadataSection.BASIC_SECTION.toString());
+        ActionValidationResult contactsValidationResult
+            = errorCollector.getResult().get(MetadataSection.CONTACTS_SECTION.toString());
+
+        missingBasicMetadata = basicMetadataValidationResult.hasErrors()
+            || contactsValidationResult.hasErrors();
       } else {
-        missingMetadata = !dataPackageMetadataValidator.isValid(resource);
+        validMetadata = dataPackageMetadataValidator.isValid(resource);
       }
 
       // check resource has been assigned a valid publishing organisation
