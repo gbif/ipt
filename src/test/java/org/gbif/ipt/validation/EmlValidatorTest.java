@@ -731,6 +731,6 @@ public class EmlValidatorTest extends IptBaseTest {
     empty.addCreator(agent);
     empty.addMetadataProvider(agent);
 
-    assertTrue(validator.areAllSectionsValid(resource, new ActionErrorCollector(action), new StrutsI18n(action)));
+    assertTrue(validator.areAllSectionsValid(resource, new SectionErrorCollector(), new StrutsI18n(action)));
   }
 }

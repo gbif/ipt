@@ -183,10 +183,10 @@ public class EmlValidator extends BaseValidator {
    * @param i18n i18n
    * @return whether all sections validated or not
    */
-  public boolean areAllSectionsValid(Resource resource, ErrorCollector ec, I18n i18n) {
+  public boolean areAllSectionsValid(Resource resource, SectionErrorCollector ec, I18n i18n) {
     boolean problemsEncountered = false;
     for (MetadataSection section : MetadataSection.values()) {
-      ((SectionErrorCollector) ec).setCurrentSection(section);
+      ec.setCurrentSection(section);
       validate(resource, section, ec, i18n);
       if (ec.hasErrors()) {
         problemsEncountered = true;
