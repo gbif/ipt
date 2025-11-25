@@ -158,7 +158,7 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex py-2 fs-smaller">
                     <div class="py-2 me-3">
-                        <span class="fs-smaller-2 text-nowrap me-1 dt-content-link dt-content-pill type-${resourceTypeLowerCase}">[@s.text name="portal.resource.type.${resourceTypeLowerCase}"/]</span>
+                        <span class="fs-smaller-2 text-nowrap me-1 my-1 dt-content-link dt-content-pill type-${resourceTypeLowerCase}">[@s.text name="portal.resource.type.${resourceTypeLowerCase}"/]</span>
 
                         [#if resource.status??]
                         <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
