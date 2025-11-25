@@ -150,9 +150,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   @Getter
   private List<Organisation> organisations;
   private Organisation doiAccount;
-  @Setter
-  @Getter
-  private String publishingOrganizationKey;
   private final EmlValidator emlValidator;
   private final DataPackageMetadataValidator dataPackageMetadataValidator;
   @Getter
@@ -297,26 +294,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       saveResource();
       potentialManagers.remove(u);
     }
-    return execute();
-  }
-
-  /**
-   * Triggered by change publishing organization button on overview page
-   */
-  public String changePublishingOrganization() throws Exception {
-    if (resource == null) {
-      return NOT_FOUND;
-    }
-
-    if (publishingOrganizationKey != null) {
-      for (Organisation org : organisations) {
-        if (org.getKey().toString().equals(publishingOrganizationKey)) {
-          resource.setOrganisation(org);
-          break;
-        }
-      }
-    }
-
     return execute();
   }
 

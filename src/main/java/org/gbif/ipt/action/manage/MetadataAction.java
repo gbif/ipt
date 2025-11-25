@@ -23,7 +23,6 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredMetadata;
-import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -95,7 +94,6 @@ public class MetadataAction extends ManagerBaseAction {
   private Map<String, String> types;
   private Map<String, String> datasetSubtypes;
   private Map<String, String> frequencies;
-  private Map<String, String> organisations;
 
   // to group dataset subtype vocabulary keys
   private List<String> checklistSubtypeKeys;
@@ -421,9 +419,6 @@ public class MetadataAction extends ManagerBaseAction {
           configWarnings.addStartupError(e.getMessage(), e);
         }
 
-        // load organisations map
-        loadOrganisations();
-
         // if IPT isn't registered there are no publishing organisations to choose from, so set to "No organisation"
         if (getRegisteredIpt() == null && getDefaultOrganisation() != null) {
           resource.setOrganisation(getDefaultOrganisation());
@@ -432,16 +427,6 @@ public class MetadataAction extends ManagerBaseAction {
 
         if (isHttpPost()) {
           resource.getEml().setIntellectualRights(null);
-
-          // publishing organisation, if provided must match organisation
-          String id = getId();
-          Organisation organisation = (id == null) ? null : registrationManager.get(id);
-          if (organisation != null) {
-            // set organisation: note organisation is locked after 1) DOI assigned, or 2) after registration with GBIF
-            if (!resource.isAlreadyAssignedDoi() && !resource.isRegistered()) {
-              resource.setOrganisation(organisation);
-            }
-          }
         }
         break;
 
@@ -967,13 +952,6 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   /**
-   * @return list of organisations associated to IPT that can publish resources
-   */
-  public Map<String, String> getOrganisations() {
-    return organisations;
-  }
-
-  /**
    * Determine whether a DOI has been reserved or registered for the resource.
    *
    * @return true if a DOI has been reserved or registered for the resource, or false otherwise
@@ -989,32 +967,6 @@ public class MetadataAction extends ManagerBaseAction {
    */
   public boolean isDoiReservedOrAssigned() {
     return doiReservedOrAssigned;
-  }
-
-  /**
-   * Populate organisations dropdown options/list, with placeholder option, followed by list of organisations able to
-   * host resources. There must be more than the default organisation "No organisation" in order to include the
-   * placeholder option.
-   */
-  private void loadOrganisations() {
-    List<Organisation> associatedOrganisations = registrationManager.list();
-    organisations = new LinkedHashMap<>();
-    if (!associatedOrganisations.isEmpty()) {
-      organisations.put("", getText("admin.organisation.name.select"));
-
-      // add default organisation "No organisation" as first option
-      Organisation noOrganisation = getDefaultOrganisation();
-      if (noOrganisation != null) {
-        organisations.put(noOrganisation.getKey().toString(), getText("eml.publishingOrganisation.none"));
-      }
-
-      // then add remaining organisations in the order they have been sorted, excluding the default organisation
-      for (Organisation o : associatedOrganisations) {
-        if (!Constants.DEFAULT_ORG_KEY.equals(o.getKey())) {
-          organisations.put(o.getKey().toString(), o.getName());
-        }
-      }
-    }
   }
 
   /**

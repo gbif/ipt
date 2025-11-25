@@ -36,15 +36,6 @@
                 $("#resource\\.coreType").attr('disabled','disabled');
             }
 
-            // publishing organisation selection is only disabled, if resource has been registered with GBIF or assigned a DOI (no matter if it's reserved or public).
-            var isRegisteredWithGBIF="${resource.key!}";
-            var isAssignedDOI="${resource.doi!}";
-            if (isRegisteredWithGBIF !== "") {
-                $("#id").attr('disabled','disabled');
-            } else if (isAssignedDOI !== "") {
-                $("#id").attr('disabled','disabled');
-            }
-
             function getList(list){
                 var arr=  list.split(",");
                 var newlistaOccurrence={};
@@ -168,17 +159,6 @@
                 },
                 width: "100%",
                 minimumResultsForSearch: 'Infinity',
-                theme: 'bootstrap4'
-            });
-            $('select#id').select2({
-                placeholder: '${action.getText("admin.organisation.name.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                minimumResultsForSearch: 15,
                 theme: 'bootstrap4'
             });
             $('select#eml\\.language').select2({
@@ -404,10 +384,6 @@
                         <div class="row g-3 mt-0">
                             <div class="col-lg-6">
                                 <@input name="eml.shortName" help="i18n" />
-                            </div>
-
-                            <div class="col-lg-6">
-                                <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations value="${(resource.organisation.key)!''}" requiredField=true />
                             </div>
                         </div>
                     </div>

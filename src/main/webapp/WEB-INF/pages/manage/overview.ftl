@@ -1468,7 +1468,6 @@
                             <li><a href="#anchor-visibility" class="sidebar-navigation-link"><@s.text name='manage.overview.visibility'/></a></li>
                             <li><a href="#anchor-publish" class="sidebar-navigation-link"><@s.text name='manage.overview.published'/></a></li>
                             <li><a href="#anchor-registration" class="sidebar-navigation-link"><@s.text name='manage.overview.registration'/></a></li>
-                            <li><a href="#anchor-autopublish" class="sidebar-navigation-link"><@s.text name='manage.overview.autopublish.title'/></a></li>
                             <li><a href="#anchor-networks" class="sidebar-navigation-link"><@s.text name='manage.overview.networks.title'/></a></li>
                             <li><a href="#anchor-managers" class="sidebar-navigation-link"><@s.text name='manage.overview.resource.managers'/></a></li>
                         </ul>
@@ -1594,6 +1593,12 @@
                             </#if>
 
                             <div class="col-4 d-flex justify-content-end">
+                                <a id="edit-publication-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button me-2" type="button" href="publication-settings.do?r=${resource.shortname}">
+                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                    </svg>
+                                    <@s.text name="button.edit"/>
+                                </a>
                                 <#if displayDoiFunctionality>
                                     <a title="${doiActionName!}" id="reserve-doi" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                                         <svg class="overview-action-button-icon" viewBox="0 0 24 24">
@@ -1607,16 +1612,6 @@
                         </div>
 
                         <div class="mt-4">
-                            <div class="mb-2">
-                                <@s.text name="eml.publishingOrganisation"/>: <i>${(resource.organisation.name)!""}</i>
-                                <a id="change-publishing-organization" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
-                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                    </svg>
-                                    <@s.text name="button.change"/>
-                                </a>
-                            </div>
-
                             <p class="mb-0">
                                 <@s.text name="manage.overview.published.intro"/>
                             </p>
@@ -2038,49 +2033,6 @@
                                 <p class="mb-0">
                                     <@s.text name="manage.overview.registration.notRegistered"/>
                                 </p>
-                            </#if>
-                        </div>
-                    </div>
-
-                    <span class="anchor anchor-overview-page" id="anchor-autopublish"></span>
-                    <div class="py-5 border-bottom section" id="autopublish">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <@popoverPropertyInfo "manage.overview.autopublish.description"/>
-                                    <@s.text name="manage.overview.autopublish.title"/>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <a id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="auto-publish.do?r=${resource.shortname}">
-                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                    </svg>
-                                    <@s.text name="button.edit"/>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <p class="mb-0">
-                                <#if resource.usesAutoPublishing()>
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
-                                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
-                                    </span>
-                                    <@s.text name="manage.overview.autopublish.intro.activated"/>
-                                <#else>
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-disabled">
-                                        <@s.text name="manage.overview.autopublish.disabled"/>
-                                    </span>
-                                    <@s.text name="manage.overview.autopublish.intro.deactivated"/>
-                                </#if>
-                            </p>
-
-                            <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
-                                </div>
                             </#if>
                         </div>
                     </div>
@@ -2963,38 +2915,6 @@
                             <@s.text name="button.cancel"/>
                         </button>
                     </#if>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="change-publishing-organization-modal" class="modal fade" tabindex="-1" aria-labelledby="change-publishing-organization-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                </div>
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="change-publishing-organization-modal-title"><@s.text name="eml.publishingOrganisation"/></h5>
-
-                    <#if resource.isRegistered()>
-                        <div class="simple-alert">
-                            <span><@s.text name="manage.overview.publishing.organisation.registeredResource">
-                                <@s.param><a href="mailto:helpdesk@gbif.org" class="custom-link text-gbif-danger fw-bold">Help Desk</a></@s.param>
-                            </@s.text></span>
-                        </div>
-                    <br>
-                    </#if>
-                    <form id="changePublishingOrganizationForm" action='resource-changePublishingOrganization.do' method='post'>
-                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                        <@selectList name="publishingOrganizationKey" options=organisations objValue="key" objTitle="name" withLabel=false />
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <input type="submit" form="changePublishingOrganizationForm" value="Change" id="changePublishingOrganization-submit" name="change" class="btn btn-sm btn-outline-gbif-primary">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
                 </div>
             </div>
         </div>

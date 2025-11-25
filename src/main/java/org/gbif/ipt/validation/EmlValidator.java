@@ -292,19 +292,6 @@ public class EmlValidator extends BaseValidator {
                 i18n.getText("validation.required", i18n.getText("eml.intellectualRights.license")));
           }
 
-          // publishing organisation - mandatory
-          if (resource.getOrganisation() == null) {
-            ec.addFieldError("id",
-                i18n.getText(
-                    "validation.required",
-                    i18n.getText("portal.home.organisation")));
-          } else if (regManager.get(resource.getOrganisation().getKey()) == null) {
-            ec.addFieldError("id",
-                i18n.getText(
-                    "eml.publishingOrganisation.notFound",
-                    resource.getOrganisation().getKey().toString()));
-          }
-
           // type - mandatory
           if (StringUtils.isBlank(resource.getCoreType())) {
             ec.addFieldError("resource.coreType",

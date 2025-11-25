@@ -7,6 +7,7 @@
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
 
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script>
         $(document).ready(function() {
             // on select of publishing frequency set parameters for publishing frequency
@@ -114,6 +115,7 @@
                         <ol class="breadcrumb justify-content-center mb-0">
                             <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                             <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                            <li class="breadcrumb-item"><a href="publication-settings.do?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview.publicationSettings"/></a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.autopublishing"/></li>
                         </ol>
                     </nav>
@@ -284,7 +286,7 @@
                 </div>
 
                 <div id="options" class="mt-5">
-                    <legend class="text-gbif-header-2"><@s.text name="manage.autopublish.options"/></legend>
+                    <h5 class="text-gbif-header-2 fw-400 mb-3"><@s.text name="manage.autopublish.options"/></h5>
 
                     <@checkbox name="skipUnchanged" value="${skipUnchanged?c}" i18nkey="manage.autopublish.options.skipUnchanged"/>
 

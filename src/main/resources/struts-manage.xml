@@ -118,6 +118,13 @@
       <allowed-methods>addNetwork,addManager,delete,deleteFromIpt,deleteDoi,deleteNetwork,deleteManager,makePrivate,makePublic,cancelMakePublic,registerResource,reserveDoi,undelete,changePublishingOrganization</allowed-methods>
     </action>
 
+    <action name="publication-settings" class="org.gbif.ipt.action.manage.PublicationSettingsAction">
+      <result name="input">/WEB-INF/pages/manage/publicationSettings.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+    </action>
+
     <action name="auto-publish" class="org.gbif.ipt.action.manage.AutoPublishAction">
       <result name="input">/WEB-INF/pages/manage/autopublish.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
