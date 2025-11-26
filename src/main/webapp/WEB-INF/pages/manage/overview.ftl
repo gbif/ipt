@@ -1618,6 +1618,21 @@
                         </div>
 
                         <div class="mt-4">
+                            <p class="mb-2">
+                                <#if resource.usesAutoPublishing()>
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
+                                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
+                                    </span>
+                                    <@s.text name="manage.overview.autopublish.intro.activated"/>
+                                </#if>
+                            </p>
+
+                            <#if (resource.organisation.name)?has_content>
+                            <div class="mb-2">
+                                <@s.text name="eml.publishingOrganisation"/>: <i>${resource.organisation.name}</i>
+                            </div>
+                            </#if>
+
                             <p class="mb-0">
                                 <@s.text name="manage.overview.published.intro"/>
                             </p>
