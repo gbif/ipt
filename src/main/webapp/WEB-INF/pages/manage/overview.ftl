@@ -1442,7 +1442,7 @@
                     </div>
 
                     <p class="mt-3 mb-0 text-smaller fst-italic">
-                        <#if dataPackageResource>
+                        <#if isDataPackage>
                             <@s.text name="manage.overview.dataPackageSchema.description"/>
                         <#elseif resource.coreType?has_content && resource.coreType==metadataType>
                             <@s.text name="manage.overview.description.metadataOnly"/>
@@ -1468,7 +1468,7 @@
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             <#else>
                                 <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='manage.overview.source.data'/></a></li>
-                                <li><a href="#anchor-mappings" class="sidebar-navigation-link"><#if dataPackageResource><@s.text name='manage.overview.mappings'/><#else><@s.text name='manage.overview.DwC.Mappings'/></#if></a></li>
+                                <li><a href="#anchor-mappings" class="sidebar-navigation-link"><#if isDataPackage><@s.text name='manage.overview.mappings'/><#else><@s.text name='manage.overview.DwC.Mappings'/></#if></a></li>
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             </#if>
                             <li><a href="#anchor-visibility" class="sidebar-navigation-link"><@s.text name='manage.overview.visibility'/></a></li>
@@ -2491,7 +2491,7 @@
                                 </select>
                             </form>
                         <#else>
-                            <#if dataPackageResource>
+                            <#if isDataPackage>
                                 <@s.text name="manage.overview.mappings.cantdo"/>
                             <#else>
                                 <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
@@ -2519,7 +2519,7 @@
                 <div class="modal-body">
                     <h5 class="modal-title w-100" id="metadata-modal-title"><@s.text name="manage.overview.metadata"/></h5>
                     <div>
-                        <#if dataPackageResource>
+                        <#if isDataPackage>
                             <form id="upload-metadata-form" action='replace-datapackage-metadata.do' method='post' enctype="multipart/form-data">
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <div class="row">
@@ -2569,7 +2569,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <#if dataPackageResource>
+                    <#if isDataPackage>
                         <input type="submit" form="upload-metadata-form" value="Replace" id="datapackageMetadataReplace" name="datapackageMetadataReplace" class="btn btn-sm btn-outline-gbif-primary confirmDatapackageMetadataReplace" style="">
                         <button id="datapackageMetadataCancel" type="button" class="btn btn-sm btn-outline-secondary " data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                     <#else>
@@ -2631,7 +2631,7 @@
                         </p>
 
                       <!-- resources cannot be published if mappings are missing (for DPs) -->
-                    <#elseif dataPackageResource && dataPackageMappingsMissing>
+                    <#elseif isDataPackage && dataPackageMappingsMissing>
                         <p class="mb-0">
                             <@s.text name="manage.overview.published.missing.mappings"/>
                         </p>

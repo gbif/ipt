@@ -43,7 +43,7 @@
 
         <div class="mt-4">
             <p class="mb-0">
-                <#if dataPackageResource>
+                <#if isDataPackage>
                     <@s.text name='manage.overview.source.dataPackage.intro'/>
                 <#else>
                     <@s.text name='manage.overview.source.intro'/>
@@ -172,7 +172,7 @@
 <!-- Represents mapping data section on resource overview page -->
 <span class="anchor anchor-overview-page" id="anchor-mappings"></span>
 <div class="py-5 border-bottom section" id="mappings">
-    <#if dataPackageResource>
+    <#if isDataPackage>
         <div class="d-flex justify-content-between">
             <div class="d-flex">
                 <h5 class="my-auto text-gbif-header-2 fw-400">
