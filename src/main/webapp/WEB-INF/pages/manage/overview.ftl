@@ -2620,8 +2620,8 @@
                         </p>
                         </#if>
 
-                        <!-- resources cannot be published if the publishing organization is missing -->
-                    <#elseif !resource.organisation?has_content>
+                        <!-- DwC-A resources cannot be published if the publishing organization is missing -->
+                    <#elseif !isDataPackage && !resource.organisation?has_content>
                         <p class="mb-0">
                             <@s.text name="manage.overview.published.missing.organisation"/>
                         </p>
