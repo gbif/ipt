@@ -1313,9 +1313,15 @@
             dialogWindow.modal('show');
         });
 
-        $('.show-metadata-validation-result').on('click', function () {
+        $('.show-metadata-validation-result').on('click', function (e) {
+            e.preventDefault();
             var dialogWindow = $("#metadata-validation-result-modal");
             dialogWindow.modal('show');
+        });
+
+        $('.go-to-publication-settings').on('click', function (e) {
+            e.preventDefault();
+            window.location.href = "publication-settings.do?r=${resource.shortname}";
         });
     });
 </script>
@@ -2613,6 +2619,16 @@
                             <@s.text name="manage.overview.published.metadata.validation.report"/>
                         </p>
                         </#if>
+
+                        <!-- resources cannot be published if the publishing organization is missing -->
+                    <#elseif !resource.organisation?has_content>
+                        <p class="mb-0">
+                            <@s.text name="manage.overview.published.missing.organisation"/>
+                        </p>
+
+                        <p class="mb-0">
+                            <@s.text name="manage.overview.published.missing.organisation.link"/>
+                        </p>
 
                       <!-- resources cannot be published if mappings are missing (for DPs) -->
                     <#elseif dataPackageResource && dataPackageMappingsMissing>
