@@ -316,11 +316,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       setState(e);
       throw new GeneratorException("Problem occurred while validating DwC-A (EML)", e);
     } catch (InvalidEmlException e) {
-      // InvalidEmlException
+      // InvalidEmlException - log ERROR, but still proceed
       log.error("Invalid EML", e);
       addMessage(Level.ERROR, "Invalid EML file: " + e.getMessage());
-      setState(e);
-      throw new GeneratorException("Invalid EML", e);
     }
 
     try {
