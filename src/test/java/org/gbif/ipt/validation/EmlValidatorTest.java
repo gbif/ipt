@@ -195,11 +195,8 @@ public class EmlValidatorTest extends IptBaseTest {
 
   @Test
   public void testBasicPartPublishingOrganisationMissing() {
-    // invalid
+    // valid - organisation is no more part of the basic metadata
     resource.setOrganisation(null);
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
-    // valid
-    resource.setOrganisation(organisation);
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
