@@ -31,9 +31,33 @@ function convertToDocBook(html) {
 
     function convertNode(node, xmlDoc) {
         if (node.nodeType === Node.TEXT_NODE) {
-            const text = node.textContent.replace(/\s+/g, " ").trim();
+            let text = node.textContent;
+
+            // Do NOT collapse whitespace blindly inside block-level contexts
+            const parent = node.parentElement;
+            const parentTag = parent ? parent.tagName.toLowerCase() : "";
+
+            const isLiteral = ["pre", "code", "literal"].includes(parentTag);
+            const isBlock = ["p", "div", "section", "li", "ol", "ul", "body"].includes(parentTag);
+
+            if (isLiteral) {
+                // preserve exactly
+                return xmlDoc.createTextNode(text);
+            }
+
+            if (isBlock) {
+                // collapse MULTIPLE spaces but keep leading/trailing
+                text = text.replace(/\s{2,}/g, " ");
+                return text ? xmlDoc.createTextNode(text) : null;
+            }
+
+            // inline context (default)
+            // collapse but ADD a leading/trailing space if needed
+            text = text.replace(/\s+/g, " ");
+
             return text ? xmlDoc.createTextNode(text) : null;
         }
+
         if (node.nodeType !== Node.ELEMENT_NODE) return null;
 
         const tag = node.tagName.toLowerCase();
@@ -218,9 +242,14 @@ function convertToHtml(docBook) {
 
     function convertNode(node, htmlDoc) {
         if (node.nodeType === Node.TEXT_NODE) {
-            // preserve text as-is
-            return htmlDoc.createTextNode(node.textContent);
+            let text = node.textContent;
+
+            // Collapse whitespace sequences but do NOT trim
+            text = text.replace(/\s+/g, " ");
+
+            return text ? htmlDoc.createTextNode(text) : null;
         }
+
         if (node.nodeType !== Node.ELEMENT_NODE) return null;
 
         const tag = (node.tagName || node.nodeName || "").toLowerCase();
