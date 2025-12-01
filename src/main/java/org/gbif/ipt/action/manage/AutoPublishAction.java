@@ -102,10 +102,12 @@ public class AutoPublishAction extends ManagerBaseAction {
     int recordsDropThreshold = Integer.parseInt(recordsDropThresholdRaw);
 
     if (OFF_FREQUENCY.equals(updateFrequency)) {
+      addActionMessage(getText("manage.autopublish.message.off"));
       LOG.debug("Turning off auto-publishing for [{}]", resource.getShortname());
       resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
       resource.clearAutoPublishingFrequency();
     } else if (MaintenanceUpdateFrequency.findByIdentifier(updateFrequency) != null) {
+      addActionMessage(getText("manage.autopublish.message.on", new String[]{updateFrequency}));
       LOG.debug("Updating auto-publishing for [{}] to: {}", resource.getShortname(),
         updateFrequency);
       resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_ON);
@@ -118,6 +120,7 @@ public class AutoPublishAction extends ManagerBaseAction {
         updateFrequencyHour,
         updateFrequencyMinute);
     } else {
+      addActionError(getText("manage.autopublish.message.error"));
       LOG.error("Cannot update auto-publishing setting for [{}]. Unknown frequency: {}",
         resource.getShortname(), updateFrequency);
       return ERROR;
