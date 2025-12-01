@@ -377,7 +377,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
 
     // eml properties loaded from eml.xml
     assertEquals("TEST RESOURCE", res.getEml().getTitle());
-    assertEquals("<p>Test description</p>", res.getEml().getDescription());
+    assertEquals("<para>Test description</para>", res.getEml().getDescription());
     assertEquals(Constants.INITIAL_RESOURCE_VERSION, res.getEml().getEmlVersion());
   }
 
@@ -1716,7 +1716,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertEquals(1, reconstructed.getRecordsPublished()); // changed
     // ensure reconstructed resource uses eml-1.1.xml
     assertEquals("Title for version 1.1", reconstructed.getEml().getTitle()); // changed
-    assertEquals("<p>Test description for version 1.1</p>", reconstructed.getEml().getDescription()); // changed
+    assertEquals("<para>Test description for version 1.1</para>", reconstructed.getEml().getDescription()); // changed
   }
 
   /**
@@ -1777,7 +1777,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertEquals(0, reconstructed.getRecordsPublished()); // unchanged
     // ensure reconstructed resource uses eml-5.0.xml
     assertEquals("Test Dataset Please Ignore", reconstructed.getEml().getTitle()); // changed
-    assertEquals("<p>This dataset covers mosses and lichens from Russia.</p>", reconstructed.getEml().getDescription()); // changed
+    assertEquals("<para>This dataset covers mosses and lichens from Russia.</para>", reconstructed.getEml().getDescription()); // changed
     // creator populated
     assertNotNull(resource.getCreator());
     assertEquals(creator, resource.getCreator());
