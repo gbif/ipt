@@ -110,13 +110,13 @@
             <p class="mb-0">
                 <#if resource.usesAutoPublishing()>
                     <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
-                                    <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
-                                </span>
+                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
+                    </span>
                     <@s.text name="manage.overview.autopublish.intro.activated"/>
                 <#else>
                     <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-disabled">
-                                    <@s.text name="manage.overview.autopublish.disabled"/>
-                                </span>
+                        <@s.text name="manage.overview.autopublish.disabled"/>
+                    </span>
                     <@s.text name="manage.overview.autopublish.intro.deactivated"/>
                 </#if>
             </p>

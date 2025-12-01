@@ -17,8 +17,11 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.MapUtils;
+import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import javax.inject.Inject;
 import java.util.LinkedHashMap;
@@ -31,17 +34,23 @@ import lombok.Getter;
 
 public class PublicationSettingsAction extends ManagerBaseAction {
 
+  private final VocabulariesManager vocabManager;
+
   private Organisation organisation;
   @Getter
   private Map<String, String> organisations;
+  @Getter
+  private Map<String, String> autoPublishFrequencies;
 
   @Inject
   public PublicationSettingsAction(
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
-      ResourceManager resourceManager) {
+      ResourceManager resourceManager,
+      VocabulariesManager vocabManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
+    this.vocabManager = vocabManager;
   }
 
   @Override
@@ -53,6 +62,14 @@ public class PublicationSettingsAction extends ManagerBaseAction {
 
     // publishing organization, if provided, must match organization
     organisation = StringUtils.isEmpty(id) ? null : registrationManager.get(id);
+
+    // auto publish frequencies
+    autoPublishFrequencies = new LinkedHashMap<>();
+
+    Map<String, String> filteredFrequencies =
+        vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
+    MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
+    autoPublishFrequencies.putAll(filteredFrequencies);
   }
 
   @Override
