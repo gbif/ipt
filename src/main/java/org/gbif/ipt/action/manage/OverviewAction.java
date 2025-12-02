@@ -1396,9 +1396,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       } catch (PublicationException e) {
         LOG.error("Exception while publishing", e);
         if (PublicationException.TYPE.LOCKED == e.getType()) {
-          LOG.error("Publication exception: resource {} is currently being published", resource.getShortname());
-          addActionError(getText("manage.overview.resource.being.published",
-            new String[] {resource.getTitleAndShortname()}));
+          if (e.getAdditionalParameter("source") != null) {
+            LOG.error("Publication exception: {}", e.getMessage());
+            addActionError(getText("manage.overview.resource.source.being.processed",
+                new String[]{(String) e.getAdditionalParameter("source")}));
+          } else {
+            LOG.error("Publication exception: resource {} is currently being published", resource.getShortname());
+            addActionError(getText("manage.overview.resource.being.published",
+                new String[]{resource.getTitleAndShortname()}));
+          }
         } else {
           LOG.error("Publication exception: resource {} publication failed. Reason: {}",
               resource.getShortname(),

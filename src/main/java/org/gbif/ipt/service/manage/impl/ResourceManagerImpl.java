@@ -2710,8 +2710,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .findAny();
 
     if (sourceBeingProcessed.isPresent()) {
-      throw new PublicationException(PublicationException.TYPE.LOCKED,
+       PublicationException e = new PublicationException(
+           PublicationException.TYPE.LOCKED,
           "Resource's " + resource.getShortname() + " source " + sourceBeingProcessed.get() + " is currently being processed");
+       e.addAdditionalParameter("source", sourceBeingProcessed.get().getName());
+
+       throw e;
     }
   }
 
