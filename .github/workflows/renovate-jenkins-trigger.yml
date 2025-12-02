@@ -66,12 +66,12 @@ jobs:
           # Access the queue_number output from the previous step
           QUEUE_NUMBER="${{ env.queue_number }}"
 
-          while true; do
+          while true; do          
             QUEUE_ITEM_STATUS=$(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.blocked')
-            # echo "DEBUG: Queue number: $QUEUE_NUMBER"
-            # echo "DEBUG: Jenkins status request - $JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json"
-            # echo "DEBUG: Queue response - $(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json")"
-            # echo "DEBUG: Blocked status - $QUEUE_ITEM_STATUS"
+            echo "DEBUG: Queue number: $QUEUE_NUMBER"
+            echo "DEBUG: Jenkins status request - $JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json"
+            echo "DEBUG: Queue response - $(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json")"
+            echo "DEBUG: Blocked status - $QUEUE_ITEM_STATUS"
 
             if [[ "$QUEUE_ITEM_STATUS" == false ]]; then
               # The job has left the queue, query the job's URL for its status
