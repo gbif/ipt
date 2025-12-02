@@ -68,28 +68,28 @@ jobs:
 
           while true; do          
             QUEUE_ITEM_STATUS=$(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.blocked')
-            echo "DEBUG: Queue number: $QUEUE_NUMBER"
-            echo "DEBUG: Jenkins status request - $JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json"
-            echo "DEBUG: Queue response - $(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json")"
-            echo "DEBUG: Blocked status - $QUEUE_ITEM_STATUS"
+            # echo "DEBUG: Queue number: $QUEUE_NUMBER"
+            # echo "DEBUG: Jenkins status request - $JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json"
+            # echo "DEBUG: Queue response - $(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json")"
+            # echo "DEBUG: Blocked status - $QUEUE_ITEM_STATUS"
 
             if [[ "$QUEUE_ITEM_STATUS" == false ]]; then
               # The job has left the queue, query the job's URL for its status
               JOB_URL=$(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
-              echo "DEBUG: job URL: $JOB_URL"
+              # echo "DEBUG: job URL: $JOB_URL"
 
-              RAW_JOB_RESPONSE=$(curl -s -L --user-agent renovate-trigger "$JOB_URL/api/json")
-              echo "DEBUG: raw job response:"
-              echo "$RAW_JOB_RESPONSE"
+              # RAW_JOB_RESPONSE=$(curl -s -L --user-agent renovate-trigger "$JOB_URL/api/json")
+              # echo "DEBUG: raw job response:"
+              # echo "$RAW_JOB_RESPONSE"
               
               JOB_RESPONSE=$(curl -s -L --user-agent renovate-trigger "$JOB_URL/api/json" | jq -r '{ result: .result, is_building: .building }')
-              echo "DEBUG: job response: $JOB_RESPONSE"
+              # echo "DEBUG: job response: $JOB_RESPONSE"
               JOB_STATUS=$(echo "$JOB_RESPONSE" | jq -r '.result')
-              echo "DEBUG: job status: $JOB_STATUS"
+              # echo "DEBUG: job status: $JOB_STATUS"
               IS_JOB_BUILDING=$(echo "$JOB_RESPONSE" | jq -r '.is_building')
-              echo "DEBUG: is job building: $IS_JOB_BUILDING"
+              # echo "DEBUG: is job building: $IS_JOB_BUILDING"
 
-              # echo "Job status is $JOB_RESPONSE"
+              echo "Job status is $JOB_RESPONSE"
 
               if [[ "$IS_JOB_BUILDING" == false ]]; then
                 if [[ "$JOB_STATUS" == "FAILURE" || "$JOB_STATUS" == "UNSTABLE" ]]; then
