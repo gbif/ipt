@@ -104,6 +104,7 @@
     <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
     <ojdbc.version>23.9.0.25.07</ojdbc.version>
     <postgresql.version>42.7.8</postgresql.version>
+    <duckdb.version>1.4.2.0</duckdb.version>
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
@@ -165,6 +166,10 @@
     <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
+    </repository>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
     </repository>
   </repositories>
 
@@ -540,6 +545,12 @@
       <groupId>com.oracle.database.jdbc</groupId>
       <artifactId>ojdbc8</artifactId>
       <version>${ojdbc.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.duckdb</groupId>
+      <artifactId>duckdb_jdbc</artifactId>
+      <version>${duckdb.version}</version>
       <scope>runtime</scope>
     </dependency>
 
