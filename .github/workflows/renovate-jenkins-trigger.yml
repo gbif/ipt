@@ -77,6 +77,11 @@ jobs:
               # The job has left the queue, query the job's URL for its status
               JOB_URL=$(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
               echo "DEBUG: job URL: $JOB_URL"
+
+              RAW_JOB_RESPONSE=$(curl -s --user-agent renovate-trigger "$JOB_URL/api/json")
+              echo "DEBUG: raw job response:"
+              echo "$RAW_JOB_RESPONSE"
+              
               JOB_RESPONSE=$(curl -s --user-agent renovate-trigger "$JOB_URL/api/json" | jq -r '{ result: .result, is_building: .building }')
               echo "DEBUG: job response: $JOB_RESPONSE"
               JOB_STATUS=$(echo "$JOB_RESPONSE" | jq -r '.result')
