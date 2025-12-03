@@ -31,7 +31,7 @@ jobs:
           BRANCH_NAME="${{ env.branch }}"
 
           # Trigger the Jenkins job and capture the response headers
-          RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_USERNAME:$JENKINS_API_TOKEN" -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-renovate-token&BRANCH_NAME=$BRANCH_NAME")
+          RESPONSE_HEADERS=$(curl -X POST -u "$JENKINS_USERNAME:$JENKINS_API_TOKEN" --user-agent renovate-trigger -s -I -D - "$JENKINS_JOB_URL/buildWithParameters?token=github-renovate-token&BRANCH_NAME=$BRANCH_NAME")
 
           # Extract the queue number from the response headers
           QUEUE_NUMBER=$(echo "$RESPONSE_HEADERS" | grep -i "^location:" | head -n 1 | tr -d '\r' | sed -E 's#^.*/queue/item/([0-9]+)/?#\1#')
@@ -66,19 +66,28 @@ jobs:
           # Access the queue_number output from the previous step
           QUEUE_NUMBER="${{ env.queue_number }}"
 
-          while true; do
-            QUEUE_ITEM_STATUS=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.blocked')
+          while true; do          
+            QUEUE_ITEM_STATUS=$(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.blocked')
             # echo "DEBUG: Queue number: $QUEUE_NUMBER"
             # echo "DEBUG: Jenkins status request - $JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json"
-            # echo "DEBUG: Queue response - $(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json")"
+            # echo "DEBUG: Queue response - $(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json")"
             # echo "DEBUG: Blocked status - $QUEUE_ITEM_STATUS"
 
             if [[ "$QUEUE_ITEM_STATUS" == false ]]; then
               # The job has left the queue, query the job's URL for its status
-              JOB_URL=$(curl -s "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
-              JOB_RESPONSE=$(curl -s "$JOB_URL/api/json" | jq -r '{ result: .result, is_building: .building }')
+              JOB_URL=$(curl -s --user-agent renovate-trigger "$JENKINS_URL/queue/item/$QUEUE_NUMBER/api/json" | jq -r '.executable.url')
+              # echo "DEBUG: job URL: $JOB_URL"
+
+              # RAW_JOB_RESPONSE=$(curl -s -L --user-agent renovate-trigger "$JOB_URL/api/json")
+              # echo "DEBUG: raw job response:"
+              # echo "$RAW_JOB_RESPONSE"
+              
+              JOB_RESPONSE=$(curl -s -L --user-agent renovate-trigger "$JOB_URL/api/json" | jq -r '{ result: .result, is_building: .building }')
+              # echo "DEBUG: job response: $JOB_RESPONSE"
               JOB_STATUS=$(echo "$JOB_RESPONSE" | jq -r '.result')
+              # echo "DEBUG: job status: $JOB_STATUS"
               IS_JOB_BUILDING=$(echo "$JOB_RESPONSE" | jq -r '.is_building')
+              # echo "DEBUG: is job building: $IS_JOB_BUILDING"
 
               echo "Job status is $JOB_RESPONSE"
 
