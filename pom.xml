@@ -78,7 +78,7 @@
     <log4j.version>2.25.2</log4j.version>
     <mockito.version>4.11.0</mockito.version>
     <openrtf.version>1.2.1</openrtf.version>
-    <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
+    <owasp-java-html-sanitizer.version>20240325.1</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.1.0</servlet-api.version>
     <struts2.version>6.7.4</struts2.version>
     <tika.version>2.9.4</tika.version>
