@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-19 08:36+0000\n"
-"PO-Revision-Date: 2025-01-21 09:41\n"
+"POT-Creation-Date: 2025-05-21 13:32+0000\n"
+"PO-Revision-Date: 2025-12-03 13:48\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -52,8 +52,8 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/data-preparation.adoc:35
-#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:192
-#: en/modules/ROOT/pages/faq.adoc:202
+#: en/modules/ROOT/pages/dwca-guide.adoc:149 en/modules/ROOT/pages/faq.adoc:219
+#: en/modules/ROOT/pages/faq.adoc:229
 msgid "{blank}"
 msgstr ""
 
