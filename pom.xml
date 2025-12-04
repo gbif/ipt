@@ -48,7 +48,7 @@
     <gbif-httputils.version>1.4</gbif-httputils.version>
 
     <!-- Third party dependencies -->
-    <apache-poi.version>5.4.1</apache-poi.version>
+    <apache-poi.version>5.5.1</apache-poi.version>
     <bcrypt.version>0.10.2</bcrypt.version>
     <commons-digester.version>2.1</commons-digester.version>
     <commons-io.version>2.21.0</commons-io.version>
