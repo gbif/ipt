@@ -40,19 +40,19 @@
     <!-- GBIF dependencies -->
     <dwc-api.version>2.1.7</dwc-api.version>
     <dwca-io.version>3.0.0</dwca-io.version>
-    <gbif-api.version>2.1.18</gbif-api.version>
+    <gbif-api.version>2.2.0</gbif-api.version>
     <gbif-common.version>0.60</gbif-common.version>
     <gbif-doi.version>2.21</gbif-doi.version>
     <gbif-metadata-profile.version>2.9</gbif-metadata-profile.version>
-    <gbif-parsers.version>0.67</gbif-parsers.version>
+    <gbif-parsers.version>0.68</gbif-parsers.version>
     <gbif-httputils.version>1.4</gbif-httputils.version>
 
     <!-- Third party dependencies -->
-    <apache-poi.version>5.4.1</apache-poi.version>
+    <apache-poi.version>5.5.1</apache-poi.version>
     <bcrypt.version>0.10.2</bcrypt.version>
     <commons-digester.version>2.1</commons-digester.version>
-    <commons-io.version>2.20.0</commons-io.version>
-    <commons-lang3.version>3.19.0</commons-lang3.version>
+    <commons-io.version>2.21.0</commons-io.version>
+    <commons-lang3.version>3.20.0</commons-lang3.version>
     <commons-collections4.version>4.5.0</commons-collections4.version>
     <commons-validator.version>1.10.1</commons-validator.version>
     <commons-text.version>1.14.0</commons-text.version>
@@ -80,7 +80,7 @@
     <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
     <servlet-api.version>3.1.0</servlet-api.version>
-    <struts2.version>6.7.4</struts2.version>
+    <struts2.version>6.8.0</struts2.version>
     <tika.version>2.9.4</tika.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
@@ -105,7 +105,7 @@
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
     <native2ascii-maven-plugin.version>2.1.1</native2ascii-maven-plugin.version>
-    <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
+    <maven-war-plugin.version>3.5.1</maven-war-plugin.version>
   </properties>
 
   <developers>
