@@ -71,7 +71,9 @@
     <h5 class="text-gbif-header fw-400">
         <@s.text name='manage.report.finished'/>
     </h5>
+    <#if (resource.shortname)?has_content>
     <p>
         <@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text>
     </p>
+    </#if>
 </#if>
