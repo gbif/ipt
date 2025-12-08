@@ -39,6 +39,8 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -244,6 +246,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Override
   @JsonProperty("contributors")
   @JsonDeserialize(contentUsing = CamtrapContributor.CamtrapContributorDeserializer.class)
+  @JsonSetter(contentNulls = Nulls.SKIP)
   @Element(CamtrapContributor.class)
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
@@ -366,6 +369,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Override
   @JsonProperty("sources")
   @JsonDeserialize(contentUsing = CamtrapSource.CamtrapSourceDeserializer.class)
+  @JsonSetter(contentNulls = Nulls.SKIP)
   @Element(CamtrapSource.class)
   @Valid
   public List<Source> getSources() {
@@ -389,6 +393,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Override
   @JsonProperty("licenses")
   @JsonDeserialize(contentUsing = CamtrapLicense.CamtrapLicenseDeserializer.class)
+  @JsonSetter(contentNulls = Nulls.SKIP)
   @Element(CamtrapLicense.class)
   @Size(min = 2, message = "validation.camtrap.metadata.licenses.size", groups = BasicMetadata.class)
   @HasGbifCompatibleLicense(

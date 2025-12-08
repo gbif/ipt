@@ -883,6 +883,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
 
           camtrapMetadata.getContributors().stream()
+              .filter(Objects::nonNull)
               .map(contributor -> (CamtrapContributor) contributor)
               .filter(contributor -> CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole()))
               .forEach(this::inferNameFieldsForCamtrapContributor);
