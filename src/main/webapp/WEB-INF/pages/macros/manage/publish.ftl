@@ -41,8 +41,8 @@
         || (resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense())>
         <@showPublicationWarningButton/>
 
-    <!-- resources cannot be published if the publishing organisation is missing -->
-    <#elseif !resource.organisation?has_content>
+    <!-- DwC-A resources cannot be published if the publishing organisation is missing (skip data packages) -->
+    <#elseif !dataPackageResource && !resource.organisation?has_content>
         <@showPublicationWarningButton/>
 
     <!-- previously published resources without a DOI, or that haven't been registered yet can be republished whenever by any manager -->
