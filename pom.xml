@@ -55,7 +55,7 @@
     <commons-lang3.version>3.20.0</commons-lang3.version>
     <commons-collections4.version>4.5.0</commons-collections4.version>
     <commons-validator.version>1.10.1</commons-validator.version>
-    <commons-text.version>1.14.0</commons-text.version>
+    <commons-text.version>1.15.0</commons-text.version>
     <excel-streaming-reader.version>4.4.0</excel-streaming-reader.version>
     <freemarker.version>2.3.34</freemarker.version>
     <frictionless.datapackage-java.version>0.9.8-gbif</frictionless.datapackage-java.version>
