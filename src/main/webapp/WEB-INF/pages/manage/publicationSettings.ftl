@@ -26,12 +26,12 @@
             allowClear: true
         });
 
-        // publishing organisation selection is only disabled, if resource has been registered with GBIF or assigned a DOI (no matter if it's reserved or public).
-        var isRegisteredWithGBIF="${resource.key!}";
-        var isAssignedDOI="${resource.doi!}";
-        if (isRegisteredWithGBIF !== "" || isAssignedDOI !== "") {
-            $("#id").attr('disabled','disabled');
-        }
+        // A warning is displayed if the resource has been registered with GBIF or assigned a DOI (no matter if it's reserved or public).
+        <#if resource.isRegistered() || resource.doi?has_content>
+        $('#id').on('change', function () {
+            $('#warning-helpdesk-assistance-required').show();
+        });
+        </#if>
     });
 </script>
 
@@ -83,6 +83,12 @@
                     <input type="hidden" name="r" value="${resource.shortname}" />
                     <@select name="id" i18nkey="eml.publishingOrganisation" options=organisations value="${(resource.organisation.key)!''}" requiredField=true />
                 </form>
+                <br>
+                <div id="warning-helpdesk-assistance-required" class="simple-alert text-smaller" style="display:none;">
+                        <span><@s.text name="manage.overview.publishing.organisation.registeredResource">
+                            <@s.param><a href="mailto:helpdesk@gbif.org" class="custom-link text-gbif-danger fw-bold">Help Desk</a></@s.param>
+                        </@s.text></span>
+                </div>
             </div>
         </div>
     </div>
