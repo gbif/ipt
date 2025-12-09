@@ -4,9 +4,32 @@
     <@s.text name='manage.report.title'/>
 </h5>
 
-<p>
-    <span class="small">${now?datetime?string.full}</span>
-</p>
+<#attempt>
+    <#if report.messages?has_content>
+        <#list report.messages as message>
+            <#assign publicationStartTimestamp = message.timestamp />
+            <#break>
+        </#list>
+    </#if>
+
+    <#assign elapsedSec = (now?long - publicationStartTimestamp?long) / 1000>
+    <#assign hours   = (elapsedSec / 3600)?floor>
+    <#assign minutes = ((elapsedSec % 3600) / 60)?floor>
+    <#assign seconds = (elapsedSec % 60)>
+
+    <p>
+        <span class="small">
+            <@s.text name="manage.report.publication.started"/>: ${publicationStartTimestamp?number_to_datetime?string.full}
+        </span><br>
+        <span class="small">
+            <@s.text name="manage.report.publication.time"/>: ${hours?string["00"]}:${minutes?string["00"]}:${seconds?string["00"]}
+        </span>
+    </p>
+<#recover>
+    <p>
+        <span class="small">${now?datetime?string.full}</span><br>
+    </p>
+</#attempt>
 
 <#if report??>
 

@@ -19,6 +19,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import lombok.Getter;
+
+@Getter
 public class StatusReport {
 
   private final boolean completed;
@@ -33,7 +36,6 @@ public class StatusReport {
     this.messages = messages;
     this.timestamp = new Date().getTime();
     this.exception = null;
-
   }
 
   public StatusReport(Exception exception, String state, List<TaskMessage> messages) {
@@ -52,10 +54,6 @@ public class StatusReport {
     this.exception = null;
   }
 
-  public Exception getException() {
-    return exception;
-  }
-
   public String getExceptionMessage() {
     return exception != null ? exception.getMessage() : null;
   }
@@ -70,24 +68,8 @@ public class StatusReport {
     return trace;
   }
 
-  public List<TaskMessage> getMessages() {
-    return messages;
-  }
-
-  public String getState() {
-    return state;
-  }
-
-  public long getTimestamp() {
-    return timestamp;
-  }
-
   public boolean hasException() {
     return exception != null;
-  }
-
-  public boolean isCompleted() {
-    return completed;
   }
 
   @Override

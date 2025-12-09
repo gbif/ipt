@@ -310,7 +310,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     boolean cancelled = resourceManager.cancelPublishing(resource.getShortname(), this);
     if (cancelled) {
-
       // final logging
       BigDecimal version = resource.getMetadataVersion();
       String msg = getText("publishing.cancelled", new String[] {version.toPlainString(), resource.getShortname()});
