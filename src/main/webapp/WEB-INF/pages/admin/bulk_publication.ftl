@@ -47,7 +47,7 @@
 
 
         // button is not created right away, set click on document
-        $(document).on('click','#yes-button', function(){
+        $(document).on('click', '#yes-button', function () {
             $("#dialog-confirm").modal('hide');
         })
 
@@ -56,7 +56,7 @@
 
         function loadReport() {
             $("#bulkReport").load("${baseURL}/admin/bulkReport.do?", function () {
-                if ($(".completed").length > 0) {
+                if ($(".running").length === 0 && $(".completed").length > 0) {
                     clearInterval(reporter);
                 }
             });

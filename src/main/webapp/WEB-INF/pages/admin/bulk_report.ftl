@@ -2,7 +2,7 @@
 <#if runningPublications?has_content>
     <div id="publishingStatusRunning" style="">
         <#list runningPublications?keys as shortname>
-        <div class="report">
+        <div class="report running">
             <h5 class="fs-regular"><a href="${baseURL}/manage/resource?r=${shortname}">${shortname}</a></h5>
             <p class="fs-smaller">
                 <strong><@s.text name="admin.config.publish.status"/>:</strong> ${(runningPublications[shortname].state)!?no_esc}<br>
@@ -24,7 +24,7 @@
     <div id="publishingStatusCompleted">
         <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400"><@s.text name="admin.config.publish.recentlyPublished"/></h4>
         <#list completedPublications?keys as shortname>
-            <div class="report">
+            <div class="report completed">
                 <h5 class="fs-regular"><a href="${baseURL}/manage/resource?r=${shortname}">${shortname}</a></h5>
                 <p class="fs-smaller">
                     <strong><@s.text name="admin.config.publish.status"/>:</strong> ${(completedPublications[shortname].state)!?no_esc}<br>
