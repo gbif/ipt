@@ -2670,7 +2670,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       Date lastPublished = resource.getLastPublished();
       Date metadataLastModified = resource.getMetadataModified();
 
-      boolean metadataChanged = metadataLastModified.after(lastPublished);
+      boolean metadataChanged = metadataLastModified == null || metadataLastModified.after(lastPublished);
 
       if (!metadataChanged) {
         String metadataNotChangedStatus = action.getText("publishing.metadataNotChanged");
