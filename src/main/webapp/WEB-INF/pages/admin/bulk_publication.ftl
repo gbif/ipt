@@ -3,6 +3,7 @@
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
 <script>
     $(document).ready(function(){
@@ -158,7 +159,9 @@
 
         <div class="my-3 p-3">
             <fieldset>
-                <legend class="text-gbif-header-2"><@s.text name="admin.config.publish.options"/></legend>
+                <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                    <@s.text name="admin.config.publish.options"/>
+                </h5>
 
                 <label class="py-1">
                     <input class="form-check-input" type="radio" name="publishMode" value="ALL" checked>
