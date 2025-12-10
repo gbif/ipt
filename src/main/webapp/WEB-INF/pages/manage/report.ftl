@@ -17,14 +17,32 @@
     <#assign minutes = ((elapsedSec % 3600) / 60)?floor>
     <#assign seconds = (elapsedSec % 60)>
 
-    <p>
-        <span class="small">
+    <div class="mb-2">
+        <div class="small">
             <@s.text name="manage.report.publication.started"/>: ${publicationStartTimestamp?number_to_datetime?string.full}
-        </span><br>
-        <span class="small">
+        </div>
+        <div class="small">
             <@s.text name="manage.report.publication.time"/>: ${hours?string["00"]}:${minutes?string["00"]}:${seconds?string["00"]}
-        </span>
-    </p>
+        </div>
+        <div class="small">
+            <@s.text name="manage.report.publication.status"/>:
+            <#if report.hasException()>
+                <i class="bi bi-x-circle-fill text-gbif-danger"></i>
+                <@s.text name="admin.config.publish.failed"/>
+            <#elseif report.completed>
+                <i class="bi bi-check-circle-fill text-gbif-primary"></i>
+                <@s.text name="admin.config.publish.completed"/>
+            <#else>
+                <@s.text name="admin.config.publish.inProgress"/>
+                <div class="inline-spinner" aria-hidden="true">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </#if>
+        </div>
+    </div>
 <#recover>
     <p>
         <span class="small">${now?datetime?string.full}</span><br>

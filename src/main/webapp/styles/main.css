@@ -2898,3 +2898,33 @@ span.contact-citation-banner {
 .note-editor h1 {
     font-size: 1.5rem;
 }
+
+/* Inline spinner */
+.inline-spinner {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    width: 48px;
+    height: 10px;
+}
+
+.inline-spinner div {
+    position: absolute;
+    top: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgb(var(--color-gbif-primary)) !important;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+/* Dot positions and animations (spinner) */
+.inline-spinner div:nth-child(1) { left: 4px;  animation: dt-loader-1 .6s infinite; }
+.inline-spinner div:nth-child(2) { left: 4px;  animation: dt-loader-2 .6s infinite; }
+.inline-spinner div:nth-child(3) { left: 16px; animation: dt-loader-2 .6s infinite; }
+.inline-spinner div:nth-child(4) { left: 28px; animation: dt-loader-3 .6s infinite; }
+
+/* Keyframes — scaled down movement (spinner) */
+@keyframes dt-loader-1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+@keyframes dt-loader-2 { 0% { transform: translateX(0); } 100% { transform: translateX(12px); } }
+@keyframes dt-loader-3 { 0% { transform: scale(1); } 100% { transform: scale(0); } }
