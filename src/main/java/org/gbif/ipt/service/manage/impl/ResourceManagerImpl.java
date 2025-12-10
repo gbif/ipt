@@ -1604,7 +1604,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                 // check metadata if data hasn't changed
                 Date lastPublished = resource.getLastPublished();
                 Date metadataLastModified = resource.getMetadataModified();
-                boolean metadataChanged = metadataLastModified.after(lastPublished);
+                boolean metadataChanged = metadataLastModified == null || metadataLastModified.after(lastPublished);
 
                 if (skipIfNotChanged && !metadataChanged) {
                   getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Metadata has not changed since last published"));
