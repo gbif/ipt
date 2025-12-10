@@ -207,6 +207,7 @@
                                 <#assign selectOrganisationInfo>
                                     <@s.text name="admin.registration.intro"/>&nbsp;<@s.text name="admin.organisation.add.intro2"/>
                                 </#assign>
+                                <#assign selectOrganisationInfo = selectOrganisationInfo?markup_string>
                                 <div class="d-flex text-smaller">
                                     <a tabindex="0" role="button"
                                        class="popover-link"
