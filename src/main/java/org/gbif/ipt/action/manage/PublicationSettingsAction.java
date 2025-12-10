@@ -91,6 +91,8 @@ public class PublicationSettingsAction extends ManagerBaseAction {
       return INPUT;
     }
 
+    organisation = StringUtils.isEmpty(id) ? null : registrationManager.get(id);
+
     if (organisation != null) {
       // set organisation, note organisation is locked after:
       // 1) DOI assigned
@@ -98,13 +100,10 @@ public class PublicationSettingsAction extends ManagerBaseAction {
       if (!resource.isAlreadyAssignedDoi() && !resource.isRegistered()) {
         resource.setOrganisation(organisation);
         resourceManager.save(resource);
-        // TODO: set publisher and save EML too?
-//        resource.getEml().setPublisher(organisation.getKey().toString(), organisation.getName());
-//        resourceManager.saveEml(resource);
       }
     }
 
-    // TODO: add a success message
+    addActionMessage(getText("manage.publicationSettings.success"));
     return SUCCESS;
   }
 
