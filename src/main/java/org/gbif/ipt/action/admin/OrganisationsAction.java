@@ -107,6 +107,8 @@ public class OrganisationsAction extends POSTAction {
         addActionError("Failed to load organisations");
         organisations = new ArrayList<>();
       }
+    } else {
+      organisations = sessionOrganisations;
     }
   }
 
