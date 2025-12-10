@@ -178,7 +178,11 @@
                 <div id="selectedDatasets" class="dataset-dropdown ms-3 mb-2" style="display: none;">
                     <select name="selectedResources" id="selectedResources" class="form-control" multiple size="6">
                         <#list resources as res>
-                            <option value="${res.shortname}">${res.shortname}</option>
+                            <#if res.title?has_content>
+                                <option value="${res.shortname}">${res.title} [${res.shortname}]</option>
+                            <#else>
+                                <option value="${res.shortname}">${res.shortname}</option>
+                            </#if>
                         </#list>
                     </select>
                 </div>
