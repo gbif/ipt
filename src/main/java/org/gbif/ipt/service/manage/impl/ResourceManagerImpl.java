@@ -1633,12 +1633,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             boolean onlyFileSources = isOnlyFileSources(resource);
             boolean sourcesModifiedSinceLastPublication = isSourcesModifiedSinceLastPublication(resource);
 
-            if (onlyFileSources && !sourcesModifiedSinceLastPublication) {
+            if (skipIfNotChanged && onlyFileSources && !sourcesModifiedSinceLastPublication) {
               dataOrMetadataChanged = false;
 
-              if (skipIfNotChanged) {
-                getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Source files has not changed since last published"));
-              }
+              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Source files has not changed since last published"));
             }
 
             if (dataOrMetadataChanged) {
