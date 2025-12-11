@@ -406,6 +406,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         LOG.warn("Canceling publication of resource " + shortname + " failed");
       }
     }
+
+    // Remove from the skip list
+    resourcesToSkip.remove(shortname);
+
     return canceled;
   }
 
@@ -2664,6 +2668,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     StatusReport report = status(shortname);
     if (report != null) {
       processReports.remove(shortname);
+    }
+
+    if (!options.isSkipPublicationIfNotChanged()) {
+      resourcesToSkip.remove(shortname);
     }
 
     // Abort further publication for Metadata Only - no changes (if skipIfNotChanged activated)
