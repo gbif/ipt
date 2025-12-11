@@ -82,28 +82,28 @@ public class PublicationSettingsAction extends ManagerBaseAction {
               new String[]{getText("portal.home.organisation")}));
 
       return INPUT;
-    } else if (registrationManager.get(id) == null) {
+    }
+
+    organisation = registrationManager.get(id);
+    if (organisation == null) {
       addFieldError("id",
-          getText(
-              "eml.publishingOrganisation.notFound",
-              resource.getOrganisation().getKey().toString()));
+          getText("eml.publishingOrganisation.notFound", id));
 
       return INPUT;
     }
 
-    organisation = StringUtils.isEmpty(id) ? null : registrationManager.get(id);
+    // set organisation, note organisation is locked after:
+    // 1) DOI assigned
+    // 2) after registration with GBIF
+    resource.setOrganisation(organisation);
+    resourceManager.save(resource);
 
-    if (organisation != null) {
-      // set organisation, note organisation is locked after:
-      // 1) DOI assigned
-      // 2) after registration with GBIF
-      if (!resource.isAlreadyAssignedDoi() && !resource.isRegistered()) {
-        resource.setOrganisation(organisation);
-        resourceManager.save(resource);
-      }
+    if (resource.isAlreadyAssignedDoi() || resource.isRegistered()) {
+      addActionMessage(getText("manage.publicationSettings.success"));
+    } else {
+      addActionMessage(getText("manage.publicationSettings.success.registered"));
     }
 
-    addActionMessage(getText("manage.publicationSettings.success"));
     return SUCCESS;
   }
 
