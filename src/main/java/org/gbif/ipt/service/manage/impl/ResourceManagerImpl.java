@@ -1539,6 +1539,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // remove the process from the locking list immediately! Fixes Issue 1141
         processFutures.remove(shortname);
         boolean succeeded = false;
+        boolean checksumMatches = false;
+        boolean metadataChanged = isMetadataModifiedSinceLastPublication(resource);
         boolean dataOrMetadataChanged = true;
         boolean skipIfNotChanged = resourcesToSkip.contains(shortname) || resource.isSkipPublicationIfNotChanged();
         boolean noSignificantRecordsDrop = true;
@@ -1589,6 +1591,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             try {
               String archiveChecksum = calculateArchiveChecksum(resourceArchiveFile);
               String lastPublishedArchiveChecksum = resource.getLastPublishedArchiveChecksum();
+              checksumMatches = archiveChecksum.equals(lastPublishedArchiveChecksum);
 
               if (lastPublishedArchiveChecksum == null) {
                 LOG.debug("No checksum found for the resource {}", shortname);
@@ -1598,18 +1601,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                 if (skipIfNotChanged) {
                   getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "No checksum found for comparison, skipping."));
                 }
-              } else if (lastPublishedArchiveChecksum.equals(archiveChecksum)) {
+              } else if (checksumMatches) {
                 LOG.debug("New checksum [{}] matches the stored one [{}] for the resource {}",
                     archiveChecksum, lastPublishedArchiveChecksum, resource.getShortname());
 
                 if (skipIfNotChanged) {
                   getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Checksum has not changed since last published"));
                 }
-
-                // check metadata if data hasn't changed
-                Date lastPublished = resource.getLastPublished();
-                Date metadataLastModified = resource.getMetadataModified();
-                boolean metadataChanged = metadataLastModified == null || metadataLastModified.after(lastPublished);
 
                 if (skipIfNotChanged && !metadataChanged) {
                   getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Metadata has not changed since last published"));
@@ -1628,6 +1626,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
               if (skipIfNotChanged) {
                 getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Failed to calculate checksum"));
+              }
+            }
+
+            // If all sources are file (CSV, TSV, Excel) also check when they were changed
+            boolean onlyFileSources = isOnlyFileSources(resource);
+            boolean sourcesModifiedSinceLastPublication = isSourcesModifiedSinceLastPublication(resource);
+
+            if (onlyFileSources && !sourcesModifiedSinceLastPublication) {
+              dataOrMetadataChanged = false;
+
+              if (skipIfNotChanged) {
+                getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Source files has not changed since last published"));
               }
             }
 
@@ -4479,5 +4489,28 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       hexString.append(String.format("%02x", b));
     }
     return hexString.toString();
+  }
+
+  private boolean isOnlyFileSources(@NotNull Resource resource) {
+    return resource.getSources().stream()
+        .allMatch(s -> s.isFileSource() || s.isExcelSource());
+  }
+
+  private boolean isMetadataModifiedSinceLastPublication(@NotNull Resource resource) {
+    Date lastPublished = resource.getLastPublished();
+    Date metadataLastModified = resource.getMetadataModified();
+
+    return metadataLastModified == null || metadataLastModified.after(lastPublished);
+  }
+
+  private boolean isSourcesModifiedSinceLastPublication(@NotNull Resource resource) {
+    if (resource.getLastPublished() == null) {
+      return resource.getSourcesModified() != null;
+    } else {
+      if (resource.getSourcesModified() != null) {
+        return resource.getSourcesModified().compareTo(resource.getLastPublished()) > 0;
+      }
+    }
+    return false;
   }
 }
