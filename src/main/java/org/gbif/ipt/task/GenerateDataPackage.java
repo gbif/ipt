@@ -13,9 +13,6 @@
  */
 package org.gbif.ipt.task;
 
-import io.frictionlessdata.datapackage.exceptions.DataPackageValidationException;
-import io.frictionlessdata.tableschema.exception.ForeignKeyException;
-import io.frictionlessdata.tableschema.exception.PrimaryKeyException;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
@@ -63,11 +60,14 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
+import io.frictionlessdata.datapackage.exceptions.DataPackageValidationException;
 import io.frictionlessdata.datapackage.JSONBase;
 import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
-import io.frictionlessdata.tableschema.exception.ValidationException;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
+import io.frictionlessdata.tableschema.exception.ForeignKeyException;
+import io.frictionlessdata.tableschema.exception.PrimaryKeyException;
+import io.frictionlessdata.tableschema.exception.ValidationException;
 import io.frictionlessdata.tableschema.schema.Schema;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -868,8 +868,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   private void checkRelationsAndPrimaryKeys() throws Exception {
-    for (io.frictionlessdata.datapackage.resource.Resource dataPackageResource : dataPackage.getResources()) {
-      dataPackageResource.checkRelations(dataPackage);
+    boolean isFkValidationEnabled = cfg.isDatapackageForeignKeysValidationEnabled();
+    for (io.frictionlessdata.datapackage.resource.Resource<?> dataPackageResource : dataPackage.getResources()) {
+      if (isFkValidationEnabled) {
+        dataPackageResource.checkRelations(dataPackage);
+      }
       dataPackageResource.checkPrimaryKeys();
     }
   }

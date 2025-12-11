@@ -79,6 +79,7 @@ public class AppConfig {
   public static final String DEFAULT_LOCALE = "defaultLocale";
   public static final String LOGO_REDIRECT_URL = "logoRedirectUrl";
   public static final String SESSION_TIMEOUT_PROPERTY = "session.timeout";
+  public static final String DATAPACKAGE_FOREIGN_KEYS_VALIDATION = "datapackage.fk.validation";
   private static final String PRODUCTION_TYPE_LOCKFILE = ".gbifreg";
   public static final String BUILD_NUMBER_VARIABLE_SUFFIX = "-r${buildNumber}";
   public static final String BUILD_NUMBER_REGEX = "-r\\$\\{buildNumber\\}$|-r\\w{7}$";
@@ -731,5 +732,9 @@ public class AppConfig {
 
   public void setLogoRedirectUrl(String logoRedirectUrl) {
     properties.setProperty(LOGO_REDIRECT_URL, logoRedirectUrl);
+  }
+
+  public boolean isDatapackageForeignKeysValidationEnabled() {
+    return "true".equalsIgnoreCase(properties.getProperty(DATAPACKAGE_FOREIGN_KEYS_VALIDATION));
   }
 }
