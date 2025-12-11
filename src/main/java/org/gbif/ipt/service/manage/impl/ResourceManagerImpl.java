@@ -171,6 +171,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -231,8 +232,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
   private Map<String, LocalDate> lastLoggedFailures = new ConcurrentHashMap<>();
-  private Map<String, StatusReport> processReports = new HashMap<>();
-  private List<String> resourcesToSkip = new ArrayList<>();
+  private Map<String, StatusReport> processReports = new ConcurrentHashMap<>();
+  private List<String> resourcesToSkip = new CopyOnWriteArrayList<>();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
