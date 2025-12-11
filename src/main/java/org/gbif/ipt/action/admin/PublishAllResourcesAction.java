@@ -82,110 +82,108 @@ public class PublishAllResourcesAction extends BaseAction {
       return cancel();
     }
 
+    resources = resourceManager.list();
+
+    // start with IPT registration update, provided the IPT has been registered already
     try {
-      resources = resourceManager.list();
+      Ipt ipt = registrationManager.getIpt();
+      if (ipt != null) {
+        registryManager.updateIpt(ipt);
+        updateResources(ipt);
+      }
+    } catch (RegistryException e) {
+      // log as specific error message as possible about why the Registry error occurred
+      String msg = RegistryException.logRegistryException(e, this);
+      addActionError(msg);
+      LOG.error(msg);
+    }
 
-      // start with IPT registration update, provided the IPT has been registered already
+    resourceManager.clearProcessReports();
+    List<Resource> allResources = resourceManager.list();
+    List<Resource> resources;
+    boolean skipIfNotChanged = false;
+
+    if (publishMode == BulkPublicationType.SELECTED) {
+      resources = allResources.stream()
+          .filter(res -> selectedResources.contains(res.getShortname()))
+          .collect(Collectors.toList());
+    } else if (publishMode == BulkPublicationType.EXCLUDED) {
+      resources = allResources.stream()
+          .filter(res -> !excludedResources.contains(res.getShortname()))
+          .collect(Collectors.toList());
+    } else if (publishMode == BulkPublicationType.CHANGED) {
+      resources = allResources;
+      skipIfNotChanged = true;
+    } else {
+      resources = allResources;
+    }
+
+    if (resources.isEmpty()) {
+      this.addActionWarning(getText("admin.config.updateMetadata.none"));
+      return SUCCESS;
+    }
+
+    // kick off publishing for all resources, unless
+    // a) the resource has exceeded the maximum number of failed publications
+    // b) the mandatory metadata has not been provided for the resource
+    for (Resource resource : resources) {
+      // next version number - the version of newly published eml/rtf/archive
+      BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
       try {
-        Ipt ipt = registrationManager.getIpt();
-        if (ipt != null) {
-          registryManager.updateIpt(ipt);
-          updateResources(ipt);
-        }
-      } catch (RegistryException e) {
-        // log as specific error message as possible about why the Registry error occurred
-        String msg = RegistryException.logRegistryException(e, this);
-        addActionError(msg);
-        LOG.error(msg);
-      }
+        if (!resourceManager.hasMaxProcessFailures(resource)) {
+          boolean isValidMetadata;
 
-      resourceManager.clearProcessReports();
-      List<Resource> allResources = resourceManager.list();
-      List<Resource> resources;
-      boolean skipIfNotChanged = false;
-
-      if (publishMode == BulkPublicationType.SELECTED) {
-        resources = allResources.stream()
-            .filter(res -> selectedResources.contains(res.getShortname()))
-            .collect(Collectors.toList());
-      } else if (publishMode == BulkPublicationType.EXCLUDED) {
-        resources = allResources.stream()
-            .filter(res -> !excludedResources.contains(res.getShortname()))
-            .collect(Collectors.toList());
-      } else if (publishMode == BulkPublicationType.CHANGED) {
-        resources = allResources;
-        skipIfNotChanged = true;
-      } else {
-        resources = allResources;
-      }
-
-      if (resources.isEmpty()) {
-        this.addActionWarning(getText("admin.config.updateMetadata.none"));
-        return SUCCESS;
-      }
-
-      // kick off publishing for all resources, unless
-      // a) the resource has exceeded the maximum number of failed publications
-      // b) the mandatory metadata has not been provided for the resource
-      for (Resource resource : resources) {
-        // next version number - the version of newly published eml/rtf/archive
-        BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
-        try {
-          if (!resourceManager.hasMaxProcessFailures(resource)) {
-            boolean isValidMetadata;
-
-            if (resource.isDataPackage()) {
-              isValidMetadata = dpMetadataValidator.isValid(resource);
-            } else {
-              isValidMetadata = emlValidator.isValid(resource, null);
-            }
-
-            if (isValidMetadata) {
-              // publish a new version of the resource - dwca gets published asynchronously
-              resourceManager.publish(resource, nextVersion, this, skipIfNotChanged);
-            } else {
-              // alert user publication failed
-              addActionError(getText("publishing.failed",
-                  new String[]{nextVersion.toPlainString(), resource.getShortname(),
-                      getText("manage.overview.published.missing.metadata")}));
-            }
+          if (resource.isDataPackage()) {
+            isValidMetadata = dpMetadataValidator.isValid(resource);
           } else {
-            addActionError(getText("publishing.skipping",
-                new String[]{String.valueOf(resource.getNextVersion()), resource.getTitleAndShortname()}));
+            isValidMetadata = emlValidator.isValid(resource, null);
           }
-        } catch (PublicationException e) {
-          if (PublicationException.TYPE.LOCKED == e.getType()) {
-            addActionError(
-                getText("manage.overview.resource.being.published", new String[]{resource.getTitleAndShortname()}));
+
+          if (isValidMetadata) {
+            // publish a new version of the resource - dwca gets published asynchronously
+            resourceManager.publish(resource, nextVersion, this, skipIfNotChanged);
           } else {
             // alert user publication failed
-            addActionError(
-                getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
-            // restore the previous version since publication was unsuccessful
-            resourceManager.restoreVersion(resource, nextVersion, this);
-            // keep track of how many failures on auto publication have happened
-            resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+            addActionError(getText("publishing.failed",
+                new String[]{nextVersion.toPlainString(), resource.getShortname(),
+                    getText("manage.overview.published.missing.metadata")}));
           }
-        } catch (InvalidConfigException e) {
-          // with this type of error, the version cannot be rolled back - just alert user publication failed
-          String msg =
-              getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()});
-          LOG.error(msg, e);
-          addActionError(msg);
+        } else {
+          addActionError(getText("publishing.skipping",
+              new String[]{String.valueOf(resource.getNextVersion()), resource.getTitleAndShortname()}));
         }
+      } catch (PublicationException e) {
+        if (PublicationException.TYPE.LOCKED == e.getType()) {
+          addActionError(
+              getText("manage.overview.resource.being.published", new String[]{resource.getTitleAndShortname()}));
+        } else {
+          // alert user publication failed
+          addActionError(
+              getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
+          // restore the previous version since publication was unsuccessful
+          resourceManager.restoreVersion(resource, nextVersion, this);
+          // keep track of how many failures on auto publication have happened
+          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+        }
+      } catch (InvalidConfigException e) {
+        // with this type of error, the version cannot be rolled back - just alert user publication failed
+        String msg =
+            getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()});
+        LOG.error(msg, e);
+        addActionError(msg);
+      } catch (Exception e) {
+        LOG.error(e.getMessage(), e);
       }
+    }
 
-      // wait around for all resources to finish publishing
-      // PublishingMonitor thread is running in the background completing asynchronous publishing tasks
-      while (!resourceManager.getProcessFutures().isEmpty()) {
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          LOG.error("Thread waiting during publish all resources was interrupted", e);
-        }
+    // wait around for all resources to finish publishing
+    // PublishingMonitor thread is running in the background completing asynchronous publishing tasks
+    while (!resourceManager.getProcessFutures().isEmpty()) {
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        LOG.error("Thread waiting during publish all resources was interrupted", e);
       }
-    } catch (Exception e) {
-      LOG.error(e.getMessage(), e);
     }
 
     // only display sinlge message: that publish all finished
