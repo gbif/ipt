@@ -3,14 +3,12 @@
     <div id="publishingStatusRunning" style="">
         <#list runningPublications?keys as shortname>
         <div class="report running">
-            <h5 class="fs-regular"><a href="${baseURL}/manage/resource?r=${shortname}">${shortname}</a></h5>
+            <h5 class="fs-regular">
+                <a href="${baseURL}/manage/resource?r=${shortname}" class="resource-table-link">${shortname}</a>
+            </h5>
             <div class="fs-smaller">
                 <div class="small">
                     <@s.text name="admin.config.publish.status"/>: ${(runningPublications[shortname].state)!?no_esc}
-                </div>
-
-                <div class="small">
-                    <@s.text name="admin.config.publish.time"/>: ${.now?time?string}
                 </div>
 
                 <div class="small">
@@ -40,7 +38,9 @@
         </h5>
         <#list completedPublications?keys as shortname>
             <div class="report completed">
-                <h5 class="fs-regular"><a href="${baseURL}/manage/resource?r=${shortname}">${shortname}</a></h5>
+                <h5 class="fs-regular">
+                    <a href="${baseURL}/manage/resource?r=${shortname}" class="resource-table-link">${shortname}</a>
+                </h5>
                 <p class="small">
                     <@s.text name="admin.config.publish.status"/>: ${(completedPublications[shortname].state)!?no_esc}<br>
                     <#if completedPublications[shortname].exception?has_content>
