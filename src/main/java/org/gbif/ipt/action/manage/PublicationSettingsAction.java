@@ -101,7 +101,10 @@ public class PublicationSettingsAction extends ManagerBaseAction {
     if (resource.isAlreadyAssignedDoi() || resource.isRegistered()) {
       addActionMessage(getText("manage.publicationSettings.success"));
     } else {
-      addActionMessage(getText("manage.publicationSettings.success.registered"));
+      addActionMessage(
+          getText(
+              "manage.publicationSettings.success.registered",
+              new String[]{"<a href=\"mailto:helpdesk@gbif.org\">Help Desk</a>"}));
     }
 
     return SUCCESS;
