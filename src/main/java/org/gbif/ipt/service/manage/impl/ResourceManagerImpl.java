@@ -4496,19 +4496,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private boolean isMetadataModifiedSinceLastPublication(@NotNull Resource resource) {
     Date lastPublished = resource.getLastPublished();
-    Date metadataLastModified = resource.getMetadataModified();
+    Date metadataModified = resource.getMetadataModified();
 
-    return metadataLastModified == null || lastPublished == null || metadataLastModified.after(lastPublished);
+    return metadataModified == null
+        || lastPublished == null
+        || metadataModified.after(lastPublished);
   }
 
   private boolean isSourcesModifiedSinceLastPublication(@NotNull Resource resource) {
-    if (resource.getLastPublished() == null) {
-      return resource.getSourcesModified() != null;
-    } else {
-      if (resource.getSourcesModified() != null) {
-        return resource.getSourcesModified().compareTo(resource.getLastPublished()) > 0;
-      }
-    }
-    return false;
+    Date lastPublished = resource.getLastPublished();
+    Date sourcesModified = resource.getSourcesModified();
+
+    return sourcesModified != null
+        && (lastPublished == null || sourcesModified.after(lastPublished));
   }
 }
