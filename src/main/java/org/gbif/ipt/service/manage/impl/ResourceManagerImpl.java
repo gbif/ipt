@@ -4498,7 +4498,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Date lastPublished = resource.getLastPublished();
     Date metadataLastModified = resource.getMetadataModified();
 
-    return metadataLastModified == null || metadataLastModified.after(lastPublished);
+    return metadataLastModified == null || lastPublished == null || metadataLastModified.after(lastPublished);
   }
 
   private boolean isSourcesModifiedSinceLastPublication(@NotNull Resource resource) {
