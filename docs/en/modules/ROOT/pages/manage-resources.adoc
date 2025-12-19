@@ -64,7 +64,7 @@ image::ipt2/manage/IPTManageResourceOverview-2.png[]
 This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:
 
 ==== File as data source
-The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click the {threedots} menu at "Source Data" and select "Add". Then select "File" from the dropdown box in the modal window and click on the button labelled "Browse…" or "Choose file" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the "Browse…" button.
+The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click the "Add" option. Then select "File" from the dropdown box in the modal window and click on the button labelled "Browse…" or "Choose file" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the "Browse…" button.
 
 image::ipt2/manage/IPTManageResourceSourceSummary.png[]
 
@@ -115,7 +115,7 @@ Should the user want to delete this source, they can reopen the Source Data File
 If the source data are contained in multiple text files, the process described in this section can be repeated for each of the files to import. A zipped folder with multiple text files can also be imported to add multiple source files in one go.
 
 ==== Database as data source
-The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the {threedots} menu and select "Add". Then choose "Database" from the list of source data types in the dropdown of the modal window, then click on the button labelled "Connect". This will open a Source Database detail page.
+The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the "Add" option. Then choose "Database" from the list of source data types in the dropdown of the modal window, then click on the button labelled "Connect". This will open a Source Database detail page.
 
 The Source Database Detail page shows the name of the resource along with a summary of the database characteristics (readability, number of columns detected) and allows the user to view and edit the parameters that describe how to access the data from the database, and to use these settings to analyse and preview the data.
 
@@ -141,7 +141,7 @@ image::ipt2/manage/IPTManageResourceSourceDatabase.png[]
 After the parameters for the data source have been set so that the data are accessed correctly, click on the button labelled "Save" to store this configuration. If the save is successful, the Resource Overview page will appear, with summary information about the data in the right-hand column of the Source Data area. A button labelled "Edit" will also appear with the source data summary information, allowing the user to reopen the Source Database detail page.
 
 ==== URL as data source
-The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or archives directly from a URL. Click the {threedots} menu and select "Add". Then select "URL" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below.
+The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or archives directly from a URL. Click the "Add" option. Then select "URL" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below.
 
 image::ipt2/manage/IPTManageResourceSourceSummary.png[]
 
@@ -173,7 +173,7 @@ image::ipt2/manage/IPTManageResourceSourceSelect.png[]
 
 Select the data source to map, and then click on the button labelled "Save". This will open the Data Mapping detail page (skip to the <<Data Mapping detail page>> below for help doing the actual mapping).
 
-After a new mapping has been added, it will be visible in the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the item to modify it, or click the {threedots} menu and select "Preview" to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.
+After a new mapping has been added, it will be visible in the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the item to modify it, or click the "Preview" to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version.
 
 image::ipt2/manage/IPTManageResourceDwCMapping2.png[]
 
@@ -287,7 +287,6 @@ image::ipt2/manage/IPTManageResourceMetadataBasicMetadata-2.png[]
 
 * *Title* - the Title for the resource. This title will appear as the name of the resource throughout the IPT. The title will also appear in the GBIF Registry, and form part of the citation. Please use a descriptive title for users of the dataset.  "Aves Tanzanian collection at the Natural History Museum of Denmark (SNM)" is a good title, "aves_tz_snm" is not! Avoid using filenames or acronyms known only within your organization.
 * *Short Name* -  the short name field provides a concise name that describes the resource.
-* *Publishing Organization* - the organization responsible for publishing (producing, releasing, holding) this resource. It will be used as the resource's rights holder and publishing organization when registering this resource with GBIF and when submitting metadata during DOI registrations. It will also be used to auto-generate the citation for the resource (if auto-generation is turned on), so consider the prominence of the role. If the desired organization does not appear in the list it may be added by the IPT Administrator (see the information under the "Configure Organizations" heading in the "Administration Menu" section). Please be aware your selection cannot be changed after the resource has been either registered with GBIF or assigned a DOI.
 * *Type* - the type of resource. The value of this field depends on the core mapping of the resource and is no longer editable if the Darwin Core mapping has already been made. If a desired type is not found in the list, the field "other" can be selected. Review the information under the "Configure Core Types and Extensions" heading of the "Administration Menu" section.
 * *Subtype* - the subtype of the resource. The options for this field depend on the Type field. If a desired subtype is not found in the list, the field can be left with the default selection.
 * *Metadata Language* - the language in which the metadata are written.
@@ -595,12 +594,12 @@ This area of the Resource Overview page allows a user to publish a version of th
 
 image::ipt2/manage/IPTManageResourcePublish.png[]
 
-Click on the {threedots} menu and select the "Publish" option to trigger publishing a new version. The "Publish" option will be enabled if
+Click on the  "Publish" option to trigger publishing a new version. The "Publish" option will be enabled if
 
-. the required metadata for the resource are complete, and
+. the required metadata for the resource is complete and valid
 . the user has the role "Manager with/without registration rights".
 
-Once the resource is registered only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" option, a confirmation dialog will appear:
+Once the resource is registered, only users with the role "Manager with registration rights" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). After pressing the "Publish" option, a confirmation dialog will appear:
 
 image::ipt2/manage/IPTManageResourcePublishConfirm.png[]
 
@@ -655,8 +654,9 @@ image::ipt2/manage/IPTManageResourcePublishingStatus.png[]
 
 === Auto-publishing
 
-To turn on automated publishing, in the Auto-publishing section click the {threedots} menu and select "Edit".
+To turn on automated publishing, in the Publication section click the "Edit" option, and then "Edit" again for the Auto-publishing.
 
+image::ipt2/manage/IPTManageResourceAutoPublishingStatusDisabled.png[]
 image::ipt2/manage/IPTManageResourceAutoPublishingStatus.png[]
 
 Select one of the 5 publishing intervals (annually, biannually, monthly, weekly, or daily) and choose a time, then press "Save".
@@ -675,7 +675,7 @@ The Visibility area of the Manage Resources page allows users having manager rig
 --
 image::ipt2/manage/IPTManageResourceVisibilityPrivate.png[]
 
-When the resource is ready for public visibility, click on the {threedots} menu and select the option labelled "Change". This will display a modal window with two options. You can make the resource public right away or at a set date
+When the resource is ready for public visibility, click on the "Change" option. This will display a modal window with two options. You can make the resource public right away or at a set date
 
 image::ipt2/manage/IPTManageResourceVisibilityMakePublic1.png[]
 
@@ -689,11 +689,11 @@ After submitting the form a message will appear at the top of the page saying th
 --
 image::ipt2/manage/IPTManageResourceVisibilityPublic.png[]
 
-One option appear in the {threedots} menu of the visibility area. Clicking on the option labelled "Change" will display a modal window
+Clicking on the option labelled "Change" will display a modal window
 
 image::ipt2/manage/IPTManageResourceVisibilityMakePrivate.png[]
 
-Clicking on button labelled "Yes" will remove the resource entirely from public visibility and return it to the private state.
+Clicking on the button labelled "Yes" will remove the resource entirely from public visibility and return it to the private state.
 --
 
 * *Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.
@@ -716,7 +716,7 @@ Registration is enabled when:
 . the resource has been published (see the explanation of the <<Publication>> area of the Resource Overview page, below), and
 . the user has the role "Manager with registration rights" (see the explanation for Role in the "Create a new user" section under the "Configure User accounts" heading of the "Administration Menu" section). A user having the Admin role can grant the "Manager with registration rights" to any user.
 
-Click on the {threedots} menu and select the option labelled "Register" to register the resource with the GBIF Registry.
+Click on the option labelled "Register" to register the resource with the GBIF Registry.
 
 NOTE: If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below
 
@@ -734,7 +734,7 @@ This section allows the resource to be included in one or more GBIF networks —
 
 image::ipt2/manage/IPTManageResourceNetworks.png[]
 
-To add the resource to a network, click on the {threedots} menu and select the "Add" option. To remove it, click the {threedots} menu on the network item and select "Delete".
+To add the resource to a network, click on the "Add" option. To remove it, click the "Delete".
 
 IMPORTANT: Please only add your resource to a network with the approval of the network managers or the GBIF Help Desk.
 
@@ -742,7 +742,7 @@ IMPORTANT: Please only add your resource to a network with the approval of the n
 
 image::ipt2/manage/IPTManageResourceManagers.png[]
 
-Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the {threedots} menu and selecting option labelled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the respective {threedots} menu and selecting the option labelled "Delete".
+Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the option labelled "Add". Any manager associated with a resource and having the role "Manager with registration rights" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the option labelled "Delete".
 
 image::ipt2/manage/IPTManageResourceManagerAdded.png[]
 
