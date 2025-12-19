@@ -59,7 +59,6 @@ This page allows users having managerial permission to make changes to various a
 
 image::ipt2/manage/IPTManageResourceOverview.png[]
 image::ipt2/manage/IPTManageResourceOverview-2.png[]
-image::ipt2/manage/IPTManageResourceOverview-3.png[]
 
 === Source Data
 This area of the Resource Overview page allows a user to import primary data from files, databases or URLs into the IPT. If a resource has no source data it is considered a metadata-only resource, with information about a data set or collection, but without any primary data. It is possible to connect a resource to more than one data source if the sources are related to each other. More about relating multiple data sources is explained in the http://rs.tdwg.org/dwc/terms/guides/text/index.htm#implement[Implementation Guide] section of the Darwin Core Text Guide.  Following are explanations for the preliminary step of choosing the source data, either from text files, database sources or a text file available at a URL:
@@ -262,11 +261,17 @@ This page shows a list of concepts within the vocabulary. In the context of mapp
 image::ipt2/manage/IPTManageResourceVocabularyDetail.png[]
 
 === Metadata
-This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the {threedots} menu and select "Edit" in the dropdown. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network, and if necessary assigned a DOI by GBIF. If any of the required metadata is missing, the Resource Overview page will open with a badge "Incomplete" in the Metadata area of the page.
+This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the Edit button. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network, and if necessary, assigned a DOI by GBIF. If any of the required metadata is missing, the Resource Overview page will open with a badge "Invalid" in the Metadata area of the page.
 
 image::ipt2/manage/IPTManageResourceMetadataMissing.png[]
+image::ipt2/manage/IPTManageResourceMetadataValid.png[]
 
-An existing resource file can be uploaded, replacing any existing metadata. To do this, click the {threedots} menu and select "Upload". Then click the "Browse" button and choose the EML file.
+For more details about the validation, open the Validation report by clicking the Invalid pill or by selecting Options -> Validation Report.
+
+image::ipt2/manage/IPTManageResourceMetadataValidationReportInvalid.png[]
+image::ipt2/manage/IPTManageResourceMetadataValidationReportValid.png[]
+
+An existing resource file can be uploaded, replacing any existing metadata. To do this, click the Options menu and select "Upload". Then click the "Browse" button and choose the EML file.
 
 Clicking on the "Edit" option opens the <<Basic Metadata>> page, the first of a series of metadata pages. Each page will appear in sequence as the button labelled "Save" is clicked upon finishing entering data on any given metadata page. Saving the metadata on the last of the metadata pages will transition back to the <<Basic Metadata>> page. Clicking on the button labelled "Cancel" on any given metadata page will disregard any changes made on that page and return to the Resource Overview page. In a column at the left of each metadata page is a list of links to all of the metadata pages for easy reference and navigation. Click on any of the links to open the metadata page for that topic.
 
