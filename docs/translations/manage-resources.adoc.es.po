@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2025-12-19 15:05+0000\n"
-"PO-Revision-Date: 2025-12-19 15:18\n"
+"PO-Revision-Date: 2025-12-19 16:46\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -323,7 +323,7 @@ msgstr "Archivo como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:68
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or equivalent files compressed with Zip or Gzip. Excel files are also supported. Click the \"Add\" option. Then select \"File\" from the dropdown box in the modal window and click on the button labelled \"Browse…\" or \"Choose file\" to navigate to and select the file to import. The file name can only be composed of alphanumeric characters (A-Z, 0-9), spaces, underscores, full stops, parentheses, and hyphens. After selecting the file, its name will appear to the right of the \"Browse…\" button."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto delimitados (CSV, archivos separados por tabuladores y que utilicen cualquier otro delimitador) o archivos equivalentes comprimidos con Zip o Gzip, también admite archivos de Excel. Seleccione la opción \"Archivo\" del menú desplegable y haga clic en el botón \"Elejir archivo\" para seleccionar el archivo a importar. El nombre del archivo sólo puede estar compuesto por caracteres alfanuméricos (A-Z, 0-9), espacios, guiones bajos, puntos, paréntesis y guiones. Tras seleccionar el archivo, el nombre aparecerá a la derecha del botón \"Elejir archivo\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:69
@@ -519,7 +519,7 @@ msgstr "Base de datos como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:119
 msgid "The IPT can use database connections to import data from tables or views. A list of supported database connections is given in the xref:database-connection.adoc[Supported Databases] section. To configure a database as a data source, click the \"Add\" option. Then choose \"Database\" from the list of source data types in the dropdown of the modal window, then click on the button labelled \"Connect\". This will open a Source Database detail page."
-msgstr ""
+msgstr "El IPT puede utilizar conexiones a bases de datos para importar datos desde tablas o vistas. En la sección xref:database-connection.adoc[Bases de datos compatibles] encontrará un listado de las conexiones a bases de datos compatibles. Para configurar una base de datos como fuente de datos, de clic en la opción \"Añadir\". Luego escoja \"Base de datos\" de la lista de fuentes de datos en el menú desplegable , luego de clic en el botón \"Conectar\". Se abrirá la página de detalles de la base de datos fuente."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:121
@@ -623,7 +623,7 @@ msgstr "URL como conjunto de datos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:145
 msgid "The IPT can import uncompressed delimited text files (CSV, tab, and files using any other delimiter) or archives directly from a URL. Click the \"Add\" option. Then select \"URL\" from the source data type dropdown list, then provide source's name and type or copy and paste the full URL (including `http://` or `https://`) into the box below."
-msgstr ""
+msgstr "El IPT puede importar archivos de texto delimitados sin comprimir (CSV, tab y archivos que utilizan cualquier otro delimitador) o archivos directamente desde una URL. Haga clic en la opción \"Agregar\". Luego seleccione \"URL\" de la lista desplegable del tipo de datos de origen, proporcione el nombre de la fuente y escriba o copie y pegue la URL completa (incluido `http://` o `https://`) en el cuadro a continuación."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:149
@@ -708,7 +708,7 @@ msgstr "Seleccione el conjunto de datos a mapear y luego haga clic en el botón 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:177
 msgid "After a new mapping has been added, it will be visible in the Darwin Core Mappings area. This area will contain a list of all the resource's mappings divided into Core Type mappings and Extension mappings. Click the item to modify it, or click the \"Preview\" to preview the mapping. Resource managers are advised to preview all mappings prior to publishing a new version."
-msgstr ""
+msgstr "Una vez añadido un nuevo mapeo, será visible en el área de Mapeos del Darwin Core. Esta área contendrá una lista de todos los mapeos del recurso divididos en mapeos de Tipo Core y mapeos de Extensión. Haga clic en el elemento para modificarlo, o haga clic en \"Vista previa\" para previsualizar el mapeo. Se recomienda a los administradores de recursos que previsualicen todos los mapeos antes de publicar una nueva versión."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:178
@@ -1023,7 +1023,7 @@ msgstr "Metadatos"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:265
 msgid "This area of the Resource Overview page allows a user to edit the resource metadata. To do this, click on the Edit button. Every resource requires a minimal set of descriptive metadata in order to be published in the GBIF network, and if necessary, assigned a DOI by GBIF. If any of the required metadata is missing, the Resource Overview page will open with a badge \"Invalid\" in the Metadata area of the page."
-msgstr ""
+msgstr "Esta área de la página de Vista General del Recurso permite al usuario editar los metadatos del recurso. Para ello, haga clic en el botón \"Editar\". Cada recurso requiere un conjunto mínimo de metadatos descriptivos para ser publicado en la red de GBIF, y si es necesario que GBIF le asigne un DOI. Si falta alguno de los metadatos requeridos, la página de Vista General del Recurso se abrirá con un distintivo \"Inválido\" en el área de Metadatos de la página."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:266
@@ -1035,29 +1035,29 @@ msgstr "ipt2/manage/IPTManageResourceMetadataMissing.png"
 #: en/modules/ROOT/pages/manage-resources.adoc:267
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataValid.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataValid.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:270
 msgid "For more details about the validation, open the Validation report by clicking the Invalid pill or by selecting Options -> Validation Report."
-msgstr ""
+msgstr "Para obtener mayor detalle acerca de la validación, abra el Reporte de validación haciendo clic en la pestaña No válido o seleccionando Opciones -> Reporte de validación."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:271
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataValidationReportInvalid.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataValidationReportInvalid.png"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:272
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceMetadataValidationReportValid.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceMetadataValidationReportValid.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:275
 msgid "An existing resource file can be uploaded, replacing any existing metadata. To do this, click the Options menu and select \"Upload\". Then click the \"Browse\" button and choose the EML file."
-msgstr ""
+msgstr "Se puede cargar un archivo de un recurso existente, sustituyendo cualquier metadato existente. Para ello, haga clic en el menú Opciones y seleccione \"Cargar\". A continuación, haga clic en el botón \"Examinar\" y seleccione el archivo EML."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:277
@@ -2287,12 +2287,12 @@ msgstr "ipt2/manage/IPTManageResourcePublish.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:598
 msgid "Click on the \"Publish\" option to trigger publishing a new version. The \"Publish\" option will be enabled if"
-msgstr ""
+msgstr "Haga clic en la opción \"Publicar\" para activar la publicación de una nueva versión. La opción \"Publicar\" se activará si"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:600
 msgid "the required metadata for the resource is complete and valid"
-msgstr ""
+msgstr "los metadatos requeridos para el recurso están completos y son válidos"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:601
@@ -2302,7 +2302,7 @@ msgstr "el usuario tiene el rol de \"Editor con/sin derechos de registro\"."
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:603
 msgid "Once the resource is registered, only users with the role \"Manager with registration rights\" can publish, since the resource's registration gets updated during each publication (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). After pressing the \"Publish\" option, a confirmation dialog will appear:"
-msgstr ""
+msgstr "Una vez registrado el recurso, sólo los usuarios con el rol \" Administrador con derechos de registro \" pueden publicar, ya que el registro del recurso se actualiza en cada publicación (véase la explicación del rol en la sección \" Crear un nuevo usuario \" en el apartado \" Configurar las cuentas de usuario \" de la sección \" Menú Administración \"). Tras pulsar la opción \"Publicar\", aparecerá un cuadro de diálogo de confirmación:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:604
@@ -2503,13 +2503,13 @@ msgstr "Publicación automática"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:658
 msgid "To turn on automated publishing, in the Publication section click the \"Edit\" option, and then \"Edit\" again for the Auto-publishing."
-msgstr ""
+msgstr "Para activar la publicación automática, en la sección Publicación, haga clic en la opción \"Editar\" y, a continuación, vuelva a hacer clic en \"Editar\" para la publicación automática."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:659
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceAutoPublishingStatusDisabled.png"
-msgstr ""
+msgstr "ipt2/manage/IPTManageResourceAutoPublishingStatusDisabled.png"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:660
@@ -2564,7 +2564,7 @@ msgstr "ipt2/manage/IPTManageResourceVisibilityPrivate.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:679
 msgid "When the resource is ready for public visibility, click on the \"Change\" option. This will display a modal window with two options. You can make the resource public right away or at a set date"
-msgstr ""
+msgstr "Cuando el recurso esté listo para su visibilidad pública, haga clic en la opción \"Cambiar\". Aparecerá una ventana emergente con dos opciones. Puede hacer público el recurso inmediatamente o en una fecha determinada"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:680
@@ -2598,7 +2598,7 @@ msgstr "ipt2/manage/IPTManageResourceVisibilityPublic.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:693
 msgid "Clicking on the option labelled \"Change\" will display a modal window"
-msgstr ""
+msgstr "Al hacer clic en la opción \"Cambiar\", se mostrará una ventana emergente"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:694
@@ -2609,7 +2609,7 @@ msgstr "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:697
 msgid "Clicking on the button labelled \"Yes\" will remove the resource entirely from public visibility and return it to the private state."
-msgstr ""
+msgstr "Al hacer clic en el botón \"Si\" el recurso desaparecerá por completo de la vista pública y regresará el estado privado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:700
@@ -2669,7 +2669,7 @@ msgstr "el usuario tiene el rol \"Editor con derechos de registro\" (ver explica
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:720
 msgid "Click on the option labelled \"Register\" to register the resource with the GBIF Registry."
-msgstr ""
+msgstr "Haga clic en el la opción \"Registro\" para registrar el recurso en el Registro GBIF."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:722
@@ -2713,7 +2713,7 @@ msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:738
 msgid "To add the resource to a network, click on the \"Add\" option. To remove it, click the \"Delete\"."
-msgstr ""
+msgstr "Para añadir el recurso a una red, haga clic en la opción \"Añadir\". Para eliminarlo, haga clic en \"Eliminar\"."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:740
@@ -2735,7 +2735,7 @@ msgstr "ipt2/manage/IPTManageResourceManagers.png"
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:746
 msgid "Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the option labelled \"Add\". Any manager associated with a resource and having the role \"Manager with registration rights\" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the option labelled \"Delete\"."
-msgstr ""
+msgstr "Cada recurso tiene uno o varios administradores asignados explícitamente que pueden ver, modificar y eliminar el recurso. El usuario que crea un recurso tiene automáticamente estas capacidades. Se pueden asociar administradores adicionales a un recurso y otorgarles estas mismas capacidades seleccionándolos por su nombre en el cuadro de selección de esta área de la página de Vista general del recurso y, a continuación, haciendo clic en la opción etiquetada como \"Añadir\". Cualquier administrador asociado a un recurso y que tenga el rol \"Administrador con derechos de registro\" puede también registrar el recurso y actualizarlo en el registro de GBIF. Todos los usuarios que tengan el rol de Administrador tienen automáticamente roles de gestión completos para todos los recursos de la instancia IPT. El área muestra el nombre y la dirección de correo electrónico del creador del recurso. Si se han agregado administradores, sus nombres y direcciones de correo electrónico aparecerán debajo del creador. Cualquier administrador agregado puede eliminar la función de administrador del recurso haciendo clic en la opción \"Eliminar\"."
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:747
