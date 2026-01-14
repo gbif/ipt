@@ -195,6 +195,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private boolean rowError;
     private String errorMessage;
     private Exception exception;
+    private long rowCounter = 0;
 
     SqlRowIterator(SqlSource source) throws SQLException {
       this.conn = getDbConnection(source);
@@ -229,6 +230,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     @Override
     public String[] next() {
+      rowCounter++;
       String[] val = new String[rowSize];
       if (hasNext) {
         try {
@@ -236,7 +238,31 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           int gotTo = 0; // field reached in row
           try {
             for (int i = 1; i <= rowSize; i++) {
-              val[i - 1] = rs.getString(i);
+              String s = rs.getString(i);
+              val[i - 1] = s;
+
+              if (s != null && s.indexOf('\u0000') >= 0) {
+                String colName = rs.getMetaData().getColumnLabel(i);
+                String colType = rs.getMetaData().getColumnTypeName(i);
+
+                LOG.error(
+                    "NUL detected at source. row={}, col={}, type={}, length={}, firstNulPos={}",
+                    rowCounter,
+                    colName,
+                    colType,
+                    s.length(),
+                    s.indexOf('\u0000')
+                );
+
+                LOG.error("Trying to get as nString...");
+                s  = rs.getNString(i);
+                if (s != null && s.indexOf('\u0000') >= 0) {
+                  LOG.error("NUL still present");
+                } else {
+                  LOG.info("No NUL present!");
+                }
+
+              }
               gotTo = i;
             }
           } catch (SQLException exOnRow) {
