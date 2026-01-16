@@ -2564,7 +2564,7 @@
                                     </div>
 
                                     <div id="datapackage-metadata-validate" class="col-12 text-smaller" style="display: none;">
-                                        <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" value="${validateDatapackageMetadata?c}"/>
+                                        <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" />
                                     </div>
                                 </div>
                             </form>
@@ -2576,7 +2576,7 @@
                                         <@s.file name="emlFile" cssClass="form-control form-control-sm my-1"/>
                                     </div>
                                     <div id="eml-validate" class="col-12" style="display: none;">
-                                        <@checkbox name="validateEml" i18nkey="button.validate" value="${validateEml?c}"/>
+                                        <@checkbox name="validateEml" i18nkey="button.validate" />
                                     </div>
                                 </div>
                             </form>

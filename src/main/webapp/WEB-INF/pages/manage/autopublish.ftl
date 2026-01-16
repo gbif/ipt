@@ -288,9 +288,9 @@
                 <div id="options" class="mt-5">
                     <h5 class="text-gbif-header-2 fw-400 mb-3"><@s.text name="manage.autopublish.options"/></h5>
 
-                    <@checkbox name="skipUnchanged" value="${skipUnchanged?c}" i18nkey="manage.autopublish.options.skipUnchanged"/>
+                    <@checkbox name="skipUnchanged" i18nkey="manage.autopublish.options.skipUnchanged"/>
 
-                    <@checkbox name="skipDrop" value="${skipDrop?c}" i18nkey="manage.autopublish.options.skipDrop"/>
+                    <@checkbox name="skipDrop" i18nkey="manage.autopublish.options.skipDrop"/>
 
                     <div id="dropThresholdContainer" class="mt-2" style="display: none;">
                         <div class="row">

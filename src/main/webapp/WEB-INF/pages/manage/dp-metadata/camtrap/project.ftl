@@ -172,11 +172,7 @@
                                 </div>
 
                                 <div class="col-12 fs-smaller">
-                                    <#if (metadata.project.individualAnimals)??>
-                                        <@checkbox name="metadata.project.individualAnimals" i18nkey="datapackagemetadata.project.individualAnimals" value="${metadata.project.individualAnimals?c}" help="i18n"/>
-                                    <#else>
-                                        <@checkbox name="metadata.project.individualAnimals" i18nkey="datapackagemetadata.project.individualAnimals" value="false" help="i18n"/>
-                                    </#if>
+                                    <@checkbox name="metadata.project.individualAnimals" i18nkey="datapackagemetadata.project.individualAnimals" help="i18n"/>
                                 </div>
                             </div>
                         </div>

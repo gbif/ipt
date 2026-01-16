@@ -158,7 +158,7 @@
             </h4>
             <div class="row g-3 mb-5">
                 <div class="col-12">
-                    <@checkbox name="archivalMode" i18nkey="admin.config.archivalMode" value="${archivalMode?c}" help="i18n"/>
+                    <@checkbox name="archivalMode" i18nkey="admin.config.archivalMode" help="i18n"/>
                 </div>
 
                 <div class="col-lg-6">
@@ -171,7 +171,7 @@
             </h4>
             <div class="row g-3 mb-5">
                 <div class="col-12">
-                    <@checkbox name="debug" i18nkey="admin.config.debug" value="${debug?c}" help="i18n"/>
+                    <@checkbox name="debug" i18nkey="admin.config.debug" help="i18n"/>
                 </div>
             </div>
 

@@ -241,17 +241,13 @@
 
                 <div class="row g-3 mt-1">
                     <div class="col-12">
-                        <#if id?has_content>
-                            <@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="organisation.canHost" help="i18n"/>
-                        <#else>
-                            <@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" value="true" help="i18n"/>
-                        </#if>
+                        <@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" help="i18n"/>
                     </div>
 
                     <#assign doiRegistrationAgencyAssociation = organisation.doiRegistrationAgency?has_content || organisation.associatedWithDoiRegistrationAgency />
 
                     <div class="col-12">
-                        <@checkbox name="organisation.associatedWithDoiRegistrationAgency" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" value="${doiRegistrationAgencyAssociation?c}" help="i18n"/>
+                        <@checkbox name="organisation.associatedWithDoiRegistrationAgency" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" help="i18n"/>
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if>>
@@ -271,7 +267,7 @@
                     </div>
 
                     <div class="col-12 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
-                        <@checkbox name="organisation.agencyAccountPrimary" i18nkey="admin.organisation.doiAccount.activated" value="${organisation.agencyAccountPrimary?c}" help="i18n"/>
+                        <@checkbox name="organisation.agencyAccountPrimary" i18nkey="admin.organisation.doiAccount.activated" help="i18n"/>
                     </div>
                 </div>
             </form>
