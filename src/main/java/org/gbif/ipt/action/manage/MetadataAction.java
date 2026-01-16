@@ -149,14 +149,6 @@ public class MetadataAction extends ManagerBaseAction {
     return resource.getEml();
   }
 
-  public boolean isInferGeocoverageAutomatically() {
-    return resource.isInferGeocoverageAutomatically();
-  }
-
-  public void setInferGeocoverageAutomatically(boolean inferGeocoverageAutomatically) {
-    resource.setInferGeocoverageAutomatically(inferGeocoverageAutomatically);
-  }
-
   public boolean isInferTaxonomicCoverageAutomatically() {
     return resource.isInferTaxonomicCoverageAutomatically();
   }
