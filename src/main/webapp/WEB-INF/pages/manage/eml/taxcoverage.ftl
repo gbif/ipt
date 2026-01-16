@@ -264,7 +264,7 @@
                             <#if resource.dataPackage==false>
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@checkbox name="inferTaxonomicCoverageAutomatically" value="${inferTaxonomicCoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
+                                    <@checkbox name="inferTaxonomicCoverageAutomatically" i18nkey="eml.inferAutomatically"/>
                                 </div>
 
                                 <div id="preview-links" class="col-md-6">

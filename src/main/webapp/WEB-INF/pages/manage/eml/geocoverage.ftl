@@ -1,4 +1,5 @@
-    <#include "/WEB-INF/pages/inc/header.ftl">
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MetadataAction" -->
+<#include "/WEB-INF/pages/inc/header.ftl">
 <title xmlns="http://www.w3.org/1999/html"><@s.text name='manage.metadata.geocoverage.title'/></title>
     <#assign currentMetadataPage = "geocoverage"/>
     <#assign currentMenu="manage"/>
@@ -463,7 +464,7 @@
             </#if>
         </div>
 
-<form id="geocoverage-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
+<form id="geocoverage-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
             <div class="container my-3 p-3">
@@ -511,7 +512,7 @@
                         <#if resource.dataPackage==false>
                         <div class="row g-2 mt-0">
                             <div class="col-md-6">
-                                <@checkbox name="inferGeocoverageAutomatically" value="${inferGeocoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
+                                <@checkbox name="resource.inferGeocoverageAutomatically" i18nkey="eml.inferAutomatically"/>
                             </div>
 
                             <div id="preview-links" class="col-md-6">
