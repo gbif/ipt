@@ -33,13 +33,15 @@
                 history.replaceState(null, '', url);
             }
 
+            var $inferAutomaticallyCheckbox = $('#resource\\.inferGeocoverageAutomatically');
+
             // Function to check if query param exists and update checkbox accordingly
             function checkUrlParams() {
                 // if "inferAutomatically" present and true, tick the inferGeocoverageAutomatically checkbox
                 const urlParams = new URLSearchParams(window.location.search);
                 const checkboxParam = urlParams.get('inferAutomatically');
                 if (checkboxParam === 'true') {
-                    $('#inferGeocoverageAutomatically').prop('checked', true);
+                    $inferAutomaticallyCheckbox.prop('checked', true);
                 }
 
                 // remove "reinferMetadata" param on load
@@ -50,7 +52,7 @@
             }
 
             // add/remove "inferAutomatically" param when clicking checkbox
-            $('#inferGeocoverageAutomatically').change(function() {
+            $inferAutomaticallyCheckbox.change(function() {
                 if ($(this).is(':checked')) {
                     updateQueryParam('inferAutomatically', 'true');
                 } else {
@@ -152,11 +154,10 @@
             });
 
             if ($("#globalCoverage").is(':checked')) {
-                $('#inferGeocoverageAutomaticallyWrapper').hide();
                 $('.intro').hide();
             }
 
-            if ($("#inferGeocoverageAutomatically").is(':checked')) {
+            if ($inferAutomaticallyCheckbox.is(':checked')) {
                 $('#globalCoverageWrapper').hide();
                 $('#coordinates').hide();
                 $('.intro').hide();
@@ -167,8 +168,8 @@
                 setInferredCoordinatesToInputs();
             }
 
-            $("#inferGeocoverageAutomatically").click(function() {
-                if ($("#inferGeocoverageAutomatically").is(':checked')) {
+            $inferAutomaticallyCheckbox.click(function() {
+                if ($inferAutomaticallyCheckbox.is(':checked')) {
                     $('#globalCoverageWrapper').hide();
                     $('#coordinates').hide();
                     $('.intro').hide();
@@ -178,7 +179,7 @@
                     adjustMapWithInferredCoordinates(true)
                     setInferredCoordinatesToInputs()
                     $("#globalCoverage").prop("checked", false);
-                    $("#inferGeocoverageAutomatically").prop("checked", true);
+                    $inferAutomaticallyCheckbox.prop("checked", true);
                     $("#coordinates").hide();
                     $("#static-coordinates").show();
                 } else {
@@ -230,7 +231,6 @@
                     $("#" + minLatId).val(MIN_LAT_VAL_LIMIT);
                     $("#" + maxLatId).val(MAX_LAT_VAL_LIMIT);
                     $("#coordinates").hide();
-                    $('#inferGeocoverageAutomaticallyWrapper').hide();
                     $('.intro').hide();
                     locationFilter.disable();
                     map.fitWorld();
@@ -244,7 +244,6 @@
                     $("#" + minLatId).val(minLatVal);
                     $("#" + maxLatId).val(maxLatVal);
                     $("#coordinates").show();
-                    $('#inferGeocoverageAutomaticallyWrapper').show();
                     $('.intro').show();
                     locationFilter.enable();
                     locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)));
@@ -260,7 +259,7 @@
             locationFilter.on("change", function (e) {
                 if (!e.skipMapAdjustment) {
                     // manual adjustments - stop inferring automatically
-                    $("#inferGeocoverageAutomatically").prop("checked", false);
+                    $inferAutomaticallyCheckbox.prop("checked", false);
                     $("#coordinates").show();
                     $("#globalCoverageWrapper").show();
                     $("#static-coordinates").hide();
