@@ -464,7 +464,7 @@
             </#if>
         </div>
 
-<form id="geocoverage-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+<form id="geocoverage-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
             <div class="container my-3 p-3">
