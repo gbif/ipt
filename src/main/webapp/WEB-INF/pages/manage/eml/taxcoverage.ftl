@@ -19,6 +19,8 @@
                 history.replaceState(null, '', url);
             }
 
+            var $inferAutomaticallyCheckbox = $('#resource\\.inferTaxonomicCoverageAutomatically');
+
             // Function to check if query param exists and update checkbox accordingly
             function checkUrlParams() {
                 // if "inferAutomatically" present and true, tick the inferTaxonomicCoverageAutomatically checkbox
@@ -26,7 +28,7 @@
                 const checkboxParam = urlParams.get('inferAutomatically');
                 if (checkboxParam === 'true') {
                     // select checkbox
-                    $('#inferTaxonomicCoverageAutomatically').prop('checked', true);
+                    $inferAutomaticallyCheckbox.prop('checked', true);
                     // enable description input
                     $('div#static-taxanomic textarea').show().prop('disabled', false);
                 }
@@ -38,14 +40,14 @@
                 }
             }
 
-            var isInferAutomaticallyChecked = $('#inferTaxonomicCoverageAutomatically').is(":checked");
+            var isInferAutomaticallyChecked = $inferAutomaticallyCheckbox.is(":checked");
             if (isInferAutomaticallyChecked) {
                 // enable description input
                 $('div#static-taxanomic textarea').show().prop('disabled', false);
             }
 
             // add/remove "inferAutomatically" param when clicking checkbox
-            $('#inferTaxonomicCoverageAutomatically').change(function() {
+            $inferAutomaticallyCheckbox.change(function() {
                 if ($(this).is(':checked')) {
                     updateQueryParam('inferAutomatically', 'true');
                     $('div#static-taxanomic textarea').show().prop('disabled', false);
@@ -264,7 +266,7 @@
                             <#if resource.dataPackage==false>
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@checkbox name="inferTaxonomicCoverageAutomatically" i18nkey="eml.inferAutomatically"/>
+                                    <@checkbox name="resource.inferTaxonomicCoverageAutomatically" i18nkey="eml.inferAutomatically"/>
                                 </div>
 
                                 <div id="preview-links" class="col-md-6">

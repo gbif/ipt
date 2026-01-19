@@ -26,13 +26,15 @@
                 history.replaceState(null, '', url);
             }
 
+            var $inferAutomaticallyCheckbox = $('#resource\\.inferTemporalCoverageAutomatically');
+
             // Function to check if query param exists and update checkbox accordingly
             function checkUrlParams() {
                 // if "inferAutomatically" present and true, tick the inferTemporalCoverageAutomatically checkbox
                 const urlParams = new URLSearchParams(window.location.search);
                 const checkboxParam = urlParams.get('inferAutomatically');
                 if (checkboxParam === 'true') {
-                    $('#inferTemporalCoverageAutomatically').prop('checked', true);
+                    $inferAutomaticallyCheckbox.prop('checked', true);
                 }
 
                 // remove "reinferMetadata" param on load
@@ -43,7 +45,7 @@
             }
 
             // add/remove "inferAutomatically" param when clicking checkbox
-            $('#inferTemporalCoverageAutomatically').change(function() {
+            $inferAutomaticallyCheckbox.change(function() {
                 if ($(this).is(':checked')) {
                     updateQueryParam('inferAutomatically', 'true');
                 } else {
@@ -442,7 +444,7 @@
                             <#if resource.dataPackage==false>
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@checkbox name="inferTemporalCoverageAutomatically" i18nkey="eml.inferAutomatically"/>
+                                    <@checkbox name="resource.inferTemporalCoverageAutomatically" i18nkey="eml.inferAutomatically"/>
                                 </div>
 
                                 <div id="preview-links" class="col-md-6">

@@ -149,22 +149,6 @@ public class MetadataAction extends ManagerBaseAction {
     return resource.getEml();
   }
 
-  public boolean isInferTaxonomicCoverageAutomatically() {
-    return resource.isInferTaxonomicCoverageAutomatically();
-  }
-
-  public void setInferTaxonomicCoverageAutomatically(boolean inferTaxonomicCoverageAutomatically) {
-    resource.setInferTaxonomicCoverageAutomatically(inferTaxonomicCoverageAutomatically);
-  }
-
-  public boolean isInferTemporalCoverageAutomatically() {
-    return resource.isInferTemporalCoverageAutomatically();
-  }
-
-  public void setInferTemporalCoverageAutomatically(boolean inferTemporalCoverageAutomatically) {
-    resource.setInferTemporalCoverageAutomatically(inferTemporalCoverageAutomatically);
-  }
-
   public Map<String, String> getJGTICuratorialUnitTypeOptions() {
     return JGTICuratorialUnitType.HTML_SELECT_MAP;
   }
