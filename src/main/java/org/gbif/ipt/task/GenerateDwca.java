@@ -833,6 +833,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     AtomicInteger recordsWithNonMatchingBasisOfRecord, AtomicInteger recordsWithAmbiguousBasisOfRecord) {
     // check basisOfRecord exists
     if (StringUtils.isBlank(bor)) {
+      writePublicationLogMessage("Line #" + line + " does not have basisOfRecord");
       recordsWithNoBasisOfRecord.getAndIncrement();
     } else {
       // check basisOfRecord matches vocabulary (lower case comparison). E.g. specimen matches Specimen are equal
