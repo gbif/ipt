@@ -43,8 +43,10 @@ import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 import org.gbif.utils.text.LineComparator;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -443,6 +445,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     // retrieve the core file
     File unsorted = file.getLocationFiles().get(0);
 
+    log.debug("Check unsorted file");
+    logFirstNullByte(unsorted, "unsorted");
+
     // create a new file that will store the records sorted by column
     File sorted = new File(unsorted.getParentFile(), SORTED_FILE_PREFIX + unsorted.getName());
     // get the ignore column rows, delimiter, enclosed by, newline character
@@ -463,7 +468,34 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     log.debug("Finished sorting file " + unsorted.getAbsolutePath() + " in "
         + (System.currentTimeMillis() - time) / 1000 + " secs, check: " + sorted.getAbsoluteFile());
 
+    log.debug("Check sorted file");
+    logFirstNullByte(sorted, "sorted");
+
     return sorted;
+  }
+
+  private void logFirstNullByte(File file, String type) throws IOException {
+    final int BUF_SIZE = 8 * 1024 * 1024;
+    byte[] buf = new byte[BUF_SIZE];
+
+    try (InputStream in = new BufferedInputStream(new FileInputStream(file), BUF_SIZE)) {
+      long pos = 0;
+      int read;
+      while ((read = in.read(buf)) != -1) {
+        for (int i = 0; i < read; i++) {
+          if (buf[i] == 0) {
+            log.error(
+                "NULL byte found in {} file at byte position {}",
+                type,
+                pos + i
+            );
+            return;
+          }
+        }
+        pos += read;
+      }
+      log.info("No NULL bytes found in {} file", type);
+    }
   }
 
   /**
