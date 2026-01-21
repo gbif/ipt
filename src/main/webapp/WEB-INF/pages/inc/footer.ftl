@@ -97,12 +97,17 @@
             e.returnValue = '';
         });
 
-
         // Intercept internal link clicks
         document.querySelectorAll('a[href]').forEach(link => {
             link.addEventListener('click', (e) => {
                 // Skip links that should not trigger the unsaved-changes modal
-                if (link.id === 're-infer-link') return;
+                if (link.id === 're-infer-link') {
+                    console.log("link.id=" + link.id);
+                    console.log("skipping!")
+                    isIntentionalUnload = true;
+                    hasUnsavedChanges = false;
+                    return;
+                }
 
                 const href = link.getAttribute('href');
 
