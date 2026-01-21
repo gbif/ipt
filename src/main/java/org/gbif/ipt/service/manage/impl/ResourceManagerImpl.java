@@ -1410,7 +1410,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     Set<PropertyMapping> fields = new TreeSet<>();
     // iterate over each field to make sure its part of the extension we know
     for (ArchiveField f : af.getFields().values()) {
-      if (ext.hasProperty(f.getTerm())) {
+      if (f.getTerm() == null) {
+        alog.warn("manage.resource.create.mapping.concept.skip",
+            new String[] {"null", ext.getRowType()});
+      } else if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
       } else {
         alog.warn("manage.resource.create.mapping.concept.skip",
