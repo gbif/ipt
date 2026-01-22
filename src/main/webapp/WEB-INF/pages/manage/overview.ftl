@@ -86,40 +86,59 @@
             console.log("Failed to initialize tooltips")
         }
 
-        $(".source-item-link").click(function (e) {
+        $(".source-item").click(function (e) {
+            // Ignore clicks on actions or anything inside them
+            if ($(e.target).closest(".source-item-actions, .delete-source").length) {
+                return;
+            }
+
             e.preventDefault();
+            displayProcessing();
             openSourceDetails(e);
         });
 
         function openSourceDetails(e) {
-            var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
-            var source = e.currentTarget.attributes["data-ipt-source"].nodeValue;
+            const $item = $(e.currentTarget).find(".source-item-link");
+            const resource = $item.data("ipt-resource");
+            const source = $item.data("ipt-source");
             location.href = 'source.do?r=' + resource + '&id=' + source;
         }
 
-        $(".mapping-item-link").click(function (e) {
+        $(".mapping-item").click(function (e) {
+            // Ignore clicks on actions or anything inside them
+            if ($(e.target).closest(".mapping-item-actions, .delete-mapping").length) {
+                return;
+            }
+
             e.preventDefault();
             displayProcessing();
             openMappingDetails(e);
         });
 
         function openMappingDetails(e) {
-            var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
-            var extension = e.currentTarget.attributes["data-ipt-extension"].nodeValue;
-            var mapping = e.currentTarget.attributes["data-ipt-mapping"].nodeValue;
+            const $item = $(e.currentTarget).find(".mapping-item-link");
+            const resource = $item.data("ipt-resource");
+            const extension = $item.data("ipt-extension");
+            const mapping = $item.data("ipt-mapping");
             location.href = 'mapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
         }
 
-        $(".schema-mapping-item-link").click(function (e) {
+        $(".schema-mapping-item").click(function (e) {
+            // Ignore clicks on actions or anything inside them
+            if ($(e.target).closest(".mapping-item-actions, .delete-mapping").length) {
+                return;
+            }
+
             e.preventDefault();
             displayProcessing();
             openSchemaMappingDetails(e);
         });
 
         function openSchemaMappingDetails(e) {
-            var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
-            var extension = e.currentTarget.attributes["data-ipt-extension"].nodeValue;
-            var mapping = e.currentTarget.attributes["data-ipt-mapping"].nodeValue;
+            const $item = $(e.currentTarget).find(".schema-mapping-item-link");
+            const resource = $item.data("ipt-resource");
+            const extension = $item.data("ipt-extension");
+            const mapping = $item.data("ipt-mapping");
             location.href = 'dataPackageMapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
         }
 
