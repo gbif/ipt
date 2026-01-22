@@ -1,0 +1,29 @@
+= 動作環境
+
+== インターネット接続環境
+IPTは、実行されるサーバーが一貫してインターネットに接続されていることを前提に設計されています。IPTの多くの機能はオフラインでも動作しますが、IPTの一部の機能（GBIF登録、拡張機能インストール、統制語彙、ソースデータ用外部データベースなど）は、外部のインターネットリソースとの通信を必要とします。IPTの管理・運用の観点からは、インターネット接続の速度はこのような通信にのみ影響します。ローカルイントラネットの外からIPTウェブアプリケーションとそのサービスにアクセスするには、常に安定した接続も必要であり、接続性の低下は、（特に大きなデータセットを転送する場合）これらの側面に悪影響を与える可能性があります。
+
+== 安定したURL
+単にlink:http://rs.tdwg.org/dwc/terms/guides/text/[ダーウィンコア・アーカイブ] を生成するツールとして使用することもできますが、IPTは発見しやすくアクセスしやすいインターネットベースのアプリケーションおよびサービスであることを意図しています。この機能をサポートするために、IPTがインストールされているサーバーは、安定したURLを介してアプリケーションとサービスへのアクセスをサポートできなければなりません。
+
+== TLS
+IPTでは必須ではありませんが、可能であれば安全なHTTPS（SSLに代わるTLS）でIPTを実行することをGBIFでは推奨しています。
+
+== メモリ
+IPTのインストールをホストするサーバーは、少なくとも256MBのRAMメモリをアプリケーションで利用できるようにする必要があります。
+
+== ディスク容量
+The space required by the IPT application is around 250MB. The contents of the IPT data directory after installation require less than 1MB of disc storage, writable by the IPT. However, the content of the data directory will grow as resources are created, and will require space roughly equal to the size of the files or tables containing the imported data sets. A reasonable estimate for the size of a relatively rich occurrence data set is one kilobyte per record. Normal usage of the IPT appends information to the log files, which will grow over time, but which generally require minimal disc space.
+
+== Java バージョン
+
+The current version of the IPT is tested to run on Java 11 and 17. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported.
+
+== Operating system
+
+The IPT is a Java web application, and can run on Linux or Windows. We provide RPM packages (Red Hat, CentOS, etc.), APT packages (Debian, Ubuntu, etc.), a Docker image, and a WAR file for a servlet container (Tomcat etc).
+
+In most cases, the appropriate OS is one supported by the organization's IT department. GBIF cannot provide technical support for OS installation, maintenance, backups, HTTPS certficates etc.
+
+== テクニカルサポート
+IPTの運用はコミットメントです。データは定期的にバックアップし、（OSやIPTの）セキュリティアップデートは、利用できるようになったらすぐに適用しなければなりません。
