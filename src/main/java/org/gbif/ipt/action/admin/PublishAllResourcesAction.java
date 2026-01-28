@@ -28,6 +28,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -42,10 +43,10 @@ import lombok.Setter;
 
 public class PublishAllResourcesAction extends BaseAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(PublishAllResourcesAction.class);
-
+  @Serial
   private static final long serialVersionUID = -2717994514136947049L;
+
+  private static final Logger LOG = LogManager.getLogger(PublishAllResourcesAction.class);
 
   protected ResourceManager resourceManager;
   protected RegistryManager registryManager;

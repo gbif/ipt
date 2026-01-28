@@ -15,12 +15,14 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.validation.TemporalScopeMetadata;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -34,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Temporal implements Serializable {
 
+  @Serial
   private final static long serialVersionUID = 1939846711591134405L;
 
   /**

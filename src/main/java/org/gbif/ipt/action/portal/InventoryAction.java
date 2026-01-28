@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.portal;
 
+import lombok.Getter;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
@@ -22,6 +23,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.ResourceUtils;
 
 import java.io.File;
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,19 +34,22 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.json.annotations.JSON;
-
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
 
 /**
  * Action serialized into JSON - used to get a simple JSON inventory of registered resources.
  */
 public class InventoryAction extends ActionSupport {
+
+  @Serial
+  private static final long serialVersionUID = -549820308428762423L;
 
   private static final Logger LOG = LogManager.getLogger(InventoryAction.class);
 
@@ -84,43 +89,72 @@ public class InventoryAction extends ActionSupport {
    */
   public static class DatasetItem {
 
-    private String title;
-    private String type;
-    private int records;
-    private Date lastPublished;
-    private String gbifKey;
-    private String eml;
-    private String dwca;
-    private BigDecimal version;
-    private Map<String, Integer> recordsByExtension = new HashMap<>();
-
     /**
+     * -- GETTER --
+     *
      * @return the dataset title
      */
-    public String getTitle() {
-      return title;
-    }
+    @Getter
+    private String title;
+    /**
+     * -- GETTER --
+     *
+     * @return the dataset type
+     */
+    @Getter
+    private String type;
+    /**
+     * -- GETTER --
+     *
+     * @return the dataset record count
+     */
+    @Getter
+    private int records;
+    private Date lastPublished;
+    /**
+     * -- GETTER --
+     *
+     * @return the dataset GBIF key (UUID)
+     */
+    @Getter
+    private String gbifKey;
+    /**
+     * -- GETTER --
+     *
+     * @return the endpoint URL to the dataset's last published Eml file
+     */
+    @Getter
+    private String eml;
+    /**
+     * -- GETTER --
+     *
+     * @return the endpoint URL to the dataset's last published DwC-A file
+     */
+    @Getter
+    private String dwca;
+    /**
+     * -- GETTER --
+     *  Get last published version of resource.
+     *
+     * @return resource version
+     */
+    @Getter
+    private BigDecimal version;
+    /**
+     * -- GETTER --
+     *
+     * @return map containing record counts (map value) by extension (map key) used in the last published DwC-A file,
+     * or an empty map
+     */
+    @Getter
+    private Map<String, Integer> recordsByExtension = new HashMap<>();
 
     public void setTitle(String title) {
       this.title = title;
     }
 
-    /**
-     * @return the dataset type
-     */
-    public String getType() {
-      return type;
-    }
-
     public void setType(String type) {
       this.type = type;
-    }
-
-    /**
-     * @return the dataset record count
-     */
-    public int getRecords() {
-      return records;
     }
 
     public void setRecords(int records) {
@@ -139,45 +173,16 @@ public class InventoryAction extends ActionSupport {
       this.lastPublished = lastPublished;
     }
 
-    /**
-     * @return the dataset GBIF key (UUID)
-     */
-    public String getGbifKey() {
-      return gbifKey;
-    }
-
     public void setGbifKey(String gbifKey) {
       this.gbifKey = gbifKey;
-    }
-
-    /**
-     * @return the endpoint URL to the dataset's last published Eml file
-     */
-    public String getEml() {
-      return eml;
     }
 
     public void setEml(String eml) {
       this.eml = eml;
     }
 
-    /**
-     * @return the endpoint URL to the dataset's last published DwC-A file
-     */
-    public String getDwca() {
-      return dwca;
-    }
-
     public void setDwca(String dwca) {
       this.dwca = dwca;
-    }
-
-    /**
-     * @return map containing record counts (map value) by extension (map key) used in the last published DwC-A file,
-     * or an empty map
-     */
-    public Map getRecordsByExtension() {
-      return recordsByExtension;
     }
 
     /**
@@ -187,16 +192,6 @@ public class InventoryAction extends ActionSupport {
       if (recordsByExtension != null) {
         this.recordsByExtension = Collections.unmodifiableMap(recordsByExtension);
       }
-    }
-
-    /**
-     * Get last published version of resource.
-     *
-     * @return resource version
-     */
-    @NotNull
-    public BigDecimal getVersion() {
-      return version;
     }
 
     /**
@@ -243,6 +238,7 @@ public class InventoryAction extends ActionSupport {
     BigDecimal version = r.getLastPublishedVersionsVersion();
     String shortname = r.getShortname();
     VersionHistory versionHistory = r.getLastPublishedVersion();
+    // TODO: possible NPE
     DOI doi = versionHistory.getDoi();
     File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, version);
     UUID gbifKey = r.getKey();

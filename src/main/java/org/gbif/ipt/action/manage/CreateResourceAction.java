@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import lombok.Getter;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -38,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serial;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,18 +55,23 @@ import org.apache.logging.log4j.Logger;
 
 public class CreateResourceAction extends POSTAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = 4182807671814949776L;
+
   private static final Logger LOG = LogManager.getLogger(CreateResourceAction.class);
 
   private ResourceManager resourceManager;
+  @Getter
   private DataDir dataDir;
   private File file;
   private String fileContentType;
   private String fileFileName;
+  @Getter
   private String shortname;
   private String resourceType;
   private Map<String, String> types;
   private Map<String, String> dataPackageTypes;
+  @Getter
   private List<Organisation> organisations;
   private final VocabulariesManager vocabManager;
   private final DataPackageSchemaManager schemaManager;
@@ -84,10 +91,6 @@ public class CreateResourceAction extends POSTAction {
     this.dataDir = dataDir;
     this.vocabManager = vocabManager;
     this.schemaManager = schemaManager;
-  }
-
-  public String getShortname() {
-    return shortname;
   }
 
   @Override
@@ -119,7 +122,7 @@ public class CreateResourceAction extends POSTAction {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[] {shortname}));
       return INPUT;
     } catch (ImportException e) {
-      LOG.error("Error importing the archive: " + e.getMessage(), e);
+      LOG.error("Error importing the archive: {}", e.getMessage(), e);
       addActionError(getText("validation.resource.import.exception"));
       // remove resource and its resource folder from data directory
       cleanupResourceFolder(shortname, startTimeInMs);
@@ -144,11 +147,11 @@ public class CreateResourceAction extends POSTAction {
     Resource resource = resourceManager.get(shortname);
     File directory = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
     if (resource != null && directory.exists() && directory.isDirectory() && directory.lastModified() > startTimeInMs) {
-      LOG.info("Deleting resource and its folder from data directory: " + directory);
+      LOG.info("Deleting resource and its folder from data directory: {}", directory);
       try {
         resourceManager.delete(resource, true);
       } catch (IOException e) {
-        LOG.error("Deleting resource failed: " + e.getMessage(), e);
+        LOG.error("Deleting resource failed: {}", e.getMessage(), e);
       } catch (DeletionNotAllowedException e) {
         LOG.error("Deleting resource not allowed", e);
       }
@@ -184,14 +187,14 @@ public class CreateResourceAction extends POSTAction {
     }
     // the file to upload to
     File tmpFile = dataDir.tmpFile(shortname, fileFileName);
-    LOG.debug("Uploading dwc archive file for new resource " + shortname + " to " + tmpFile.getAbsolutePath());
+    LOG.debug("Uploading dwc archive file for new resource {} to {}", shortname, tmpFile.getAbsolutePath());
     // retrieve the file data
     // write the file to the file specified
     try (InputStream input = new FileInputStream(file);
          OutputStream output = new FileOutputStream(tmpFile)) {
       IOUtils.copy(input, output);
       output.flush();
-      LOG.debug("Uploaded file " + fileFileName + " with content-type " + fileContentType);
+      LOG.debug("Uploaded file {} with content-type {}", fileFileName, fileContentType);
     } catch (IOException e) {
       LOG.error(e);
       throw new ImportException("Failed to upload file to tmp file", e);
@@ -246,17 +249,4 @@ public class CreateResourceAction extends POSTAction {
     return dataPackageTypes;
   }
 
-  /**
-   * @return list of organisations that can host
-   */
-  public List<Organisation> getOrganisations() {
-    return organisations;
-  }
-
-  /**
-   * @return DataDir
-   */
-  public DataDir getDataDir() {
-    return dataDir;
-  }
 }

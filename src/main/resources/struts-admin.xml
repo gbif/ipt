@@ -114,10 +114,6 @@
     </action>
 
     <action name="appLogoUpload" class="org.gbif.ipt.action.admin.UIManagementAction" method="uploadLogo">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
-        <param name="allowedTypes">image/jpeg,image/gif,image/png</param>
-      </interceptor-ref>
       <interceptor-ref name="adminStack"/>
       <result name="success">/WEB-INF/pages/manage/source.ftl</result>
       <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>

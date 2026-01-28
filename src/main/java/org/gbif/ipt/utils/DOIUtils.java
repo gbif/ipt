@@ -18,7 +18,7 @@ import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.logging.log4j.LogManager;
@@ -46,7 +46,6 @@ public class DOIUtils {
    *
    * @param agency DOI registration agency
    * @param prefix DOI prefix
-   *
    * @return DOI object constructed
    */
   @NotNull

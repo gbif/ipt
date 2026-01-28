@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serial;
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +36,9 @@ import org.apache.logging.log4j.Logger;
  */
 public class AppFileAction extends PortalBaseAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = 7600127945674199976L;
+
   private static final Logger LOG = LogManager.getLogger(AppFileAction.class);
 
   private final DataDir dataDir;

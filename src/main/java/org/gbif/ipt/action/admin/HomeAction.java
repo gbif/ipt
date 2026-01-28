@@ -19,8 +19,12 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.inject.Inject;
+import java.io.Serial;
 
 public class HomeAction extends BaseAction {
+
+  @Serial
+  private static final long serialVersionUID = 6041482193930893683L;
 
   @Inject
   public HomeAction(

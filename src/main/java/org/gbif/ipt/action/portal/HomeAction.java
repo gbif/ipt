@@ -23,14 +23,18 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.annotations.JSON;
 
+import java.io.Serial;
+
 public class HomeAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = 8504283506326312600L;
 
   private final ResourceManager resourceManager;

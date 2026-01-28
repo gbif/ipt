@@ -17,6 +17,7 @@ import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.KeywordsMetadata;
 import org.gbif.ipt.validation.ValidURI;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -26,9 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
+import org.apache.struts2.util.Element;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,7 +41,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.opensymphony.xwork2.util.Element;
 
 /**
  * Frictionless metadata
@@ -47,6 +50,7 @@ import com.opensymphony.xwork2.util.Element;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
 
+  @Serial
   private final static long serialVersionUID = 5948080618683312611L;
 
   /**
@@ -465,44 +469,44 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
     if (o == null || getClass() != o.getClass()) return false;
     FrictionlessMetadata that = (FrictionlessMetadata) o;
     return Objects.equals(title, that.title)
-      && Objects.equals(version, that.version)
-      && Objects.equals(profile, that.profile)
-      && Objects.equals(name, that.name)
-      && Objects.equals(id, that.id)
-      && Objects.equals(description, that.description)
-      && Objects.equals(homepage, that.homepage)
-      && Objects.equals(created, that.created)
-      && Objects.equals(contributors, that.contributors)
-      && Objects.equals(keywords, that.keywords)
-      && Objects.equals(image, that.image)
-      && Objects.equals(licenses, that.licenses)
-      && Objects.equals(sources, that.sources)
-      && Objects.equals(additionalProperties, that.additionalProperties);
+        && Objects.equals(version, that.version)
+        && Objects.equals(profile, that.profile)
+        && Objects.equals(name, that.name)
+        && Objects.equals(id, that.id)
+        && Objects.equals(description, that.description)
+        && Objects.equals(homepage, that.homepage)
+        && Objects.equals(created, that.created)
+        && Objects.equals(contributors, that.contributors)
+        && Objects.equals(keywords, that.keywords)
+        && Objects.equals(image, that.image)
+        && Objects.equals(licenses, that.licenses)
+        && Objects.equals(sources, that.sources)
+        && Objects.equals(additionalProperties, that.additionalProperties);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(title, version, profile, name, id, description, homepage, created, contributors, keywords,
-      image, licenses, sources, additionalProperties);
+        image, licenses, sources, additionalProperties);
   }
 
   @Override
   public String toString() {
     return new StringJoiner(", ", DataPackageMetadata.class.getSimpleName() + "[", "]")
-      .add("profile='" + profile + "'")
-      .add("name='" + name + "'")
-      .add("id='" + id + "'")
-      .add("title='" + title + "'")
-      .add("description='" + description + "'")
-      .add("homepage=" + homepage)
-      .add("version=" + version)
-      .add("created=" + created)
-      .add("contributors=" + contributors)
-      .add("keywords=" + keywords)
-      .add("image='" + image + "'")
-      .add("licenses=" + licenses)
-      .add("sources=" + sources)
-      .add("additionalProperties=" + additionalProperties)
-      .toString();
+        .add("profile='" + profile + "'")
+        .add("name='" + name + "'")
+        .add("id='" + id + "'")
+        .add("title='" + title + "'")
+        .add("description='" + description + "'")
+        .add("homepage=" + homepage)
+        .add("version=" + version)
+        .add("created=" + created)
+        .add("contributors=" + contributors)
+        .add("keywords=" + keywords)
+        .add("image='" + image + "'")
+        .add("licenses=" + licenses)
+        .add("sources=" + sources)
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
   }
 }

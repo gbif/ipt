@@ -46,7 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -112,7 +112,7 @@ public class DataCiteMetadataBuilder {
 
     // add list of contributors (recommended)
     List<Agent> emlContributors =
-      prepareContributorsFromEmlAgents(eml.getContacts(), eml.getMetadataProviders(), eml.getAssociatedParties());
+        prepareContributorsFromEmlAgents(eml.getContacts(), eml.getMetadataProviders(), eml.getAssociatedParties());
     DataCiteMetadata.Contributors contributors = convertEmlContributors(emlContributors);
     dataCiteMetadata.setContributors(contributors);
 
@@ -129,12 +129,12 @@ public class DataCiteMetadataBuilder {
 
     // add list of alternate identifier (optional)
     DataCiteMetadata.AlternateIdentifiers alternateIdentifiers =
-      convertEmlAlternateIdentifiers(eml.getAlternateIdentifiers());
+        convertEmlAlternateIdentifiers(eml.getAlternateIdentifiers());
     dataCiteMetadata.setAlternateIdentifiers(alternateIdentifiers);
 
     // add list of related identifiers stemming from bibliographic citations
     DataCiteMetadata.RelatedIdentifiers ridsBibliographicCitations =
-      convertRelatedIdentifiers(eml.getBibliographicCitations(), eml.getPhysicalData());
+        convertRelatedIdentifiers(eml.getBibliographicCitations(), eml.getPhysicalData());
     dataCiteMetadata.setRelatedIdentifiers(ridsBibliographicCitations);
 
     // add formats (optional)
@@ -164,7 +164,6 @@ public class DataCiteMetadataBuilder {
    * Retrieve the DOI identifier assigned to the resource. DataCite metadata schema (v4) requires the identifier.
    *
    * @param doi DOI identifier assigned to resource
-   *
    * @return DataCite identifier of type DOI
    */
   protected static DataCiteMetadata.Identifier getDOIIdentifier(@NotNull DOI doi) {
@@ -183,7 +182,7 @@ public class DataCiteMetadataBuilder {
   protected static DataCiteMetadata.Formats getFormats(Resource resource) {
     DataCiteMetadata.Formats formats = FACTORY.createDataCiteMetadataFormats();
     if (resource.getCoreType() != null && resource.getCoreType()
-      .equalsIgnoreCase(Resource.CoreRowType.METADATA.toString())) {
+        .equalsIgnoreCase(Resource.CoreRowType.METADATA.toString())) {
       formats.getFormat().add(EML_FORMAT_NAME);
       formats.getFormat().add(RTF_FORMAT_NAME);
     } else {
@@ -275,15 +274,14 @@ public class DataCiteMetadataBuilder {
    * Convert list of EML alternateIdentifiers into DataCite alternateIdentifiers.
    *
    * @param alternateIdentifiers Eml alternateIdentifier list
-   *
    * @return list of DataCite alternativeIdentifier
    */
   protected static DataCiteMetadata.AlternateIdentifiers convertEmlAlternateIdentifiers(
-    List<String> alternateIdentifiers) {
+      List<String> alternateIdentifiers) {
     DataCiteMetadata.AlternateIdentifiers alternates = FACTORY.createDataCiteMetadataAlternateIdentifiers();
     for (String alternateIdentifier : alternateIdentifiers) {
       DataCiteMetadata.AlternateIdentifiers.AlternateIdentifier alternate =
-        FACTORY.createDataCiteMetadataAlternateIdentifiersAlternateIdentifier();
+          FACTORY.createDataCiteMetadataAlternateIdentifiersAlternateIdentifier();
       alternate.setValue(alternateIdentifier);
       alternate.setAlternateIdentifierType(ALTERNATE_IDENTIFIER_TYPE_TEXT);
       alternates.getAlternateIdentifier().add(alternate);
@@ -295,17 +293,16 @@ public class DataCiteMetadataBuilder {
    * Convert list of EML bibliographicCitations, and list of EML PhysicalData, into DataCite relatedIdentifiers.
    *
    * @param bibliographicCitations Eml bibliographicCitations list
-   *
    * @return list of DataCite relatedIdentifiers
    */
   protected static DataCiteMetadata.RelatedIdentifiers convertRelatedIdentifiers(List<Citation> bibliographicCitations,
-    List<PhysicalData> physicalDatas) {
+                                                                                 List<PhysicalData> physicalDatas) {
     DataCiteMetadata.RelatedIdentifiers rids = FACTORY.createDataCiteMetadataRelatedIdentifiers();
     // from bibliographic citations
     for (Citation citation : bibliographicCitations) {
       if (StringUtils.isNotBlank(citation.getIdentifier())) {
         DataCiteMetadata.RelatedIdentifiers.RelatedIdentifier rid =
-          FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
+            FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
         rid.setValue(citation.getIdentifier());
         rid.setRelationType(RelationType.REFERENCES);
         rid.setRelatedIdentifierType(RelatedIdentifierType.URL);
@@ -317,7 +314,7 @@ public class DataCiteMetadataBuilder {
       if (StringUtils.isNotBlank(data.getDistributionUrl())) {
         if (data.getDistributionUrl().startsWith(HTTP_PROTOCOL)) {
           DataCiteMetadata.RelatedIdentifiers.RelatedIdentifier rid =
-            FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
+              FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
           try {
             URI val = new URI(data.getDistributionUrl());
             rid.setValue(val.toString());
@@ -325,7 +322,7 @@ public class DataCiteMetadataBuilder {
             rid.setRelationType(RelationType.IS_VARIANT_FORM_OF);
             rids.getRelatedIdentifier().add(rid);
           } catch (URISyntaxException e) {
-            LOG.error("Failed to convert distributionUrl into URI: " + data.getDistributionUrl());
+            LOG.error("Failed to convert distributionUrl into URI: {}", data.getDistributionUrl());
           }
         }
       }
@@ -338,9 +335,7 @@ public class DataCiteMetadataBuilder {
    * DataCite schema (v4) requires the resource type.
    *
    * @param resource resource
-   *
    * @return DataCite ResourceType
-   *
    * @throws InvalidMetadataException if mandatory resource type cannot be retrieved
    */
   protected static DataCiteMetadata.ResourceType getResourceType(Resource resource) throws InvalidMetadataException {
@@ -359,9 +354,7 @@ public class DataCiteMetadataBuilder {
    * (v4) requires the publisher. This method ensures that the default organisation "No organisation" cannot be used.
    *
    * @param resource IPT resource
-   *
    * @return the publisher name
-   *
    * @throws InvalidMetadataException if mandatory publisher cannot be retrieved
    */
   protected static String getPublisher(Resource resource) throws InvalidMetadataException {
@@ -378,9 +371,7 @@ public class DataCiteMetadataBuilder {
    * (v4) requires the publication year.
    *
    * @param eml EML
-   *
    * @return the publication year
-   *
    * @throws InvalidMetadataException if mandatory publication year cannot be retrieved
    */
   protected static String getPublicationYear(Eml eml) throws InvalidMetadataException {
@@ -398,9 +389,7 @@ public class DataCiteMetadataBuilder {
    * creator. The DataCite metadata schema allows the creator to "be a corporate/institutional or personal name."
    *
    * @param agents EML agents list
-   *
    * @return DataCite creators list
-   *
    * @throws org.gbif.doi.service.InvalidMetadataException if mandatory number of creators cannot be created/returned
    */
   protected static DataCiteMetadata.Creators convertEmlCreators(List<Agent> agents) throws InvalidMetadataException {
@@ -440,8 +429,8 @@ public class DataCiteMetadataBuilder {
         // otherwise if no name, organisation name, or position name found, throw exception
         else {
           throw new InvalidMetadataException(
-            "DataCite schema (v4) requires creator have a name! Creator can be an organisation or person. Check creator/agent: "
-            + agent);
+              "DataCite schema (v4) requires creator have a name! Creator can be an organisation or person. Check creator/agent: "
+                  + agent);
         }
         // add to list
         creators.getCreator().add(creator);
@@ -460,11 +449,10 @@ public class DataCiteMetadataBuilder {
    * @param metadataProviders EML metadataProviders list
    * @param contacts          EML contacts list
    * @param associatedParties EML associatedParties list
-   *
    * @return list of agents converted into DataCite contributors
    */
   private static List<Agent> prepareContributorsFromEmlAgents(List<Agent> contacts, List<Agent> metadataProviders,
-    List<Agent> associatedParties) {
+                                                              List<Agent> associatedParties) {
     List<Agent> ls = new ArrayList<>();
 
     // add type to contacts
@@ -489,13 +477,11 @@ public class DataCiteMetadataBuilder {
    * DataCite metadata schema (v4.0) does not require contributors, they are recommended though.
    *
    * @param agents EML agents list, composed from EML contacts, metadataProviders, and associatedParties
-   *
    * @return DataCite contributors list
-   *
    * @throws org.gbif.doi.service.InvalidMetadataException if name or type cannot be set
    */
   protected static DataCiteMetadata.Contributors convertEmlContributors(List<Agent> agents)
-    throws InvalidMetadataException {
+      throws InvalidMetadataException {
     DataCiteMetadata.Contributors contributors = FACTORY.createDataCiteMetadataContributors();
     for (Agent agent : agents) {
       DataCiteMetadata.Contributors.Contributor contributor = FACTORY.createDataCiteMetadataContributorsContributor();
@@ -543,14 +529,14 @@ public class DataCiteMetadataBuilder {
       // otherwise if no name, organisation name, or position name found, throw exception
       else {
         throw new InvalidMetadataException(
-          "DataCite schema (v4) requires contributor have a name! Check contributor/agent: " + agent);
+            "DataCite schema (v4) requires contributor have a name! Check contributor/agent: " + agent);
       }
 
       // contributorType is mandatory, if not found throw exception
       String role = agent.getRole();
       if (StringUtils.isBlank(role)) {
         throw new InvalidMetadataException(
-          "DataCite schema (v4) requires contributor have a type! Check contributor/agent: " + agent);
+            "DataCite schema (v4) requires contributor have a type! Check contributor/agent: " + agent);
       }
 
       // contributor type, defaulting to RELATED_PERSON if no suitable match exists
@@ -592,9 +578,7 @@ public class DataCiteMetadataBuilder {
    * schema (v4) requires at least one title.
    *
    * @param eml Eml
-   *
    * @return DataCite titles list
-   *
    * @throws org.gbif.doi.service.InvalidMetadataException if mandatory number of titles cannot be created/returned
    */
   protected static DataCiteMetadata.Titles convertEmlTitles(Eml eml) throws InvalidMetadataException {
@@ -616,13 +600,11 @@ public class DataCiteMetadataBuilder {
    *
    * @param keywordSets Eml list of KeywordSet
    * @param language    Eml metadata language (3-letter ISO country code)
-   *
    * @return DataCite subjects list
-   *
    * @throws org.gbif.doi.service.InvalidMetadataException if mandatory number of titles cannot be created/returned
    */
   protected static DataCiteMetadata.Subjects convertEmlKeywords(List<KeywordSet> keywordSets, String language)
-    throws InvalidMetadataException {
+      throws InvalidMetadataException {
     DataCiteMetadata.Subjects subjects = FACTORY.createDataCiteMetadataSubjects();
     for (KeywordSet keywordSet : keywordSets) {
       for (String keyword : keywordSet.getKeywords()) {
@@ -640,7 +622,7 @@ public class DataCiteMetadataBuilder {
               URI schemeUri = new URI(keywordSet.getKeywordThesaurus());
               subject.setSchemeURI(schemeUri.toString());
             } catch (URISyntaxException e) {
-              LOG.debug("Could not convert keyword thesaurus to URI: " + keywordSet.getKeywordThesaurus());
+              LOG.debug("Could not convert keyword thesaurus to URI: {}", keywordSet.getKeywordThesaurus());
             }
           } else {
             subject.setSubjectScheme(thesaurus);
@@ -658,7 +640,6 @@ public class DataCiteMetadataBuilder {
    * Also create DataCite CREATED and UPDATED Dates too.
    *
    * @param coverages Eml list of TemporalCoverage
-   *
    * @return DataCite Dates list
    */
   protected static DataCiteMetadata.Dates convertEmlDates(Date created, List<TemporalCoverage> coverages) {
@@ -708,24 +689,23 @@ public class DataCiteMetadataBuilder {
    * ResearcherID.
    *
    * @param userId Eml UserId object
-   *
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
    */
   protected static NameIdentifier convertEmlUserIdIntoCreatorNameIdentifier(
-    UserId userId) {
+      UserId userId) {
     if (StringUtils.isNotBlank(userId.getIdentifier()) && StringUtils.isNotBlank(userId.getDirectory())) {
       String directory = StringUtils.trimToEmpty(userId.getDirectory()).toLowerCase();
       if (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) || directory
-        .contains(RESEARCHERID_NAME_IDENTIFIER_SCHEME.toLowerCase())) {
+          .contains(RESEARCHERID_NAME_IDENTIFIER_SCHEME.toLowerCase())) {
         NameIdentifier nid = FACTORY.createNameIdentifier();
         nid.setValue(userId.getIdentifier());
         nid.setSchemeURI(userId.getDirectory());
         nid.setNameIdentifierScheme(
-          directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ? ORCID_NAME_IDENTIFIER_SCHEME
-            : RESEARCHERID_NAME_IDENTIFIER_SCHEME);
+            directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ? ORCID_NAME_IDENTIFIER_SCHEME
+                : RESEARCHERID_NAME_IDENTIFIER_SCHEME);
         return nid;
       } else {
-        LOG.debug("UserId has unrecognized directory (" + directory + "), only ORCID and ResearcherID are supported");
+        LOG.debug("UserId has unrecognized directory ({}), only ORCID and ResearcherID are supported", directory);
         return null;
       }
     }
@@ -739,24 +719,23 @@ public class DataCiteMetadataBuilder {
    * ResearcherID.
    *
    * @param userId Eml UserId object
-   *
    * @return DataCite NameIdentifier object or null if none could be created (e.g. because directory wasn't recognized)
    */
   protected static NameIdentifier convertEmlUserIdIntoContributorNameIdentifier(
-    UserId userId) {
+      UserId userId) {
     if (StringUtils.isNotBlank(userId.getIdentifier()) && StringUtils.isNotBlank(userId.getDirectory())) {
       String directory = StringUtils.trimToEmpty(userId.getDirectory()).toLowerCase();
       if (directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) || directory
-        .contains(RESEARCHERID_NAME_IDENTIFIER_SCHEME.toLowerCase())) {
+          .contains(RESEARCHERID_NAME_IDENTIFIER_SCHEME.toLowerCase())) {
         NameIdentifier nid = FACTORY.createNameIdentifier();
         nid.setValue(userId.getIdentifier());
         nid.setSchemeURI(userId.getDirectory());
         nid.setNameIdentifierScheme(
-          directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ? ORCID_NAME_IDENTIFIER_SCHEME
-            : RESEARCHERID_NAME_IDENTIFIER_SCHEME);
+            directory.contains(ORCID_NAME_IDENTIFIER_SCHEME.toLowerCase()) ? ORCID_NAME_IDENTIFIER_SCHEME
+                : RESEARCHERID_NAME_IDENTIFIER_SCHEME);
         return nid;
       } else {
-        LOG.debug("UserId has unrecognized directory (" + directory + "), only ORCID and ResearcherID are supported");
+        LOG.debug("UserId has unrecognized directory ({}), only ORCID and ResearcherID are supported", directory);
         return null;
       }
     }
@@ -769,9 +748,9 @@ public class DataCiteMetadataBuilder {
    * @param replaced DOI identifier of resource being replaced
    */
   public static void addIsNewVersionOfDOIRelatedIdentifier(@NotNull DataCiteMetadata metadata, @NotNull DOI replaced)
-    throws InvalidMetadataException {
+      throws InvalidMetadataException {
     DataCiteMetadata.RelatedIdentifiers.RelatedIdentifier rid =
-      FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
+        FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
     rid.setRelatedIdentifierType(RelatedIdentifierType.DOI);
     rid.setValue(replaced.getDoiName());
     rid.setRelationType(RelationType.IS_NEW_VERSION_OF);
@@ -784,9 +763,9 @@ public class DataCiteMetadataBuilder {
    * @param replacing DOI identifier of resource replacing resource being registered
    */
   public static void addIsPreviousVersionOfDOIRelatedIdentifier(@NotNull DataCiteMetadata metadata,
-    @NotNull DOI replacing) {
+                                                                @NotNull DOI replacing) {
     DataCiteMetadata.RelatedIdentifiers.RelatedIdentifier rid =
-      FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
+        FACTORY.createDataCiteMetadataRelatedIdentifiersRelatedIdentifier();
     rid.setRelatedIdentifierType(RelatedIdentifierType.DOI);
     rid.setValue(replacing.getDoiName());
     rid.setRelationType(RelationType.IS_PREVIOUS_VERSION_OF);

@@ -141,7 +141,6 @@ public class ResourceManagerImplIT extends IptBaseTest {
       .withUser(p.getProperty("user"))
       .withPassword(p.getProperty("password"))
       .build();
-    //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
     oDataCite.setAgencyAccountPrimary(true);

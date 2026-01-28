@@ -16,8 +16,11 @@ package org.gbif.ipt.model;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
+import lombok.Setter;
+
+@Setter
 public class KeyNamePair {
 
   private String key;
@@ -36,17 +39,9 @@ public class KeyNamePair {
     return key;
   }
 
-  public void setKey(String key) {
-    this.key = key;
-  }
-
   @NotNull
   public String getName() {
     return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
 

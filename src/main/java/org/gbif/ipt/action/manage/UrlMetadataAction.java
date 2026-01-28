@@ -17,15 +17,15 @@ import org.gbif.ipt.model.UrlMetadata;
 import org.gbif.ipt.utils.FileUtils;
 
 import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.ActionSupport;
 
 import lombok.Setter;
-
-import com.opensymphony.xwork2.ActionSupport;
 
 public class UrlMetadataAction extends ActionSupport {
 

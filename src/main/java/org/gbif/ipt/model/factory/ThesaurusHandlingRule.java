@@ -53,21 +53,21 @@ public class ThesaurusHandlingRule extends Rule {
           tv = vocabManager.get(url);
           // install vocabulary if it's new
           if (tv == null) {
-            LOG.warn("Installing new vocabulary with URL (" + attributes.getValue(i) + ")...");
+            LOG.warn("Installing new vocabulary with URL ({})...", attributes.getValue(i));
             tv = vocabManager.installIfAbsentOrOutdated(url);
           }
         } catch (MalformedURLException e) {
-          LOG.error("Thesaurus URL (" + attributes.getValue(i) + ") is malformed: " + e.getMessage(), e);
+          LOG.error("Thesaurus URL ({}) is malformed: {}", attributes.getValue(i), e.getMessage(), e);
         }
 
         if (tv == null) {
-          LOG.error("No Vocabulary object exists for the URL (" + attributes.getValue(i) + ") so cannot be set");
+          LOG.error("No Vocabulary object exists for the URL ({}) so cannot be set", attributes.getValue(i));
         } else {
           Object extensionPropertyAsObject = getDigester().peek();
           if (extensionPropertyAsObject instanceof ExtensionProperty) {
             ExtensionProperty eProperty = (ExtensionProperty) extensionPropertyAsObject;
             eProperty.setVocabulary(tv);
-            LOG.debug("Vocabulary with URI[" + tv.getUriString() + "] added to extension property");
+            LOG.debug("Vocabulary with URI[{}] added to extension property", tv.getUriString());
           }
         }
 

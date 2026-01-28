@@ -16,8 +16,9 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;

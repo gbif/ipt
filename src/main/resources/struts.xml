@@ -4,7 +4,7 @@
     "https://struts.apache.org/dtds/struts-6.0.dtd">
 <!--
 	NOTES TO DEVELOPERS:
-	Wildcards can be used in this definition to reduce the amount of configuration necesary
+	Wildcards can be used in this definition to reduce the amount of configuration necessary
 	Given the following:
 	  <action name="*BaseURL" class="org.gbif.ipt.action.ConfigurationAction" method="{1}BaseURL">
 	means that:
@@ -12,17 +12,17 @@
 	  .../replaceBaseURL will call the method replaceBaseURL
 	  ... etc
 
-	This is useful when there are many repetitive CRUD operations, but where there are only 2 methods
-	it is easier for reading, to use full verbose names.
+	This is useful when there are many repetitive CRUD operations, but where there are only 2 methods,
+	it is easier for reading to use full verbose names.
 
 	Inside a package declaration, there is the namespace="/..." which sets the base URL for the actions
 
-	The action definitions are split into the 3 major sections of the IPT (portal, manage and admin).
+	The action definitions are split into the 3 major sections of the IPT (portal, manage, and admin).
 	Note that actions are recognised on a "first declared basis", so it reads top to bottom.  However,
-	this should be kept simple, and overrides should be avoided unless absolutely necessary, to maintain
+	this should be kept simple, and overrides should be avoided unless absolutely necessary to maintain
 	simplicity
 
-	Constants see struts.properties some constants, i.e. struts.locale dont work in struts.xml:
+	Constants see struts.properties some constants, i.e. struts.locale don't work in struts.xml:
 	http://issues.apache.org/struts/browse/WW-2068
 -->
 <struts>
@@ -69,7 +69,7 @@
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="defaultLocale"/>
         <interceptor-ref name="i18n"/>
-        <interceptor-ref name="basicStack"/>
+        <interceptor-ref name="defaultStack"/>
         <interceptor-ref name="validation">
           <param name="excludeMethods">input,back,cancel,list</param>
         </interceptor-ref>

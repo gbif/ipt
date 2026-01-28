@@ -23,10 +23,8 @@ import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.LocaleProvider;
-import com.opensymphony.xwork2.LocaleProviderFactory;
-import com.opensymphony.xwork2.inject.Container;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.inject.Container;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -54,12 +52,14 @@ public class BaseActionTest extends IptBaseTest {
     HashMap<String, Object> contextMap = new HashMap<>();
     Container mockContainer = mock(Container.class);
 
+    // TODO: check what has to be mocked
     // Mocking only the required objects inside the container
-    LocaleProviderFactory mockLocaleProviderFactory = mock(LocaleProviderFactory.class);
-    LocaleProvider mockLocaleProvider = mock(LocaleProvider.class);
-    when(mockLocaleProvider.getLocale()).thenReturn(Locale.JAPANESE);
-    when(mockLocaleProviderFactory.createLocaleProvider()).thenReturn(mockLocaleProvider);
-    when(mockContainer.getInstance(LocaleProviderFactory.class)).thenReturn(mockLocaleProviderFactory);
+//    LocaleProviderFactory mockLocaleProviderFactory = mock(LocaleProviderFactory.class);
+//    LocaleProvider mockLocaleProvider = mock(LocaleProvider.class);
+//    when(mockLocaleProvider.getLocale()).thenReturn(Locale.JAPANESE);
+//    when(mockLocaleProviderFactory.createLocaleProvider()).thenReturn(mockLocaleProvider);
+//    when(mockContainer.getInstance(LocaleProviderFactory.class)).thenReturn(mockLocaleProviderFactory);
+
 
     // Set up a real ActionContext
     ActionContext testActionContext = ActionContext.of(contextMap);

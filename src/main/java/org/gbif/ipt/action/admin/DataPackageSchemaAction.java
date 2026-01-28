@@ -27,6 +27,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -34,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,6 +47,7 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 
 public class DataPackageSchemaAction extends POSTAction {
 
+  @Serial
   private static final long serialVersionUID = -535308367714585780L;
 
   private static final Logger LOG = LogManager.getLogger(DataPackageSchemaAction.class);
@@ -101,15 +102,15 @@ public class DataPackageSchemaAction extends POSTAction {
         if (r.getDataPackageIdentifier() != null
             && r.getDataPackageIdentifier().equals(id) && !r.getDataPackageMappings().isEmpty()) {
           LOG.warn("Schema mapped in resource {}", r.getShortname());
-          String msg = getText("admin.dataPackages.delete.error.mapped", new String[] {r.getShortname()});
+          String msg = getText("admin.dataPackages.delete.error.mapped", new String[]{r.getShortname()});
           throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DATA_SCHEMA_MAPPED, msg);
         }
       }
 
       schemaManager.uninstallSafely(id, schemaName);
-      addActionMessage(getText("admin.dataPackages.delete.success", new String[] {id}));
+      addActionMessage(getText("admin.dataPackages.delete.success", new String[]{id}));
     } catch (DeletionNotAllowedException e) {
-      addActionWarning(getText("admin.dataPackages.delete.error", new String[] {id}));
+      addActionWarning(getText("admin.dataPackages.delete.error", new String[]{id}));
       addActionExceptionWarning(e);
     }
     return SUCCESS;
@@ -133,10 +134,10 @@ public class DataPackageSchemaAction extends POSTAction {
         updateResourcesAfterSchemaUpdate(latestCompatibleSchema);
       }
 
-      addActionMessage(getText("admin.dataPackages.update.success", new String[] {id}));
+      addActionMessage(getText("admin.dataPackages.update.success", new String[]{id}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.dataPackages.update.error", new String[] {e.getMessage()}), e);
+      addActionWarning(getText("admin.dataPackages.update.error", new String[]{e.getMessage()}), e);
     }
     return SUCCESS;
   }
@@ -151,8 +152,7 @@ public class DataPackageSchemaAction extends POSTAction {
   private void updateResourceAfterSchemaUpdate(Resource resource, DataPackageSchema newlyInstalledSchema) {
     // update metadata profile
     if (CAMTRAP_DP.equals(resource.getCoreType())) {
-      if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-        CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
+      if (resource.getDataPackageMetadata() instanceof CamtrapMetadata metadata) {
         metadata.setProfile(newlyInstalledSchema.getProfile());
       }
     }
@@ -175,11 +175,11 @@ public class DataPackageSchemaAction extends POSTAction {
     // also update isUpdatable field
     updateComputableFields(schemas);
 
-    // populate list of uninstalled data schemas, removing data schemas installed already, showing only latest versions
+    // populate the list of uninstalled data schemas, removing data schemas installed already, showing only the latest versions
     newSchemas = getLatestDataSchemasVersions();
     List<String> installedSchemasIdentifiers = schemas.stream()
         .map(DataPackageSchema::getIdentifier)
-        .collect(Collectors.toList());
+        .toList();
     newSchemas.removeIf(ds -> installedSchemasIdentifiers.contains(ds.getIdentifier()));
 
     return SUCCESS;
@@ -195,13 +195,13 @@ public class DataPackageSchemaAction extends POSTAction {
       if (wrappedSchema.isPresent()) {
         schemaManager.install(wrappedSchema.get());
       } else {
-        addActionWarning(getText("admin.dataPackages.install.error", new String[] {id}));
+        addActionWarning(getText("admin.dataPackages.install.error", new String[]{id}));
       }
 
-      addActionMessage(getText("admin.dataPackages.install.success", new String[] {id}));
+      addActionMessage(getText("admin.dataPackages.install.success", new String[]{id}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.dataPackages.install.error", new String[] {id}), e);
+      addActionWarning(getText("admin.dataPackages.install.error", new String[]{id}), e);
     }
     return SUCCESS;
   }
@@ -237,7 +237,7 @@ public class DataPackageSchemaAction extends POSTAction {
       LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
-      msg = getText("admin.dataPackages.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      msg = getText("admin.dataPackages.couldnt.load", new String[]{cfg.getRegistryUrl()});
       configWarnings.addStartupError(msg);
       LOG.error(msg);
     } finally {
@@ -253,16 +253,15 @@ public class DataPackageSchemaAction extends POSTAction {
    * is determined by its issued date.
    *
    * @param dataPackageSchemas unfiltered list of all registered data schemas
-   *
    * @return filtered list of data schemas
    */
   protected List<DataPackageSchema> getLatestVersions(List<DataPackageSchema> dataPackageSchemas) {
     // sort data schemas by issued date, starting with latest issued
     List<DataPackageSchema> sorted = dataPackageSchemas.stream()
         .sorted(Comparator.comparing(DataPackageSchema::getIssued, Comparator.nullsLast(Comparator.reverseOrder())))
-        .collect(Collectors.toList());
+        .toList();
 
-    // populate list of the latest data schema versions
+    // populate the list of the latest data schema versions
     Map<String, DataPackageSchema> dataPackageSchemasByIdentifier = new HashMap<>();
     if (!sorted.isEmpty()) {
       for (DataPackageSchema dataPackageSchema : sorted) {
@@ -283,7 +282,7 @@ public class DataPackageSchemaAction extends POSTAction {
    *   <li>updating each data schema's isUpdatable field</li>
    *   <li>for action logging (logging if at least one data schema is not up-to-date).</li>
    * </ol>
-   *
+   * <p>
    * Works by iterating through list of installed data schemas. Updates each one, indicating if it is the latest version
    * or not. Plus, updates boolean "upToDate", set to false if there is at least one data schema that is not up-to-date.
    */

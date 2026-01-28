@@ -20,6 +20,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.model.Agent;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import org.apache.struts2.json.annotations.JSON;
 
 public class MetadataAgentSuggesterAction extends ManagerBaseAction {
 
+  @Serial
   private static final long serialVersionUID = -6982193399461813074L;
 
   public Map<String, String> suggestedResources = new HashMap<>();

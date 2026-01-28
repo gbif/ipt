@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
+
+import jakarta.servlet.ServletContext;
+
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.logging.log4j.LogManager;
@@ -77,17 +79,16 @@ public class IPTModule {
     String dataDirectoryLocationEnv = System.getenv(DATA_DIR_ENV_VAR);
 
     if (dataDirectoryLocationParam != null) {
-      LOG.info("Using context parameter " + DATA_DIR_ENV_VAR +
-        " for data directory location: " + dataDirectoryLocationParam);
+      LOG.info("Using context parameter {} for data directory location: {}",
+          DATA_DIR_ENV_VAR, dataDirectoryLocationParam);
       dd = DataDir.buildFromString(dataDirectoryLocationParam);
     } else if (dataDirectoryLocationEnv != null) {
-      LOG.info("Using environment variable " + DATA_DIR_ENV_VAR +
-        " for data directory location: " + dataDirectoryLocationEnv);
+      LOG.info("Using environment variable {} for data directory location: {}",
+          DATA_DIR_ENV_VAR, dataDirectoryLocationEnv);
       dd = DataDir.buildFromString(dataDirectoryLocationEnv);
     } else {
       File dataDirSettingFile = new File(servletContext.getRealPath("/") + "/WEB-INF/datadir.location");
-      LOG.info("Using file " + dataDirSettingFile.getAbsolutePath() +
-        " for data directory location.");
+      LOG.info("Using file {} for data directory location.", dataDirSettingFile.getAbsolutePath());
       dd = DataDir.buildFromLocationFile(dataDirSettingFile);
     }
     try {
@@ -112,7 +113,7 @@ public class IPTModule {
       TemplateLoader tlDataDir = new DataDirTemplateLoader(datadir.dataFile(""));
       tLoader.add(tlDataDir);
     } catch (IOException e) {
-      LOG.warn("Cannot load custom templates from data dir: " + e.getMessage(), e);
+      LOG.warn("Cannot load custom templates from data dir: {}", e.getMessage(), e);
     }
     TemplateLoader tl = new MultiTemplateLoader(tLoader.toArray(new TemplateLoader[0]));
     fm.setDefaultEncoding("UTF-8");
@@ -141,7 +142,7 @@ public class IPTModule {
         version,
         System.getProperty("java.version", "?"),
         System.getProperty("os.name", "?")
-        );
+    );
 
     return HttpUtil.newMultithreadedClient(
         CONNECTION_TIMEOUT_MSEC,
@@ -156,15 +157,15 @@ public class IPTModule {
     InputStreamUtils streamUtils = new InputStreamUtils();
     InputStream configStream = streamUtils.classpathStream(JdbcSupport.CLASSPATH_PROPFILE);
     if (configStream == null) {
-      LOG.error("Could not find supported jdbc driver information file " + JdbcSupport.CLASSPATH_PROPFILE);
+      LOG.error("Could not find supported jdbc driver information file {}", JdbcSupport.CLASSPATH_PROPFILE);
     } else {
       try {
         Properties props = new Properties();
         props.load(configStream);
         jdbcs.setProperties(props);
-        LOG.debug("Loaded supported jdbc driver information from " + JdbcSupport.CLASSPATH_PROPFILE);
+        LOG.debug("Loaded supported jdbc driver information from {}", JdbcSupport.CLASSPATH_PROPFILE);
       } catch (IOException e) {
-        LOG.error("Could not load supported jdbc driver information from " + JdbcSupport.CLASSPATH_PROPFILE, e);
+        LOG.error("Could not load supported jdbc driver information from {}", JdbcSupport.CLASSPATH_PROPFILE, e);
       }
     }
     return jdbcs;
@@ -177,7 +178,7 @@ public class IPTModule {
       saxf.setValidating(false);
       saxf.setNamespaceAware(true);
     } catch (Exception e) {
-      LOG.error("Cant create namespace aware SAX Parser Factory: " + e.getMessage(), e);
+      LOG.error("Cant create namespace aware SAX Parser Factory: {}", e.getMessage(), e);
     }
     return saxf;
   }

@@ -40,7 +40,6 @@ import org.apache.logging.log4j.Logger;
 
 public class OrganisationSupport {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(OrganisationSupport.class);
 
   private RegistryManager registryManager;

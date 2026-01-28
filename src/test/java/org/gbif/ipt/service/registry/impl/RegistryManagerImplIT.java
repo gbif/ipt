@@ -58,7 +58,6 @@ import static org.mockito.Mockito.when;
 @Disabled("These require live UAT webservice and should therefore only run when manually triggered")
 public class RegistryManagerImplIT extends IptMockBaseTest {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(RegistryManagerImplTest.class);
 
   // organisation below must exist in sandbox registry!

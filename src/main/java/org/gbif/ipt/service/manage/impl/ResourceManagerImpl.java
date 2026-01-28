@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import lombok.Getter;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
@@ -180,7 +181,9 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -227,6 +230,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private RegistryManager registryManager;
   private ResourceMetadataInferringService resourceMetadataInferringService;
   private ThreadPoolExecutor executor;
+  @Getter
   private GenerateDwcaFactory dwcaFactory;
   private GenerateDataPackageFactory dataPackageFactory;
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
@@ -276,8 +280,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (!res.getVersionHistory().isEmpty()) {
         VersionHistory latestVersion = res.getVersionHistory().get(0);
         if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
-                !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
-                latestVersion.getReleased() != null) {
+            !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
+            latestVersion.getReleased() != null) {
           publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
         }
       }
@@ -294,20 +298,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias) {
     resources.values().stream()
-            .filter(r -> r.getOrganisation() != null)
-            .filter(r -> r.getOrganisation().getKey() != null)
-            .filter(r -> r.getOrganisation().getKey().equals(organisationKey))
-            .forEach(r -> {
-              r.getOrganisation().setAlias(organisationAlias);
-              r.getOrganisation().setName(organisationName);
-            });
+        .filter(r -> r.getOrganisation() != null)
+        .filter(r -> r.getOrganisation().getKey() != null)
+        .filter(r -> r.getOrganisation().getKey().equals(organisationKey))
+        .forEach(r -> {
+          r.getOrganisation().setAlias(organisationAlias);
+          r.getOrganisation().setName(organisationName);
+        });
     publishedPublicVersionsSimplified.values().stream()
-            .filter(r -> r.getOrganisationKey() != null)
-            .filter(r -> r.getOrganisationKey().equals(organisationKey))
-            .forEach(r -> {
-              r.setOrganisationName(organisationName);
-              r.setOrganisationAlias(organisationAlias);
-            });
+        .filter(r -> r.getOrganisationKey() != null)
+        .filter(r -> r.getOrganisationKey().equals(organisationKey))
+        .forEach(r -> {
+          r.setOrganisationName(organisationName);
+          r.setOrganisationAlias(organisationAlias);
+        });
   }
 
   /**
@@ -403,7 +407,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // remove process from locking list
         processFutures.remove(shortname);
       } else {
-        LOG.warn("Canceling publication of resource " + shortname + " failed");
+        LOG.warn("Canceling publication of resource {} failed", shortname);
       }
     }
 
@@ -433,7 +437,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * another basic metadata format. Note: only a small number of fields actually contain data.
    *
    * @param metadata Dataset object
-   *
    * @return Eml instance
    */
   private Eml convertMetadataToEml(Dataset metadata) {
@@ -466,8 +469,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Validates EML file
    *
    * @param emlFile EML file
-   * @throws SAXException if failed to create validator
-   * @throws IOException if failed to read EML file
+   * @throws SAXException        if failed to create validator
+   * @throws IOException         if failed to read EML file
    * @throws InvalidEmlException if EML is invalid
    */
   private void validateEmlFile(File emlFile)
@@ -526,9 +529,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param shortname shortname
    * @param emlFile   eml file
-   *
    * @return populated Eml instance
-   *
    * @throws ImportException if eml file could not be read/parsed
    */
   private Eml copyMetadata(String shortname, File emlFile) throws ImportException {
@@ -581,16 +582,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (files != null && files.length == 1 && files[0].equals(file)) {
       try {
         FileUtils.deleteDirectory(parent);
-        LOG.info("Deleted directory: " + parent.getAbsolutePath());
+        LOG.info("Deleted directory: {}", parent.getAbsolutePath());
       } catch (IOException e) {
-        LOG.error("Failed to delete directory " + parent.getAbsolutePath() + ": " + e.getMessage(), e);
+        LOG.error("Failed to delete directory {}: {}", parent.getAbsolutePath(), e.getMessage(), e);
       }
     }
   }
 
   @Override
   public Resource create(String shortname, String type, File archiveOrSingleFile, User creator, BaseAction action)
-    throws AlreadyExistingException, ImportException, InvalidFilenameException {
+      throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
@@ -604,9 +605,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       decompressed = CompressionUtil.decompressFile(archiveDir, archiveOrSingleFile, true);
     } catch (UnsupportedCompressionType e) {
-      LOG.debug("1st attempt to decompress file failed: " + e.getMessage(), e);
+      LOG.debug("1st attempt to decompress file failed: {}", e.getMessage(), e);
     } catch (Exception e) {
-      LOG.debug("Decompression failed: " + e.getMessage(), e);
+      LOG.debug("Decompression failed: {}", e.getMessage(), e);
     }
 
     if (CollectionUtils.isEmpty(decompressed)) {
@@ -614,7 +615,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       try {
         decompressed = CompressionUtil.ungzipFile(archiveDir, archiveOrSingleFile, false);
       } catch (Exception e2) {
-        LOG.debug("2nd attempt to decompress file failed: " + e2.getMessage(), e2);
+        LOG.debug("2nd attempt to decompress file failed: {}", e2.getMessage(), e2);
       }
     }
 
@@ -672,14 +673,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param folder    IPT resource folder
    * @param creator   Creator
    * @param alog      action logging
-   *
    * @return Resource created or null if it was unsuccessful
-   *
    * @throws AlreadyExistingException if a unique shortname could not be determined
    * @throws ImportException          if a problem occurred trying to create the new Resource
    */
   private Resource createFromIPTResourceFolder(String shortname, File folder, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException {
+      throws AlreadyExistingException, ImportException {
     Resource res;
     try {
 
@@ -764,7 +763,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * resource.xml file and one of the metadata files: eml.xml/datapackage.json/metadata.yml
    *
    * @param dir directory where compressed file was decompressed
-   *
    * @return true if it is an IPT Resource folder or false otherwise
    */
   private boolean isIPTResourceFolder(File dir) {
@@ -775,7 +773,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       File colDpMetadataFile = new File(dir, COL_DP_METADATA_FILENAME);
 
       return persistenceFile.isFile() &&
-        (emlFile.isFile() || datapackageDescriptorFile.isFile() || colDpMetadataFile.isFile());
+          (emlFile.isFile() || datapackageDescriptorFile.isFile() || colDpMetadataFile.isFile());
     }
     return false;
   }
@@ -823,7 +821,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // create dir
     try {
       save(res);
-      LOG.info("Created resource " + res.getShortname());
+      LOG.info("Created resource {}", res.getShortname());
     } catch (InvalidConfigException e) {
       LOG.error("Error creating resource", e);
       return null;
@@ -833,7 +831,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private Resource createFromFrictionlessDataPackage(String shortname, String packageType, List<File> packageFiles, User creator,
                                                      ActionLogger alog)
-    throws AlreadyExistingException, ImportException, InvalidFilenameException {
+      throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
@@ -875,8 +873,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       if (metadataFile != null) {
         DataPackageMetadata metadata = readDataPackageMetadata(resource.getShortname(), packageType, metadataFile, alog);
 
-        if (metadata instanceof FrictionlessMetadata) {
-          FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+        if (metadata instanceof FrictionlessMetadata frictionlessMetadata) {
           // set name, erase some internal fields
           frictionlessMetadata.setName(resource.getShortname());
           frictionlessMetadata.setId(null);
@@ -884,9 +881,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           frictionlessMetadata.getAdditionalProperties().clear();
         }
 
-        if (metadata instanceof CamtrapMetadata) {
-          CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
-
+        if (metadata instanceof CamtrapMetadata camtrapMetadata) {
           camtrapMetadata.getContributors().stream()
               .filter(Objects::nonNull)
               .map(contributor -> (CamtrapContributor) contributor)
@@ -907,7 +902,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       saveDatapackageMetadata(resource);
 
       alog.info("manage.resource.dp.create.success",
-        new String[] {String.valueOf(resource.getSources().size()), String.valueOf(resource.getDataPackageMappings().size())});
+          new String[]{String.valueOf(resource.getSources().size()), String.valueOf(resource.getDataPackageMappings().size())});
     } catch (UnsupportedArchiveException | InvalidConfigException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
@@ -917,7 +912,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private Resource createFromDwcArchive(String shortname, File dwca, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException, InvalidFilenameException {
+      throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
@@ -994,7 +989,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         for (ArchiveFile ext : arch.getExtensions()) {
           if (sources.containsKey(ext.getLocations().get(0))) {
             s = sources.get(ext.getLocations().get(0));
-            LOG.debug("SourceBase " + s.getName() + " shared by multiple extensions");
+            LOG.debug("SourceBase {} shared by multiple extensions", s.getName());
           } else {
             s = importSource(resource, ext);
             sources.put(ext.getLocations().get(0), s);
@@ -1025,8 +1020,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       save(resource);
 
       alog.info("manage.resource.create.success",
-        new String[] {StringUtils.trimToEmpty(resource.getCoreRowType()), String.valueOf(resource.getSources().size()),
-          String.valueOf(resource.getMappings().size())});
+          new String[]{StringUtils.trimToEmpty(resource.getCoreRowType()), String.valueOf(resource.getSources().size()),
+              String.valueOf(resource.getMappings().size())});
     } catch (UnsupportedArchiveException | InvalidConfigException | IOException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
@@ -1060,13 +1055,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     DataPackageMetadata metadata = copyDatapackageMetadata(resource.getShortname(), metadataFile, resource.getCoreType());
 
-    if (metadata instanceof ColMetadata) {
-      ColMetadata colMetadata = (ColMetadata) metadata;
+    if (metadata instanceof ColMetadata colMetadata) {
       colMetadata.setVersion(resource.getDataPackageMetadata().getVersion());
     }
 
-    if (metadata instanceof FrictionlessMetadata) {
-      FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+    if (metadata instanceof FrictionlessMetadata frictionlessMetadata) {
       // set name, erase some internal fields
       frictionlessMetadata.setName(resource.getShortname());
       frictionlessMetadata.setId(null);
@@ -1075,9 +1068,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       frictionlessMetadata.setVersion(resource.getDataPackageMetadata().getVersion());
     }
 
-    if (metadata instanceof CamtrapMetadata) {
-      CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
-
+    if (metadata instanceof CamtrapMetadata camtrapMetadata) {
       camtrapMetadata.getContributors().stream()
           .map(contributor -> (CamtrapContributor) contributor)
           .filter(contributor -> CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole()))
@@ -1138,7 +1129,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       mapping.getFields().add(coreIdTermMapping);
     } else {
       if (coreIdTermPropertyMapping.getIndex() != null && !coreIdTermPropertyMapping.getIndex()
-        .equals(mapping.getIdColumn())) {
+          .equals(mapping.getIdColumn())) {
         mapping.setIdColumn(coreIdTermPropertyMapping.getIndex());
       }
     }
@@ -1151,14 +1142,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param emlFile   eml file
    * @param creator   User creating resource
    * @param alog      ActionLogger
-   *
    * @return resource created
-   *
    * @throws AlreadyExistingException if the resource created uses a shortname that already exists
    * @throws ImportException          if the eml file could not be read/parsed
    */
   private Resource createFromEml(String shortname, File emlFile, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException {
+      throws AlreadyExistingException, ImportException {
     Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
@@ -1180,7 +1169,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private Resource createFromPackageDescriptor(String shortname, String type, File metadataFile, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException {
+      throws AlreadyExistingException, ImportException {
     Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
@@ -1192,8 +1181,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
       metadata = copyDatapackageMetadata(shortname, metadataFile, type);
 
-      if (metadata instanceof FrictionlessMetadata) {
-        FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) metadata;
+      if (metadata instanceof FrictionlessMetadata frictionlessMetadata) {
         // set name, erase some internal fields
         frictionlessMetadata.setName(shortname);
         frictionlessMetadata.setId(null);
@@ -1212,7 +1200,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private Resource createFromColDpMetadata(String shortname, File metadataFile, User creator, ActionLogger alog)
-    throws AlreadyExistingException, ImportException {
+      throws AlreadyExistingException, ImportException {
     Objects.requireNonNull(shortname);
     // check if existing already
     if (get(shortname) != null) {
@@ -1314,7 +1302,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       try {
         registryManager.deregister(resource);
       } catch (RegistryException e) {
-        LOG.error("Failed to deregister resource: " + e.getMessage(), e);
+        LOG.error("Failed to deregister resource: {}", e.getMessage(), e);
         throw new DeletionNotAllowedException(Reason.REGISTRY_ERROR, e.getMessage());
       }
     }
@@ -1373,13 +1361,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Creates an ExtensionMapping from an ArchiveFile, which encapsulates information about a file contained
    * within a Darwin Core Archive.
    *
-   * @param alog ActionLogger
-   * @param af ArchiveFile
+   * @param alog   ActionLogger
+   * @param af     ArchiveFile
    * @param source source file corresponding to ArchiveFile
-   *
    * @return ExtensionMapping created from ArchiveFile
    * @throws InvalidConfigException if ExtensionMapping could not be created because the ArchiveFile uses
-   * an extension that has not been installed yet.
+   *                                an extension that has not been installed yet.
    */
   @NotNull
   private ExtensionMapping importMappings(ActionLogger alog, ArchiveFile af, Source source) {
@@ -1396,7 +1383,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           FileUtils.deleteQuietly(file);
         }
       }
-      alog.warn("manage.resource.create.rowType.null", new String[] {af.getRowType().qualifiedName()});
+      alog.warn("manage.resource.create.rowType.null", new String[]{af.getRowType().qualifiedName()});
       throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
     }
     map.setSource(source);
@@ -1412,12 +1399,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     for (ArchiveField f : af.getFields().values()) {
       if (f.getTerm() == null) {
         alog.warn("manage.resource.create.mapping.concept.skip",
-            new String[] {"null", ext.getRowType()});
+            new String[]{"null", ext.getRowType()});
       } else if (ext.hasProperty(f.getTerm())) {
         fields.add(new PropertyMapping(f));
       } else {
         alog.warn("manage.resource.create.mapping.concept.skip",
-          new String[] {f.getTerm().qualifiedName(), ext.getRowType()});
+            new String[]{f.getTerm().qualifiedName(), ext.getRowType()});
       }
     }
     map.setFields(fields);
@@ -1440,17 +1427,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           FileUtils.deleteQuietly(file);
         }
       }
-      alog.warn("manage.resource.create.schema.null", new String[] {packageType});
+      alog.warn("manage.resource.create.schema.null", new String[]{packageType});
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
     }
 
     DataPackageTableSchema tableSchema = dataPackageSchema.getTableSchemas().stream()
-      .filter(s -> s.getName().equals(filenameWithoutExtension))
-      .findAny()
-      .orElse(null);
+        .filter(s -> s.getName().equals(filenameWithoutExtension))
+        .findAny()
+        .orElse(null);
 
     if (tableSchema == null) {
-      alog.warn("manage.resource.create.tableschema.null", new String[] {filenameWithoutExtension});
+      alog.warn("manage.resource.create.tableschema.null", new String[]{filenameWithoutExtension});
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
     }
 
@@ -1464,13 +1451,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String fileHeaderRow = brTest.readLine();
       columnNames = StringUtils.split(fileHeaderRow, ",");
     } catch (IOException e) {
-      alog.warn("manage.resource.create.tableschema.null", new String[] {filenameWithoutExtension});
+      alog.warn("manage.resource.create.tableschema.null", new String[]{filenameWithoutExtension});
       throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
     }
 
     List<DataPackageFieldMapping> fields = new ArrayList<>();
     Map<String, DataPackageField> schemaFieldsMap = tableSchema.getFields().stream()
-      .collect(Collectors.toMap(DataPackageField::getName, p -> p));
+        .collect(Collectors.toMap(DataPackageField::getName, p -> p));
 
     // iterate over each field to make sure its part of the extension we know
     for (int i = 0; i < columnNames.length; i++) {
@@ -1480,7 +1467,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         fields.add(new DataPackageFieldMapping(i, dataPackageField));
       } else {
         alog.warn("manage.resource.create.mapping.field.skip",
-          new String[] {columnNames[i], dataPackageSchema.getName() + "/" + tableSchema.getName()});
+            new String[]{columnNames[i], dataPackageSchema.getName() + "/" + tableSchema.getName()});
       }
     }
 
@@ -1490,8 +1477,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     return map;
   }
+
   private TextFileSource importSource(Resource config, ArchiveFile af)
-    throws ImportException, InvalidFilenameException {
+      throws ImportException, InvalidFilenameException {
     File extFile = af.getLocationFiles().get(0);
     TextFileSource s = (TextFileSource) sourceManager.add(config, extFile, af.getLocations().get(0));
     SourceManagerImpl.copyArchiveFileProperties(af, s);
@@ -1499,8 +1487,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // the number of rows was calculated using the standard file importer
     // make an adjustment now that the exact number of header rows are known
     if (s.getIgnoreHeaderLines() != 1) {
-      LOG.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
-               + " since header count is declared as " + s.getIgnoreHeaderLines());
+      LOG.info("Adjusting row count to {} from {} since header count is declared as {}", s.getRows() + 1 - s.getIgnoreHeaderLines(), s.getRows(), s.getIgnoreHeaderLines());
     }
     s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
 
@@ -1508,15 +1495,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private TextFileSource importSource(Resource config, File file)
-    throws ImportException, InvalidFilenameException {
+      throws ImportException, InvalidFilenameException {
     TextFileSource s = (TextFileSource) sourceManager.add(config, file, FilenameUtils.removeExtension(file.getName()));
     SourceManagerImpl.copyArchiveFileProperties(file, s);
 
     // the number of rows was calculated using the standard file importer
     // make an adjustment now that the exact number of header rows are known
     if (s.getIgnoreHeaderLines() != 1) {
-      LOG.info("Adjusting row count to " + (s.getRows() + 1 - s.getIgnoreHeaderLines()) + " from " + s.getRows()
-        + " since header count is declared as " + s.getIgnoreHeaderLines());
+      LOG.info("Adjusting row count to {} from {} since header count is declared as {}", s.getRows() + 1 - s.getIgnoreHeaderLines(), s.getRows(), s.getIgnoreHeaderLines());
     }
     s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
 
@@ -1653,17 +1639,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           // getCause holds the actual exception our callable (GenerateDwca) threw
           cause = e.getCause();
           if (cause instanceof GeneratorException) {
-            reasonFailed = action.getText("dwca.failed", new String[] {shortname, cause.getMessage()});
+            reasonFailed = action.getText("dwca.failed", new String[]{shortname, cause.getMessage()});
           } else if (cause instanceof InterruptedException) {
-            reasonFailed = action.getText("dwca.interrupted", new String[] {shortname, cause.getMessage()});
+            reasonFailed = action.getText("dwca.interrupted", new String[]{shortname, cause.getMessage()});
           } else {
-            reasonFailed = action.getText("dwca.failed", new String[] {shortname, cause.getMessage()});
+            reasonFailed = action.getText("dwca.failed", new String[]{shortname, cause.getMessage()});
           }
         } catch (InterruptedException e) {
-          reasonFailed = action.getText("dwca.interrupted", new String[] {shortname, e.getMessage()});
+          reasonFailed = action.getText("dwca.interrupted", new String[]{shortname, e.getMessage()});
           cause = e;
         } catch (PublicationException e) {
-          reasonFailed = action.getText("publishing.error", new String[] {e.getType().toString(), e.getMessage()});
+          reasonFailed = action.getText("publishing.error", new String[]{e.getType().toString(), e.getMessage()});
           cause = e;
           // this type of exception happens outside GenerateDwca - so add reason to StatusReport
           getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
@@ -1672,7 +1658,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           if (succeeded) {
             // update StatusReport on publishing page
             String msg =
-              action.getText("publishing.success", new String[] {version.toPlainString(), resource.getShortname()});
+                action.getText("publishing.success", new String[]{version.toPlainString(), resource.getShortname()});
             StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
             processReports.put(shortname, updated);
           } else {
@@ -1689,7 +1675,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
             // alert user publication failed
             String msg =
-              action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, reasonFailed});
+                action.getText("publishing.failed", new String[]{version.toPlainString(), shortname, reasonFailed});
             action.addActionError(msg);
 
             // update StatusReport on publishing page
@@ -1846,7 +1832,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public DatatableResult listPublishedPublicVersionsSimplified(DatatableRequest request) {
     List<SimplifiedResource> filteredResources = publishedPublicVersionsSimplified.values().stream()
         .filter(p -> matchesSearchString(p, request.getSearch()))
-        .collect(Collectors.toList());
+        .toList();
 
     Locale currentLocale = Locale.forLanguageTag(request.getLocale());
 
@@ -1857,8 +1843,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     List<DataPackageSchema> installedSchemas = schemaManager.list();
     for (DataPackageSchema installedSchema : installedSchemas) {
       datasetTypes.put(
-        installedSchema.getName(),
-        Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
+          installedSchema.getName(),
+          Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
     }
 
     Map<String, String> datasetSubtypes =
@@ -1950,7 +1936,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Check if provided string is present in one of the searchable fields.
    *
    * @param resource lightweight resource
-   * @param search search string
+   * @param search   search string
    * @return true/false
    */
   private boolean matchesSearchString(SimplifiedResource resource, String search) {
@@ -1972,8 +1958,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Converts raw data (one simplified resource) to UI data for portal home page.
    * BEWARE! Order is crucial!
    *
-   * @param resource simplified resource
-   * @param datasetTypes dataset types vocabulary
+   * @param resource        simplified resource
+   * @param datasetTypes    dataset types vocabulary
    * @param datasetSubtypes dataset subtypes vocabulary
    * @return UI data (array)
    */
@@ -2001,8 +1987,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Converts raw data (one simplified resource) to UI data for manage home page.
    * BEWARE! Order is crucial!
    *
-   * @param resource simplified resource
-   * @param datasetTypes dataset types vocabulary
+   * @param resource        simplified resource
+   * @param datasetTypes    dataset types vocabulary
    * @param datasetSubtypes dataset subtypes vocabulary
    * @return UI data (array)
    */
@@ -2093,7 +2079,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Wraps number of published records into a link and format number according to the locale.
    *
    * @param resource lightweight resource
-   * @param locale locale
+   * @param locale   locale
    * @return link to records section
    */
   private String toUiRecordsPublished(SimplifiedResource resource, Locale locale) {
@@ -2105,7 +2091,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Converts raw data to UI format.
    * Wraps core type or subtype into span to make it badge on UI.
    *
-   * @param type core type or subtype
+   * @param type  core type or subtype
    * @param vocab vocabulary map
    * @return wrapped type (badge)
    */
@@ -2180,8 +2166,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     List<DataPackageSchema> installedSchemas = schemaManager.list();
     for (DataPackageSchema installedSchema : installedSchemas) {
       datasetTypes.put(
-        installedSchema.getName(),
-        Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
+          installedSchema.getName(),
+          Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
     }
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(
@@ -2227,26 +2213,26 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           File[] resourceDirFiles = resourceDir.listFiles((dir, name) -> !name.equalsIgnoreCase(".DS_Store"));
 
           if (resourceDirFiles == null) {
-            LOG.error("Resource directory " + resourceDir.getName() + " could not be read. Please verify its content");
+            LOG.error("Resource directory {} could not be read. Please verify its content", resourceDir.getName());
           } else if (resourceDirFiles.length == 0) {
-            LOG.warn("Cleaning up empty resource directory " + resourceDir.getName());
+            LOG.warn("Cleaning up empty resource directory {}", resourceDir.getName());
             FileUtils.deleteQuietly(resourceDir);
             counterDeleted++;
           } else {
             try {
-              LOG.debug("Loading resource from directory " + resourceDir.getName());
+              LOG.debug("Loading resource from directory {}", resourceDir.getName());
               addResource(loadFromDir(resourceDir, creator));
               counter++;
             } catch (InvalidConfigException e) {
-              LOG.error("Can't load resource " + resourceDir.getName(), e);
+              LOG.error("Can't load resource {}", resourceDir.getName(), e);
             }
           }
         }
       }
-      LOG.info("Loaded " + counter + " resources into memory altogether.");
-      LOG.info("Cleaned up " + counterDeleted + " resources altogether.");
+      LOG.info("Loaded {} resources into memory altogether.", counter);
+      LOG.info("Cleaned up {} resources altogether.", counterDeleted);
     } else {
-      LOG.error("Data directory does not hold a resources directory: " + dataDir.dataFile(""));
+      LOG.error("Data directory does not hold a resources directory: {}", dataDir.dataFile(""));
     }
     return counter;
   }
@@ -2335,7 +2321,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) xstream.fromXML(input);
         resource.setInferredMetadata(inferredMetadata);
       } catch (Exception e) {
-        LOG.error("Cannot read inferred metadata file (Camtrap) for resource " + resource.getShortname(), e);
+        LOG.error("Cannot read inferred metadata file (Camtrap) for resource {}", resource.getShortname(), e);
         resource.setInferredMetadata(new InferredCamtrapMetadata());
       }
     } else {
@@ -2349,7 +2335,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) xstream.fromXML(input);
         resource.setInferredMetadata(inferredMetadata);
       } catch (Exception e) {
-        LOG.error("Cannot read inferred metadata file (EML) for resource " + resource.getShortname(), e);
+        LOG.error("Cannot read inferred metadata file (EML) for resource {}", resource.getShortname(), e);
         resource.setInferredMetadata(new InferredEmlMetadata());
       }
     }
@@ -2359,8 +2345,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Calls loadFromDir(File, User, ActionLogger), inserting a new instance of ActionLogger.
    *
    * @param resourceDir resource directory
-   * @param creator User that created resource (only used to populate creator when missing)
-   *
+   * @param creator     User that created resource (only used to populate creator when missing)
    * @return loaded Resource
    */
   protected Resource loadFromDir(File resourceDir, @Nullable User creator) {
@@ -2383,7 +2368,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // populate missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
           resource.setCreator(creator);
-          LOG.warn("On load, populated missing creator for resource: " + shortname);
+          LOG.warn("On load, populated missing creator for resource: {}", shortname);
         }
 
         // non-existing users end up being a NULL in the set, so remove them
@@ -2397,16 +2382,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         for (ExtensionMapping ext : resource.getMappings()) {
           Extension x = ext.getExtension();
           if (x == null) {
-            alog.warn("manage.resource.create.extension.null", new String[] {ext.getExtensionVerbatim()});
+            alog.warn("manage.resource.create.extension.null", new String[]{ext.getExtensionVerbatim()});
             throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-existent extension");
           } else if (extensionManager.get(x.getRowType()) == null) {
-            alog.warn("manage.resource.create.rowType.null", new String[] {x.getRowType()});
+            alog.warn("manage.resource.create.rowType.null", new String[]{x.getRowType()});
             throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
           }
           // is the ExtensionMapping of core type, not taxon core type, and uses a coreIdColumn mapping?
           if (ext.isCore() && !ext.isTaxonCore() && ext.getIdColumn() != null) {
             if (ext.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER) || ext.getIdColumn()
-              .equals(ExtensionMapping.IDGEN_UUID)) {
+                .equals(ExtensionMapping.IDGEN_UUID)) {
               ext.setIdColumn(ExtensionMapping.NO_ID);
             }
           }
@@ -2469,12 +2454,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           syncEmlWithResource(resource);
         }
 
-        LOG.debug("Read resource configuration for " + shortname);
+        LOG.debug("Read resource configuration for {}", shortname);
         return resource;
       } catch (Exception e) {
-        LOG.error("Cannot read resource configuration for " + shortname, e);
+        LOG.error("Cannot read resource configuration for {}", shortname, e);
         throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-          "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
+            "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
       }
     }
     return null;
@@ -2485,7 +2470,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * integer-based version numbers.
    *
    * @param resource resource
-   *
    * @return converted version number, or null if no conversion happened
    */
   @SuppressWarnings("BigDecimalEquals")
@@ -2497,7 +2481,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         return Constants.INITIAL_RESOURCE_VERSION;
       } else if (version.scale() == 0) {
         BigDecimal majorMinorVersion = version.setScale(1, RoundingMode.CEILING);
-        LOG.debug("Converted version [" + version.toPlainString() + "] to [" + majorMinorVersion.toPlainString() + "]");
+        LOG.debug("Converted version [{}] to [{}]", version.toPlainString(), majorMinorVersion.toPlainString());
         return majorMinorVersion;
       }
     }
@@ -2510,7 +2494,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource   resource to update
    * @param oldVersion old version number
    * @param newVersion new version number
-   *
    * @return resource whose version number and files' version numbers have been updated
    */
   @SuppressWarnings("BigDecimalEquals")
@@ -2545,9 +2528,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // if all renames were successful (didn't throw an exception), set new version
         resource.setMetadataVersion(newVersion);
       } catch (IOException e) {
-        LOG.error("Failed to update version number for " + resource.getShortname(), e);
+        LOG.error("Failed to update version number for {}", resource.getShortname(), e);
         throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-          "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
+            "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
       }
     }
     return resource;
@@ -2568,11 +2551,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (unversionedDwca.exists() && !versionedDwca.exists()) {
       try {
         FileUtils.moveFile(unversionedDwca, versionedDwca);
-        LOG.debug("Renamed dwca.zip to " + versionedDwca.getName());
+        LOG.debug("Renamed dwca.zip to {}", versionedDwca.getName());
       } catch (IOException e) {
-        LOG.error("Failed to rename dwca.zip file name with version number for " + resource.getShortname(), e);
+        LOG.error("Failed to rename dwca.zip file name with version number for {}", resource.getShortname(), e);
         throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-          "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
+            "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
       }
     }
   }
@@ -2582,13 +2565,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * VersionHistory. Please note IPTs before v2.2 had no list of VersionHistory.
    *
    * @param resource resource
-   *
    * @return VersionHistory, or null if no VersionHistory needed to be created.
    */
   protected VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
     if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
       VersionHistory vh =
-        new VersionHistory(resource.getMetadataVersion(), resource.getLastPublished(), resource.getStatus());
+          new VersionHistory(resource.getMetadataVersion(), resource.getLastPublished(), resource.getStatus());
       vh.setRecordsPublished(resource.getRecordsPublished());
       return vh;
     }
@@ -2602,7 +2584,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * the coreRowType against the taxon and occurrence rowTypes.
    *
    * @param resource Resource
-   *
    * @return resource with coreType set if it could be inferred, or unchanged if it couldn't be inferred.
    */
   Resource inferCoreType(Resource resource) {
@@ -2625,7 +2606,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * null. That would mean the user would then have to reselect the subtype from the Basic Metadata page.
    *
    * @param resource Resource
-   *
    * @return resource with subtype set using term from dataset_subtype vocabulary (assuming it has been set).
    */
   Resource standardizeSubtype(Resource resource) {
@@ -2633,7 +2613,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // the vocabulary key names are identifiers and standard across Locales
       // it's this key we want to persist as the subtype
       Map<String, String> subtypes =
-        vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, Locale.ENGLISH.getLanguage(), false);
+          vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, Locale.ENGLISH.getLanguage(), false);
       boolean usesVocab = false;
       for (Map.Entry<String, String> entry : subtypes.entrySet()) {
         // remember to do comparison regardless of case, since the subtype is stored in lowercase
@@ -2665,7 +2645,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   @Override
   public boolean publish(Resource resource, BigDecimal version, BaseAction action, PublicationOptions options)
-    throws PublicationException, InvalidConfigException {
+      throws PublicationException, InvalidConfigException {
     String shortname = resource.getShortname();
 
     // prevent null action from being handled
@@ -2731,12 +2711,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .findAny();
 
     if (sourceBeingProcessed.isPresent()) {
-       PublicationException e = new PublicationException(
-           PublicationException.TYPE.LOCKED,
+      PublicationException e = new PublicationException(
+          PublicationException.TYPE.LOCKED,
           "Resource's " + resource.getShortname() + " source " + sourceBeingProcessed.get() + " is currently being processed");
-       e.addAdditionalParameter("source", sourceBeingProcessed.get().getName());
+      e.addAdditionalParameter("source", sourceBeingProcessed.get().getName());
 
-       throw e;
+      throw e;
     }
   }
 
@@ -2749,12 +2729,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param resource resource
    * @param action   action
    * @param version  version number to finalize publishing
-   *
    * @throws PublicationException   if publication was unsuccessful
    * @throws InvalidConfigException if resource configuration could not be saved
    */
   private void publishEnd(Resource resource, BaseAction action, BigDecimal version)
-    throws PublicationException, InvalidConfigException {
+      throws PublicationException, InvalidConfigException {
     // prevent null action from being handled
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
@@ -2787,7 +2766,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
     // final logging
     String msg = action
-      .getText("publishing.success", new String[] {String.valueOf(resource.getMetadataVersion()), resource.getShortname()});
+        .getText("publishing.success", new String[]{String.valueOf(resource.getMetadataVersion()), resource.getShortname()});
     action.addActionMessage(msg);
     LOG.info(msg);
   }
@@ -2802,28 +2781,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param version         resource version being published
    * @param versionReplaced resource version being replaced
    * @param action          action
-   *
    * @throws PublicationException thrown if any part of DOI workflow failed
    */
   private void executeDoiWorkflow(Resource resource, BigDecimal version, BigDecimal versionReplaced, BaseAction action)
-    throws PublicationException {
+      throws PublicationException {
     // All DOI operations require resource be publicly available, and resource DOI be PUBLIC/PUBLIC_PENDING_PUBLICATION
     if (resource.getDoi() != null && resource.isPubliclyAvailable() && (
-      resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || resource
-        .getIdentifierStatus().equals(IdentifierStatus.PUBLIC))) {
+        resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || resource
+            .getIdentifierStatus().equals(IdentifierStatus.PUBLIC))) {
       if (resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION)) {
         if (resource.isAlreadyAssignedDoi()) {
           // another new major version that replaces previous version
           doReplaceDoi(resource, version, versionReplaced);
           String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion.replaces",
-            new String[] {resource.getDoi().toString()});
+              new String[]{resource.getDoi().toString()});
           LOG.info(msg);
           action.addActionMessage(msg);
         } else {
           // initial major version
           doRegisterDoi(resource, null);
           String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion",
-            new String[] {resource.getDoi().toString()});
+              new String[]{resource.getDoi().toString()});
           LOG.info(msg);
           action.addActionMessage(msg);
         }
@@ -2831,7 +2809,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // minor version increment
         doUpdateDoi(resource);
         String msg = action.getText("manage.overview.publishing.doi.publish.newMinorVersion",
-          new String[] {resource.getDoi().toString()});
+            new String[]{resource.getDoi().toString()});
         LOG.info(msg);
         action.addActionMessage(msg);
       }
@@ -2865,12 +2843,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
       } catch (DoiExistsException e) {
         LOG.warn(
-          "Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead",
-          e);
+            "Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead",
+            e);
         try {
           registrationManager.getDoiService().update(doi, dataCiteMetadata);
           resource.setIdentifierStatus(
-            IdentifierStatus.PUBLIC); // must transition reused (registered DOI) from public_pending_publication to public
+              IdentifierStatus.PUBLIC); // must transition reused (registered DOI) from public_pending_publication to public
           resource.updateAlternateIdentifierForDOI();
           resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
         } catch (DoiException e2) {
@@ -2880,7 +2858,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
       } catch (InvalidMetadataException e) {
         String errorMsg =
-          "Failed to register " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
+            "Failed to register " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
         LOG.error(errorMsg);
         throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
       } catch (DoiException e) {
@@ -2890,7 +2868,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       throw new InvalidConfigException(TYPE.INVALID_DOI_REGISTRATION,
-        "Resource not in required state to register DOI!");
+          "Resource not in required state to register DOI!");
     }
   }
 
@@ -2921,8 +2899,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Replace DOI currently assigned to resource with new DOI that has been reserved for resource.
    * This corresponds to a new major version change.
    *
-   * @param resource resource whose DOI will be registered
-   * @param version new version
+   * @param resource        resource whose DOI will be registered
+   * @param version         new version
    * @param replacedVersion previous version being replaced
    */
   protected void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion) {
@@ -2943,11 +2921,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // reconstruct last published version (version being replaced)
         File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
         Resource lastPublishedVersion = ResourceUtils
-          .reconstructVersion(replacedVersion, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), doiToReplace, resource.getOrganisation(),
-            resource.findVersionHistory(replacedVersion), replacedVersionEmlFile, resource.getKey());
+            .reconstructVersion(replacedVersion, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), doiToReplace, resource.getOrganisation(),
+                resource.findVersionHistory(replacedVersion), replacedVersionEmlFile, resource.getKey());
 
         DataCiteMetadata assignedDoiMetadata =
-          DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
+            DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
 
         // add isPreviousVersionOf new resource version registered above
         DataCiteMetadataBuilder.addIsPreviousVersionOfDOIRelatedIdentifier(assignedDoiMetadata, doiToRegister);
@@ -2982,7 +2960,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param resource   resource
    * @param toRollBack version to rollback
-   *
    * @return the version to restore, or null if version history is invalid
    */
   private BigDecimal getVersionToRestore(@NotNull Resource resource, @NotNull BigDecimal toRollBack) {
@@ -3019,8 +2996,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (toRestore != null) {
       String shortname = resource.getShortname();
       LOG.info(
-        "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + toRestore.toPlainString()
-        + " of resource " + shortname);
+          "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + toRestore.toPlainString()
+              + " of resource " + shortname);
 
       try {
         // delete eml-1.1.xml if it exists (eml.xml must remain)
@@ -3070,12 +3047,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       } catch (IOException e) {
         String msg = action
-          .getText("restore.resource.failed", new String[] {toRestore.toPlainString(), shortname, e.getMessage()});
+            .getText("restore.resource.failed", new String[]{toRestore.toPlainString(), shortname, e.getMessage()});
         LOG.error(msg, e);
         action.addActionError(msg);
       }
       // alert user version rollback was successful
-      String msg = action.getText("restore.resource.success", new String[] {toRestore.toPlainString(), shortname});
+      String msg = action.getText("restore.resource.success", new String[]{toRestore.toPlainString(), shortname});
       LOG.info(msg);
       action.addActionMessage(msg);
       // update StatusReport on publishing page
@@ -3086,7 +3063,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       String msg = action
-          .getText("restore.resource.failed.version.notFound", new String[] {rollingBack.toPlainString()});
+          .getText("restore.resource.failed.version.notFound", new String[]{rollingBack.toPlainString()});
       LOG.error(msg);
       action.addActionError(msg);
     }
@@ -3099,8 +3076,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (toRestore != null) {
       String shortname = resource.getShortname();
       LOG.info(
-              "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + toRestore.toPlainString()
-                      + " of resource " + shortname);
+          "Rolling back version #" + rollingBack.toPlainString() + ". Restoring version #" + toRestore.toPlainString()
+              + " of resource " + shortname);
 
       try {
         // delete versioned metadata file if exists (datapackage.json must remain)
@@ -3140,12 +3117,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       } catch (IOException e) {
         String msg = action
-                .getText("restore.resource.failed", new String[] {toRestore.toPlainString(), shortname, e.getMessage()});
+            .getText("restore.resource.failed", new String[]{toRestore.toPlainString(), shortname, e.getMessage()});
         LOG.error(msg, e);
         action.addActionError(msg);
       }
       // alert user version rollback was successful
-      String msg = action.getText("restore.resource.success", new String[] {toRestore.toPlainString(), shortname});
+      String msg = action.getText("restore.resource.success", new String[]{toRestore.toPlainString(), shortname});
       LOG.info(msg);
       action.addActionMessage(msg);
       // update StatusReport on publishing page
@@ -3156,7 +3133,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       String msg = action
-              .getText("restore.resource.failed.version.notFound", new String[] {rollingBack.toPlainString()});
+          .getText("restore.resource.failed.version.notFound", new String[]{rollingBack.toPlainString()});
       LOG.error(msg);
       action.addActionError(msg);
     }
@@ -3169,7 +3146,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * time the resource gets re-published.
    *
    * @param resource resource
-   *
    * @return resource with Registry UUID for the resource updated
    */
   public Resource updateAlternateIdentifierForRegistry(Resource resource) {
@@ -3270,7 +3246,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param resource Resource
    * @param version  version number to publish
-   *
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
   private void publishEml(Resource resource, BigDecimal version, BaseAction action) throws PublicationException {
@@ -3279,7 +3254,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // check if publishing task is already running
     if (isLocked(shortname)) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
-        "Resource " + shortname + " is currently locked by another process");
+          "Resource " + shortname + " is currently locked by another process");
     }
 
     if (resource.isMetadataOnly()) {
@@ -3352,7 +3327,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "✓ Validated EML file"));
         StatusReport report = new StatusReport(
             true,
-            action.getText("publishing.success", new String[] {version.toPlainString(), shortname}),
+            action.getText("publishing.success", new String[]{version.toPlainString(), shortname}),
             getTaskMessages(shortname));
         processReports.put(shortname, report);
       } catch (IOException | SAXException e) {
@@ -3361,7 +3336,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             "Can't publish eml file for resource " + shortname + ". Failed to validate EML", e);
         StatusReport errorReport = new StatusReport(
             exception,
-            action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, "Failed to validate EML"}),
+            action.getText("publishing.failed", new String[]{version.toPlainString(), shortname, "Failed to validate EML"}),
             getTaskMessages(shortname));
         processReports.put(shortname, errorReport);
         throw exception;
@@ -3371,7 +3346,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             "Can't publish eml file for resource " + resource.getShortname() + ". Invalid EML", e);
         StatusReport errorReport = new StatusReport(
             exception,
-            action.getText("publishing.failed", new String[] {version.toPlainString(), shortname, "Invalid EML"}),
+            action.getText("publishing.failed", new String[]{version.toPlainString(), shortname, "Invalid EML"}),
             getTaskMessages(shortname));
         processReports.put(shortname, errorReport);
         throw exception;
@@ -3384,7 +3359,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       FileUtils.copyFile(trunkFile, versionedFile);
     } catch (IOException e) {
       throw new PublicationException(PublicationException.TYPE.EML,
-        "Can't publish eml file for resource " + resource.getShortname(), e);
+          "Can't publish eml file for resource " + resource.getShortname(), e);
     }
   }
 
@@ -3542,7 +3517,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param resource Resource
    * @param version  version number to publish
-   *
    * @throws PublicationException if resource was already being published, or if publishing failed for any reason
    */
   private void publishRtf(Resource resource, BigDecimal version) throws PublicationException {
@@ -3554,7 +3528,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // check if publishing task is already running
     if (isLocked(resource.getShortname())) {
       throw new PublicationException(PublicationException.TYPE.LOCKED,
-        "Resource " + resource.getShortname() + " is currently locked by another process");
+          "Resource " + resource.getShortname() + " is currently locked by another process");
     }
 
     Document doc = new Document();
@@ -3566,13 +3540,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       eml2Rtf.writeEmlIntoRtf(doc, resource);
     } catch (FileNotFoundException e) {
       throw new PublicationException(PublicationException.TYPE.RTF,
-        "Can't find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
+          "Can't find rtf file to write metadata to: " + rtfFile.getAbsolutePath(), e);
     } catch (DocumentException e) {
       throw new PublicationException(PublicationException.TYPE.RTF,
-        "RTF DocumentException while writing to file: " + rtfFile.getAbsolutePath(), e);
+          "RTF DocumentException while writing to file: " + rtfFile.getAbsolutePath(), e);
     } catch (Exception e) {
       throw new PublicationException(PublicationException.TYPE.RTF,
-        "An unexpected error occurred while writing RTF file: " + e.getMessage(), e);
+          "An unexpected error occurred while writing RTF file: " + e.getMessage(), e);
     } finally {
       if (out != null) {
         try {
@@ -3590,7 +3564,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @param shortname resource shortname
    * @param archive   archive
    * @param alog      ActionLogger
-   *
    * @return Eml instance or null if none could be created because the metadata file did not exist or was invalid
    */
   @Nullable
@@ -3628,7 +3601,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       alog.info("manage.resource.read.basic.metadata");
       return eml;
     } catch (Exception e) {
-      LOG.warn("Cant read basic archive metadata: " + e.getMessage());
+      LOG.warn("Cant read basic archive metadata: {}", e.getMessage());
     }
     alog.warn("manage.resource.read.problem");
     return null;
@@ -3659,7 +3632,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   @Override
   public void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action)
-    throws RegistryException {
+      throws RegistryException {
     ActionLogger alog = new ActionLogger(this.LOG, action);
 
     if (PublicationStatus.REGISTERED != resource.getStatus() && PublicationStatus.PUBLIC == resource.getStatus()) {
@@ -3671,7 +3644,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // there can be max 1 candidate UUID. This safeguards against migration errors
       if (candidateResourceUUIDs.size() > 1) {
         String reason =
-          action.getText("manage.resource.migrate.failed.multipleUUIDs", new String[] {organisation.getName()});
+            action.getText("manage.resource.migrate.failed.multipleUUIDs", new String[]{organisation.getName()});
         String help = action.getText("manage.resource.migrate.failed.help");
         throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
       }
@@ -3689,7 +3662,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                 registryManager.isResourceBelongsToOrganisation(candidate.toString(), organisation.getKey().toString());
 
             if (matched) {
-              LOG.debug("Resource matched to existing registered resource, UUID=" + organisation.getKey());
+              LOG.debug("Resource matched to existing registered resource, UUID={}", organisation.getKey());
 
               // fill in registration info - we've found the original resource being migrated to the IPT
               resource.setStatus(PublicationStatus.REGISTERED);
@@ -3697,7 +3670,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               resource.setOrganisation(organisation);
 
               // display update about migration to user
-              alog.info("manage.resource.migrate", new String[] {organisation.getKey().toString(), organisation.getName()});
+              alog.info("manage.resource.migrate", new String[]{organisation.getKey().toString(), organisation.getName()});
 
               // update the resource, adding the new service(s)
               updateRegistration(resource, action);
@@ -3705,14 +3678,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             // if no match was ever found, this is considered a failed resource migration
             else {
               String reason =
-                action.getText("manage.resource.migrate.failed.badUUID", new String[] {organisation.getName()});
+                  action.getText("manage.resource.migrate.failed.badUUID", new String[]{organisation.getName()});
               String help = action.getText("manage.resource.migrate.failed.help");
               throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help);
             }
           }
         } else {
           String reason = action.getText("manage.resource.migrate.failed.duplicate",
-            new String[] {candidate.toString(), duplicateUses.toString()});
+              new String[]{candidate.toString(), duplicateUses.toString()});
           String help1 = action.getText("manage.resource.migrate.failed.help");
           String help2 = action.getText("manage.resource.migrate.failed.duplicate.help");
           throw new InvalidConfigException(TYPE.INVALID_RESOURCE_MIGRATION, reason + " " + help1 + " " + help2);
@@ -3721,10 +3694,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         UUID key = registryManager.register(resource, organisation, ipt);
         if (key == null) {
           throw new RegistryException(RegistryException.Type.MISSING_METADATA, null,
-            "No key returned for registered resource");
+              "No key returned for registered resource");
         }
         // display success to user
-        alog.info("manage.overview.resource.registered", new String[] {organisation.getName()});
+        alog.info("manage.overview.resource.registered", new String[]{organisation.getName()});
 
         // change status to registered
         resource.setStatus(PublicationStatus.REGISTERED);
@@ -3738,7 +3711,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // save all changes to resource
       save(resource);
     } else {
-      LOG.error("Registration request failed: the resource must be public. Status=" + resource.getStatus().toString());
+      LOG.error("Registration request failed: the resource must be public. Status={}", resource.getStatus().toString());
     }
   }
 
@@ -3761,7 +3734,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *
    * @param candidate UUID
    * @param shortname shortname of resource to exclude from matching
-   *
    * @return list of names of resources that have matched candidate UUID
    */
   protected List<String> detectDuplicateUsesOfUUID(UUID candidate, String shortname) {
@@ -3796,7 +3768,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Dataset UUIDs.
    *
    * @param resource resource
-   *
    * @return set of UUIDs that could qualify as GBIF Registry Dataset UUIDs
    */
   private Set<UUID> collectCandidateResourceUUIDsFromAlternateIds(Resource resource) {
@@ -3812,9 +3783,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
       }
     } else if (resource.getDataPackageMetadata() != null
-        && resource.getDataPackageMetadata() instanceof CamtrapMetadata
+        && resource.getDataPackageMetadata() instanceof CamtrapMetadata metadata
         && CAMTRAP_DP.equals(resource.getCoreType())) {
-      CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
       List<RelatedIdentifier> relatedIdentifiers = metadata.getRelatedIdentifiers();
       for (RelatedIdentifier identifier : relatedIdentifiers) {
         if (identifier != null && identifier.getRelatedIdentifier() != null
@@ -3845,14 +3815,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Construct or update the VersionHistory for version v of resource, and make sure that it is added to the resource's
    * VersionHistory List.
    *
-   * @param resource resource published
-   * @param version  version of resource published
+   * @param resource  resource published
+   * @param version   version of resource published
    * @param published true if this version has been published successfully, false otherwise
-   * @param action   action
+   * @param action    action
    */
   protected synchronized void addOrUpdateVersionHistory(Resource resource, BigDecimal version, boolean published,
-    BaseAction action) {
-    LOG.info("Adding or updating version: " + version.toPlainString());
+                                                        BaseAction action) {
+    LOG.info("Adding or updating version: {}", version.toPlainString());
 
     VersionHistory versionHistory;
     // Construct new VersionHistory, or update existing one if it exists
@@ -3860,10 +3830,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (existingVersionHistory == null) {
       versionHistory = new VersionHistory(version, resource.getStatus());
       resource.addVersionHistory(versionHistory);
-      LOG.info("Adding VersionHistory for version " + version.toPlainString());
+      LOG.info("Adding VersionHistory for version {}", version.toPlainString());
     } else {
       versionHistory = existingVersionHistory;
-      LOG.info("Updating VersionHistory for version " + version.toPlainString());
+      LOG.info("Updating VersionHistory for version {}", version.toPlainString());
     }
 
     // DOI
@@ -3900,7 +3870,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             LOG.info("Deleting archive version {} for resource: {}", version, resource.getShortname());
             removeArchiveVersion(resource.getShortname(), version);
           } catch (Exception e) {
-            LOG.error("Cannot delete old archive versions for resource: " + resource.getShortname(), e);
+            LOG.error("Cannot delete old archive versions for resource: {}", resource.getShortname(), e);
             return;
           }
         }
@@ -3966,7 +3936,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     File emlFile = dataDir.resourceEmlFile(resource.getShortname());
     // Locale.US it's used because uses '.' as the decimal separator
     EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
-    LOG.debug("Updated EML file for " + resource);
+    LOG.debug("Updated EML file for {}", resource);
   }
 
   @Override
@@ -3982,7 +3952,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       throw new RuntimeException(e);
     }
 
-    LOG.debug("Updated metadata file for " + resource);
+    LOG.debug("Updated metadata file for {}", resource);
   }
 
   @Override
@@ -3999,7 +3969,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * </br>
    * This method must be called before persisting the EML file to ensure that the EML file and resource are in sync.
    *
-   * @param resource Resource
+   * @param resource         Resource
    * @param preserveKeywords perform keywords update or not
    */
   private void syncEmlWithResource(Resource resource, boolean preserveKeywords) {
@@ -4029,13 +3999,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         action = new BaseAction(textProvider, cfg, registrationManager);
       }
       try {
-        LOG.debug("Updating registration of resource with key: " + resource.getKey().toString());
+        LOG.debug("Updating registration of resource with key: {}", resource.getKey().toString());
 
         // get IPT key
         String iptKey = null;
         if (registrationManager.getIpt() != null) {
           iptKey =
-            (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().getKey().toString();
+              (registrationManager.getIpt().getKey() == null) ? null : registrationManager.getIpt().getKey().toString();
         }
 
         // perform update
@@ -4051,7 +4021,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         LOG.error(msg);
         throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
       } catch (InvalidConfigException e) {
-        String msg = action.getText("manage.overview.failed.resource.update", new String[] {e.getMessage()});
+        String msg = action.getText("manage.overview.failed.resource.update", new String[]{e.getMessage()});
         action.addActionError(msg);
         LOG.error(msg);
         throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
@@ -4063,7 +4033,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public void visibilityToPrivate(Resource resource, BaseAction action) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
-        "The resource is already registered with GBIF");
+          "The resource is already registered with GBIF");
     } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
       // update visibility to private
       resource.setStatus(PublicationStatus.PRIVATE);
@@ -4083,7 +4053,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public void visibilityToPublic(Resource resource, BaseAction action) throws InvalidConfigException {
     if (PublicationStatus.REGISTERED == resource.getStatus()) {
       throw new InvalidConfigException(TYPE.RESOURCE_ALREADY_REGISTERED,
-        "The resource is already registered with GBIF");
+          "The resource is already registered with GBIF");
     } else if (PublicationStatus.PRIVATE == resource.getStatus()) {
       // update visibility to public
       resource.setStatus(PublicationStatus.PUBLIC);
@@ -4107,20 +4077,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * list of TaskMessage.
    *
    * @param shortname resource shortname
-   *
    * @return resource's StatusReport's list of TaskMessage or an empty list if no StatusReport exists for resource
    */
   private List<TaskMessage> getTaskMessages(String shortname) {
     return processReports.get(shortname) == null ? new ArrayList<>()
-      : processReports.get(shortname).getMessages();
+        : processReports.get(shortname).getMessages();
   }
 
   @Override
   public void updatePublicationMode(Resource resource) {
     if (resource.usesAutoPublishing()) {
       updateNextPublishedDate(new Date(), resource);
-    }
-    else {
+    } else {
       resource.setNextPublished(null);
     }
   }
@@ -4131,7 +4099,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * daily), and have auto-publishing mode turned on for this update to take place.
    *
    * @param resource resource
-   *
    * @throws PublicationException if the next published date cannot be set for any reason
    */
   protected void updateNextPublishedDate(Date currentDate, Resource resource) throws PublicationException {
@@ -4253,7 +4220,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Try to add/update/remove KeywordSet for dataset type and subtype.
    *
    * @param resource resource
-   *
    * @return resource whose Eml list of KeywordSet has been updated depending on presence of dataset type or subtype
    */
   protected Resource updateKeywordsWithDatasetTypeAndSubtype(Resource resource) {
@@ -4340,10 +4306,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return false;
   }
 
-  public GenerateDwcaFactory getDwcaFactory() {
-    return dwcaFactory;
-  }
-
   /**
    * Remove an archived version in the resource history and from the file system
    */
@@ -4358,8 +4320,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         resource.removeVersionHistory(version);
         save(resource);
         LOG.debug("Version {} has been removed for resource: {}", version, resource.getShortname());
-      }
-      catch(IOException e) {
+      } catch (IOException e) {
         LOG.error("Cannot remove version {} for resource: {}", version, resource.getShortname(), e);
       }
     }
@@ -4433,7 +4394,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     while ((bytesCount = fis.read(byteArray)) != -1) {
       digest.update(byteArray, 0, bytesCount);
-    };
+    }
     fis.close();
 
     byte[] bytes = digest.digest();

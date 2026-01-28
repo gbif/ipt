@@ -36,6 +36,7 @@ import org.gbif.utils.HttpClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -53,10 +54,10 @@ import org.apache.logging.log4j.Logger;
  */
 public class SetupAction extends BaseAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(SetupAction.class);
-
+  @Serial
   private static final long serialVersionUID = 4726973323043063968L;
+
+  private static final Logger LOG = LogManager.getLogger(SetupAction.class);
 
   private final ConfigManager configManager;
   private final AppConfig cfg;
@@ -133,7 +134,7 @@ public class SetupAction extends BaseAction {
           baseURL = baseURL.replaceFirst("^http://", "https://");
         }
 
-        LOG.info("Auto-Detected IPT BaseURL=" + baseURL);
+        LOG.info("Auto-Detected IPT BaseURL={}", baseURL);
       } else {
         baseURL = cfg.getBaseUrl();
       }
@@ -220,7 +221,7 @@ public class SetupAction extends BaseAction {
           addFieldError("dataDirPath", getText("admin.config.setup.datadir.absolute"));
         }
       } catch (InvalidConfigException e) {
-        LOG.warn("Failed to setup datadir: " + e.getMessage(), e);
+        LOG.warn("Failed to setup datadir: {}", e.getMessage(), e);
         if (e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
           addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
         } else {
@@ -228,7 +229,7 @@ public class SetupAction extends BaseAction {
         }
       } catch (RegistryException e) {
         String msg = RegistryException.logRegistryException(e, this);
-        LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
+        LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
         addActionError(msg);
       }
     }
@@ -393,7 +394,7 @@ public class SetupAction extends BaseAction {
         }
       } catch (RegistryException e) {
         String msg = RegistryException.logRegistryException(e, this);
-        LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
+        LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
         addActionError(msg);
       }
     }
@@ -418,7 +419,7 @@ public class SetupAction extends BaseAction {
       addActionWarning(msg, e);
     } catch (RegistryException e) {
       String msg = RegistryException.logRegistryException(e, this);
-      LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
+      LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
       addActionError(msg);
       addActionExceptionWarning(e);
     }

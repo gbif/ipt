@@ -117,14 +117,14 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       File f = getVocabFile(toUninstall.getUriResolvable());
       if (f.exists()) {
         f.delete();
-        LOG.debug("Successfully deleted (uninstalled) vocabulary file: " + f.getAbsolutePath());
+        LOG.debug("Successfully deleted (uninstalled) vocabulary file: {}", f.getAbsolutePath());
       } else {
-        LOG.warn("Vocabulary file doesn't exist locally - can't delete: " + f.getAbsolutePath());
+        LOG.warn("Vocabulary file doesn't exist locally - can't delete: {}", f.getAbsolutePath());
       }
       // 2. delete from local lookup
       vocabulariesById.remove(identifier);
     } else {
-      LOG.warn("Vocabulary not installed locally, can't uninstall: " + identifier);
+      LOG.warn("Vocabulary not installed locally, can't uninstall: {}", identifier);
     }
   }
 
@@ -170,7 +170,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
     if (map.isEmpty()) {
-      LOG.error("Empty i18n map for vocabulary " + identifier + " and language " + lang);
+      LOG.error("Empty i18n map for vocabulary {} and language {}", identifier, lang);
     }
     return map;
   }
@@ -290,7 +290,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
       vocabulariesById.put(vocabulary.getUriString(), fromFile);
     } catch (IOException e) {
-      LOG.error("Installing vocabulary failed, while trying to move and rename vocabulary file: " + e.getMessage(), e);
+      LOG.error("Installing vocabulary failed, while trying to move and rename vocabulary file: {}", e.getMessage(), e);
       throw e;
     }
   }
@@ -308,7 +308,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
-      LOG.info("Successfully downloaded vocabulary: " + url);
+      LOG.info("Successfully downloaded vocabulary: {}", url);
       return tmpFile;
     } else {
       String msg =
@@ -348,7 +348,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
                 counter++;
               }
             } else {
-              LOG.warn("An invalid vocabulary has been encountered and will be deleted: " + vf.getAbsolutePath());
+              LOG.warn("An invalid vocabulary has been encountered and will be deleted: {}", vf.getAbsolutePath());
               FileUtils.deleteQuietly(vf);
             }
           } catch (InvalidConfigException e) {
@@ -470,14 +470,14 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
     try (InputStream fileIn = new FileInputStream(localFile)) {
       Vocabulary v = vocabFactory.build(fileIn);
       v.setModified(new Date(localFile.lastModified())); // filesystem date
-      LOG.info("Successfully loaded vocabulary: " + v.getUriString());
+      LOG.info("Successfully loaded vocabulary: {}", v.getUriString());
       return v;
     } catch (IOException e) {
-      LOG.error("Can't access local vocabulary file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't access local vocabulary file ({})", localFile.getAbsolutePath(), e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_VOCABULARY,
         "Can't access local vocabulary file");
     } catch (SAXException e) {
-      LOG.error("Can't parse local extension file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't parse local extension file ({})", localFile.getAbsolutePath(), e);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_VOCABULARY,
         "Can't parse local vocabulary file");
     } catch (ParserConfigurationException e) {

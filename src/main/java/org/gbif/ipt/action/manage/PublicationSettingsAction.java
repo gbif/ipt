@@ -24,6 +24,7 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import javax.inject.Inject;
+import java.io.Serial;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,9 @@ import org.apache.commons.lang3.StringUtils;
 import lombok.Getter;
 
 public class PublicationSettingsAction extends ManagerBaseAction {
+
+  @Serial
+  private static final long serialVersionUID = 7675406287200699071L;
 
   private final VocabulariesManager vocabManager;
 

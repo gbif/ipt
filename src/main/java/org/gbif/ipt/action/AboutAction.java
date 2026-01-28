@@ -20,16 +20,24 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.inject.Inject;
+import java.io.Serial;
 import java.util.UUID;
+
+import lombok.Getter;
 
 public class AboutAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = -471175839075190159L;
 
   private final AppConfig cfg;
+  @Getter
   private String title;
+  @Getter
   private UUID iptKey;
+  @Getter
   private String iptDescription;
+  @Getter
   private String hostingOrganisationName;
 
   @Inject
@@ -39,10 +47,6 @@ public class AboutAction extends BaseAction {
       RegistrationManager registrationManager) {
     super(textProvider, cfg, registrationManager);
     this.cfg = cfg;
-  }
-
-  public String getTitle() {
-    return title;
   }
 
   public String getPortalUrl() {
@@ -75,15 +79,4 @@ public class AboutAction extends BaseAction {
     }
   }
 
-  public UUID getIptKey() {
-    return iptKey;
-  }
-
-  public String getIptDescription() {
-    return iptDescription;
-  }
-
-  public String getHostingOrganisationName() {
-    return hostingOrganisationName;
-  }
 }

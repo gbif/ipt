@@ -18,10 +18,12 @@ import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.validation.BasicMetadata;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -35,6 +37,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapLicense extends FrictionlessLicense {
 
+  @Serial
   private final static long serialVersionUID = -6253983938937199264L;
 
   /**

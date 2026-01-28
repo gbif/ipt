@@ -73,7 +73,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   }
 
   private Workbook openBook() {
-    LOG.info("Opening excel workbook [" + file.getName() + "]");
+    LOG.info("Opening excel workbook [{}]", file.getName());
 
     return StreamingReader.builder()
       .rowCacheSize(100)
@@ -122,7 +122,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
       try {
         book.close();
       } catch (IOException e) {
-        LOG.error("Failed to close workbook for the source " + sourceName, e);
+        LOG.error("Failed to close workbook for the source {}", sourceName, e);
       }
     }
 
@@ -144,7 +144,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
             val[i] = dataFormatter.formatCellValue(c);
           }
         } catch (Exception e) {
-          LOG.debug("Exception caught: " + e.getMessage(), e);
+          LOG.debug("Exception caught: {}", e.getMessage(), e);
           exception = e;
           errorMessage = e.getMessage();
         }
@@ -187,7 +187,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     try {
       return new RowIterator(this, ignoreHeaderLines);
     } catch (Exception e) {
-      LOG.error("Exception while reading excel source " + name, e);
+      LOG.error("Exception while reading excel source {}", name, e);
     }
     return null;
   }
@@ -203,7 +203,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
         sheets.put(x, book.getSheetName(x));
       }
     } catch (Exception e) {
-      LOG.error("Exception while reading excel source " + name, e);
+      LOG.error("Exception while reading excel source {}", name, e);
     }
     return sheets;
   }
@@ -224,7 +224,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
         }
 
       } catch (Exception e) {
-        LOG.error("Exception while reading excel source " + name, e);
+        LOG.error("Exception while reading excel source {}", name, e);
       }
     }
 

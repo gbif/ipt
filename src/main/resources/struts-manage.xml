@@ -64,18 +64,12 @@
     </action>
 
     <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">10000000000</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${shortname}</result>
     </action>
 
     <action name="replace-eml" class="org.gbif.ipt.action.manage.OverviewAction" method="replaceEml">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
@@ -84,9 +78,6 @@
     </action>
 
     <action name="replace-datapackage-metadata" class="org.gbif.ipt.action.manage.OverviewAction" method="replaceDatapackageMetadata">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
@@ -162,9 +153,6 @@
     </action>
 
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">10000000000</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="success" type="redirect">
         <param name="location">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${id}</param>
@@ -216,10 +204,6 @@
     </action>
 
     <action name="uploadlogo" class="org.gbif.ipt.action.manage.MetadataAction" method="uploadLogo">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">2097152</param>
-        <param name="allowedTypes">image/jpeg,image/gif,image/png</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="input" type="redirect">${baseURL}/manage/metadata-additional.do?r=${resource.shortname}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>

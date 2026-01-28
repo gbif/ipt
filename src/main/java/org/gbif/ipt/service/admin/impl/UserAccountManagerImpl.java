@@ -75,7 +75,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   private User addUser(User user) {
     if (user != null) {
       if (user.getRole() == Role.Admin) {
-        LOG.debug("Adding admin " + user.getEmail());
+        LOG.debug("Adding admin {}", user.getEmail());
         if (allowSimplifiedAdminLogin) {
           if (onlyAdminEmail == null || users.isEmpty()) {
             // first admin - keep its email address available for simplified login
@@ -88,7 +88,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
           }
         }
       } else {
-        LOG.debug("Adding user " + user.getEmail());
+        LOG.debug("Adding user {}", user.getEmail());
       }
       users.put(user.getEmail().toLowerCase(), user);
     }
@@ -172,7 +172,6 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
    * Retrieve user from internal hash.
    *
    * @param email email of user account to retrieve
-   *
    * @return User if found, null otherwise
    */
   @Override
@@ -187,7 +186,6 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
    * Remove user from internal hash.
    *
    * @param email email of user account to remove
-   *
    * @return true if user was removed, false otherwise
    */
   public boolean remove(String email) {
@@ -269,11 +267,11 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
       }
 
     } catch (FileNotFoundException e) {
-      LOG.warn("User accounts not existing, " + PERSISTENCE_FILE
-        + " file missing  (This is normal when first setting up a new datadir)");
+      LOG.warn("User accounts not existing, {} file missing  (This is normal when first setting up a new datadir)",
+          PERSISTENCE_FILE);
     } catch (IOException e) {
       LOG.error(e.getMessage(), e);
-      throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldnt read user accounts: " + e.getMessage());
+      throw new InvalidConfigException(TYPE.USER_CONFIG, "Couldn't read user accounts: " + e.getMessage());
     }
   }
 
@@ -283,7 +281,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
   @Override
   public synchronized void save() throws IOException {
-    LOG.debug("Saving all " + users.size() + " user accounts...");
+    LOG.debug("Saving all {} user accounts...", users.size());
     try (Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
          ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users")) {
       for (Entry<String, User> entry : users.entrySet()) {

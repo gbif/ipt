@@ -21,6 +21,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 
 import javax.annotation.Nullable;
@@ -30,14 +31,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import lombok.Getter;
+
 /**
  * Action that allows a editing a resource version's change summary.
  */
 public class VersionHistoryAction extends ManagerBaseAction {
 
+  @Serial
+  private static final long serialVersionUID = -8934381063190066616L;
+
   private static final Logger LOG = LogManager.getLogger(VersionHistoryAction.class);
 
   protected BigDecimal version;
+  @Getter
   private String summary;
 
   @Inject
@@ -59,7 +66,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
       try {
         setVersion(new BigDecimal(v));
       } catch (NumberFormatException e) {
-        LOG.error("Parameter version (v) was not a valid number: " + String.valueOf(v));
+        LOG.error("Parameter version (v) was not a valid number: {}", String.valueOf(v));
       }
     }
   }
@@ -118,13 +125,6 @@ public class VersionHistoryAction extends ManagerBaseAction {
    */
   public String getVersionString() {
     return version.toPlainString();
-  }
-
-  /**
-   * @return the change summary (for resource version) as it was entered by the user in the form
-   */
-  public String getSummary() {
-    return summary;
   }
 
   /**

@@ -30,8 +30,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.Spy;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionInvocation;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.ActionInvocation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,54 +40,54 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class DefaultLocaleInterceptorTest extends IptBaseTest {
 
-    @InjectMocks
-    private DefaultLocaleInterceptor interceptor = new DefaultLocaleInterceptor();
+  @InjectMocks
+  private DefaultLocaleInterceptor interceptor = new DefaultLocaleInterceptor();
 
-    @Spy
-    private AppConfig appConfigSpy;
+  @Spy
+  private AppConfig appConfigSpy;
 
-    @Mock
-    private ActionInvocation invocationMock;
+  @Mock
+  private ActionInvocation invocationMock;
 
-    private ActionContext actionContext;
+  private ActionContext actionContext;
 
-    @BeforeEach
-    void setUp() {
-        // Use a real instance instead of a mock (Mockito can't mock ActionContext)
-        actionContext = ActionContext.of(new HashMap<>());
-        when(invocationMock.getInvocationContext()).thenReturn(actionContext);
+  @BeforeEach
+  void setUp() {
+    // Use a real instance instead of a mock (Mockito can't mock ActionContext)
+    actionContext = ActionContext.of(new HashMap<>());
+    when(invocationMock.getInvocationContext()).thenReturn(actionContext);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"en_GB", "fr", "es", "pt", "ru", "ja", "zh"})
+  public void testSupportedDefaultLocale(String locale) throws Exception {
+    when(appConfigSpy.getDefaultLocale()).thenReturn(locale);
+    when(appConfigSpy.isSupportedLocale(any())).thenReturn(true);
+
+    interceptor.intercept(invocationMock);
+
+    assertEquals(locale.toLowerCase(), actionContext.getLocale().toString().toLowerCase());
+  }
+
+  @Test
+  public void testDefaultLocaleNullDefaultsToEnGb() throws Exception {
+    when(appConfigSpy.getDefaultLocale()).thenReturn(null);
+
+    interceptor.intercept(invocationMock);
+
+    assertEquals(Locale.UK, actionContext.getLocale());
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"", "it", "ar", "fa", "en_DK"})
+  public void testNotSupportedLocaleDefaultToEnGb(String locale) throws Exception {
+    when(appConfigSpy.getDefaultLocale()).thenReturn(locale);
+    if (StringUtils.isNotEmpty(locale)) {
+      when(appConfigSpy.isSupportedLocale(any())).thenReturn(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = {"en_GB", "fr", "es", "pt", "ru", "ja", "zh"})
-    public void testSupportedDefaultLocale(String locale) throws Exception {
-        when(appConfigSpy.getDefaultLocale()).thenReturn(locale);
-        when(appConfigSpy.isSupportedLocale(any())).thenReturn(true);
+    interceptor.intercept(invocationMock);
 
-        interceptor.intercept(invocationMock);
-
-        assertEquals(locale.toLowerCase(), actionContext.getLocale().toString().toLowerCase());
-    }
-
-    @Test
-    public void testDefaultLocaleNullDefaultsToEnGb() throws Exception {
-        when(appConfigSpy.getDefaultLocale()).thenReturn(null);
-
-        interceptor.intercept(invocationMock);
-
-        assertEquals(Locale.UK, actionContext.getLocale());
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"", "it", "ar", "fa", "en_DK"})
-    public void testNotSupportedLocaleDefaultToEnGb(String locale) throws Exception {
-        when(appConfigSpy.getDefaultLocale()).thenReturn(locale);
-        if (StringUtils.isNotEmpty(locale)) {
-            when(appConfigSpy.isSupportedLocale(any())).thenReturn(false);
-        }
-
-        interceptor.intercept(invocationMock);
-
-        assertEquals(Locale.UK, actionContext.getLocale());
-    }
+    assertEquals(Locale.UK, actionContext.getLocale());
+  }
 }

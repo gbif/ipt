@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>3.2.2-SNAPSHOT</version>
+  <version>3.3.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
@@ -17,9 +17,9 @@
   <url>https://github.com/gbif/ipt</url>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <java.version>11</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <java.version>17</java.version>
 
     <!--
       maven treats properties as strings only, so we cannot negate a boolean devMode value.
@@ -71,7 +71,7 @@
     <javax.inject.version>1</javax.inject.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.19.4</jersey.version>
-    <jetty-maven-plugin.version>9.4.58.v20250814</jetty-maven-plugin.version>
+    <jetty-maven-plugin.version>12.0.12</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>5.14.2</junit.version>
@@ -79,13 +79,12 @@
     <mockito.version>4.11.0</mockito.version>
     <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
-    <servlet-api.version>3.1.0</servlet-api.version>
-    <struts2.version>6.8.0</struts2.version>
+    <servlet-api.version>6.0.0</servlet-api.version>
+    <struts2.version>7.0.3</struts2.version>
     <tika.version>2.9.4</tika.version>
-    <validation-api.version>2.0.1.Final</validation-api.version>
-    <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
-    <jakarta.el.version>3.0.4</jakarta.el.version>
-    <javax.el.version>3.0.0</javax.el.version>
+    <validation-api.version>3.0.2</validation-api.version>
+    <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+    <jakarta.el-api.version>5.0.1</jakarta.el-api.version>
     <!-- NB XStream does not use semantic versioning.  Take care when upgrading, as we need to
          ensure the IPT can still load existing resource.xml and other configuration files -->
     <xstream.version>1.4.21</xstream.version>
@@ -98,7 +97,7 @@
     <!-- JDBC drivers -->
     <jtds.version>1.3.1</jtds.version>
     <mssql-jdbc.version>13.2.1.jre11</mssql-jdbc.version>
-    <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
+    <mysql-connector-java.version>9.5.0</mysql-connector-java.version>
     <ojdbc.version>23.26.0.0.0</ojdbc.version>
     <postgresql.version>42.7.9</postgresql.version>
 
@@ -195,18 +194,17 @@
       -->
 
       <plugin>
-        <!--
-          http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin
-        -->
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
+        <groupId>org.eclipse.jetty.ee10</groupId>
+        <artifactId>jetty-ee10-maven-plugin</artifactId>
         <version>${jetty-maven-plugin.version}</version>
         <configuration>
-          <webAppConfig>
+          <webApp>
             <contextPath>/</contextPath>
-          </webAppConfig>
+          </webApp>
+          <jvmArgs>
+            --add-opens java.base/java.util=ALL-UNNAMED
+          </jvmArgs>
           <!-- no scan, don't detect changed classes -->
-          <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopKey>stop</stopKey>
           <stopPort>9362</stopPort>
           <systemProperties>
@@ -395,6 +393,10 @@
           <groupId>org.gbif</groupId>
           <artifactId>name-parser-v1</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>javax.validation</groupId>
+          <artifactId>validation-api</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -461,8 +463,8 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
       <version>${servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>
@@ -475,8 +477,8 @@
     <!-- Accessing different external databases to suck in data alternatively to text files -->
     <!-- JDBC driver to support a variety of external datasources -->
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
       <version>${mysql-connector-java.version}</version>
       <scope>runtime</scope>
     </dependency>
@@ -593,8 +595,8 @@
 
     <!-- Validation -->
     <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
       <version>${validation-api.version}</version>
     </dependency>
     <dependency>
@@ -603,16 +605,9 @@
       <version>${hibernate-validator.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.el</groupId>
-      <artifactId>javax.el-api</artifactId>
-      <version>${javax.el.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>jakarta.el</artifactId>
-      <version>${jakarta.el.version}</version>
-      <scope>test</scope>
+      <groupId>jakarta.el</groupId>
+      <artifactId>jakarta.el-api</artifactId>
+      <version>${jakarta.el-api.version}</version>
     </dependency>
 
     <!-- Simple XML Parsing -->

@@ -22,6 +22,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.StatusReport;
 
 import javax.inject.Inject;
+import java.io.Serial;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,10 +31,16 @@ import java.util.stream.Collectors;
 
 import org.apache.struts2.json.annotations.JSON;
 
+import lombok.Getter;
+
 public class PublishingStatusApiAction extends BaseAction {
+
+  @Serial
+  private static final long serialVersionUID = -6781737879827279405L;
 
   private final ResourceManager resourceManager;
 
+  @Getter
   private Date publicationStartedDate;
   private String r;
   private String status;
@@ -120,7 +127,4 @@ public class PublishingStatusApiAction extends BaseAction {
     this.since = since;
   }
 
-  public Date getPublicationStartedDate() {
-    return publicationStartedDate;
-  }
 }

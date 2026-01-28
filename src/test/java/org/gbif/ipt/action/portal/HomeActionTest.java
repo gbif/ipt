@@ -21,7 +21,6 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.file.FileUtils;
@@ -33,18 +32,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
-import com.opensymphony.xwork2.LocaleProviderFactory;
-import com.opensymphony.xwork2.inject.Container;
+import org.apache.struts2.inject.Container;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -62,7 +57,6 @@ public class HomeActionTest extends IptBaseTest {
 
   @BeforeEach
   public void setup() throws IOException {
-    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     Container container = mock(Container.class);
 
     organisation.setName("NHM");
@@ -97,12 +91,13 @@ public class HomeActionTest extends IptBaseTest {
     when(appConfig.getDataDir()).thenReturn(dataDir);
 
     // mock a locale provider
-    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
+    // TODO: mock locale?
+//    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
     action = new HomeAction(mock(SimpleTextProvider.class), appConfig, mock(RegistrationManager.class), resourceManager);
 
     action.setContainer(container);
-    action.setServletRequest(mock(HttpServletRequest.class));
+    action.withServletRequest(mock(HttpServletRequest.class));
   }
 
   // TODO: 2019-06-18 floating behavior

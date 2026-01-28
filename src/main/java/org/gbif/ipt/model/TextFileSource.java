@@ -130,7 +130,7 @@ public class TextFileSource extends SourceBase implements FileSource {
         return columns;
       }
     } catch (IOException e) {
-      LOG.warn("Cant read source " + getName(), e);
+      LOG.warn("Cant read source {}", getName(), e);
     }
 
     return new ArrayList<>();

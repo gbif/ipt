@@ -21,6 +21,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import javax.inject.Inject;
 
@@ -29,6 +30,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class DeleteVersionAction extends POSTAction {
+
+  @Serial
+  private static final long serialVersionUID = 5720945348362679742L;
 
   private static final Logger LOG = LogManager.getLogger(DeleteVersionAction.class);
 

@@ -25,6 +25,8 @@
     <Logger name="org.hibernate.validator.internal" level="ERROR"/>
     <Logger name="org.hibernate.validator.messageinterpolation" level="ERROR"/>
     <Logger name="com.opensymphony.xwork2.interceptor.ParametersInterceptor" level="FATAL"/>
+    <Logger name="org.apache.struts2" level="DEBUG"/>
+    <Logger name="org.apache.struts2.interceptor.parameter.ParametersInterceptor" level="DEBUG"/>
     <Logger name="freemarker" level="WARN"/>
     <Logger name="org.apache.commons.beanutils" level="ERROR"/>
     <Logger name="org.apache.http" level="ERROR"/>

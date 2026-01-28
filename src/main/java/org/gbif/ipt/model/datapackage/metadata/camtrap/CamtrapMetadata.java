@@ -27,14 +27,18 @@ import org.gbif.ipt.validation.TemporalScopeMetadata;
 import org.gbif.ipt.validation.ValidGeojson;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import org.apache.struts2.util.Element;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -47,7 +51,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.opensymphony.xwork2.util.Element;
 
 /**
  * <a href="https://rs.gbif.org/data-packages/camtrap-dp/1.0/profile/camtrap-dp-profile.json">Camtrap DP profile</a>
@@ -55,6 +58,7 @@ import com.opensymphony.xwork2.util.Element;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapMetadata extends FrictionlessMetadata {
 
+  @Serial
   private final static long serialVersionUID = 7011607601336714408L;
 
   /**

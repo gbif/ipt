@@ -17,13 +17,20 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.Serial;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+
+import lombok.Getter;
 
 public class POSTAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = 2236168478005348993L;
+
+  @Getter
   protected boolean delete = false;
   protected boolean notFound = false;
   protected boolean validate = true;
@@ -56,20 +63,16 @@ public class POSTAction extends BaseAction {
       return cancel();
     }
 
-    // if this is a GET request we request the INPUT form
+    // if this is a GET request, we request the INPUT form
     if (isHttpPost()) {
-      // if its a POST we either save or delete
+      // if it's a POST, we either save or delete
       // supplied default methods which be overridden
       String result = delete ? delete() : save();
-      // check again if notFound was set
+      // check again if notFound was set,
       // this also allows the load() or delete() method to set the flag
       return notFound ? NOT_FOUND : result;
     }
     return defaultResult;
-  }
-
-  public boolean isDelete() {
-    return delete;
   }
 
   /**
@@ -94,6 +97,7 @@ public class POSTAction extends BaseAction {
     }
   }
 
+  @StrutsParameter
   public void setValidate(boolean validate) {
     this.validate = validate;
   }

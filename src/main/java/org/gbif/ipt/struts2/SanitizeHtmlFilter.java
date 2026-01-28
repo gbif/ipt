@@ -21,15 +21,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,11 +39,13 @@ import org.owasp.html.HtmlStreamEventReceiver;
 
 /**
  * Filter that wraps a request and checks every parameter for potential xss attacks.
- * If found a bad request response error is returned.
- * Otherwise all html tags are stripped from the content found in input parameters to prevent yet unknown xss attacks.
+ * If found, a bad request response error is returned.
+ * Otherwise, all HTML tags are stripped from the content found in input parameters to prevent yet unknown xss attacks.
  */
 public class SanitizeHtmlFilter implements Filter {
+
   private static final Logger LOG = LogManager.getLogger(SanitizeHtmlFilter.class);
+
   private static final HtmlPolicyBuilder POLICY_BUILDER = new HtmlPolicyBuilder();
 
   @Override
@@ -94,7 +96,6 @@ public class SanitizeHtmlFilter implements Filter {
      *
      * @param request the HttpServletRequest to wrap
      */
-    @SuppressWarnings("unchecked")
     public XssRequestWrapper(HttpServletRequest request) {
       super(request);
       sanitized = sanitizeParamMap(request.getParameterMap());
@@ -109,8 +110,6 @@ public class SanitizeHtmlFilter implements Filter {
         return null;
     }
 
-
-    @SuppressWarnings("unchecked")
     @Override
     public Map<String, String[]> getParameterMap() {
       return sanitized;
@@ -150,11 +149,15 @@ public class SanitizeHtmlFilter implements Filter {
 
       // now strip all tags to be safe in case our custom regex misses sth
       StringBuilder sb = new StringBuilder();
-      HtmlSanitizer.Policy textPolicy = POLICY_BUILDER.build(new HtmlStreamEventReceiver(){
+      HtmlSanitizer.Policy textPolicy = POLICY_BUILDER.build(new HtmlStreamEventReceiver() {
         @Override
-        public void openDocument() {}
+        public void openDocument() {
+        }
+
         @Override
-        public void closeDocument() {}
+        public void closeDocument() {
+        }
+
         @Override
         public void openTag(String elementName, List<String> attribs) {
           if ("br".equals(elementName) || "p".equals(elementName)) {
@@ -162,8 +165,11 @@ public class SanitizeHtmlFilter implements Filter {
             sb.append('\n');
           }
         }
+
         @Override
-        public void closeTag(String elementName) {}
+        public void closeTag(String elementName) {
+        }
+
         @Override
         public void text(String text) {
           sb.append(text);
@@ -173,7 +179,7 @@ public class SanitizeHtmlFilter implements Filter {
 
       String cleaned = sb.toString();
       if (!cleaned.equals(value)) {
-        LOG.warn("Parameter sanitization. " + parameter + " modified: " +  value + "  ==>  " + cleaned);
+        LOG.warn("Parameter sanitization. {} modified: {}  ==>  {}", parameter, value, cleaned);
       }
 
       return cleaned;

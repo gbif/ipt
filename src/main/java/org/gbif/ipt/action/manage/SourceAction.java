@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import lombok.Getter;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -34,6 +35,7 @@ import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Date;
@@ -41,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 import javax.activation.MimeTypeParseException;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,16 +53,22 @@ import org.apache.struts2.ServletActionContext;
 
 public class SourceAction extends ManagerBaseAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = 3324051864626106131L;
+
   private static final Logger LOG = LogManager.getLogger(SourceAction.class);
 
   private SourceManager sourceManager;
   private JdbcSupport jdbcSupport;
   private DataDir dataDir;
   // config
+  @Getter
   private Source source;
+  @Getter
   private String rdbms;
+  @Getter
   private String problem;
+  @Getter
   private String sqlSourcePassword;
   // to store password internally
   private String sqlSourcePasswordCache;
@@ -73,7 +81,9 @@ public class SourceAction extends ManagerBaseAction {
   private String fileFileName;
   private boolean analyze = false;
   // preview
+  @Getter
   private List<String> columns;
+  @Getter
   private List<String[]> peek;
   private int peekRows = 10;
   private int analyzeRows = 1000;
@@ -274,7 +284,7 @@ public class SourceAction extends ManagerBaseAction {
       }
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
-      LOG.error("Cannot add URL source " + url, e);
+      LOG.error("Cannot add URL source {}", url, e);
       addActionError(getText("manage.source.cannot.add", new String[]{sourceName, e.getMessage()}));
     }
   }
@@ -306,8 +316,8 @@ public class SourceAction extends ManagerBaseAction {
         addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
       }
     } catch (ImportException e) {
-      // even though we have problems with this source we'll keep it for manual corrections
-      LOG.error("Cannot add source " + filename + ": " + e.getMessage(), e);
+      // even though we have problems with this source, we'll keep it for manual corrections
+      LOG.error("Cannot add source {}: {}", filename, e.getMessage(), e);
       addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
     } catch (InvalidFilenameException e) {
       // clean session variables used for confirming file overwrite
@@ -348,10 +358,6 @@ public class SourceAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  public List<String> getColumns() {
-    return columns;
-  }
-
   public TextFileSource getFileSource() {
     if (source instanceof TextFileSource) {
       return (TextFileSource) source;
@@ -367,28 +373,8 @@ public class SourceAction extends ManagerBaseAction {
     return dataDir.sourceLogFile(resource.getShortname(), source.getName()).exists();
   }
 
-  public List<String[]> getPeek() {
-    return peek;
-  }
-
   public int getPreviewSize() {
     return peekRows;
-  }
-
-  public String getProblem() {
-    return problem;
-  }
-
-  public String getRdbms() {
-    return rdbms;
-  }
-
-  public String getSqlSourcePassword() {
-    return sqlSourcePassword;
-  }
-
-  public Source getSource() {
-    return source;
   }
 
   public SqlSource getSqlSource() {
@@ -414,10 +400,10 @@ public class SourceAction extends ManagerBaseAction {
     if (id != null) {
       source = resource.getSource(id);
       if (source == null) {
-        LOG.error("No source with id " + id + " found!");
+        LOG.error("No source with id {} found!", id);
         addActionError(getText("manage.source.cannot.load", new String[] {id}));
       } else {
-        // store original number of columns, in case they change the user should be warned to update its mappings
+        // store the original number of columns, in case they change, the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
       }
 
@@ -537,29 +523,26 @@ public class SourceAction extends ManagerBaseAction {
     if (source != null) {
       // ALL SOURCES
       // check if title exists already as a source
-      if (StringUtils.trimToEmpty(source.getName()).length() == 0) {
+      if (StringUtils.trimToEmpty(source.getName()).isEmpty()) {
         addFieldError("source.name", getText("validation.required", new String[] {getText("source.name")}));
       } else if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
         addFieldError("source.name", getText("validation.short", new String[] {getText("source.name"), "3"}));
       } else if (id == null && resource.getSources().contains(source)) {
         addFieldError("source.name", getText("manage.source.unique"));
       }
-      if (source instanceof SqlSource) {
-        // SQL SOURCE
-        SqlSource src = (SqlSource) source;
-
-        // restore password if it was not sent from UI
+      if (source instanceof SqlSource src) {
+        // restore password if it was not sent from the UI
         if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
           ((SqlSource) source).setPassword(sqlSourcePasswordCache);
         }
 
         // pure ODBC connections need only a DSN, no server
-        if (StringUtils.trimToEmpty(src.getHost()).length() == 0 && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
+        if (StringUtils.trimToEmpty(src.getHost()).isEmpty() && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
           addFieldError("sqlSource.host", getText("validation.required", new String[] {getText("sqlSource.host")}));
         } else if (StringUtils.trimToEmpty(src.getHost()).length() < 2) {
           addFieldError("sqlSource.host", getText("validation.short", new String[] {getText("sqlSource.host"), "2"}));
         }
-        if (StringUtils.trimToEmpty(src.getDatabase()).length() == 0) {
+        if (StringUtils.trimToEmpty(src.getDatabase()).isEmpty()) {
           addFieldError("sqlSource.database",
             getText("validation.required", new String[] {getText("sqlSource.database")}));
         } else if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {

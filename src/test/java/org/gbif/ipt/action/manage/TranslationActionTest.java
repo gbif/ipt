@@ -48,14 +48,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
-import com.opensymphony.xwork2.LocaleProviderFactory;
-import com.opensymphony.xwork2.inject.Container;
+import org.apache.struts2.inject.Container;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -74,7 +72,7 @@ public class TranslationActionTest extends IptBaseTest {
   public void setup() throws Exception {
     // mock needed managers
     SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
-    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
+//    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     AppConfig mockCfg = mock(AppConfig.class);
     ResourceManager mockResourceManager = mock(ResourceManager.class);
     SourceManager mockSourceManager = mock(SourceManager.class);
@@ -151,7 +149,8 @@ public class TranslationActionTest extends IptBaseTest {
     when(mockResourceManager.get(anyString())).thenReturn(resource);
 
     // mock a locale provider
-    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
+    // TODO: mock locale?
+//    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
     // mock textProvider getTexts
     ResourceBundle mockResourceBundle = mock(ResourceBundle.class);
@@ -165,7 +164,7 @@ public class TranslationActionTest extends IptBaseTest {
     action.setContainer(container);
 
     // empty session params
-    action.setSession(new HashMap<>());
+    action.withSession(new HashMap<>());
 
     // initialize ExtensionProperty representing BasisOfRecord field on Occurrence core Extension
     ExtensionProperty property = mapping.getExtension().getProperty(field.getTerm());
@@ -219,7 +218,7 @@ public class TranslationActionTest extends IptBaseTest {
     when(mockRequest.getParameter(TranslationAction.REQ_PARAM_TERM)).thenReturn(DwcTerm.basisOfRecord.qualifiedName());
     when(mockRequest.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn(resourceShortName);
     when(mockRequest.getMethod()).thenReturn("GET");
-    action.setServletRequest(mockRequest);
+    action.withServletRequest(mockRequest);
 
     // ensure the resource is set
     action.setResource(resource);

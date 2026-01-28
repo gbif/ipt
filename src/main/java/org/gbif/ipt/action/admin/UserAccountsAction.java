@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.admin;
 
+import lombok.Getter;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
@@ -28,6 +29,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserValidator;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,10 +47,11 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
  */
 public class UserAccountsAction extends POSTAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = 8892204508303815998L;
+
   private static final Logger LOG = LogManager.getLogger(UserAccountsAction.class);
 
-  private static final long serialVersionUID = 8892204508303815998L;
   private static final int PASSWORD_LENGTH = 8;
   private static final String PASSWORD_ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
   private static final RandomStringGenerator PASSWORD_GENERATOR =
@@ -56,39 +59,43 @@ public class UserAccountsAction extends POSTAction {
           .selectFrom(PASSWORD_ALLOWED_CHARS.toCharArray())
           .build();
   private static final String EMAIL_NEW_ACCOUNT = "<a href=\"mailto:%s" +
-          "?subject=IPT account" +
-          "&amp;body=Dear %s," +
-          "%%0d%%0dWe would like to inform you that we have created an IPT account for you." +
-          "%%0d%%0dAccount information:" +
-          "%%0d%%0dIPT: %s" +
-          "%%0dEmail: %s" +
-          "%%0dPassword: %s" +
-          "%%0dRole: %s" +
-          "%%0d%%0dThank you for your attention.\">" +
-          "Click here" +
-          "</a> " +
-          "to share the credentials with the user";
+      "?subject=IPT account" +
+      "&amp;body=Dear %s," +
+      "%%0d%%0dWe would like to inform you that we have created an IPT account for you." +
+      "%%0d%%0dAccount information:" +
+      "%%0d%%0dIPT: %s" +
+      "%%0dEmail: %s" +
+      "%%0dPassword: %s" +
+      "%%0dRole: %s" +
+      "%%0d%%0dThank you for your attention.\">" +
+      "Click here" +
+      "</a> " +
+      "to share the credentials with the user";
   private static final String EMAIL_PASSWORD_CHANGE = "<a href=\"mailto:%s" +
-          "?subject=IPT password change" +
-          "&amp;body=Dear %s," +
-          "%%0d%%0dWe would like to inform you that your IPT account's password has been successfully changed." +
-          "%%0d%%0dAccount information:" +
-          "%%0d%%0dIPT: %s" +
-          "%%0dEmail: %s" +
-          "%%0dPassword: %s" +
-          "%%0d%%0dThank you for your attention.\">" +
-          "Click here" +
-          "</a> " +
-          "to share the new password with the user";
+      "?subject=IPT password change" +
+      "&amp;body=Dear %s," +
+      "%%0d%%0dWe would like to inform you that your IPT account's password has been successfully changed." +
+      "%%0d%%0dAccount information:" +
+      "%%0d%%0dIPT: %s" +
+      "%%0dEmail: %s" +
+      "%%0dPassword: %s" +
+      "%%0d%%0dThank you for your attention.\">" +
+      "Click here" +
+      "</a> " +
+      "to share the new password with the user";
 
   private final UserAccountManager userManager;
   private final ResourceManager resourceManager;
   private final UserValidator validator = new UserValidator();
 
+  // Getters / Setters follow
+  @Getter
   private User user;
+  @Getter
   private String password2;
   private boolean resetPassword;
   private boolean newUser;
+  @Getter
   private List<User> users;
 
   @Inject
@@ -184,34 +191,21 @@ public class UserAccountsAction extends POSTAction {
         if (Reason.LAST_ADMIN == e.getReason()) {
           addActionError(getText("admin.user.deleted.lastadmin"));
         } else if (Reason.LAST_RESOURCE_MANAGER == e.getReason()) {
-          addActionError(getText("admin.user.deleted.lastmanager", new String[] {e.getMessage()}));
+          addActionError(getText("admin.user.deleted.lastmanager", new String[]{e.getMessage()}));
         } else if (Reason.IS_RESOURCE_CREATOR == e.getReason()) {
-          addActionError(getText("admin.user.deleted.error.creator", new String[] {e.getMessage()}));
+          addActionError(getText("admin.user.deleted.error.creator", new String[]{e.getMessage()}));
         } else {
           addActionError(getText("admin.user.deleted.error"));
         }
       } catch (IOException e) {
-        addActionError(getText("admin.user.cantSave", new String[] {e.getMessage()}));
+        addActionError(getText("admin.user.cantSave", new String[]{e.getMessage()}));
       }
     }
     return INPUT;
   }
 
-  public String getPassword2() {
-    return password2;
-  }
-
   public String getNewUser() {
     return newUser ? "yes" : "no";
-  }
-
-  // Getters / Setters follow
-  public User getUser() {
-    return user;
-  }
-
-  public List<User> getUsers() {
-    return users;
   }
 
   public String list() {
@@ -246,7 +240,7 @@ public class UserAccountsAction extends POSTAction {
       try {
         user = (User) user.clone();
       } catch (CloneNotSupportedException e) {
-        LOG.error("An exception occurred while retrieving user: " + e.getMessage(), e);
+        LOG.error("An exception occurred while retrieving user: {}", e.getMessage(), e);
       }
     }
   }
@@ -263,7 +257,7 @@ public class UserAccountsAction extends POSTAction {
         String emailLink = String.format(EMAIL_NEW_ACCOUNT, user.getEmail(), user.getFirstname(), cfg.getBaseUrl(), user.getEmail(), passwordBeforeSaving, user.getRole());
 
         LOG.info("User {} has been created by {}", id, currentUser.getEmail());
-        addActionMessage(getText("admin.user.added", new String[] {emailLink}));
+        addActionMessage(getText("admin.user.added", new String[]{emailLink}));
       } else if (resetPassword) {
         String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
         String hash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
@@ -273,7 +267,7 @@ public class UserAccountsAction extends POSTAction {
         String emailLink = String.format(EMAIL_PASSWORD_CHANGE, user.getEmail(), user.getFirstname(), cfg.getBaseUrl(), user.getEmail(), newPassword);
 
         LOG.info("User {} password has been changed by {}", user.getEmail(), currentUser.getEmail());
-        addActionMessage(getText("admin.user.passwordChanged", new String[] {user.getEmail(), newPassword, emailLink}));
+        addActionMessage(getText("admin.user.passwordChanged", new String[]{user.getEmail(), newPassword, emailLink}));
       } else {
         User currentStateUser = userManager.get(user.getEmail());
 
@@ -304,13 +298,13 @@ public class UserAccountsAction extends POSTAction {
       }
       return SUCCESS;
     } catch (IOException e) {
-      LOG.error("User change couldn't be saved: " + e.getMessage(), e);
+      LOG.error("User change couldn't be saved: {}", e.getMessage(), e);
       addActionError(getText("admin.user.saveError"));
       addActionError(e.getMessage());
       return INPUT;
     } catch (AlreadyExistingException e) {
       LOG.error("User with the email address {} already exists", user.getEmail(), e);
-      addActionError(getText("admin.user.exists", new String[] {user.getEmail()}));
+      addActionError(getText("admin.user.exists", new String[]{user.getEmail()}));
       // resetting user
       user = new User();
       return INPUT;

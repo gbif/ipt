@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import lombok.Getter;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.BiMonthEnum;
@@ -26,6 +27,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
+import java.io.Serial;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -38,7 +40,9 @@ import org.apache.logging.log4j.Logger;
 
 public class AutoPublishAction extends ManagerBaseAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = -1212620671839313545L;
+
   private static final Logger LOG = LogManager.getLogger(AutoPublishAction.class);
 
   private static final String OFF_FREQUENCY = "off";
@@ -48,10 +52,15 @@ public class AutoPublishAction extends ManagerBaseAction {
 
   private final VocabulariesManager vocabManager;
 
+  @Getter
   private Map<String, String> frequencies;
+  @Getter
   private Map<String, String> months;
+  @Getter
   private Map<String, String> biMonths;
+  @Getter
   private Map<Integer, String> days;
+  @Getter
   private Map<String, String> daysOfWeek;
 
   @Inject
@@ -109,20 +118,20 @@ public class AutoPublishAction extends ManagerBaseAction {
     } else if (MaintenanceUpdateFrequency.findByIdentifier(updateFrequency) != null) {
       addActionMessage(getText("manage.autopublish.message.on", new String[]{updateFrequency}));
       LOG.debug("Updating auto-publishing for [{}] to: {}", resource.getShortname(),
-        updateFrequency);
+          updateFrequency);
       resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_ON);
       resource.setAutoPublishingFrequency(
-        updateFrequency,
-        updateFrequencyMonth,
-        updateFrequencyBiMonth,
-        updateFrequencyDay,
-        updateFrequencyDayOfWeek,
-        updateFrequencyHour,
-        updateFrequencyMinute);
+          updateFrequency,
+          updateFrequencyMonth,
+          updateFrequencyBiMonth,
+          updateFrequencyDay,
+          updateFrequencyDayOfWeek,
+          updateFrequencyHour,
+          updateFrequencyMinute);
     } else {
       addActionError(getText("manage.autopublish.message.error"));
       LOG.error("Cannot update auto-publishing setting for [{}]. Unknown frequency: {}",
-        resource.getShortname(), updateFrequency);
+          resource.getShortname(), updateFrequency);
       return ERROR;
     }
 
@@ -141,26 +150,6 @@ public class AutoPublishAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  public Map<String, String> getFrequencies() {
-    return frequencies;
-  }
-
-  public Map<String, String> getMonths() {
-    return months;
-  }
-
-  public Map<String, String> getBiMonths() {
-    return biMonths;
-  }
-
-  public Map<Integer, String> getDays() {
-    return days;
-  }
-
-  public Map<String, String> getDaysOfWeek() {
-    return daysOfWeek;
-  }
-
   /**
    * Populate frequencies map, representing the publishing interval choices uses have when configuring
    * auto-publishing. The frequencies list is derived from an XML vocabulary, and will contain values in the requested
@@ -172,7 +161,7 @@ public class AutoPublishAction extends ManagerBaseAction {
 
     // update frequencies list, that qualify for auto-publishing
     Map<String, String> filteredFrequencies =
-      vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
+        vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
     MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
     frequencies.putAll(filteredFrequencies);
   }

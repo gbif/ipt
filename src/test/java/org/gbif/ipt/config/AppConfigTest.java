@@ -20,7 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.gbif.ipt.IptBaseTest;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -63,21 +63,21 @@ public class AppConfigTest extends IptBaseTest {
   public void testGetResourceVersionUriFromFullyQualifiedName() {
     cfg.setProperty("ipt.baseURL", "http://ipt.gbif.org");
     assertEquals("http://ipt.gbif.org/resource?r=ants&v=1.0",
-      cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
+        cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
   }
 
   @Test
   public void testGetResourceVersionUriFromIPAddress() {
     cfg.setProperty("ipt.baseURL", "http://192.168.0.84:8080/ipt");
     assertEquals("http://192.168.0.84:8080/ipt/resource?r=ants&v=1.0",
-      cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
+        cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
   }
 
   @Test
   public void testGetResourceVersionUriFromLocalhost() {
     cfg.setProperty("ipt.baseURL", "http://localhost:8080");
     assertEquals("http://localhost:8080/resource?r=ants&v=1.0",
-      cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
+        cfg.getResourceVersionUri("ants", new BigDecimal("1.0")).toString());
   }
 
   @Test

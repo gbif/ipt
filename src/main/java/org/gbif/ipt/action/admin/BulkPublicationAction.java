@@ -21,6 +21,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.inject.Inject;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import lombok.Getter;
 
 public class BulkPublicationAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = -8016332755710954222L;
 
   private final ResourceManager resourceManager;

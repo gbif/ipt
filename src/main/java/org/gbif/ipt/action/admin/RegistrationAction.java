@@ -32,6 +32,7 @@ import org.gbif.ipt.validation.IptValidator;
 import org.gbif.ipt.validation.OrganisationSupport;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,22 +43,25 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
+
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
+import lombok.Getter;
+
 /**
  * The Action responsible for all user input relating to the registration options.
  */
 public class RegistrationAction extends POSTAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(RegistrationAction.class);
-
+  @Serial
   private static final long serialVersionUID = -6522969037528106704L;
+
+  private static final Logger LOG = LogManager.getLogger(RegistrationAction.class);
 
   private static final String SESSION_ORGANISATIONS_KEY = "organisations";
   private static final String SESSION_ORGANISATIONS_LAST_UPDATED_KEY = "organisations.lastUpdated";
@@ -69,18 +73,25 @@ public class RegistrationAction extends POSTAction {
   private final OrganisationSupport organisationValidation;
   private final IptValidator iptValidation;
 
+  @Getter
   private String registeredIptPassword;
+  @Getter
   private String hostingOrganisationToken;
+  @Getter
   protected boolean tokenChange = false;
-
+  @Getter
   private String networkKey;
+  @Getter
   private boolean applyToExistingResources = false;
 
   private boolean validatedBaseURL = false;
 
   private List<Organisation> organisations = new ArrayList<>();
+  @Getter
   private Map<String, String> networks = new LinkedHashMap<>();
+  @Getter
   private Organisation organisation;
+  @Getter
   private Ipt ipt;
 
   @Inject
@@ -108,9 +119,8 @@ public class RegistrationAction extends POSTAction {
     if (sessionOrganisationsRaw == null) {
       // null session organisation cache - request registry
       requestRegistry = true;
-    } else if (sessionOrganisationsRaw instanceof List) {
+    } else if (sessionOrganisationsRaw instanceof List<?> organisationsGenericList) {
       // Safely cast to List<?> and check if it contains Organisation objects
-      List<?> organisationsGenericList = (List<?>) sessionOrganisationsRaw;
       if (!organisationsGenericList.isEmpty() && organisationsGenericList.get(0) instanceof Organisation) {
         // The list is already in the session and is of the correct type
         //noinspection unchecked
@@ -189,7 +199,7 @@ public class RegistrationAction extends POSTAction {
       } catch (RegistryException e) {
         LOG.error("Failed to load networks", e);
         String msg = RegistryException.logRegistryException(e, this);
-        addActionWarning(getText("admin.networks.couldnt.load", new String[] {cfg.getRegistryUrl()}) + msg);
+        addActionWarning(getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()}) + msg);
         networks = new HashMap<>();
       }
     }
@@ -201,20 +211,6 @@ public class RegistrationAction extends POSTAction {
 
   public Network getNetwork() {
     return registrationManager.getNetwork();
-  }
-
-  /**
-   * @return the ipt
-   */
-  public Ipt getIpt() {
-    return ipt;
-  }
-
-  /**
-   * @return the organisation
-   */
-  public Organisation getOrganisation() {
-    return organisation;
   }
 
   /**
@@ -275,7 +271,7 @@ public class RegistrationAction extends POSTAction {
       } catch (AlreadyExistingException e) {
         LOG.error(e);
       } catch (IOException e) {
-        LOG.error("The organisation association couldnt be saved: " + e.getMessage(), e);
+        LOG.error("The organisation association couldnt be saved: {}", e.getMessage(), e);
         addActionError(getText("admin.organisation.saveError"));
         addActionError(e.getMessage());
         return INPUT;
@@ -389,7 +385,7 @@ public class RegistrationAction extends POSTAction {
           }
         }
 
-        addActionMessage(getText("admin.ipt.success.associateWithNetwork", new String[] {networkName}));
+        addActionMessage(getText("admin.ipt.success.associateWithNetwork", new String[]{networkName}));
       } else {
         Network network = getNetwork();
 
@@ -440,44 +436,20 @@ public class RegistrationAction extends POSTAction {
     }
   }
 
-  public String getRegisteredIptPassword() {
-    return registeredIptPassword;
-  }
-
   public void setRegisteredIptPassword(String registeredIptPassword) {
     this.registeredIptPassword = registeredIptPassword;
-  }
-
-  public String getHostingOrganisationToken() {
-    return hostingOrganisationToken;
   }
 
   public void setHostingOrganisationToken(String hostingOrganisationToken) {
     this.hostingOrganisationToken = hostingOrganisationToken;
   }
 
-  public boolean isTokenChange() {
-    return tokenChange;
-  }
-
   public void setTokenChange(boolean tokenChange) {
     this.tokenChange = tokenChange;
   }
 
-  public Map<String, String> getNetworks() {
-    return networks;
-  }
-
-  public String getNetworkKey() {
-    return networkKey;
-  }
-
   public void setNetworkKey(String networkKey) {
     this.networkKey = networkKey;
-  }
-
-  public boolean isApplyToExistingResources() {
-    return applyToExistingResources;
   }
 
   public void setApplyToExistingResources(boolean applyToExistingResources) {

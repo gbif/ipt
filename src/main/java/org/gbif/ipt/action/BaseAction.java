@@ -22,44 +22,49 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.XSSUtil;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.ServletResponseAware;
-import org.apache.struts2.interceptor.SessionAware;
+import org.apache.struts2.action.ServletRequestAware;
+import org.apache.struts2.action.ServletResponseAware;
+import org.apache.struts2.action.SessionAware;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.ActionSupport;
+import org.apache.struts2.Preparable;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+import org.apache.struts2.util.ValueStack;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.util.ValueStack;
+import lombok.Getter;
 
 import static org.gbif.ipt.config.Constants.CANCEL;
 
 /**
  * The base of all IPT actions. This handles conditions such as menu items, a custom text provider, sessions, currently
- * logged in user, and hosting organization information.
+ * logged-in user, and hosting organization information.
  */
-public class BaseAction extends ActionSupport implements SessionAware, Preparable, ServletRequestAware, ServletResponseAware {
+public class BaseAction extends ActionSupport
+    implements Preparable, SessionAware, ServletRequestAware, ServletResponseAware {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = -2330991910834399442L;
+
   private static final Logger LOG = LogManager.getLogger(BaseAction.class);
 
-  private static final long serialVersionUID = -2330991910834399442L;
   public static final String NOT_MODIFIED = "304";
   public static final String NOT_FOUND = "404";
   public static final String NOT_ALLOWED = "401";
@@ -69,15 +74,19 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public static final String LOCKED = "locked";
   public static final String GONE = "410";
 
+  @Getter
   protected List<String> warnings = new ArrayList<>();
   protected Map<String, Object> session;
   protected HttpServletRequest req;
   protected HttpServletResponse response;
   // a generic identifier for loading an object BEFORE the param interceptor sets values
+  @Getter
   public String id;
+  @Getter
   protected boolean cancel = false;
 
   protected SimpleTextProvider textProvider;
+  @Getter
   protected AppConfig cfg;
   protected RegistrationManager registrationManager;
 
@@ -169,15 +178,15 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   public String getNavbarGbifLogoColor() {
     String navbarGbifLogoColorHex = cfg.getColorSchemeConfig().getNavbarGbifLogoColor();
     return Integer.valueOf(navbarGbifLogoColorHex.substring(1, 3), 16) + ","
-            + Integer.valueOf(navbarGbifLogoColorHex.substring(3, 5), 16) + ","
-            + Integer.valueOf(navbarGbifLogoColorHex.substring(5, 7), 16);
+        + Integer.valueOf(navbarGbifLogoColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(navbarGbifLogoColorHex.substring(5, 7), 16);
   }
 
   public String getNavbarActiveTabColor() {
     String navbarActiveTabColorHex = cfg.getColorSchemeConfig().getNavbarActiveTabColor();
     return Integer.valueOf(navbarActiveTabColorHex.substring(1, 3), 16) + ","
-            + Integer.valueOf(navbarActiveTabColorHex.substring(3, 5), 16) + ","
-            + Integer.valueOf(navbarActiveTabColorHex.substring(5, 7), 16);
+        + Integer.valueOf(navbarActiveTabColorHex.substring(3, 5), 16) + ","
+        + Integer.valueOf(navbarActiveTabColorHex.substring(5, 7), 16);
   }
 
   public String getLinkColor() {
@@ -205,10 +214,6 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     return getBaseURL();
   }
 
-  public AppConfig getCfg() {
-    return cfg;
-  }
-
   /**
    * Return the currently logged in (session) user.
    *
@@ -222,10 +227,6 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
       LOG.debug("A problem occurred retrieving current user. This can happen if the session is not yet opened");
     }
     return u;
-  }
-
-  public String getId() {
-    return id;
   }
 
   /**
@@ -253,52 +254,52 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
    */
   @Override
   public Locale getLocale() {
-      return (ActionContext.getContext() != null) ? super.getLocale() : null;
+    return (ActionContext.getContext() != null) ? super.getLocale() : null;
   }
 
   @Override
   public String getText(String key) {
-    return textProvider.getText(this, key, null, new String[0]);
+    return textProvider.getText(getLocale(), key, null, new String[0]);
   }
 
   @Override
   public String getText(String key, List<?> args) {
-    return textProvider.getText(this, key, null, args);
+    return textProvider.getText(getLocale(), key, null, args);
   }
 
   @Override
   public String getText(String key, String defaultValue) {
-    return textProvider.getText(this, key, defaultValue, new String[0]);
+    return textProvider.getText(getLocale(), key, defaultValue, new String[0]);
   }
 
   @Override
   public String getText(String key, String defaultValue, List<?> args) {
-    return textProvider.getText(this, key, defaultValue, args);
+    return textProvider.getText(getLocale(), key, defaultValue, args);
   }
 
   @Override
   public String getText(String key, String defaultValue, List<?> args, ValueStack stack) {
-    return textProvider.getText(this, key, defaultValue, args);
+    return textProvider.getText(getLocale(), key, defaultValue, args);
   }
 
   @Override
   public String getText(String key, String defaultValue, String obj) {
-    return textProvider.getText(this, key, defaultValue, new String[0]);
+    return textProvider.getText(getLocale(), key, defaultValue, new String[0]);
   }
 
   @Override
   public String getText(String key, String defaultValue, String[] args) {
-    return textProvider.getText(this, key, defaultValue, args);
+    return textProvider.getText(getLocale(), key, defaultValue, args);
   }
 
   @Override
   public String getText(String key, String defaultValue, String[] args, ValueStack stack) {
-    return textProvider.getText(this, key, defaultValue, args);
+    return textProvider.getText(getLocale(), key, defaultValue, args);
   }
 
   @Override
   public String getText(String key, String[] args) {
-    return textProvider.getText(this, key, null, args);
+    return textProvider.getText(getLocale(), key, null, args);
   }
 
   @Override
@@ -312,11 +313,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   }
 
   public String getTextWithDynamicArgs(String key, String... args) {
-    return textProvider.getText(this, key, null, args);
-  }
-
-  public List<String> getWarnings() {
-    return warnings;
+    return textProvider.getText(getLocale(), key, null, args);
   }
 
   public boolean isAdminRights() {
@@ -363,7 +360,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   /**
    * Extract request parameter from request as Optional.
    *
-   * @param request request
+   * @param request   request
    * @param paramName parameter name
    * @return wrapped value for the parameter
    */
@@ -381,7 +378,7 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
   @Override
   public void prepare() {
     // see if an id was provided in the request.
-    // we dont use the PARAM - PREPARE - PARAM interceptor stack
+    // we don't use the PARAM - PREPARE - PARAM interceptor stack,
     // so we investigate the request object directly BEFORE the param interceptor is called
     // this allows us to load any existing instances that should be modified
     id = StringUtils.trimToNull(req.getParameter("id"));
@@ -394,32 +391,9 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     return CANCEL;
   }
 
+  @StrutsParameter
   public void setCancel(String cancel) {
     this.cancel = StringUtils.trimToNull(cancel) != null;
-  }
-
-  public boolean isCancel() {
-    return cancel;
-  }
-
-  @Override
-  public void setServletRequest(HttpServletRequest req) {
-    this.req = req;
-  }
-
-  @Override
-  public void setServletResponse(HttpServletResponse response) {
-    this.response = response;
-  }
-
-  @Override
-  public void setSession(Map<String, Object> session) {
-    this.session = session;
-    // always keep sth in the session otherwise the session is not maintained and e.g. the message redirect interceptor
-    // doesnt work
-    if (session.isEmpty()) {
-      session.put("-", true);
-    }
   }
 
   /**
@@ -454,4 +428,24 @@ public class BaseAction extends ActionSupport implements SessionAware, Preparabl
     return registrationManager.get(Constants.DEFAULT_ORG_KEY);
   }
 
+  @Override
+  public void withServletRequest(HttpServletRequest request) {
+    this.req = request;
+  }
+
+  @Override
+  public void withServletResponse(HttpServletResponse response) {
+    this.response = response;
+  }
+
+  @Override
+  public void withSession(Map<String, Object> session) {
+    this.session = session;
+
+    // always keep sth in the session otherwise the session is not maintained
+    // e.g. the message redirect interceptor doesn't work
+    if (session.isEmpty()) {
+      session.put("-", true);
+    }
+  }
 }

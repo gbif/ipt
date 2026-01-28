@@ -16,9 +16,11 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessResource;
 import org.gbif.ipt.validation.InternalField;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapResource extends FrictionlessResource {
 
+  @Serial
   private final static long serialVersionUID = -5654049327007100865L;
 
   /**

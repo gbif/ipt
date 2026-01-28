@@ -23,27 +23,27 @@ package org.gbif.ipt.struts2;
 
 import org.gbif.ipt.action.BaseAction;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.struts2.result.ServletActionRedirectResult;
+import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.MethodFilterInterceptor;
+import org.apache.struts2.result.Result;
 import org.apache.struts2.result.ServletRedirectResult;
-
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.Result;
-import com.opensymphony.xwork2.interceptor.MethodFilterInterceptor;
 
 /**
  * An Interceptor to preserve an actions ValidationAware messages across a redirect result. It makes the assumption
  * that you always want to preserve messages across a redirect and restore them to the next action if they exist.
  * The way this works is it looks at the result type after a action has executed and if the result was a redirect
  * (ServletRedirectResult) or a redirectAction (ServletActionRedirectResult) and there were any errors, messages, or
- * fieldErrors they are stored in the session. Before the next action executes it will check if there are any messages
+ * fieldErrors they are stored in the session. Before the next action executes, it will check if there are any messages
  * stored in the session and add them to the next action.
  */
 public class RedirectMessageInterceptor extends MethodFilterInterceptor {
 
+  @Serial
   private static final long serialVersionUID = -1847557437429753540L;
 
   public static final String FIELD_ERRORS_KEY = "RedirectMessageInterceptor_FieldErrors";
@@ -57,7 +57,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
   protected void after(ActionInvocation invocation, BaseAction action) throws Exception {
     Result result = invocation.getResult();
 
-    if (result != null && (result instanceof ServletRedirectResult || result instanceof ServletActionRedirectResult)) {
+    if (result instanceof ServletRedirectResult) {
       Map<String, Object> session = invocation.getInvocationContext().getSession();
 
       Collection<String> actionWarnings = action.getWarnings();

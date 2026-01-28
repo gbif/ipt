@@ -21,14 +21,19 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.CsrfLoginInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import jakarta.servlet.http.Cookie;
+
 import java.io.IOException;
+import java.io.Serial;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.http.Cookie;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+
+import lombok.Getter;
 
 /**
  * Action handling login/logout only. Login can happen both from small login box on every page, or dedicated login
@@ -36,16 +41,20 @@ import org.apache.logging.log4j.Logger;
  */
 public class LoginAction extends POSTAction {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(LoginAction.class);
 
+  @Serial
   private static final long serialVersionUID = -863287752175768744L;
 
   private final UserAccountManager userManager;
 
+  @Getter
   private String redirectUrl;
+  @Getter
   private String email;
+  @Getter
   private String password;
+  @Getter
   private String adminEmail;
   private String csrfToken;
 
@@ -86,28 +95,28 @@ public class LoginAction extends POSTAction {
     if (email != null && !StringUtils.isBlank(csrfToken) && csrfCookie != null) {
       // prevent login CSRF
       // Make sure the token from the login form is the same as in the cookie
-        if (csrfToken.equals(csrfCookie.getValue())){
-          User authUser = userManager.authenticate(email.trim(), password.trim());
-          if (authUser == null) {
-            addActionError(getText("admin.user.wrong.email.password.combination"));
-            LOG.info("User {} failed to log in", email);
-          } else {
-            LOG.info("User {} logged in successfully", email);
-            authUser.setLastLoginToNow();
-            userManager.save();
-            session.put(Constants.SESSION_USER, authUser);
-
-            int sessionTimeout = cfg.getSessionTimeout();
-            LOG.debug("Setting session timeout to {} seconds", sessionTimeout);
-            req.getSession().setMaxInactiveInterval(sessionTimeout);
-
-            // remember previous URL to redirect back to
-            setRedirectUrl();
-            return SUCCESS;
-          }
+      if (csrfToken.equals(csrfCookie.getValue())) {
+        User authUser = userManager.authenticate(email.trim(), password.trim());
+        if (authUser == null) {
+          addActionError(getText("admin.user.wrong.email.password.combination"));
+          LOG.info("User {} failed to log in", email);
         } else {
-          LOG.warn("CSRF login token wrong! A potential malicious attack.");
+          LOG.info("User {} logged in successfully", email);
+          authUser.setLastLoginToNow();
+          userManager.save();
+          session.put(Constants.SESSION_USER, authUser);
+
+          int sessionTimeout = cfg.getSessionTimeout();
+          LOG.debug("Setting session timeout to {} seconds", sessionTimeout);
+          req.getSession().setMaxInactiveInterval(sessionTimeout);
+
+          // remember previous URL to redirect back to
+          setRedirectUrl();
+          return SUCCESS;
         }
+      } else {
+        LOG.warn("CSRF login token wrong! A potential malicious attack.");
+      }
     }
     return INPUT;
   }
@@ -120,7 +129,7 @@ public class LoginAction extends POSTAction {
 
   private void setRedirectUrl() {
     redirectUrl = getBase() + "/";
-    // if we have a request refer back to the originally requested page
+    // if we have a request, refer back to the originally requested page
     String referer = (String) session.get(Constants.SESSION_REFERER);
     LOG.debug("Session's referer: {}", referer);
 
@@ -134,40 +143,27 @@ public class LoginAction extends POSTAction {
     LOG.info("Redirecting to {}", redirectUrl);
   }
 
-  public String getRedirectUrl() {
-    return redirectUrl;
-  }
-
   public void setRedirectUrl(String redirectUrl) {
     this.redirectUrl = redirectUrl;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
+  @StrutsParameter
   public void setEmail(String email) {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
+  @StrutsParameter
   public void setPassword(String password) {
     this.password = password;
   }
 
-  public String getAdminEmail() {
-    return adminEmail;
-  }
-
+  @StrutsParameter
   public void setAdminEmail(String adminEmail) {
     this.adminEmail = adminEmail;
   }
 
+  @StrutsParameter
   public void setCsrfToken(String csrfToken) {
     this.csrfToken = csrfToken;
   }
-
 }

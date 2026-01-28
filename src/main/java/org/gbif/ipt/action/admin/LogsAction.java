@@ -23,23 +23,28 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import lombok.Getter;
 
 /**
  * The Action responsible for showing IPT logs to the admin.
  */
 public class LogsAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = -5038153790552063249L;
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(LogsAction.class);
 
   private final DataDir dataDir;
+  @Getter
   private InputStream inputStream;
+  @Getter
   private String log;
 
   @Inject
@@ -57,20 +62,12 @@ public class LogsAction extends BaseAction {
     return SUCCESS;
   }
 
-  public InputStream getInputStream() {
-    return inputStream;
-  }
-
-  public String getLog() {
-    return log;
-  }
-
   public String logfile() throws IOException {
     // server file as set in prepare method
     File logFile = dataDir.loggingFile(log + ".log");
     // Log file must exist and be a file inside the ipt data directory/log
     if (logFile.exists() && dataDir.loggingDir().equals(logFile.getParentFile())) {
-      LOG.debug("Serving logfile " + logFile.getAbsolutePath());
+      LOG.debug("Serving logfile {}", logFile.getAbsolutePath());
       inputStream = new FileInputStream(logFile);
       return SUCCESS;
     } else {

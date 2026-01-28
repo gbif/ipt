@@ -16,10 +16,12 @@ package org.gbif.ipt.model.datapackage.metadata;
 import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.ValidUrl;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +45,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FrictionlessSource implements Source, Serializable {
 
+  @Serial
   private final static long serialVersionUID = -3013088705460436883L;
 
   /**

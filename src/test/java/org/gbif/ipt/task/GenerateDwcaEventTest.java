@@ -73,7 +73,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+
 import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -121,8 +122,8 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     basisOfRecords.put("occurrence", "Occurrence");
 
     when(
-      mockVocabulariesManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false))
-      .thenReturn(basisOfRecords);
+        mockVocabulariesManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false))
+        .thenReturn(basisOfRecords);
   }
 
   @Test
@@ -134,7 +135,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     resource = getResource(resourceXML, event, occurrence);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
     Map<String, Integer> recordsByExtension = generateDwca.call();
     // record count for event core and occurrence extension
     assertEquals(2, recordsByExtension.size());
@@ -222,7 +223,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     boolean foundWarningAboutEmptyLine = false;
     // since occurrenceId isn't mapped in occurrence extension, there should be a warning message!
     boolean foundWarningAboutUnmappedOccurrenceId = false;
-    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext();) {
+    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext(); ) {
       TaskMessage msg = iter.next();
       if (msg.getMessage().startsWith("2 line(s) use ambiguous basisOfRecord")) {
         foundWarningAboutAmbiguousBOR = true;
@@ -250,7 +251,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     resource = getResource(resourceXML, event, occurrence);
 
     generateDwca =
-      new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
+        new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -267,7 +268,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     resource = getResource(resourceXML, event, occurrence);
 
     generateDwca =
-      new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
+        new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -284,7 +285,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     resource = getResource(resourceXML, event, occurrence);
 
     generateDwca =
-      new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
+        new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -301,7 +302,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     resource = getResource(resourceXML, event, occurrence);
 
     generateDwca =
-      new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
+        new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -318,7 +319,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     resource = getResource(resourceXML, event, occurrence);
 
     generateDwca =
-      new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
+        new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -335,7 +336,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     resource = getResource(resourceXML, event, occurrence);
 
     generateDwca =
-      new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
+        new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -343,7 +344,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
    * Generates a test sampling event resource having an event core with occurrence extension.
    */
   private Resource getResource(@NotNull File resourceXML, @NotNull File eventSourceFile,
-    @NotNull File occurrenceSourceFile) throws Exception {
+                               @NotNull File occurrenceSourceFile) throws Exception {
     UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
     UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
@@ -375,7 +376,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
 
     // construct occurrence core Extension
     InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream(
-      "/extensions/dwc_occurrence_2015-04-24.xml");
+        "/extensions/dwc_occurrence_2015-04-24.xml");
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
 
     // mock ExtensionManager returning occurrence core Extension
@@ -426,23 +427,23 @@ public class GenerateDwcaEventTest extends IptBaseTest {
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
-      new ResourceManagerImpl(
-          mockAppConfig,
-          mockDataDir,
-          mockResourceConvertersManager,
-          mockSourceManager,
-          extensionManager,
-          mockSchemaManager,
-          mockRegistryManager,
-          mockDwcaFactory,
-          mock(GenerateDataPackageFactory.class),
-          passwordEncrypter,
-          mockEml2Rtf,
-          mockVocabulariesManager,
-          mockSimpleTextProvider,
-          mockRegistrationManager,
-          mock(MetadataReader.class),
-          mock(ResourceMetadataInferringService.class));
+        new ResourceManagerImpl(
+            mockAppConfig,
+            mockDataDir,
+            mockResourceConvertersManager,
+            mockSourceManager,
+            extensionManager,
+            mockSchemaManager,
+            mockRegistryManager,
+            mockDwcaFactory,
+            mock(GenerateDataPackageFactory.class),
+            passwordEncrypter,
+            mockEml2Rtf,
+            mockVocabulariesManager,
+            mockSimpleTextProvider,
+            mockRegistrationManager,
+            mock(MetadataReader.class),
+            mock(ResourceMetadataInferringService.class));
 
     // create user
     User creator = new User();
@@ -455,7 +456,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
 
     // create a new resource.
     resource = resourceManager.create(RESOURCE_SHORTNAME, Resource.CoreRowType.SAMPLINGEVENT.toString(),
-      zippedResourceFolder, creator, baseAction);
+        zippedResourceFolder, creator, baseAction);
 
     // copy event source file to tmp folder
     File copiedEvent = new File(resourceDir, "event.txt");
@@ -480,7 +481,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
 
     // mock creation of versioned zipped dwca in resource directory
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class)))
-      .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
+        .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
 
     return resource;
   }

@@ -24,8 +24,6 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.opensymphony.xwork2.LocaleProvider;
-
 /**
  * A basic text provider for internationalised messages that can replace the native struts2 one. It uses only a single
  * bundle name to speed up the lookup which increases performance of page rendering with many text blocks by sometimes
@@ -48,7 +46,6 @@ public class SimpleTextProvider {
    *
    * @param aBundleName the name of the bundle (usually it's FQN classname).
    * @param locale      the locale.
-   *
    * @return the bundle, defaulting to the English bundle if no match for locale found or if Exception occurred
    */
   public ResourceBundle findResourceBundle(String aBundleName, Locale locale) {
@@ -86,22 +83,22 @@ public class SimpleTextProvider {
    * Gets a message based on a key using the supplied args, as defined in {@link MessageFormat}, or, if the
    * message is not found, a supplied default value is returned. Instead of using the value stack in the ActionContext
    * this version of the getText() method uses the provided value stack.
-   * 
-   * @param localeProvider LocaleProvider
-   * @param key the resource bundle key that is to be searched for
+   *
+   * @param locale       locale
+   * @param key          the resource bundle key that is to be searched for
    * @param defaultValue the default value which will be returned if no message is found. If null the key name will be
-   *        used instead
-   * @param args a list args to be used in a {@link MessageFormat} message
+   *                     used instead
+   * @param args         a list args to be used in a {@link MessageFormat} message
    * @return the message as found in the resource bundle, or defaultValue if none is found
    */
-  public String getText(LocaleProvider localeProvider, String key, String defaultValue, List args) {
+  public String getText(Locale locale, String key, String defaultValue, List args) {
     Object[] argsArray = args != null ? args.toArray() : null;
-    return getText(localeProvider, key, defaultValue, argsArray);
+    return getText(locale, key, defaultValue, argsArray);
   }
 
-  public String getText(LocaleProvider localeProvider, String key, String defaultValue, Object[] args) {
+  public String getText(Locale nullableLocale, String key, String defaultValue, Object[] args) {
     // Locale, defaulting to English if it cannot be determined
-    Locale locale = (localeProvider.getLocale() == null) ? Locale.ENGLISH : localeProvider.getLocale();
+    Locale locale = (nullableLocale == null) ? Locale.ENGLISH : nullableLocale;
 
     String text = null;
     for (String resName : baseBundleNames) {

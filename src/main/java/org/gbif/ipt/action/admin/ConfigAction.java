@@ -25,6 +25,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 
+import java.io.Serial;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -41,10 +42,10 @@ import org.apache.logging.log4j.Logger;
  */
 public class ConfigAction extends POSTAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(ConfigAction.class);
-
+  @Serial
   private static final long serialVersionUID = 4726973323043063968L;
+
+  private static final Logger LOG = LogManager.getLogger(ConfigAction.class);
 
   protected ConfigManager configManager;
   private final ResourceManager resourceManager;
@@ -167,7 +168,7 @@ public class ConfigAction extends POSTAction {
     boolean baseUrlChanged = false;
     // base URL
     if (!stringEquals(baseUrl, cfg.getBaseUrl())) {
-      LOG.info("Changing the installation baseURL from [" + cfg.getBaseUrl() + "] to [" + baseUrl + "]");
+      LOG.info("Changing the installation baseURL from [{}] to [{}]", cfg.getBaseUrl(), baseUrl);
       try {
         URL burl = new URL(baseUrl);
         configManager.setBaseUrl(burl);
@@ -175,7 +176,7 @@ public class ConfigAction extends POSTAction {
         // ensure any public resource URL (alternative identifiers) are updated also
         updateAllAlternateIdentifiersForIPTURLToResource();
 
-        LOG.info("Installation baseURL successfully changed to[" + baseUrl + "]");
+        LOG.info("Installation baseURL successfully changed to[{}]", baseUrl);
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));
         addActionMessage(getText("admin.config.baseUrl.changed.reminder"));

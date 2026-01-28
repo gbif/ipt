@@ -64,7 +64,6 @@ import static org.mockito.Mockito.when;
 
 public class RegistryManagerImplTest extends IptMockBaseTest {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(RegistryManagerImplTest.class);
 
   private AppConfig mockAppConfig;

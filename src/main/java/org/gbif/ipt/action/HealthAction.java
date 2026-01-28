@@ -32,9 +32,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.Serial;
+
 public class HealthAction extends BaseAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = 5332856472390163029L;
+
   private static final Logger LOG = LogManager.getLogger(HealthAction.class);
 
   private DataDir dataDir;
@@ -100,8 +104,7 @@ public class HealthAction extends BaseAction {
       if ((resp != null) && (resp.getStatusCode() == 200)) {
         networkRegistry = true;
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       // do nothing
     }
 
@@ -110,8 +113,7 @@ public class HealthAction extends BaseAction {
       if ((resp != null) && (resp.getStatusCode() == 200)) {
         networkRepository = true;
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       // do nothing
     }
 
@@ -125,8 +127,7 @@ public class HealthAction extends BaseAction {
           networkPublicAccess = true;
         }
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       // do nothing
     }
 

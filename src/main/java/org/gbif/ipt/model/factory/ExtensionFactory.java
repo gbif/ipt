@@ -75,9 +75,9 @@ public class ExtensionFactory {
           extensions.add(e);
         }
       } catch (IOException e) {
-        LOG.error("Unable to access extension definition defined at " + urlAsString, e);
+        LOG.error("Unable to access extension definition defined at {}", urlAsString, e);
       } catch (SAXException e) {
-        LOG.error("Unable to parse extension definition defined at " + urlAsString, e);
+        LOG.error("Unable to parse extension definition defined at {}", urlAsString, e);
       }
     }
 
@@ -224,11 +224,11 @@ public class ExtensionFactory {
         // copy stream to local file
         try (InputStream is = entity.getContent()) {
           Extension e = build(is);
-          LOG.info("Successfully parsed extension: " + e.getTitle());
+          LOG.info("Successfully parsed extension: {}", e.getTitle());
           return e;
 
         } catch (SAXException e) {
-          LOG.error("Unable to parse XML for extension: " + e.getMessage(), e);
+          LOG.error("Unable to parse XML for extension: {}", e.getMessage(), e);
         }
         // close http connection
         EntityUtils.consume(entity);

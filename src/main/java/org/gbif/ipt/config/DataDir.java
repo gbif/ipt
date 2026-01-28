@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -76,7 +76,6 @@ public class DataDir {
    * Build and configure new IPT Data Directory instance from location settings file.
    *
    * @param dataDirSettingFile location settings file specifying location of existing IPT data directory
-   *
    * @return IPT Data Directory instance
    */
   public static DataDir buildFromLocationFile(File dataDirSettingFile) {
@@ -87,12 +86,12 @@ public class DataDir {
       try {
         dataDirPath = StringUtils.trimToNull(FileUtils.readFileToString(dataDirSettingFile, "UTF-8"));
         if (dataDirPath != null) {
-          LOG.info("IPT Data Directory configured at " + dataDirPath);
+          LOG.info("IPT Data Directory configured at {}", dataDirPath);
           dd.dataDir = new File(dataDirPath);
         }
       } catch (IOException e) {
         LOG.error(
-          "Failed to read the IPT Data Directory location settings file in WEB-INF at " + dataDirSettingFile.getAbsolutePath(), e);
+            "Failed to read the IPT Data Directory location settings file in WEB-INF at " + dataDirSettingFile.getAbsolutePath(), e);
       }
     } else {
       LOG.warn("IPT Data Directory location settings file in WEB-INF not found. Continue without data directory.");
@@ -104,13 +103,12 @@ public class DataDir {
    * Build and configure new IPT Data Directory instance from specified path.
    *
    * @param dataDirPath location of existing IPT Data Directory
-   *
    * @return IPT Data Directory instance
    */
   public static DataDir buildFromString(String dataDirPath) {
     DataDir dd = new DataDir();
     if (dataDirPath != null) {
-      LOG.info("IPT Data Directory configured at " + dataDirPath);
+      LOG.info("IPT Data Directory configured at {}", dataDirPath);
       dd.dataDir = new File(dataDirPath);
     }
     return dd;
@@ -156,7 +154,7 @@ public class DataDir {
     InputStream input = streamUtils.classpathStream("configDefault/ipt.properties");
     if (input == null) {
       throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-        "Cannot read required classpath resources to create new data dir!");
+          "Cannot read required classpath resources to create new data dir!");
     }
     org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
 
@@ -231,7 +229,7 @@ public class DataDir {
   private void persistLocation() throws IOException {
     // persist location in WEB-INF
     FileUtils.writeStringToFile(dataDirSettingFile, dataDir.getAbsolutePath(), StandardCharsets.UTF_8);
-    LOG.info("IPT DataDir location file in /WEB-INF changed to " + dataDir.getAbsolutePath());
+    LOG.info("IPT DataDir location file in /WEB-INF changed to {}", dataDir.getAbsolutePath());
   }
 
   /**
@@ -239,7 +237,6 @@ public class DataDir {
    *
    * @param resourceName resource short name
    * @param version      version
-   *
    * @return DwC-A file having specific version
    */
   public File resourceDwcaFile(@NotNull String resourceName, @NotNull BigDecimal version) {
@@ -263,7 +260,6 @@ public class DataDir {
    *
    * @param resourceName resource short name
    * @param version      version
-   *
    * @return data package file having specific version
    */
   public File resourceDataPackageFile(@NotNull String resourceName, @NotNull BigDecimal version) {
@@ -275,7 +271,6 @@ public class DataDir {
    * Retrieves DwC-A file for a resource.
    *
    * @param resourceName resource short name
-   *
    * @return DwC-A file having specific version
    */
   public File resourceDwcaFile(@NotNull String resourceName) {
@@ -287,7 +282,6 @@ public class DataDir {
    *
    * @param resourceName resource short name
    * @param version      version
-   *
    * @return EML file having specific version
    */
   public File resourceEmlFile(@NotNull String resourceName, @NotNull BigDecimal version) {
@@ -308,7 +302,6 @@ public class DataDir {
    * Retrieves EML file for a resource.
    *
    * @param resourceName resource short name
-   *
    * @return interim EML file for resource
    */
   public File resourceEmlFile(@NotNull String resourceName) {
@@ -411,7 +404,6 @@ public class DataDir {
    *
    * @param resourceName resource short name
    * @param version      version
-   *
    * @return RTF file having specific version, defaulting to the latest published version if no version specified
    */
   public File resourceRtfFile(@NotNull String resourceName, @NotNull BigDecimal version) {
@@ -442,7 +434,7 @@ public class DataDir {
           if (!configDir.exists() || !configDir.isDirectory()) {
             this.dataDir = null;
             throw new InvalidConfigException(TYPE.INVALID_DATA_DIR,
-              "DataDir " + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
+                "DataDir " + dataDir.getAbsolutePath() + " exists already and is no IPT data dir.");
           }
           LOG.info("Reusing existing data dir {}", dataDir);
           // persist location in WEB-INF
@@ -455,7 +447,7 @@ public class DataDir {
         } else {
           this.dataDir = null;
           throw new InvalidConfigException(TYPE.INVALID_DATA_DIR,
-            "DataDir " + dataDir.getAbsolutePath() + " is not a directory");
+              "DataDir " + dataDir.getAbsolutePath() + " is not a directory");
         }
 
       } else {
@@ -477,10 +469,10 @@ public class DataDir {
           }
           return true;
         } catch (IOException e) {
-          LOG.error("New DataDir " + dataDir.getAbsolutePath() + " not writable", e);
+          LOG.error("New DataDir {} not writable", dataDir.getAbsolutePath(), e);
           this.dataDir = null;
           throw new InvalidConfigException(InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR,
-            "DataDir " + dataDir.getAbsolutePath() + " is not writable");
+              "DataDir " + dataDir.getAbsolutePath() + " is not writable");
         }
       }
     }
@@ -521,7 +513,6 @@ public class DataDir {
    * unique filename - it only uses the path provided.
    *
    * @param path relative file path within temporary folder
-   *
    * @return temporary file within relative file path
    */
   public File tmpFile(String path) {
@@ -533,7 +524,6 @@ public class DataDir {
    *
    * @param prefix file name prefix, e.g. "dwca"
    * @param suffix file name suffix, e.g. ".zip"
-   *
    * @return temporary File handle with unique filename
    */
   public File tmpFile(String prefix, String suffix) {
@@ -589,8 +579,7 @@ public class DataDir {
         }
       }
       return DirStatus.READ_WRITE;
-    }
-    else {
+    } else {
       return DirStatus.NOT_EXIST;
     }
   }

@@ -23,6 +23,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
@@ -30,18 +31,23 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import lombok.Getter;
+
 public class UIManagementAction extends POSTAction {
 
+  @Serial
   private static final long serialVersionUID = 2001100185337026057L;
 
   private static final Logger LOG = LogManager.getLogger(UIManagementAction.class);
 
   private final DataDir dataDir;
 
+  @Getter
   private IptColorScheme colorScheme;
 
   private File file;
   private String fileContentType;
+  @Getter
   private boolean removeLogo;
 
   @Inject
@@ -99,10 +105,6 @@ public class UIManagementAction extends POSTAction {
     return INPUT;
   }
 
-  public IptColorScheme getColorScheme() {
-    return colorScheme;
-  }
-
   public void setColorScheme(IptColorScheme colorScheme) {
     this.colorScheme = colorScheme;
   }
@@ -113,10 +115,6 @@ public class UIManagementAction extends POSTAction {
 
   public void setFileContentType(String fileContentType) {
     this.fileContentType = fileContentType;
-  }
-
-  public boolean isRemoveLogo() {
-    return removeLogo;
   }
 
   public void setRemoveLogo(boolean removeLogo) {

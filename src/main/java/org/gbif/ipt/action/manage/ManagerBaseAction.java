@@ -22,6 +22,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.Serial;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,7 @@ import lombok.Setter;
 
 public class ManagerBaseAction extends POSTAction {
 
+  @Serial
   private static final long serialVersionUID = -7385261456013846954L;
 
   // the resourceManager session is populated by the resource interceptor and kept alive for an entire manager session
@@ -59,7 +61,7 @@ public class ManagerBaseAction extends POSTAction {
       try {
         res = (String) session.get(Constants.SESSION_RESOURCE);
       } catch (Exception e) {
-        // swallow. if session is not yet opened we get an exception here...
+        // swallow. if the session is not yet opened, we get an exception here...
       }
     }
     resource = resourceManager.get(res);

@@ -187,10 +187,10 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       if (f.exists()) {
         FileUtils.deleteQuietly(f);
       } else {
-        LOG.warn("Data schema doesn't exist locally, can't delete " + identifier);
+        LOG.warn("Data schema doesn't exist locally, can't delete {}", identifier);
       }
     } else {
-      LOG.warn("Data schema not installed locally, can't delete " + identifier);
+      LOG.warn("Data schema not installed locally, can't delete {}", identifier);
     }
   }
 
@@ -214,7 +214,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       try {
         dataPackageFileRawContent = new String(Files.readAllBytes(tmpFileSchema.toPath()), StandardCharsets.UTF_8);
       } catch (IOException e) {
-        LOG.error("Failed to read the data package schema file " + filename, e);
+        LOG.error("Failed to read the data package schema file {}", filename, e);
       }
 
       try (FileWriter fw = new FileWriter(tmpFileSchema)) {
@@ -247,7 +247,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
         File schemaConfigFolder = dataDir.configFile(CONFIG_FOLDER + "/" + dataPackageSchema.getName());
         FileUtils.cleanDirectory(schemaConfigFolder);
       } catch (IOException ioe) {
-        LOG.error("Failed to clean directory for schema " + dataPackageSchema.getName(), e);
+        LOG.error("Failed to clean directory for schema {}", dataPackageSchema.getName(), e);
       }
 
       throw new InvalidConfigException(INVALID_DATA_SCHEMA, msg, e);
@@ -289,7 +289,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
               try {
                 dataPackageRawContent = new String(Files.readAllBytes(mainSchemaFile.toPath()), StandardCharsets.UTF_8);
               } catch (IOException e) {
-                LOG.error("Failed to read the data package schema file " + mainSchemaFile, e);
+                LOG.error("Failed to read the data package schema file {}", mainSchemaFile, e);
               }
 
               dataPackageSchema = loadSchemaFromFile(mainSchemaFile);
@@ -451,7 +451,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
-      LOG.info("Successfully downloaded data schema: " + url);
+      LOG.info("Successfully downloaded data schema: {}", url);
       return tmpFile;
     } else {
       String msg =
@@ -512,10 +512,10 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
     try {
       DataPackageSchema dataPackageSchema = factory.buildSchema(localFile);
-      LOG.info("Successfully loaded data package schema file " + dataPackageSchema.getIdentifier());
+      LOG.info("Successfully loaded data package schema file {}", dataPackageSchema.getIdentifier());
       return dataPackageSchema;
     } catch (IOException e) {
-      LOG.error("Can't access local data package schema file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't access local data package schema file ({})", localFile.getAbsolutePath(), e);
       throw new InvalidConfigException(INVALID_DATA_SCHEMA,
           "Can't access local data schema file");
     }
@@ -538,10 +538,10 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
     try {
       DataPackageTableSchema tableSchema = factory.buildTableSchema(localFile);
-      LOG.info("Successfully loaded table schema file " + tableSchema.getName());
+      LOG.info("Successfully loaded table schema file {}", tableSchema.getName());
       return tableSchema;
     } catch (IOException e) {
-      LOG.error("Can't access local data schema file (" + localFile.getAbsolutePath() + ")", e);
+      LOG.error("Can't access local data schema file ({})", localFile.getAbsolutePath(), e);
       throw new InvalidConfigException(INVALID_DATA_SCHEMA,
           "Can't access local data schema file");
     }
@@ -563,7 +563,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       File installedFile = getDataSchema(schemaIdentifier, schemaName);
       FileUtils.moveFile(tmpFile, installedFile);
     } catch (IOException e) {
-      LOG.error("Installing data schema failed, while trying to move and rename data schema file: " + e.getMessage(), e);
+      LOG.error("Installing data schema failed, while trying to move and rename data schema file: {}", e.getMessage(), e);
       throw e;
     }
   }
@@ -587,7 +587,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       File installedFile = getTableSchemaFile(schemaIdentifier, schemaName, tableSchema.getName());
       FileUtils.moveFile(tmpFile, installedFile);
     } catch (IOException e) {
-      LOG.error("Installing data schema failed, while trying to move and rename data schema file: " + e.getMessage(), e);
+      LOG.error("Installing data schema failed, while trying to move and rename data schema file: {}", e.getMessage(), e);
       throw e;
     }
   }
