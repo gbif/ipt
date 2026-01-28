@@ -49,6 +49,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.apache.struts2.inject.Container;
+import org.apache.struts2.locale.DefaultLocaleProviderFactory;
+import org.apache.struts2.locale.LocaleProviderFactory;
 
 import freemarker.template.TemplateException;
 
@@ -78,6 +80,7 @@ public class ResourceActionTest extends IptBaseTest {
   @BeforeEach
   public void setup() throws IOException, TemplateException {
     SimpleTextProvider textProvider = new SimpleTextProvider();
+    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     AppConfig mockCfg = mock(AppConfig.class);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     ResourceManager mockResourceManager = mock(ResourceManager.class);
@@ -153,7 +156,7 @@ public class ResourceActionTest extends IptBaseTest {
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class))).thenReturn(nonExistingDwca);
 
     // mock a locale provider
-//    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
+    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
     action = new ResourceAction(textProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
         mockDataDir, mock(ExtensionManager.class), mock(MetadataReader.class));

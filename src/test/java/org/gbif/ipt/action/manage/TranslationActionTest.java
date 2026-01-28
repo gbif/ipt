@@ -54,6 +54,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.apache.struts2.inject.Container;
+import org.apache.struts2.locale.DefaultLocaleProviderFactory;
+import org.apache.struts2.locale.LocaleProviderFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -72,7 +74,7 @@ public class TranslationActionTest extends IptBaseTest {
   public void setup() throws Exception {
     // mock needed managers
     SimpleTextProvider mockTextProvider = mock(SimpleTextProvider.class);
-//    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
+    LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     AppConfig mockCfg = mock(AppConfig.class);
     ResourceManager mockResourceManager = mock(ResourceManager.class);
     SourceManager mockSourceManager = mock(SourceManager.class);
@@ -149,8 +151,7 @@ public class TranslationActionTest extends IptBaseTest {
     when(mockResourceManager.get(anyString())).thenReturn(resource);
 
     // mock a locale provider
-    // TODO: mock locale?
-//    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
+    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
     // mock textProvider getTexts
     ResourceBundle mockResourceBundle = mock(ResourceBundle.class);
