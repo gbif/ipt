@@ -62,6 +62,7 @@ import java.util.TreeMap;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -958,9 +959,9 @@ public class MetadataAction extends ManagerBaseAction {
 
     @Override
     public int compare(String o1, String o2) {
-      if (StringUtils.equals(o1, o2)) {
+      if (Strings.CS.equals(o1, o2)) {
         return 0;
-      } else if (!StringUtils.equalsAny("cczero", o1, o2)) {
+      } else if (!Strings.CS.equalsAny("cczero", o1, o2)) {
         // if not cczero - just compare them
         return o1.compareTo(o2);
       } else if ("cczero".equals(o1) && !o2.isEmpty()) {

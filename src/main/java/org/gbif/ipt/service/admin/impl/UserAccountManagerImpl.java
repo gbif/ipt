@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
@@ -276,7 +276,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   }
 
   private boolean isOldEncryptedPassword(String pass) {
-    return !StringUtils.startsWith(pass, "$2a$");
+    return !Strings.CS.startsWith(pass, "$2a$");
   }
 
   @Override

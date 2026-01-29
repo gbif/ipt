@@ -50,6 +50,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RegExUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -435,13 +436,13 @@ public class AppConfig {
   public String getVersion() {
     String version = properties.getProperty(DEV_VERSION);
     // remove suffix if it was not filled
-    return StringUtils.removeEnd(version, BUILD_NUMBER_VARIABLE_SUFFIX);
+    return Strings.CS.removeEnd(version, BUILD_NUMBER_VARIABLE_SUFFIX);
   }
 
   public String getShortVersion() {
     String version = properties.getProperty(DEV_VERSION);
     // remove build number suffix in the end
-    return RegExUtils.removePattern(version, BUILD_NUMBER_REGEX);
+    return RegExUtils.removePattern((CharSequence) version, BUILD_NUMBER_REGEX);
   }
 
   public boolean hasLocation() {

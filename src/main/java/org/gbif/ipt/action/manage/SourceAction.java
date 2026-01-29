@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.action.manage;
 
-import lombok.Getter;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -47,9 +46,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+
+import lombok.Getter;
 
 public class SourceAction extends ManagerBaseAction {
 
@@ -149,7 +151,7 @@ public class SourceAction extends ManagerBaseAction {
       // check a text file (or no extension)
       String extension = FilenameUtils.getExtension(url);
       boolean extensionNotAllowed = (!extension.isEmpty()
-          && !StringUtils.equalsAny(extension, "txt", "tsv", "csv", "zip"));
+          && !Strings.CS.equalsAny(extension, "txt", "tsv", "csv", "zip"));
 
       if (extensionNotAllowed) {
         LOG.debug("No extension in the URL, checking content type.");
@@ -177,7 +179,7 @@ public class SourceAction extends ManagerBaseAction {
   private String addFileSource() {
     // uploaded a new file. Is it compressed?
     // application/zip, application/x-gzip
-    if (StringUtils.endsWithAny(fileContentType.toLowerCase(), "zip", "gzip", "compressed")) {
+    if (Strings.CS.endsWithAny(fileContentType.toLowerCase(), "zip", "gzip", "compressed")) {
       try {
         File tmpDir = dataDir.tmpDir();
         // override auto-generated name

@@ -60,6 +60,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.StatusLine;
 import org.apache.logging.log4j.LogManager;
@@ -303,11 +304,11 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
             vocabulariesRemoved.add(property);
           }
           // case 2: vocabulary versions are unchanged between versions
-          else if (v1.getUriString().equalsIgnoreCase(v2.getUriString())) {
+          else if (Strings.CI.equals(v1.getUriString(), v2.getUriString())) {
             vocabulariesUnchanged.add(property);
           }
           // case 3: vocabulary has been updated in newer version
-          else if (!v1.getUriString().equalsIgnoreCase(v2.getUriString())) {
+          else {
             vocabulariesUpdated.add(property);
           }
         }
@@ -676,7 +677,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
           continue;
         }
         if ((includeEmptySubject && StringUtils.trimToNull(e.getSubject()) == null)
-            || StringUtils.containsIgnoreCase(e.getSubject(), keyword)) {
+            || Strings.CI.contains(e.getSubject(), keyword)) {
           list.add(e);
         }
       }

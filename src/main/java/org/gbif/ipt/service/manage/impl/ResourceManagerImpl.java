@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
-import lombok.Getter;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.registry.Dataset;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
@@ -193,6 +192,7 @@ import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.xml.sax.SAXException;
@@ -202,6 +202,8 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+
+import lombok.Getter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP_OBSERVATIONS;
@@ -1929,11 +1931,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * @return true if descending, false otherwise
    */
   private boolean isDescendingOrder(String order) {
-    return StringUtils.equalsIgnoreCase(StringUtils.trimToEmpty(order), "desc");
+    return Strings.CI.equals(StringUtils.trimToEmpty(order), "desc");
   }
 
   /**
-   * Check if provided string is present in one of the searchable fields.
+   * Check if the provided string is present in one of the searchable fields.
    *
    * @param resource lightweight resource
    * @param search   search string
@@ -1944,14 +1946,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       return true;
     }
 
-    return StringUtils.containsIgnoreCase(resource.getShortname(), search)
-        || StringUtils.containsIgnoreCase(resource.getTitle(), search)
-        || StringUtils.containsIgnoreCase(resource.getOrganisationAlias(), search)
-        || StringUtils.containsIgnoreCase(resource.getOrganisationName(), search)
-        || StringUtils.containsIgnoreCase(resource.getCoreType(), search)
-        || StringUtils.containsIgnoreCase(resource.getSubtype(), search)
-        || StringUtils.containsIgnoreCase(resource.getCreatorName(), search)
-        || StringUtils.containsIgnoreCase(resource.getSubject(), search);
+    return Strings.CI.contains(resource.getShortname(), search)
+        || Strings.CI.contains(resource.getTitle(), search)
+        || Strings.CI.contains(resource.getOrganisationAlias(), search)
+        || Strings.CI.contains(resource.getOrganisationName(), search)
+        || Strings.CI.contains(resource.getCoreType(), search)
+        || Strings.CI.contains(resource.getSubtype(), search)
+        || Strings.CI.contains(resource.getCreatorName(), search)
+        || Strings.CI.contains(resource.getSubject(), search);
   }
 
   /**

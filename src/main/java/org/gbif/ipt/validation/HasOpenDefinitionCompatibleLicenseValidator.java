@@ -21,7 +21,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 public class HasOpenDefinitionCompatibleLicenseValidator implements ConstraintValidator<HasOpenDefinitionCompatibleLicense, List<License>> {
 
@@ -73,7 +73,7 @@ public class HasOpenDefinitionCompatibleLicenseValidator implements ConstraintVa
   }
 
   private boolean isValid(CamtrapLicense license) {
-    return StringUtils.equalsAny(license.getName(), OPEN_DEFINITION_COMPATIBLE_LICENSES);
+    return Strings.CS.equalsAny(license.getName(), OPEN_DEFINITION_COMPATIBLE_LICENSES);
   }
 
 }

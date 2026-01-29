@@ -13,11 +13,12 @@
  */
 package org.gbif.ipt.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+
+import org.apache.commons.lang3.Strings;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
@@ -38,6 +39,6 @@ public final class MetadataUtils {
   }
 
   public static boolean isDataPackageType(String type) {
-    return StringUtils.equalsAny(type, CAMTRAP_DP, COL_DP);
+    return Strings.CS.equalsAny(type, CAMTRAP_DP, COL_DP);
   }
 }

@@ -49,7 +49,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.http.StatusLine;
 
 import com.google.gson.Gson;
@@ -181,7 +181,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     if (dataPackageSchemasByIdentifiers.containsKey(identifier)) {
       dataPackageSchemasByIdentifiers.remove(identifier);
       dataPackageSchemaRawContentByName.remove(name);
-      dataPackageSchemas.removeIf(d -> StringUtils.equals(d.getIdentifier(), identifier));
+      dataPackageSchemas.removeIf(d -> Strings.CS.equals(d.getIdentifier(), identifier));
 
       File f = getDataSchemaDirectory(name);
       if (f.exists()) {

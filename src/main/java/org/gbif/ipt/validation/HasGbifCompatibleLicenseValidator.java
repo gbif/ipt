@@ -21,7 +21,7 @@ import java.util.List;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 public class HasGbifCompatibleLicenseValidator implements ConstraintValidator<HasGbifCompatibleLicense, List<License>> {
 
@@ -60,6 +60,6 @@ public class HasGbifCompatibleLicenseValidator implements ConstraintValidator<Ha
   }
 
   private boolean isValid(CamtrapLicense license) {
-    return StringUtils.equalsAny(license.getName(), GBIF_COMPATIBLE_LICENSES);
+    return Strings.CS.equalsAny(license.getName(), GBIF_COMPATIBLE_LICENSES);
   }
 }

@@ -39,7 +39,7 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 
 import org.apache.commons.lang3.RegExUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.hibernate.validator.HibernateValidator;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -148,7 +148,7 @@ public class DataPackageMetadataValidator {
             = validator.validate(metadata, BasicMetadata.class);
 
         for (ConstraintViolation<DataPackageMetadata> violation : basicSectionViolations) {
-          if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
+          if (Strings.CS.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
             action.addActionError(action.getText(violation.getMessage()));
           } else {
             if (violation.getMessage().equals("validation.datapackage.metadata.license.name.required")) {
@@ -250,7 +250,7 @@ public class DataPackageMetadataValidator {
           = validator.validate(metadata, BasicMetadata.class);
 
       for (ConstraintViolation<DataPackageMetadata> violation : basicSectionViolations) {
-        if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
+        if (Strings.CS.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
           action.addActionError(action.getText(violation.getMessage()));
         } else {
           if (violation.getMessage().equals("validation.datapackage.metadata.license.name.required")) {
@@ -297,9 +297,7 @@ public class DataPackageMetadataValidator {
   }
 
   private void validateVernacularNames(BaseAction action, DataPackageMetadata metadata) {
-    if (metadata instanceof CamtrapMetadata) {
-      CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
-
+    if (metadata instanceof CamtrapMetadata camtrapMetadata) {
       List<Taxonomic> taxonomics = camtrapMetadata.getTaxonomic();
 
       for (int taxonomicIndex = 0; taxonomicIndex < taxonomics.size(); taxonomicIndex++) {
