@@ -447,7 +447,7 @@ public class OverviewActionIT extends IptBaseTest {
     assertEquals(3, r.getVersionHistory().size());
 
     // ensure resource has reserved DOI
-    assertEquals(r.getIdentifierStatus(), IdentifierStatus.PUBLIC_PENDING_PUBLICATION);
+    assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, r.getIdentifierStatus());
     assertTrue(r.isAlreadyAssignedDoi());
     assertTrue(r.isPubliclyAvailable());
     assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
@@ -464,7 +464,7 @@ public class OverviewActionIT extends IptBaseTest {
     assertEquals(reserved3.getUrl().toString(), r.getEml().getCitation().getIdentifier());
 
     // delete!
-    action.setDelete("true");
+    action.setDeleteFlag("true");
     assertEquals("home", action.delete());
     assertEquals(PublicationStatus.DELETED, r.getStatus());
     assertEquals(IdentifierStatus.UNRESERVED, r.getIdentifierStatus());
@@ -480,7 +480,7 @@ public class OverviewActionIT extends IptBaseTest {
     if (type.equals(DOIRegistrationAgency.DATACITE)) {
       assertEquals("success", action.undelete());
       assertEquals(PublicationStatus.PUBLIC, r.getStatus());
-      assertEquals(r.getIdentifierStatus(), IdentifierStatus.PUBLIC);
+      assertEquals(IdentifierStatus.PUBLIC, r.getIdentifierStatus());
       assertEquals(ORGANISATION_KEY, r.getDoiOrganisationKey());
       assertEquals(2, r.getEml().getAlternateIdentifiers().size());
       // DOI of last published version should be used as citation identifier

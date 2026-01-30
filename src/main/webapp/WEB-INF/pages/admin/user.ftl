@@ -94,7 +94,7 @@
                                         <@s.submit cssClass="confirmPasswordReset button btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" form="newuser" name="resetPassword" key="button.resetPassword" />
                                     </li>
                                     <li>
-                                        <@s.submit cssClass="userConfirmDeletion btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" form="newuser" name="delete" key="button.delete"/>
+                                        <@s.submit cssClass="userConfirmDeletion btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" form="newuser" name="deleteFlag" key="button.delete"/>
                                     </li>
                                 </ul>
                             </div>
@@ -122,16 +122,16 @@
                     </#if>
 
                     <div class="col-md-6">
-                        <@input tabindex=1 name="user.firstname" />
+                        <@input tabindex=1 name="user.firstname" value=user.firstname! />
                     </div>
 
                     <div class="col-md-6">
-                        <@input tabindex=2 name="user.lastname" />
+                        <@input tabindex=2 name="user.lastname" value=user.lastname! />
                     </div>
 
                     <#if !id?has_content>
                         <div class="col-md-6">
-                            <@input tabindex=3 name="user.email" disabled=id?has_content/>
+                            <@input tabindex=3 name="user.email" value=user.email! disabled=id?has_content/>
                         </div>
                     </#if>
 

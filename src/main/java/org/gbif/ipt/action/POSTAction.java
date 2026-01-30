@@ -82,7 +82,8 @@ public class POSTAction extends BaseAction {
     return SUCCESS;
   }
 
-  public void setDelete(String delete) {
+  @StrutsParameter
+  public void setDeleteFlag(String delete) {
     this.delete = StringUtils.trimToNull(delete) != null;
     if (this.delete) {
       validate = false;

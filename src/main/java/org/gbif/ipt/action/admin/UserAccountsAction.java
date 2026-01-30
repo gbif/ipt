@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.action.admin;
 
-import lombok.Getter;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
@@ -39,8 +38,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+
+import lombok.Getter;
 
 /**
  * The Action responsible for all user input relating to the user accounts in the IPT.
@@ -89,7 +91,6 @@ public class UserAccountsAction extends POSTAction {
   private final UserValidator validator = new UserValidator();
 
   // Getters / Setters follow
-  @Getter
   private User user;
   @Getter
   private String password2;
@@ -229,7 +230,7 @@ public class UserAccountsAction extends POSTAction {
       notFound = true;
     }
 
-    // if no id is submitted we want to create a new account
+    // if no id is submitted, we want to create a new account
     if (user == null) {
       // reset id
       id = null;
@@ -311,18 +312,22 @@ public class UserAccountsAction extends POSTAction {
     }
   }
 
+  @StrutsParameter
   public void setPassword2(String password2) {
     this.password2 = password2;
   }
 
+  @StrutsParameter
   public void setResetPassword(String pass) {
     this.resetPassword = StringUtils.trimToNull(pass) != null;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  @StrutsParameter(depth = 1)
+  public User getUser() {
+    return user;
   }
 
+  @StrutsParameter
   public void setUsers(List<User> users) {
     this.users = users;
   }
@@ -338,6 +343,5 @@ public class UserAccountsAction extends POSTAction {
       password2 = null;
       user.setPassword(null);
     }
-
   }
 }
