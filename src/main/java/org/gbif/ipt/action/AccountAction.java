@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -159,22 +160,27 @@ public class AccountAction extends POSTAction {
     return INPUT;
   }
 
+  @StrutsParameter
   public void setEmail(String email) {
     this.email = email;
   }
 
+  @StrutsParameter
   public void setUser(User user) {
     this.user = user;
   }
 
+  @StrutsParameter
   public void setPassword2(String password2) {
     this.password2 = password2;
   }
 
+  @StrutsParameter
   public void setNewPassword(String newPassword) {
     this.newPassword = newPassword;
   }
 
+  @StrutsParameter
   public void setCurrentPassword(String currentPassword) {
     this.currentPassword = currentPassword;
   }
