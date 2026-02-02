@@ -29,6 +29,8 @@
 
   <constant name="struts.objectFactory" value="spring"/>
 
+  <constant name="struts.multipart.parser" value="jakarta"/>
+
   <!--
      default settings all other packages inherit from
      security interceptors, default action class & result type, global results are defined here
