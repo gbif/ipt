@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.action.manage;
 
-import lombok.Getter;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -52,6 +51,9 @@ import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+
+import lombok.Getter;
 
 public class CreateResourceAction extends POSTAction {
 
@@ -158,18 +160,22 @@ public class CreateResourceAction extends POSTAction {
     }
   }
 
+  @StrutsParameter
   public void setFile(File file) {
     this.file = file;
   }
 
+  @StrutsParameter
   public void setFileContentType(String fileContentType) {
     this.fileContentType = fileContentType;
   }
 
+  @StrutsParameter
   public void setFileFileName(String fileFileName) {
     this.fileFileName = fileFileName;
   }
 
+  @StrutsParameter
   public void setShortname(String shortname) {
     this.shortname = shortname;
   }
@@ -220,6 +226,7 @@ public class CreateResourceAction extends POSTAction {
     return resourceType;
   }
 
+  @StrutsParameter
   public void setResourceType(String resourceType) {
     this.resourceType = resourceType;
   }
