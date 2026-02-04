@@ -285,16 +285,16 @@
 
                             <#-- inputs used by multiple source types -->
                             <#macro multivalue>
-                                <@input name="source.multiValueFieldsDelimitedBy" help="i18n" helpOptions={"|":"[ | ] Pipe",";":"[ ; ] Semicolon",",":"[ , ] Comma"}/>
+                                <@input name="source.multiValueFieldsDelimitedBy" help="i18n" value=(source.multiValueFieldsDelimitedBy)! helpOptions={"|":"[ | ] Pipe",";":"[ ; ] Semicolon",",":"[ , ] Comma"}/>
                             </#macro>
                             <#macro dateFormat>
-                                <@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
+                                <@input name="source.dateFormat" help="i18n" value=(source.dateFormat)! helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
                             </#macro>
                             <#macro encoding>
-                                <@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
+                                <@input name="source.encoding" help="i18n" value=(source.encoding)! helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
                             </#macro>
                             <#macro headerLines>
-                                <@input name="source.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
+                                <@input name="source.ignoreHeaderLines" value=(source.ignoreHeaderLines)! help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
                             </#macro>
 
                             <#-- only for sql sources -->

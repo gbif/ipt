@@ -49,6 +49,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.struts2.ServletActionContext;
 
 import lombok.Getter;
@@ -64,7 +65,6 @@ public class SourceAction extends ManagerBaseAction {
   private JdbcSupport jdbcSupport;
   private DataDir dataDir;
   // config
-  @Getter
   private Source source;
   @Getter
   private String rdbms;
@@ -559,6 +559,11 @@ public class SourceAction extends ManagerBaseAction {
           originalNumberColumns);
       }
     }
+  }
+
+  @StrutsParameter(depth = 1)
+  public Source getSource() {
+    return source;
   }
 
   enum UiSourceType {

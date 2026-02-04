@@ -147,9 +147,9 @@
 
     <action name="source" class="org.gbif.ipt.action.manage.SourceAction">
       <result name="input">/WEB-INF/pages/manage/source.ftl</result>
-      <result name="analyze" type="redirect">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${source.name}</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="analyze" type="redirect">${baseURL}/manage/source.do?r=%{#parameters.r}&amp;id=%{#parameters.id}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
