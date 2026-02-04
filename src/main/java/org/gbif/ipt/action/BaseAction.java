@@ -201,15 +201,19 @@ public class BaseAction extends ActionSupport
    * Returns baseURL in case of errors reconstructing the correct URL.
    */
   public String getRequestURL() {
-    try {
-      return UriBuilder.fromUri(getBaseURL())
-          .path(StringUtils.trimToEmpty(req.getServletPath()))
-          .path(StringUtils.trimToEmpty(req.getPathInfo()))
-          .replaceQuery(req.getQueryString())
-          .replaceQueryParam("request_locale")
-          .build().toString();
-    } catch (RuntimeException e) {
-      LOG.warn("Failed to reconstruct requestURL from {}. Error: {}", req.getRequestURL(), e.getMessage());
+    if (req == null) {
+      LOG.error("Request is null, returning base URL");
+    } else {
+      try {
+        return UriBuilder.fromUri(getBaseURL())
+            .path(StringUtils.trimToEmpty(req.getServletPath()))
+            .path(StringUtils.trimToEmpty(req.getPathInfo()))
+            .replaceQuery(req.getQueryString())
+            .replaceQueryParam("request_locale")
+            .build().toString();
+      } catch (RuntimeException e) {
+        LOG.warn("Failed to reconstruct requestURL from {}. Error: {}", req.getRequestURL(), e.getMessage());
+      }
     }
     return getBaseURL();
   }
@@ -447,5 +451,18 @@ public class BaseAction extends ActionSupport
     if (session.isEmpty()) {
       session.put("-", true);
     }
+  }
+
+  // Compatibility: some interceptors/integrations still call setXxx* methods
+  public void setServletRequest(HttpServletRequest request) {
+    withServletRequest(request);
+  }
+
+  public void setServletResponse(HttpServletResponse response) {
+    withServletResponse(response);
+  }
+
+  public void setSession(Map<String, Object> session) {
+    withSession(session);
   }
 }
