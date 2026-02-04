@@ -68,6 +68,8 @@ import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
+import org.gbif.ipt.model.converter.SafeTreeMapConverter;
+import org.gbif.ipt.model.converter.SafeTreeSetConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
@@ -1268,6 +1270,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // make files transient to allow moving the datadir
     xstream.omitField(TextFileSource.class, "file");
 
+    // Read legacy TreeMap/TreeSet without triggering XStream's TreeMapConverter (Struts 7/Java 17 issues).
+    xstream.registerConverter(new SafeTreeMapConverter(), 10000);
+    xstream.registerConverter(new SafeTreeSetConverter(), 10000);
     // persist only emails for users
     xstream.registerConverter(resourceConvertersManager.getUserConverter());
     // custom converter for ExtensionMapping
