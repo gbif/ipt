@@ -15,6 +15,10 @@ package org.gbif.ipt.model.converter;
 
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.PropertyMapping;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -25,7 +29,6 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
-// TODO: make sure it works after refactoring
 public class ExtensionMappingConverter implements Converter {
 
   private final ReflectionConverter reflectionConverter;
@@ -47,17 +50,28 @@ public class ExtensionMappingConverter implements Converter {
       reader.moveDown();
       String nodeName = reader.getNodeName();
 
-      if ("extension".equals(nodeName)) {
-        Extension extension = (Extension) context.convertAnother(mapping, Extension.class);
-        mapping.setExtension(extension);
-        mapping.setExtensionVerbatim(reader.getValue());
-      } else {
-        // Let XStream handle all other fields safely
-        reflectionConverter.doUnmarshal(
-            mapping,
-            reader,
-            context
-        );
+      switch (nodeName) {
+        case "extension":
+          Extension extension = (Extension) context.convertAnother(mapping, Extension.class);
+          mapping.setExtension(extension);
+          mapping.setExtensionVerbatim(reader.getValue());
+          break;
+
+        case "fields":
+          Set<PropertyMapping> fields = new TreeSet<>();
+          while (reader.hasMoreChildren()) {
+            reader.moveDown();
+            PropertyMapping pm = (PropertyMapping) context.convertAnother(
+                mapping, PropertyMapping.class);
+            fields.add(pm);
+            reader.moveUp();
+          }
+          mapping.setFields(fields);
+          break;
+
+        default:
+          // explicitly ignore unknown nodes or log
+          break;
       }
 
       reader.moveUp();
@@ -68,6 +82,7 @@ public class ExtensionMappingConverter implements Converter {
 
   @Override
   public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
+    // Delegate entirely to default reflection-based serialization
     reflectionConverter.marshal(source, writer, context);
   }
 }

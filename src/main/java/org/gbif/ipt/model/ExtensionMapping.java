@@ -16,6 +16,7 @@ package org.gbif.ipt.model;
 import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.config.Constants;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +26,7 @@ import java.util.TreeSet;
 
 public class ExtensionMapping implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 23789961641L;
 
   public static final Integer IDGEN_LINE_NUMBER = -1;
@@ -54,7 +56,7 @@ public class ExtensionMapping implements Serializable {
       for (int count = 0; count < columnsCount; count++) {
         String value = null;
         for (String[] row : peek) {
-          if (row[count] != null && !(row[count].length() == 0)) {
+          if (row[count] != null && !(row[count].isEmpty())) {
             // add column number and first value as example
             // e.g. Column #2 - Puma conco...
             value = row[count].length() > 10 ? row[count].substring(0, 10) + "..." : row[count];
