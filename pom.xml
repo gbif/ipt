@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>3.2.2-SNAPSHOT</version>
+  <version>3.2.2</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
@@ -137,7 +137,7 @@
     <connection>scm:git:git@github.com:gbif/${project.artifactId}.git</connection>
     <url>https://github.com/gbif/${project.artifactId}</url>
     <developerConnection>scm:git:git@github.com:gbif/${project.artifactId}.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>ipt-3.2.2</tag>
   </scm>
 
   <issueManagement>
