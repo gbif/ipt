@@ -13,15 +13,17 @@
  */
 package org.gbif.ipt.model.converter;
 
+import org.gbif.ipt.model.PropertyMapping;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Reads legacy TreeSet XML without triggering XStream's TreeMapConverter.
@@ -38,9 +40,10 @@ public class SafeTreeSetConverter implements Converter {
   public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
     @SuppressWarnings("unchecked")
     Set<Object> set = (Set<Object>) source;
-    for (Object item : set) {
-      writer.startNode("item");
-      context.convertAnother(item);
+    for (Object entry : set) {
+      String nodeName = (entry instanceof PropertyMapping) ? "field" : "item";
+      writer.startNode(nodeName);
+      context.convertAnother(entry);
       writer.endNode();
     }
   }
