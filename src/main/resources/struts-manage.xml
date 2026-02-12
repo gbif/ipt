@@ -217,10 +217,10 @@
     <action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
       <result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/mappingSource.ftl</result>
-      <result name="save" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="save" type="redirect">${baseURL}/manage/mapping.do?r=%{#parameters.r}&amp;id=%{#parameters.id}&amp;mid=%{#parameters.mid}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="dataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction">
