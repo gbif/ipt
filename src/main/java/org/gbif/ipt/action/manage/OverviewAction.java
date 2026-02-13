@@ -107,10 +107,8 @@ import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-
-import jakarta.validation.constraints.NotNull;
-
 import javax.xml.parsers.ParserConfigurationException;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -119,6 +117,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
+
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -1659,6 +1659,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * @param publish form variable
    */
+  @StrutsParameter
   public void setPublish(String publish) {
     this.publish = StringUtils.trimToNull(publish) != null;
   }
