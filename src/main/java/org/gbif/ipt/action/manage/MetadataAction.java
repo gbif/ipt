@@ -166,7 +166,7 @@ public class MetadataAction extends ManagerBaseAction {
     return section.getName();
   }
 
-  @StrutsParameter(depth = 7)
+  @StrutsParameter(depth = 8)
   public Eml getEml() {
     return resource.getEml();
   }
