@@ -125,24 +125,20 @@
 
     <!-- EML metadata actions dynamically invoked. This is the *only* action needed for all forms -->
     <action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
-      <!-- Setting parameters like this doesn't seem to work as expected :((( -->
-      <!-- workaround is parsing the request string in the action manually, see MetadataAction.prepare() -->
-      <!--   <param name="section">{1}</param>   -->
-
       <!-- use the template matching the dynamic method invocation, e.g. metadata-parties.do will use parties.ftl-->
       <result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
-      <!-- on sucess redirect to the next metadata form page -->
-      <result name="success" type="redirect">${baseURL}/manage/metadata-${next}.do?r=${resource.shortname}</result>
+      <!-- on success redirect to the next metadata form page -->
+      <result name="success" type="redirect">${baseURL}/manage/metadata-${next}.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="camtrap-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
       <result name="input">/WEB-INF/pages/manage/dp-metadata/camtrap/{1}.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/camtrap-metadata-${next}.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/camtrap-metadata-${next}.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="datapackage-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
       <result name="input">/WEB-INF/pages/manage/dp-metadata/frictionless/{1}.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="source" class="org.gbif.ipt.action.manage.SourceAction">
