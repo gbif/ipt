@@ -197,9 +197,9 @@
                                 <@text name="eml.citation.citation" help="i18n" />
                                 <#attempt>
                                 <#if resource.doi?? && doiReservedOrAssigned>
-                                    <@input name="eml.citation.identifier" help="i18n" disabled=true value="${resource.doi.getUrl()!}"/>
+                                    <@input name="eml.citation.identifier" value=(resource.doi.getUrl())! help="i18n" disabled=true/>
                                 <#else>
-                                    <@input name="eml.citation.identifier" help="i18n"/>
+                                    <@input name="eml.citation.identifier" value=(resource.citation.identifier)! help="i18n"/>
                                 </#if>
                                 <#recover>
                                 </#attempt>
@@ -228,8 +228,8 @@
                                                     <span>${removeLink?lower_case?cap_first}</span>
                                                 </a>
                                             </div>
-                                            <@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].citation" help="i18n" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation" size=40 requiredField=true />
-                                            <@input name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].identifier" help="i18n" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
+                                            <@text name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].citation" value=item.citation help="i18n" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation" size=40 requiredField=true />
+                                            <@input name="eml.bibliographicCitationSet.bibliographicCitations[${item_index}].identifier" value=item.identifier help="i18n" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
                                         </div>
                                     </#list>
                                 </div>

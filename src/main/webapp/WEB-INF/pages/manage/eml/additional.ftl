@@ -180,19 +180,11 @@
                             <!-- Resource Logo -->
                             <div id="logofields" class="row g-3 pb-1 mt-1">
                                 <div class="col-lg-6">
-                                    <#if eml.dateStamp??>
-                                        <@input name="dateStamp" value='${eml.dateStamp?date?string("yyyy-MM-dd")}' i18nkey="eml.dateStamp" help="i18n" disabled=true />
-                                    <#else>
-                                        <@input name="dateStamp" value="" i18nkey="eml.dateStamp" help="i18n" disabled=true />
-                                    </#if>
+                                    <@input name="dateStamp" value=(eml.dateStamp??)?then(eml.dateStamp?date?string("yyyy-MM-dd"), "") i18nkey="eml.dateStamp" help="i18n" disabled=true />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <#if eml.pubDate??>
-                                        <@input name="eml.pubDate" value='${eml.pubDate?date?string("yyyy-MM-dd")}' i18nkey="eml.pubDate" help="i18n" disabled=true />
-                                    <#else>
-                                        <@input name="eml.pubDate" value="" i18nkey="eml.pubDate" help="i18n" disabled=true />
-                                    </#if>
+                                    <@input name="eml.pubDate" value=(eml.pubDate??)?then(eml.pubDate?date?string("yyyy-MM-dd"), "") i18nkey="eml.pubDate" help="i18n" disabled=true />
                                 </div>
 
                                 <div class="col-lg-6">
@@ -247,7 +239,7 @@
                                                     <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span>
                                                 </a>
                                             </div>
-                                            <@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
+                                            <@input name="eml.alternateIdentifiers[${item_index}]" value=item i18nkey="eml.alternateIdentifier" help="i18n"/>
                                         </div>
                                     </#list>
                                 </div>
