@@ -68,6 +68,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
 import org.apache.struts2.ActionContext;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -165,6 +166,7 @@ public class MetadataAction extends ManagerBaseAction {
     return section.getName();
   }
 
+  @StrutsParameter(depth = 7)
   public Eml getEml() {
     return resource.getEml();
   }

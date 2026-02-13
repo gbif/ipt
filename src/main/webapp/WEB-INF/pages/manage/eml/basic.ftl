@@ -377,13 +377,13 @@
 
                         <div class="row g-3">
                             <div class="col-12">
-                                <@input name="eml.title" help="i18n" requiredField=true />
+                                <@input name="eml.title" value=eml.title! help="i18n" requiredField=true />
                             </div>
                         </div>
 
                         <div class="row g-3 mt-0">
                             <div class="col-lg-6">
-                                <@input name="eml.shortName" help="i18n" />
+                                <@input name="eml.shortName" value=eml.shortName! help="i18n" />
                             </div>
                         </div>
                     </div>
@@ -476,7 +476,7 @@
                         <div class="row g-3 mt-0">
                             <div class="col-12">
                                 <!-- Maintenance Update Frequency -->
-                                <@text name="eml.updateFrequencyDescription" i18nkey="eml.updateFrequencyDescription" help="i18n" />
+                                <@text name="eml.updateFrequencyDescription" value=eml.updateFrequencyDescription! i18nkey="eml.updateFrequencyDescription" help="i18n" />
                             </div>
                         </div>
                     </div>
