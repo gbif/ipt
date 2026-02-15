@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-02-11 09:30+0000\n"
-"PO-Revision-Date: 2026-02-11 11:04\n"
+"PO-Revision-Date: 2026-02-15 03:51\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<3-2-2-february-2026,3.2.2>>."
-msgstr ""
+msgstr "La versión estable actual es la <<3-2-2-febrero-2026,3.2.2>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
@@ -42,17 +42,17 @@ msgstr "Está leyendo la última versión del manual.  Puede leer versiones ante
 #: en/modules/ROOT/pages/releases.adoc:14
 #, no-wrap
 msgid "*3.2.2* – February 2026"
-msgstr ""
+msgstr "*3.2.2* – Febrero 2026"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:17
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.2.2/ipt-3.2.2.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.2.2/ipt-3.2.2.war[Descargar WAR], xref:installation.adoc#installation-from-linux-packages[Paquetes de Linux] o xref:installation.adoc#installation-from-docker[usar Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:18
 msgid "xref:release-notes.adoc[IPT v3.2.2 Release Notes]"
-msgstr ""
+msgstr "xref:release-notes.adoc[Notas de la versión IPT v3.2.2]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
@@ -72,7 +72,7 @@ msgstr "xref:index.adoc[Manual del Usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "Addressed https://github.com/gbif/ipt/milestone/71?closed=1[7 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/71?closed=1[7 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
