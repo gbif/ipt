@@ -111,12 +111,9 @@
         </div>
     </#macro>
 
-    <#macro checkbox name i18nkey="" errorfield="" disabled=false value="-99999" help="" requiredField=false>
+    <#macro checkbox name i18nkey="" errorfield="" disabled=false value=false help="" requiredField=false>
         <div class="form-check">
-            <@s.checkbox name="${name}" id="${name}" cssClass="form-check-input" fieldValue="true" disabled=disabled />
-            <#-- Struts sends only true value (when checkbox is checked).Send false additionaly because it only sends true. -->
-            <#-- Send false additionaly. It is picked when the first value is absent otherwise ignored. -->
-            <input type="hidden" name="${name}" value="false">
+            <@s.checkbox name="${name}" id="${name}" cssClass="form-check-input" fieldValue="true" value="${value?c}" disabled=disabled />
             <div class="d-flex">
                 <#include "/WEB-INF/pages/macros/form_checkbox_label.ftl">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
