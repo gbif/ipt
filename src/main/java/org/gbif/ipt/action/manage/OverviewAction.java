@@ -116,6 +116,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.xml.sax.SAXException;
 
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -132,7 +135,7 @@ import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT;
 import static org.gbif.ipt.task.GenerateDwca.CHARACTER_ENCODING;
 
-public class OverviewAction extends ManagerBaseAction implements ReportHandler {
+public class OverviewAction extends ManagerBaseAction implements ReportHandler, UploadedFilesAware {
 
   @Serial
   private static final long serialVersionUID = -8224519285804551170L;
@@ -183,9 +186,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private StatusReport report;
   @Getter
   private Date now;
-  @Setter
-  @Getter
-  private File emlFile;
+  private List<UploadedFile> uploadedFiles = new ArrayList<>();
   @Setter
   private File datapackageMetadataFile;
   @Getter
@@ -1666,7 +1667,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public String replaceEml() {
     try {
-      resourceManager.replaceEml(resource, emlFile, validateEml);
+      UploadedFile upload = requireSingleUpload("EML");
+      File uploadedTempFile = (File) upload.getContent();
+
+      resourceManager.replaceEml(resource, uploadedTempFile, validateEml);
       addActionMessage(getText("manage.overview.success.replace.eml"));
       return SUCCESS;
     } catch (ImportException e) {
@@ -1677,7 +1681,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error("Failed to create EML validator", e);
       addActionError(getText("manage.overview.failed.replace.eml.validator"));
       return ERROR;
-    } catch (IOException e) {
+    } catch (IllegalArgumentException | IOException e) {
       LOG.error("Failed to read EML from file", e);
       addActionError(getText("manage.overview.failed.replace.eml.read"));
       return ERROR;
@@ -1900,5 +1904,30 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       potentialNetworks = networksCopy;
     }
     return potentialNetworks;
+  }
+
+  @StrutsParameter
+  public void setValidateEml(boolean validateEml) {
+    this.validateEml = validateEml;
+  }
+
+  private UploadedFile requireSingleUpload(String label) {
+    if (uploadedFiles == null || uploadedFiles.isEmpty()) {
+      throw new IllegalArgumentException(getText("manage.overview.failed.replace.eml.read"));
+    }
+    if (uploadedFiles.size() != 1) {
+      throw new IllegalArgumentException(label + " upload: expected exactly 1 file, got " + uploadedFiles.size());
+    }
+
+    UploadedFile upload = uploadedFiles.get(0);
+    if (upload == null || upload.getContent() == null) {
+      throw new IllegalArgumentException(label + " upload: file was empty");
+    }
+    return upload;
+  }
+
+  @Override
+  public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+    this.uploadedFiles = uploadedFiles;
   }
 }
