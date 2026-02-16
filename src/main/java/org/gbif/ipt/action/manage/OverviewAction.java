@@ -121,8 +121,6 @@ import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.xml.sax.SAXException;
 
-import org.apache.struts2.interceptor.parameter.StrutsParameter;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -196,7 +194,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private boolean deleteDoi = false;
   private boolean undelete = false;
   private boolean publish = false;
-  @Setter
   @Getter
   private boolean validateEml = false;
   @Getter
@@ -1621,44 +1618,38 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
   /**
    * To hold the state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param unpublish form variable
    */
+  @StrutsParameter
   public void setUnpublish(String unpublish) {
     this.unpublish = StringUtils.trimToNull(unpublish) != null;
   }
 
   /**
    * To hold the identifier state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param reserveDoi form variable
    */
+  @StrutsParameter
   public void setReserveDoi(String reserveDoi) {
     this.reserveDoi = StringUtils.trimToNull(reserveDoi) != null;
   }
 
   /**
    * To hold the identifier state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param deleteDoi form variable
    */
+  @StrutsParameter
   public void setDeleteDoi(String deleteDoi) {
     this.deleteDoi = StringUtils.trimToNull(deleteDoi) != null;
   }
 
   /**
    * To hold the state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param undelete form variable
    */
+  @StrutsParameter
   public void setUndelete(String undelete) {
     this.undelete = StringUtils.trimToNull(undelete) != null;
   }
 
   /**
    * To hold the publish request, so the same request triggered purely by a URL will not work.
-   *
-   * @param publish form variable
    */
   @StrutsParameter
   public void setPublish(String publish) {
