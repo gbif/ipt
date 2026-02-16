@@ -511,7 +511,7 @@
                         <#if resource.dataPackage==false>
                         <div class="row g-2 mt-0">
                             <div class="col-md-6">
-                                <@checkbox name="resource.inferGeocoverageAutomatically" i18nkey="eml.inferAutomatically"/>
+                                <@checkbox name="resource.inferGeocoverageAutomatically" value=resource.inferGeocoverageAutomatically i18nkey="eml.inferAutomatically"/>
                             </div>
 
                             <div id="preview-links" class="col-md-6">

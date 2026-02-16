@@ -445,7 +445,7 @@
                             <#if resource.dataPackage==false>
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@checkbox name="resource.inferTemporalCoverageAutomatically" i18nkey="eml.inferAutomatically"/>
+                                    <@checkbox name="resource.inferTemporalCoverageAutomatically" value=resource.inferTemporalCoverageAutomatically i18nkey="eml.inferAutomatically"/>
                                 </div>
 
                                 <div id="preview-links" class="col-md-6">
@@ -503,10 +503,10 @@
                                             <div id="date-${temporalCoverage_index}" class="typeForm col-12">
                                                 <div class="row g-3">
                                                     <div class="col-lg-6">
-                                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.startDate" value="${temporalCoverage.startDate!?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                                     </div>
                                                     <div class="col-lg-6">
-                                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" value="${eml.temporalCoverages[temporalCoverage_index].endDate?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n"/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.endDate" value="${temporalCoverage.endDate!?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -515,7 +515,7 @@
                                             <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                                 <div>
                                                     <#if eml.temporalCoverages[temporalCoverage_index].startDate?has_content>
-                                                        <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${eml.temporalCoverages[temporalCoverage_index].startDate!?date!?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
+                                                        <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${temporalCoverage.startDate!?date!?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                                     <#else>
                                                         <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
                                                     </#if>
@@ -526,14 +526,14 @@
                                         <#elseif "${temporalCoverage.type}" == "FORMATION_PERIOD" >
                                             <div id="formation-${temporalCoverage_index}" class="typeForm col-lg-6" >
                                                 <div>
-                                                    <@input i18nkey="eml.temporalCoverages.formationPeriod" name="eml.temporalCoverages[${temporalCoverage_index}].formationPeriod" help="i18n" />
+                                                    <@input i18nkey="eml.temporalCoverages.formationPeriod" name="eml.temporalCoverages[${temporalCoverage_index}].formationPeriod" value=temporalCoverage.formationPeriod! help="i18n" />
                                                 </div>
                                             </div>
 
                                         <#else> <!-- LIVING_TIME_PERIOD -->
                                             <div id="living-${temporalCoverage_index}" class="typeForm col-lg-6"  >
                                                 <div>
-                                                    <@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="eml.temporalCoverages[${temporalCoverage_index}].livingTimePeriod" help="i18n" />
+                                                    <@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="eml.temporalCoverages[${temporalCoverage_index}].livingTimePeriod" value=temporalCoverage.livingTimePeriod! help="i18n" />
                                                 </div>
                                             </div>
                                         </#if>

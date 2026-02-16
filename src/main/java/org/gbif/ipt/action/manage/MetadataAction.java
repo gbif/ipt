@@ -271,11 +271,6 @@ public class MetadataAction extends ManagerBaseAction {
     return next.getName();
   }
 
-  @Override
-  public Resource getResource() {
-    return resource;
-  }
-
   public String getSection() {
     return section.getName();
   }
