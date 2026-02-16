@@ -26,6 +26,7 @@ import java.io.Serial;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Setter;
 
@@ -76,6 +77,7 @@ public class ManagerBaseAction extends POSTAction {
     }
   }
 
+  @StrutsParameter(depth = 8)
   public Resource getResource() {
     return resource;
   }
