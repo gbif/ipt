@@ -43,6 +43,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -151,16 +152,11 @@ public class OrganisationsAction extends POSTAction {
     return INPUT;
   }
 
-  /**
-   * @return the linkedOrganisations
-   */
   public List<Organisation> getLinkedOrganisations() {
     return linkedOrganisations;
   }
 
-  /**
-   * @return the organisation
-   */
+  @StrutsParameter(depth = 2)
   public Organisation getOrganisation() {
     return organisation;
   }
@@ -180,9 +176,6 @@ public class OrganisationsAction extends POSTAction {
     return cfg.getRegistryUrl() + "/registry/";
   }
 
-  /**
-   * @return the resourceManager
-   */
   public ResourceManager getResourceManager() {
     return resourceManager;
   }

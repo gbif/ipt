@@ -174,33 +174,33 @@
                     <#if id?has_content>
                         <p>${organisation.description!}</p>
 
-                        <@s.hidden id="organisation.name" name="organisation.name" required="true" />
-                        <@s.hidden name="organisation.key" id="organisation.key" required="true" />
+                        <@s.hidden name="organisation.name" id="organisation.name" value=organisation.name! required="true" />
+                        <@s.hidden name="organisation.key" id="organisation.key"  value=organisation.key! required="true" />
                         <@s.hidden name="id" id="id" required="true" />
-                        <!-- preserve other fields not edited -->
-                        <@s.hidden name="organisation.nodeName" id="organisation.nodeName" />
-                        <@s.hidden name="organisation.nodeKey" id="organisation.nodeKey" />
-                        <@s.hidden name="organisation.primaryContactPhone" id="organisation.primaryContactPhone" />
-                        <@s.hidden name="organisation.primaryContactEmail" id="organisation.primaryContactEmail" />
-                        <@s.hidden name="organisation.primaryContactAddress" id="organisation.primaryContactAddress" />
-                        <@s.hidden name="organisation.primaryContactDescription" id="organisation.primaryContactDescription" />
-                        <@s.hidden name="organisation.primaryContactName" id="organisation.primaryContactName" />
-                        <@s.hidden name="organisation.primaryContactType" id="organisation.primaryContactType" />
-                        <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" />
-                        <@s.hidden name="organisation.description" id="organisation.description" />
+                        <!-- preserve other fields -->
+                        <@s.hidden name="organisation.nodeName" id="organisation.nodeName" value=organisation.nodeName! />
+                        <@s.hidden name="organisation.nodeKey" id="organisation.nodeKey" value=organisation.nodeKey!  />
+                        <@s.hidden name="organisation.primaryContactPhone" id="organisation.primaryContactPhone" value=organisation.primaryContactPhone!  />
+                        <@s.hidden name="organisation.primaryContactEmail" id="organisation.primaryContactEmail" value=organisation.primaryContactEmail!  />
+                        <@s.hidden name="organisation.primaryContactAddress" id="organisation.primaryContactAddress" value=organisation.primaryContactAddress!  />
+                        <@s.hidden name="organisation.primaryContactDescription" id="organisation.primaryContactDescription" value=organisation.primaryContactDescription!  />
+                        <@s.hidden name="organisation.primaryContactName" id="organisation.primaryContactName" value=organisation.primaryContactName!  />
+                        <@s.hidden name="organisation.primaryContactType" id="organisation.primaryContactType" value=organisation.primaryContactType!  />
+                        <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" value=organisation.homepageURL!  />
+                        <@s.hidden name="organisation.description" id="organisation.description" value=organisation.description!  />
                     <#else>
-                        <@s.hidden id="organisation.name" name="organisation.name" required="true" />
-                        <!-- preserve other fields not edited -->
-                        <@s.hidden name="organisation.nodeName" id="organisation.nodeName" />
-                        <@s.hidden name="organisation.nodeKey" id="organisation.nodeKey" />
-                        <@s.hidden name="organisation.primaryContactPhone" id="organisation.primaryContactPhone" />
-                        <@s.hidden name="organisation.primaryContactEmail" id="organisation.primaryContactEmail" />
-                        <@s.hidden name="organisation.primaryContactAddress" id="organisation.primaryContactAddress" />
-                        <@s.hidden name="organisation.primaryContactDescription" id="organisation.primaryContactDescription" />
-                        <@s.hidden name="organisation.primaryContactName" id="organisation.primaryContactName" />
-                        <@s.hidden name="organisation.primaryContactType" id="organisation.primaryContactType" />
-                        <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" />
-                        <@s.hidden name="organisation.description" id="organisation.description" />
+                        <@s.hidden name="organisation.name" id="organisation.name" required="true" />
+                        <!-- preserve other fields -->
+                        <@s.hidden name="organisation.nodeName" id="organisation.nodeName" value=organisation.nodeName!  />
+                        <@s.hidden name="organisation.nodeKey" id="organisation.nodeKey" value=organisation.primaryContactPhone!  />
+                        <@s.hidden name="organisation.primaryContactPhone" id="organisation.primaryContactPhone" value=organisation.primaryContactPhone!  />
+                        <@s.hidden name="organisation.primaryContactEmail" id="organisation.primaryContactEmail" value=organisation.primaryContactEmail!  />
+                        <@s.hidden name="organisation.primaryContactAddress" id="organisation.primaryContactAddress" value=organisation.primaryContactAddress!  />
+                        <@s.hidden name="organisation.primaryContactDescription" id="organisation.primaryContactDescription" value=organisation.primaryContactDescription!  />
+                        <@s.hidden name="organisation.primaryContactName" id="organisation.primaryContactName" value=organisation.primaryContactName!  />
+                        <@s.hidden name="organisation.primaryContactType" id="organisation.primaryContactType" value=organisation.primaryContactType!  />
+                        <@s.hidden name="organisation.homepageURL" id="organisation.homepageURL" value=organisation.homepageURL!  />
+                        <@s.hidden name="organisation.description" id="organisation.description" value=organisation.description!  />
 
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -229,25 +229,25 @@
                     </#if>
 
                     <div class="col-lg-6">
-                        <@input name="organisation.alias" i18nkey="admin.organisation.alias" type="text"/>
+                        <@input name="organisation.alias" value=organisation.alias! i18nkey="admin.organisation.alias" type="text"/>
                     </div>
                 </div>
 
                 <div class="row g-3 mt-1">
                     <div class="col-lg-6">
-                        <@input name="organisation.password" i18nkey="admin.organisation.password" type="password" requiredField=true />
+                        <@input name="organisation.password" value=organisation.password! i18nkey="admin.organisation.password" type="password" requiredField=true />
                     </div>
                 </div>
 
                 <div class="row g-3 mt-1">
                     <div class="col-12">
-                        <@checkbox name="organisation.canHost" i18nkey="admin.organisation.canPublish" help="i18n"/>
+                        <@checkbox name="organisation.canHost" value=organisation.canHost i18nkey="admin.organisation.canPublish" help="i18n"/>
                     </div>
 
                     <#assign doiRegistrationAgencyAssociation = organisation.doiRegistrationAgency?has_content || organisation.associatedWithDoiRegistrationAgency />
 
                     <div class="col-12">
-                        <@checkbox name="organisation.associatedWithDoiRegistrationAgency" i18nkey="admin.organisation.doiRegistrationAgencyAssociation" help="i18n"/>
+                        <@checkbox name="organisation.associatedWithDoiRegistrationAgency" value=organisation.associatedWithDoiRegistrationAgency i18nkey="admin.organisation.doiRegistrationAgencyAssociation" help="i18n"/>
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if>>
@@ -255,19 +255,19 @@
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
-                        <@input name="organisation.agencyAccountUsername" i18nkey="admin.organisation.doiRegistrationAgency.username" help="i18n" type="text"/>
+                        <@input name="organisation.agencyAccountUsername" value=organisation.agencyAccountUsername! i18nkey="admin.organisation.doiRegistrationAgency.username" help="i18n" type="text"/>
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
-                        <@input name="organisation.agencyAccountPassword" i18nkey="admin.organisation.doiRegistrationAgency.password" help="i18n" type="password"/>
+                        <@input name="organisation.agencyAccountPassword" value=organisation.agencyAccountPassword! i18nkey="admin.organisation.doiRegistrationAgency.password" help="i18n" type="password"/>
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
-                        <@input name="organisation.doiPrefix" i18nkey="admin.organisation.doiRegistrationAgency.prefix" help="i18n" type="text"/>
+                        <@input name="organisation.doiPrefix" value=organisation.doiPrefix! i18nkey="admin.organisation.doiRegistrationAgency.prefix" help="i18n" type="text"/>
                     </div>
 
                     <div class="col-12 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
-                        <@checkbox name="organisation.agencyAccountPrimary" i18nkey="admin.organisation.doiAccount.activated" help="i18n"/>
+                        <@checkbox name="organisation.agencyAccountPrimary" value=organisation.agencyAccountPrimary i18nkey="admin.organisation.doiAccount.activated" help="i18n"/>
                     </div>
                 </div>
             </form>
