@@ -71,7 +71,7 @@
     <javax.inject.version>1</javax.inject.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jersey.version>1.19.4</jersey.version>
-    <jetty-maven-plugin.version>9.4.58.v20250814</jetty-maven-plugin.version>
+    <jetty-maven-plugin.version>11.0.26</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>5.14.3</junit.version>
