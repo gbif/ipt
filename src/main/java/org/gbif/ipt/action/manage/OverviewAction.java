@@ -200,11 +200,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private boolean networksAvailable = true;
   @Getter
   private boolean outdatedExtensions = false;
-  @Setter
   @Getter
   private boolean validateDatapackageMetadata = false;
   private String summary;
-  @Setter
   @Getter
   private String makePublicDateTime;
   @Getter
@@ -219,7 +217,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private List<String> columns;
   @Getter
   private List<String[]> peek;
-  @Setter
   @Getter
   private Integer mid;
   private static final int PEEK_ROWS = 100;
@@ -1654,6 +1651,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   @StrutsParameter
   public void setPublish(String publish) {
     this.publish = StringUtils.trimToNull(publish) != null;
+  }
+
+  @StrutsParameter
+  public void setValidateDatapackageMetadata(boolean validateDatapackageMetadata) {
+    this.validateDatapackageMetadata = validateDatapackageMetadata;
+  }
+
+  @StrutsParameter
+  public void setMid(Integer mid) {
+    this.mid = mid;
+  }
+
+  @StrutsParameter
+  public String getMakePublicDateTime() {
+    return makePublicDateTime;
   }
 
   public String replaceEml() {
