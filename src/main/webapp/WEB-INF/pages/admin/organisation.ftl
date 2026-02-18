@@ -158,7 +158,7 @@
                     <div class="mt-2">
                         <@s.submit name="save" form="organisationsForm" key="button.save" cssClass="button btn btn-sm btn-outline-gbif-primary top-button"/>
                         <#if id?has_content>
-                            <@s.submit name="delete" form="organisationsForm" key="button.delete" cssClass="button confirm btn btn-sm btn-outline-gbif-danger top-button"/>
+                            <@s.submit name="deleteFlag" form="organisationsForm" key="button.delete" cssClass="button confirm btn btn-sm btn-outline-gbif-danger top-button"/>
                         </#if>
                         <@s.submit name="cancel" form="organisationsForm" key="button.cancel" cssClass="button btn btn-sm btn-outline-secondary top-button"/>
                     </div>
