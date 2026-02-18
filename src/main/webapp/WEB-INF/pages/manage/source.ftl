@@ -279,7 +279,7 @@
 
                             <#if !id?has_content>
                                 <div class="col-lg-6">
-                                    <@input name="source.name" help="i18n"/>
+                                    <@input name="source.name" value=source.name! help="i18n"/>
                                 </div>
                             </#if>
 
@@ -303,19 +303,19 @@
                                     <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name!}" i18nkey="sqlSource.rdbms" />
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="sqlSource.host" help="i18n"/>
+                                    <@input name="sqlSource.host" value=sqlSource.host! help="i18n"/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="sqlSource.database" help="i18n"/>
+                                    <@input name="sqlSource.database" value=sqlSource.database! help="i18n"/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="sqlSource.username" />
+                                    <@input name="sqlSource.username" value=sqlSource.username!/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="sqlSourcePassword" i18nkey="sqlSource.password" type="password" />
+                                    <@input name="sqlSourcePassword" value=sqlSourcePassword! i18nkey="sqlSource.password" type="password" />
                                 </div>
                                 <div class="col-12">
-                                    <@text name="sqlSource.sql" help="i18n"/>
+                                    <@text name="sqlSource.sql" value=sqlSource.sql! help="i18n"/>
                                     <#if sqlSource.sql?has_content>
                                         <div class="mt-3">
                                             <a id="generatedSqlLink" href=""><@s.text name="sqlSource.sqlLimited"/></a>

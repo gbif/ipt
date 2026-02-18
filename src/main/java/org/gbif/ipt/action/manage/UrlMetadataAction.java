@@ -17,18 +17,19 @@ import org.gbif.ipt.model.UrlMetadata;
 import org.gbif.ipt.utils.FileUtils;
 
 import java.io.IOException;
+import java.io.Serial;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.ActionSupport;
 
-import lombok.Setter;
-
 public class UrlMetadataAction extends ActionSupport {
 
+  @Serial
   private static final long serialVersionUID = 4678767005519916360L;
 
   private static final Logger LOG = LogManager.getLogger(UrlMetadataAction.class);
@@ -41,7 +42,6 @@ public class UrlMetadataAction extends ActionSupport {
       "\"acceptRanges\": \"%s\"" +
       "}";
 
-  @Setter
   private String url;
 
   @Override
@@ -87,5 +87,10 @@ public class UrlMetadataAction extends ActionSupport {
       return "";
     }
     return value.replace("\"", "\\\"");
+  }
+
+  @StrutsParameter
+  public void setUrl(String url) {
+    this.url = url;
   }
 }

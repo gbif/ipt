@@ -151,18 +151,18 @@
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
       <interceptor-ref name="managerStack"/>
       <result name="success" type="redirect">
-        <param name="location">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${id}</param>
+        <param name="location">${baseURL}/manage/source.do?r=%{#parameters.r}&amp;id=%{id}</param>
       </result>
-      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
       <result name="error" type="httpheader">
         <param name="status">400</param>
       </result>
     </action>
 
     <action name="canceloverwrite" class="org.gbif.ipt.action.manage.SourceAction" method="cancelOverwrite">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="raw-source" class="org.gbif.ipt.action.portal.ResourceFileAction" method="rawsource">
@@ -175,8 +175,8 @@
     </action>
 
     <action name="delete-source" class="org.gbif.ipt.action.manage.SourceAction" method="delete">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="eml" class="org.gbif.ipt.action.manage.ResourceFileAction" method="metadata">
