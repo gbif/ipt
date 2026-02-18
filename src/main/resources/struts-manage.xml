@@ -190,13 +190,13 @@
     </action>
 
     <action name="delete-mapping" class="org.gbif.ipt.action.manage.MappingAction" method="delete">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="deleteDataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="delete">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="uploadlogo" class="org.gbif.ipt.action.manage.MetadataAction" method="uploadLogo">

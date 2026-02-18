@@ -1438,22 +1438,22 @@
                                 <#if resource.key?? && resource.status == "REGISTERED">
                                     <form action="resource-delete.do" method='post' style="display: none;">
                                         <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="deleteFlag" key="button.delete.fromIptAndGbif"/>
                                     </form>
                                     <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
                                         <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="deleteFlag" key="button.delete.fromIpt"/>
                                     </form>
-                                    <button class="btn btn-sm btn-outline-gbif-danger top-button button-show-delete-resource-modal" name="delete"><@s.text name="button.delete"/></button>
+                                    <button class="btn btn-sm btn-outline-gbif-danger top-button button-show-delete-resource-modal" name="deleteFlag"><@s.text name="button.delete"/></button>
                                 <#else>
                                     <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
                                         <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly top-button" name="delete" key="button.delete.fromIpt"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly top-button" name="deleteFlag" key="button.delete.fromIpt"/>
                                     </form>
-                                    <button class="btn btn-sm btn-outline-gbif-danger top-button proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete"/></button>
+                                    <button class="btn btn-sm btn-outline-gbif-danger top-button proxy-button-delete-from-ipt" name="deleteFlag"><@s.text name="button.delete"/></button>
                                 </#if>
                             <#else>
-                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-disabled-modal top-button" name="delete"><@s.text name="button.delete"/></button>
+                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-disabled-modal top-button" name="deleteFlag"><@s.text name="button.delete"/></button>
                             </#if>
                         </#if>
 
