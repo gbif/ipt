@@ -53,7 +53,12 @@ public class SafeTreeSetConverter implements Converter {
     Set<Object> out = new LinkedHashSet<>();
     while (reader.hasMoreChildren()) {
       reader.moveDown();
-      Object item = context.convertAnother(out, Object.class);
+      Object item;
+      if ("field".equals(reader.getNodeName())) {
+        item = context.convertAnother(out, PropertyMapping.class);
+      } else {
+        item = context.convertAnother(out, Object.class);
+      }
       out.add(item);
       reader.moveUp();
     }
