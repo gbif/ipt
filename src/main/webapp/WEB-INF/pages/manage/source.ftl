@@ -139,7 +139,7 @@
                                       </li>
                                         <#if id?has_content>
                                       <li>
-                                          <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                          <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
                                       </li>
                                         </#if>
                                     </ul>
