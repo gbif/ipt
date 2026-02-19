@@ -66,7 +66,7 @@
     <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{shortname}</result>
     </action>
 
     <action name="replace-eml" class="org.gbif.ipt.action.manage.OverviewAction" method="replaceEml">

@@ -33,12 +33,11 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.validation.ResourceValidator;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serial;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,14 +47,16 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
 
-public class CreateResourceAction extends POSTAction {
+public class CreateResourceAction extends POSTAction implements UploadedFilesAware {
 
   @Serial
   private static final long serialVersionUID = 4182807671814949776L;
@@ -65,9 +66,7 @@ public class CreateResourceAction extends POSTAction {
   private ResourceManager resourceManager;
   @Getter
   private DataDir dataDir;
-  private File file;
-  private String fileContentType;
-  private String fileFileName;
+  private List<UploadedFile> uploadedFiles = new ArrayList<>();
   @Getter
   private String shortname;
   private String resourceType;
@@ -161,21 +160,6 @@ public class CreateResourceAction extends POSTAction {
   }
 
   @StrutsParameter
-  public void setFile(File file) {
-    this.file = file;
-  }
-
-  @StrutsParameter
-  public void setFileContentType(String fileContentType) {
-    this.fileContentType = fileContentType;
-  }
-
-  @StrutsParameter
-  public void setFileFileName(String fileFileName) {
-    this.fileFileName = fileFileName;
-  }
-
-  @StrutsParameter
   public void setShortname(String shortname) {
     this.shortname = shortname;
   }
@@ -188,19 +172,26 @@ public class CreateResourceAction extends POSTAction {
    * @throws ImportException if file type was invalid
    */
   private File uploadToTmp() throws ImportException {
-    if (fileFileName == null) {
+    if (uploadedFiles == null || uploadedFiles.isEmpty()) {
       return null;
     }
+
+    UploadedFile upload = uploadedFiles.get(0);
+    if (upload == null || upload.getContent() == null) {
+      return null;
+    }
+
+    File content = (File) upload.getContent();
+    String originalName = StringUtils.trimToNull(upload.getOriginalName());
+    String safeName = (originalName != null) ? originalName : "upload.bin";
+
     // the file to upload to
-    File tmpFile = dataDir.tmpFile(shortname, fileFileName);
-    LOG.debug("Uploading dwc archive file for new resource {} to {}", shortname, tmpFile.getAbsolutePath());
-    // retrieve the file data
-    // write the file to the file specified
-    try (InputStream input = new FileInputStream(file);
-         OutputStream output = new FileOutputStream(tmpFile)) {
-      IOUtils.copy(input, output);
-      output.flush();
-      LOG.debug("Uploaded file {} with content-type {}", fileFileName, fileContentType);
+    File tmpFile = dataDir.tmpFile(shortname, safeName);
+    LOG.debug("Uploading archive file for new resource {} to {}", shortname, tmpFile.getAbsolutePath());
+
+    try {
+      Files.copy(content.toPath(), tmpFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      LOG.debug("Uploaded file {} with content-type {}", safeName, upload.getContentType());
     } catch (IOException e) {
       LOG.error(e);
       throw new ImportException("Failed to upload file to tmp file", e);
@@ -256,4 +247,8 @@ public class CreateResourceAction extends POSTAction {
     return dataPackageTypes;
   }
 
+  @Override
+  public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+    this.uploadedFiles = uploadedFiles;
+  }
 }
