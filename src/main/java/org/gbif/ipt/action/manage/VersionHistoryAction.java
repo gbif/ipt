@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
@@ -114,6 +115,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
    *
    * @param version version number requested
    */
+  @StrutsParameter
   public void setVersion(BigDecimal version) {
     this.version = version;
   }
@@ -130,6 +132,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
   /**
    * @param summary the change summary (for version) entered by the user in the form, defaulting to empty string
    */
+  @StrutsParameter
   public void setSummary(String summary) {
     this.summary = StringUtils.trimToEmpty(summary);
   }
