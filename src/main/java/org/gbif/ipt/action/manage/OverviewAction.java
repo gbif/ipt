@@ -1664,8 +1664,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   }
 
   @StrutsParameter
-  public String getMakePublicDateTime() {
-    return makePublicDateTime;
+  public void setMakePublicDateTime(String makePublicDateTime) {
+    this.makePublicDateTime = makePublicDateTime;
   }
 
   public String replaceEml() {
