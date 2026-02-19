@@ -255,7 +255,7 @@
     <action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
       <result name="input">/WEB-INF/pages/manage/translation.ftl</result>
-      <result name="none" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
+      <result name="none" type="redirect">${baseURL}/manage/mapping.do?r=%{#parameters.r}&amp;id=%{id}&amp;mid=%{mid}</result>
     </action>
 
     <action name="translationReload" class="org.gbif.ipt.action.manage.TranslationAction" method="reload">
@@ -269,7 +269,7 @@
     <action name="dataPackageFieldTranslation" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction">
       <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
       <result name="input">/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
-      <result name="none" type="redirect">${baseURL}/manage/dataPackageMapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
+      <result name="none" type="redirect">${baseURL}/manage/dataPackageMapping.do?r=%{#parameters.r}&amp;id=%{#parameters.id}&amp;mid=%{mid}</result>
     </action>
 
     <action name="dataPackageFieldTranslationReload" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" method="reload">

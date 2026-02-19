@@ -41,6 +41,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import freemarker.ext.beans.SimpleMapModel;
 import lombok.Getter;
@@ -56,8 +57,8 @@ public class TranslationAction extends ManagerBaseAction {
 
     private String rowType;
     private Term term;
-    private TreeMap<String, String> sourceValues;
-    private TreeMap<String, String> translatedValues;
+    private TreeMap<String, String> sourceValues = new TreeMap<>();
+    private TreeMap<String, String> translatedValues = new TreeMap<>();
 
     /**
      * Return a map populated with all source value to translated value pairs.
@@ -87,8 +88,8 @@ public class TranslationAction extends ManagerBaseAction {
 
     public void setTmap(String rowType, Term term, TreeMap<String, String> sourceValues,
                         TreeMap<String, String> translatedValues) {
-      this.sourceValues = sourceValues;
-      this.translatedValues = translatedValues;
+      this.sourceValues = (sourceValues != null) ? sourceValues : new TreeMap<>();
+      this.translatedValues = (translatedValues != null) ? translatedValues : new TreeMap<>();
       this.rowType = rowType;
       this.term = term;
     }
@@ -302,6 +303,7 @@ public class TranslationAction extends ManagerBaseAction {
     return trans.getSourceValues();
   }
 
+  @StrutsParameter(depth = 2)
   public Map<String, String> getTmap() {
     return trans.getTranslatedValues();
   }
@@ -320,8 +322,9 @@ public class TranslationAction extends ManagerBaseAction {
    *
    * @param translatedValues map with translated values, whose key corresponds to translation.sourceValues map
    */
+  @StrutsParameter(depth = 2)
   public void setTmap(TreeMap<String, String> translatedValues) {
-    this.trans.translatedValues = translatedValues;
+    this.trans.translatedValues = (translatedValues != null) ? translatedValues : new TreeMap<>();
   }
 
   public void setField(PropertyMapping field) {
