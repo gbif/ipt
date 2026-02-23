@@ -26,6 +26,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -128,7 +130,7 @@ public class FrictionlessContributor implements Serializable {
    */
   @JsonProperty("path")
   public void setPath(String path) {
-    this.path = path;
+    this.path = StringUtils.trimToNull(path);
   }
 
   /**
