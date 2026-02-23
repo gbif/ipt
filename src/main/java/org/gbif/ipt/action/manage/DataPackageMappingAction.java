@@ -46,6 +46,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -75,7 +76,6 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private List<String> columns;
   @Getter
   private List<String[]> peek;
-  @Getter
   @Setter
   private List<DataPackageFieldMapping> fields;
   @Getter
@@ -505,5 +505,10 @@ public class DataPackageMappingAction extends ManagerBaseAction {
     ActionInvocation invocation = ActionContext.getContext().getActionInvocation();
     String actionMethod = invocation.getProxy().getMethod();
     return "delete".equals(actionMethod);
+  }
+
+  @StrutsParameter(depth = 2)
+  public List<DataPackageFieldMapping> getFields() {
+    return fields;
   }
 }

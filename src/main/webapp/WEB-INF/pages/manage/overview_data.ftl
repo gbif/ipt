@@ -232,7 +232,7 @@
                     <div class="row g-2">
                         <#list resource.getDataPackageMappings() as m>
                             <div class="col-xl-6">
-                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item">
+                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 mapping-item schema-mapping-item">
                                     <div class="d-flex my-auto mapping-item-icon ps-2">
                                         <i class="bi bi-arrow-down-up me-1 text-gbif-primary"></i>
                                     </div>
