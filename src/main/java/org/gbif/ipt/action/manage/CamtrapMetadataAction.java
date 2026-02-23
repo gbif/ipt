@@ -82,7 +82,6 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
   private Map<String, String> organisations = new LinkedHashMap<>();
   @Getter
   private InferredMetadata inferredMetadata;
-  @Setter
   @Getter
   private String customGeoJson;
 
@@ -226,6 +225,7 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
     this.metadataInferringService = metadataInferringService;
   }
 
+  @StrutsParameter(depth = 4)
   @Override
   public Resource getResource() {
     return resource;
@@ -374,7 +374,7 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata.camtrap" + section.getName())}));
+      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata.camtrap." + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
 
@@ -531,6 +531,11 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
 
   public void setMetadata(CamtrapMetadata metadata) {
     resource.setDataPackageMetadata(metadata);
+  }
+
+  @StrutsParameter
+  public void setCustomGeoJson(String customGeoJson) {
+    this.customGeoJson = customGeoJson;
   }
 
   public Map<String, String> getLicenseScopes() {
