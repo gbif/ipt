@@ -57,6 +57,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -545,6 +546,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     return section.getName();
   }
 
+  @StrutsParameter(depth = 8)
   public DataPackageMetadata getMetadata() {
     return resource.getDataPackageMetadata();
   }
