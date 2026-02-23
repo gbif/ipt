@@ -48,7 +48,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * Data Package is a simple specification for data access and delivery.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
+public class FrictionlessMetadata<C extends FrictionlessContributor, L extends FrictionlessLicense, S extends FrictionlessSource>
+    implements DataPackageMetadata, Serializable {
 
   @Serial
   private final static long serialVersionUID = 5948080618683312611L;
@@ -130,7 +131,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("contributors")
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
-  private List<Contributor> contributors = new ArrayList<>();
+  private List<C> contributors = new ArrayList<>();
 
   /**
    * Keywords
@@ -160,7 +161,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("licenses")
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
-  private List<License> licenses = new ArrayList<>();
+  private List<L> licenses = new ArrayList<>();
 
   /**
    * Sources
@@ -170,7 +171,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("sources")
   @NotNull(message = "validation.input.notNull", groups = BasicMetadata.class)
   @Valid
-  private List<Source> sources = new ArrayList<>();
+  private List<S> sources = new ArrayList<>();
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
@@ -352,7 +353,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    */
   @JsonProperty("contributors")
   @Element(FrictionlessContributor.class)
-  public List<Contributor> getContributors() {
+  public List<C> getContributors() {
     return contributors;
   }
 
@@ -362,7 +363,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
-  public void setContributors(List<Contributor> contributors) {
+  public void setContributors(List<C> contributors) {
     this.contributors = contributors;
   }
 
@@ -417,7 +418,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("licenses")
   @JsonDeserialize(contentUsing = FrictionlessLicense.DataPackageLicenseDeserializer.class)
   @Element(FrictionlessLicense.class)
-  public List<License> getLicenses() {
+  public List<L> getLicenses() {
     return licenses;
   }
 
@@ -427,7 +428,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  public void setLicenses(List<License> licenses) {
+  public void setLicenses(List<L> licenses) {
     this.licenses = licenses;
   }
 
@@ -439,7 +440,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("sources")
   @JsonDeserialize(contentUsing = FrictionlessSource.DataPackageSourceDeserializer.class)
   @Element(FrictionlessSource.class)
-  public List<Source> getSources() {
+  public List<S> getSources() {
     return sources;
   }
 
@@ -449,7 +450,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  public void setSources(List<Source> sources) {
+  public void setSources(List<S> sources) {
     this.sources = sources;
   }
 

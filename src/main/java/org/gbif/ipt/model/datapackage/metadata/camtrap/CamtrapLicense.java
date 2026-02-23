@@ -14,7 +14,6 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
-import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.validation.BasicMetadata;
 
 import java.io.IOException;
@@ -109,9 +108,9 @@ public class CamtrapLicense extends FrictionlessLicense {
     }
   }
 
-  public static class CamtrapLicenseDeserializer extends JsonDeserializer<License> {
+  public static class CamtrapLicenseDeserializer extends JsonDeserializer<CamtrapLicense> {
     @Override
-    public License deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public CamtrapLicense deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
       return jsonParser.getCodec().treeToValue(node, CamtrapLicense.class);
     }

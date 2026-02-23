@@ -42,7 +42,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * A license for this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FrictionlessLicense implements License, Serializable {
+public class FrictionlessLicense implements Serializable {
 
   @Serial
   private final static long serialVersionUID = 5529108333342991396L;
@@ -149,9 +149,9 @@ public class FrictionlessLicense implements License, Serializable {
     this.additionalProperties.put(name, value);
   }
 
-  public static class DataPackageLicenseDeserializer extends JsonDeserializer<License> {
+  public static class DataPackageLicenseDeserializer extends JsonDeserializer<FrictionlessLicense> {
     @Override
-    public License deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public FrictionlessLicense deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
       return jsonParser.getCodec().treeToValue(node, FrictionlessLicense.class);
     }
@@ -159,7 +159,7 @@ public class FrictionlessLicense implements License, Serializable {
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", License.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", FrictionlessLicense.class.getSimpleName() + "[", "]")
         .add("name='" + name + "'")
         .add("path='" + path + "'")
         .add("title='" + title + "'")

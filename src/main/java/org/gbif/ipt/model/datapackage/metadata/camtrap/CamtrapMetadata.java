@@ -13,10 +13,7 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import org.gbif.ipt.model.datapackage.metadata.Contributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
-import org.gbif.ipt.model.datapackage.metadata.License;
-import org.gbif.ipt.model.datapackage.metadata.Source;
 import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.GeographicScopeMetadata;
 import org.gbif.ipt.validation.HasGbifCompatibleLicense;
@@ -56,7 +53,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * <a href="https://rs.gbif.org/data-packages/camtrap-dp/1.0/profile/camtrap-dp-profile.json">Camtrap DP profile</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CamtrapMetadata extends FrictionlessMetadata {
+public class CamtrapMetadata extends FrictionlessMetadata<CamtrapContributor, CamtrapLicense, CamtrapSource> {
 
   @Serial
   private final static long serialVersionUID = 7011607601336714408L;
@@ -255,7 +252,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
   @Size(min = 1, message = "validation.datapackage.metadata.contributors.size", groups = BasicMetadata.class)
-  public List<Contributor> getContributors() {
+  public List<CamtrapContributor> getContributors() {
     return super.getContributors();
   }
 
@@ -266,7 +263,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("contributors")
-  public void setContributors(List<Contributor> contributors) {
+  public void setContributors(List<CamtrapContributor> contributors) {
     super.setContributors(contributors);
   }
 
@@ -376,7 +373,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @JsonSetter(contentNulls = Nulls.SKIP)
   @Element(CamtrapSource.class)
   @Valid
-  public List<Source> getSources() {
+  public List<CamtrapSource> getSources() {
     return super.getSources();
   }
 
@@ -386,7 +383,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("sources")
-  public void setSources(List<Source> sources) {
+  public void setSources(List<CamtrapSource> sources) {
     super.setSources(sources);
   }
 
@@ -406,7 +403,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @HasOpenDefinitionCompatibleLicense(
       message = "validation.camtrap.metadata.licenses.openDefinitionCompatible.required",
       groups = BasicMetadata.class)
-  public List<License> getLicenses() {
+  public List<CamtrapLicense> getLicenses() {
     return super.getLicenses();
   }
 
@@ -416,7 +413,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("licenses")
-  public void setLicenses(List<License> licenses) {
+  public void setLicenses(List<CamtrapLicense> licenses) {
     super.setLicenses(licenses);
   }
 

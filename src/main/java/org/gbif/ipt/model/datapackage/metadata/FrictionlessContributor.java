@@ -38,7 +38,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A contributor to this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FrictionlessContributor implements Contributor, Serializable {
+public class FrictionlessContributor implements Serializable {
 
   @Serial
   private final static long serialVersionUID = -288140518286006582L;

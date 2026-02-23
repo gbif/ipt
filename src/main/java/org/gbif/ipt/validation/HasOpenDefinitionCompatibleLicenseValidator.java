@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.validation;
 
-import org.gbif.ipt.model.datapackage.metadata.License;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 
 import jakarta.validation.ConstraintValidator;
@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.Strings;
 
-public class HasOpenDefinitionCompatibleLicenseValidator implements ConstraintValidator<HasOpenDefinitionCompatibleLicense, List<License>> {
+public class HasOpenDefinitionCompatibleLicenseValidator implements ConstraintValidator<HasOpenDefinitionCompatibleLicense, List<? extends FrictionlessLicense>> {
 
   private static final String[] OPEN_DEFINITION_COMPATIBLE_LICENSES = {"AAL", "AFL-3.0", "AGPL-3.0", "APL-1.0",
       "APSL-2.0", "Against-DRM", "Apache-1.1", "Apache-2.0", "Artistic-2.0", "BSD-2-Clause", "BSD-3-Clause", "BSL-1.0",
@@ -41,14 +41,14 @@ public class HasOpenDefinitionCompatibleLicenseValidator implements ConstraintVa
       "other-open", "other-pd", "ukclickusepsi", "ukcrown", "ukcrown-withrights", "ukpsi"};
 
   @Override
-  public boolean isValid(List<License> value, ConstraintValidatorContext context) {
+  public boolean isValid(List<? extends FrictionlessLicense> value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
     }
 
     boolean isValid = true;
 
-    for (License license : value) {
+    for (FrictionlessLicense license : value) {
       CamtrapLicense camtrapLicense;
       if (license instanceof CamtrapLicense) {
         camtrapLicense = (CamtrapLicense) license;

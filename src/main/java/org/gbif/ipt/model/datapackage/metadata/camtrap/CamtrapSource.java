@@ -14,9 +14,9 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessSource;
-import org.gbif.ipt.model.datapackage.metadata.Source;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.StringJoiner;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapSource extends FrictionlessSource {
 
+  @Serial
   private final static long serialVersionUID = -86921756591701358L;
 
   /**
@@ -53,9 +54,9 @@ public class CamtrapSource extends FrictionlessSource {
     this.version = version;
   }
 
-  public static class CamtrapSourceDeserializer extends JsonDeserializer<Source> {
+  public static class CamtrapSourceDeserializer extends JsonDeserializer<CamtrapSource> {
     @Override
-    public Source deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public CamtrapSource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
       return jsonParser.getCodec().treeToValue(node, CamtrapSource.class);
     }

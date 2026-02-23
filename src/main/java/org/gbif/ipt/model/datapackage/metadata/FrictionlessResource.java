@@ -45,7 +45,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  * Data Resource.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FrictionlessResource implements Resource, Serializable {
+public class FrictionlessResource implements Serializable {
 
   @Serial
   private final static long serialVersionUID = -7790507710447205789L;
@@ -123,7 +123,7 @@ public class FrictionlessResource implements Resource, Serializable {
   @JsonProperty("sources")
   @Size(groups = InternalField.class)
   @Valid
-  private List<Source> sources = new ArrayList<>();
+  private List<? extends FrictionlessSource> sources = new ArrayList<>();
 
   /**
    * Licenses
@@ -133,7 +133,7 @@ public class FrictionlessResource implements Resource, Serializable {
   @JsonProperty("licenses")
   @Size(min = 1, groups = InternalField.class)
   @Valid
-  private List<License> licenses = new ArrayList<>();
+  private List<? extends FrictionlessLicense> licenses = new ArrayList<>();
 
   /**
    * Format
@@ -348,7 +348,7 @@ public class FrictionlessResource implements Resource, Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  public List<Source> getSources() {
+  public List<? extends FrictionlessSource> getSources() {
     return sources;
   }
 
@@ -358,7 +358,7 @@ public class FrictionlessResource implements Resource, Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  public void setSources(List<Source> sources) {
+  public void setSources(List<? extends FrictionlessSource> sources) {
     this.sources = sources;
   }
 
@@ -368,7 +368,7 @@ public class FrictionlessResource implements Resource, Serializable {
    * The license(s) under which the resource is published.
    */
   @JsonProperty("licenses")
-  public List<License> getLicenses() {
+  public List<? extends FrictionlessLicense> getLicenses() {
     return licenses;
   }
 
@@ -378,7 +378,7 @@ public class FrictionlessResource implements Resource, Serializable {
    * The license(s) under which the resource is published.
    */
   @JsonProperty("licenses")
-  public void setLicenses(List<License> licenses) {
+  public void setLicenses(List<? extends FrictionlessLicense> licenses) {
     this.licenses = licenses;
   }
 
@@ -492,9 +492,9 @@ public class FrictionlessResource implements Resource, Serializable {
     this.additionalProperties.put(name, value);
   }
 
-  public static class DataPackageResourceDeserializer extends JsonDeserializer<Resource> {
+  public static class DataPackageResourceDeserializer extends JsonDeserializer<FrictionlessResource> {
     @Override
-    public Resource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public FrictionlessResource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
       return jsonParser.getCodec().treeToValue(node, FrictionlessResource.class);
     }
