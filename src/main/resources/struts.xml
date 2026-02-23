@@ -31,6 +31,9 @@
 
   <constant name="struts.multipart.parser" value="jakarta"/>
 
+  <constant name="struts.devMode" value="true"/>
+  <constant name="struts.interceptor.params.logParameters" value="true"/>
+
   <!--
      default settings all other packages inherit from
      security interceptors, default action class & result type, global results are defined here
