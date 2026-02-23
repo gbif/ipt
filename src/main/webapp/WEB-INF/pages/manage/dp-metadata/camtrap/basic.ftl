@@ -569,19 +569,19 @@
                         <div class="my-md-3 p-3">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <@input name="metadata.title" help="i18n" i18nkey="datapackagemetadata.title" requiredField=true />
+                                    <@input name="metadata.title" value=metadata.title! help="i18n" i18nkey="datapackagemetadata.title" requiredField=true />
                                 </div>
 
                                 <div class="col-12">
-                                    <@text name="metadata.description" help="i18n" i18nkey="datapackagemetadata.description" requiredField=true />
+                                    <@text name="metadata.description" value=metadata.description! help="i18n" i18nkey="datapackagemetadata.description" requiredField=true />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.homepage" help="i18n" i18nkey="datapackagemetadata.homepage" type="url" />
+                                    <@input name="metadata.homepage" value=metadata.homepage! help="i18n" i18nkey="datapackagemetadata.homepage" type="url" />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.image" help="i18n" i18nkey="datapackagemetadata.image" type="url" />
+                                    <@input name="metadata.image" value=metadata.image! help="i18n" i18nkey="datapackagemetadata.image" type="url" />
                                 </div>
                             </div>
                         </div>
@@ -616,31 +616,27 @@
                                                 </div>
                                             <#else>
                                                 <div class="col-12 title-col-wrapper">
-                                                    <@input name="metadata.contributors[${item_index}].title" value="${item.title!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
+                                                    <@input name="metadata.contributors[${item_index}].title" value=item.title! help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
                                                 </div>
                                             </#if>
 
                                             <div class="col-lg-6 firstName-col-wrapper">
-                                                <@input name="metadata.contributors[${item_index}].firstName" i18nkey="datapackagemetadata.contributor.firstName" />
+                                                <@input name="metadata.contributors[${item_index}].firstName" value=item.firstName! i18nkey="datapackagemetadata.contributor.firstName" />
                                             </div>
                                             <div class="col-lg-6 lastName-col-wrapper">
-                                                <@input name="metadata.contributors[${item_index}].lastName" i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
+                                                <@input name="metadata.contributors[${item_index}].lastName" value=item.lastName! i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.contributor.path" />
+                                                <@input name="metadata.contributors[${item_index}].path" value=item.path! help="i18n" i18nkey="datapackagemetadata.contributor.path" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].email" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
+                                                <@input name="metadata.contributors[${item_index}].email" value=item.email! help="i18n" i18nkey="datapackagemetadata.contributor.email" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <#if (item.role)??>
-                                                    <@select name="metadata.contributors[${item_index}].role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="${item.role}" />
-                                                <#else>
-                                                    <@select name="metadata.contributors[${item_index}].role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="" />
-                                                </#if>
+                                                <@select name="metadata.contributors[${item_index}].role" value=item.role! help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value=(item.role)!"" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].organization" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
+                                                <@input name="metadata.contributors[${item_index}].organization" value=item.organization! help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
                                             </div>
                                         </div>
                                         </#if>
@@ -736,16 +732,16 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
+                                                <@input name="metadata.sources[${item_index}].title" value=item.title! help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.source.path" />
+                                                <@input name="metadata.sources[${item_index}].path" value=item.path! help="i18n" i18nkey="datapackagemetadata.source.path" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].email" help="i18n" i18nkey="datapackagemetadata.source.email" />
+                                                <@input name="metadata.sources[${item_index}].email" value=item.email! help="i18n" i18nkey="datapackagemetadata.source.email" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].version" help="i18n" i18nkey="datapackagemetadata.source.version" />
+                                                <@input name="metadata.sources[${item_index}].version" value=item.version! help="i18n" i18nkey="datapackagemetadata.source.version" />
                                             </div>
                                         </div>
                                     </#list>
