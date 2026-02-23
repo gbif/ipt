@@ -114,24 +114,24 @@
 
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <@input name="metadata.project.title" help="i18n" i18nkey="datapackagemetadata.project.title" requiredField=true />
+                                    <@input name="metadata.project.title" value=(metadata.project.title)! help="i18n" i18nkey="datapackagemetadata.project.title" requiredField=true />
                                 </div>
 
                                 <div class="col-12">
-                                    <@text name="metadata.project.description" help="i18n" i18nkey="datapackagemetadata.project.description" />
+                                    <@text name="metadata.project.description" value=(metadata.project.description)! help="i18n" i18nkey="datapackagemetadata.project.description" />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.acronym" help="i18n" i18nkey="datapackagemetadata.project.acronym" />
+                                    <@input name="metadata.project.acronym" value=(metadata.project.acronym)! help="i18n" i18nkey="datapackagemetadata.project.acronym" />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.path" help="i18n" i18nkey="datapackagemetadata.project.path" />
+                                    <@input name="metadata.project.path" value=(metadata.project.path)! help="i18n" i18nkey="datapackagemetadata.project.path" />
                                 </div>
 
                                 <div class="col-lg-6">
                                     <#if (metadata.project.samplingDesign)??>
-                                        <@select name="metadata.project.samplingDesign" help="i18n" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="${metadata.project.samplingDesign!}" requiredField=true />
+                                        <@select name="metadata.project.samplingDesign" help="i18n" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value=(metadata.project.samplingDesign)! requiredField=true />
                                     <#else>
                                         <@select name="metadata.project.samplingDesign" help="i18n" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="" requiredField=true />
                                     </#if>
@@ -172,7 +172,7 @@
                                 </div>
 
                                 <div class="col-12 fs-smaller">
-                                    <@checkbox name="metadata.project.individualAnimals" i18nkey="datapackagemetadata.project.individualAnimals" help="i18n"/>
+                                    <@checkbox name="metadata.project.individualAnimals" value=(metadata.project.individualAnimals)!false i18nkey="datapackagemetadata.project.individualAnimals" help="i18n"/>
                                 </div>
                             </div>
                         </div>

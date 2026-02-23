@@ -222,20 +222,20 @@
     <action name="dataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction">
       <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="dataPackageMappingSourceNew" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="source">
       <result name="input">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="dataPackageMappingSourceCreate" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="create">
       <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="history" class="org.gbif.ipt.action.manage.VersionHistoryAction">
