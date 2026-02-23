@@ -131,7 +131,7 @@
       <result name="success" type="redirect">${baseURL}/manage/metadata-${next}.do?r=%{#parameters.r}</result>
     </action>
 
-    <action name="camtrap-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
+    <action name="camtrap-metadata-*" class="org.gbif.ipt.action.manage.CamtrapMetadataAction">
       <result name="input">/WEB-INF/pages/manage/dp-metadata/camtrap/{1}.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/camtrap-metadata-${next}.do?r=%{#parameters.r}</result>
     </action>
