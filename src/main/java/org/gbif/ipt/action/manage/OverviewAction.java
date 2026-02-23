@@ -1697,7 +1697,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
   public String replaceDatapackageMetadata() {
     try {
-      resourceManager.replaceDatapackageMetadata(this, resource, datapackageMetadataFile, validateDatapackageMetadata);
+      UploadedFile upload = requireSingleUpload("Metadata");
+      File uploadedTempFile = (File) upload.getContent();
+
+      resourceManager.replaceDatapackageMetadata(this, resource, uploadedTempFile, validateDatapackageMetadata);
       addActionMessage(getText("manage.overview.success.replace.metadata"));
       return SUCCESS;
     } catch (ImportException e) {
@@ -1917,9 +1920,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private UploadedFile requireSingleUpload(String label) {
     if (uploadedFiles == null || uploadedFiles.isEmpty()) {
       throw new IllegalArgumentException(getText("manage.overview.failed.replace.eml.read"));
-    }
-    if (uploadedFiles.size() != 1) {
-      throw new IllegalArgumentException(label + " upload: expected exactly 1 file, got " + uploadedFiles.size());
     }
 
     UploadedFile upload = uploadedFiles.get(0);
