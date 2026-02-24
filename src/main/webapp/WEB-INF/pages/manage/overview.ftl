@@ -116,30 +116,18 @@
         });
 
         function openMappingDetails(e) {
-            const $item = $(e.currentTarget).find(".mapping-item-link");
+            const $row = $(e.currentTarget);
+            const isSchemaMapping = $row.hasClass("schema-mapping-item");
+
+            const linkSelector = isSchemaMapping ? ".schema-mapping-item-link" : ".mapping-item-link";
+            const $item = $row.find(linkSelector).first();
+
             const resource = $item.data("ipt-resource");
             const extension = $item.data("ipt-extension");
             const mapping = $item.data("ipt-mapping");
-            location.href = 'mapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
-        }
 
-        $(".schema-mapping-item").click(function (e) {
-            // Ignore clicks on actions or anything inside them
-            if ($(e.target).closest(".mapping-item-actions, .delete-mapping").length) {
-                return;
-            }
-
-            e.preventDefault();
-            displayProcessing();
-            openSchemaMappingDetails(e);
-        });
-
-        function openSchemaMappingDetails(e) {
-            const $item = $(e.currentTarget).find(".schema-mapping-item-link");
-            const resource = $item.data("ipt-resource");
-            const extension = $item.data("ipt-extension");
-            const mapping = $item.data("ipt-mapping");
-            location.href = 'dataPackageMapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
+            const target = isSchemaMapping ? "dataPackageMapping.do" : "mapping.do";
+            location.href = target + "?r=" + resource + "&id=" + extension + "&mid=" + mapping;
         }
 
         $(".network-item-link").click(function (e) {
