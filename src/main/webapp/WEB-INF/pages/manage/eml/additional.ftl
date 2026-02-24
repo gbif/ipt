@@ -23,7 +23,7 @@
                 $.ajaxFileUpload
                 (
                     {
-                        url: 'uploadlogo.do',
+                        url: 'uploadlogo.do?r=${resource.shortname}',
                         secureuri: false,
                         fileElementId: 'file',
                         dataType: 'json',
@@ -128,7 +128,10 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation track-unsaved" action="metadata-${section}.do?r=${resource.shortname}" method="post" novalidate>
+        <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
+        <input id="validate" name="validate" type="hidden" value="false" />
+
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -255,10 +258,6 @@
                                     </a>
                                 </div>
                             </div>
-
-                            <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
-                            <input id="r" name="r" type="hidden" value="${resource.shortname}" />
-                            <input id="validate" name="validate" type="hidden" value="false" />
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle mt-2 d-flex justify-content-end">

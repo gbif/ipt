@@ -176,7 +176,7 @@
 
     <action name="delete-source" class="org.gbif.ipt.action.manage.SourceAction" method="delete">
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{parameters.r}</result>
     </action>
 
     <action name="eml" class="org.gbif.ipt.action.manage.ResourceFileAction" method="metadata">
@@ -201,8 +201,8 @@
 
     <action name="uploadlogo" class="org.gbif.ipt.action.manage.MetadataAction" method="uploadLogo">
       <interceptor-ref name="managerStack"/>
-      <result name="input" type="redirect">${baseURL}/manage/metadata-additional.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="input" type="redirect">${baseURL}/manage/metadata-additional.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">

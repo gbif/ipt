@@ -68,6 +68,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
 import org.apache.struts2.ActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
@@ -75,7 +77,7 @@ import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.DATASET_TYPE_METADATA_IDENTIFIER;
 
-public class MetadataAction extends ManagerBaseAction {
+public class MetadataAction extends ManagerBaseAction implements UploadedFilesAware {
 
   @Serial
   private static final long serialVersionUID = 3996112876438145205L;
@@ -142,7 +144,7 @@ public class MetadataAction extends ManagerBaseAction {
   private static Map<String, String> userIdDirectories;
 
   private final DataDir dataDir;
-  private File file;
+  private List<UploadedFile> uploadedFiles = new ArrayList<>();
 
   @Inject
   public MetadataAction(
@@ -915,12 +917,11 @@ public class MetadataAction extends ManagerBaseAction {
     return s;
   }
 
-  public void setFile(File file) {
-    this.file = file;
-  }
-
   public String uploadLogo() {
-    if (file != null) {
+    UploadedFile upload = requireSingleUpload();
+    File uploadedTempFile = (File) upload.getContent();
+
+    if (uploadedTempFile != null) {
       // remove any previous logo file
       for (String suffix : Constants.IMAGE_TYPES) {
         FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
@@ -938,13 +939,30 @@ public class MetadataAction extends ManagerBaseAction {
       }
       File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
       try {
-        FileUtils.copyFile(file, logoFile);
+        FileUtils.copyFile(uploadedTempFile, logoFile);
       } catch (IOException e) {
         LOG.warn(e.getMessage());
       }
       // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
     }
     return INPUT;
+  }
+
+  private UploadedFile requireSingleUpload() {
+    if (uploadedFiles == null || uploadedFiles.isEmpty()) {
+      throw new IllegalArgumentException("Failed to upload logo");
+    }
+
+    UploadedFile upload = uploadedFiles.get(0);
+    if (upload == null || upload.getContent() == null) {
+      throw new IllegalArgumentException("Logo upload: file was empty");
+    }
+    return upload;
+  }
+
+  @Override
+  public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+    this.uploadedFiles = uploadedFiles;
   }
 
   /**
