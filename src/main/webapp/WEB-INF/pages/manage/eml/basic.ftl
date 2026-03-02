@@ -388,6 +388,15 @@
                         </div>
                     </div>
 
+                    <div class="my-0 px-3 py-0">
+                        <div class="callout callout-info text-smaller">
+                            <@s.text name="manage.metadata.basic.organisation.moved"/>
+                            <a href="${baseURL}/manage/publication-settings.do?r=${resource.shortname}" target="_blank">
+                                <@s.text name="manage.publicationSettings.title"/>
+                            </a>.
+                        </div>
+                    </div>
+
                     <div class="my-3 p-3">
                         <div class="row g-3">
                             <div class="col-lg-6">
