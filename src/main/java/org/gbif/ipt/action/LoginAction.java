@@ -71,6 +71,30 @@ public class LoginAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
+
+    // If the user clicked "login" from a public page, no interceptor stored the original URL.
+    // Capture it from the HTTP Referer header (only if it points to our own base URL).
+    if (session.get(Constants.SESSION_REFERER) == null && req != null) {
+      String refererHeader = req.getHeader("Referer");
+      String base = getBase();
+
+      if (StringUtils.isNotBlank(refererHeader) && StringUtils.isNotBlank(base) && refererHeader.startsWith(base)) {
+        String relative = refererHeader.substring(base.length());
+        // normalize to something like "/resource?r=..."
+        if (StringUtils.isBlank(relative)) {
+          relative = "/";
+        } else if (!relative.startsWith("/")) {
+          relative = "/" + relative;
+        }
+
+        // avoid redirecting back to the login page itself
+        if (!(relative.endsWith("login.do") || relative.endsWith("login"))) {
+          LOG.debug("Storing referer from header into session: {}", relative);
+          session.put(Constants.SESSION_REFERER, relative);
+        }
+      }
+    }
+
     adminEmail = userManager.getDefaultAdminEmail();
     if (StringUtils.isBlank(adminEmail)) {
       List<User> users = userManager.list(User.Role.Admin);
@@ -89,6 +113,7 @@ public class LoginAction extends POSTAction {
 
     // user already logged in, return
     if (session.get(Constants.SESSION_USER) != null) {
+      setRedirectUrl();
       return SUCCESS;
     }
 
@@ -110,7 +135,7 @@ public class LoginAction extends POSTAction {
           LOG.debug("Setting session timeout to {} seconds", sessionTimeout);
           req.getSession().setMaxInactiveInterval(sessionTimeout);
 
-          // remember previous URL to redirect back to
+          // remember the previous URL to redirect back to
           setRedirectUrl();
           return SUCCESS;
         }
