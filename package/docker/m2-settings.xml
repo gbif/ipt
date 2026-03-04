@@ -1,12 +1,19 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-		      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		      xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-	<mirrors>
-		<mirror>
-			<id>gbif-public-mirror</id>
-			<mirrorOf>*</mirrorOf>
-			<name>GBIF mirror of public repositories</name>
-			<url>https://repository.gbif.org/content/groups/public/</url>
-		</mirror>
-	</mirrors>
+	        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <mirrors>
+    <mirror>
+      <!-- Note this mirror is only accessible on GBIF's internal network -->
+      <id>gbif-central-mirror</id>
+      <mirrorOf>central</mirrorOf>
+      <name>GBIF mirror of Maven Central</name>
+      <url>https://repository.gbif.org/content/repositories/central/</url>
+    </mirror>
+    <mirror>
+      <id>gbif-public-mirror</id>
+      <mirrorOf>*,!central</mirrorOf>
+      <name>GBIF mirror of public repositories</name>
+      <url>https://repository.gbif.org/content/groups/public/</url>
+    </mirror>
+  </mirrors>
 </settings>

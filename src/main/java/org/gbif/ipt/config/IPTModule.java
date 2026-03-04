@@ -109,12 +109,19 @@ public class IPTModule {
     Configuration fm = new Configuration(Configuration.VERSION_2_3_31);
     List<TemplateLoader> tLoader = new ArrayList<>();
     tLoader.add(new ClassTemplateLoader(AppConfig.class, "/"));
+
     try {
-      TemplateLoader tlDataDir = new DataDirTemplateLoader(datadir.dataFile(""));
-      tLoader.add(tlDataDir);
+      File dataDirRoot = (datadir == null) ? null : datadir.getDataDir();
+      if (dataDirRoot != null) {
+        TemplateLoader tlDataDir = new DataDirTemplateLoader(dataDirRoot);
+        tLoader.add(tlDataDir);
+      } else {
+        LOG.info("No data dir configured yet; skipping loading custom templates from data dir");
+      }
     } catch (IOException e) {
       LOG.warn("Cannot load custom templates from data dir: {}", e.getMessage(), e);
     }
+
     TemplateLoader tl = new MultiTemplateLoader(tLoader.toArray(new TemplateLoader[0]));
     fm.setDefaultEncoding("UTF-8");
     fm.setTemplateLoader(tl);

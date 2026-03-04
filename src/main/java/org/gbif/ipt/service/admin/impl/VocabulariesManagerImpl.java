@@ -337,14 +337,45 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
           try {
             Vocabulary v = loadFromFile(vf);
             if (fileNameToVocabulary.containsKey(vf.getName())) {
-              if (!vocabulariesById.containsKey(v.getUriString())) {
-                // populate vocabulary's resolvable URI (needed in order to properly uninstall vocabulary later)
-                v.setUriResolvable(fileNameToVocabulary.get(vf.getName()).getUriResolvable());
+              // populate vocabulary's resolvable URI (needed in order to properly uninstall vocabulary later)
+              v.setUriResolvable(fileNameToVocabulary.get(vf.getName()).getUriResolvable());
+
+              Vocabulary already = vocabulariesById.get(v.getUriString());
+              if (already == null) {
                 // keep vocabulary in local lookup: allowed one installed vocabulary per identifier
                 vocabulariesById.put(v.getUriString(), v);
                 counter++;
               } else {
-                // skip - was loaded already
+                // Duplicate vocabulary identifier encountered on disk.
+                // Keep the newest one (by issued date; fallback to filesystem modified date) and delete the other file.
+                boolean keepNew = false;
+
+                Date issuedExisting = already.getIssued();
+                Date issuedNew = v.getIssued();
+
+                if (issuedExisting == null && issuedNew != null) {
+                  keepNew = true;
+                } else if (issuedExisting != null && issuedNew != null) {
+                  keepNew = issuedNew.after(issuedExisting);
+                } else if (issuedExisting == null && issuedNew == null) {
+                  // fallback: compare filesystem modified timestamps
+                  keepNew = v.getModified() != null
+                    && already.getModified() != null
+                    && v.getModified().after(already.getModified());
+                }
+
+                if (keepNew) {
+                  File oldFile = getVocabFile(already.getUriResolvable());
+                  vocabulariesById.put(v.getUriString(), v);
+                  LOG.warn("Duplicate vocabulary {} detected; keeping newer file {} and deleting {}",
+                      v.getUriString(), vf.getName(), oldFile.getName());
+                  FileUtils.deleteQuietly(oldFile);
+                } else {
+                  LOG.warn("Duplicate vocabulary {} detected; keeping existing and deleting {}",
+                      v.getUriString(), vf.getName());
+                  FileUtils.deleteQuietly(vf);
+                }
+
                 counter++;
               }
             } else {
@@ -491,26 +522,26 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    */
   protected void updateIsLatest(List<Vocabulary> vocabularies, List<Vocabulary> registered) {
     if (!vocabularies.isEmpty() && !registered.isEmpty()) {
-      for (Vocabulary vocabulary : vocabularies) {
+      for (Vocabulary iptVocabulary : vocabularies) {
         // is this the latest version?
-        for (Vocabulary rVocabulary : registered) {
-          if (vocabulary.getUriString() != null && rVocabulary.getUriString() != null) {
-            String idOne = vocabulary.getUriString();
-            String idTwo = rVocabulary.getUriString();
+        for (Vocabulary registryVocabulary : registered) {
+          if (iptVocabulary.getUriString() != null && registryVocabulary.getUriString() != null) {
+            String iptVocabularyId = iptVocabulary.getUriString();
+            String registryVocabularyId = registryVocabulary.getUriString();
             // first compare on identifier
-            if (idOne.equalsIgnoreCase(idTwo)) {
-              Date issuedOne = vocabulary.getIssued();
-              Date issuedTwo = rVocabulary.getIssued();
+            if (iptVocabularyId.equalsIgnoreCase(registryVocabularyId)) {
+              Date iptVocabularyIssuedDate = iptVocabulary.getIssued();
+              Date registryVocabularyIssuedDate = registryVocabulary.getIssued();
               // next compare on issued date: can both be null, or issued date must be same
-              if ((issuedOne == null && issuedTwo == null) || (issuedOne != null && issuedTwo != null
-                                                               && issuedOne.compareTo(issuedTwo) == 0)) {
-                vocabulary.setLatest(rVocabulary.isLatest());
+              if ((iptVocabularyIssuedDate == null && registryVocabularyIssuedDate == null)
+                  || (iptVocabularyIssuedDate != null && registryVocabularyIssuedDate != null && iptVocabularyIssuedDate.compareTo(registryVocabularyIssuedDate) == 0)) {
+                iptVocabulary.setLatest(registryVocabulary.isLatest());
               }
             }
           }
         }
-        LOG.debug(
-          "Installed vocabulary with identifier " + vocabulary.getUriString() + " latest=" + vocabulary.isLatest());
+        LOG.debug("Installed vocabulary with identifier {} latest={}",
+            iptVocabulary.getUriString(), iptVocabulary.isLatest());
       }
     }
   }
