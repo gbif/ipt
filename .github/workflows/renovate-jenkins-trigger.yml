@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.pull_request.title != 'New Crowdin updates' }}
+    if: ${{ github.event.pull_request.head.ref != 'translation_master' }}
     runs-on: ubuntu-latest
 
     env:
