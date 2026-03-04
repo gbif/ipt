@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    if: ${{ github.event.pull_request.title != 'New Crowdin updates' }}
     runs-on: ubuntu-latest
 
     env:
