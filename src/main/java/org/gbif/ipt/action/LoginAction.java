@@ -36,7 +36,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class LoginAction extends POSTAction {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(LoginAction.class);
 
   private static final long serialVersionUID = -863287752175768744L;
@@ -62,6 +61,30 @@ public class LoginAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
+
+    // If the user clicked "login" from a public page, no interceptor stored the original URL.
+    // Capture it from the HTTP Referer header (only if it points to our own base URL).
+    if (session.get(Constants.SESSION_REFERER) == null && req != null) {
+      String refererHeader = req.getHeader("Referer");
+      String base = getBase();
+
+      if (StringUtils.isNotBlank(refererHeader) && StringUtils.isNotBlank(base) && refererHeader.startsWith(base)) {
+        String relative = refererHeader.substring(base.length());
+        // normalize to something like "/resource?r=..."
+        if (StringUtils.isBlank(relative)) {
+          relative = "/";
+        } else if (!relative.startsWith("/")) {
+          relative = "/" + relative;
+        }
+
+        // avoid redirecting back to the login page itself
+        if (!(relative.endsWith("login.do") || relative.endsWith("login"))) {
+          LOG.debug("Storing referer from header into session: {}", relative);
+          session.put(Constants.SESSION_REFERER, relative);
+        }
+      }
+    }
+
     adminEmail = userManager.getDefaultAdminEmail();
     if (StringUtils.isBlank(adminEmail)) {
       List<User> users = userManager.list(User.Role.Admin);
@@ -80,34 +103,35 @@ public class LoginAction extends POSTAction {
 
     // user already logged in, return
     if (session.get(Constants.SESSION_USER) != null) {
+      setRedirectUrl();
       return SUCCESS;
     }
 
     if (email != null && !StringUtils.isBlank(csrfToken) && csrfCookie != null) {
       // prevent login CSRF
       // Make sure the token from the login form is the same as in the cookie
-        if (csrfToken.equals(csrfCookie.getValue())){
-          User authUser = userManager.authenticate(email.trim(), password.trim());
-          if (authUser == null) {
-            addActionError(getText("admin.user.wrong.email.password.combination"));
-            LOG.info("User {} failed to log in", email);
-          } else {
-            LOG.info("User {} logged in successfully", email);
-            authUser.setLastLoginToNow();
-            userManager.save();
-            session.put(Constants.SESSION_USER, authUser);
-
-            int sessionTimeout = cfg.getSessionTimeout();
-            LOG.debug("Setting session timeout to {} seconds", sessionTimeout);
-            req.getSession().setMaxInactiveInterval(sessionTimeout);
-
-            // remember previous URL to redirect back to
-            setRedirectUrl();
-            return SUCCESS;
-          }
+      if (csrfToken.equals(csrfCookie.getValue())) {
+        User authUser = userManager.authenticate(email.trim(), password.trim());
+        if (authUser == null) {
+          addActionError(getText("admin.user.wrong.email.password.combination"));
+          LOG.info("User {} failed to log in", email);
         } else {
-          LOG.warn("CSRF login token wrong! A potential malicious attack.");
+          LOG.info("User {} logged in successfully", email);
+          authUser.setLastLoginToNow();
+          userManager.save();
+          session.put(Constants.SESSION_USER, authUser);
+
+          int sessionTimeout = cfg.getSessionTimeout();
+          LOG.debug("Setting session timeout to {} seconds", sessionTimeout);
+          req.getSession().setMaxInactiveInterval(sessionTimeout);
+
+          // remember the previous URL to redirect back to
+          setRedirectUrl();
+          return SUCCESS;
         }
+      } else {
+        LOG.warn("CSRF login token wrong! A potential malicious attack.");
+      }
     }
     return INPUT;
   }
@@ -120,7 +144,7 @@ public class LoginAction extends POSTAction {
 
   private void setRedirectUrl() {
     redirectUrl = getBase() + "/";
-    // if we have a request refer back to the originally requested page
+    // if we have a request, refer back to the originally requested page
     String referer = (String) session.get(Constants.SESSION_REFERER);
     LOG.debug("Session's referer: {}", referer);
 
@@ -169,5 +193,4 @@ public class LoginAction extends POSTAction {
   public void setCsrfToken(String csrfToken) {
     this.csrfToken = csrfToken;
   }
-
 }
