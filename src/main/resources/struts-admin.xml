@@ -116,8 +116,8 @@
     <action name="appLogoUpload" class="org.gbif.ipt.action.admin.UIManagementAction" method="uploadLogo">
       <interceptor-ref name="adminStack"/>
       <result name="success">/WEB-INF/pages/manage/source.ftl</result>
-      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <!-- REGISTRY ACTIONS -->
