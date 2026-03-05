@@ -37,9 +37,9 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class PublishAllResourcesAction extends BaseAction {
 
@@ -54,11 +54,8 @@ public class PublishAllResourcesAction extends BaseAction {
   private final DataPackageMetadataValidator dpMetadataValidator;
   @Getter
   private List<Resource> resources;
-  @Setter
   private List<String> selectedResources;
-  @Setter
   private List<String> excludedResources;
-  @Setter
   private BulkPublicationType publishMode;
 
   @Inject
@@ -206,6 +203,21 @@ public class PublishAllResourcesAction extends BaseAction {
       }
       LOG.info("Resource registrations updated successfully!");
     }
+  }
+
+  @StrutsParameter
+  public void setSelectedResources(List<String> selectedResources) {
+    this.selectedResources = selectedResources;
+  }
+
+  @StrutsParameter
+  public void setExcludedResources(List<String> excludedResources) {
+    this.excludedResources = excludedResources;
+  }
+
+  @StrutsParameter
+  public void setPublishMode(BulkPublicationType publishMode) {
+    this.publishMode = publishMode;
   }
 
   public enum BulkPublicationType {

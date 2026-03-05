@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.struts2.json.annotations.JSON;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
 
@@ -115,6 +116,7 @@ public class PublishingStatusApiAction extends BaseAction {
     return report;
   }
 
+  @StrutsParameter
   public void setR(String r) {
     this.r = r;
   }
