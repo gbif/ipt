@@ -1421,7 +1421,7 @@
                                 <#if resource.pendingStatus == "PUBLIC">
                                     <#assign pendingStatusColor = "primary"/>
                                 <#else>
-                                    <#assign pendingStatusColor = "danger"/>
+                                    <#assign pendingStatusColor = "text"/>
                                 </#if>
                             </#if>
                             <#if isStatusPending>
@@ -1446,7 +1446,9 @@
                         </div>
                         <#if isStatusPending>
                             <div class="mt-2">
-                                <span class="fs-smaller-2 text-discreet">Visibility of this resource has been changed to <b class="text-gbif-${pendingStatusColor}">${resource.pendingStatus}</b>. It will take effect after the resource is republished.</span>
+                                <span class="fs-smaller-2 text-discreet">
+                                    <@s.text name="manage.overview.changed.publication.status.description"/>: <b class="text-gbif-${pendingStatusColor}">${resource.pendingStatus}</b>. <@s.text name="manage.overview.changed.publication.status.republication"/>
+                                </span>
                             </div>
                         </#if>
                         <div class="mt-2">
@@ -1602,6 +1604,11 @@
                         </div>
 
                         <div class="mt-4">
+                            <#if isStatusPending>
+                            <p>
+                                <@s.text name="manage.overview.changed.publication.status.description"/>: <b class="text-gbif-${pendingStatusColor}">${resource.pendingStatus}</b>. <@s.text name="manage.overview.changed.publication.status.republication"/>
+                            </p>
+                            </#if>
                             <p class="mb-0">
                                 <#if resource.status=="PRIVATE">
                                     <#if resource.makePublicDate?has_content>

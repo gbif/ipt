@@ -819,8 +819,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         // makePrivate
         try {
           resourceManager.visibilityToPrivate(resource, this);
-          addActionMessage(getText("manage.overview.changed.publication.status", new String[]{resource.getStatus()
-              .toString()}));
+          addActionMessage(
+              getText("manage.overview.changed.publication.status", new String[]{resource.getStatus().toString()})
+                  + " "
+                  + getText("manage.overview.changed.publication.status.republication"));
         } catch (InvalidConfigException e) {
           LOG.error("Cant unpublish resource {}", resource, e);
         }
@@ -846,15 +848,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           Date date = DATE_FORMAT.parse(makePublicDateTime);
           resource.setMakePublicDate(date);
           saveResource();
-          addActionMessage(getText("manage.overview.changed.publication.status.become.public", new String[]{DATE_FORMAT_UI.format(date)}));
+          addActionMessage(
+              getText("manage.overview.changed.publication.status.become.public", new String[]{DATE_FORMAT_UI.format(date)})
+                  + " "
+                  + getText("manage.overview.changed.publication.status.republication"));
         } catch (Exception e) {
           LOG.error("Can't set make public date {}", resource, e);
         }
       } else {
         try {
           resourceManager.visibilityToPublic(resource, this);
-          addActionMessage(getText("manage.overview.changed.publication.status", new String[]{resource.getStatus()
-              .toString()}));
+          addActionMessage(
+              getText("manage.overview.changed.publication.status", new String[]{resource.getStatus().toString()})
+                  + " "
+                  + getText("manage.overview.changed.publication.status.republication"));
         } catch (InvalidConfigException e) {
           LOG.error("Can't publish resource {}", resource, e);
         }
