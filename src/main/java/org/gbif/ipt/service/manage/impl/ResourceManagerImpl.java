@@ -160,6 +160,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -378,6 +379,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     SimplifiedResource result = new SimplifiedResource();
     result.setShortname(resource.getShortname());
     result.setTitle(resource.getTitle());
+    result.setPendingStatus(resource.getPendingStatus());
     result.setStatus(resource.getStatus());
     result.setRecordsPublished(resource.getRecordsPublished());
     result.setLogoUrl(resource.getLogoUrl());
@@ -1987,7 +1989,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.add(toUiDateTime(resource.getModified()));
     result.add(toUiDateTime(resource.getLastPublished()));
     result.add(toUiNextPublished(resource.getNextPublished()));
-    result.add(toUiStatus(resource.getStatus(), locale));
+    result.add(toUiStatus(resource.getStatus(), resource.getPendingStatus(), locale));
     result.add(resource.getCreatorName());
     result.add(resource.getShortname());
     result.add(resource.getSubject() != null ? resource.getSubject() : "");
@@ -2016,7 +2018,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.add(toUiDateTime(resource.getModified()));
     result.add(toUiDateTime(resource.getLastPublished()));
     result.add(toUiNextPublished(resource.getNextPublished()));
-    result.add(toUiStatus(resource.getStatus(), locale));
+    result.add(toUiStatus(resource.getStatus(), resource.getPendingStatus(), locale));
     result.add(resource.getCreatorName());
     result.add(resource.getShortname());
     result.add(resource.getSubject() != null ? resource.getSubject() : "");
@@ -2143,17 +2145,36 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    * Wraps lower case status into span to make it badge on UI.
    *
    * @param status publication status
+   * @param pendingStatus pending publication status
    * @return wrapped publication status (badge)
    */
-  private String toUiStatus(PublicationStatus status, Locale locale) {
-    String localizedStatus = textProvider.getTexts(locale).getString("manage.home.visible." + status.name().toLowerCase());
+  private String toUiStatus(PublicationStatus status, PublicationStatus pendingStatus, Locale locale) {
+    PublicationStatus effectiveStatus;
+    String localizedStatus;
+    String translationPrefix;
     String icon;
-    if (status == PublicationStatus.PUBLIC || status == PublicationStatus.PRIVATE) {
+
+    if (pendingStatus != null) {
+      effectiveStatus = pendingStatus;
+      translationPrefix = "manage.home.visible.pending.";
+    } else {
+      effectiveStatus = status;
+      translationPrefix = "manage.home.visible.";
+    }
+
+    localizedStatus = textProvider.getText(
+        locale,
+        translationPrefix + effectiveStatus.name().toLowerCase(),
+        effectiveStatus.name().toLowerCase(),
+        Collections.emptyList());
+
+    if (effectiveStatus == PublicationStatus.PUBLIC || effectiveStatus == PublicationStatus.PRIVATE) {
       icon = "<i class=\"bi bi-circle fs-smaller-2 me-1\"></i>";
     } else {
       icon = "<i class=\"bi bi-circle-fill fs-smaller-2 me-1\"></i>";
     }
-    return "<span class=\"text-nowrap status-pill fs-smaller-2 status-" + status.name().toLowerCase() + "\">" +
+
+    return "<span class=\"text-nowrap status-pill fs-smaller-2 status-" + effectiveStatus.name().toLowerCase() + "\">" +
         icon +
         "<span>" +
         localizedStatus +
@@ -2167,7 +2188,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .filter(res -> RequireManagerInterceptor.isAuthorized(user, res))
         .map(this::toSimplifiedResource)
         .filter(res -> matchesSearchString(res, request.getSearch()))
-        .collect(Collectors.toList());
+        .toList();
 
     Locale currentLocale = Locale.forLanguageTag(request.getLocale());
 
@@ -2193,7 +2214,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .collect(Collectors.toList());
 
     DatatableResult result = new DatatableResult();
-    result.setTotalRecords(resources.values().size());
+    result.setTotalRecords(resources.size());
     result.setTotalDisplayRecords(filteredResources.size());
     result.setData(data);
 
