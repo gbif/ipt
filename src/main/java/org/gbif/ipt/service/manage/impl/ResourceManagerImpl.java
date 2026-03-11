@@ -1625,6 +1625,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               }
             }
 
+            boolean visibilityChanged = resource.getPendingStatus() != null;
+            if (visibilityChanged) {
+              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Visibility changed to: " + resource.getPendingStatus()));
+            }
+
             // If all sources are file (CSV, TSV, Excel) also check when they were changed
             boolean onlyFileSources = isOnlyFileSources(resource);
             boolean sourcesModifiedSinceLastPublication = isSourcesModifiedSinceLastPublication(resource);
@@ -1635,7 +1640,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Source files has not changed since last published"));
             }
 
-            if (dataOrMetadataChanged) {
+            if (dataOrMetadataChanged || visibilityChanged) {
               // finish publication (update registration, persist resource changes)
               publishEnd(resource, action, version);
               // important: indicate publishing finished successfully!
@@ -2708,6 +2713,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // finish publication now
       publishEnd(resource, action, version);
     }
+
+
+
     return archive;
   }
 
@@ -2757,6 +2765,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     executeDoiWorkflow(resource, version, replacedMetadataVersion, action);
     // finalise/update version history
     addOrUpdateVersionHistory(resource, version, true, action);
+
+    // visibility change - erase pending status, update visibility
+    if (resource.getPendingStatus() != null) {
+      resource.setStatus(resource.getPendingStatus());
+      resource.setPendingStatus(null);
+    }
+
     // remove resource from the list if it's private
     if (resource.getStatus() == PublicationStatus.PRIVATE) {
       publishedPublicVersionsSimplified.remove(resource.getShortname());
@@ -4043,11 +4058,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           "The resource is already registered with GBIF");
     } else if (PublicationStatus.PUBLIC == resource.getStatus()) {
       // update visibility to private
-      resource.setStatus(PublicationStatus.PRIVATE);
+      resource.setPendingStatus(PublicationStatus.PRIVATE);
 
       // Changing the visibility means some public alternateIds need to be removed, e.g. IPT URL
       // not applicable for data packages
-      if (resource.getDataPackageIdentifier() == null) {
+      if (!resource.isDataPackage()) {
         updateAlternateIdentifierForIPTURLToResource(resource);
       }
 
@@ -4063,14 +4078,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           "The resource is already registered with GBIF");
     } else if (PublicationStatus.PRIVATE == resource.getStatus()) {
       // update visibility to public
-      resource.setStatus(PublicationStatus.PUBLIC);
+      resource.setPendingStatus(PublicationStatus.PUBLIC);
 
       // erase make public date
       resource.setMakePublicDate(null);
 
       // Changing the visibility means some public alternateIds need to be added, e.g. IPT URL
       // not applicable for data packages
-      if (resource.getDataPackageIdentifier() == null) {
+      if (!resource.isDataPackage()) {
         updateAlternateIdentifierForIPTURLToResource(resource);
       }
 

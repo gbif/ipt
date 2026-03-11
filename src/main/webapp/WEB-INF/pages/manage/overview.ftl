@@ -169,15 +169,14 @@
             location.href = '${baseURL}/resource/preview?r=${resource.shortname}';
         }
 
-        <#if resource.status=="PRIVATE">
+        <#if action.isNextVisibilityPrivate()>
             <#assign resourceVisibility="private" />
-        <#elseif resource.status=="PUBLIC" || resource.status=="REGISTERED" || resource.status=="DELETED">
+        <#elseif action.isNextVisibilityPublic() || resource.status=="DELETED">
             <#assign resourceVisibility="public" />
         </#if>
 
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary", processing: true});
-        $('.confirmMakePrivate').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.make.private'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmDatapackageMetadataReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
         $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
@@ -577,6 +576,16 @@
             showMakePublicModal();
         });
 
+        $('#makePrivate').click(function (e) {
+            e.preventDefault();
+            showMakePrivateModal();
+        });
+
+        $('#cancelVisibilityChange').click(function (e) {
+            e.preventDefault();
+            showCancelVisibilityChangeModal();
+        });
+
         // make public modal window
         function showMakePublicModal() {
             var dialogWindow = $("#make-public-modal");
@@ -592,6 +601,17 @@
                 $("#makePublicDateTimeWrapper").show();
                 $("#makePublicDateTime").show();
             }
+        }
+
+        // make public modal window
+        function showMakePrivateModal() {
+            var dialogWindow = $("#make-private-modal");
+            dialogWindow.modal('show');
+        }
+
+        function showCancelVisibilityChangeModal() {
+            var dialogWindow = $("#cancel-visibility-change-modal");
+            dialogWindow.modal('show');
         }
 
         // hide/show input on radio change
@@ -616,6 +636,11 @@
                 $("#makePublicDateTime").val("");
             }
 
+            $(this).submit();
+        });
+
+        $("#make-private-modal-form").one('submit', function (e) {
+            e.preventDefault();
             $(this).submit();
         });
 
@@ -789,12 +814,13 @@
 
         var selectedFiles = [];
 
-        document.getElementById("chooseFilesButton").addEventListener("click", function () {
-            document.getElementById("fileInput").click();
+        $("#chooseFilesButton").on("click", function (e) {
+            e.preventDefault();
+            $("#fileInput").click();
         });
 
-        document.getElementById("fileInput").addEventListener("change", function () {
-            var newlySelectedFiles = Array.from(document.getElementById("fileInput").files);
+        $("#fileInput").on("change", function () {
+            var newlySelectedFiles = Array.from(this.files);
             selectedFiles = selectedFiles.concat(newlySelectedFiles);
             refreshFileList();
 
@@ -805,10 +831,9 @@
             }
         });
 
-        document.getElementById("sendButton").addEventListener("click", async function () {
-            var uploadButton = $("#sendButton");
-            uploadButton.addClass("clicked")
-            uploadButton.hide();
+        $("#sendButton").on("click", async function () {
+            this.addClass("clicked")
+            this.hide();
 
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
@@ -1149,59 +1174,61 @@
         // Spy confirm overwrite warnings and enable/disable submit button
         const fileListDiv = document.getElementById('fileList');
 
-        const observer = new MutationObserver(function() {
-            var fileErrors = $(".fileError");
-            var fileOutOfSpaceCallout = $("#callout-not-enough-space");
-            var fileItems = $(".fileItem");
+        if (fileListDiv) {
+            const observer = new MutationObserver(function () {
+                var fileErrors = $(".fileError");
+                var fileOutOfSpaceCallout = $("#callout-not-enough-space");
+                var fileItems = $(".fileItem");
 
-            if (totalFreeSpace - totalFilesSize < 0) {
-                fileOutOfSpaceCallout.show();
-            } else {
-                fileOutOfSpaceCallout.hide();
-            }
+                if (totalFreeSpace - totalFilesSize < 0) {
+                    fileOutOfSpaceCallout.show();
+                } else {
+                    fileOutOfSpaceCallout.hide();
+                }
 
-            var outOfSpaceDisplayed = fileOutOfSpaceCallout.css("display") !== "none";
+                var outOfSpaceDisplayed = fileOutOfSpaceCallout.css("display") !== "none";
 
-            if (fileErrors.length > 0 || outOfSpaceDisplayed) {
-                sendButton.hide();
-            } else if (!sendButton.hasClass("clicked")) {
-                sendButton.show();
-            }
+                if (fileErrors.length > 0 || outOfSpaceDisplayed) {
+                    sendButton.hide();
+                } else if (!sendButton.hasClass("clicked")) {
+                    sendButton.show();
+                }
 
-            if (fileItems.length === 0) {
-                sendButton.hide();
-            }
-        });
-
-        const config = { attributes: true, childList: true, subtree: true };
-
-        observer.observe(fileListDiv, config);
-
-        // remove error classes/icons if confirmed
-        $('#fileList').on('click', '.confirmOverwriteSourceFileLink', function() {
-            var fileIndex = $(this).data('index');
-
-            var fileItemElement = $('.fileItem[data-file-index="' + fileIndex + '"]');
-            fileItemElement.find('.fileError').remove();
-
-            var fileNameWithExtension = fileItemElement.find('.fileName').text();
-            var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.')).replace(/\s/g, "");
-
-            confirmedFiles.push(fileNameWithoutExtension);
-
-            var fileWarningIconElement = fileItemElement.find('.fileWarningIcon');
-            var fileDoneIconElement = fileItemElement.find('.fileDoneIcon');
-
-            fileWarningIconElement.css({
-                'display': 'none',
-                'visibility': 'hidden'
+                if (fileItems.length === 0) {
+                    sendButton.hide();
+                }
             });
 
-            fileDoneIconElement.css({'display': 'block'});
+            const config = {attributes: true, childList: true, subtree: true};
 
-            // Prevent the default link behavior
-            return false;
-        });
+            observer.observe(fileListDiv, config);
+
+            // remove error classes/icons if confirmed
+            $('#fileList').on('click', '.confirmOverwriteSourceFileLink', function () {
+                var fileIndex = $(this).data('index');
+
+                var fileItemElement = $('.fileItem[data-file-index="' + fileIndex + '"]');
+                fileItemElement.find('.fileError').remove();
+
+                var fileNameWithExtension = fileItemElement.find('.fileName').text();
+                var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.')).replace(/\s/g, "");
+
+                confirmedFiles.push(fileNameWithoutExtension);
+
+                var fileWarningIconElement = fileItemElement.find('.fileWarningIcon');
+                var fileDoneIconElement = fileItemElement.find('.fileDoneIcon');
+
+                fileWarningIconElement.css({
+                    'display': 'none',
+                    'visibility': 'hidden'
+                });
+
+                fileDoneIconElement.css({'display': 'block'});
+
+                // Prevent the default link behavior
+                return false;
+            });
+        }
 
         $("#rowType").select2({
             placeholder: '',
@@ -1389,7 +1416,24 @@
                             <#if resourceSubtypeLowerCase?has_content>
                                 <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
                             </#if>
-                            <#if resource.status??>
+                            <#assign isStatusPending = resource.pendingStatus?has_content && resource.status != resource.pendingStatus>
+                            <#if isStatusPending>
+                                <#if resource.pendingStatus == "PUBLIC">
+                                    <#assign pendingStatusColor = "primary"/>
+                                <#else>
+                                    <#assign pendingStatusColor = "danger"/>
+                                </#if>
+                            </#if>
+                            <#if isStatusPending>
+                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.pendingStatus!?lower_case}">
+                                    <#if  resource.pendingStatus == "PUBLIC" || resource.pendingStatus == "PRIVATE">
+                                        <i class="bi bi-circle fs-smaller-2"></i>
+                                    <#else>
+                                        <i class="bi bi-circle-fill fs-smaller-2"></i>
+                                    </#if>
+                                    <span><@s.text name="manage.home.visible.pending.${resource.pendingStatus!?lower_case}"/></span>
+                                </span>
+                            <#elseif resource.status?has_content>
                                 <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status!?lower_case}">
                                     <#if  resource.status == "PUBLIC" || resource.status == "PRIVATE">
                                         <i class="bi bi-circle fs-smaller-2"></i>
@@ -1400,6 +1444,11 @@
                                 </span>
                             </#if>
                         </div>
+                        <#if isStatusPending>
+                            <div class="mt-2">
+                                <span class="fs-smaller-2 text-discreet">Visibility of this resource has been changed to <b class="text-gbif-${pendingStatusColor}">${resource.pendingStatus}</b>. It will take effect after the resource is republished.</span>
+                            </div>
+                        </#if>
                         <div class="mt-2">
                             <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.name)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
                         </div>
@@ -1511,7 +1560,7 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <#if resource.status=="PRIVATE">
+                                <#if action.canBeMadePublic()>
                                     <#assign actionMethod>makePublic</#assign>
                                     <form action='resource-${actionMethod}.do' method='post'>
                                         <input name="r" type="hidden" value="${resource.shortname}"/>
@@ -1522,18 +1571,25 @@
                                             <@s.text name='button.change'/>
                                         </button>
                                     </form>
-                                <#elseif resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
+                                <#elseif action.canBeMadePrivate()>
                                     <#assign actionMethod>makePrivate</#assign>
                                     <form action='resource-${actionMethod}.do' method='post'>
                                         <input name="r" type="hidden" value="${resource.shortname}"/>
                                         <input name="unpublish" type="hidden" value="Change"/>
-                                        <button class="confirmMakePrivate text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
+                                        <button id="makePrivate" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                                             </svg>
                                             <@s.text name='button.change'/>
                                         </button>
                                     </form>
+                                <#elseif resource.pendingStatus?has_content>
+                                    <button id="cancelVisibilityChange" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
+                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                        </svg>
+                                        <@s.text name='button.change'/>
+                                    </button>
                                 <#else>
                                     <button id="show-visibility-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                         <svg viewBox="0 0 24 24" class="overview-action-button-icon">
@@ -2260,7 +2316,25 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="modal-title w-100" id="make-public-modal-title"><@s.text name="manage.overview.visibility.change.public"/></h5>
-                    <div class="pt-2">
+
+                    <div class="border rounded px-3 py-1 mt-3">
+                        <div class="simpleCallout">
+                            <div class="simpleCallout-inner">
+                                <div class="simpleCalloutInfo simpleCalloutInfo-message">
+                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                        <i class="bi bi-info-circle text-gbif-primary"></i>
+                                    </div>
+                                    <div class="simpleCalloutMeta">
+                                        <div class="simpleCalloutMessage">
+                                            <@s.text name="manage.overview.visibility.change.republish"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="makePublicOptions" id="makePublicImmediately" value="makePublicImmediately" <#if !resource.makePublicDate?has_content>checked</#if> >
                             <label class="form-check-label" for="inlineRadio1"><@s.text name="manage.overview.visibility.change.public.immediately"/></label>
@@ -2281,7 +2355,7 @@
                                     <input id="makePublicDateTime" name="makePublicDateTime" class="form-control form-control-sm" type="datetime-local" value="${makePublicDateTime!}" />
                                 </#if>
                             </form>
-                            <form id="cancel-make-public" action="resource-cancelMakePublic.do" method="post">
+                            <form id="cancel-make-public" action="resource-cancelVisibilityChange.do" method="post">
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                             </form>
                         </div>
@@ -2293,6 +2367,74 @@
                     <#if resource.makePublicDate?has_content>
                         <button id="cancelMakePublic" type="submit" form="cancel-make-public" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.reset"/></button>
                     </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="make-private-modal" class="modal fade" tabindex="-1" aria-labelledby="make-private-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
+                </div>
+                <div class="modal-body">
+                    <h5 class="modal-title w-100" id="make-private-modal-title"><@s.text name="manage.overview.visibility.change.private"/></h5>
+
+                    <div class="border rounded px-3 py-1 mt-3">
+                        <div class="simpleCallout">
+                            <div class="simpleCallout-inner">
+                                <div class="simpleCalloutInfo simpleCalloutInfo-warning">
+                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                        <i class="bi bi-info-circle text-gbif-danger"></i>
+                                    </div>
+                                    <div class="simpleCalloutMeta">
+                                        <div class="simpleCalloutMessage">
+                                            <@s.text name="manage.overview.visibility.change.republish"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <form id="make-private-modal-form" action="resource-makePrivate.do" method="post">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <input name="unpublish" type="hidden" value="Change"/>
+                        </form>
+                        <@s.text name="manage.overview.visibility.confirm.make.private"/>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                    <button id="changeStateSubmit" type="submit" form="make-private-modal-form" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.submit"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cancel-visibility-change-modal" class="modal fade" tabindex="-1" aria-labelledby="cancel-visibility-change-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
+                </div>
+                <div class="modal-body">
+                    <h5 class="modal-title w-100" id="cancel-visibility-change-modal-title"><@s.text name="manage.overview.visibility.change.cancel"/></h5>
+
+                    <div class="mt-3">
+                        <form id="cancel-visibility-change-modal-form" action="resource-cancelVisibilityChange.do" method="post">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                        </form>
+                        <@s.text name="manage.overview.visibility.confirm.cancel.change"><@s.param>${resource.status!}</@s.param><@s.param>${resource.pendingStatus!}</@s.param></@s.text>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                    <button id="changeStateSubmit" type="submit" form="cancel-visibility-change-modal-form" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.submit"/></button>
                 </div>
             </div>
         </div>

@@ -866,10 +866,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return execute();
   }
 
-  public String cancelMakePublic() throws Exception {
+  public String cancelVisibilityChange() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
+    resource.setPendingStatus(null);
     resource.setMakePublicDate(null);
     saveResource();
     addActionMessage(getText("manage.overview.changed.publication.status", new String[]{resource.getStatus()
@@ -1862,6 +1863,44 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
   public boolean isDataPackageMappingsMissing() {
     return resource.getDataPackageMappings().isEmpty();
+  }
+
+  public boolean isVisibilityChangePending() {
+    return resource != null && resource.getPendingStatus() != null;
+  }
+
+  public PublicationStatus getCurrentVisibilityStatus() {
+    return resource != null ? resource.getStatus() : null;
+  }
+
+  public PublicationStatus getNextVisibilityStatus() {
+    if (resource == null) {
+      return null;
+    }
+    return resource.getPendingStatus() != null ? resource.getPendingStatus() : resource.getStatus();
+  }
+
+  public boolean isNextVisibilityPublic() {
+    PublicationStatus nextStatus = getNextVisibilityStatus();
+    return PublicationStatus.PUBLIC == nextStatus || PublicationStatus.REGISTERED == nextStatus;
+  }
+
+  public boolean isNextVisibilityPrivate() {
+    return PublicationStatus.PRIVATE == getNextVisibilityStatus();
+  }
+
+  public boolean canBeMadePublic() {
+    return resource != null
+        && PublicationStatus.PRIVATE == resource.getStatus()
+        && resource.getPendingStatus() == null;
+  }
+
+  public boolean canBeMadePrivate() {
+    return resource != null
+        && PublicationStatus.PUBLIC == resource.getStatus()
+        && resource.getPendingStatus() == null
+        && (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION
+        || resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED);
   }
 
   /**
