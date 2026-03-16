@@ -3871,7 +3871,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // Construct new VersionHistory, or update existing one if it exists
     VersionHistory existingVersionHistory = resource.findVersionHistory(version);
     if (existingVersionHistory == null) {
-      versionHistory = new VersionHistory(version, resource.getStatus());
+      PublicationStatus publicationStatus =
+          resource.getPendingStatus() != null ? resource.getPendingStatus() : resource.getStatus();
+      versionHistory = new VersionHistory(version, publicationStatus);
       resource.addVersionHistory(versionHistory);
       LOG.info("Adding VersionHistory for version {}", version.toPlainString());
     } else {
