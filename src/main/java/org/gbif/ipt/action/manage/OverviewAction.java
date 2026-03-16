@@ -423,6 +423,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           resource.updateAlternateIdentifierForDOI();
           resource.updateCitationIdentifierForDOI(); // unset DOI as citation identifier
           saveResource();
+          LOG.info("Resource {} is deleted by {}", resource.toString(), getCurrentUser().getEmail());
           addActionMessage(getText("manage.overview.resource.deleted", new String[]{resource.toString()}));
         } else {
           // de-register resource, and delete resource directory
