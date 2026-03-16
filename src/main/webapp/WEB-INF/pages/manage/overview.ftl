@@ -1605,10 +1605,16 @@
 
                         <div class="mt-4">
                             <#if isStatusPending>
-                            <p>
-                                <@s.text name="manage.overview.changed.publication.status.description"/>: <b class="text-gbif-${pendingStatusColor}">${resource.pendingStatus}</b>. <@s.text name="manage.overview.changed.publication.status.republication"/>
-                            </p>
-                            </#if>
+                                <#if resource.pendingStatus=="PRIVATE">
+                                    <p>
+                                        <@s.text name="manage.resource.status.intro.pending.private"/> <@s.text name="manage.overview.changed.publication.status.republication"/>
+                                    </p>
+                                <#elseif resource.pendingStatus=="PUBLIC">
+                                    <p>
+                                        <@s.text name="manage.resource.status.intro.pending.public"/> <@s.text name="manage.overview.changed.publication.status.republication"/>
+                                    </p>
+                                </#if>
+                            <#else>
                             <p class="mb-0">
                                 <#if resource.status=="PRIVATE">
                                     <#if resource.makePublicDate?has_content>
@@ -1626,6 +1632,7 @@
                                     <@s.text name="manage.resource.status.intro.deleted"/>
                                 </#if>
                             </p>
+                            </#if>
                         </div>
                     </div>
 
@@ -1853,7 +1860,12 @@
                                     </#if>
 
                                     <div class="col-xl-6" style="height: 100%">
-                                        <#assign nextVersionStatus>${resource.status?lower_case}</#assign>
+                                        <#if resource.pendingStatus?has_content>
+                                            <#assign nextVersionStatus>${resource.pendingStatus?lower_case}</#assign>
+                                        <#else>
+                                            <#assign nextVersionStatus>${resource.status?lower_case}</#assign>
+                                        </#if>
+
                                         <#assign nextVersionStatus = nextVersionStatus?markup_string>
 
                                         <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">

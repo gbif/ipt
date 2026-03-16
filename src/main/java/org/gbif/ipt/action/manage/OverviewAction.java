@@ -819,10 +819,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         // makePrivate
         try {
           resourceManager.visibilityToPrivate(resource, this);
-          addActionMessage(
-              getText("manage.overview.changed.publication.status", new String[]{resource.getStatus().toString()})
-                  + " "
-                  + getText("manage.overview.changed.publication.status.republication"));
+          if (resource.getPendingStatus() != null) {
+            addActionMessage(
+                getText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
+                    + " "
+                    + getText("manage.overview.changed.publication.status.republication"));
+          }
         } catch (InvalidConfigException e) {
           LOG.error("Cant unpublish resource {}", resource, e);
         }
@@ -858,10 +860,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       } else {
         try {
           resourceManager.visibilityToPublic(resource, this);
-          addActionMessage(
-              getText("manage.overview.changed.publication.status", new String[]{resource.getStatus().toString()})
-                  + " "
-                  + getText("manage.overview.changed.publication.status.republication"));
+          if (resource.getPendingStatus() != null) {
+            addActionMessage(
+                getText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
+                    + " "
+                    + getText("manage.overview.changed.publication.status.republication"));
+          }
         } catch (InvalidConfigException e) {
           LOG.error("Can't publish resource {}", resource, e);
         }
