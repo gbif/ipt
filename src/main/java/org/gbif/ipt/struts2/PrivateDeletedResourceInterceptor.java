@@ -80,26 +80,25 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
           // return 404 if version was in incorrect format
           return BaseAction.NOT_FOUND;
         }
-      }
+      } else {
+        if (PublicationStatus.DELETED == resource.getStatus()) {
+          // user authorised?
+          if (user == null || !isAuthorized(user, resource)) {
+            return BaseAction.GONE;
+          }
+        }
 
-      if (PublicationStatus.DELETED == resource.getStatus()) {
-        // user authorised?
-        if (user == null || !isAuthorized(user, resource)) {
-          return BaseAction.GONE;
+        PublicationStatus resourceStatus = CollectionUtils.isNotEmpty(resource.getVersionHistory())
+            ? resource.getVersionHistory().get(0).getPublicationStatus()
+            : resource.getStatus();
+
+        if (PublicationStatus.PRIVATE == resourceStatus) {
+          // user authorised?
+          if (user == null || !isAuthorized(user, resource)) {
+            return BaseAction.NOT_ALLOWED;
+          }
         }
       }
-
-      PublicationStatus resourceStatus = CollectionUtils.isNotEmpty(resource.getVersionHistory())
-          ? resource.getVersionHistory().get(0).getPublicationStatus()
-          : resource.getStatus();
-
-      if (PublicationStatus.PRIVATE == resourceStatus) {
-        // user authorised?
-        if (user == null || !isAuthorized(user, resource)) {
-          return BaseAction.NOT_ALLOWED;
-        }
-      }
-
     }
     return invocation.invoke();
   }
