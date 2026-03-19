@@ -45,6 +45,7 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
 
@@ -438,6 +439,12 @@ public class ExtensionsAction extends POSTAction {
     this.synchronise = StringUtils.trimToNull(synchronise) != null;
   }
 
+  @StrutsParameter
+  public void setSynchronise(boolean synchronise) {
+    this.synchronise = synchronise;
+  }
+
+  @StrutsParameter
   public void setUrl(String url) {
     this.url = url;
   }
