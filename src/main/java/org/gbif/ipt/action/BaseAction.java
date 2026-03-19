@@ -28,14 +28,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -205,12 +206,36 @@ public class BaseAction extends ActionSupport
       LOG.error("Request is null, returning base URL");
     } else {
       try {
-        return UriBuilder.fromUri(getBaseURL())
-            .path(StringUtils.trimToEmpty(req.getServletPath()))
-            .path(StringUtils.trimToEmpty(req.getPathInfo()))
-            .replaceQuery(req.getQueryString())
-            .replaceQueryParam("request_locale")
-            .build().toString();
+        String baseURL = getBaseURL();
+        StringBuilder url = new StringBuilder(baseURL);
+
+        String servletPath = StringUtils.trimToEmpty(req.getServletPath());
+        if (!servletPath.isEmpty()) {
+          if (!baseURL.endsWith("/") && !servletPath.startsWith("/")) {
+            url.append('/');
+          }
+          url.append(servletPath);
+        }
+
+        String pathInfo = StringUtils.trimToEmpty(req.getPathInfo());
+        if (!pathInfo.isEmpty()) {
+          if (!pathInfo.startsWith("/")) {
+            url.append('/');
+          }
+          url.append(pathInfo);
+        }
+
+        String query = req.getQueryString();
+        if (StringUtils.isNotBlank(query)) {
+          String filteredQuery = Arrays.stream(query.split("&"))
+              .filter(param -> !param.startsWith("request_locale=") && !"request_locale".equals(param))
+              .collect(Collectors.joining("&"));
+          if (!filteredQuery.isEmpty()) {
+            url.append('?').append(filteredQuery);
+          }
+        }
+
+        return url.toString();
       } catch (RuntimeException e) {
         LOG.warn("Failed to reconstruct requestURL from {}. Error: {}", req.getRequestURL(), e.getMessage());
       }

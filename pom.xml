@@ -70,7 +70,6 @@
     <javassist.version>3.12.1.GA</javassist.version>
     <javax.inject.version>1</javax.inject.version>
     <javax.mail.version>1.4.7</javax.mail.version>
-    <jersey.version>1.19.4</jersey.version>
     <jetty-maven-plugin.version>12.0.12</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
@@ -651,17 +650,6 @@
       <groupId>com.github.librepdf</groupId>
       <artifactId>openrtf</artifactId>
       <version>${openrtf.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-core</artifactId>
-      <version>${jersey.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
-      <version>${jersey.version}</version>
     </dependency>
 
     <!-- JSON representation -->

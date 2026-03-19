@@ -75,8 +75,6 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.ws.rs.core.UriBuilder;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,9 +104,9 @@ public class ResourceManagerImplIT extends IptBaseTest {
 
     // mock returning resource URI in gbif-uat belong
     when(mockAppConfig.getResourceUri(anyString()))
-        .thenReturn(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt?r=ants").build());
+        .thenReturn(URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants"));
     when(mockAppConfig.getResourceVersionUri("ants", new BigDecimal("1.1")))
-        .thenReturn(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").build());
+        .thenReturn(URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants&v=1.1"));
     when(mockAppConfig.getMaxThreads()).thenReturn(3);
 
     UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);

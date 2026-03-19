@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,8 +46,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import jakarta.validation.constraints.NotNull;
-
-import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RegExUtils;
@@ -320,8 +319,11 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_ARCHIVE)
-        .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    return base + "/" + Constants.REQ_PATH_ARCHIVE + "?"
+        + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
   }
 
   /**
@@ -335,8 +337,11 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_EML)
-        .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    return base + "/" + Constants.REQ_PATH_EML + "?"
+        + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
   }
 
   /**
@@ -350,8 +355,11 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_METADATA)
-        .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    return base + "/" + Constants.REQ_PATH_METADATA + "?"
+        + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
   }
 
   /**
@@ -365,8 +373,11 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_LOGO)
-        .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    return base + "/" + Constants.REQ_PATH_LOGO + "?"
+        + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
   }
 
   /**
@@ -388,8 +399,12 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
-        .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build();
+    String path = baseUrl.endsWith("/")
+        ? baseUrl + Constants.REQ_PATH_RESOURCE
+        : baseUrl + "/" + Constants.REQ_PATH_RESOURCE;
+
+    return URI.create(path + "?" + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8));
   }
 
   /**
@@ -403,8 +418,14 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
-        .queryParam(Constants.REQ_PARAM_ID, shortname).build().toString();
+    String uri = baseUrl.endsWith("/")
+        ? baseUrl + Constants.REQ_PATH_RESOURCE
+        : baseUrl + "/" + Constants.REQ_PATH_RESOURCE;
+
+    uri = uri + "?"
+        + Constants.REQ_PARAM_ID + "=" + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
+
+    return uri;
   }
 
   /**
@@ -418,9 +439,16 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
-        .queryParam(Constants.REQ_PARAM_RESOURCE, shortname)
-        .queryParam(Constants.REQ_PARAM_VERSION, version.toPlainString()).build();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    String uri = baseUrl.endsWith("/")
+        ? baseUrl + Constants.REQ_PATH_RESOURCE
+        : baseUrl + "/" + Constants.REQ_PATH_RESOURCE;
+
+    uri = uri + "?" + Constants.REQ_PARAM_RESOURCE + "=" + URLEncoder.encode(shortname, StandardCharsets.UTF_8)
+        + "&" + Constants.REQ_PARAM_VERSION + "=" + URLEncoder.encode(version.toPlainString(), StandardCharsets.UTF_8);
+
+    return URI.create(uri);
   }
 
   /**
