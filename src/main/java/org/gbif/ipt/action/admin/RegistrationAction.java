@@ -49,9 +49,11 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.struts2.ServletActionContext;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The Action responsible for all user input relating to the registration options.
@@ -86,12 +88,13 @@ public class RegistrationAction extends POSTAction {
 
   private boolean validatedBaseURL = false;
 
+  @Setter
   private List<Organisation> organisations = new ArrayList<>();
   @Getter
   private Map<String, String> networks = new LinkedHashMap<>();
-  @Getter
+  @Setter
   private Organisation organisation;
-  @Getter
+  @Setter
   private Ipt ipt;
 
   @Inject
@@ -282,27 +285,6 @@ public class RegistrationAction extends POSTAction {
     return SUCCESS;
   }
 
-  /**
-   * @param ipt the ipt to set
-   */
-  public void setIpt(Ipt ipt) {
-    this.ipt = ipt;
-  }
-
-  /**
-   * @param organisation the organisation to set
-   */
-  public void setOrganisation(Organisation organisation) {
-    this.organisation = organisation;
-  }
-
-  /**
-   * @param organisations the organisations to set
-   */
-  public void setOrganisations(List<Organisation> organisations) {
-    this.organisations = organisations;
-  }
-
   public String update() {
     try {
       if (cancel) {
@@ -454,5 +436,15 @@ public class RegistrationAction extends POSTAction {
 
   public void setApplyToExistingResources(boolean applyToExistingResources) {
     this.applyToExistingResources = applyToExistingResources;
+  }
+
+  @StrutsParameter(depth = 3)
+  public Organisation getOrganisation() {
+    return organisation;
+  }
+
+  @StrutsParameter(depth = 3)
+  public Ipt getIpt() {
+    return ipt;
   }
 }
