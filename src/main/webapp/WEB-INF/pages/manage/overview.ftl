@@ -832,8 +832,8 @@
         });
 
         $("#sendButton").on("click", async function () {
-            this.addClass("clicked")
-            this.hide();
+            $(this).addClass("clicked");
+            $(this).hide();
 
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
