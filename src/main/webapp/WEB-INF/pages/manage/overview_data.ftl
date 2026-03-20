@@ -322,6 +322,12 @@
             </p>
 
             <#if resource.coreRowType?has_content>
+                <#assign extensionMappingsSize=resource.getMappedExtensions()?size/>
+                <#if (extensionMappingsSize > 1)>
+                    <#assign deleteCoreMappingClass="delete-core-mapping"/>
+                <#else>
+                    <#assign deleteCoreMappingClass="delete-mapping"/>
+                </#if>
                 <div class="details mt-3">
                     <div class="mapping_head"><@s.text name='manage.overview.DwC.Mappings.cores.select'/></div>
                     <div class="row g-2">
@@ -349,7 +355,7 @@
                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                             </svg>
                                         </a>
-                                        <a title="<@s.text name="button.delete"/>" class="delete-mapping icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                        <a title="<@s.text name="button.delete"/>" class="${deleteCoreMappingClass} icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                             </svg>
@@ -372,7 +378,7 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item action-link delete-mapping" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
+                                                    <a class="dropdown-item action-link ${deleteCoreMappingClass}" type="button" href="delete-mapping.do?r=${resource.shortname}&id=${m.extension.rowType?url}&mid=${m_index}">
                                                         <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                         </svg>
@@ -386,7 +392,7 @@
                             </div>
                         </#list>
                     </div>
-                    <#if (resource.getMappedExtensions()?size > 1)>
+                    <#if (extensionMappingsSize > 1)>
                         <div class="mapping_head mt-3"><@s.text name='manage.overview.DwC.Mappings.extensions.select'/></div>
                         <div class="row g-2">
                             <#list resource.getMappedExtensions() as ext>
