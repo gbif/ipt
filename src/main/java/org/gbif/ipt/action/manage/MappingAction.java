@@ -56,6 +56,7 @@ import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.struts2.interceptor.ValidationErrorAware;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.CANCEL;
 
@@ -89,14 +90,16 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
   // config
-  @Getter
+  @Setter
   private ExtensionMapping mapping;
+  @Setter
   @Getter
   private List<String> columns = new ArrayList<>();
   @Getter
   private final Comparator[] comparators = Comparator.values();
   @Getter
   private List<String[]> peek;
+  @Setter
   private List<PropertyMapping> fields;
   @Getter
   private final Map<String, Integer> fieldsTermIndices = new HashMap<>();
@@ -106,12 +109,17 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   private final Map<String, Map<String, String>> vocabTerms = new HashMap<>();
   @Getter
   private ExtensionProperty coreid;
+  @Setter
   @Getter
   private ExtensionProperty datasetId;
+  @Setter
   @Getter
   private Integer mid;
+  @Setter
   @Getter
   private PropertyMapping mappingCoreid;
+  @Setter
+  @Getter
   private boolean doiUsedForDatasetId;
 
   @Inject
@@ -538,41 +546,6 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     return INPUT;
   }
 
-  public void setColumns(List<String> columns) {
-    this.columns = columns;
-  }
-
-  public void setFields(List<PropertyMapping> fields) {
-    this.fields = fields;
-  }
-
-  public void setMapping(ExtensionMapping mapping) {
-    this.mapping = mapping;
-  }
-
-  public void setMappingCoreid(PropertyMapping mappingCoreid) {
-    this.mappingCoreid = mappingCoreid;
-  }
-
-  public void setDatasetId(ExtensionProperty datasetId) {
-    this.datasetId = datasetId;
-  }
-
-  public void setMid(Integer mid) {
-    this.mid = mid;
-  }
-
-  /**
-   * @return true if the DOI should be used for the datasetId, false otherwise
-   */
-  public boolean isDoiUsedForDatasetId() {
-    return doiUsedForDatasetId;
-  }
-
-  public void setDoiUsedForDatasetId(boolean doiUsedForDatasetId) {
-    this.doiUsedForDatasetId = doiUsedForDatasetId;
-  }
-
   /**
    * @return true if mapping is a core mapping, false if mapping is an extension mapping
    */
@@ -593,5 +566,10 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @StrutsParameter(depth = 2)
   public List<PropertyMapping> getFields() {
     return fields;
+  }
+
+  @StrutsParameter(depth = 2)
+  public ExtensionMapping getMapping() {
+    return mapping;
   }
 }
