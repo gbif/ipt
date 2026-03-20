@@ -29,6 +29,8 @@ import org.gbif.ipt.validation.UserValidator;
 
 import java.io.IOException;
 import java.io.Serial;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -255,17 +257,33 @@ public class UserAccountsAction extends POSTAction {
         String passwordBeforeSaving = user.getPassword();
         userManager.create(user);
 
-        String emailLink = String.format(EMAIL_NEW_ACCOUNT, user.getEmail(), user.getFirstname(), cfg.getBaseUrl(), user.getEmail(), passwordBeforeSaving, user.getRole());
+        String encodedPassword = URLEncoder.encode(passwordBeforeSaving, StandardCharsets.UTF_8);
+
+        String emailLink = String.format(
+            EMAIL_NEW_ACCOUNT,
+            user.getEmail(),
+            user.getFirstname(),
+            cfg.getBaseUrl(),
+            user.getEmail(),
+            encodedPassword,
+            user.getRole());
 
         LOG.info("User {} has been created by {}", id, currentUser.getEmail());
         addActionMessage(getText("admin.user.added", new String[]{emailLink}));
       } else if (resetPassword) {
         String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
+        String newPasswordEncoded = URLEncoder.encode(newPassword, StandardCharsets.UTF_8);
         String hash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
         user.setPassword(hash);
         userManager.save(user);
 
-        String emailLink = String.format(EMAIL_PASSWORD_CHANGE, user.getEmail(), user.getFirstname(), cfg.getBaseUrl(), user.getEmail(), newPassword);
+        String emailLink = String.format(
+            EMAIL_PASSWORD_CHANGE,
+            user.getEmail(),
+            user.getFirstname(),
+            cfg.getBaseUrl(),
+            user.getEmail(),
+            newPasswordEncoded);
 
         LOG.info("User {} password has been changed by {}", user.getEmail(), currentUser.getEmail());
         addActionMessage(getText("admin.user.passwordChanged", new String[]{user.getEmail(), newPassword, emailLink}));
