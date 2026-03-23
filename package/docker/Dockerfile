@@ -1,4 +1,4 @@
-FROM maven:3.8.8-eclipse-temurin-11 AS builder
+FROM maven:3.9.14-eclipse-temurin-17 AS builder
 
 ARG GIT_REVISION=docker
 
@@ -14,8 +14,8 @@ RUN perl -pi -e 's(\${buildNumber})('${GIT_REVISION}')' src/main/resources/appli
     mvn -DskipTests install && \
     rm target/*.war && mv target/ipt-* target/ipt
 
-FROM tomcat:9.0-jdk17
-LABEL maintainers="Matthew Blissett <mblissett@gbif.org>"
+FROM tomcat:11.0.20-jdk17-temurin
+LABEL maintainers="Mikhail Podolskiy <mpodolskiy@gbif.org>, Matthew Blissett <mblissett@gbif.org>"
 
 ARG IPT_NAME=ROOT
 
