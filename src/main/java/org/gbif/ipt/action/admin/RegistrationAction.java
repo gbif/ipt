@@ -418,22 +418,27 @@ public class RegistrationAction extends POSTAction {
     }
   }
 
+  @StrutsParameter
   public void setRegisteredIptPassword(String registeredIptPassword) {
     this.registeredIptPassword = registeredIptPassword;
   }
 
+  @StrutsParameter
   public void setHostingOrganisationToken(String hostingOrganisationToken) {
     this.hostingOrganisationToken = hostingOrganisationToken;
   }
 
+  @StrutsParameter
   public void setTokenChange(boolean tokenChange) {
     this.tokenChange = tokenChange;
   }
 
+  @StrutsParameter
   public void setNetworkKey(String networkKey) {
     this.networkKey = networkKey;
   }
 
+  @StrutsParameter
   public void setApplyToExistingResources(boolean applyToExistingResources) {
     this.applyToExistingResources = applyToExistingResources;
   }

@@ -276,7 +276,7 @@
                     <form id="registration" class="needs-validation" action="updateRegistration" method="post" novalidate>
                         <div class="row g-3">
                             <div class="col-lg-6">
-                                <@input name="registeredIpt.name" i18nkey="admin.ipt.name" type="text" requiredField=true />
+                                <@input name="registeredIpt.name" value=(registeredIpt.name)! i18nkey="admin.ipt.name" type="text" requiredField=true />
                             </div>
 
                             <div class="col-12">
@@ -289,11 +289,11 @@
                             -->
 
                             <div class="col-lg-6">
-                                <@input name="registeredIpt.primaryContactName" i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
+                                <@input name="registeredIpt.primaryContactName" value=(registeredIpt.primaryContactName)! i18nkey="admin.ipt.primaryContactName" type="text" requiredField=true />
                             </div>
 
                             <div class="col-lg-6">
-                                <@input name="registeredIpt.primaryContactEmail" i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
+                                <@input name="registeredIpt.primaryContactEmail" value=(registeredIpt.primaryContactEmail)! i18nkey="admin.ipt.primaryContactEmail" type="text" requiredField=true />
                             </div>
                         </div>
                     </form>
