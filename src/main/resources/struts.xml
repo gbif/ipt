@@ -31,8 +31,8 @@
 
   <constant name="struts.multipart.parser" value="jakarta"/>
 
-  <constant name="struts.devMode" value="true"/>
-  <constant name="struts.interceptor.params.logParameters" value="true"/>
+<!--  <constant name="struts.devMode" value="true"/>-->
+<!--  <constant name="struts.interceptor.params.logParameters" value="true"/>-->
 
   <!--
      default settings all other packages inherit from
