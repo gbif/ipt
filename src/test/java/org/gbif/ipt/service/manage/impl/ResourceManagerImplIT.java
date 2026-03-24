@@ -239,7 +239,8 @@ public class ResourceManagerImplIT extends IptBaseTest {
                                       DOI doi,
                                       RegistrationManager registrationManager) throws Exception {
     LOG.info("Testing " + type + "...");
-    String expectedDataciteUrl = URI.create("http://www.gbif-uat.org:7001/ipt?r=ants").toString();
+    String expectedDataciteUrl = URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants").toString();
+    String expectedDataciteUrl1_1 = URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants&v=1.1").toString();
 
     // reserve DOI to begin with
     assertNotNull(doi);
@@ -353,11 +354,11 @@ public class ResourceManagerImplIT extends IptBaseTest {
     assertNotNull(doiData.getTarget());
 
     if (type == DOIRegistrationAgency.DATACITE) {
-      assertEquals(URI.create("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").toString(), decodeUrl(doiData.getTarget().toString()));
+      assertEquals(expectedDataciteUrl1_1, decodeUrl(doiData.getTarget().toString()));
     }
   }
 
   private String decodeUrl(String url) throws UnsupportedEncodingException {
-    return URLDecoder.decode(url, StandardCharsets.UTF_8.name());
+    return URLDecoder.decode(url, StandardCharsets.UTF_8);
   }
 }
