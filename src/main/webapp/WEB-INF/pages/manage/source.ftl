@@ -78,6 +78,37 @@
             minimumResultsForSearch: 15,
             theme: 'bootstrap4'
         });
+
+        var $rdbmsInput = $('#rdbms');
+
+        if ($rdbmsInput.val() === "duckdb") {
+            $("#host-block").hide();
+            $("#sqlSource\\.host").hide().prop('disabled', true);
+            $("#username-block").hide();
+            $("#sqlSource\\.username").hide().prop('disabled', true);
+            $("#password-block").hide();
+            $("#sqlSourcePassword").hide().prop('disabled', true);
+        }
+
+        $rdbmsInput.on('change', function() {
+            const db = $(this).val();
+
+            if (db === "duckdb") {
+                $("#host-block").hide();
+                $("#sqlSource\\.host").hide().prop('disabled', true);
+                $("#username-block").hide();
+                $("#sqlSource\\.username").hide().prop('disabled', true);
+                $("#password-block").hide();
+                $("#sqlSourcePassword").hide().prop('disabled', true);
+            } else {
+                $("#host-block").show();
+                $("#sqlSource\\.host").show().prop('disabled', false);
+                $("#username-block").show();
+                $("#sqlSource\\.username").show().prop('disabled', false);
+                $("#password-block").show();
+                $("#sqlSourcePassword").show().prop('disabled', false);
+            }
+        });
     });
 </script>
 <#assign currentMenu = "manage"/>
@@ -302,16 +333,21 @@
                                 <div class="col-lg-6">
                                     <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name!}" i18nkey="sqlSource.rdbms" />
                                 </div>
-                                <div class="col-lg-6">
+                                <#if (source.rdbms.name)?? && source.rdbms.name=="duckdb">
+                                    <#assign displayInput="none"/>
+                                <#else>
+                                    <#assign displayInput="block"/>
+                                </#if>
+                                <div class="col-lg-6" id="host-block" style="display: ${displayInput};">
                                     <@input name="sqlSource.host" value=sqlSource.host! help="i18n"/>
                                 </div>
                                 <div class="col-lg-6">
                                     <@input name="sqlSource.database" value=sqlSource.database! help="i18n"/>
                                 </div>
-                                <div class="col-lg-6">
-                                    <@input name="sqlSource.username" value=sqlSource.username!/>
+                                <div class="col-lg-6" id="username-block" style="display: ${displayInput};">
+                                    <@input name="sqlSource.username" value=sqlSource.username! />
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6" id="password-block" style="display: ${displayInput};">
                                     <@input name="sqlSourcePassword" value=sqlSourcePassword! i18nkey="sqlSource.password" type="password" />
                                 </div>
                                 <div class="col-12">

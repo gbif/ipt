@@ -557,17 +557,21 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         addFieldError("source.name", getText("manage.source.unique"));
       }
       if (source instanceof SqlSource src) {
-        // restore password if it was not sent from the UI
-        if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
-          src.setPassword(sqlSourcePasswordCache);
+        // ignore host and password validation for DuckDB - not applicable
+        if (!"duckdb".equalsIgnoreCase(rdbms)) {
+          // restore password if it was not sent from the UI
+          if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
+            src.setPassword(sqlSourcePasswordCache);
+          }
+
+          // pure ODBC connections need only a DSN, no server
+          if (StringUtils.trimToEmpty(src.getHost()).isEmpty() && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
+            addFieldError("sqlSource.host", getText("validation.required", new String[]{getText("sqlSource.host")}));
+          } else if (StringUtils.trimToEmpty(src.getHost()).length() < 2) {
+            addFieldError("sqlSource.host", getText("validation.short", new String[]{getText("sqlSource.host"), "2"}));
+          }
         }
 
-        // pure ODBC connections need only a DSN, no server
-        if (StringUtils.trimToEmpty(src.getHost()).isEmpty() && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
-          addFieldError("sqlSource.host", getText("validation.required", new String[] {getText("sqlSource.host")}));
-        } else if (StringUtils.trimToEmpty(src.getHost()).length() < 2) {
-          addFieldError("sqlSource.host", getText("validation.short", new String[] {getText("sqlSource.host"), "2"}));
-        }
         if (StringUtils.trimToEmpty(src.getDatabase()).isEmpty()) {
           addFieldError("sqlSource.database",
             getText("validation.required", new String[] {getText("sqlSource.database")}));
@@ -576,6 +580,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
             getText("validation.short", new String[] {getText("sqlSource.database"), "2"}));
         }
       }
+
       // alert user if the number of columns changed
       Integer originalNumberColumns = (Integer) session.get(Constants.SESSION_FILE_NUMBER_COLUMNS);
       if (originalNumberColumns != null) {
