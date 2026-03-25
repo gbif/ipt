@@ -35,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Disabled("These rely on external IPTs")
 public class ReadRSSTest {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(ReadRSSTest.class);
   // timeout in milliseconds for both the connection timeout and the response read timeout
   private static final int TIMEOUT_MILLIS = 2000;

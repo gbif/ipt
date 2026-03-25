@@ -35,6 +35,7 @@ import org.gbif.ipt.validation.ExtensionMappingValidator;
 import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -51,8 +52,11 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+import org.apache.struts2.interceptor.ValidationErrorAware;
 
-import com.opensymphony.xwork2.interceptor.ValidationErrorAware;
+import lombok.Getter;
+import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.CANCEL;
 
@@ -68,9 +72,9 @@ import static org.gbif.ipt.config.Constants.CANCEL;
  */
 public class MappingAction extends ManagerBaseAction implements ValidationErrorAware {
 
+  @Serial
   private static final long serialVersionUID = -831969146160030857L;
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(MappingAction.class);
 
   private static final Pattern NORM_TERM = Pattern.compile("[^a-zA-Z0-9:]+");
@@ -86,18 +90,36 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
   // config
+  @Setter
   private ExtensionMapping mapping;
+  @Setter
+  @Getter
   private List<String> columns = new ArrayList<>();
+  @Getter
   private final Comparator[] comparators = Comparator.values();
+  @Getter
   private List<String[]> peek;
+  @Setter
   private List<PropertyMapping> fields;
-  private Map<String, Integer> fieldsTermIndices = new HashMap<>();
-  private Map<String, List<PropertyMapping>> fieldsByGroup = new LinkedHashMap<>();
+  @Getter
+  private final Map<String, Integer> fieldsTermIndices = new HashMap<>();
+  @Getter
+  private final Map<String, List<PropertyMapping>> fieldsByGroup = new LinkedHashMap<>();
+  @Getter
   private final Map<String, Map<String, String>> vocabTerms = new HashMap<>();
+  @Getter
   private ExtensionProperty coreid;
+  @Setter
+  @Getter
   private ExtensionProperty datasetId;
+  @Setter
+  @Getter
   private Integer mid;
+  @Setter
+  @Getter
   private PropertyMapping mappingCoreid;
+  @Setter
+  @Getter
   private boolean doiUsedForDatasetId;
 
   @Inject
@@ -130,14 +152,14 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
         addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
       }
       for (Term t : v.getMissingRequiredFields()) {
-        addActionWarning(getText("validation.required", new String[] {t.simpleName()}));
+        addActionWarning(getText("validation.required", new String[]{t.simpleName()}));
       }
       for (Term t : v.getWrongDataTypeFields()) {
-        addActionWarning(getText("validation.wrong.datatype", new String[] {t.simpleName()}));
+        addActionWarning(getText("validation.wrong.datatype", new String[]{t.simpleName()}));
       }
       // report columns that have been translated multiple times
       for (String columnName : v.getMultipleTranslationsForSameColumn()) {
-        addActionError(getText("validation.column.multipleTranslations", new String[] {columnName}));
+        addActionError(getText("validation.column.multipleTranslations", new String[]{columnName}));
       }
     }
   }
@@ -205,47 +227,15 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @Override
   public String delete() {
     if (resource.deleteMapping(mapping)) {
-      addActionMessage(getText("manage.mapping.deleted", new String[] {id}));
+      addActionMessage(getText("manage.mapping.deleted", new String[]{id}));
       // set mappings modified date
       resource.setMappingsModified(new Date());
       // save resource
       saveResource();
     } else {
-      addActionMessage(getText("manage.mapping.couldnt.delete", new String[] {id}));
+      addActionMessage(getText("manage.mapping.couldnt.delete", new String[]{id}));
     }
     return SUCCESS;
-  }
-
-  public List<String> getColumns() {
-    return columns;
-  }
-
-  public Comparator[] getComparators() {
-    return comparators;
-  }
-
-  public ExtensionProperty getCoreid() {
-    return coreid;
-  }
-
-  public List<PropertyMapping> getFields() {
-    return fields;
-  }
-
-  public ExtensionMapping getMapping() {
-    return mapping;
-  }
-
-  public PropertyMapping getMappingCoreid() {
-    return mappingCoreid;
-  }
-
-  public ExtensionProperty getDatasetId() {
-    return datasetId;
-  }
-
-  public Integer getMid() {
-    return mid;
   }
 
   /**
@@ -262,7 +252,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
 
     // get list of all columns mapped to fields
     for (PropertyMapping field : fields) {
-      if (field.getIndex() != null && field.getIndex() >=0 && field.getIndex() < columns.size()) {
+      if (field.getIndex() != null && field.getIndex() >= 0 && field.getIndex() < columns.size()) {
         String sourceColumn = columns.get(field.getIndex());
         if (sourceColumn != null) {
           mapped.add(sourceColumn);
@@ -295,14 +285,6 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
       redundantGroups = extensionManager.getRedundantGroups(mapping.getExtension(), core);
     }
     return redundantGroups;
-  }
-
-  public List<String[]> getPeek() {
-    return peek;
-  }
-
-  public Map<String, Map<String, String>> getVocabTerms() {
-    return vocabTerms;
   }
 
   /**
@@ -385,7 +367,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     // skip if it's cancel request
     if (!cancel && !delete && mapping != null && mapping.getExtension() != null) {
 
-      // is source assigned yet?
+      // is the source assigned yet?
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
         String source = StringUtils.trimToNull(req.getParameter("source"));
@@ -407,14 +389,14 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
         // not yet set, the current mapping must be the core type
         coreRowType = mapping.getExtension().getRowType();
       }
-      LOG.info("Core row type: " + coreRowType);
+      LOG.info("Core row type: {}", coreRowType);
 
 
       String coreIdTerm = AppConfig.coreIdTerm(coreRowType);
       coreid = extensionManager.get(coreRowType).getProperty(coreIdTerm);
-      LOG.info("Field representing the id for the core: " + coreid);
+      LOG.info("Field representing the id for the core: {}", coreid);
 
-      // setup the core record id term
+      // set up the core record id term
       mappingCoreid = mapping.getField(coreid.getQualname());
       if (mappingCoreid == null) {
         mappingCoreid = new PropertyMapping();
@@ -422,7 +404,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
         mappingCoreid.setIndex(mapping.getIdColumn());
         fields = new ArrayList<>(mapping.getExtension().getProperties().size());
       } else {
-        fields = new ArrayList<>(mapping.getExtension().getProperties().size() -1);
+        fields = new ArrayList<>(mapping.getExtension().getProperties().size() - 1);
       }
 
       // inspect source
@@ -458,7 +440,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
       if (mapping.getFields().isEmpty()) {
         int automapped = automap();
         if (automapped > 0) {
-          addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
+          addActionMessage(getText("manage.mapping.automaped", new String[]{String.valueOf(automapped)}));
         }
       }
 
@@ -476,7 +458,6 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
    * the existing PropertyMapping. Otherwise, creates a brand new PropertyMapping.
    *
    * @param ep ExtensionProperty
-   *
    * @return PropertyMapping created
    */
   private PropertyMapping populatePropertyMapping(ExtensionProperty ep) {
@@ -497,7 +478,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     } else {
       try {
         peek = sourceManager.peek(src, 5);
-        // If user wants to import a source without a header lines, the columns are going to be numbered with the first
+        // If a user wants to import a source without a header lines, the columns are going to be numbered with the first
         // non-null value as an example. Otherwise, read the file/database normally.
         if ((src.isUrlSource() || src.isFileSource())
             && ((SourceWithHeader) src).getIgnoreHeaderLines() == 0) {
@@ -556,62 +537,13 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     LOG.debug("mapping saved..");
 
     // encode id (rowType) before redirect (might be issues with '#' and other characters)
-    id = URLEncoder.encode(id, StandardCharsets.UTF_8.toString());
+    id = URLEncoder.encode(id, StandardCharsets.UTF_8);
 
     return "save";
   }
 
   public String saveSetSource() {
     return INPUT;
-  }
-
-  public void setColumns(List<String> columns) {
-    this.columns = columns;
-  }
-
-  public void setFields(List<PropertyMapping> fields) {
-    this.fields = fields;
-  }
-
-  public void setMapping(ExtensionMapping mapping) {
-    this.mapping = mapping;
-  }
-
-  public void setMappingCoreid(PropertyMapping mappingCoreid) {
-    this.mappingCoreid = mappingCoreid;
-  }
-
-  public void setDatasetId(ExtensionProperty datasetId) {
-    this.datasetId = datasetId;
-  }
-
-  public void setMid(Integer mid) {
-    this.mid = mid;
-  }
-
-  /**
-   * @return true if the DOI should be used for the datasetId, false otherwise
-   */
-  public boolean isDoiUsedForDatasetId() {
-    return doiUsedForDatasetId;
-  }
-
-  public void setDoiUsedForDatasetId(boolean doiUsedForDatasetId) {
-    this.doiUsedForDatasetId = doiUsedForDatasetId;
-  }
-
-  /**
-   * Called from Freemarker template.
-   */
-  public Map<String, List<PropertyMapping>> getFieldsByGroup() {
-    return fieldsByGroup;
-  }
-
-  /**
-   * Called from Freemarker template.
-   */
-  public Map<String, Integer> getFieldsTermIndices() {
-    return fieldsTermIndices;
   }
 
   /**
@@ -629,5 +561,15 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @Override
   public String actionErrorOccurred(String currentResultName) {
     return defaultResult;
+  }
+
+  @StrutsParameter(depth = 2)
+  public List<PropertyMapping> getFields() {
+    return fields;
+  }
+
+  @StrutsParameter(depth = 2)
+  public ExtensionMapping getMapping() {
+    return mapping;
   }
 }

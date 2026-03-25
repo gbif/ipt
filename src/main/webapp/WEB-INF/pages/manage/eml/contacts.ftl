@@ -321,16 +321,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5">
-                                            <@input name="eml.contacts[${contact_index}].firstName" i18nkey="eml.contact.firstName"/>
+                                            <@input name="eml.contacts[${contact_index}].firstName" value=(contact.firstName)! i18nkey="eml.contact.firstName"/>
                                         </div>
                                         <div class="col-md-5">
-                                            <@input name="eml.contacts[${contact_index}].lastName" i18nkey="eml.contact.lastName" />
+                                            <@input name="eml.contacts[${contact_index}].lastName" value=(contact.lastName)! i18nkey="eml.contact.lastName" />
                                         </div>
                                         <div class="col-md-2">
-                                            <@input name="eml.contacts[${contact_index}].salutation" i18nkey="eml.contact.salutation"/>
+                                            <@input name="eml.contacts[${contact_index}].salutation" value=(contact.salutation)! i18nkey="eml.contact.salutation"/>
                                         </div>
                                         <div class="col-md-6">
-                                            <@input name="eml.contacts[${contact_index}].organisation" i18nkey="eml.contact.organisation"  />
+                                            <@input name="eml.contacts[${contact_index}].organisation" value=(contact.organisation)! i18nkey="eml.contact.organisation"  />
                                         </div>
                                         <div class="col-12">
                                             <div id="contact-${contact_index}-positions" class="contact-positions">
@@ -352,7 +352,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.contacts[${contact_index}].position[${position_index}]" i18nkey="eml.contact.position" withLabel=false />
+                                                                    <@input name="eml.contacts[${contact_index}].position[${position_index}]" value=position! i18nkey="eml.contact.position" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="contact-position-remove-${contact_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
@@ -389,7 +389,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.contacts[${contact_index}].address.address[${address_index}]" i18nkey="eml.contact.address.address" withLabel=false />
+                                                                    <@input name="eml.contacts[${contact_index}].address.address[${address_index}]" value=address! i18nkey="eml.contact.address.address" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="contact-address-remove-${contact_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
@@ -407,16 +407,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-lg-4">
-                                            <@input name="eml.contacts[${contact_index}].address.city" i18nkey="eml.contact.address.city" />
+                                            <@input name="eml.contacts[${contact_index}].address.city" value=(contact.address.city)! i18nkey="eml.contact.address.city" />
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <@input name="eml.contacts[${contact_index}].address.province" i18nkey="eml.contact.address.province" />
+                                            <@input name="eml.contacts[${contact_index}].address.province" value=(contact.address.province)! i18nkey="eml.contact.address.province" />
                                         </div>
                                         <div class="countryList col-md-6 col-lg-3">
-                                            <@select name="eml.contacts[${contact_index}].address.country" help="i18n" options=countries i18nkey="eml.contact.address.country" value="${eml.contacts[contact_index].address.country!}"/>
+                                            <@select name="eml.contacts[${contact_index}].address.country" value=(contact.address.country)! help="i18n" options=countries i18nkey="eml.contact.address.country" value="${eml.contacts[contact_index].address.country!}"/>
                                         </div>
                                         <div class="col-md-6 col-lg-2">
-                                            <@input name="eml.contacts[${contact_index}].address.postalCode" i18nkey="eml.contact.address.postalCode" />
+                                            <@input name="eml.contacts[${contact_index}].address.postalCode" value=(contact.address.postalCode)! i18nkey="eml.contact.address.postalCode" />
                                         </div>
                                         <div class="col-12">
                                             <div id="contact-${contact_index}-phones" class="contact-phones">
@@ -438,7 +438,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.contacts[${contact_index}].phone[${phone_index}]" i18nkey="eml.contact.phone" withLabel=false />
+                                                                    <@input name="eml.contacts[${contact_index}].phone[${phone_index}]" value=phone! i18nkey="eml.contact.phone" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="contact-phone-remove-${contact_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
@@ -475,7 +475,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.contacts[${contact_index}].email[${email_index}]" i18nkey="eml.contact.email" withLabel=false />
+                                                                    <@input name="eml.contacts[${contact_index}].email[${email_index}]" value=email! i18nkey="eml.contact.email" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="contact-email-remove-${contact_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
@@ -512,7 +512,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.contacts[${contact_index}].homepage[${homepage_index}]" i18nkey="eml.contact.homepage" type="url" withLabel=false />
+                                                                    <@input name="eml.contacts[${contact_index}].homepage[${homepage_index}]" value=homepage! i18nkey="eml.contact.homepage" type="url" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="contact-homepage-remove-${contact_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
@@ -560,7 +560,7 @@
                                                             </div>
                                                             <div class="col-md-4 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
+                                                                    <@input name="eml.contacts[${contact_index}].userIds[${userId_index}].identifier" value=(userId.identifier)! help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="contact-identifier-remove-${contact_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
@@ -621,13 +621,13 @@
                                     <@input name="eml.contact.firstName" i18nkey="eml.contact.firstName"/>
                                 </div>
                                 <div class="col-md-5">
-                                    <@input name="eml.contact.lastName" i18nkey="eml.contact.lastName" />
+                                    <@input name="eml.contact.lastName" i18nkey="eml.contact.lastName"/>
                                 </div>
                                 <div class="col-md-2">
                                     <@input name="eml.contact.salutation" i18nkey="eml.contact.salutation"/>
                                 </div>
                                 <div class="col-md-6">
-                                    <@input name="eml.contact.organisation" i18nkey="eml.contact.organisation"  />
+                                    <@input name="eml.contact.organisation" i18nkey="eml.contact.organisation"/>
                                 </div>
                                 <div class="col-12">
                                     <div id="contact-positions" class="contact-positions">
@@ -793,16 +793,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5">
-                                            <@input name="eml.creators[${creator_index}].firstName" i18nkey="eml.resourceCreator.firstName"/>
+                                            <@input name="eml.creators[${creator_index}].firstName" value=(creator.firstName)! i18nkey="eml.resourceCreator.firstName"/>
                                         </div>
                                         <div class="col-md-5">
-                                            <@input name="eml.creators[${creator_index}].lastName" i18nkey="eml.resourceCreator.lastName" />
+                                            <@input name="eml.creators[${creator_index}].lastName" value=(creator.lastName)! i18nkey="eml.resourceCreator.lastName" />
                                         </div>
                                         <div class="col-md-2">
-                                            <@input name="eml.creators[${creator_index}].salutation" i18nkey="eml.resourceCreator.salutation"/>
+                                            <@input name="eml.creators[${creator_index}].salutation" value=(creator.salutation)! i18nkey="eml.resourceCreator.salutation"/>
                                         </div>
                                         <div class="col-md-6">
-                                            <@input name="eml.creators[${creator_index}].organisation" i18nkey="eml.resourceCreator.organisation"  />
+                                            <@input name="eml.creators[${creator_index}].organisation" value=(creator.organisation)! i18nkey="eml.resourceCreator.organisation"  />
                                         </div>
                                         <div class="col-12">
                                             <div id="creator-${creator_index}-positions" class="creator-positions">
@@ -824,7 +824,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.creators[${creator_index}].position[${position_index}]" i18nkey="eml.resourceCreator.position" withLabel=false />
+                                                                    <@input name="eml.creators[${creator_index}].position[${position_index}]" value=position! i18nkey="eml.resourceCreator.position" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="creator-position-remove-${creator_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
@@ -861,7 +861,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.creators[${creator_index}].address.address[${address_index}]" i18nkey="eml.creator.address.address" withLabel=false />
+                                                                    <@input name="eml.creators[${creator_index}].address.address[${address_index}]" value=address! i18nkey="eml.creator.address.address" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="creator-address-remove-${creator_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
@@ -879,16 +879,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-lg-4">
-                                            <@input name="eml.creators[${creator_index}].address.city" i18nkey="eml.resourceCreator.address.city" />
+                                            <@input name="eml.creators[${creator_index}].address.city" value=(creator.address.city)! i18nkey="eml.resourceCreator.address.city" />
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <@input name="eml.creators[${creator_index}].address.province" i18nkey="eml.resourceCreator.address.province" />
+                                            <@input name="eml.creators[${creator_index}].address.province" value=(creator.address.province)! i18nkey="eml.resourceCreator.address.province" />
                                         </div>
                                         <div class="countryList col-md-6 col-lg-3">
-                                            <@select name="eml.creators[${creator_index}].address.country" help="i18n" options=countries i18nkey="eml.resourceCreator.address.country" value="${eml.creators[creator_index].address.country!}"/>
+                                            <@select name="eml.creators[${creator_index}].address.country" value=(creator.address.country)! help="i18n" options=countries i18nkey="eml.resourceCreator.address.country" value="${eml.creators[creator_index].address.country!}"/>
                                         </div>
                                         <div class="col-md-6 col-lg-2">
-                                            <@input name="eml.creators[${creator_index}].address.postalCode" i18nkey="eml.resourceCreator.address.postalCode" />
+                                            <@input name="eml.creators[${creator_index}].address.postalCode" value=(creator.address.postalCode)! i18nkey="eml.resourceCreator.address.postalCode" />
                                         </div>
                                         <div class="col-12">
                                             <div id="creator-${creator_index}-phones" class="creator-phones">
@@ -910,7 +910,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.creators[${creator_index}].phone[${phone_index}]" i18nkey="eml.creator.phone" withLabel=false />
+                                                                    <@input name="eml.creators[${creator_index}].phone[${phone_index}]" value=phone! i18nkey="eml.creator.phone" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="creator-phone-remove-${creator_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
@@ -947,7 +947,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.creators[${creator_index}].email[${email_index}]" i18nkey="eml.resourceCreator.email" withLabel=false />
+                                                                    <@input name="eml.creators[${creator_index}].email[${email_index}]" value=email! i18nkey="eml.resourceCreator.email" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="creator-email-remove-${creator_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
@@ -984,7 +984,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.creators[${creator_index}].homepage[${homepage_index}]" i18nkey="eml.resourceCreator.homepage" withLabel=false />
+                                                                    <@input name="eml.creators[${creator_index}].homepage[${homepage_index}]" value=homepage! i18nkey="eml.resourceCreator.homepage" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="creator-homepage-remove-${creator_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
@@ -1032,7 +1032,7 @@
                                                             </div>
                                                             <div class="col-md-4 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
+                                                                    <@input name="eml.creators[${creator_index}].userIds[${userId_index}].identifier" value=(userId.identifier)! help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="creator-identifier-remove-${creator_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
@@ -1271,16 +1271,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5">
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].firstName" i18nkey="eml.metadataProvider.firstName"/>
+                                            <@input name="eml.metadataProviders[${metadataProvider_index}].firstName" value=(metadataProvider.firstName)! i18nkey="eml.metadataProvider.firstName"/>
                                         </div>
                                         <div class="col-md-5">
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].lastName" i18nkey="eml.metadataProvider.lastName" />
+                                            <@input name="eml.metadataProviders[${metadataProvider_index}].lastName" value=(metadataProvider.lastName)! i18nkey="eml.metadataProvider.lastName" />
                                         </div>
                                         <div class="col-md-2">
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].salutation" i18nkey="eml.metadataProvider.salutation"/>
+                                            <@input name="eml.metadataProviders[${metadataProvider_index}].salutation" value=(metadataProvider.salutation)! i18nkey="eml.metadataProvider.salutation"/>
                                         </div>
                                         <div class="col-md-6">
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].organisation" i18nkey="eml.metadataProvider.organisation" />
+                                            <@input name="eml.metadataProviders[${metadataProvider_index}].organisation" value=(metadataProvider.organisation)! i18nkey="eml.metadataProvider.organisation" />
                                         </div>
                                         <div class="col-12">
                                             <div id="metadataProvider-${metadataProvider_index}-positions" class="metadataProvider-positions">
@@ -1302,7 +1302,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].position[${position_index}]" i18nkey="eml.metadataProvider.position" withLabel=false />
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].position[${position_index}]" value=position! i18nkey="eml.metadataProvider.position" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="metadataProvider-position-remove-${metadataProvider_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
@@ -1339,7 +1339,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].address.address[${address_index}]" i18nkey="eml.metadataProvider.address" withLabel=false />
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].address.address[${address_index}]" value=address! i18nkey="eml.metadataProvider.address" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="metadataProvider-address-remove-${metadataProvider_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
@@ -1357,16 +1357,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-lg-4">
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].address.city" i18nkey="eml.metadataProvider.address.city" />
+                                            <@input name="eml.metadataProviders[${metadataProvider_index}].address.city" value=(metadataProvider.address.city)! i18nkey="eml.metadataProvider.address.city" />
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].address.province" i18nkey="eml.metadataProvider.address.province" />
+                                            <@input name="eml.metadataProviders[${metadataProvider_index}].address.province" value=(metadataProvider.address.province)! i18nkey="eml.metadataProvider.address.province" />
                                         </div>
                                         <div class="countryList col-md-6 col-lg-3">
-                                            <@select name="eml.metadataProviders[${metadataProvider_index}].address.country" help="i18n" options=countries i18nkey="eml.metadataProvider.address.country" value="${eml.metadataProviders[metadataProvider_index].address.country!}"/>
+                                            <@select name="eml.metadataProviders[${metadataProvider_index}].address.country" value=(metadataProvider.address.country)! help="i18n" options=countries i18nkey="eml.metadataProvider.address.country" value="${eml.metadataProviders[metadataProvider_index].address.country!}"/>
                                         </div>
                                         <div class="col-md-6 col-lg-2">
-                                            <@input name="eml.metadataProviders[${metadataProvider_index}].address.postalCode" i18nkey="eml.metadataProvider.address.postalCode" />
+                                            <@input name="eml.metadataProviders[${metadataProvider_index}].address.postalCode" value=(metadataProvider.address.postalCode)! i18nkey="eml.metadataProvider.address.postalCode" />
                                         </div>
                                         <div class="col-12">
                                             <div id="metadataProvider-${metadataProvider_index}-phones" class="metadataProvider-phones">
@@ -1388,7 +1388,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].phone[${phone_index}]" i18nkey="eml.metadataProvider.phone" withLabel=false />
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].phone[${phone_index}]" value=phone! i18nkey="eml.metadataProvider.phone" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="metadataProvider-phone-remove-${metadataProvider_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
@@ -1425,7 +1425,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].email[${email_index}]" i18nkey="eml.metadataProvider.email" withLabel=false />
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].email[${email_index}]" value=email! i18nkey="eml.metadataProvider.email" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="metadataProvider-email-remove-${metadataProvider_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
@@ -1462,7 +1462,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].homepage[${homepage_index}]" i18nkey="eml.metadataProvider.homepage" withLabel=false />
+                                                                    <@input name="eml.metadataProviders[${metadataProvider_index}].homepage[${homepage_index}]" value=homepage! i18nkey="eml.metadataProvider.homepage" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="metadataProvider-homepage-remove-${metadataProvider_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
@@ -1509,7 +1509,7 @@
                                                                 <@select name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
+                                                                <@input name="eml.metadataProviders[${metadataProvider_index}].userIds[${userId_index}].identifier" value=(userId.identifier)! help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
                                                             </div>
                                                             <div class="col-md-4 mb-auto py-1">
                                                                 <a id="metadataProvider-identifier-remove-${metadataProvider_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
@@ -1877,16 +1877,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5">
-                                            <@input name="eml.associatedParties[${item_index}].firstName" i18nkey="eml.associatedParties.firstName"/>
+                                            <@input name="eml.associatedParties[${item_index}].firstName" value=(item.firstName)! i18nkey="eml.associatedParties.firstName"/>
                                         </div>
                                         <div class="col-md-5">
-                                            <@input name="eml.associatedParties[${item_index}].lastName" i18nkey="eml.associatedParties.lastName" />
+                                            <@input name="eml.associatedParties[${item_index}].lastName" value=(item.lastName)! i18nkey="eml.associatedParties.lastName" />
                                         </div>
                                         <div class="col-md-2">
-                                            <@input name="eml.associatedParties[${item_index}].salutation" i18nkey="eml.associatedParties.salutation"/>
+                                            <@input name="eml.associatedParties[${item_index}].salutation" value=(item.salutation)! i18nkey="eml.associatedParties.salutation"/>
                                         </div>
                                         <div class="col-md-6">
-                                            <@input name="eml.associatedParties[${item_index}].organisation" i18nkey="eml.associatedParties.organisation"  />
+                                            <@input name="eml.associatedParties[${item_index}].organisation" value=(item.organisation)! i18nkey="eml.associatedParties.organisation"  />
                                         </div>
                                         <div class="col-md-6">
                                             <@select name="eml.associatedParties[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${(eml.associatedParties[item_index].role)!}" options=roles />
@@ -1911,7 +1911,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.associatedParties[${item_index}].position[${position_index}]" i18nkey="eml.associatedParties.position" withLabel=false />
+                                                                    <@input name="eml.associatedParties[${item_index}].position[${position_index}]" value=position! i18nkey="eml.associatedParties.position" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="associatedParty-position-remove-${item_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
@@ -1948,7 +1948,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.associatedParties[${item_index}].address.address[${address_index}]" i18nkey="eml.associatedParties.address.address" withLabel=false />
+                                                                    <@input name="eml.associatedParties[${item_index}].address.address[${address_index}]" value=address! i18nkey="eml.associatedParties.address.address" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="associatedParty-address-remove-${item_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
@@ -1966,16 +1966,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 col-lg-4">
-                                            <@input name="eml.associatedParties[${item_index}].address.city" i18nkey="eml.associatedParties.address.city" />
+                                            <@input name="eml.associatedParties[${item_index}].address.city" value=(item.address.city)! i18nkey="eml.associatedParties.address.city" />
                                         </div>
                                         <div class="col-md-6 col-lg-3">
-                                            <@input name="eml.associatedParties[${item_index}].address.province" i18nkey="eml.associatedParties.address.province" />
+                                            <@input name="eml.associatedParties[${item_index}].address.province" value=(item.address.province)! i18nkey="eml.associatedParties.address.province" />
                                         </div>
                                         <div class="countryList col-md-6 col-lg-3">
-                                            <@select name="eml.associatedParties[${item_index}].address.country" help="i18n" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
+                                            <@select name="eml.associatedParties[${item_index}].address.country" value=(item.address.country)! help="i18n" options=countries i18nkey="eml.associatedParties.address.country" value="${eml.associatedParties[item_index].address.country!}"/>
                                         </div>
                                         <div class="col-md-6 col-lg-2">
-                                            <@input name="eml.associatedParties[${item_index}].address.postalCode" i18nkey="eml.associatedParties.address.postalCode" />
+                                            <@input name="eml.associatedParties[${item_index}].address.postalCode" value=(item.address.postalCode)! i18nkey="eml.associatedParties.address.postalCode" />
                                         </div>
                                         <div class="col-12">
                                             <div id="associatedParty-${item_index}-phones" class="associatedParty-phones">
@@ -1997,7 +1997,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.associatedParties[${item_index}].phone[${phone_index}]" i18nkey="eml.associatedParties.phone" withLabel=false />
+                                                                    <@input name="eml.associatedParties[${item_index}].phone[${phone_index}]" value=phone! i18nkey="eml.associatedParties.phone" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="associatedParty-phone-remove-${item_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
@@ -2034,7 +2034,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.associatedParties[${item_index}].email[${email_index}]" i18nkey="eml.associatedParties.email" withLabel=false />
+                                                                    <@input name="eml.associatedParties[${item_index}].email[${email_index}]" value=email! i18nkey="eml.associatedParties.email" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="associatedParty-email-remove-${item_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
@@ -2071,7 +2071,7 @@
                                                         <div class="row g-2 mt-0">
                                                             <div class="col-md-6 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.associatedParties[${item_index}].homepage[${homepage_index}]" i18nkey="eml.associatedParties.homepage" type="url" withLabel=false />
+                                                                    <@input name="eml.associatedParties[${item_index}].homepage[${homepage_index}]" value=homepage! i18nkey="eml.associatedParties.homepage" type="url" withLabel=false />
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="associatedParty-homepage-remove-${item_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
@@ -2119,7 +2119,7 @@
                                                             </div>
                                                             <div class="col-md-4 d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <@input name="eml.associatedParties[${item_index}].userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.associatedParties.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
+                                                                    <@input name="eml.associatedParties[${item_index}].userIds[${userId_index}].identifier" value=(userId.identifier)! help="i18n" i18nkey="eml.associatedParties.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
                                                                 </div>
                                                                 <div class="mb-auto py-1 ps-1">
                                                                     <a id="associatedParty-identifier-remove-${item_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">

@@ -17,16 +17,16 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
 
+import java.io.Serial;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.AbstractInterceptor;
 
 import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
 
@@ -35,7 +35,9 @@ import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
  */
 public class RequireAdminInterceptor extends AbstractInterceptor {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = -975622498498574759L;
+
   private static final Logger LOG = LogManager.getLogger(RequireAdminInterceptor.class);
 
   @Override
@@ -52,7 +54,7 @@ public class RequireAdminInterceptor extends AbstractInterceptor {
 
       String queryString = request.getQueryString();
       String referer = request.getServletPath();
-      // check if there is query string, if so append it
+      // check if there is a query string, if so append it
       if (queryString != null) {
         referer = referer + '?' + queryString;
       }

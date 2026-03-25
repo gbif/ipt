@@ -50,7 +50,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -64,7 +65,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class GenerateDCAT {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(GenerateDCAT.class);
 
   private static final String DCAT_SETTINGS = "org/gbif/metadata/eml/dcatsettings.properties";
@@ -117,10 +117,10 @@ public class GenerateDCAT {
     // determine caching time, from settings
     long cacheTime;
     try {
-     cacheTime = Long.parseLong(settings.get(CACHING_TIME_KEY));
+      cacheTime = Long.parseLong(settings.get(CACHING_TIME_KEY));
     } catch (NumberFormatException e) {
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
-        "Invalid caching time in properties file: " + DCAT_SETTINGS);
+          "Invalid caching time in properties file: " + DCAT_SETTINGS);
     }
 
     long now = System.currentTimeMillis();
@@ -159,7 +159,7 @@ public class GenerateDCAT {
       Organisation org = registrationManager.getHostingOrganisation();
       String publisher = publisherBaselink + org.getKey() + "#Organization";
       String organisation =
-        encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\"";
+          encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + org.getName() + "\"";
       if (org.getHomepageURL() != null) {
         String homepagesStrWithoutBrackets = StringUtils.substringBetween(org.getHomepageURL(), "[", "]");
 
@@ -194,8 +194,8 @@ public class GenerateDCAT {
         String shortname = resource.getShortname();
         File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
         Resource publishedPublicVersion = ResourceUtils.reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(),
-          resource.getAssignedDoi(), resource.getOrganisation(), resource.findVersionHistory(v), versionEmlFile,
-          resource.getKey());
+            resource.getAssignedDoi(), resource.getOrganisation(), resource.findVersionHistory(v), versionEmlFile,
+            resource.getKey());
 
         // make sure it has a license
         if (publishedPublicVersion.getEml() != null && publishedPublicVersion.getEml().parseLicenseUrl() != null) {
@@ -210,8 +210,8 @@ public class GenerateDCAT {
           if (publishedPublicVersion.getOrganisation() != null) {
             String publisher = publisherBaselink + publishedPublicVersion.getOrganisation().getKey() + "#Organization";
             String organisation =
-              encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + publishedPublicVersion
-                .getOrganisation().getName() + "\"";
+                encapsulateObject(publisher, ObjectTypes.RESOURCE) + " a foaf:Agent ; foaf:name \"" + publishedPublicVersion
+                    .getOrganisation().getName() + "\"";
             if (publishedPublicVersion.getOrganisation().getHomepageURL() != null) {
               String homepagesStrWithoutBrackets = StringUtils.substringBetween(
                   publishedPublicVersion.getOrganisation().getHomepageURL(), "[", "]");
@@ -234,8 +234,8 @@ public class GenerateDCAT {
 
           //add Themes of datasets
           themes.add(
-            encapsulateObject(themeUri, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + datasetThemeLabel
-            + "\"@en ; skos:inScheme <" + themeTaxonomyUri + "> .");
+              encapsulateObject(themeUri, ObjectTypes.RESOURCE) + " a skos:Concept ; skos:prefLabel \"" + datasetThemeLabel
+                  + "\"@en ; skos:inScheme <" + themeTaxonomyUri + "> .");
 
         }
       }
@@ -270,7 +270,7 @@ public class GenerateDCAT {
 
     try (InputStream configStream = streamUtils.classpathStream(DCAT_SETTINGS)) {
       if (configStream == null) {
-        LOG.error("Failed to load DCAT settings: " + DCAT_SETTINGS);
+        LOG.error("Failed to load DCAT settings: {}", DCAT_SETTINGS);
       } else {
         Properties properties = new Properties();
         properties.load(configStream);
@@ -281,13 +281,13 @@ public class GenerateDCAT {
             loadedSettings.put(key, value);
           } else {
             throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
-              "Invalid properties file: " + DCAT_SETTINGS);
+                "Invalid properties file: " + DCAT_SETTINGS);
           }
         }
-        LOG.debug("Loaded static DCAT settings: " + loadedSettings);
+        LOG.debug("Loaded static DCAT settings: {}", loadedSettings);
       }
     } catch (Exception e) {
-      LOG.error("Failed to load DCAT settings from: " + DCAT_SETTINGS, e);
+      LOG.error("Failed to load DCAT settings from: {}", DCAT_SETTINGS, e);
     }
     return loadedSettings;
   }
@@ -300,7 +300,7 @@ public class GenerateDCAT {
     InputStreamUtils streamUtils = new InputStreamUtils();
     try (InputStream configStream = streamUtils.classpathStream(PREFIXES_PROPERTIES);) {
       if (configStream == null) {
-        LOG.error("Could not load DCAT prefixes from file: " + PREFIXES_PROPERTIES);
+        LOG.error("Could not load DCAT prefixes from file: {}", PREFIXES_PROPERTIES);
       } else {
         Properties properties = new Properties();
         properties.load(configStream);
@@ -311,10 +311,10 @@ public class GenerateDCAT {
             prefixes.put(key, value);
           } else {
             throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
-              "Invalid properties file: " + PREFIXES_PROPERTIES);
+                "Invalid properties file: " + PREFIXES_PROPERTIES);
           }
         }
-        LOG.debug("Loaded DCAT prefixes: " + prefixes);
+        LOG.debug("Loaded DCAT prefixes: {}", prefixes);
       }
     } catch (Exception e) {
       LOG.error("Exception while loading DCAT prefixes", e);
@@ -442,8 +442,8 @@ public class GenerateDCAT {
       if (themeTaxonomyUri != null && catalogThemeTitle != null) {
         addPredicateToBuilder(catalogBuilder, "dcat:themeTaxonomy");
         themeTaxonomies.add(
-          encapsulateObject(themeTaxonomyUri, ObjectTypes.RESOURCE) + " a skos:ConceptScheme ; dct:title \""
-          + catalogThemeTitle + "\"@en .");
+            encapsulateObject(themeTaxonomyUri, ObjectTypes.RESOURCE) + " a skos:ConceptScheme ; dct:title \""
+                + catalogThemeTitle + "\"@en .");
         addObjectToBuilder(catalogBuilder, themeTaxonomyUri, ObjectTypes.RESOURCE);
       }
 
@@ -458,8 +458,8 @@ public class GenerateDCAT {
       if (cfg.getLongitude() != null && cfg.getLatitude() != null) {
         addPredicateToBuilder(catalogBuilder, "dct:spatial");
         String spatial =
-          " a dct:Location ; locn:geometry \"" + "{ \\\"type\\\": \\\"Point\\\", \\\"coordinates\\\": [ " + cfg
-            .getLongitude() + "," + cfg.getLatitude() + " ] }\" ";
+            " a dct:Location ; locn:geometry \"" + "{ \\\"type\\\": \\\"Point\\\", \\\"coordinates\\\": [ " + cfg
+                .getLongitude() + "," + cfg.getLatitude() + " ] }\" ";
         addObjectToBuilder(catalogBuilder, spatial, ObjectTypes.OBJECT);
       } else {
         LOG.debug("No spatial data defined for the IPT");
@@ -512,7 +512,6 @@ public class GenerateDCAT {
    * </p>
    *
    * @param resource resource to create DCAT Dataset from
-   *
    * @return String DCAT Dataset for one resource
    */
   protected String createDCATDatasetInformation(Resource resource) {
@@ -588,11 +587,11 @@ public class GenerateDCAT {
       BBox bb = coverage.getBoundingCoordinates();
       addPredicateToBuilder(datasetBuilder, "dct:spatial");
       String spatial =
-        " a dct:Location ; locn:geometry \"" + "{ \\\"type\\\": \\\"Polygon\\\", \\\"coordinates\\\": [ [ [" + bb
-          .getMin().getLongitude() + "," + bb.getMin().getLatitude() + "], [" + bb.getMin().getLongitude() + "," + bb
-          .getMax().getLatitude() + "], [" + bb.getMax().getLongitude() + "," + bb.getMax().getLatitude() + "], [" + bb
-          .getMax().getLongitude() + "," + bb.getMin().getLatitude() + "], [" + bb.getMin().getLongitude() + "," + bb
-          .getMin().getLatitude() + "] ] ] }" + "\" ";
+          " a dct:Location ; locn:geometry \"" + "{ \\\"type\\\": \\\"Polygon\\\", \\\"coordinates\\\": [ [ [" + bb
+              .getMin().getLongitude() + "," + bb.getMin().getLatitude() + "], [" + bb.getMin().getLongitude() + "," + bb
+              .getMax().getLatitude() + "], [" + bb.getMax().getLongitude() + "," + bb.getMax().getLatitude() + "], [" + bb
+              .getMax().getLongitude() + "," + bb.getMin().getLatitude() + "], [" + bb.getMin().getLongitude() + "," + bb
+              .getMin().getLatitude() + "] ] ] }" + "\" ";
       addObjectToBuilder(datasetBuilder, spatial, ObjectTypes.OBJECT);
     }
 
@@ -600,7 +599,7 @@ public class GenerateDCAT {
     if (resource.getLastPublishedVersionsVersion() != null) {
       addPredicateToBuilder(datasetBuilder, "adms:versionInfo");
       addObjectToBuilder(datasetBuilder, resource.getLastPublishedVersionsVersion().toPlainString(),
-        ObjectTypes.LITERAL);
+          ObjectTypes.LITERAL);
     }
 
     //adms:versionNotes
@@ -647,7 +646,7 @@ public class GenerateDCAT {
       addPredicateToBuilder(datasetBuilder, "dct:language");
       ParseResult<Language> result = LANGUAGE_PARSER.parse(eml.getMetadataLanguage());
       String ln = result.isSuccessful() ? languageLink + result.getPayload().getIso2LetterCode().toLowerCase()
-        : languageLink + "en";
+          : languageLink + "en";
       addObjectToBuilder(datasetBuilder, ln, ObjectTypes.RESOURCE);
     }
 
@@ -669,7 +668,6 @@ public class GenerateDCAT {
    * </ul>
    *
    * @param resource resource to create the DCAT Distribution from
-   *
    * @return String DCAT Distribution for one resource
    */
   protected String createDCATDistributionInformation(Resource resource) {
@@ -713,7 +711,7 @@ public class GenerateDCAT {
     //dcat:accessURL
     addPredicateToBuilder(distributionBuilder, "dcat:accessURL");
     String accessURLClass =
-      encapsulateObject(cfg.getResourceUrl(resource.getShortname()), ObjectTypes.RESOURCE) + " a rdfs:Resource .";
+        encapsulateObject(cfg.getResourceUrl(resource.getShortname()), ObjectTypes.RESOURCE) + " a rdfs:Resource .";
     addObjectToBuilder(distributionBuilder, cfg.getResourceUrl(resource.getShortname()), ObjectTypes.RESOURCE);
 
     distributionBuilder.append(" .\n");
@@ -755,8 +753,8 @@ public class GenerateDCAT {
    * @param type    type of the objects (Literals, resources or objects)
    */
   private void addObjectsToBuilder(@NotNull StringBuilder builder, @NotNull List<String> objects,
-    @NotNull ObjectTypes type) {
-    if (objects.size() == 0) {
+                                   @NotNull ObjectTypes type) {
+    if (objects.isEmpty()) {
       throw new IllegalArgumentException();
     }
 
@@ -828,7 +826,6 @@ public class GenerateDCAT {
    * Parse a Date to the ISO 8601 standard.
    *
    * @param dateStamp Date
-   *
    * @return ISO8601 string representation for a date
    */
   private String parseToIsoDate(@NotNull Date dateStamp) {
@@ -840,10 +837,9 @@ public class GenerateDCAT {
    * Escape sequence specified in <a href="http://www.w3.org/TeamSubmission/turtle/#sec-strings">Turtle specification</a>.
    *
    * @param s string
-   *
    * @return escaped string
    */
   private String escapeString(String s) {
-    return (s == null) ? null : s.replaceAll("\"","\\\\\"");
+    return (s == null) ? null : s.replaceAll("\"", "\\\\\"");
   }
 }

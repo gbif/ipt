@@ -13,28 +13,29 @@
  */
 package org.gbif.ipt.validation;
 
-import org.gbif.ipt.model.datapackage.metadata.License;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 
 import java.util.List;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
-import org.apache.commons.lang3.StringUtils;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-public class HasGbifCompatibleLicenseValidator implements ConstraintValidator<HasGbifCompatibleLicense, List<License>> {
+import org.apache.commons.lang3.Strings;
+
+public class HasGbifCompatibleLicenseValidator implements ConstraintValidator<HasGbifCompatibleLicense, List<? extends FrictionlessLicense>> {
 
   private static final String[] GBIF_COMPATIBLE_LICENSES = {"CC0-1.0", "CC-BY-4.0", "CC-BY-NC-4.0"};
 
   @Override
-  public boolean isValid(List<License> value, ConstraintValidatorContext context) {
+  public boolean isValid(List<? extends FrictionlessLicense> value, ConstraintValidatorContext context) {
     if (value == null) {
       return true;
     }
 
     boolean isValid = true;
 
-    for (License license : value) {
+    for (FrictionlessLicense license : value) {
       CamtrapLicense camtrapLicense;
       if (license instanceof CamtrapLicense) {
         camtrapLicense = (CamtrapLicense) license;
@@ -59,6 +60,6 @@ public class HasGbifCompatibleLicenseValidator implements ConstraintValidator<Ha
   }
 
   private boolean isValid(CamtrapLicense license) {
-    return StringUtils.equalsAny(license.getName(), GBIF_COMPATIBLE_LICENSES);
+    return Strings.CS.equalsAny(license.getName(), GBIF_COMPATIBLE_LICENSES);
   }
 }

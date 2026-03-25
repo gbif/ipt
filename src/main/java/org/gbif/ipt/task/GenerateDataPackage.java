@@ -57,6 +57,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
@@ -193,30 +194,19 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   @Override
   protected String currentState() {
-    switch (state) {
-      case WAITING:
-        return "Not started yet";
-      case STARTED:
-        return "Starting Data Package generation";
-      case DATARESOURCES:
-        return "Processing record " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
-      case METADATA:
-        return "Creating metadata files";
-      case BUNDLING:
-        return "Compressing Data Package (archive)";
-      case COMPLETED:
-        return "Data Package generated!";
-      case VALIDATING:
-        return "Validating Data Package, " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
-      case ARCHIVING:
-        return "Archiving version of data package";
-      case CANCELLED:
-        return "Data Package generation cancelled";
-      case FAILED:
-        return "Data Package generation failed";
-      default:
-        return "You should never see this";
-    }
+    return switch (state) {
+      case WAITING -> "Not started yet";
+      case STARTED -> "Starting Data Package generation";
+      case DATARESOURCES -> "Processing record " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
+      case METADATA -> "Creating metadata files";
+      case BUNDLING -> "Compressing Data Package (archive)";
+      case COMPLETED -> "Data Package generated!";
+      case VALIDATING ->
+          "Validating Data Package, " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
+      case ARCHIVING -> "Archiving version of data package";
+      case CANCELLED -> "Data Package generation cancelled";
+      case FAILED -> "Data Package generation failed";
+    };
   }
 
   /**
@@ -724,7 +714,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         // Escape double quotes if present
         if (containsDoubleQuotes) {
           // escape double quotes
-          columns[i] = StringUtils.replace(columns[i], "\"", "\"\"");
+          columns[i] = Strings.CS.replace(columns[i], "\"", "\"\"");
         }
 
         // commas break the whole line, wrap in double quotes

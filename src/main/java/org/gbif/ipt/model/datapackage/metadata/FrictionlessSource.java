@@ -16,14 +16,18 @@ package org.gbif.ipt.model.datapackage.metadata;
 import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.ValidUrl;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -41,8 +45,9 @@ import com.fasterxml.jackson.databind.JsonNode;
  * A source file.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FrictionlessSource implements Source, Serializable {
+public class FrictionlessSource implements Serializable {
 
+  @Serial
   private final static long serialVersionUID = -3013088705460436883L;
 
   /**
@@ -117,7 +122,7 @@ public class FrictionlessSource implements Source, Serializable {
    */
   @JsonProperty("path")
   public void setPath(String path) {
-    this.path = path;
+    this.path = StringUtils.trimToNull(path);
   }
 
   /**
@@ -150,9 +155,9 @@ public class FrictionlessSource implements Source, Serializable {
     this.additionalProperties.put(name, value);
   }
 
-  public static class DataPackageSourceDeserializer extends JsonDeserializer<Source> {
+  public static class DataPackageSourceDeserializer extends JsonDeserializer<FrictionlessSource> {
     @Override
-    public Source deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public FrictionlessSource deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
       return jsonParser.getCodec().treeToValue(node, FrictionlessSource.class);
     }

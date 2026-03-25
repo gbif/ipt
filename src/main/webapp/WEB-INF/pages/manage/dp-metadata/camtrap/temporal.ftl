@@ -116,7 +116,7 @@
                                 <#assign inferAutomaticallyPopupInfo>
                                     <@s.text name='datapackagemetadata.infer.automatically.short.help'/>
                                 </#assign>
-                                <@checkbox name="resource.inferTemporalCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" />
+                                <@checkbox name="resource.inferTemporalCoverageAutomatically" value=resource.inferTemporalCoverageAutomatically i18nkey="datapackagemetadata.infer.automatically" />
                             </div>
 
                             <div id="actual-metadata-block" class="mt-3">

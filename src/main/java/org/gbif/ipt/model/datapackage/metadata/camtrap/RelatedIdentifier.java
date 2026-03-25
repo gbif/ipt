@@ -15,13 +15,15 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.validation.OtherMetadata;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,6 +39,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RelatedIdentifier implements Serializable {
 
+  @Serial
   private final static long serialVersionUID = 3596514384020747828L;
 
   /**

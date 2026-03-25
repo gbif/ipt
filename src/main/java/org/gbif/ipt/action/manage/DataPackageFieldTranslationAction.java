@@ -25,6 +25,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -47,8 +48,9 @@ import lombok.Getter;
 
 public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
+  @Serial
   private static final long serialVersionUID = -5414310011336523439L;
-  // logging
+
   private static final Logger LOG = LogManager.getLogger(DataPackageFieldTranslationAction.class);
 
   static class Translation {
@@ -65,7 +67,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
     public Map<String, String> getPersistentMap() {
       Map<String, String> m = new HashMap<>();
-      for (Entry<String, String> translatedValueEntry: translatedValues.entrySet()) {
+      for (Entry<String, String> translatedValueEntry : translatedValues.entrySet()) {
         m.put(sourceValues.get(translatedValueEntry.getKey()), StringUtils.trimToEmpty(translatedValueEntry.getValue()));
       }
       return m;
@@ -123,13 +125,13 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     } else {
       List<String> vocab = field.getConstraints().getVocabulary();
       int count = 0;
-      for (Entry<String, String> sourceValueEntry: getSourceValuesMap().entrySet()) {
+      for (Entry<String, String> sourceValueEntry : getSourceValuesMap().entrySet()) {
         // only if not yet mapped
         if (!getTmap().containsValue(sourceValueEntry.getValue())) {
           Optional<String> vocabularyMatch = vocab.stream()
-            .filter(v -> v.replaceAll("_", "")
-              .equalsIgnoreCase(sourceValueEntry.getValue().replaceAll("_", "")))
-            .findFirst();
+              .filter(v -> v.replaceAll("_", "")
+                  .equalsIgnoreCase(sourceValueEntry.getValue().replaceAll("_", "")))
+              .findFirst();
 
           if (vocabularyMatch.isPresent()) {
             getTmap().put(sourceValueEntry.getKey(), vocabularyMatch.get());
@@ -137,7 +139,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
           }
         }
       }
-      addActionMessage(getText("manage.translation.mapped.fields", new String[] {String.valueOf(count)}));
+      addActionMessage(getText("manage.translation.mapped.fields", new String[]{String.valueOf(count)}));
     }
     return SUCCESS;
   }
@@ -159,7 +161,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       // 3. save the resource
       saveResource();
       // 4. add msg to appear in UI indicating the translation for this PropertyMapping has been deleted
-      addActionMessage(getText("manage.translation.field.deleted", new String[] {field.getName()}));
+      addActionMessage(getText("manage.translation.field.deleted", new String[]{field.getName()}));
       // 5. reload source values, so they aren't empty on next page visit
       reloadSourceValues();
     } else {
@@ -187,7 +189,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
         mapping = resource.getDataPackageMapping(mid);
       }
     } catch (Exception e) {
-      LOG.error("An exception was encountered: " + e.getMessage(), e);
+      LOG.error("An exception was encountered: {}", e.getMessage(), e);
     }
 
     if (mapping != null) {
@@ -200,7 +202,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
         if (field.getConstraints() != null && field.getConstraints().getVocabulary() != null) {
           Map<String, String> vocabRawData = field.getConstraints().getVocabulary().stream()
-            .collect(Collectors.toMap(Function.identity(), Function.identity(), (e1, e2) -> e1, LinkedHashMap::new));
+              .collect(Collectors.toMap(Function.identity(), Function.identity(), (e1, e2) -> e1, LinkedHashMap::new));
           vocabTerms = new SimpleMapModel(vocabRawData, null);
         }
 
@@ -259,7 +261,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
         for (Entry<String, String> entry : fieldMapping.getTranslation().entrySet()) {
           // only keep entries with values mapped that exist in the newly reloaded map
           if (entry.getValue() != null && getSourceValuesMap().containsValue(entry.getKey())) {
-            for (Entry<String, String> sourceValueEntry: getSourceValuesMap().entrySet()) {
+            for (Entry<String, String> sourceValueEntry : getSourceValuesMap().entrySet()) {
               if (sourceValueEntry.getValue().equals(entry.getKey())) {
                 getTmap().put(sourceValueEntry.getKey(), entry.getValue());
               }
@@ -271,13 +273,13 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       // bring it to user's attention, that the source values have been reloaded
       if (!isHttpPost()) {
         addActionMessage(getText("manage.translation.reloaded.field.values",
-          new String[]{String.valueOf(getSourceValuesMap().size()), fieldMapping.getField().getName()}));
+            new String[]{String.valueOf(getSourceValuesMap().size()), fieldMapping.getField().getName()}));
       }
 
     } catch (SourceException e) {
       // if an error has occurred, bring it to the user's attention
       addActionError(getText("manage.translation.reloaded.field.fail",
-        new String[] {fieldMapping.getField().getName(), e.getMessage()}));
+          new String[]{fieldMapping.getField().getName(), e.getMessage()}));
     }
   }
 
@@ -293,7 +295,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     // save entire resource config
     saveResource();
     id = mapping.getDataPackageTableSchemaName().getName();
-    addActionMessage(getText("manage.translation.field.saved", new String[] {fieldMapping.getField().getName()}));
+    addActionMessage(getText("manage.translation.field.saved", new String[]{fieldMapping.getField().getName()}));
 
     return NONE;
   }
@@ -312,7 +314,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
   public Set<String> getVocabTermsKeys() {
     return vocabTerms != null && (vocabTerms.getWrappedObject() instanceof Map) ?
-      ((Map) vocabTerms.getWrappedObject()).keySet() : Collections.emptySet();
+        ((Map) vocabTerms.getWrappedObject()).keySet() : Collections.emptySet();
   }
 
   /**

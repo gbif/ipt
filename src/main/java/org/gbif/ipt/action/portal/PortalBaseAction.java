@@ -21,8 +21,8 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.Serial;
 import java.math.BigDecimal;
-
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
@@ -30,16 +30,28 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * The base of all portal actions.
  */
 public class PortalBaseAction extends BaseAction {
 
-  protected ResourceManager resourceManager;
-  protected Resource resource;
-  protected BigDecimal version;
-  public static final String UNSPECIFIED_VERSION = "unspecified";
+  @Serial
+  private static final long serialVersionUID = 3697934807565787530L;
+
   private static final Logger LOG = LogManager.getLogger(PortalBaseAction.class);
+
+  public static final String UNSPECIFIED_VERSION = "unspecified";
+
+  protected ResourceManager resourceManager;
+  @Setter
+  @Getter
+  protected Resource resource;
+  // Version number of the resource requested. Null version is equal to the latest published version.
+  @Setter
+  protected BigDecimal version;
 
   @Inject
   public PortalBaseAction(
@@ -49,15 +61,6 @@ public class PortalBaseAction extends BaseAction {
       ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
-  }
-
-  /**
-   * Return the resource.
-   * 
-   * @return the resource
-   */
-  public Resource getResource() {
-    return resource;
   }
 
   @Override
@@ -70,7 +73,7 @@ public class PortalBaseAction extends BaseAction {
       try {
         res = (String) session.get(Constants.SESSION_RESOURCE);
       } catch (Exception e) {
-        // swallow. if session is not yet opened we get an exception here...
+        // swallow. if the session is not yet opened, we get an exception here...
       }
     }
     if (res != null) {
@@ -82,14 +85,14 @@ public class PortalBaseAction extends BaseAction {
       try {
         setVersion(new BigDecimal(v));
       } catch (NumberFormatException e) {
-        LOG.error("Parameter version (v) was not a valid number: " + v);
+        LOG.error("Parameter version (v) was not a valid number: {}", v);
       }
     }
   }
 
   /**
    * Return the version number requested. Null version is equal to the latest published version.
-   * 
+   *
    * @return the version number requested
    */
   @Nullable
@@ -98,29 +101,12 @@ public class PortalBaseAction extends BaseAction {
   }
 
   /**
-   * Version number of the resource requested. Null version is equal to the latest published version.
-   * 
-   * @param version version number requested
-   */
-  public void setVersion(BigDecimal version) {
-    this.version = version;
-  }
-
-  /**
    * Return the version as a string. If it is null, return "unspecified".
-   * 
+   *
    * @return the version as a string
    */
   protected String getStringVersion() {
     return (version == null) ? UNSPECIFIED_VERSION : String.valueOf(version);
   }
 
-  /**
-   * Resource requested.
-   *
-   * @param resource resource
-   */
-  public void setResource(Resource resource) {
-    this.resource = resource;
-  }
 }

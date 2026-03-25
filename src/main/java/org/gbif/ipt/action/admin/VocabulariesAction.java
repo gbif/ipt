@@ -21,15 +21,20 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.inject.Inject;
+import java.io.Serial;
+
+import lombok.Getter;
 
 /**
  * The Action responsible for all user input relating to the vocabularies in use within the IPT.
  */
 public class VocabulariesAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = 7277675384287096912L;
 
   private final VocabulariesManager vocabManager;
+  @Getter
   private Vocabulary vocabulary;
 
   @Inject
@@ -51,10 +56,6 @@ public class VocabulariesAction extends BaseAction {
       }
     }
     return SUCCESS;
-  }
-
-  public Vocabulary getVocabulary() {
-    return vocabulary;
   }
 
 }

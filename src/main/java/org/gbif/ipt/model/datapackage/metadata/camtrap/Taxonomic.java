@@ -15,12 +15,14 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.validation.TaxonomicScopeMetadata;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -38,6 +40,7 @@ import lombok.ToString;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Taxonomic implements Serializable {
 
+  @Serial
   private final static long serialVersionUID = 2951714488879146221L;
 
   /**

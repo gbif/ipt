@@ -25,11 +25,7 @@ BuildArch: noarch
 
 BuildRequires: systemd-rpm-macros
 
-%if 0%{?el7}
-Requires: java >= 1:1.8.0
-%else
-Requires: java-11-headless >= 10.0.0
-%endif
+Requires: java-headless >= 17
 Requires: jetty-runner
 
 Requires(pre): /usr/sbin/useradd, /usr/bin/getent

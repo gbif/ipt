@@ -19,18 +19,19 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.manage.ResourceManager;
 
+import java.io.Serial;
 import java.util.Map;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
-
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.AbstractInterceptor;
 
 import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
 
@@ -38,14 +39,14 @@ import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
  * An Interceptor that makes sure a user with manager rights (=admin or manager role) is currently logged in and
  * returns a notAllowed otherwise. It also checks if the resource is currently locked and returns locked in that case
  * regardless of user rights.
- * If a resource is requested it also checks that the logged in user has permissions to manage that specific resource.
+ * If a resource is requested, it also checks that the logged-in user has permissions to manage that specific resource.
  */
 public class RequireManagerInterceptor extends AbstractInterceptor {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(RequireManagerInterceptor.class);
-
+  @Serial
   private static final long serialVersionUID = -7688584369470756187L;
+
+  private static final Logger LOG = LogManager.getLogger(RequireManagerInterceptor.class);
 
   private ResourceManager resourceManager;
 
@@ -62,7 +63,6 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
    * Checks whether the resource parameter is used in the request.
    *
    * @param invocation ActionInvocation
-   *
    * @return true if the resource parameter was used in the request, false otherwise.
    */
   protected static boolean hasResourceParam(ActionInvocation invocation) {
@@ -101,7 +101,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
 
       String queryString = request.getQueryString();
       String referer = request.getServletPath();
-      // check if there is query string, if so append it
+      // check if there is a query string, if so append it
       if (queryString != null) {
         referer = referer + '?' + queryString;
       }

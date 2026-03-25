@@ -323,7 +323,7 @@
                                                 <@select name="metadata.relatedIdentifiers[${item_index}].relationType" help="i18n" includeEmpty=true compareValues=true options=relationTypes! i18nkey="datapackagemetadata.other.relationType" value="${(metadata.relatedIdentifiers[item_index].relationType)!}" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.relatedIdentifiers[${item_index}].relatedIdentifier" help="i18n" i18nkey="datapackagemetadata.other.relatedIdentifier" requiredField=true />
+                                                <@input name="metadata.relatedIdentifiers[${item_index}].relatedIdentifier" value=item.relatedIdentifier! help="i18n" i18nkey="datapackagemetadata.other.relatedIdentifier" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
                                                 <@select name="metadata.relatedIdentifiers[${item_index}].resourceTypeGeneral" help="i18n" includeEmpty=true compareValues=true options=resourceTypeGenerals! i18nkey="datapackagemetadata.other.resourceTypeGeneral" value="${(metadata.relatedIdentifiers[item_index].resourceTypeGeneral)!}" />
@@ -361,7 +361,7 @@
                                         <div id="reference-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="col-12 d-flex">
                                                 <div class="flex-grow-1">
-                                                    <@input name="metadata.references[${item_index}]" i18nkey="datapackagemetadata.other.reference" withLabel=false />
+                                                    <@input name="metadata.references[${item_index}]" value=item! i18nkey="datapackagemetadata.other.reference" withLabel=false />
                                                 </div>
                                                 <div>
                                                     <a id="reference-removeLink-${item_index}" href="" class="removeReferenceLink metadata-action-link custom-link">

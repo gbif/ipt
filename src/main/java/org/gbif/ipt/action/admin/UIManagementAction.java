@@ -23,15 +23,26 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
-public class UIManagementAction extends POSTAction {
+import lombok.Getter;
 
+public class UIManagementAction extends POSTAction implements UploadedFilesAware {
+
+  @Serial
   private static final long serialVersionUID = 2001100185337026057L;
 
   private static final Logger LOG = LogManager.getLogger(UIManagementAction.class);
@@ -39,9 +50,8 @@ public class UIManagementAction extends POSTAction {
   private final DataDir dataDir;
 
   private IptColorScheme colorScheme;
-
-  private File file;
-  private String fileContentType;
+  private List<UploadedFile> uploadedFiles = new ArrayList<>();
+  @Getter
   private boolean removeLogo;
 
   @Inject
@@ -79,6 +89,8 @@ public class UIManagementAction extends POSTAction {
   }
 
   public String uploadLogo() {
+    UploadedFile file = uploadedFiles.get(0);
+
     if (file != null) {
       // remove any previous logo file
       for (String suffix : Constants.IMAGE_TYPES) {
@@ -86,39 +98,40 @@ public class UIManagementAction extends POSTAction {
       }
       // inspect file type
       String type = "jpeg";
-      if (fileContentType != null) {
-        type = StringUtils.substringAfterLast(fileContentType, "/");
+      if (file.getContentType() != null) {
+        type = StringUtils.substringAfterLast(
+            file.getContentType(), "/");
       }
       File logoFile = dataDir.appLogoFile(type);
+
       try {
-        FileUtils.copyFile(file, logoFile);
+        File tempFile = (File) file.getContent();
+        Files.copy(
+            tempFile.toPath(),
+            logoFile.toPath(),
+            StandardCopyOption.REPLACE_EXISTING
+        );
       } catch (IOException e) {
-        LOG.warn(e.getMessage());
+        LOG.error("Failed to upload the IPT logo: {}", e.getMessage(), e);
       }
+    } else {
+      LOG.debug("No uploaded file found");
     }
+
     return INPUT;
   }
 
+  @StrutsParameter(depth = 1)
   public IptColorScheme getColorScheme() {
     return colorScheme;
   }
 
-  public void setColorScheme(IptColorScheme colorScheme) {
-    this.colorScheme = colorScheme;
+  @Override
+  public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+    this.uploadedFiles = uploadedFiles;
   }
 
-  public void setFile(File file) {
-    this.file = file;
-  }
-
-  public void setFileContentType(String fileContentType) {
-    this.fileContentType = fileContentType;
-  }
-
-  public boolean isRemoveLogo() {
-    return removeLogo;
-  }
-
+  @StrutsParameter
   public void setRemoveLogo(boolean removeLogo) {
     this.removeLogo = removeLogo;
   }

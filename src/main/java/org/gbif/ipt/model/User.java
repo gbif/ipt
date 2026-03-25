@@ -13,13 +13,17 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class User implements Serializable, Cloneable {
 
@@ -27,13 +31,23 @@ public class User implements Serializable, Cloneable {
     User, Manager, Publisher, Admin
   }
 
+  @Serial
   private static final long serialVersionUID = 3832626162173359411L;
 
   private String email; // unique
+  @Setter
+  @Getter
   private String password;
+  @Setter
+  @Getter
   private String firstname;
+  @Setter
+  @Getter
   private String lastname;
+  @Getter
   private Role role = Role.User;
+  @Setter
+  @Getter
   private Date lastLogin;
 
   @Override
@@ -62,18 +76,6 @@ public class User implements Serializable, Cloneable {
     return email;
   }
 
-  public String getFirstname() {
-    return firstname;
-  }
-
-  public Date getLastLogin() {
-    return lastLogin;
-  }
-
-  public String getLastname() {
-    return lastname;
-  }
-
   public String getName() {
     return StringUtils.trimToNull(StringUtils.trimToEmpty(firstname) + " " + StringUtils.trimToEmpty(lastname));
   }
@@ -91,14 +93,6 @@ public class User implements Serializable, Cloneable {
    */
   public String getNameWithEmail() {
     return StringUtils.trimToNull(getName() + " <" + email + ">");
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public Role getRole() {
-    return role;
   }
 
   /**
@@ -134,24 +128,8 @@ public class User implements Serializable, Cloneable {
     this.email = email;
   }
 
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
-  }
-
-  public void setLastLogin(Date lastLogin) {
-    this.lastLogin = lastLogin;
-  }
-
   public void setLastLoginToNow() {
     this.lastLogin = new Date();
-  }
-
-  public void setLastname(String lastname) {
-    this.lastname = lastname;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public void setRole(Role role) {

@@ -21,15 +21,16 @@ import java.net.URI;
 import java.security.SecureRandom;
 import java.util.Map;
 import javax.inject.Inject;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.StrutsStatics;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.AbstractInterceptor;
 
 /**
  * An Interceptor that makes sure an admin user is currently logged in and returns a notAllowed otherwise.
@@ -63,8 +64,8 @@ public class CsrfLoginInterceptor extends AbstractInterceptor {
     } else {
       // create new CSRF login token and store it as a cookie
       StringBuilder sb = new StringBuilder(TOKEN_LENGTH);
-      for( int i = 0; i < TOKEN_LENGTH; i++ ) {
-        sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+      for (int i = 0; i < TOKEN_LENGTH; i++) {
+        sb.append(AB.charAt(rnd.nextInt(AB.length())));
       }
       String token = sb.toString();
       // add token to cookie

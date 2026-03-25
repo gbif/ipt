@@ -64,34 +64,25 @@
     </action>
 
     <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">10000000000</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{shortname}</result>
     </action>
 
     <action name="replace-eml" class="org.gbif.ipt.action.manage.OverviewAction" method="replaceEml">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="replace-datapackage-metadata" class="org.gbif.ipt.action.manage.OverviewAction" method="replaceDatapackageMetadata">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">209715200</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
@@ -113,72 +104,65 @@
 
     <action name="resource-*" class="org.gbif.ipt.action.manage.OverviewAction" method="{1}">
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <allowed-methods>addNetwork,addManager,delete,deleteFromIpt,deleteDoi,deleteNetwork,deleteManager,makePrivate,makePublic,cancelMakePublic,registerResource,reserveDoi,undelete,changePublishingOrganization</allowed-methods>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <allowed-methods>addNetwork,addManager,delete,deleteFromIpt,deleteDoi,deleteNetwork,deleteManager,makePrivate,makePublic,cancelVisibilityChange,registerResource,reserveDoi,undelete,changePublishingOrganization</allowed-methods>
     </action>
 
     <action name="publication-settings" class="org.gbif.ipt.action.manage.PublicationSettingsAction">
       <result name="input">/WEB-INF/pages/manage/publicationSettings.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="auto-publish" class="org.gbif.ipt.action.manage.AutoPublishAction">
       <result name="input">/WEB-INF/pages/manage/autopublish.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <!-- EML metadata actions dynamically invoked. This is the *only* action needed for all forms -->
     <action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
-      <!-- Setting parameters like this doesn't seem to work as expected :((( -->
-      <!-- workaround is parsing the request string in the action manually, see MetadataAction.prepare() -->
-      <!--   <param name="section">{1}</param>   -->
-
       <!-- use the template matching the dynamic method invocation, e.g. metadata-parties.do will use parties.ftl-->
       <result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
-      <!-- on sucess redirect to the next metadata form page -->
-      <result name="success" type="redirect">${baseURL}/manage/metadata-${next}.do?r=${resource.shortname}</result>
+      <!-- on success redirect to the next metadata form page -->
+      <result name="success" type="redirect">${baseURL}/manage/metadata-${next}.do?r=%{#parameters.r}</result>
     </action>
 
-    <action name="camtrap-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
+    <action name="camtrap-metadata-*" class="org.gbif.ipt.action.manage.CamtrapMetadataAction">
       <result name="input">/WEB-INF/pages/manage/dp-metadata/camtrap/{1}.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/camtrap-metadata-${next}.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/camtrap-metadata-${next}.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="datapackage-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
       <result name="input">/WEB-INF/pages/manage/dp-metadata/frictionless/{1}.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="source" class="org.gbif.ipt.action.manage.SourceAction">
       <result name="input">/WEB-INF/pages/manage/source.ftl</result>
-      <result name="analyze" type="redirect">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${source.name}</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="analyze" type="redirect">${baseURL}/manage/source.do?r=%{#parameters.r}&amp;id=%{#parameters.id}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="addsource" class="org.gbif.ipt.action.manage.SourceAction" method="add">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">10000000000</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
       <result name="success" type="redirect">
-        <param name="location">${baseURL}/manage/source.do?r=${resource.shortname}&amp;id=${id}</param>
+        <param name="location">${baseURL}/manage/source.do?r=%{#parameters.r}&amp;id=%{id}</param>
       </result>
-      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
       <result name="error" type="httpheader">
         <param name="status">400</param>
       </result>
     </action>
 
     <action name="canceloverwrite" class="org.gbif.ipt.action.manage.SourceAction" method="cancelOverwrite">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="raw-source" class="org.gbif.ipt.action.portal.ResourceFileAction" method="rawsource">
@@ -191,8 +175,8 @@
     </action>
 
     <action name="delete-source" class="org.gbif.ipt.action.manage.SourceAction" method="delete">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{parameters.r}</result>
     </action>
 
     <action name="eml" class="org.gbif.ipt.action.manage.ResourceFileAction" method="metadata">
@@ -206,23 +190,19 @@
     </action>
 
     <action name="delete-mapping" class="org.gbif.ipt.action.manage.MappingAction" method="delete">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="deleteDataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="delete">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="uploadlogo" class="org.gbif.ipt.action.manage.MetadataAction" method="uploadLogo">
-      <interceptor-ref name="fileUpload">
-        <param name="maximumSize">2097152</param>
-        <param name="allowedTypes">image/jpeg,image/gif,image/png</param>
-      </interceptor-ref>
       <interceptor-ref name="managerStack"/>
-      <result name="input" type="redirect">${baseURL}/manage/metadata-additional.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="input" type="redirect">${baseURL}/manage/metadata-additional.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">
@@ -233,35 +213,35 @@
     <action name="mapping" class="org.gbif.ipt.action.manage.MappingAction">
       <result name="input">/WEB-INF/pages/manage/mapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/mappingSource.ftl</result>
-      <result name="save" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="save" type="redirect">${baseURL}/manage/mapping.do?r=%{#parameters.r}&amp;id=%{#parameters.id}&amp;mid=%{mid}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="dataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction">
       <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="dataPackageMappingSourceNew" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="source">
       <result name="input">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="dataPackageMappingSourceCreate" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="create">
       <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="history" class="org.gbif.ipt.action.manage.VersionHistoryAction">
       <result name="input">/WEB-INF/pages/manage/version_history.ftl</result>
-      <result name="success" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}&amp;v=${versionString}</result>
-      <result name="back" type="redirect">${baseURL}/manage/detail.do?r=${resource.shortname}</result>
+      <result name="success" type="redirect">${baseURL}/manage/detail.do?r=%{#parameters.r}&amp;v=%{versionString}</result>
+      <result name="back" type="redirect">${baseURL}/manage/detail.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="detail" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
@@ -275,7 +255,7 @@
     <action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
       <result name="input">/WEB-INF/pages/manage/translation.ftl</result>
-      <result name="none" type="redirect">${baseURL}/manage/mapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
+      <result name="none" type="redirect">${baseURL}/manage/mapping.do?r=%{#parameters.r}&amp;id=%{id}&amp;mid=%{mid}</result>
     </action>
 
     <action name="translationReload" class="org.gbif.ipt.action.manage.TranslationAction" method="reload">
@@ -289,7 +269,7 @@
     <action name="dataPackageFieldTranslation" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction">
       <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
       <result name="input">/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
-      <result name="none" type="redirect">${baseURL}/manage/dataPackageMapping.do?r=${resource.shortname}&amp;id=${id}&amp;mid=${mid}</result>
+      <result name="none" type="redirect">${baseURL}/manage/dataPackageMapping.do?r=%{#parameters.r}&amp;id=%{#parameters.id}&amp;mid=%{mid}</result>
     </action>
 
     <action name="dataPackageFieldTranslationReload" class="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" method="reload">

@@ -147,14 +147,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     DOI doi = resource.getAssignedDoi();
     if (doi != null) {
       data.add(new BasicNameValuePair("doi", doi.toString()));
-      LOG.debug("Including registry param doi=" + doi);
+      LOG.debug("Including registry param doi={}", doi);
     }
     // otherwise try using the DOI citation identifier of the last published public version, see issue #1276
     else {
       DOI existingDoi = getLastPublishedVersionExistingDoi(resource);
       if (existingDoi != null) {
         data.add(new BasicNameValuePair("doi", existingDoi.toString()));
-        LOG.debug("Including registry param doi=" + existingDoi);
+        LOG.debug("Including registry param doi={}", existingDoi);
       }
     }
 
@@ -305,7 +305,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resourceShortname);
         rs.serviceTypes += "|" + SERVICE_TYPE_SAMPLING_EVENT;
       } else {
-        LOG.warn("Unknown core resource type " + resourceCoreTypeTerm);
+        LOG.warn("Unknown core resource type {}", resourceCoreTypeTerm);
         LOG.debug("Registering EML service only");
       }
     } else {
@@ -324,9 +324,9 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       if (resource.getOrganisation() != null) {
         ExtendedResponse resp = http.delete(url, orgCredentials(resource.getOrganisation()));
         if (HttpUtil.success(resp)) {
-          LOG.info("The resource has been deleted. Resource key: " + resource.getKey().toString());
+          LOG.info("The resource has been deleted. Resource key: {}", resource.getKey().toString());
         } else {
-          LOG.error("Deregister resource response received=" + resp.getStatusCode() + ": " + resp.getContent());
+          LOG.error("Deregister resource response received={}: {}", resp.getStatusCode(), resp.getContent());
           throw new RegistryException(Type.BAD_RESPONSE, url, "Empty registry response");
         }
       } else {
@@ -552,7 +552,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         }
       }
       if (invalid > 0) {
-        LOG.debug("Skipped " + invalid + " invalid organisation JSON objects");
+        LOG.debug("Skipped {} invalid organisation JSON objects", invalid);
       }
     }
     return organisations;
@@ -716,7 +716,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
       }
       if (invalid > 0) {
-        LOG.debug("Skipped " + invalid + " invalid dataset JSON objects");
+        LOG.debug("Skipped {} invalid dataset JSON objects", invalid);
       }
     }
     return resources;
@@ -784,7 +784,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         if (HttpUtil.success(resp)) {
           LOG.info("The resource {} has been added to network {}.", resource.getKey().toString(), networkKey);
         } else {
-          LOG.error("Response received=" + resp.getStatusCode() + ": " + resp.getContent());
+          LOG.error("Response received={}: {}", resp.getStatusCode(), resp.getContent());
           throw new RegistryException(Type.BAD_REQUEST, url, resp.getContent());
         }
       } else {
@@ -810,7 +810,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         if (HttpUtil.success(resp)) {
           LOG.info("The resource {} has been removed from network {}.", resource.getKey().toString(), networkKey);
         } else {
-          LOG.error("Response received=" + resp.getStatusCode() + ": " + resp.getContent());
+          LOG.error("Response received={}: {}", resp.getStatusCode(), resp.getContent());
           throw new RegistryException(Type.BAD_REQUEST, url, resp.getContent());
         }
       } else {
@@ -952,7 +952,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from resource registration has invalid key");
     }
 
-    LOG.info("A new resource has been registered with GBIF. [Key=" + key + "]");
+    LOG.info("A new resource has been registered with GBIF. [Key={}]", key);
     resource.setKey(uuidKey);
     resource.setOrganisation(org);
     return uuidKey;
@@ -1009,7 +1009,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       throw new RegistryException(Type.BAD_RESPONSE, url, "Response received from IPT registration has invalid key");
     }
 
-    LOG.info("A new ipt has been registered with GBIF. [Key=" + uuidKey + "]");
+    LOG.info("A new ipt has been registered with GBIF. [Key={}]", uuidKey);
     ipt.setKey(uuidKey.toString());
     return key;
   }
@@ -1088,7 +1088,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         "Update resource registration failed: resource [shortname=" + resource.getShortname() + "] is not registered");
     }
 
-    LOG.info("Update resource registration... [key=" + resource.getKey().toString() + "]");
+    LOG.info("Update resource registration... [key={}]", resource.getKey().toString());
     // populate params for ws call to update registered resource
     List<NameValuePair> data;
     if (resource.isDataPackage()) {
@@ -1112,7 +1112,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     }
 
     if (HttpUtil.success(resp)) {
-      LOG.info("Update resource registration was successful! [key=" + resource.getKey().toString() + "]");
+      LOG.info("Update resource registration was successful! [key={}]", resource.getKey().toString());
         // to avoid repetition, alert user here that update was successful
         baseAction.addActionMessage(
           baseAction.getText("manage.overview.resource.update.registration", new String[] {resource.getTitle()}));
@@ -1173,7 +1173,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), version);
       if (emlFile.exists()) {
         try {
-          LOG.debug("Loading EML from file: " + emlFile.getAbsolutePath());
+          LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
           InputStream in = new FileInputStream(emlFile);
           Eml eml = EmlFactory.build(in);
           if (eml.getCitation() != null && StringUtils.isNotBlank(eml.getCitation().getIdentifier())) {
@@ -1183,7 +1183,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
             }
           }
         } catch (Exception e) {
-          LOG.error("Failed to check last published version citation identifier: " + e.getMessage(), e);
+          LOG.error("Failed to check last published version citation identifier: {}", e.getMessage(), e);
         }
       }
     }

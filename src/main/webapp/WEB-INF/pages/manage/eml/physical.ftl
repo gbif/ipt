@@ -127,7 +127,7 @@
                             </p>
 
                             <div class="mt-2">
-                                <@input name="eml.distributionUrl" i18nkey="eml.distributionUrl" type="url" />
+                                <@input name="eml.distributionUrl" value=eml.distributionUrl! i18nkey="eml.distributionUrl" type="url" />
                             </div>
                         </div>
 
@@ -150,19 +150,19 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="eml.physicalData[${item_index}].name" i18nkey="eml.physicalData.name" requiredField=true />
+                                                <@input name="eml.physicalData[${item_index}].name" value=item.name! i18nkey="eml.physicalData.name" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="eml.physicalData[${item_index}].charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
+                                                <@input name="eml.physicalData[${item_index}].charset" value=item.charset! i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
                                             </div>
                                             <div class="fullcolumn">
-                                                <@input name="eml.physicalData[${item_index}].distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true type="url" />
+                                                <@input name="eml.physicalData[${item_index}].distributionUrl" value=item.distributionUrl! i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true type="url" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="eml.physicalData[${item_index}].format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
+                                                <@input name="eml.physicalData[${item_index}].format" value=item.format! i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="eml.physicalData[${item_index}].formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
+                                                <@input name="eml.physicalData[${item_index}].formatVersion" value=item.formatVersion! i18nkey="eml.physicalData.formatVersion" help="i18n"/>
                                             </div>
                                         </div>
                                     </#list>

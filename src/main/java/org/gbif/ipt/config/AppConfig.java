@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,14 +45,16 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RegExUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import lombok.Getter;
 
 public class AppConfig {
 
@@ -64,7 +67,7 @@ public class AppConfig {
   protected static final String DATADIR_PROPFILE = "ipt.properties";
   static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
-   // Since 2.1
+  // Since 2.1
   public static final String CORE_ROW_TYPES = "ipt.core_rowTypes";
   public static final String CORE_ROW_ID_TERMS = "ipt.core_idTerms";
   public static final String PROXY = "proxy";
@@ -86,6 +89,7 @@ public class AppConfig {
   private Properties properties = new Properties();
   private IptColorScheme colorScheme;
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
+  @Getter
   private DataDir dataDir;
   private REGISTRY_TYPE type;
 
@@ -102,6 +106,12 @@ public class AppConfig {
   private static final Set<Locale> IPT_SUPPORTED_LOCALES;
   private static final Set<String> IPT_SUPPORTED_LANGUAGES;
 
+  /**
+   *  Returns the core types that the application is configured to support.
+   *  Exposed with static accessor to allow model objects to access this without the need for dependency
+   *  injection. This is set during
+   */
+  @Getter
   private static List<String> coreRowTypes;
   private static Map<String, String> coreRowTypeIdTerms;
 
@@ -160,17 +170,8 @@ public class AppConfig {
       return coreRowTypeIdTerms.get(rowType);
     } else {
       throw new IllegalArgumentException("IPT is not configured correctly to support rowType[" + rowType
-                                         + "].  Hint: are you missing mappings for the row type and id term in the properties?");
+          + "].  Hint: are you missing mappings for the row type and id term in the properties?");
     }
-  }
-
-  /**
-   * Returns the core types that the application is configured to support.
-   * Exposed with static accessor to allow model objects to access this without the need for dependency
-   * injection. This is set during
-   */
-  public static List<String> getCoreRowTypes() {
-    return coreRowTypes;
   }
 
   public Map<String, String> getSupportedDataSchemaNamesWithVersions() {
@@ -215,10 +216,6 @@ public class AppConfig {
     return properties.getProperty(DEFAULT_LOCALE);
   }
 
-  public DataDir getDataDir() {
-    return dataDir;
-  }
-
   public Double getLatitude() {
     try {
       String val = properties.getProperty(IPT_LATITUDE);
@@ -226,7 +223,7 @@ public class AppConfig {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
-      LOG.warn("IPT latitude was invalid: " + e.getMessage());
+      LOG.warn("IPT latitude was invalid: {}", e.getMessage());
     }
     return null;
   }
@@ -238,7 +235,7 @@ public class AppConfig {
         return Double.valueOf(val);
       }
     } catch (NumberFormatException e) {
-      LOG.warn("IPT longitude was invalid: " +e.getMessage());
+      LOG.warn("IPT longitude was invalid: {}", e.getMessage());
     }
     return null;
   }
@@ -255,8 +252,7 @@ public class AppConfig {
     String sessionTimeout = properties.getProperty(SESSION_TIMEOUT_PROPERTY);
     if (sessionTimeout != null) {
       return Integer.parseInt(sessionTimeout) * 60;
-    }
-    else {
+    } else {
       return SESSION_TIMEOUT;
     }
   }
@@ -323,8 +319,11 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_ARCHIVE)
-      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    return base + "/" + Constants.REQ_PATH_ARCHIVE + "?"
+        + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
   }
 
   /**
@@ -338,8 +337,11 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_EML)
-        .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    return base + "/" + Constants.REQ_PATH_EML + "?"
+        + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
   }
 
   /**
@@ -353,8 +355,11 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_METADATA)
-      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    return base + "/" + Constants.REQ_PATH_METADATA + "?"
+        + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
   }
 
   /**
@@ -368,8 +373,11 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_LOGO)
-      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build().toString();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    return base + "/" + Constants.REQ_PATH_LOGO + "?"
+        + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
   }
 
   /**
@@ -391,8 +399,12 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
-      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname).build();
+    String path = baseUrl.endsWith("/")
+        ? baseUrl + Constants.REQ_PATH_RESOURCE
+        : baseUrl + "/" + Constants.REQ_PATH_RESOURCE;
+
+    return URI.create(path + "?" + Constants.REQ_PARAM_RESOURCE + "="
+        + URLEncoder.encode(shortname, StandardCharsets.UTF_8));
   }
 
   /**
@@ -406,8 +418,14 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
-      .queryParam(Constants.REQ_PARAM_ID, shortname).build().toString();
+    String uri = baseUrl.endsWith("/")
+        ? baseUrl + Constants.REQ_PATH_RESOURCE
+        : baseUrl + "/" + Constants.REQ_PATH_RESOURCE;
+
+    uri = uri + "?"
+        + Constants.REQ_PARAM_ID + "=" + URLEncoder.encode(shortname, StandardCharsets.UTF_8);
+
+    return uri;
   }
 
   /**
@@ -421,9 +439,16 @@ public class AppConfig {
       throw new RuntimeException("IPT's base URL must not be null or empty");
     }
 
-    return UriBuilder.fromPath(baseUrl).path(Constants.REQ_PATH_RESOURCE)
-      .queryParam(Constants.REQ_PARAM_RESOURCE, shortname)
-      .queryParam(Constants.REQ_PARAM_VERSION, version.toPlainString()).build();
+    String base = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
+
+    String uri = baseUrl.endsWith("/")
+        ? baseUrl + Constants.REQ_PATH_RESOURCE
+        : baseUrl + "/" + Constants.REQ_PATH_RESOURCE;
+
+    uri = uri + "?" + Constants.REQ_PARAM_RESOURCE + "=" + URLEncoder.encode(shortname, StandardCharsets.UTF_8)
+        + "&" + Constants.REQ_PARAM_VERSION + "=" + URLEncoder.encode(version.toPlainString(), StandardCharsets.UTF_8);
+
+    return URI.create(uri);
   }
 
   /**
@@ -439,13 +464,13 @@ public class AppConfig {
   public String getVersion() {
     String version = properties.getProperty(DEV_VERSION);
     // remove suffix if it was not filled
-    return StringUtils.removeEnd(version, BUILD_NUMBER_VARIABLE_SUFFIX);
+    return Strings.CS.removeEnd(version, BUILD_NUMBER_VARIABLE_SUFFIX);
   }
 
   public String getShortVersion() {
     String version = properties.getProperty(DEV_VERSION);
     // remove build number suffix in the end
-    return RegExUtils.removePattern(version, BUILD_NUMBER_REGEX);
+    return RegExUtils.removePattern((CharSequence) version, BUILD_NUMBER_REGEX);
   }
 
   public boolean hasLocation() {
@@ -471,14 +496,13 @@ public class AppConfig {
         return Integer.valueOf(val);
       }
     } catch (NumberFormatException e) {
-      LOG.warn("Archival limit was invalid: " +e.getMessage());
+      LOG.warn("Archival limit was invalid: {}", e.getMessage());
     }
     return null;
   }
 
   /**
    * @return true if the datadir is linked to the test registry, false otherwise
-   *
    */
   public boolean isTestInstallation() {
     return REGISTRY_TYPE.DEVELOPMENT == type;
@@ -509,9 +533,9 @@ public class AppConfig {
           try {
             fis = new FileInputStream(userCfgFile);
             props.load(fis);
-            LOG.debug("Loaded user configuration from " + userCfgFile.getAbsolutePath());
+            LOG.debug("Loaded user configuration from {}", userCfgFile.getAbsolutePath());
           } catch (IOException e) {
-            LOG.warn("DataDir configured, but failed to load ipt.properties from " + userCfgFile.getAbsolutePath(), e);
+            LOG.warn("DataDir configured, but failed to load ipt.properties from {}", userCfgFile.getAbsolutePath(), e);
           } finally {
             if (fis != null) {
               try {
@@ -522,7 +546,7 @@ public class AppConfig {
             }
           }
         } else {
-          LOG.warn("DataDir configured, but user configuration doesnt exist: " + userCfgFile.getAbsolutePath());
+          LOG.warn("DataDir configured, but user configuration doesnt exist: {}", userCfgFile.getAbsolutePath());
         }
 
         // load (and create if absent) default colors configuration from ipt-color.scheme.properties
@@ -585,11 +609,11 @@ public class AppConfig {
       List<String> configCores = Arrays.stream(cores.split("\\|"))
           .map(org.gbif.utils.text.StringUtils::trim)
           .filter(StringUtils::isNotEmpty)
-          .collect(Collectors.toList());
+          .toList();
       List<String> configIDs = Arrays.stream(ids.split("\\|"))
           .map(org.gbif.utils.text.StringUtils::trim)
           .filter(StringUtils::isNotEmpty)
-          .collect(Collectors.toList());
+          .toList();
 
       if (configCores.size() == configIDs.size()) {
         coreRowTypes = new ArrayList<>(DEFAULT_CORE_ROW_TYPES);
@@ -599,12 +623,12 @@ public class AppConfig {
         for (int i = 0; i < configCores.size(); i++) {
           coreRowTypeIdTerms.put(configCores.get(i), configIDs.get(i));
         }
-        LOG.info("IPT configured to support cores and id terms: " + coreRowTypeIdTerms);
+        LOG.info("IPT configured to support cores and id terms: {}", coreRowTypeIdTerms);
         return;
 
       } else {
-        LOG.error("Invalid configuration of [" + CORE_ROW_TYPES + "," + CORE_ROW_ID_TERMS
-                  + "].  Should have same number of elements - using defaults");
+        LOG.error("Invalid configuration of [{},{}].  Should have same number of elements - using defaults",
+            CORE_ROW_TYPES, CORE_ROW_ID_TERMS);
       }
     }
 
@@ -622,7 +646,7 @@ public class AppConfig {
         LOG.info("Reading registry lock file to determine if the DataDir is locked to a registry yet.");
         String regTypeAsString = StringUtils.trimToEmpty(FileUtils.readFileToString(lockFile, "UTF-8"));
         this.type = REGISTRY_TYPE.valueOf(regTypeAsString);
-        LOG.info("DataDir is locked to registry type: " + type);
+        LOG.info("DataDir is locked to registry type: {}", type);
       } catch (IllegalArgumentException e) {
         LOG.error("Cannot interpret registry lock file contents!", e);
         throw new InvalidConfigException(TYPE.INVALID_DATA_DIR, "Cannot interpret registry lock file contents!");
@@ -700,14 +724,14 @@ public class AppConfig {
         return;
       } else {
         throw new InvalidConfigException(TYPE.DATADIR_ALREADY_REGISTERED,
-          "The datadir is already designated as " + this.type);
+            "The datadir is already designated as " + this.type);
       }
     }
     try {
       writeRegistryLockFile(newType);
       this.type = newType;
     } catch (IOException e) {
-      LOG.error("Cannot lock the datadir to registry type " + newType, e);
+      LOG.error("Cannot lock the datadir to registry type {}", newType, e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cannot lock the datadir to registry type " + newType);
     }
   }
@@ -718,7 +742,7 @@ public class AppConfig {
     try (Writer lock = Files.newBufferedWriter(lockFile.toPath(), StandardCharsets.UTF_8)) {
       lock.write(registryType.name());
       lock.flush();
-      LOG.info("Locked DataDir to registry of type " + registryType);
+      LOG.info("Locked DataDir to registry of type {}", registryType);
     }
   }
 

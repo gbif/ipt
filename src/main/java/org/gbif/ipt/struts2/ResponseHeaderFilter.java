@@ -13,17 +13,15 @@
  */
 package org.gbif.ipt.struts2;
 
-
 import java.io.IOException;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Class filters response, setting headers.
@@ -59,7 +57,7 @@ public class ResponseHeaderFilter implements Filter {
    */
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-    throws IOException, ServletException {
+      throws IOException, ServletException {
     HttpServletResponse res = ((HttpServletResponse) response);
     res.setHeader("Cache-Control", "max-age=0, no-store, must-revalidate");
     res.setHeader("Pragma", "no-cache");

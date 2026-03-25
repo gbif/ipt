@@ -24,16 +24,18 @@ package org.gbif.ipt.struts2;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 
+import java.io.Serial;
 import java.util.Map;
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.AbstractInterceptor;
 
 /**
  * An Interceptor to set the current resource in a users session.
  */
 public class ResourceSessionInterceptor extends AbstractInterceptor {
 
+  @Serial
   private static final long serialVersionUID = -184757845342974320L;
 
   @Override

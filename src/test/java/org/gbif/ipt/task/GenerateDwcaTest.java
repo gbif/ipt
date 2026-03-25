@@ -75,7 +75,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+
 import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -125,8 +126,8 @@ public class GenerateDwcaTest extends IptBaseTest {
     basisOfRecords.put("occurrence", "Occurrence");
 
     when(
-      mockVocabulariesManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false))
-      .thenReturn(basisOfRecords);
+        mockVocabulariesManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false))
+        .thenReturn(basisOfRecords);
 
     // create resource, version 3.0
     resource = new Resource();
@@ -162,7 +163,7 @@ public class GenerateDwcaTest extends IptBaseTest {
   @Test
   public void testResourceWithNoCore() throws Exception {
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mock(SourceManager.class), mockAppConfig,
-      mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class));
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -175,7 +176,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     Resource resource = getResource(resourceXML, occurrence);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
     Map<String, Integer> recordsByExtension = generateDwca.call();
     // count for occurrence core only
     assertEquals(1, recordsByExtension.size());
@@ -259,7 +260,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     assertEquals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION, resource.getIdentifierStatus());
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
     Map<String, Integer> recordsByExtension = generateDwca.call();
     // count for occurrence core only
     assertEquals(1, recordsByExtension.size());
@@ -323,7 +324,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     Resource resource = getResource(resourceXML, occurrence);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
     Map<String, Integer> recordsByExtension = generateDwca.call();
     // count for occurrence core only
     assertEquals(1, recordsByExtension.size());
@@ -387,7 +388,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     Resource resource = getResource(resourceXML, occurrence);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class));
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -404,7 +405,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     Resource resource = getResource(resourceXML, occurrence);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class));
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -422,7 +423,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     Resource resource = getResource(resourceXML, occurrence);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class));
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -437,8 +438,7 @@ public class GenerateDwcaTest extends IptBaseTest {
    * configuration file, multiple scenarios can be created for testing.
    *
    * @param resourceXML resource (XML) configuration file defining column mapping of sourceFile
-   * @param sourceFile source file
-   *
+   * @param sourceFile  source file
    * @return test Resource
    */
   private Resource getResource(@NotNull File resourceXML, @NotNull File sourceFile) throws Exception {
@@ -467,7 +467,7 @@ public class GenerateDwcaTest extends IptBaseTest {
 
     // construct occurrence core Extension
     InputStream occurrenceCoreIs = GenerateDwcaTest.class.getResourceAsStream(
-      "/extensions/dwc_occurrence_2015-04-24.xml");
+        "/extensions/dwc_occurrence_2015-04-24.xml");
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
     ExtensionManager extensionManager = mock(ExtensionManager.class);
     ExtensionsHolder extensionsHolder = mock(ExtensionsHolder.class);
@@ -483,7 +483,7 @@ public class GenerateDwcaTest extends IptBaseTest {
         .thenReturn(occurrenceCore);
 
     // mock ExtensionHolder returning Occurrence and Event
-    when(extensionsHolder.getExtensionsByRowtype()).thenReturn( Map.ofEntries(
+    when(extensionsHolder.getExtensionsByRowtype()).thenReturn(Map.ofEntries(
         Map.entry("http://rs.tdwg.org/dwc/terms/Occurrence", occurrenceCore),
         Map.entry("http://rs.tdwg.org/dwc/terms/Event", eventCore),
         Map.entry("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord", occurrenceCore)));
@@ -518,23 +518,23 @@ public class GenerateDwcaTest extends IptBaseTest {
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
-      new ResourceManagerImpl(
-          mockAppConfig,
-          mockDataDir,
-          mockResourceConvertersManager,
-          mockSourceManager,
-          extensionManager,
-          mockSchemaManager,
-          mockRegistryManager,
-          mockDwcaFactory,
-          mock(GenerateDataPackageFactory.class),
-          passwordEncrypter,
-          mockEml2Rtf,
-          mockVocabulariesManager,
-          mockSimpleTextProvider,
-          mockRegistrationManager,
-          mock(MetadataReader.class),
-          mock(ResourceMetadataInferringService.class));
+        new ResourceManagerImpl(
+            mockAppConfig,
+            mockDataDir,
+            mockResourceConvertersManager,
+            mockSourceManager,
+            extensionManager,
+            mockSchemaManager,
+            mockRegistryManager,
+            mockDwcaFactory,
+            mock(GenerateDataPackageFactory.class),
+            passwordEncrypter,
+            mockEml2Rtf,
+            mockVocabulariesManager,
+            mockSimpleTextProvider,
+            mockRegistrationManager,
+            mock(MetadataReader.class),
+            mock(ResourceMetadataInferringService.class));
 
     // create a new resource.
     resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);
@@ -555,7 +555,7 @@ public class GenerateDwcaTest extends IptBaseTest {
 
     // mock creation of versioned zipped dwca in resource directory
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class)))
-      .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
+        .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
 
     return resource;
   }
@@ -563,7 +563,7 @@ public class GenerateDwcaTest extends IptBaseTest {
   @Test
   public void testCreateFileName() throws Exception {
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class));
 
     // DwC-A directory
     File dir = FileUtils.createTempDir();
@@ -601,7 +601,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_missing_bor.txt");
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -617,7 +617,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_non_matching_bor.txt");
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -632,7 +632,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence_no_bor_mapped.txt");
     Resource resource = getResource(resourceXML, occurrence);
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
     assertThrows(GeneratorException.class, () -> generateDwca.call());
   }
 
@@ -649,7 +649,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     resource.getMappings().get(0).getSource().setMultiValueFieldsDelimitedBy("|");
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
     Map<String, Integer> recordsByExtension = generateDwca.call();
     // count for occurrence core only
     assertEquals(1, recordsByExtension.size());
@@ -702,7 +702,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     Resource resource = getResource(resourceXML, event);
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mock(VocabulariesManager.class));
+        mock(VocabulariesManager.class));
     generateDwca.call();
 
     // check for warning message
@@ -719,24 +719,24 @@ public class GenerateDwcaTest extends IptBaseTest {
   @Test
   public void testTabRow() throws IOException {
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
-      mockVocabulariesManager);
+        mockVocabulariesManager);
 
-    String[] elements = new String[] {"1", "humanObservation", "Panthera tigris"};
+    String[] elements = new String[]{"1", "humanObservation", "Panthera tigris"};
     String tabRow = generateDwca.tabRow(elements);
     assertEquals("1\thumanObservation\tPanthera tigris\n", tabRow);
 
     // with line breaking characters replaced with empty space
-    elements = new String[] {"OBS\t1", "human\rObservation", "Panthera ti\ngris"};
+    elements = new String[]{"OBS\t1", "human\rObservation", "Panthera ti\ngris"};
     tabRow = generateDwca.tabRow(elements);
     assertEquals("OBS 1\thuman Observation\tPanthera ti gris\n", tabRow);
 
     // check column with null value is still represented
-    elements = new String[] {"1", null, "humanObservation"};
+    elements = new String[]{"1", null, "humanObservation"};
     tabRow = generateDwca.tabRow(elements);
     assertEquals("1\t\thumanObservation\n", tabRow);
 
     // with null values
-    elements = new String[] {null, null, null};
+    elements = new String[]{null, null, null};
     tabRow = generateDwca.tabRow(elements);
     assertNull(tabRow);
   }

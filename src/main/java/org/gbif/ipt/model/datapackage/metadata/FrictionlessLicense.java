@@ -16,13 +16,17 @@ package org.gbif.ipt.model.datapackage.metadata;
 import org.gbif.ipt.validation.BasicMetadata;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -40,8 +44,9 @@ import com.fasterxml.jackson.databind.JsonNode;
  * A license for this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FrictionlessLicense implements License, Serializable {
+public class FrictionlessLicense implements Serializable {
 
+  @Serial
   private final static long serialVersionUID = 5529108333342991396L;
 
   /**
@@ -113,7 +118,7 @@ public class FrictionlessLicense implements License, Serializable {
    */
   @JsonProperty("path")
   public void setPath(String path) {
-    this.path = path;
+    this.path = StringUtils.trimToNull(path);
   }
 
   /**
@@ -146,9 +151,9 @@ public class FrictionlessLicense implements License, Serializable {
     this.additionalProperties.put(name, value);
   }
 
-  public static class DataPackageLicenseDeserializer extends JsonDeserializer<License> {
+  public static class DataPackageLicenseDeserializer extends JsonDeserializer<FrictionlessLicense> {
     @Override
-    public License deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public FrictionlessLicense deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
       return jsonParser.getCodec().treeToValue(node, FrictionlessLicense.class);
     }
@@ -156,7 +161,7 @@ public class FrictionlessLicense implements License, Serializable {
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", License.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", FrictionlessLicense.class.getSimpleName() + "[", "]")
         .add("name='" + name + "'")
         .add("path='" + path + "'")
         .add("title='" + title + "'")

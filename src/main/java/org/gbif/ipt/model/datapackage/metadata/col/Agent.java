@@ -16,7 +16,8 @@ package org.gbif.ipt.model.datapackage.metadata.col;
 import java.net.URI;
 import java.util.Objects;
 import java.util.StringJoiner;
-import javax.validation.constraints.Size;
+
+import jakarta.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -33,18 +34,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
-  "orcid",
-  "family",
-  "given",
-  "rorid",
-  "department",
-  "organisation",
-  "city",
-  "state",
-  "country",
-  "email",
-  "url",
-  "note"
+    "orcid",
+    "family",
+    "given",
+    "rorid",
+    "department",
+    "organisation",
+    "city",
+    "state",
+    "country",
+    "email",
+    "url",
+    "note"
 })
 public class Agent {
 
@@ -67,7 +68,7 @@ public class Agent {
   private String given;
 
   /**
-  ROR organisation ID, https://ror.org  example: https://ror.org/05fjyn938
+   * ROR organisation ID, https://ror.org  example: https://ror.org/05fjyn938
    */
   @JsonProperty("rorid")
   private String rorid;
@@ -247,17 +248,17 @@ public class Agent {
     if (o == null || getClass() != o.getClass()) return false;
     Agent agent = (Agent) o;
     return Objects.equals(orcid, agent.orcid)
-      && Objects.equals(family, agent.family)
-      && Objects.equals(given, agent.given)
-      && Objects.equals(rorid, agent.rorid)
-      && Objects.equals(department, agent.department)
-      && Objects.equals(organisation, agent.organisation)
-      && Objects.equals(city, agent.city)
-      && Objects.equals(state, agent.state)
-      && Objects.equals(country, agent.country)
-      && Objects.equals(email, agent.email)
-      && Objects.equals(url, agent.url)
-      && Objects.equals(note, agent.note);
+        && Objects.equals(family, agent.family)
+        && Objects.equals(given, agent.given)
+        && Objects.equals(rorid, agent.rorid)
+        && Objects.equals(department, agent.department)
+        && Objects.equals(organisation, agent.organisation)
+        && Objects.equals(city, agent.city)
+        && Objects.equals(state, agent.state)
+        && Objects.equals(country, agent.country)
+        && Objects.equals(email, agent.email)
+        && Objects.equals(url, agent.url)
+        && Objects.equals(note, agent.note);
   }
 
   @Override
@@ -268,18 +269,18 @@ public class Agent {
   @Override
   public String toString() {
     return new StringJoiner(", ", Agent.class.getSimpleName() + "[", "]")
-      .add("orcid='" + orcid + "'")
-      .add("family='" + family + "'")
-      .add("given='" + given + "'")
-      .add("rorid='" + rorid + "'")
-      .add("department='" + department + "'")
-      .add("organisation='" + organisation + "'")
-      .add("city='" + city + "'")
-      .add("state='" + state + "'")
-      .add("country='" + country + "'")
-      .add("email='" + email + "'")
-      .add("url=" + url)
-      .add("note='" + note + "'")
-      .toString();
+        .add("orcid='" + orcid + "'")
+        .add("family='" + family + "'")
+        .add("given='" + given + "'")
+        .add("rorid='" + rorid + "'")
+        .add("department='" + department + "'")
+        .add("organisation='" + organisation + "'")
+        .add("city='" + city + "'")
+        .add("state='" + state + "'")
+        .add("country='" + country + "'")
+        .add("email='" + email + "'")
+        .add("url=" + url)
+        .add("note='" + note + "'")
+        .toString();
   }
 }

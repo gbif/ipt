@@ -15,36 +15,39 @@ package org.gbif.ipt.struts2;
 
 import org.gbif.ipt.config.AppConfig;
 
+import java.io.Serial;
 import java.util.Locale;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.AbstractInterceptor;
 
 import javax.inject.Inject;
 
 public class DefaultLocaleInterceptor extends AbstractInterceptor {
 
-    private static final long serialVersionUID = -5106569324133156303L;
-    private AppConfig cfg;
+  @Serial
+  private static final long serialVersionUID = -5106569324133156303L;
 
-    @Override
-    public String intercept(ActionInvocation invocation) throws Exception {
-        Locale locale = Optional.ofNullable(cfg.getDefaultLocale())
-                .filter(StringUtils::isNotEmpty)
-                .map(Locale::new)
-                .filter(cfg::isSupportedLocale)
-                .orElse(Locale.UK);
+  private AppConfig cfg;
 
-        invocation.getInvocationContext().withLocale(locale);
+  @Override
+  public String intercept(ActionInvocation invocation) throws Exception {
+    Locale locale = Optional.ofNullable(cfg.getDefaultLocale())
+        .filter(StringUtils::isNotEmpty)
+        .map(Locale::new)
+        .filter(cfg::isSupportedLocale)
+        .orElse(Locale.UK);
 
-        return invocation.invoke();
-    }
+    invocation.getInvocationContext().withLocale(locale);
 
-    @Inject
-    public void setCfg(AppConfig cfg) {
-        this.cfg = cfg;
-    }
+    return invocation.invoke();
+  }
+
+  @Inject
+  public void setCfg(AppConfig cfg) {
+    this.cfg = cfg;
+  }
 }

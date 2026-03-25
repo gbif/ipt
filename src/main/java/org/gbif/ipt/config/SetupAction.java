@@ -36,6 +36,7 @@ import org.gbif.utils.HttpClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -47,16 +48,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+
+import lombok.Getter;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
  */
 public class SetupAction extends BaseAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(SetupAction.class);
-
+  @Serial
   private static final long serialVersionUID = 4726973323043063968L;
+
+  private static final Logger LOG = LogManager.getLogger(SetupAction.class);
 
   private final ConfigManager configManager;
   private final AppConfig cfg;
@@ -69,13 +73,17 @@ public class SetupAction extends BaseAction {
   private final UserValidator userValidation = new UserValidator();
 
   // action attributes to be set
+  @Getter
   protected String dataDirPath;
   protected User user = new User();
+  @Getter
   private String password2;
   protected String modeSelected;
   protected String baseURL;
+  @Getter
   protected String proxy;
   // can't pass a literal boolean to ftl, using int instead...
+  @Getter
   protected Integer ignoreUserValidation = 0;
   private boolean setupDefaultAdministrator = false;
   private boolean setupPublicUrl = false;
@@ -133,7 +141,7 @@ public class SetupAction extends BaseAction {
           baseURL = baseURL.replaceFirst("^http://", "https://");
         }
 
-        LOG.info("Auto-Detected IPT BaseURL=" + baseURL);
+        LOG.info("Auto-Detected IPT BaseURL={}", baseURL);
       } else {
         baseURL = cfg.getBaseUrl();
       }
@@ -141,22 +149,7 @@ public class SetupAction extends BaseAction {
     return baseURL;
   }
 
-  public String getDataDirPath() {
-    return dataDirPath;
-  }
-
-  public Integer getIgnoreUserValidation() {
-    return this.ignoreUserValidation;
-  }
-
-  public String getPassword2() {
-    return password2;
-  }
-
-  public String getProxy() {
-    return proxy;
-  }
-
+  @StrutsParameter(depth = 2)
   public User getUser() {
     return user;
   }
@@ -170,30 +163,37 @@ public class SetupAction extends BaseAction {
     return !cfg.debug();
   }
 
+  @StrutsParameter
   public void setBaseURL(String baseUrlVerbatim) {
     this.baseURL = baseUrlVerbatim;
   }
 
+  @StrutsParameter
   public void setDataDirPath(String dataDirPath) {
     this.dataDirPath = dataDirPath;
   }
 
+  @StrutsParameter
   public void setIgnoreUserValidation(Integer ignoreUserValidation) {
     this.ignoreUserValidation = ignoreUserValidation;
   }
 
+  @StrutsParameter
   public void setPassword2(String password2) {
     this.password2 = password2;
   }
 
+  @StrutsParameter
   public void setProxy(String proxy) {
     this.proxy = proxy;
   }
 
+  @StrutsParameter
   public void setSetupDefaultAdministrator(boolean setupDefaultAdministrator) {
     this.setupDefaultAdministrator = setupDefaultAdministrator;
   }
 
+  @StrutsParameter
   public void setSetupPublicUrl(boolean setupPublicUrl) {
     this.setupPublicUrl = setupPublicUrl;
   }
@@ -220,7 +220,7 @@ public class SetupAction extends BaseAction {
           addFieldError("dataDirPath", getText("admin.config.setup.datadir.absolute"));
         }
       } catch (InvalidConfigException e) {
-        LOG.warn("Failed to setup datadir: " + e.getMessage(), e);
+        LOG.warn("Failed to setup datadir: {}", e.getMessage(), e);
         if (e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
           addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
         } else {
@@ -228,7 +228,7 @@ public class SetupAction extends BaseAction {
         }
       } catch (RegistryException e) {
         String msg = RegistryException.logRegistryException(e, this);
-        LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
+        LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
         addActionError(msg);
       }
     }
@@ -393,7 +393,7 @@ public class SetupAction extends BaseAction {
         }
       } catch (RegistryException e) {
         String msg = RegistryException.logRegistryException(e, this);
-        LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
+        LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
         addActionError(msg);
       }
     }
@@ -418,7 +418,7 @@ public class SetupAction extends BaseAction {
       addActionWarning(msg, e);
     } catch (RegistryException e) {
       String msg = RegistryException.logRegistryException(e, this);
-      LOG.warn("Failed to contact the GBIF Registry (" + msg + "): " + e.getMessage(), e);
+      LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
       addActionError(msg);
       addActionExceptionWarning(e);
     }
@@ -512,6 +512,7 @@ public class SetupAction extends BaseAction {
    *
    * @param modeSelected mode that has been selected to run the IPT in
    */
+  @StrutsParameter
   public void setModeSelected(String modeSelected) {
     this.modeSelected = modeSelected;
   }

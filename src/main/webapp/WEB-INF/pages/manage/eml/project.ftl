@@ -245,12 +245,12 @@
                             <#assign addAwardLink = addAwardLink?markup_string>
 
                             <div class="row g-3 mt-1 mb-2">
-                                <@input name="eml.project.title" />
-                                <@input name="eml.project.identifier" help="i18n"/>
-                                <@text name="eml.project.description" help="i18n"/>
-                                <@text name="eml.project.funding" help="i18n"/>
-                                <@text name="eml.project.studyAreaDescription.descriptorValue" help="i18n" />
-                                <@text name="eml.project.designDescription" help="i18n" />
+                                <@input name="eml.project.title" value=(eml.project.title)!/>
+                                <@input name="eml.project.identifier" value=(eml.project.identifier)! help="i18n"/>
+                                <@text name="eml.project.description" value=(eml.project.description)! help="i18n"/>
+                                <@text name="eml.project.funding" value=(eml.project.funding)! help="i18n"/>
+                                <@text name="eml.project.studyAreaDescription.descriptorValue" value=(eml.project.studyAreaDescription.descriptorValue)! help="i18n" />
+                                <@text name="eml.project.designDescription" value=(eml.project.designDescription)! help="i18n" />
                             </div>
 
                         </div>
@@ -276,19 +276,19 @@
                                                 </div>
                                             </div>
                                             <div class="col-12">
-                                                <@input name="eml.project.awards[" + item_index + "].title" help="i18n" i18nkey="eml.project.award.title" requiredField=true/>
+                                                <@input name="eml.project.awards[${item_index}].title" value=(item.title)! help="i18n" i18nkey="eml.project.award.title" requiredField=true/>
                                             </div>
                                             <div class="col-lg-4">
-                                                <@input name="eml.project.awards[" + item_index + "].funderName" help="i18n" i18nkey="eml.project.award.funderName" requiredField=true />
+                                                <@input name="eml.project.awards[${item_index}].funderName" value=(item.funderName)! help="i18n" i18nkey="eml.project.award.funderName" requiredField=true />
                                             </div>
                                             <div class="col-lg-4">
-                                                <@input name="eml.project.awards[" + item_index + "].awardNumber" help="i18n" i18nkey="eml.project.award.awardNumber" />
+                                                <@input name="eml.project.awards[${item_index}].awardNumber" value=(item.awardNumber)! help="i18n" i18nkey="eml.project.award.awardNumber" />
                                             </div>
                                             <div class="col-lg-4">
-                                                <@input name="eml.project.awards[" + item_index + "].awardUrl" help="i18n" i18nkey="eml.project.award.awardUrl" />
+                                                <@input name="eml.project.awards[${item_index}].awardUrl" value=(item.awardUrl)! help="i18n" i18nkey="eml.project.award.awardUrl" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="eml.project.awards[" + item_index + "].funderIdentifiers[0]" help="i18n" i18nkey="eml.project.award.funderIdentifier" />
+                                                <@input name="eml.project.awards[${item_index}].funderIdentifiers[0]" value=(item.funderIdentifiers[0])! help="i18n" i18nkey="eml.project.award.funderIdentifier" />
                                             </div>
                                         </div>
                                     </#list>
@@ -328,13 +328,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-12">
-                                                <@input name="eml.project.relatedProjects[" + item_index + "].title"  i18nkey="eml.project.relatedProject.title" requiredField=true/>
+                                                <@input name="eml.project.relatedProjects[${item_index}].title" value=(item.title)! i18nkey="eml.project.relatedProject.title" requiredField=true/>
                                             </div>
                                             <div class="col-12">
-                                                <@input name="eml.project.relatedProjects[" + item_index + "].identifier"  i18nkey="eml.project.relatedProject.identifier" />
+                                                <@input name="eml.project.relatedProjects[${item_index}].identifier" value=(item.identifier)! i18nkey="eml.project.relatedProject.identifier" />
                                             </div>
                                             <div class="col-12">
-                                                <@text name="eml.project.relatedProjects[" + item_index + "].description"  i18nkey="eml.project.relatedProject.description" />
+                                                <@text name="eml.project.relatedProjects[${item_index}].description" value=(item.description)! i18nkey="eml.project.relatedProject.description" />
                                             </div>
                                             <div class="col-12">
                                                 <div id="relatedProject-${item_index}-personnel">
@@ -374,22 +374,22 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-5">
-                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].firstName" i18nkey="eml.project.personnel.firstName" />
+                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].firstName" value=(personnel.firstName)! i18nkey="eml.project.personnel.firstName" />
                                                             </div>
                                                             <div class="col-lg-5">
-                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].lastName" i18nkey="eml.project.personnel.lastName" requiredField=true />
+                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].lastName" value=(personnel.lastName)! i18nkey="eml.project.personnel.lastName" requiredField=true />
                                                             </div>
                                                             <div class="col-lg-2">
-                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].salutation" i18nkey="eml.project.personnel.salutation" />
+                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].salutation" value=(personnel.salutation)! i18nkey="eml.project.personnel.salutation" />
                                                             </div>
                                                             <div class="col-lg-6">
-                                                                <@select name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].userIds[0].directory" value="${(eml.project.relatedProjects[item_index].personnel[personnel_index].userIds[0].directory)!}" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" />
+                                                                <@select name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].userIds[0].directory" options=userIdDirectories help="i18n" i18nkey="eml.contact.directory" value=(userIdDirecotriesExtended[(personnel.userIds?has_content)?then(personnel.userIds[0].directory!"", "")])!"" />
                                                             </div>
                                                             <div class="col-lg-6">
-                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+                                                                <@input name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].userIds[0].identifier" value=(personnel.userIds?has_content)?then(personnel.userIds[0].identifier!"", "") help="i18n" i18nkey="eml.contact.identifier" />
                                                             </div>
                                                             <div class="col-lg-6">
-                                                                <@select name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].role" value="${(eml.project.relatedProjects[item_index].personnel[personnel_index].role)!}" i18nkey="eml.associatedParties.role" help="i18n" options=roles />
+                                                                <@select name="eml.project.relatedProjects[${item_index}].personnel[${personnel_index}].role" value=(personnel.role)! i18nkey="eml.associatedParties.role" help="i18n" options=roles />
                                                             </div>
                                                         </div>
                                                     </#list>
@@ -461,26 +461,22 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-5">
-                                                <@input name="eml.project.personnel[${item_index}].firstName" i18nkey="eml.project.personnel.firstName"/>
+                                                <@input name="eml.project.personnel[${item_index}].firstName" value=(item.firstName)! i18nkey="eml.project.personnel.firstName"/>
                                             </div>
                                             <div class="col-lg-5">
-                                                <@input name="eml.project.personnel[${item_index}].lastName" i18nkey="eml.project.personnel.lastName" requiredField=true/>
+                                                <@input name="eml.project.personnel[${item_index}].lastName" value=(item.lastName)! i18nkey="eml.project.personnel.lastName" requiredField=true/>
                                             </div>
                                             <div class="col-lg-2">
-                                                <@input name="eml.project.personnel[${item_index}].salutation" i18nkey="eml.project.personnel.salutation" />
+                                                <@input name="eml.project.personnel[${item_index}].salutation" value=(item.salutation)! i18nkey="eml.project.personnel.salutation" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <#if eml.project.personnel[item_index]?? && eml.project.personnel[item_index].userIds[0]??>
-                                                    <@select name="eml.project.personnel[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="${userIdDirecotriesExtended[eml.project.personnel[item_index].userIds[0].directory!]!}"/>
-                                                <#else>
-                                                    <@select name="eml.project.personnel[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=""/>
-                                                </#if>
+                                                <@select name="eml.project.personnel[${item_index}].userIds[0].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value=(userIdDirecotriesExtended[(item.userIds?has_content)?then(item.userIds[0].directory!"", "")])!""/>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="eml.project.personnel[${item_index}].userIds[0].identifier" help="i18n" i18nkey="eml.contact.identifier" />
+                                                <@input name="eml.project.personnel[${item_index}].userIds[0].identifier" value=(item.userIds?has_content)?then(item.userIds[0].identifier!"", "") help="i18n" i18nkey="eml.contact.identifier" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@select name="eml.project.personnel[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${eml.project.personnel[item_index].role!}" options=roles />
+                                                <@select name="eml.project.personnel[${item_index}].role" i18nkey="eml.associatedParties.role" help="i18n" value="${item.role!}" options=roles />
                                             </div>
                                         </div>
                                     </#list>

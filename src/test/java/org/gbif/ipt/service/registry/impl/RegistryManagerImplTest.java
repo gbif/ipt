@@ -64,7 +64,6 @@ import static org.mockito.Mockito.when;
 
 public class RegistryManagerImplTest extends IptMockBaseTest {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(RegistryManagerImplTest.class);
 
   private AppConfig mockAppConfig;
@@ -353,12 +352,10 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
       new RegistryManagerImpl(mockAppConfig, dataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider);
 
-    assertEquals(RegistryException.Type.BAD_REQUEST, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.BAD_REQUEST.getStatusCode()));
-    assertEquals(RegistryException.Type.NOT_AUTHORISED, manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.UNAUTHORIZED.getStatusCode()));
-    assertEquals(RegistryException.Type.BAD_RESPONSE,
-      manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()));
-    assertEquals(RegistryException.Type.BAD_RESPONSE,
-      manager.getRegistryExceptionType(javax.ws.rs.core.Response.Status.MOVED_PERMANENTLY.getStatusCode()));
+    assertEquals(RegistryException.Type.BAD_REQUEST, manager.getRegistryExceptionType(400));
+    assertEquals(RegistryException.Type.NOT_AUTHORISED, manager.getRegistryExceptionType(401));
+    assertEquals(RegistryException.Type.BAD_RESPONSE, manager.getRegistryExceptionType(500));
+    assertEquals(RegistryException.Type.BAD_RESPONSE, manager.getRegistryExceptionType(301));
 
     try {
       manager.getRegistryExceptionType(101);

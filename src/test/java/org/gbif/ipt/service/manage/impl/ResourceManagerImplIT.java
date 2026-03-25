@@ -75,8 +75,6 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import javax.ws.rs.core.UriBuilder;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,9 +104,9 @@ public class ResourceManagerImplIT extends IptBaseTest {
 
     // mock returning resource URI in gbif-uat belong
     when(mockAppConfig.getResourceUri(anyString()))
-        .thenReturn(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt?r=ants").build());
+        .thenReturn(URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants"));
     when(mockAppConfig.getResourceVersionUri("ants", new BigDecimal("1.1")))
-        .thenReturn(UriBuilder.fromPath("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").build());
+        .thenReturn(URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants&v=1.1"));
     when(mockAppConfig.getMaxThreads()).thenReturn(3);
 
     UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
@@ -141,7 +139,6 @@ public class ResourceManagerImplIT extends IptBaseTest {
       .withUser(p.getProperty("user"))
       .withPassword(p.getProperty("password"))
       .build();
-    //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
     Organisation oDataCite = new Organisation();
     oDataCite.setAgencyAccountPrimary(true);
@@ -242,7 +239,8 @@ public class ResourceManagerImplIT extends IptBaseTest {
                                       DOI doi,
                                       RegistrationManager registrationManager) throws Exception {
     LOG.info("Testing " + type + "...");
-    String expectedDataciteUrl = URI.create("http://www.gbif-uat.org:7001/ipt?r=ants").toString();
+    String expectedDataciteUrl = URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants").toString();
+    String expectedDataciteUrl1_1 = URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants&v=1.1").toString();
 
     // reserve DOI to begin with
     assertNotNull(doi);
@@ -356,11 +354,11 @@ public class ResourceManagerImplIT extends IptBaseTest {
     assertNotNull(doiData.getTarget());
 
     if (type == DOIRegistrationAgency.DATACITE) {
-      assertEquals(URI.create("http://www.gbif-uat.org:7001/ipt?r=ants&v=1.1").toString(), decodeUrl(doiData.getTarget().toString()));
+      assertEquals(expectedDataciteUrl1_1, decodeUrl(doiData.getTarget().toString()));
     }
   }
 
   private String decodeUrl(String url) throws UnsupportedEncodingException {
-    return URLDecoder.decode(url, StandardCharsets.UTF_8.name());
+    return URLDecoder.decode(url, StandardCharsets.UTF_8);
   }
 }

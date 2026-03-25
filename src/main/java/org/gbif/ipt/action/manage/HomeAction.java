@@ -23,21 +23,30 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.Serial;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.annotations.JSON;
 
+import lombok.Getter;
+
 public class HomeAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = -7395504502586148676L;
 
   private DatatableResult resources = new DatatableResult();
 
   private final ResourceManager resourceManager;
+  /**
+   * list of organisations that can host
+   */
+  @Getter
   private List<Organisation> organisations;
 
   @Inject
@@ -104,13 +113,6 @@ public class HomeAction extends BaseAction {
   public String locked() {
     addActionError(getText("manage.home.resource.locked"));
     return execute();
-  }
-
-  /**
-   * @return list of organisations that can host
-   */
-  public List<Organisation> getOrganisations() {
-    return organisations;
   }
 
 }

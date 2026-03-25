@@ -201,7 +201,7 @@
                                     </li>
                                 </#if>
                                 <li>
-                                    <@s.submit form="translation" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                    <@s.submit form="translation" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
                                 </li>
                             </ul>
                         </div>
@@ -363,7 +363,7 @@
                     <select name="addNewTranslation" id="addNewTranslation" class="form-select">
                         <option value="" disabled selected><@s.text name="manage.translation.select"/></option>
                         <#list sourceValuesMap as key, val>
-                            <#if tmap?? && tmap['${key}']??>
+                            <#if tmap?? && tmap[key]??>
                             <#else>
                                 <option id="option-${key}" value="${val}">
                                     ${val}

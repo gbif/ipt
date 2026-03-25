@@ -34,7 +34,7 @@ usersTable macro: Generates a data table that has searching, pagination, and sor
                 '<svg class="icon-button-svg icon-material-reset-password" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l4 4 4-4H6c0-3.86 3.14-7 7-7s7 3.14 7 7-3.14 7-7 7c-1.9 0-3.62-.76-4.88-1.99L6.7 18.42C8.32 20.01 10.55 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm2 8v-1c0-1.1-.9-2-2-2s-2 .9-2 2v1c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1zm-1 0h-2v-1c0-.55.45-1 1-1s1 .45 1 1v1z"></path></svg>' +
                 '</label>' +
                 '<label title="<@s.text name="button.delete"/>" class="userConfirmDeletion icon-button icon-button-sm">' +
-                '<input type="submit" value="Delete" id="delete" name="delete" class="button btn btn-sm btn-outline-gbif-danger top-button" style="display: none;">' +
+                '<input type="submit" value="Delete" id="delete" name="deleteFlag" class="button btn btn-sm btn-outline-gbif-danger top-button" style="display: none;">' +
                 '<svg class="icon-button-svg icon-material-delete" focusable="false" aria-hidden="true" viewBox="0 0 24 24">' +
                 '<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>' +
                 '</svg>' +

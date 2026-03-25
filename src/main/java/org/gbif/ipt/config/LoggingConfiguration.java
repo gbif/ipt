@@ -40,32 +40,42 @@ public class LoggingConfiguration extends XmlConfiguration {
   protected void doConfigure() {
     super.doConfigure();
 
-    final Layout layout = PatternLayout.newBuilder().withPattern("%-5p %d{dd-MMM-yyyy HH:mm:ss} [%c] - %m%n").build();
+    final Layout<?> layout = PatternLayout.newBuilder()
+        .withConfiguration(this)
+        .withPattern("%-5p %d{dd-MMM-yyyy HH:mm:ss} [%c] - %m%n")
+        .build();
 
-    final CompositeTriggeringPolicy policy = CompositeTriggeringPolicy.createPolicy(
+    final CompositeTriggeringPolicy debugPolicy = CompositeTriggeringPolicy.createPolicy(
         OnStartupTriggeringPolicy.createPolicy(1),
         SizeBasedTriggeringPolicy.createPolicy("10MB")
     );
 
     final Appender debugAppender = RollingFileAppender.newBuilder()
+        .setConfiguration(this)
         .setName("LOGFILE")
         .setLayout(layout)
         .withFileName(logDirectory + "debug.log")
         .withFilePattern(logDirectory + "debug.log.%i")
-        .withPolicy(policy)
-        .withStrategy(DefaultRolloverStrategy.newBuilder().build())
+        .withPolicy(debugPolicy)
+        .withStrategy(DefaultRolloverStrategy.newBuilder().withConfig(this).build())
         .build();
     debugAppender.start();
     addAppender(debugAppender);
     getRootLogger().addAppender(debugAppender, null, null);
 
+    final CompositeTriggeringPolicy adminPolicy = CompositeTriggeringPolicy.createPolicy(
+        OnStartupTriggeringPolicy.createPolicy(1),
+        SizeBasedTriggeringPolicy.createPolicy("10MB")
+    );
+
     final Appender adminAppender = RollingFileAppender.newBuilder()
+        .setConfiguration(this)
         .setName("ADMINFILE")
         .setLayout(layout)
         .withFileName(logDirectory + "admin.log")
         .withFilePattern(logDirectory + "admin.log.%i")
-        .withPolicy(policy)
-        .withStrategy(DefaultRolloverStrategy.newBuilder().build())
+        .withPolicy(adminPolicy)
+        .withStrategy(DefaultRolloverStrategy.newBuilder().withConfig(this).build())
         .build();
     adminAppender.start();
     addAppender(adminAppender);

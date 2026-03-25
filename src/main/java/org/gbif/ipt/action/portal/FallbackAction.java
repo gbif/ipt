@@ -19,9 +19,11 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import javax.inject.Inject;
+import java.io.Serial;
 
 public class FallbackAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = 5075091500212058562L;
 
   @Inject

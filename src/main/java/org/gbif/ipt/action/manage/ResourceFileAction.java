@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serial;
 import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
@@ -36,10 +37,10 @@ import lombok.Getter;
  */
 public class ResourceFileAction extends ManagerBaseAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(ResourceFileAction.class);
-
+  @Serial
   private static final long serialVersionUID = -3304799051086050164L;
+
+  private static final Logger LOG = LogManager.getLogger(ResourceFileAction.class);
 
   private final DataDir dataDir;
   @Getter

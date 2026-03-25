@@ -34,24 +34,34 @@ import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.activation.MimeTypeParseException;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.struts2.ServletActionContext;
 
-public class SourceAction extends ManagerBaseAction {
+import lombok.Getter;
 
-  // logging
+public class SourceAction extends ManagerBaseAction implements UploadedFilesAware {
+
+  @Serial
+  private static final long serialVersionUID = 3324051864626106131L;
+
   private static final Logger LOG = LogManager.getLogger(SourceAction.class);
 
   private SourceManager sourceManager;
@@ -59,8 +69,11 @@ public class SourceAction extends ManagerBaseAction {
   private DataDir dataDir;
   // config
   private Source source;
+  @Getter
   private String rdbms;
+  @Getter
   private String problem;
+  @Getter
   private String sqlSourcePassword;
   // to store password internally
   private String sqlSourcePasswordCache;
@@ -68,12 +81,12 @@ public class SourceAction extends ManagerBaseAction {
   private String url;
   private String sourceName;
   // file upload
-  private File file;
-  private String fileContentType;
-  private String fileFileName;
+  private List<UploadedFile> uploadedFiles = new ArrayList<>();
   private boolean analyze = false;
   // preview
+  @Getter
   private List<String> columns;
+  @Getter
   private List<String[]> peek;
   private int peekRows = 10;
   private int analyzeRows = 1000;
@@ -139,7 +152,7 @@ public class SourceAction extends ManagerBaseAction {
       // check a text file (or no extension)
       String extension = FilenameUtils.getExtension(url);
       boolean extensionNotAllowed = (!extension.isEmpty()
-          && !StringUtils.equalsAny(extension, "txt", "tsv", "csv", "zip"));
+          && !Strings.CS.equalsAny(extension, "txt", "tsv", "csv", "zip"));
 
       if (extensionNotAllowed) {
         LOG.debug("No extension in the URL, checking content type.");
@@ -165,61 +178,126 @@ public class SourceAction extends ManagerBaseAction {
   }
 
   private String addFileSource() {
-    // uploaded a new file. Is it compressed?
-    // application/zip, application/x-gzip
-    if (StringUtils.endsWithAny(fileContentType.toLowerCase(), "zip", "gzip", "compressed")) {
-      try {
-        File tmpDir = dataDir.tmpDir();
-        // override auto-generated name
-        String unzippedFileName = fileFileName != null
-            ? fileFileName.substring(0, fileFileName.lastIndexOf(".")) : null;
+    if (uploadedFiles == null || uploadedFiles.isEmpty()) {
+      addErrorHeader("manage.source.upload.unexpectedException");
+      addActionError(getText("manage.source.upload.unexpectedException"));
+      return ERROR;
+    }
 
-        List<File> files = CompressionUtil.decompressFile(tmpDir, file, unzippedFileName);
-        addActionMessage(getText("manage.source.compressed.files", new String[]{String.valueOf(files.size())}));
+    List<String> createdSourceNames = new ArrayList<>();
 
-        // import each file
-        for (File f : files) {
-          addDataFile(f, f.getName());
-        }
-      } catch (IOException e) {
-        LOG.error(e);
-        addErrorHeader("manage.source.filesystem.error");
-        addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
-        return ERROR;
-      } catch (UnsupportedCompressionType e) {
-        LOG.error(e);
-        addErrorHeader("manage.source.unsupported.compression.format");
-        addActionError(getText("manage.source.unsupported.compression.format"));
-        return ERROR;
-      } catch (InvalidFilenameException e) {
-        LOG.error(e);
-        addErrorHeader("manage.source.invalidFileName.archive");
-        addActionError(getText("manage.source.invalidFileName.archive"));
-        return ERROR;
-      } catch (Exception e) {
-        LOG.error(e);
-        addErrorHeader("manage.source.upload.unexpectedException");
-        addActionError(getText("manage.source.upload.unexpectedException"));
-        return ERROR;
+    for (UploadedFile upload : uploadedFiles) {
+      if (upload == null || upload.getContent() == null) {
+        continue; // ignore empty slots, but don’t fail whole request
       }
-    } else {
-      try {
-        // treat as is - hopefully a simple text or Excel file
-        addDataFile(file, fileFileName);
-      } catch (InvalidFilenameException e) {
-        LOG.error(e);
-        addErrorHeader("manage.source.invalidFileName");
-        addActionError(getText("manage.source.invalidFileName"));
-        return ERROR;
-      } catch (Exception e) {
-        LOG.error(e);
-        addErrorHeader("manage.source.upload.unexpectedException");
-        addActionError(getText("manage.source.upload.unexpectedException"));
-        return ERROR;
+
+      File content = (File) upload.getContent();
+      String contentType = StringUtils.defaultString(upload.getContentType()).toLowerCase();
+      String originalName = StringUtils.trimToNull(upload.getOriginalName());
+
+      // uploaded a new file. Is it compressed?
+      // application/zip, application/x-gzip
+      if (Strings.CS.endsWithAny(contentType.toLowerCase(), "zip", "gzip", "compressed")) {
+        try {
+          File tmpDir = dataDir.tmpDir();
+          // override auto-generated name
+          String unzippedFileName = originalName != null && originalName.contains(".")
+              ? originalName.substring(0, originalName.lastIndexOf("."))
+              : null;
+
+          List<File> files = CompressionUtil.decompressFile(tmpDir, content, unzippedFileName);
+          addActionMessage(getText("manage.source.compressed.files", new String[]{String.valueOf(files.size())}));
+
+          // import each file from the archive
+          for (File f : files) {
+            String created = addDataFileAndReturnSourceName(f, f.getName());
+            if (created != null) {
+              createdSourceNames.add(created);
+            }
+          }
+        } catch (IOException e) {
+          LOG.error(e);
+          addErrorHeader("manage.source.filesystem.error");
+          addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
+          return ERROR;
+        } catch (UnsupportedCompressionType e) {
+          LOG.error(e);
+          addErrorHeader("manage.source.unsupported.compression.format");
+          addActionError(getText("manage.source.unsupported.compression.format"));
+          return ERROR;
+        } catch (InvalidFilenameException e) {
+          LOG.error(e);
+          addErrorHeader("manage.source.invalidFileName.archive");
+          addActionError(getText("manage.source.invalidFileName.archive"));
+          return ERROR;
+        } catch (Exception e) {
+          LOG.error(e);
+          addErrorHeader("manage.source.upload.unexpectedException");
+          addActionError(getText("manage.source.upload.unexpectedException"));
+          return ERROR;
+        }
+      } else {
+        try {
+          // treat as is - hopefully a simple text or Excel file
+          String created = addDataFileAndReturnSourceName(content, originalName);
+          if (created != null) {
+            createdSourceNames.add(created);
+          }
+        } catch (InvalidFilenameException e) {
+          LOG.error(e);
+          addErrorHeader("manage.source.invalidFileName");
+          addActionError(getText("manage.source.invalidFileName"));
+          return ERROR;
+        } catch (Exception e) {
+          LOG.error(e);
+          addErrorHeader("manage.source.upload.unexpectedException");
+          addActionError(getText("manage.source.upload.unexpectedException"));
+          return ERROR;
+        }
       }
     }
 
+    if (createdSourceNames.isEmpty()) {
+      addErrorHeader("manage.source.upload.unexpectedException");
+      addActionError(getText("manage.source.upload.unexpectedException"));
+      return ERROR;
+    }
+
+    if (createdSourceNames.size() == 1) {
+      addActionMessage(getText("manage.overview.source.created", new String[]{createdSourceNames.get(0)}));
+    } else {
+      addActionMessage(getText("manage.overview.sources.created", new String[]{String.join(", ", createdSourceNames)}));
+    }
+
     return SUCCESS;
+  }
+
+  private String addDataFileAndReturnSourceName(File f, String filename) throws InvalidFilenameException {
+    Source existingSource = resource.getSource(filename);
+    boolean replaced = existingSource != null;
+
+    try {
+      source = sourceManager.add(resource, f, filename);
+
+      resource.setSourcesModified(new Date());
+      saveResource();
+
+      id = source.getName();
+
+      if (replaced) {
+        addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
+        alertColumnNumberChange(resource.hasMappedSource(existingSource), source.getColumns(), existingSource.getColumns());
+      } else {
+        addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
+      }
+
+      return source.getName();
+
+    } catch (ImportException e) {
+      LOG.error("Cannot add source {}: {}", filename, e.getMessage(), e);
+      addActionError(getText("manage.source.cannot.add", new String[]{filename, e.getMessage()}));
+      return null;
+    }
   }
 
   private void addErrorHeader(String value) {
@@ -274,44 +352,8 @@ public class SourceAction extends ManagerBaseAction {
       }
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
-      LOG.error("Cannot add URL source " + url, e);
+      LOG.error("Cannot add URL source {}", url, e);
       addActionError(getText("manage.source.cannot.add", new String[]{sourceName, e.getMessage()}));
-    }
-  }
-
-  /**
-   * Add new file source to resource, replacing existing source if they have the exact same name.
-   *
-   * @param f file source
-   * @param filename filename
-   *
-   * @throws InvalidFilenameException
-   */
-  private void addDataFile(File f, String filename) throws InvalidFilenameException {
-    Source existingSource = resource.getSource(filename);
-    boolean replaced = existingSource != null;
-    try {
-      source = sourceManager.add(resource, f, filename);
-      // set sources modified date
-      resource.setSourcesModified(new Date());
-      // save resource
-      saveResource();
-      id = source.getName();
-      if (replaced) {
-        addActionMessage(getText("manage.source.replaced.existing", new String[] {source.getName()}));
-        // alert user if the number of columns changed
-        alertColumnNumberChange(resource.hasMappedSource(existingSource), source.getColumns(),
-          existingSource.getColumns());
-      } else {
-        addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
-      }
-    } catch (ImportException e) {
-      // even though we have problems with this source we'll keep it for manual corrections
-      LOG.error("Cannot add source " + filename + ": " + e.getMessage(), e);
-      addActionError(getText("manage.source.cannot.add", new String[] {filename, e.getMessage()}));
-    } catch (InvalidFilenameException e) {
-      // clean session variables used for confirming file overwrite
-      throw e;
     }
   }
 
@@ -348,10 +390,6 @@ public class SourceAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
-  public List<String> getColumns() {
-    return columns;
-  }
-
   public TextFileSource getFileSource() {
     if (source instanceof TextFileSource) {
       return (TextFileSource) source;
@@ -367,30 +405,11 @@ public class SourceAction extends ManagerBaseAction {
     return dataDir.sourceLogFile(resource.getShortname(), source.getName()).exists();
   }
 
-  public List<String[]> getPeek() {
-    return peek;
-  }
-
   public int getPreviewSize() {
     return peekRows;
   }
 
-  public String getProblem() {
-    return problem;
-  }
-
-  public String getRdbms() {
-    return rdbms;
-  }
-
-  public String getSqlSourcePassword() {
-    return sqlSourcePassword;
-  }
-
-  public Source getSource() {
-    return source;
-  }
-
+  @StrutsParameter(depth = 2)
   public SqlSource getSqlSource() {
     if (source instanceof SqlSource) {
       return (SqlSource) source;
@@ -414,21 +433,21 @@ public class SourceAction extends ManagerBaseAction {
     if (id != null) {
       source = resource.getSource(id);
       if (source == null) {
-        LOG.error("No source with id " + id + " found!");
+        LOG.error("No source with id {} found!", id);
         addActionError(getText("manage.source.cannot.load", new String[] {id}));
       } else {
-        // store original number of columns, in case they change the user should be warned to update its mappings
+        // store the original number of columns, in case they change, the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
       }
 
       // we don't display password after saving, store password internally
-      if (source instanceof SqlSource) {
-        String pw = ((SqlSource) source).getPassword();
+      if (source instanceof SqlSource sqlSrc) {
+        String pw = sqlSrc.getPassword();
         if (StringUtils.isNotEmpty(pw)) {
           sqlSourcePasswordCache = pw;
         }
       }
-    } else if (file == null) {
+    } else if (uploadedFiles == null || uploadedFiles.isEmpty()) {
       // prepare a new, empty sql source
       source = new SqlSource();
       source.setResource(resource);
@@ -482,30 +501,22 @@ public class SourceAction extends ManagerBaseAction {
     }
   }
 
+  @StrutsParameter
   public void setUrl(String url) {
     this.url = url;
   }
 
+  @StrutsParameter
   public void setSourceName(String sourceName) {
     this.sourceName = sourceName;
   }
 
+  @StrutsParameter
   public void setSourceType(String sourceType) {
     this.sourceType = sourceType;
   }
 
-  public void setFile(File file) {
-    this.file = file;
-  }
-
-  public void setFileContentType(String fileContentType) {
-    this.fileContentType = fileContentType;
-  }
-
-  public void setFileFileName(String fileFileName) {
-    this.fileFileName = fileFileName;
-  }
-
+  @StrutsParameter
   public void setRdbms(String jdbc) {
     this.rdbms = jdbc;
     if (source != null && source instanceof SqlSource) {
@@ -513,6 +524,7 @@ public class SourceAction extends ManagerBaseAction {
     }
   }
 
+  @StrutsParameter
   public void setSqlSourcePassword(String sqlSourcePassword) {
     if (source != null && source instanceof SqlSource) {
       // ignore empty password
@@ -537,29 +549,30 @@ public class SourceAction extends ManagerBaseAction {
     if (source != null) {
       // ALL SOURCES
       // check if title exists already as a source
-      if (StringUtils.trimToEmpty(source.getName()).length() == 0) {
+      if (StringUtils.trimToEmpty(source.getName()).isEmpty()) {
         addFieldError("source.name", getText("validation.required", new String[] {getText("source.name")}));
       } else if (StringUtils.trimToEmpty(source.getName()).length() < 3) {
         addFieldError("source.name", getText("validation.short", new String[] {getText("source.name"), "3"}));
       } else if (id == null && resource.getSources().contains(source)) {
         addFieldError("source.name", getText("manage.source.unique"));
       }
-      if (source instanceof SqlSource) {
-        // SQL SOURCE
-        SqlSource src = (SqlSource) source;
+      if (source instanceof SqlSource src) {
+        // ignore host and password validation for DuckDB - not applicable
+        if (!"duckdb".equalsIgnoreCase(rdbms)) {
+          // restore password if it was not sent from the UI
+          if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
+            src.setPassword(sqlSourcePasswordCache);
+          }
 
-        // restore password if it was not sent from UI
-        if (StringUtils.isEmpty(src.getPassword()) && StringUtils.isNotEmpty(sqlSourcePasswordCache)) {
-          ((SqlSource) source).setPassword(sqlSourcePasswordCache);
+          // pure ODBC connections need only a DSN, no server
+          if (StringUtils.trimToEmpty(src.getHost()).isEmpty() && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
+            addFieldError("sqlSource.host", getText("validation.required", new String[]{getText("sqlSource.host")}));
+          } else if (StringUtils.trimToEmpty(src.getHost()).length() < 2) {
+            addFieldError("sqlSource.host", getText("validation.short", new String[]{getText("sqlSource.host"), "2"}));
+          }
         }
 
-        // pure ODBC connections need only a DSN, no server
-        if (StringUtils.trimToEmpty(src.getHost()).length() == 0 && rdbms != null && !rdbms.equalsIgnoreCase("odbc")) {
-          addFieldError("sqlSource.host", getText("validation.required", new String[] {getText("sqlSource.host")}));
-        } else if (StringUtils.trimToEmpty(src.getHost()).length() < 2) {
-          addFieldError("sqlSource.host", getText("validation.short", new String[] {getText("sqlSource.host"), "2"}));
-        }
-        if (StringUtils.trimToEmpty(src.getDatabase()).length() == 0) {
+        if (StringUtils.trimToEmpty(src.getDatabase()).isEmpty()) {
           addFieldError("sqlSource.database",
             getText("validation.required", new String[] {getText("sqlSource.database")}));
         } else if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
@@ -567,6 +580,7 @@ public class SourceAction extends ManagerBaseAction {
             getText("validation.short", new String[] {getText("sqlSource.database"), "2"}));
         }
       }
+
       // alert user if the number of columns changed
       Integer originalNumberColumns = (Integer) session.get(Constants.SESSION_FILE_NUMBER_COLUMNS);
       if (originalNumberColumns != null) {
@@ -574,6 +588,16 @@ public class SourceAction extends ManagerBaseAction {
           originalNumberColumns);
       }
     }
+  }
+
+  @Override
+  public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+    this.uploadedFiles = uploadedFiles;
+  }
+
+  @StrutsParameter(depth = 2)
+  public Source getSource() {
+    return source;
   }
 
   enum UiSourceType {

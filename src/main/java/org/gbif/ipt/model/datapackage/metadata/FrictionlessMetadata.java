@@ -17,6 +17,7 @@ import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.KeywordsMetadata;
 import org.gbif.ipt.validation.ValidURI;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -26,9 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
+import org.apache.struts2.util.Element;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -37,7 +41,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.opensymphony.xwork2.util.Element;
 
 /**
  * Frictionless metadata
@@ -45,8 +48,10 @@ import com.opensymphony.xwork2.util.Element;
  * Data Package is a simple specification for data access and delivery.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
+public class FrictionlessMetadata<C extends FrictionlessContributor, L extends FrictionlessLicense, S extends FrictionlessSource>
+    implements DataPackageMetadata, Serializable {
 
+  @Serial
   private final static long serialVersionUID = 5948080618683312611L;
 
   /**
@@ -126,7 +131,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("contributors")
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
-  private List<Contributor> contributors = new ArrayList<>();
+  private List<C> contributors = new ArrayList<>();
 
   /**
    * Keywords
@@ -156,7 +161,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("licenses")
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
-  private List<License> licenses = new ArrayList<>();
+  private List<L> licenses = new ArrayList<>();
 
   /**
    * Sources
@@ -166,7 +171,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("sources")
   @NotNull(message = "validation.input.notNull", groups = BasicMetadata.class)
   @Valid
-  private List<Source> sources = new ArrayList<>();
+  private List<S> sources = new ArrayList<>();
 
   @SuppressWarnings("FieldMayBeFinal")
   @JsonIgnore
@@ -348,7 +353,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    */
   @JsonProperty("contributors")
   @Element(FrictionlessContributor.class)
-  public List<Contributor> getContributors() {
+  public List<C> getContributors() {
     return contributors;
   }
 
@@ -358,7 +363,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The contributors to this descriptor.
    */
   @JsonProperty("contributors")
-  public void setContributors(List<Contributor> contributors) {
+  public void setContributors(List<C> contributors) {
     this.contributors = contributors;
   }
 
@@ -413,7 +418,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("licenses")
   @JsonDeserialize(contentUsing = FrictionlessLicense.DataPackageLicenseDeserializer.class)
   @Element(FrictionlessLicense.class)
-  public List<License> getLicenses() {
+  public List<L> getLicenses() {
     return licenses;
   }
 
@@ -423,7 +428,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The license(s) under which this package is published.
    */
   @JsonProperty("licenses")
-  public void setLicenses(List<License> licenses) {
+  public void setLicenses(List<L> licenses) {
     this.licenses = licenses;
   }
 
@@ -435,7 +440,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
   @JsonProperty("sources")
   @JsonDeserialize(contentUsing = FrictionlessSource.DataPackageSourceDeserializer.class)
   @Element(FrictionlessSource.class)
-  public List<Source> getSources() {
+  public List<S> getSources() {
     return sources;
   }
 
@@ -445,7 +450,7 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
    * The raw sources for this resource.
    */
   @JsonProperty("sources")
-  public void setSources(List<Source> sources) {
+  public void setSources(List<S> sources) {
     this.sources = sources;
   }
 
@@ -465,44 +470,44 @@ public class FrictionlessMetadata implements DataPackageMetadata, Serializable {
     if (o == null || getClass() != o.getClass()) return false;
     FrictionlessMetadata that = (FrictionlessMetadata) o;
     return Objects.equals(title, that.title)
-      && Objects.equals(version, that.version)
-      && Objects.equals(profile, that.profile)
-      && Objects.equals(name, that.name)
-      && Objects.equals(id, that.id)
-      && Objects.equals(description, that.description)
-      && Objects.equals(homepage, that.homepage)
-      && Objects.equals(created, that.created)
-      && Objects.equals(contributors, that.contributors)
-      && Objects.equals(keywords, that.keywords)
-      && Objects.equals(image, that.image)
-      && Objects.equals(licenses, that.licenses)
-      && Objects.equals(sources, that.sources)
-      && Objects.equals(additionalProperties, that.additionalProperties);
+        && Objects.equals(version, that.version)
+        && Objects.equals(profile, that.profile)
+        && Objects.equals(name, that.name)
+        && Objects.equals(id, that.id)
+        && Objects.equals(description, that.description)
+        && Objects.equals(homepage, that.homepage)
+        && Objects.equals(created, that.created)
+        && Objects.equals(contributors, that.contributors)
+        && Objects.equals(keywords, that.keywords)
+        && Objects.equals(image, that.image)
+        && Objects.equals(licenses, that.licenses)
+        && Objects.equals(sources, that.sources)
+        && Objects.equals(additionalProperties, that.additionalProperties);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(title, version, profile, name, id, description, homepage, created, contributors, keywords,
-      image, licenses, sources, additionalProperties);
+        image, licenses, sources, additionalProperties);
   }
 
   @Override
   public String toString() {
     return new StringJoiner(", ", DataPackageMetadata.class.getSimpleName() + "[", "]")
-      .add("profile='" + profile + "'")
-      .add("name='" + name + "'")
-      .add("id='" + id + "'")
-      .add("title='" + title + "'")
-      .add("description='" + description + "'")
-      .add("homepage=" + homepage)
-      .add("version=" + version)
-      .add("created=" + created)
-      .add("contributors=" + contributors)
-      .add("keywords=" + keywords)
-      .add("image='" + image + "'")
-      .add("licenses=" + licenses)
-      .add("sources=" + sources)
-      .add("additionalProperties=" + additionalProperties)
-      .toString();
+        .add("profile='" + profile + "'")
+        .add("name='" + name + "'")
+        .add("id='" + id + "'")
+        .add("title='" + title + "'")
+        .add("description='" + description + "'")
+        .add("homepage=" + homepage)
+        .add("version=" + version)
+        .add("created=" + created)
+        .add("contributors=" + contributors)
+        .add("keywords=" + keywords)
+        .add("image='" + image + "'")
+        .add("licenses=" + licenses)
+        .add("sources=" + sources)
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
   }
 }

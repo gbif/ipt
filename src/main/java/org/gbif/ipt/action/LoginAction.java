@@ -21,14 +21,19 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.CsrfLoginInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import jakarta.servlet.http.Cookie;
+
 import java.io.IOException;
+import java.io.Serial;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.http.Cookie;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+
+import lombok.Getter;
 
 /**
  * Action handling login/logout only. Login can happen both from small login box on every page, or dedicated login
@@ -38,13 +43,18 @@ public class LoginAction extends POSTAction {
 
   private static final Logger LOG = LogManager.getLogger(LoginAction.class);
 
+  @Serial
   private static final long serialVersionUID = -863287752175768744L;
 
   private final UserAccountManager userManager;
 
+  @Getter
   private String redirectUrl;
+  @Getter
   private String email;
+  @Getter
   private String password;
+  @Getter
   private String adminEmail;
   private String csrfToken;
 
@@ -158,38 +168,26 @@ public class LoginAction extends POSTAction {
     LOG.info("Redirecting to {}", redirectUrl);
   }
 
-  public String getRedirectUrl() {
-    return redirectUrl;
-  }
-
   public void setRedirectUrl(String redirectUrl) {
     this.redirectUrl = redirectUrl;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
+  @StrutsParameter
   public void setEmail(String email) {
     this.email = email;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
+  @StrutsParameter
   public void setPassword(String password) {
     this.password = password;
   }
 
-  public String getAdminEmail() {
-    return adminEmail;
-  }
-
+  @StrutsParameter
   public void setAdminEmail(String adminEmail) {
     this.adminEmail = adminEmail;
   }
 
+  @StrutsParameter
   public void setCsrfToken(String csrfToken) {
     this.csrfToken = csrfToken;
   }

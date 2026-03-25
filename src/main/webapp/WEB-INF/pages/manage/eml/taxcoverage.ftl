@@ -266,7 +266,7 @@
                             <#if resource.dataPackage==false>
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@checkbox name="resource.inferTaxonomicCoverageAutomatically" i18nkey="eml.inferAutomatically"/>
+                                    <@checkbox name="resource.inferTaxonomicCoverageAutomatically" value=resource.inferTaxonomicCoverageAutomatically i18nkey="eml.inferAutomatically"/>
                                 </div>
 
                                 <div id="preview-links" class="col-md-6">
@@ -370,11 +370,11 @@
                                                     <div id="subItem-${item_index}-${subItem_index}" class="sub-item" data-ipt-item-index="${item_index}">
                                                         <div class="row g-3 py-1">
                                                             <div class="col-lg-4">
-                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true withLabel=false />
+                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" value=subItem.scientificName! requiredField=true withLabel=false />
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" withLabel=false />
+                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" value=subItem.commonName! withLabel=false />
                                                             </div>
 
                                                             <div class="col-lg-4 d-flex">

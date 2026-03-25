@@ -23,7 +23,7 @@
                 $.ajaxFileUpload
                 (
                     {
-                        url: 'uploadlogo.do',
+                        url: 'uploadlogo.do?r=${resource.shortname}',
                         secureuri: false,
                         fileElementId: 'file',
                         dataType: 'json',
@@ -128,7 +128,10 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation track-unsaved" action="metadata-${section}.do?r=${resource.shortname}" method="post" novalidate>
+        <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
+        <input id="validate" name="validate" type="hidden" value="false" />
+
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -180,19 +183,11 @@
                             <!-- Resource Logo -->
                             <div id="logofields" class="row g-3 pb-1 mt-1">
                                 <div class="col-lg-6">
-                                    <#if eml.dateStamp??>
-                                        <@input name="dateStamp" value='${eml.dateStamp?date?string("yyyy-MM-dd")}' i18nkey="eml.dateStamp" help="i18n" disabled=true />
-                                    <#else>
-                                        <@input name="dateStamp" value="" i18nkey="eml.dateStamp" help="i18n" disabled=true />
-                                    </#if>
+                                    <@input name="dateStamp" value=(eml.dateStamp??)?then(eml.dateStamp?date?string("yyyy-MM-dd"), "") i18nkey="eml.dateStamp" help="i18n" disabled=true />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <#if eml.pubDate??>
-                                        <@input name="eml.pubDate" value='${eml.pubDate?date?string("yyyy-MM-dd")}' i18nkey="eml.pubDate" help="i18n" disabled=true />
-                                    <#else>
-                                        <@input name="eml.pubDate" value="" i18nkey="eml.pubDate" help="i18n" disabled=true />
-                                    </#if>
+                                    <@input name="eml.pubDate" value=(eml.pubDate??)?then(eml.pubDate?date?string("yyyy-MM-dd"), "") i18nkey="eml.pubDate" help="i18n" disabled=true />
                                 </div>
 
                                 <div class="col-lg-6">
@@ -247,7 +242,7 @@
                                                     <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span>
                                                 </a>
                                             </div>
-                                            <@input name="eml.alternateIdentifiers[${item_index}]" i18nkey="eml.alternateIdentifier" help="i18n"/>
+                                            <@input name="eml.alternateIdentifiers[${item_index}]" value=item i18nkey="eml.alternateIdentifier" help="i18n"/>
                                         </div>
                                     </#list>
                                 </div>
@@ -263,10 +258,6 @@
                                     </a>
                                 </div>
                             </div>
-
-                            <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
-                            <input id="r" name="r" type="hidden" value="${resource.shortname}" />
-                            <input id="validate" name="validate" type="hidden" value="false" />
 
                             <div id="baseItem" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
                                 <div class="handle mt-2 d-flex justify-content-end">

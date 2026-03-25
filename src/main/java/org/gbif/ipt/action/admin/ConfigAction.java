@@ -25,6 +25,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 
+import java.io.Serial;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -35,16 +36,17 @@ import javax.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 /**
  * The Action responsible for all user input relating to the IPT configuration.
  */
 public class ConfigAction extends POSTAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(ConfigAction.class);
-
+  @Serial
   private static final long serialVersionUID = 4726973323043063968L;
+
+  private static final Logger LOG = LogManager.getLogger(ConfigAction.class);
 
   protected ConfigManager configManager;
   private final ResourceManager resourceManager;
@@ -167,7 +169,7 @@ public class ConfigAction extends POSTAction {
     boolean baseUrlChanged = false;
     // base URL
     if (!stringEquals(baseUrl, cfg.getBaseUrl())) {
-      LOG.info("Changing the installation baseURL from [" + cfg.getBaseUrl() + "] to [" + baseUrl + "]");
+      LOG.info("Changing the installation baseURL from [{}] to [{}]", cfg.getBaseUrl(), baseUrl);
       try {
         URL burl = new URL(baseUrl);
         configManager.setBaseUrl(burl);
@@ -175,7 +177,7 @@ public class ConfigAction extends POSTAction {
         // ensure any public resource URL (alternative identifiers) are updated also
         updateAllAlternateIdentifiersForIPTURLToResource();
 
-        LOG.info("Installation baseURL successfully changed to[" + baseUrl + "]");
+        LOG.info("Installation baseURL successfully changed to[{}]", baseUrl);
         addActionMessage(getText("admin.config.baseUrl.changed"));
         addActionMessage(getText("admin.user.login"));
         addActionMessage(getText("admin.config.baseUrl.changed.reminder"));
@@ -258,7 +260,7 @@ public class ConfigAction extends POSTAction {
       return INPUT;
     }
 
-    // google analyticsKey
+    // Google Analytics
     if (analyticsKey != null) {
       try {
         configManager.setAnalyticsKey(analyticsKey);
@@ -299,47 +301,57 @@ public class ConfigAction extends POSTAction {
     return SUCCESS;
   }
 
+  @StrutsParameter
   public void setAnalyticsKey(String analyticsKey) {
     this.analyticsKey = analyticsKey;
   }
 
-  // Getters / Setters follow
+  @StrutsParameter
   public void setAdminEmail(String adminEmail) {
     this.adminEmail = adminEmail;
   }
 
+  @StrutsParameter
   public void setBaseUrl(String baseUrl) {
     this.baseUrl = baseUrl;
   }
 
+  @StrutsParameter
   public void setLogoRedirectUrl(String logoRedirectUrl) {
     this.logoRedirectUrl = logoRedirectUrl;
   }
 
+  @StrutsParameter
   public void setDebug(Boolean debug) {
     this.debug = debug;
   }
 
+  @StrutsParameter
   public void setLatitude(Double latitude) {
     this.latitude = latitude;
   }
 
+  @StrutsParameter
   public void setLongitude(Double longitude) {
     this.longitude = longitude;
   }
 
+  @StrutsParameter
   public void setProxy(String proxy) {
     this.proxy = StringUtils.trimToNull(proxy);
   }
 
+  @StrutsParameter
   public void setArchivalMode(Boolean archivalMode) {
     this.archivalMode = archivalMode;
   }
 
+  @StrutsParameter
   public void setArchivalLimit(Integer archivalLimit) {
     this.archivalLimit = archivalLimit;
   }
 
+  @StrutsParameter
   public void setDefaultLocale(String defaultLocale) {
     this.defaultLocale = defaultLocale;
   }

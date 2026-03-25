@@ -78,6 +78,37 @@
             minimumResultsForSearch: 15,
             theme: 'bootstrap4'
         });
+
+        var $rdbmsInput = $('#rdbms');
+
+        if ($rdbmsInput.val() === "duckdb") {
+            $("#host-block").hide();
+            $("#sqlSource\\.host").hide().prop('disabled', true);
+            $("#username-block").hide();
+            $("#sqlSource\\.username").hide().prop('disabled', true);
+            $("#password-block").hide();
+            $("#sqlSourcePassword").hide().prop('disabled', true);
+        }
+
+        $rdbmsInput.on('change', function() {
+            const db = $(this).val();
+
+            if (db === "duckdb") {
+                $("#host-block").hide();
+                $("#sqlSource\\.host").hide().prop('disabled', true);
+                $("#username-block").hide();
+                $("#sqlSource\\.username").hide().prop('disabled', true);
+                $("#password-block").hide();
+                $("#sqlSourcePassword").hide().prop('disabled', true);
+            } else {
+                $("#host-block").show();
+                $("#sqlSource\\.host").show().prop('disabled', false);
+                $("#username-block").show();
+                $("#sqlSource\\.username").show().prop('disabled', false);
+                $("#password-block").show();
+                $("#sqlSourcePassword").show().prop('disabled', false);
+            }
+        });
     });
 </script>
 <#assign currentMenu = "manage"/>
@@ -139,7 +170,7 @@
                                       </li>
                                         <#if id?has_content>
                                       <li>
-                                          <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                          <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
                                       </li>
                                         </#if>
                                     </ul>
@@ -279,22 +310,22 @@
 
                             <#if !id?has_content>
                                 <div class="col-lg-6">
-                                    <@input name="source.name" help="i18n"/>
+                                    <@input name="source.name" value=source.name! help="i18n"/>
                                 </div>
                             </#if>
 
                             <#-- inputs used by multiple source types -->
                             <#macro multivalue>
-                                <@input name="source.multiValueFieldsDelimitedBy" help="i18n" helpOptions={"|":"[ | ] Pipe",";":"[ ; ] Semicolon",",":"[ , ] Comma"}/>
+                                <@input name="source.multiValueFieldsDelimitedBy" help="i18n" value=(source.multiValueFieldsDelimitedBy)! helpOptions={"|":"[ | ] Pipe",";":"[ ; ] Semicolon",",":"[ , ] Comma"}/>
                             </#macro>
                             <#macro dateFormat>
-                                <@input name="source.dateFormat" help="i18n" helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
+                                <@input name="source.dateFormat" help="i18n" value=(source.dateFormat)! helpOptions={"YYYY-MM-DD":"ISO format: YYYY-MM-DD","MM/DD/YYYY":"US dates: MM/DD/YYYY","DD.MM.YYYY":"DD.MM.YYYY"}/>
                             </#macro>
                             <#macro encoding>
-                                <@input name="source.encoding" help="i18n" helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
+                                <@input name="source.encoding" help="i18n" value=(source.encoding)! helpOptions={"UTF-8":"UTF-8","Latin1":"Latin 1","Cp1252":"Windows1252"}/>
                             </#macro>
                             <#macro headerLines>
-                                <@input name="source.ignoreHeaderLines" help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
+                                <@input name="source.ignoreHeaderLines" value=(source.ignoreHeaderLines)! help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
                             </#macro>
 
                             <#-- only for sql sources -->
@@ -302,20 +333,25 @@
                                 <div class="col-lg-6">
                                     <@select name="rdbms" options=jdbcOptions value="${source.rdbms.name!}" i18nkey="sqlSource.rdbms" />
                                 </div>
-                                <div class="col-lg-6">
-                                    <@input name="sqlSource.host" help="i18n"/>
+                                <#if (source.rdbms.name)?? && source.rdbms.name=="duckdb">
+                                    <#assign displayInput="none"/>
+                                <#else>
+                                    <#assign displayInput="block"/>
+                                </#if>
+                                <div class="col-lg-6" id="host-block" style="display: ${displayInput};">
+                                    <@input name="sqlSource.host" value=sqlSource.host! help="i18n"/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="sqlSource.database" help="i18n"/>
+                                    <@input name="sqlSource.database" value=sqlSource.database! help="i18n"/>
                                 </div>
-                                <div class="col-lg-6">
-                                    <@input name="sqlSource.username" />
+                                <div class="col-lg-6" id="username-block" style="display: ${displayInput};">
+                                    <@input name="sqlSource.username" value=sqlSource.username! />
                                 </div>
-                                <div class="col-lg-6">
-                                    <@input name="sqlSourcePassword" i18nkey="sqlSource.password" type="password" />
+                                <div class="col-lg-6" id="password-block" style="display: ${displayInput};">
+                                    <@input name="sqlSourcePassword" value=sqlSourcePassword! i18nkey="sqlSource.password" type="password" />
                                 </div>
                                 <div class="col-12">
-                                    <@text name="sqlSource.sql" help="i18n"/>
+                                    <@text name="sqlSource.sql" value=sqlSource.sql! help="i18n"/>
                                     <#if sqlSource.sql?has_content>
                                         <div class="mt-3">
                                             <a id="generatedSqlLink" href=""><@s.text name="sqlSource.sqlLimited"/></a>

@@ -120,7 +120,7 @@ public class FileUtils {
       // see http://commons.apache.org/io/api-1.4/org/apache/commons/io/FileUtils.html#touch(java.io.File)
       // we catch this and check if the file was created
       if (file.exists() && file.canWrite()) {
-        LOG.warn("Cant touch file, but it was created: " + e.getMessage());
+        LOG.warn("Cant touch file, but it was created: {}", e.getMessage());
         LOG.debug(e);
       } else {
         throw e;

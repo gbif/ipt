@@ -20,6 +20,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.StatusReport;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ import lombok.Getter;
 
 public class PublishingStatusAction extends BaseAction {
 
+  @Serial
   private static final long serialVersionUID = -3984381818825518246L;
 
   private final ResourceManager resourceManager;

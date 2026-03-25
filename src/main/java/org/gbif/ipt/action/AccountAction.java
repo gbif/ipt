@@ -21,34 +21,43 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserValidator;
 
 import java.io.IOException;
+import java.io.Serial;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+
+import lombok.Getter;
 
 /**
  * Action handling account updates, such as changing username and password.
  */
 public class AccountAction extends POSTAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(AccountAction.class);
-
+  @Serial
   private static final long serialVersionUID = 5092204508303815778L;
+
+  private static final Logger LOG = LogManager.getLogger(AccountAction.class);
 
   private final UserAccountManager userManager;
   private final UserValidator validator = new UserValidator();
 
   // main form
+  @Getter
   private String email;
+  @Getter
   private User user;
 
   // password change form
+  @Getter
   private String newPassword;
+  @Getter
   private String password2;
+  @Getter
   private String currentPassword;
 
   // current user
@@ -83,7 +92,7 @@ public class AccountAction extends POSTAction {
         email = user.getEmail();
       }
     } catch (CloneNotSupportedException e) {
-      LOG.error("Failed to clone current user: " + e.getMessage(), e);
+      LOG.error("Failed to clone current user: {}", e.getMessage(), e);
     }
   }
 
@@ -101,7 +110,7 @@ public class AccountAction extends POSTAction {
       }
     } catch (IOException e) {
       addActionError(getText("admin.user.account.saveError"));
-      LOG.error("The user {} account change could not be made: " + e.getMessage(), user.getEmail(), e);
+      LOG.error("The user {} account change could not be made: {}", user.getEmail(), e.getMessage(), e);
       addActionError(e.getMessage());
     }
 
@@ -151,42 +160,27 @@ public class AccountAction extends POSTAction {
     return INPUT;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
+  @StrutsParameter
   public void setEmail(String email) {
     this.email = email;
   }
 
-  public User getUser() {
-    return user;
-  }
-
+  @StrutsParameter
   public void setUser(User user) {
     this.user = user;
   }
 
-  public String getPassword2() {
-    return password2;
-  }
-
+  @StrutsParameter
   public void setPassword2(String password2) {
     this.password2 = password2;
   }
 
-  public String getNewPassword() {
-    return newPassword;
-  }
-
+  @StrutsParameter
   public void setNewPassword(String newPassword) {
     this.newPassword = newPassword;
   }
 
-  public String getCurrentPassword() {
-    return currentPassword;
-  }
-
+  @StrutsParameter
   public void setCurrentPassword(String currentPassword) {
     this.currentPassword = currentPassword;
   }

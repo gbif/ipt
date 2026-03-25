@@ -136,7 +136,7 @@
                                                 <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></span>
                                             </a>
                                         </div>
-                                        <@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
+                                        <@input name="eml.keywords[${item_index}].keywordThesaurus" value=(item.keywordThesaurus)! i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
                                         <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
                                         <#-- TODO: remove check for "null" after fixing problem in gbif-metadata-profile -->
                                         <#assign keywordList = item.keywordsString />

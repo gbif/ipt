@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,14 +118,14 @@ public class MappingActionTest extends IptBaseTest {
 
     // mock action
     action = new MappingAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-      mockResourceManager, mockExtensionManager, mock(SourceManager.class), mock(VocabulariesManager.class));
+        mockResourceManager, mockExtensionManager, mock(SourceManager.class), mock(VocabulariesManager.class));
 
     action.setColumns(columns);
     action.setMappingCoreid(mappingCoreid);
     action.setMapping(mapping);
     action.setResource(resource); // overridden by resourceManager.get(shortname)
     action.setFields(fields);
-    action.setServletRequest(req);
+    action.withServletRequest(req);
   }
 
   @Test

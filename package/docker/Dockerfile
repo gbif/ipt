@@ -1,4 +1,4 @@
-FROM maven:3.8.8-eclipse-temurin-11 AS builder
+FROM maven:3.9.14-eclipse-temurin-17 AS builder
 
 ARG GIT_REVISION=docker
 
@@ -14,19 +14,36 @@ RUN perl -pi -e 's(\${buildNumber})('${GIT_REVISION}')' src/main/resources/appli
     mvn -DskipTests install && \
     rm target/*.war && mv target/ipt-* target/ipt
 
-FROM tomcat:9.0-jdk17
-LABEL maintainers="Matthew Blissett <mblissett@gbif.org>"
+FROM tomcat:11.0.20-jdk17-temurin
+LABEL maintainers="Mikhail Podolskiy <mpodolskiy@gbif.org>, Matthew Blissett <mblissett@gbif.org>"
 
+# Argument for IPT name
 ARG IPT_NAME=ROOT
 
 ENV IPT_DATA_DIR=/srv/ipt
+ENV TOMCAT_GROUP=tomcat
+ENV TOMCAT_USER=tomcat
 
-COPY --from=builder /usr/src/ipt/target/ipt /usr/local/tomcat/webapps/${IPT_NAME}
+# Create user and group
+RUN groupadd -r $TOMCAT_GROUP && useradd -r -g $TOMCAT_GROUP -m $TOMCAT_USER
+
+# Set ownership of the directories to tomcat user
+RUN chown -R $TOMCAT_GROUP:$TOMCAT_USER /usr/local/tomcat && \
+    chmod -R 755 /usr/local/tomcat
+
+# Expose IPT data volume
+RUN mkdir -p $IPT_DATA_DIR \
+      && chown -R $TOMCAT_GROUP:$TOMCAT_USER $IPT_DATA_DIR
+VOLUME $IPT_DATA_DIR
+
+# Copy the built WAR file to Tomcat webapps directory
+COPY --from=builder --chown=$TOMCAT_GROUP:$TOMCAT_USER /usr/src/ipt/target/ipt /usr/local/tomcat/webapps/${IPT_NAME}
 
 # Modify maxParameterCount in server.xml
 RUN sed -i 's/maxParameterCount="1000"/maxParameterCount="10000"/g' /usr/local/tomcat/conf/server.xml
 
-VOLUME /srv/ipt
+# Switch to tomcat user for running the container
+USER $TOMCAT_USER
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]

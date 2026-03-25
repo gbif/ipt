@@ -2,7 +2,8 @@
 
 <!-- temp fix to protocol differences -->
 <#assign userIdDirecotriesExtended =
-{"https://orcid.org/": "https://orcid.org/",
+{"": "",
+"https://orcid.org/": "https://orcid.org/",
 "http://orcid.org/": "https://orcid.org/",
 "http://www.researcherid.com/rid/": "http://www.researcherid.com/rid/",
 "https://www.researcherid.com/rid/": "http://www.researcherid.com/rid/",

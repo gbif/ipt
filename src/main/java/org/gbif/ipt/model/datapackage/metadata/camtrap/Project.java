@@ -16,6 +16,7 @@ package org.gbif.ipt.model.datapackage.metadata.camtrap;
 import org.gbif.ipt.validation.ProjectMetadata;
 import org.gbif.ipt.validation.ValidUrl;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -23,9 +24,12 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -42,6 +46,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Project implements Serializable {
 
+  @Serial
   private final static long serialVersionUID = 926360715052617217L;
 
   /**
@@ -201,7 +206,7 @@ public class Project implements Serializable {
    */
   @JsonProperty("path")
   public void setPath(String path) {
-    this.path = path;
+    this.path = StringUtils.trimToNull(path);
   }
 
   /**

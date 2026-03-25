@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.utils;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 public class StringUtils {
 

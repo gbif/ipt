@@ -114,7 +114,7 @@
 
             <div class="row g-3 mt-0 mb-2">
                 <div class="col-sm-6">
-                    <@input name="user.email" disabled=true requiredField=true />
+                    <@input name="user.email" value=user.email! disabled=true requiredField=true />
                 </div>
 
                 <#assign val><@s.text name="user.roles.${user.role?lower_case}"/></#assign>
@@ -124,11 +124,11 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <@input name="user.firstname" requiredField=true />
+                    <@input name="user.firstname" value=user.firstname! requiredField=true />
                 </div>
 
                 <div class="col-sm-6">
-                    <@input name="user.lastname" requiredField=true />
+                    <@input name="user.lastname" value=user.lastname! requiredField=true />
                 </div>
             </div>
         </form>

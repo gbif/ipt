@@ -31,7 +31,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,21 +61,20 @@ public class ResourceUtils {
   /**
    * Reconstruct published version, using version's Eml file, version history, etc.
    *
-   * @param version version to assign to reconstructed resource
-   * @param shortname shortname to assign to reconstructed resource
+   * @param version               version to assign to reconstructed resource
+   * @param shortname             shortname to assign to reconstructed resource
    * @param coreTypeOrPackageType coreType or packageType
    * @param dataPackageIdentifier data package identifier (optional)
-   * @param doi DOI to assign to reconstructed resource
-   * @param organisation organisation to assign to reconstructed resource
-   * @param versionHistory VersionHistory corresponding to resource version being reconstructed
-   * @param versionMetadataFile eml file ord metadata file corresponding to version of resource being reconstructed
-   * @param key GBIF UUID to assign to reconstructed resource
-   *
+   * @param doi                   DOI to assign to reconstructed resource
+   * @param organisation          organisation to assign to reconstructed resource
+   * @param versionHistory        VersionHistory corresponding to resource version being reconstructed
+   * @param versionMetadataFile   eml file ord metadata file corresponding to version of resource being reconstructed
+   * @param key                   GBIF UUID to assign to reconstructed resource
    * @return published version reconstructed
    */
   public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreTypeOrPackageType,
-    @Nullable String dataPackageIdentifier, @Nullable DOI doi, @Nullable Organisation organisation,
-    @Nullable VersionHistory versionHistory, @Nullable File versionMetadataFile, @Nullable UUID key) {
+                                            @Nullable String dataPackageIdentifier, @Nullable DOI doi, @Nullable Organisation organisation,
+                                            @Nullable VersionHistory versionHistory, @Nullable File versionMetadataFile, @Nullable UUID key) {
     Objects.requireNonNull(version);
     Objects.requireNonNull(shortname);
 
@@ -82,17 +82,17 @@ public class ResourceUtils {
 
     if (organisation == null && !isDataPackageResource) {
       throw new IllegalArgumentException(
-              "Failed to reconstruct resource version: organisation is null");
+          "Failed to reconstruct resource version: organisation is null");
     }
 
     if (versionHistory == null) {
       throw new IllegalArgumentException(
-              "Failed to reconstruct resource version: version history is null");
+          "Failed to reconstruct resource version: version history is null");
     }
 
     if (versionMetadataFile == null) {
       throw new IllegalArgumentException(
-              "Failed to reconstruct resource version: version eml file is null");
+          "Failed to reconstruct resource version: version eml file is null");
     }
 
     // initiate new version, and set properties
@@ -140,7 +140,7 @@ public class ResourceUtils {
     } else {
       LOG.error("Failed to reconstruct resource: {} not found!", versionMetadataFile.getAbsolutePath());
       throw new IllegalArgumentException(
-        "Failed to reconstruct resource: " + versionMetadataFile.getAbsolutePath() + " not found!");
+          "Failed to reconstruct resource: " + versionMetadataFile.getAbsolutePath() + " not found!");
     }
     return resource;
   }
@@ -159,7 +159,6 @@ public class ResourceUtils {
    *
    * @param b version
    * @param a version
-   *
    * @return true if version a is greater than version b, false otherwise
    */
   public static boolean assertVersionOrder(BigDecimal b, BigDecimal a) {

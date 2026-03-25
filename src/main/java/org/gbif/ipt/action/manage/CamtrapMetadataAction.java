@@ -23,8 +23,6 @@ import org.gbif.ipt.model.InferredCamtrapTemporalScope;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
-import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
@@ -36,8 +34,6 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
 import org.gbif.ipt.model.voc.CamtrapMetadataSection;
-import org.gbif.ipt.model.voc.DataPackageMetadataSection;
-import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -68,25 +64,24 @@ import lombok.Setter;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.service.manage.impl.ResourceManagerImpl.CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT;
 
-public class DataPackageMetadataAction extends ManagerBaseAction {
+public class CamtrapMetadataAction extends ManagerBaseAction {
 
   @Serial
   private static final long serialVersionUID = -1669636958170716515L;
 
-  private static final Logger LOG = LogManager.getLogger(DataPackageMetadataAction.class);
+  private static final Logger LOG = LogManager.getLogger(CamtrapMetadataAction.class);
 
   private final ResourceMetadataInferringService metadataInferringService;
   private final DataPackageMetadataValidator metadataValidator;
   private final ObjectMapper objectMapper;
   private final DataPackageSchemaManager dataPackageSchemaManager;
-  private DataPackageMetadataSection section = FrictionlessMetadataSection.BASIC_SECTION;
-  private DataPackageMetadataSection next = FrictionlessMetadataSection.BASIC_SECTION;
+  private CamtrapMetadataSection section = CamtrapMetadataSection.BASIC_SECTION;
+  private CamtrapMetadataSection next = CamtrapMetadataSection.BASIC_SECTION;
   // map of organisations associated to IPT that can publish resources
   @Getter
   private Map<String, String> organisations = new LinkedHashMap<>();
   @Getter
   private InferredMetadata inferredMetadata;
-  @Setter
   @Getter
   private String customGeoJson;
 
@@ -215,7 +210,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   }
 
   @Inject
-  public DataPackageMetadataAction(
+  public CamtrapMetadataAction(
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
@@ -230,6 +225,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     this.metadataInferringService = metadataInferringService;
   }
 
+  @StrutsParameter(depth = 4)
   @Override
   public Resource getResource() {
     return resource;
@@ -242,26 +238,14 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       return;
     }
 
-    if (resource != null && CAMTRAP_DP.equals(resource.getCoreType())) {
+    if (resource != null) {
       prepareCamtrap();
-    } else{
-      prepareFrictionless();
-    }
-  }
-
-  private void prepareFrictionless() {
-    FrictionlessMetadata metadata = (FrictionlessMetadata) resource.getDataPackageMetadata();
-    if (isHttpPost()) {
-      metadata.getContributors().clear();
-      metadata.getLicenses().clear();
-      metadata.getSources().clear();
     }
   }
 
   private void prepareCamtrap() {
     // take the section parameter from the requested url
     section = CamtrapMetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "camtrap-metadata-", "."));
-    CamtrapMetadataSection camtrapMetadataSection = (CamtrapMetadataSection) section;
     CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
     DataPackageSchema dataPackageSchema = dataPackageSchemaManager.get(CAMTRAP_DP);
 
@@ -269,7 +253,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       metadata.setProfile(dataPackageSchema.getProfile());
     }
 
-    if (camtrapMetadataSection == null) {
+    if (section == null) {
       return;
     }
 
@@ -288,7 +272,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         inferredMetadata = inferredMetadataRaw;
       } else {
         LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
-                InferredCamtrapMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
+            InferredCamtrapMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
         inferredMetadata = new InferredCamtrapMetadata();
       }
       resource.setInferredMetadata(inferredMetadata);
@@ -298,12 +282,12 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         inferredMetadata = resource.getInferredMetadata();
       } else {
         LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
-                InferredCamtrapMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
+            InferredCamtrapMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
         inferredMetadata = new InferredCamtrapMetadata();
       }
     }
 
-    switch (camtrapMetadataSection) {
+    switch (section) {
       case BASIC_SECTION:
         if (isHttpPost()) {
           metadata.getContributors().clear();
@@ -380,11 +364,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
 
   @Override
   public String save() throws Exception {
-    boolean isCamtrap = resource.getDataPackageMetadata() instanceof CamtrapMetadata;
-
-    if (isCamtrap) {
-      preProcessCamtrapMetadata();
-    }
+    preProcessCamtrapMetadata();
 
     // before saving, the minimum amount of mandatory metadata must have been provided, and ALL metadata sections must
     // be valid, otherwise an error is displayed
@@ -394,13 +374,11 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata." + (isCamtrap ? "camtrap." : "") + section.getName())}));
+      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata.camtrap." + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
 
-      if (section instanceof CamtrapMetadataSection) {
-        nextSectionCamtrap();
-      }
+      nextSectionCamtrap();
     } else {
       return INPUT;
     }
@@ -547,8 +525,17 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   }
 
   @StrutsParameter(depth = 8)
-  public DataPackageMetadata getMetadata() {
-    return resource.getDataPackageMetadata();
+  public CamtrapMetadata getMetadata() {
+    return (CamtrapMetadata) resource.getDataPackageMetadata();
+  }
+
+  public void setMetadata(CamtrapMetadata metadata) {
+    resource.setDataPackageMetadata(metadata);
+  }
+
+  @StrutsParameter
+  public void setCustomGeoJson(String customGeoJson) {
+    this.customGeoJson = customGeoJson;
   }
 
   public Map<String, String> getLicenseScopes() {

@@ -15,8 +15,9 @@ package org.gbif.ipt.validation;
 
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;

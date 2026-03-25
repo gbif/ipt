@@ -43,7 +43,8 @@ import java.net.URL;
 import java.util.Optional;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -101,7 +102,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       try {
         loadDataDirConfig();
       } catch (InvalidConfigException e) {
-        LOG.error("Configuration problems existing. Watch your data dir! " + e.getMessage(), e);
+        LOG.error("Configuration problems existing. Watch your data dir! {}", e.getMessage(), e);
       }
     } else {
       LOG.debug("IPT DataDir not configured - no configuration loaded");
@@ -114,7 +115,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * the current proxy.
    *
    * @param currentProxyHost the actual proxy.
-   * @param proxy    a URL with the format http://proxy.my-institution.com:8080.
+   * @param proxy            a URL with the format http://proxy.my-institution.com:8080.
    * @throws InvalidConfigException If it can not connect to the proxy host or if the port number is no integer or if
    *                                the proxy URL is not with the valid format http://proxy.my-institution.com:8080
    */
@@ -126,7 +127,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
       boolean proxyWorks;
       try {
         // prepare custom configuration with proxy and timeouts
-        LOG.info("Testing new proxy by fetching " + testUrl + " with 4 second timeout");
+        LOG.info("Testing new proxy by fetching {} with 4 second timeout", testUrl);
         RequestConfig rs = RequestConfig.custom()
             .setProxy(proxyHost)
             .setConnectTimeout(DEFAULT_TO)
@@ -135,7 +136,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
         ExtendedResponse response = client.get(testUrl, rs);
 
-        LOG.info("Proxy response is "+ response.getStatusLine());
+        LOG.info("Proxy response is {}", response.getStatusLine());
         proxyWorks = (HttpServletResponse.SC_OK == response.getStatusLine().getStatusCode());
       } catch (Exception e) {
         proxyWorks = false;
@@ -161,7 +162,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
   private void throwConfigException(String logMessage, HttpHost currentProxyHost, String message) {
     if (currentProxyHost != null) {
-      LOG.info(logMessage + " , reverting to previous proxy setting on HTTP client: " + currentProxyHost);
+      LOG.info("{} , reverting to previous proxy setting on HTTP client: {}", logMessage, currentProxyHost);
     }
     throw new InvalidConfigException(TYPE.INVALID_PROXY, message);
   }
@@ -193,7 +194,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    */
   @Override
   public void loadDataDirConfig() throws InvalidConfigException {
-    LOG.info("Reading DATA DIRECTORY: " + dataDir.getDataDir().getAbsolutePath());
+    LOG.info("Reading DATA DIRECTORY: {}", dataDir.getDataDir().getAbsolutePath());
 
     LOG.info("Loading IPT config ...");
     cfg.loadConfig();
@@ -264,17 +265,17 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     switch (status) {
       case NOT_EXIST:
         // No folder /resources
-        LOG.error("Resources directory does not exist: " + resourcesDir);
+        LOG.error("Resources directory does not exist: {}", resourcesDir);
         warnings.addStartupError("Resources directory does not exist: " + resourcesDir);
         break;
       case NO_ACCESS:
         // No access to folder /resources
-        LOG.error("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
+        LOG.error("Resources directory cannot be read. Please check access rights for: {}", resourcesDir);
         warnings.addStartupError("Resources directory cannot be read. Please check access rights for: " + resourcesDir);
         break;
       case READ_ONLY:
         // No write access to folder /resources
-        LOG.error("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
+        LOG.error("Resources directory cannot be written. Please check access rights for: {}", resourcesDir);
         warnings.addStartupError("Resources directory cannot be written. Please check access rights for: " + resourcesDir);
         break;
       case READ_WRITE:
@@ -288,12 +289,12 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
               case NOT_EXIST:
               case NO_ACCESS:
                 // No access to sub folders of /resources
-                LOG.error("At least one resource directory cannot be read. Please check access rights for: " + subResourceDir);
+                LOG.error("At least one resource directory cannot be read. Please check access rights for: {}", subResourceDir);
                 warnings.addStartupError("At least one resource directory cannot be read. Please check access rights for: " + subResourceDir);
                 break;
               case READ_ONLY:
                 // No write access to sub folders of /resources
-                LOG.error("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
+                LOG.error("At least one resource directory cannot be written. Please check access rights for: {}", subResourceDir);
                 warnings.addStartupError("At least one resource directory cannot be written. Please check access rights for: " + subResourceDir);
                 break;
               default:
@@ -327,7 +328,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     try {
       cfg.saveConfig();
     } catch (IOException e) {
-      LOG.debug("Cant save IPT configuration: " + e.getMessage(), e);
+      LOG.debug("Cant save IPT configuration: {}", e.getMessage(), e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Cant save IPT configuration: " + e.getMessage());
     }
   }
@@ -368,7 +369,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         if (!baseURL.getHost().equalsIgnoreCase(this.getHostName())) {
           // local URL is not permitted in production mode.
           throw new InvalidConfigException(TYPE.INACCESSIBLE_BASE_URL,
-            "Localhost base URL not permitted in production mode, since the IPT will not be visible to the outside!");
+              "Localhost base URL not permitted in production mode, since the IPT will not be visible to the outside!");
         }
       }
     }
@@ -378,7 +379,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
 
     // store in properties file
-    LOG.info("Updating the baseURL to: " + baseURL);
+    LOG.info("Updating the baseURL to: {}", baseURL);
     cfg.setProperty(AppConfig.BASEURL, baseURL.toString());
   }
 
@@ -410,7 +411,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   public void setArchivalMode(boolean archivalMode) throws InvalidConfigException {
     if (!archivalMode && registrationManager.findPrimaryDoiAgencyAccount() != null) {
       throw new InvalidConfigException(TYPE.DOI_REGISTRATION_ALREADY_ACTIVATED,
-        "Cannot turn off archival mode since" + "DOI registration has been activated");
+          "Cannot turn off archival mode since" + "DOI registration has been activated");
     }
     cfg.setProperty(AppConfig.ARCHIVAL_MODE, Boolean.toString(archivalMode));
   }
@@ -420,10 +421,9 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    */
   @Override
   public void setArchivalLimit(Integer archivalLimit) throws InvalidConfigException {
-    if ((archivalLimit == null) || (archivalLimit == 0)){
+    if ((archivalLimit == null) || (archivalLimit == 0)) {
       cfg.setProperty(AppConfig.ARCHIVAL_LIMIT, "");
-    }
-    else {
+    } else {
       cfg.setProperty(AppConfig.ARCHIVAL_LIMIT, Integer.toString(archivalLimit));
     }
   }
@@ -451,7 +451,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * the config page), it validates if this proxy is the same as current proxy, if this is true, nothing changes, if
    * not, it removes the current proxy and save the new proxy.
    *
-   * @param proxy a URL with the format http://proxy.my-institution.com:8080.
+   * @param proxy a URL with the format <a href="http://proxy.my-institution.com:8080">...</a>.
    */
   @Override
   public void setProxy(String proxy) throws InvalidConfigException {
@@ -494,8 +494,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
    * It validates if the there is a connection with the baseURL, it executes a request using the baseURL.
    *
    * @param baseURL a URL to validate.
-   * @param proxy a proxy host
-   *
+   * @param proxy   a proxy host
    * @return true if the response to the request has a status code equal to 200.
    */
   public boolean isValidBaseUrl(URL baseURL, HttpHost proxy) {
@@ -504,7 +503,7 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     }
     try {
       String testURL = baseURL + PATH_TO_CSS;
-      LOG.info("Validating BaseURL with get request (having 4 second timeout) to: " + testURL);
+      LOG.info("Validating BaseURL with get request (having 4 second timeout) to: {}", testURL);
 
       RequestConfig.Builder requestConfigBuilder = RequestConfig.custom()
           .setConnectTimeout(DEFAULT_TO)
@@ -518,11 +517,11 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
       return HttpServletResponse.SC_OK == response.getStatusLine().getStatusCode();
     } catch (ClientProtocolException e) {
-      LOG.info("Protocol error connecting to new base URL [" + baseURL + "]", e);
+      LOG.info("Protocol error connecting to new base URL [{}]", baseURL, e);
     } catch (IOException e) {
-      LOG.info("IO error connecting to new base URL [" + baseURL + "]", e);
+      LOG.info("IO error connecting to new base URL [{}]", baseURL, e);
     } catch (Exception e) {
-      LOG.info("Unknown error connecting to new base URL [" + baseURL + "]", e);
+      LOG.info("Unknown error connecting to new base URL [{}]", baseURL, e);
     }
     return false;
   }
@@ -535,8 +534,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   @Override
   public void setDefaultLocale(String defaultLocale) {
     Optional.ofNullable(defaultLocale)
-            .filter(cfg::isSupportedLanguage)
-            .ifPresent(cfg::setDefaultLocale);
+        .filter(cfg::isSupportedLanguage)
+        .ifPresent(cfg::setDefaultLocale);
   }
 
   @Override

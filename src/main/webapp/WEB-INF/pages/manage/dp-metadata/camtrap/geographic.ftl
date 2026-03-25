@@ -141,7 +141,7 @@
                     <div class="bd-content">
                         <div class="mb-md-3 ps-3 py-3">
                             <div class="mt-4">
-                                <@checkbox name="resource.inferGeocoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferGeocoverageAutomatically?c}" />
+                                <@checkbox name="resource.inferGeocoverageAutomatically" value=resource.inferGeocoverageAutomatically i18nkey="datapackagemetadata.infer.automatically" help="i18n"/>
                             </div>
 
                             <div id="actual-metadata-block" class="mt-3">

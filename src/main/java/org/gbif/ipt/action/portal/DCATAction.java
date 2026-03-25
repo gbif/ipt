@@ -17,19 +17,28 @@ import org.gbif.ipt.task.GenerateDCAT;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.Serial;
 import java.nio.charset.StandardCharsets;
 import javax.inject.Inject;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.apache.struts2.ActionSupport;
+
+import lombok.Getter;
 
 /**
  * Action to create the DCAT feed.
  */
 public class DCATAction extends ActionSupport {
 
-  private GenerateDCAT generateDCAT;
+  @Serial
+  private static final long serialVersionUID = 1261384385423019045L;
 
-  // used to print the feed
+  private final GenerateDCAT generateDCAT;
+
+  /**
+   * DCAT feed
+   */
+  @Getter
   private InputStream dcatInfo;
 
   @Inject
@@ -48,10 +57,4 @@ public class DCATAction extends ActionSupport {
     return SUCCESS;
   }
 
-  /**
-   * @return DCAT feed
-   */
-  public InputStream getDcatInfo() {
-    return dcatInfo;
-  }
 }

@@ -15,36 +15,38 @@ package org.gbif.ipt.struts2;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
-public class CorsFilter implements Filter{
+public class CorsFilter implements Filter {
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response,
                        FilterChain filterChain) throws IOException, ServletException {
 
-    if(response instanceof HttpServletResponse){
-      HttpServletResponse res = ((HttpServletResponse)response);
+    if (response instanceof HttpServletResponse) {
+      HttpServletResponse res = ((HttpServletResponse) response);
       addCorsHeader(res);
     }
 
     filterChain.doFilter(request, response);
   }
 
-  private void addCorsHeader(HttpServletResponse response){
+  private void addCorsHeader(HttpServletResponse response) {
     response.addHeader("Access-Control-Allow-Origin", "*");
     response.addHeader("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD");
   }
 
   @Override
-  public void destroy() {}
+  public void destroy() {
+  }
 
   @Override
-  public void init(FilterConfig filterConfig)throws ServletException{}
+  public void init(FilterConfig filterConfig) throws ServletException {
+  }
 }

@@ -18,6 +18,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -27,10 +28,12 @@ import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,8 +41,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -47,12 +53,14 @@ public class CreateResourceActionTest extends IptBaseTest {
   private static final Logger LOG = LogManager.getLogger(CreateResourceActionTest.class);
   private static final String SHORTNAME = "bugs";
   private CreateResourceAction action;
+  private DataDir mockDataDir;
+  private ResourceManager mockResourceManager;
   private static final File RESOURCES_DIRECTORY = getResourceDirectory();
 
   @BeforeEach
   public void setup() throws IOException, DeletionNotAllowedException {
     // mock DataDir returning temp file (needed during import stage)
-    DataDir mockDataDir =  mock(DataDir.class);
+    mockDataDir =  mock(DataDir.class);
     when(mockDataDir.tmpFile(anyString(), anyString())).thenReturn(FileUtils.createTempDir());
 
     // mock DataDir returning resources directory
@@ -61,7 +69,7 @@ public class CreateResourceActionTest extends IptBaseTest {
     // mock resource manager that returns resource with shortname "bugs"
     Resource res = new Resource();
     res.setShortname(SHORTNAME);
-    ResourceManager mockResourceManager = mock(ResourceManager.class);
+    mockResourceManager = mock(ResourceManager.class);
     when(mockResourceManager.get(SHORTNAME)).thenReturn(res);
 
     // mock resource manager that deletes resource directory "bugs"
@@ -79,14 +87,25 @@ public class CreateResourceActionTest extends IptBaseTest {
    * and the action error is stored.
    */
   @Test
-  public void testSaveImportException() throws IOException {
-    action.setFile(File.createTempFile("archive", "zip"));
+  public void testSaveImportException() throws Exception {
+    File tmpUpload = File.createTempFile("archive", ".zip");
+
+    UploadedFile upload = mock(UploadedFile.class);
+    when(upload.getContent()).thenReturn(tmpUpload);
+    when(upload.getOriginalName()).thenReturn("archive.zip");
+    when(upload.getContentType()).thenReturn("application/zip");
+
+    action.withUploadedFiles(Collections.singletonList(upload));
     action.setShortname("otherShortname");
-    action.setFileFileName("archive.zip");
+    action.setResourceType("occurrence"); // any non-null type is fine
+
+    doThrow(new ImportException("boom"))
+        .when(mockResourceManager)
+        .create(eq("otherShortname"), eq("occurrence"), any(File.class), any(), eq(action));
+
     String result = action.save();
 
     assertEquals("input", result);
-    // ImportException logged in ActionError
     assertEquals(1, action.getActionErrors().size());
   }
 

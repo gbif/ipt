@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.portal;
 
+
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -26,27 +27,35 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serial;
 import java.math.BigDecimal;
+import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
+import lombok.Getter;
 
 /**
  * The Action responsible for serving datadir resource files.
  */
 public class ResourceFileAction extends PortalBaseAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = 5715166165151695646L;
+
   private static final Logger LOG = LogManager.getLogger(ResourceFileAction.class);
 
   private final DataDir dataDir;
   protected Source source;
+  @Getter
   private InputStream inputStream;
+  @Getter
   protected File data;
+  @Getter
   protected String mimeType = "text/plain";
+  @Getter
   protected String filename;
 
   @Inject
@@ -110,7 +119,7 @@ public class ResourceFileAction extends PortalBaseAction {
 
   /**
    * Handles metadata file download request. Specific versions can also be resolved depending on the optional parameter
-   * "version". If no specific version is requested the latest published version is used.
+   * "version". If no specific version is requested, the latest published version is used.
    *
    * @return Struts2 result string
    */
@@ -196,22 +205,6 @@ public class ResourceFileAction extends PortalBaseAction {
       return NOT_FOUND;
     }
     return SUCCESS;
-  }
-
-  public File getData() {
-    return data;
-  }
-
-  public String getFilename() {
-    return filename;
-  }
-
-  public InputStream getInputStream() {
-    return inputStream;
-  }
-
-  public String getMimeType() {
-    return mimeType;
   }
 
   public String logo() {
@@ -306,9 +299,7 @@ public class ResourceFileAction extends PortalBaseAction {
 
     Source source = resource.getSource(id);
 
-    if (source instanceof FileSource) {
-      FileSource frSrc = (FileSource) source;
-
+    if (source instanceof FileSource frSrc) {
       data = dataDir.sourceFile(resource, frSrc);
       mimeType = "application/octet-stream";
 

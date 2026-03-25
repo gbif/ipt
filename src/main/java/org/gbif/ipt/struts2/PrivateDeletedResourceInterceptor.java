@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.struts2;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -22,15 +21,16 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.manage.ResourceManager;
 
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Map;
 import javax.inject.Inject;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.dispatcher.Parameter;
-
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.AbstractInterceptor;
 
 /**
  * An Interceptor that makes sure a requested resource is either public or the current user has rights to manage the
@@ -38,6 +38,7 @@ import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
  */
 public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
 
+  @Serial
   private static final long serialVersionUID = 2340800191217429210L;
 
   private ResourceManager resourceManager;
@@ -79,26 +80,25 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
           // return 404 if version was in incorrect format
           return BaseAction.NOT_FOUND;
         }
-      }
+      } else {
+        if (PublicationStatus.DELETED == resource.getStatus()) {
+          // user authorised?
+          if (user == null || !isAuthorized(user, resource)) {
+            return BaseAction.GONE;
+          }
+        }
 
-      if (PublicationStatus.DELETED == resource.getStatus()) {
-        // user authorised?
-        if (user == null || !isAuthorized(user, resource)) {
-          return BaseAction.GONE;
+        PublicationStatus resourceStatus = CollectionUtils.isNotEmpty(resource.getVersionHistory())
+            ? resource.getVersionHistory().get(0).getPublicationStatus()
+            : resource.getStatus();
+
+        if (PublicationStatus.PRIVATE == resourceStatus) {
+          // user authorised?
+          if (user == null || !isAuthorized(user, resource)) {
+            return BaseAction.NOT_ALLOWED;
+          }
         }
       }
-
-      PublicationStatus resourceStatus = CollectionUtils.isNotEmpty(resource.getVersionHistory())
-          ? resource.getVersionHistory().get(0).getPublicationStatus()
-          : resource.getStatus();
-
-      if (PublicationStatus.PRIVATE == resourceStatus) {
-        // user authorised?
-        if (user == null || !isAuthorized(user, resource)) {
-          return BaseAction.NOT_ALLOWED;
-        }
-      }
-
     }
     return invocation.invoke();
   }

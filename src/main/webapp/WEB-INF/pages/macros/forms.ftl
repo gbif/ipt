@@ -1,6 +1,6 @@
 <#ftl output_format="HTML">
 
-    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1 withLabel=true tabindex=-1 placeholder="">
+    <#macro input name value="" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1 withLabel=true tabindex=-1 placeholder="">
         <div>
             <#if withLabel>
                 <div class="d-flex text-smaller">
@@ -15,7 +15,7 @@
                     name="${name}"
                     placeholder="${placeholder}"
                     <#if (tabindex>0)>tabindex="${tabindex}" </#if>
-                    value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
+                    value="${value!}"
                     <#if (size>0)>size="${size}"</#if>
                     <#if (maxlength>0)>maxlength="${maxlength}"</#if>
                     <#if disabled>readonly="readonly"</#if>
@@ -111,9 +111,9 @@
         </div>
     </#macro>
 
-    <#macro checkbox name i18nkey="" errorfield="" disabled=false value="-99999" help="" requiredField=false>
+    <#macro checkbox name i18nkey="" errorfield="" disabled=false value=false help="" requiredField=false>
         <div class="form-check">
-            <@s.checkbox name="${name}" id="${name}" cssClass="form-check-input" fieldValue="true" disabled=disabled />
+            <@s.checkbox name="${name}" id="${name}" cssClass="form-check-input" fieldValue="true" value="${value?c}" disabled=disabled />
             <#-- Struts sends only true value (when checkbox is checked).Send false additionaly because it only sends true. -->
             <#-- Send false additionaly. It is picked when the first value is absent otherwise ignored. -->
             <input type="hidden" name="${name}" value="false">
