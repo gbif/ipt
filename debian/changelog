@@ -1,3 +1,10 @@
+ipt (3.2.3) bookworm; urgency=medium
+
+  * Update to IPT 3.2.3
+  * Add Tomcat 10 support (auto-detection of tomcat9/tomcat10)
+
+ -- GBIF Development Team <helpdesk@gbif.org>  Thu, 26 Mar 2026 00:00:00 +0000
+
 ipt (2.7.3) bionic; urgency=medium
 
   * [maven-release-plugin] prepare release ipt-2.7.3
