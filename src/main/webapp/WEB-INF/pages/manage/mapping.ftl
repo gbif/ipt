@@ -344,7 +344,7 @@
 </#macro>
 
 <#macro sourceSample index fieldsIndex>
-    <div id="fSIdx${fieldsIndex}" class="text-collapse sample mappingText mx-lg-3">
+    <div id="fSIdx${fieldsIndex}" class="text-collapse sample mappingText mx-lg-4">
         <@s.text name='manage.mapping.sourceSample' />:
         <em>
             <#list peek! as row>
@@ -385,7 +385,8 @@
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
     <div class="row py-1 g-1 mappingRow border-bottom text-smaller">
-            <div class="col-lg-4 pt-1">
+        <div class="col-lg-4 pt-1">
+            <div class="d-flex align-items-start gap-2 mappingRow">
                 <#assign fieldPopoverInfo>
                     <#if p.qualifiedName()?has_content><a href="${p.qualifiedName()}">${p.qualifiedName()}</a><#else>${p.name!}</#if><br/><br/>
                     <#if (p.translations[currentLocale].description)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].description/><br/><br/><#elseif p.description?has_content>${p.description}<br/><br/></#if>
@@ -403,61 +404,83 @@
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
-                <strong>
-                    ${(p.translations[currentLocale].label)!p.label!p.name}
-                    <span class="text-gbif-danger"><#if p.required>&#42;</#if></span>
-                </strong>
-            </div>
-
-            <div class="col-lg-4">
-                <select id="fIdx${fieldsIndex}" class="fidx form-select form-select-sm" name="fields[${fieldsIndex}].index">
-                    <option value="" <#if !field.index??> selected="selected"</#if>></option>
-                    <#list columns as col>
-                        <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
-                    </#list>
-                </select>
-            </div>
-
-            <div class="col-lg-4">
-                <#if p.vocabulary??>
-                    <#assign vocab=vocabTerms[p.vocabulary.uriString] />
-
-                    <div class="input-group input-group-sm">
-                        <select id="fVal${fieldsIndex}" class="fval fval-select form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
-                            <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
-                            <#list vocab?keys as code>
-                                <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>
-                            </#list>
-                        </select>
+                <div class="field-label">
+                    <div class="field-label__main">
+                        <strong>
+                            ${(p.translations[currentLocale].label)!p.label!p.name}
+                            <span class="text-gbif-danger"><#if p.required>&#42;</#if></span>
+                        </strong>
                     </div>
-                <#else>
-                    <input id="fVal${fieldsIndex}" class="fval form-control form-control-sm" name="fields[${fieldsIndex}].defaultValue" value="${field.defaultValue!}"/>
-                </#if>
+                    <div class="field-label__original">
+                        <small>
+                            <i>
+                                <#if p.namespace()?starts_with("http://rs.tdwg.org/dwc/terms/")>
+                                    dwc:${p.name}
+                                <#elseif p.namespace()?starts_with("http://purl.org/dc/terms")>
+                                    dcterms:${p.name}
+                                <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>
+                                    dc:${p.name}
+                                <#elseif p.namespace()?starts_with("http://rs.tdwg.org/ac/terms/")>
+                                    ac:${p.name}
+                                <#else>
+                                    ${p.name}
+                                </#if>
+                            </i>
+                        </small>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <#if field.index??>
-                <small><@sourceSample field.index fieldsIndex/></small>
-                <div id="fTIdx${fieldsIndex}" class="sample mappingText">
-                    <small class="mx-lg-3"><@s.text name='manage.mapping.translation' />:</small>
-                    <small>
-                        <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
-                            <#if (((field.translation?size)!0)>0)>
-                                ${(field.translation?size)!0} terms
-                            <#else>
-                                <@s.text name="button.add"/>
-                            </#if>
-                        </a>
-                    </small>
-                </div>
-            </#if>
+        <div class="col-lg-4">
+            <select id="fIdx${fieldsIndex}" class="fidx form-select form-select-sm" name="fields[${fieldsIndex}].index">
+                <option value="" <#if !field.index??> selected="selected"</#if>></option>
+                <#list columns as col>
+                    <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
+                </#list>
+            </select>
+        </div>
 
-            <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
-                <div class="sample mappingText">
-                    <#-- option to use DOI as datasetID -->
-                    <@datasetDoiCheckbox idAttr="cVal${fieldsIndex}" name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" classAttr="cval datasetDoiCheckbox form-check-input" requiredField=false value="${doiUsedForDatasetId?string}" errorfield="" />
+        <div class="col-lg-4">
+            <#if p.vocabulary??>
+                <#assign vocab=vocabTerms[p.vocabulary.uriString] />
+
+                <div class="input-group input-group-sm">
+                    <select id="fVal${fieldsIndex}" class="fval fval-select form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
+                        <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
+                        <#list vocab?keys as code>
+                            <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>
+                        </#list>
+                    </select>
                 </div>
+            <#else>
+                <input id="fVal${fieldsIndex}" class="fval form-control form-control-sm" name="fields[${fieldsIndex}].defaultValue" value="${field.defaultValue!}"/>
             </#if>
         </div>
+
+        <#if field.index??>
+            <small><@sourceSample field.index fieldsIndex/></small>
+            <div id="fTIdx${fieldsIndex}" class="sample mappingText">
+                <small class="mx-lg-4"><@s.text name='manage.mapping.translation' />:</small>
+                <small>
+                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
+                        <#if (((field.translation?size)!0)>0)>
+                            ${(field.translation?size)!0} terms
+                        <#else>
+                            <@s.text name="button.add"/>
+                        </#if>
+                    </a>
+                </small>
+            </div>
+        </#if>
+
+        <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
+            <div class="sample mappingText">
+                <#-- option to use DOI as datasetID -->
+                <@datasetDoiCheckbox idAttr="cVal${fieldsIndex}" name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" classAttr="cval datasetDoiCheckbox form-check-input" requiredField=false value="${doiUsedForDatasetId?string}" errorfield="" />
+            </div>
+        </#if>
+    </div>
 </#macro>
 
 <form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
@@ -618,7 +641,7 @@
                                 </#assign>
                                 <@popoverTextInfo text1/>
                             </#if>
-                            <strong>${(coreid.translations[currentLocale].label)!coreid.label!coreid.name!"Record ID"}</strong>
+                            <strong class="ps-1">${(coreid.translations[currentLocale].label)!coreid.label!coreid.name!"Record ID"}</strong>
                         </div>
 
                         <div class="col-lg-4">
@@ -651,7 +674,7 @@
                         <div class="row pt-2 pb-3 g-2 mappingFiler">
                             <div class="col-lg-1 pt-1" id="filter">
                                 <@popoverPropertyInfo "manage.mapping.info" />
-                                <strong><@s.text name='manage.mapping.filter'/></strong>
+                                <strong class="ps-1"><@s.text name='manage.mapping.filter'/></strong>
                             </div>
 
                             <div class="col-lg-3">
