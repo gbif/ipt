@@ -82,7 +82,7 @@
     <struts2.version>7.1.1</struts2.version>
     <tika.version>2.9.4</tika.version>
     <validation-api.version>3.0.2</validation-api.version>
-    <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+    <hibernate-validator.version>8.0.3.Final</hibernate-validator.version>
     <jakarta.el-api.version>5.0.1</jakarta.el-api.version>
     <glassfish.jakarata.el.version>5.0.0-M1</glassfish.jakarata.el.version>
     <!-- NB XStream does not use semantic versioning.  Take care when upgrading, as we need to
