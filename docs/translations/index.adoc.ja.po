@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2025-03-19 07:13+0000\n"
-"PO-Revision-Date: 2025-03-19 07:18\n"
+"POT-Creation-Date: 2025-12-19 15:05+0000\n"
+"PO-Revision-Date: 2026-03-20 17:27\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -161,7 +161,7 @@ msgstr "コミュニティの多大な努力と、ローカリゼーションツ
 
 #. type: Title ===
 #: en/modules/ROOT/pages/index.adoc:53
-#: en/modules/ROOT/pages/manage-resources.adoc:352
+#: en/modules/ROOT/pages/manage-resources.adoc:356
 #, no-wrap
 msgid "Acknowledgements"
 msgstr "謝辞"
