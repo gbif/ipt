@@ -19,7 +19,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.tika.Tika;
@@ -68,10 +67,10 @@ public class MediaTypeAndFormatDetector {
   /**
    * Given a {@link Path} to a file (or folder) and a original contentType this function will check
    * to reevaluate the contentType and return the matching {@link FileFormat}. If a more specific
-   * contentType can not be found the original one will be return with the matching {@link
+   * contentType cannot be found the original one will be return with the matching {@link
    * FileFormat}.
    *
-   * @param dataFilePath shall point to data file or folder (not a zip file)
+   * @param dataFilePath shall point to a datafile or folder (not a zip file)
    */
   public static Optional<MediaTypeAndFormat> evaluateMediaTypeAndFormat(
       Path dataFilePath, String detectedContentType) throws IOException {
@@ -81,7 +80,7 @@ public class MediaTypeAndFormatDetector {
     if (COMPRESS_CONTENT_TYPE.contains(detectedContentType)) {
       List<Path> content;
       try (Stream<Path> list = Files.list(dataFilePath)) {
-        content = list.collect(Collectors.toList());
+        content = list.toList();
       }
       if (content.size() == 1) {
         contentType = MediaTypeAndFormatDetector.detectMediaType(content.get(0));
