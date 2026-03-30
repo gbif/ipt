@@ -50,7 +50,7 @@
     <!-- Third party dependencies -->
     <apache-poi.version>5.5.1</apache-poi.version>
     <bcrypt.version>0.10.2</bcrypt.version>
-    <commons-digester.version>2.1</commons-digester.version>
+    <commons-digester.version>3.2</commons-digester.version>
     <commons-io.version>2.21.0</commons-io.version>
     <commons-lang3.version>3.20.0</commons-lang3.version>
     <commons-collections4.version>4.5.0</commons-collections4.version>
@@ -66,7 +66,6 @@
     <jackson.version>2.15.1</jackson.version> <!-- Fixed to the version used in tableschema-java -->
     <jackson-dataformat-yaml.version>2.14.0</jackson-dataformat-yaml.version> <!-- Fixed to 2.14.0 for now because of issues with jackson-datatype-jts -->
     <jackson-datatype-jts.version>2.21.0</jackson-datatype-jts.version>
-    <javassist.version>3.12.1.GA</javassist.version>
     <javax.inject.version>1</javax.inject.version>
     <javax.mail.version>1.4.7</javax.mail.version>
     <jetty-maven-plugin.version>12.0.12</jetty-maven-plugin.version>
@@ -434,13 +433,7 @@
       <artifactId>struts2-json-plugin</artifactId>
       <version>${struts2.version}</version>
     </dependency>
-    <!-- required by OGNL/struts2 since version 2.2.x -->
-    <dependency>
-      <groupId>javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <version>${javassist.version}</version>
-      <scope>runtime</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
@@ -623,8 +616,8 @@
 
     <!-- Simple XML Parsing -->
     <dependency>
-      <groupId>commons-digester</groupId>
-      <artifactId>commons-digester</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-digester3</artifactId>
       <version>${commons-digester.version}</version>
     </dependency>
 
