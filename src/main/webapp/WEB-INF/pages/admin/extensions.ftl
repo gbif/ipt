@@ -3,8 +3,16 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
     <script>
-        $(document).ready(function(){
-            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='admin.extension.update.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+        $(document).ready(function () {
+            $('.confirm').jConfirmAction({
+                titleQuestion: "<@s.text name="basic.confirm"/>",
+                question: "<@s.text name='admin.extension.update.confirm'/>",
+                yesAnswer: "<@s.text name='basic.yes'/>",
+                cancelAnswer: "<@s.text name='basic.no'/>",
+                buttonType: "primary",
+                baseUrl: "${baseURL}",
+                logo: "success"
+            });
         });
 
         $("#synchronise").on("click", displayProcessing);

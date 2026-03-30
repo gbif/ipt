@@ -11,7 +11,8 @@
             question: "<@s.text name="manage.source.confirmation.message"/>",
             yesAnswer: "<@s.text name="basic.yes"/>",
             cancelAnswer: "<@s.text name="basic.no"/>",
-            buttonType: "danger"
+            buttonType: "danger",
+            baseUrl: "${baseURL}"
         });
         $('#analyze').jConfirmAction({
             titleQuestion: "<@s.text name="basic.confirm"/>",
@@ -19,7 +20,9 @@
             yesAnswer: "<@s.text name="basic.yes"/>",
             cancelAnswer: "<@s.text name="basic.no"/>",
             buttonType: "primary",
-            processing: true
+            processing: true,
+            baseUrl: "${baseURL}",
+            logo: "success"
         });
         $("#peekBtn").click(function (e) {
             e.preventDefault();

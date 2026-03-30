@@ -12,7 +12,8 @@
                 titleQuestion: "<@s.text name="basic.confirm"/>",
                 yesAnswer: "<@s.text name="basic.yes"/>",
                 cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger"
+                buttonType: "danger",
+                baseUrl: "${baseURL}"
             });
             $("table input").focus(function () {
                 $(this).parent().parent().addClass("highlight");

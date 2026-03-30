@@ -14,7 +14,7 @@
             buttonType: "primary",
             processing: false,
             closeModal: true,
-            baseURL: "${baseURL}",
+            baseUrl: "${baseURL}",
             logo: "warning"
         });
 

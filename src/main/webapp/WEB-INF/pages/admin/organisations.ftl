@@ -10,7 +10,8 @@
                         question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
                         yesAnswer: "<@s.text name="basic.yes"/>",
                         cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger"
+                        buttonType: "danger",
+                        baseUrl: "${baseURL}"
                     });
                 } else {
                     setTimeout(initConfirmationModal, 100); // check again in a moment
@@ -28,7 +29,8 @@
                         question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
                         yesAnswer: "<@s.text name="basic.yes"/>",
                         cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger"
+                        buttonType: "danger",
+                        baseUrl: "${baseURL}"
                     });
                 });
             }

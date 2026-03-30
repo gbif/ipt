@@ -8,8 +8,14 @@
 
 <script>
     $(document).ready(function(){
-        $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
-        $("table input").focus(function() {
+        $('.confirm').jConfirmAction({
+            titleQuestion: "<@s.text name="basic.confirm"/>",
+            yesAnswer: "<@s.text name="basic.yes"/>",
+            cancelAnswer: "<@s.text name="basic.no"/>",
+            buttonType: "danger",
+            baseUrl: "${baseURL}"
+        });
+        $("table input").focus(function () {
             $(this).parent().parent().addClass("highlight");
         });
         $("table input").blur(function() {

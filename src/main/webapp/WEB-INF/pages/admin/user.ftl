@@ -21,7 +21,8 @@
                 question: "<@s.text name="admin.user.delete.confirmation.message"/>",
                 yesAnswer: "<@s.text name="basic.yes"/>",
                 cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger"
+                buttonType: "danger",
+                baseUrl: "${baseURL}"
             });
 
             $('.confirmPasswordReset').jConfirmAction({
@@ -29,7 +30,8 @@
                 question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
                 yesAnswer: "<@s.text name="basic.yes"/>",
                 cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger"
+                buttonType: "danger",
+                baseUrl: "${baseURL}"
             });
 
             $("#user\\.role").select2({

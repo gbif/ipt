@@ -129,7 +129,14 @@
                 hideRedundantGroups();
             }
 
-            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
+            $('.confirm').jConfirmAction({
+                titleQuestion: "<@s.text name="basic.confirm"/>",
+                question: "<@s.text name ="manage.mapping.confirmation.message"/>",
+                yesAnswer: "<@s.text name="basic.yes"/>",
+                cancelAnswer: "<@s.text name="basic.no"/>",
+                buttonType: "danger",
+                baseUrl: "${baseURL}"
+            });
 
             $("#save").on("click", displayProcessing);
 
