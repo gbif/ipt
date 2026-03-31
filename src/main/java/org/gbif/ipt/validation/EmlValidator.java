@@ -382,6 +382,11 @@ public class EmlValidator extends BaseValidator {
                     i18n.getText("validation.required", i18n.getText("eml.contact.position")));
               }
 
+              if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
+                ec.addFieldError("eml.contacts[" + index + "].organisation",
+                    i18n.getText("validation.short", i18n.getText("eml.contact.organisation"), "2"));
+              }
+
               /* address(es) are optional. But if they exist, they should not be empty */
               if (c.getAddress() != null
                   && c.getAddress().getAddress() != null
@@ -509,6 +514,11 @@ public class EmlValidator extends BaseValidator {
                     i18n.getText(
                         "validation.required",
                         i18n.getText("eml.resourceCreator.position")));
+              }
+
+              if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
+                ec.addFieldError("eml.creators[" + index + "].organisation",
+                    i18n.getText("validation.short", i18n.getText("eml.resourceCreator.organisation"), "2"));
               }
 
               /* address(es) are optional. But if they exist, they should not be empty */
@@ -643,6 +653,11 @@ public class EmlValidator extends BaseValidator {
                       i18n.getText("eml.metadataProvider.position")));
             }
 
+            if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
+              ec.addFieldError("eml.metadataProviders[" + index + "].organisation",
+                  i18n.getText("validation.short", i18n.getText("eml.metadataProvider.organisation"), "2"));
+            }
+
             /* address(es) are optional. But if they exist, they should not be empty */
             if (c.getAddress() != null
                 && c.getAddress().getAddress() != null
@@ -772,6 +787,11 @@ public class EmlValidator extends BaseValidator {
                   i18n.getText(
                       "validation.required",
                       i18n.getText("eml.associatedParties.position")));
+            }
+
+            if (StringUtils.isNotEmpty(ap.getOrganisation()) && ap.getOrganisation().length() < 2) {
+              ec.addFieldError("eml.associatedParties[" + index + "].organisation",
+                  i18n.getText("validation.short", i18n.getText("eml.associatedParties.organisation"), "2"));
             }
 
             /* address(es) are optional. But if they exist, they should not be empty */
