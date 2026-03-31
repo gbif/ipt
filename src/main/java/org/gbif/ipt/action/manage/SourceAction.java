@@ -32,6 +32,7 @@ import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
+import jakarta.activation.MimeTypeParseException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -43,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import javax.activation.MimeTypeParseException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
