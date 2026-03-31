@@ -25,6 +25,10 @@
       "automerge": false
     },
     {
+      "matchPackageNames": ["jakarta.servlet:jakarta.servlet-api"],
+      "automerge": false
+    },
+    {
       "matchPackageNames": ["com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"],
       "automerge": false
     },
