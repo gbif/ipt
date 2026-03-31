@@ -13,10 +13,9 @@
  */
 package org.gbif.ipt.validation;
 
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import java.util.Date;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -66,7 +65,7 @@ public abstract class BaseValidator {
         InternetAddress internetAddress = new InternetAddress(email);
         internetAddress.validate();
         return true;
-      } catch (javax.mail.internet.AddressException e) {
+      } catch (jakarta.mail.internet.AddressException e) {
         LOG.error("Email address was invalid: {}. Reason: {}", StringUtils.trimToEmpty(email), e.getMessage());
       }
     }
@@ -81,7 +80,7 @@ public abstract class BaseValidator {
         internetAddress.validate();
         result.setValid(true);
 
-        // Additionally validate by Apache Commons' EmailValidator (to align with the registry)
+        // Additionally, validate by Apache Commons' EmailValidator (to align with the registry)
         boolean validationResult = emailValidator.isValid(email);
         result.setValid(validationResult);
         if (!validationResult) {
