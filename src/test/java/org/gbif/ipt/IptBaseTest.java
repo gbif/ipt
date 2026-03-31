@@ -35,8 +35,7 @@ public class IptBaseTest {
   }
 
   // TODO: Some tests still produce junk files - make sure all are cleaned up
-  @Disabled
-  @AfterEach
+//  @AfterEach
   void checkForStrayDirsAndFiles(TestInfo testInfo) throws Exception {
     String[] expectedJunk = { "event", "res1", "amphibians", "${test.datadir}", "admin.log", "debug.log" };
     boolean junkFound = false;
