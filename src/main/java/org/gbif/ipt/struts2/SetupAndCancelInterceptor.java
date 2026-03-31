@@ -18,10 +18,10 @@ import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.SetupAction;
 import org.gbif.ipt.service.admin.ConfigManager;
 
+import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.HashSet;
 import java.util.Set;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

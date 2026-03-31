@@ -27,12 +27,12 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
+import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

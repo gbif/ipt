@@ -15,8 +15,8 @@ package org.gbif.ipt.struts2;
 
 import org.gbif.ipt.config.AppConfig;
 
+import jakarta.inject.Inject;
 import java.util.Locale;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.logging.log4j.LogManager;

@@ -17,7 +17,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;

@@ -21,12 +21,11 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.struts2.CsrfLoginInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import jakarta.inject.Inject;
 import jakarta.servlet.http.Cookie;
-
 import java.io.IOException;
 import java.io.Serial;
 import java.util.List;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

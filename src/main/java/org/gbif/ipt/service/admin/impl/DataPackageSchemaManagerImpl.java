@@ -55,7 +55,7 @@ import org.apache.http.StatusLine;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import static org.gbif.ipt.service.InvalidConfigException.TYPE.INVALID_DATA_SCHEMA;
 import static org.gbif.utils.HttpUtil.success;

@@ -20,16 +20,14 @@ import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.PreemptiveAuthenticationInterceptor;
 
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import javax.inject.Inject;
-
-import jakarta.servlet.ServletContext;
 
 import javax.xml.parsers.SAXParserFactory;
 

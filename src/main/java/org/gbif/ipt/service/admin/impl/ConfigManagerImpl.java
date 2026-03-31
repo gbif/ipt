@@ -42,8 +42,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
-import javax.inject.Inject;
-
+import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;

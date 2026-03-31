@@ -46,6 +46,7 @@ import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
 import org.gbif.metadata.eml.ipt.model.UserId;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
@@ -59,7 +60,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.TreeMap;
-import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Strings;

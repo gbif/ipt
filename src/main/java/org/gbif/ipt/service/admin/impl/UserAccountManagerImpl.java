@@ -27,6 +27,7 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.PBEEncrypt;
 
+import jakarta.inject.Inject;
 import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,7 +40,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.Strings;
 

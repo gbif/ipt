@@ -23,9 +23,9 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.List;
-import javax.inject.Inject;
 
 import jakarta.servlet.http.HttpServletRequest;
 

@@ -23,7 +23,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.LinkedHashMap;
 import java.util.List;

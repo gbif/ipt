@@ -15,11 +15,11 @@ package org.gbif.ipt.action.portal;
 
 import org.gbif.ipt.task.GenerateDCAT;
 
+import jakarta.inject.Inject;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serial;
 import java.nio.charset.StandardCharsets;
-import javax.inject.Inject;
 
 import org.apache.struts2.ActionSupport;
 

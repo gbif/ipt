@@ -22,6 +22,7 @@ import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.ResourceUtils;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

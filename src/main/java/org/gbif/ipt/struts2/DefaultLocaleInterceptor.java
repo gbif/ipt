@@ -24,7 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.interceptor.AbstractInterceptor;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class DefaultLocaleInterceptor extends AbstractInterceptor {
 

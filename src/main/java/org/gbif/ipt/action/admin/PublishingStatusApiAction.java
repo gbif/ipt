@@ -21,7 +21,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.StatusReport;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.Date;
 import java.util.HashMap;

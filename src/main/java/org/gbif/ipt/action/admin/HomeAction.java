@@ -18,7 +18,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.Serial;
 
 public class HomeAction extends BaseAction {

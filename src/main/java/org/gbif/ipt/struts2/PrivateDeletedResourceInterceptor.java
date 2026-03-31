@@ -21,10 +21,10 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.manage.ResourceManager;
 
+import jakarta.inject.Inject;
 import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Map;
-import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

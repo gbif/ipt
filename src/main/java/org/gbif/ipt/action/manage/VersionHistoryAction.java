@@ -25,8 +25,8 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.io.Serial;
 import java.math.BigDecimal;
 
+import jakarta.inject.Inject;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;

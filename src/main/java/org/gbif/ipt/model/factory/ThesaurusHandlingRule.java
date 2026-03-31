@@ -17,9 +17,9 @@ import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 
+import jakarta.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
-import javax.inject.Inject;
 
 import org.apache.commons.digester.Rule;
 import org.apache.logging.log4j.LogManager;

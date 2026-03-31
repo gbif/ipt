@@ -20,7 +20,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;

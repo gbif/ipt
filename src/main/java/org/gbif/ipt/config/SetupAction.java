@@ -34,6 +34,7 @@ import org.gbif.ipt.utils.URLUtils;
 import org.gbif.ipt.validation.UserValidator;
 import org.gbif.utils.HttpClient;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
@@ -42,7 +43,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;

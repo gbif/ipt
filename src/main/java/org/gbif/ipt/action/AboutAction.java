@@ -19,7 +19,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.UUID;
 
