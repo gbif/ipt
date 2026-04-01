@@ -82,7 +82,7 @@
     <junit.version>6.0.3</junit.version>
     <log4j.version>2.25.4</log4j.version>
     <mockito.version>4.11.0</mockito.version>
-    <openrtf.version>1.2.1</openrtf.version>
+    <openrtf.version>3.0.0</openrtf.version>
     <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
     <struts2.version>7.1.1</struts2.version>
     <tika.version>3.3.0</tika.version>
