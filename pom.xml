@@ -72,7 +72,7 @@
     <jakarta.el-api.version>5.0.1</jakarta.el-api.version>
     <jakarta.jaxb-api.version>4.0.5</jakarta.jaxb-api.version>
     <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
-    <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+    <jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
     <jaxb-core.version>4.0.7</jaxb-core.version>
     <jaxb-impl.version>4.0.7</jaxb-impl.version>
     <jaxb-runtime.version>4.0.7</jaxb-runtime.version>
