@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-04-09 07:15+0000\n"
-"PO-Revision-Date: 2026-04-09 07:17\n"
+"PO-Revision-Date: 2026-04-09 14:02\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<3-3-0-april-2026,3.3.0>>."
-msgstr ""
+msgstr "La versión estable actual es la <<3-3-0-abril-2026,3.3.0>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
@@ -42,17 +42,17 @@ msgstr "Está leyendo la última versión del manual.  Puede leer versiones ante
 #: en/modules/ROOT/pages/releases.adoc:14
 #, no-wrap
 msgid "*3.3.0* – April 2026"
-msgstr ""
+msgstr "*3.3.0* – Abril 2026"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:17
 msgid "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.3.0/ipt-3.3.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]"
-msgstr ""
+msgstr "https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.3.0/ipt-3.3.0.war[Descargar WAR], xref:installation.adoc#installation-from-linux-packages[Paquetes de Linux] o xref:installation.adoc#installation-from-docker[usar Docker]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:18
 msgid "xref:release-notes.adoc[IPT v3.3.0 Release Notes]"
-msgstr ""
+msgstr "xref:release-notes.adoc[Notas de la versión IPT v3.3.0]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:19
@@ -74,7 +74,7 @@ msgstr "xref:index.adoc[Manual del Usuario]"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:20
 msgid "Addressed https://github.com/gbif/ipt/milestone/72?closed=1[31 issues]."
-msgstr ""
+msgstr "Abordadas https://github.com/gbif/ipt/milestone/72?closed=1[31 incidencias]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:21
@@ -131,12 +131,12 @@ msgstr "Traducida en 7 idiomas"
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:23
 msgid "This major release includes upgrades to internal libraries, enabling support for the latest versions of Tomcat (10.1/11) and Java 17, along with several new features."
-msgstr ""
+msgstr "Esta importante versión incluye actualizaciones de las librerías internas, lo que permite la compatibilidad con las últimas versiones de Tomcat (10.1/11) y Java 17, además de varias funciones nuevas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:25
 msgid "Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes]. Please ensure you are using a supported version of Tomcat, as Tomcat 9 is no longer supported.  New users should follow the xref:getting-started.adoc[Getting Started guide]."
-msgstr ""
+msgstr "Los usuarios actuales deben actualizar a esta versión siguiendo las instrucciones que se indican en el archivo xref:release-notes.adoc [Notas de la versión]. Asegúrese de que está utilizando una versión compatible de Tomcat, ya que Tomcat 9 ya no es compatible. Los nuevos usuarios deben seguir la xref:getting-started.adoc [Guía de inicio]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/releases.adoc:27
