@@ -3,13 +3,30 @@
 [TIP]
 .Latest stable release
 ====
-The current, stable release is version <<3-2-3-march-2026,3.2.3>>.
+The current, stable release is version <<3-3-0-april-2026,3.3.0>>.
 
 You are reading the latest version of the manual.  You can read older versions of the manual using the selectors at the top-right or bottom-left of the screen.
 ifeval::["{language}" != "en"]
 Note that the not all manual versions are available in TRANSLATOR_PUT_YOUR_LANGUAGE_HERE.
 endif::[]
 ====
+
+== *3.3.0* – April 2026
+
+* https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/3.3.0/ipt-3.3.0.war[Download WAR], xref:installation.adoc#installation-from-linux-packages[Linux packages] or xref:installation.adoc#installation-from-docker[use Docker]
+* xref:release-notes.adoc[IPT v3.3.0 Release Notes]
+* xref:index.adoc[User Manual]
+* Addressed https://github.com/gbif/ipt/milestone/72?closed=1[31 issues].
+* Translated into 7 languages
+
+This major release includes upgrades to internal libraries, enabling support for the latest versions of Tomcat (10.1/11) and Java 17, along with several new features.
+
+Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes]. Please ensure you are using a supported version of Tomcat, as Tomcat 9 is no longer supported.  New users should follow the xref:getting-started.adoc[Getting Started guide].
+
+No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
+
+Minor issues and security issues will be addressed in patch releases.
+
 
 == *3.2.3* – March 2026
 
@@ -21,11 +38,6 @@ endif::[]
 
 This minor release brings bug fixes.
 
-Existing users should upgrade to this version following the instructions in the xref:release-notes.adoc[Release Notes].  New users should follow the xref:getting-started.adoc[Getting Started guide].
-
-No release date has been set for the next release. Progress working on issues for the next release can be browsed https://github.com/gbif/ipt/milestones[on GitHub].
-
-Minor issues and security issues will be addressed in patch releases.
 
 == *3.2.2* – February 2026
 
