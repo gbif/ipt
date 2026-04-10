@@ -19,7 +19,9 @@ CURVERSION = $(shell grep -oPm2 "(?<=<version>)[^<]+" "pom.xml" | tail -1)
 override_dh_auto_build:
 	dh_auto_build
 	mkdir -p $(CURDIR)/target
-	curl -o $(CURDIR)/target/ipt.war https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/$(CURVERSION)/ipt-$(CURVERSION).war
+	curl --http1.1 --retry 5 --retry-delay 10 --connect-timeout 30 --max-time 1800 --continue-at - \
+	  -o $(CURDIR)/target/ipt.war \
+	  https://repository.gbif.org/content/groups/gbif/org/gbif/ipt/$(CURVERSION)/ipt-$(CURVERSION).war
 
 override_dh_fixperms:
 	dh_fixperms
