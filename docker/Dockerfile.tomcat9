@@ -71,11 +71,13 @@ RUN mkdir -p /etc/tomcat9/Catalina/localhost && \
 
 EXPOSE 8080
 
-# Start tomcat9 in foreground as tomcat user
-# Debian's tomcat9 package uses /usr/share/tomcat9/bin/catalina.sh
-# with CATALINA_HOME and CATALINA_BASE set
 ENV CATALINA_HOME=/usr/share/tomcat9
 ENV CATALINA_BASE=/var/lib/tomcat9
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 
+# IPT's log4j writes debug.log relative to the working directory at startup.
+# Use IPT_DATA_DIR as workdir so the tomcat user can write there.
+WORKDIR ${IPT_DATA_DIR}
+
+# Start tomcat9 in foreground as tomcat user
 CMD ["su", "-s", "/bin/bash", "tomcat", "-c", "/usr/share/tomcat9/bin/catalina.sh run"]
