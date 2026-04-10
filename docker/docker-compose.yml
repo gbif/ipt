@@ -1,0 +1,66 @@
+# docker-compose.yml
+# Test IPT 3.2.3 with Tomcat 9 and Tomcat 10
+#
+# Usage:
+#   # Test Tomcat 10 (Debian Bookworm):
+#   docker compose up ipt-tomcat10
+#
+#   # Test Tomcat 9 (Debian Bullseye):
+#   docker compose up ipt-tomcat9
+#
+#   # Test both simultaneously:
+#   docker compose up
+#
+# After startup, access:
+#   Tomcat 10: http://localhost:8080/ipt
+#   Tomcat 9:  http://localhost:8081/ipt
+#
+# Build only (no run):
+#   docker compose build ipt-tomcat10
+#   docker compose build ipt-tomcat9
+
+services:
+  ipt-tomcat10:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.tomcat10
+    image: ipt-tomcat10:3.2.3
+    container_name: ipt-tomcat10
+    command: ["/usr/share/tomcat10/bin/catalina.sh", "run"]
+    ports:
+      - "8080:8080"
+    volumes:
+      - ipt-data-tomcat10:/var/lib/ipt
+    environment:
+      - JAVA_OPTS=-Xmx512m -Xms256m
+      - CATALINA_HOME=/usr/share/tomcat10
+      - CATALINA_BASE=/var/lib/tomcat10
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ipt"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  ipt-tomcat9:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.tomcat9
+    image: ipt-tomcat9:3.2.3
+    container_name: ipt-tomcat9
+    ports:
+      - "8081:8080"
+    volumes:
+      - ipt-data-tomcat9:/var/lib/ipt
+    environment:
+      - JAVA_OPTS=-Xmx512m -Xms256m
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ipt"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  ipt-data-tomcat10:
+  ipt-data-tomcat9:
