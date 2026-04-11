@@ -22,8 +22,4 @@ Description: Integrated Publishing Toolkit (IPT) application
  through the GBIF network. The IPT can also be configured with a DataCite
  account in order to assign DOIs to datasets transforming it into a data
  repository.
- .
- IMPORTANT: IPT 3.3.0+ requires:
-  - Java 17 or higher (OpenJDK 17 recommended)
-  - Tomcat 10 for Jakarta EE support (Tomcat 9 NOT compatible)
-  - Ubuntu 24.04 or Debian 12+ (for Tomcat 10 availability)
+
