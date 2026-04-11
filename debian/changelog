@@ -1,3 +1,31 @@
+ipt (3.3.0) bookworm; urgency=medium
+
+  * Update to IPT 3.3.0
+  
+  BREAKING CHANGES - READ CAREFULLY:
+  
+  * REQUIRES Java 17 or higher (Java 11 no longer supported)
+    - Added dependency: openjdk-17-jre-headless | openjdk-17-jre | openjdk-17-jdk-headless | openjdk-17-jdk
+    - Postinst script validates Java version and configures Tomcat with JAVA_HOME
+  
+  * REQUIRES Tomcat 10 for Jakarta EE support (Tomcat 9 NOT compatible)
+    - IPT 3.3.0 uses Jakarta Servlet API (jakarta.servlet.*)
+    - Tomcat 9 only supports Javax Servlet API (javax.servlet.*)
+    - ClassNotFoundException will occur on Tomcat 9
+  
+  * Platform requirements:
+    - Ubuntu 24.04+ (Noble or later) - Tomcat 10 available
+    - Debian 12+ (Bookworm or later) - Tomcat 10 available
+    - Ubuntu 22.04 NOT supported - lacks Tomcat 10 packages
+  
+  * Upgrade path from IPT 3.2.x:
+    1. Upgrade OS to Ubuntu 24.04 or Debian 12
+    2. Install Tomcat 10 and Java 17
+    3. Install this package
+    4. See UPGRADE-PATH.md for detailed instructions
+
+ -- GBIF Development Team <helpdesk@gbif.org>  Fri, 11 Apr 2026 09:00:00 +0000
+
 ipt (3.2.3) bookworm; urgency=medium
 
   * Update to IPT 3.2.3
