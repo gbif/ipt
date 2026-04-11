@@ -10,6 +10,66 @@ set -e
 
 #DEBHELPER#
 
+# Function to check Java version
+check_java_version() {
+    if command -v java >/dev/null 2>&1; then
+        # Get Java version and extract major version number
+        JAVA_VER=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -d'.' -f1)
+        
+        # Handle Java versions like "1.8" (pre-Java 9 format)
+        if [ "$JAVA_VER" = "1" ]; then
+            JAVA_VER=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}' | cut -d'.' -f2)
+        fi
+        
+        echo "$JAVA_VER"
+    else
+        echo "0"
+    fi
+}
+
+# Function to find Java 17 installation
+find_java17() {
+    # Check common Java 17 installation paths
+    for java_home in /usr/lib/jvm/java-17-openjdk-* /usr/lib/jvm/java-1.17.0-openjdk-*; do
+        if [ -d "$java_home" ] && [ -x "$java_home/bin/java" ]; then
+            echo "$java_home"
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Verify Java 17 is available
+CURRENT_JAVA_VER=$(check_java_version)
+
+# Always try to find Java 17 installation path
+JAVA17_HOME=$(find_java17)
+
+if [ "$CURRENT_JAVA_VER" -lt 17 ]; then
+    echo "ERROR: IPT 3.3.0+ requires Java 17 or higher."
+    echo "Current Java version: $CURRENT_JAVA_VER"
+    
+    if [ -n "$JAVA17_HOME" ]; then
+        echo "Found Java 17 at: $JAVA17_HOME"
+        echo "Configuring Tomcat to use Java 17..."
+    else
+        echo ""
+        echo "Please install Java 17:"
+        echo "  sudo apt-get update"
+        echo "  sudo apt-get install openjdk-17-jre-headless"
+        echo ""
+        echo "Then reconfigure this package:"
+        echo "  sudo dpkg-reconfigure ipt"
+        exit 1
+    fi
+else
+    echo "Java version $CURRENT_JAVA_VER detected - OK"
+    if [ -z "$JAVA17_HOME" ]; then
+        echo "WARNING: Could not find Java 17 installation directory."
+        echo "Will rely on system default Java."
+    fi
+fi
+
 # Get the previous value of data-dir
 db_get ipt/data-dir
 DATA_DIR="$RET"
@@ -51,10 +111,21 @@ TOMCAT_SERVICE_OVERRIDE="/etc/systemd/system/${TOMCAT_VERSION}.service.d/overrid
 mkdir -p "$(dirname "$TOMCAT_SERVICE_OVERRIDE")"
 
 # Write the configuration to the 'override.conf' file
-cat << EOF > "$TOMCAT_SERVICE_OVERRIDE"
+# Always set JAVA_HOME explicitly if we found Java 17, to ensure Tomcat uses it
+# (even if update-alternatives points to Java 17, Tomcat might use /usr/lib/jvm/default-java symlink)
+if [ -n "$JAVA17_HOME" ]; then
+    cat << EOF > "$TOMCAT_SERVICE_OVERRIDE"
+[Service]
+ReadWritePaths=$DATA_DIR
+Environment="JAVA_HOME=$JAVA17_HOME"
+EOF
+    echo "Configured Tomcat to use Java 17: $JAVA17_HOME"
+else
+    cat << EOF > "$TOMCAT_SERVICE_OVERRIDE"
 [Service]
 ReadWritePaths=$DATA_DIR
 EOF
+fi
 
 # Set appropriate permissions for the configuration file
 chmod 644 "$TOMCAT_SERVICE_OVERRIDE"
