@@ -279,8 +279,12 @@
     <constructor-arg ref="simpleTextProvider"/>
   </bean>
 
-  <bean id="xstreamMapper" class="com.thoughtworks.xstream.mapper.DefaultMapper">
+  <bean id="defaultMapper" class="com.thoughtworks.xstream.mapper.DefaultMapper">
     <constructor-arg value="#{T(java.lang.Thread).currentThread().getContextClassLoader()}" />
+  </bean>
+
+  <bean id="xstreamMapper" class="org.gbif.ipt.model.converter.ExtendedXstreamMapper">
+    <constructor-arg ref="defaultMapper" />
   </bean>
 
   <bean id="xstreamReflectionProvider" class="com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider"/>
