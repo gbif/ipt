@@ -100,6 +100,7 @@ fi
 
 IPT_XML="/etc/${TOMCAT_VERSION}/Catalina/localhost/ipt.xml"
 
+mkdir -p "/etc/${TOMCAT_VERSION}/Catalina/localhost"
 install -m 644 /usr/share/ipt/ipt.xml "$IPT_XML"
 chown $TOMCAT_USER:$TOMCAT_GROUP "$IPT_XML"
 
