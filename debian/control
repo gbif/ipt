@@ -12,7 +12,7 @@ Vcs-Git: https://github.com/gbif/ipt.git
 
 Package: ipt
 Architecture: all
-Depends: ${misc:Depends}, tomcat9 | tomcat10, openjdk-17-jre-headless | openjdk-17-jre | openjdk-17-jdk-headless | openjdk-17-jdk
+Depends: ${misc:Depends}, tomcat10, openjdk-17-jre-headless | openjdk-17-jre | openjdk-17-jdk-headless | openjdk-17-jdk
 Suggests: apache2 | nginx
 Description: Integrated Publishing Toolkit (IPT) application
  This package contains the ipt package from GBIF.
