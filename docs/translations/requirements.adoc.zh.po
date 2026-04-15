@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2025-06-03 10:41+0000\n"
-"PO-Revision-Date: 2025-06-03 10:43\n"
+"POT-Creation-Date: 2026-04-09 07:15+0000\n"
+"PO-Revision-Date: 2026-04-09 07:16\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -85,7 +85,7 @@ msgstr "Java 版本"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/requirements.adoc:21
-msgid "The current version of the IPT is tested to run on Java 11 and 17. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported."
+msgid "The current version of the IPT is tested to run on Java 17. Please refer to the https://adoptopenjdk.net/support.html#roadmap[OpenJDK release roadmap], the https://www.oracle.com/java/technologies/java-se-support-roadmap.html[Oracle Java version Roadmap] or documentation from your Linux distribution for an overview of how long your Java version will be supported."
 msgstr ""
 
 #. type: Title ==
