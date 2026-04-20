@@ -8,7 +8,9 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.pull_request.head.ref != 'translation_master' }}
+    if: >
+      github.event.pull_request.head.ref != 'translation_master' &&
+      github.event.pull_request.user.login == 'renovate[bot]'
     runs-on: ubuntu-latest
 
     env:
