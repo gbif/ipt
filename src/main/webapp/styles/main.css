@@ -425,7 +425,6 @@ table {
 
 .bg-gbif-main-navbar {
     background-image: linear-gradient(to bottom, rgba(var(--navbar-color), 1), rgba(var(--navbar-color), 0.85));
-    );
 }
 
 .bg-gbif-main-navbar-test {
