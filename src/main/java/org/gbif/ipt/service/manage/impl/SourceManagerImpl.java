@@ -874,7 +874,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   private Connection getDbConnection(SqlSource source) throws SQLException {
     Connection conn = null;
     // try to connect to db via simple JDBC
-    if (source.getHost() != null && source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
+    if (source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
       try {
         DriverManager.setLoginTimeout(CONNECTION_TIMEOUT_SECS);
         Class.forName(source.getJdbcDriver());

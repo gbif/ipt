@@ -120,11 +120,19 @@ public class JdbcSupport {
     }
 
     public String getJdbcUrl(SqlSource source) {
-      return this.url.replace("{host}", source.getHost()).replace("{database}", source.getDatabase());
+      String jdbcUrl = this.url.replace("{database}", source.getDatabase());
+      if (source.getHost() != null) {
+        jdbcUrl = jdbcUrl.replace("{host}", source.getHost());
+      }
+      return jdbcUrl;
     }
 
     public String getJdbcUrl(String host, String database) {
-      return this.url.replace("{host}", host).replace("{database}", database);
+      String jdbcUrl = this.url.replace("{database}", database);
+      if (host != null) {
+        jdbcUrl = jdbcUrl.replace("{host}", host);
+      }
+      return jdbcUrl;
     }
 
     public String getName() {
