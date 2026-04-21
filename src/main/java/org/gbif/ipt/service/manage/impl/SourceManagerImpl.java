@@ -990,10 +990,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         LOG.debug("Executing SQL {}", source.getSqlLimited(rows + 1));
         rs = stmt.executeQuery(source.getSqlLimited(rows + 1));
         // loop over result
+        int columnCount = rs.getMetaData().getColumnCount();
         while (rows > 0 && rs.next()) {
           rows--;
-          String[] row = new String[source.getColumns()];
-          for (int idx = 0; idx < source.getColumns(); idx++) {
+          String[] row = new String[columnCount];
+          for (int idx = 0; idx < columnCount; idx++) {
             row[idx] = rs.getString(idx + 1);
           }
           preview.add(row);
