@@ -88,7 +88,6 @@
         }
     </style>
 
-    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
     <script>
         $(document).ready(function () {

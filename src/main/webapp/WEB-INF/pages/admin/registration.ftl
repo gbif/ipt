@@ -1,5 +1,4 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">

@@ -3,7 +3,6 @@
 <title><@s.text name="title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
-<script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
 <script src="${baseURL}/js/jquery/dataTables.responsive-2.5.0.min.js"></script>
 
