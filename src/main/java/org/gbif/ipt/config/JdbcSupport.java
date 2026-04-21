@@ -127,14 +127,6 @@ public class JdbcSupport {
       return jdbcUrl;
     }
 
-    public String getJdbcUrl(String host, String database) {
-      String jdbcUrl = this.url.replace("{database}", database);
-      if (host != null) {
-        jdbcUrl = jdbcUrl.replace("{host}", host);
-      }
-      return jdbcUrl;
-    }
-
     public String getName() {
       return name;
     }
