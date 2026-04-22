@@ -1,6 +1,6 @@
 = Release Notes
 
-*IPT Versions: pass:[3.0.*]*
+*IPT Versions: pass:[3.3.*]*
 
 == Upgrade instructions
 
@@ -33,7 +33,7 @@ yum-config-manager --add-repo https://packages.gbif.org/gbif.repo
 yum install --enablerepo=gbif-testing ipt
 
 # Roll back to a previous, stable version:
-yum downgrade ipt-2.7.5
+yum downgrade ipt-3.2.3
 
 # Show all available versions, testing and stable:
 yum --showduplicates list --enablerepo=gbif-testing ipt
@@ -70,7 +70,9 @@ Additionally, the IPT administrator should update all installed cores and extens
 
 The full list of new features is documented on the xref:releases.adoc[releases page].  Please pay particular attention to these points after upgrading:
 
-* IPT 3.0.0 requires Tomcat 8 or 9. Tomcat 7 is not supported anymore.
+* IPT 3.3.0 requires Java 17.
+
+* IPT 3.3.0 requires Tomcat 10.1 or 11. Tomcat 8/9 are not supported anymore.
 
 == When all else fails
 
