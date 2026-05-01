@@ -98,7 +98,7 @@
     <mysql-connector-java.version>9.7.0</mysql-connector-java.version>
     <ojdbc.version>23.26.1.0.0</ojdbc.version>
     <postgresql.version>42.7.11</postgresql.version>
-    <duckdb.version>1.5.2.0</duckdb.version>
+    <duckdb.version>1.5.2.1</duckdb.version>
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
