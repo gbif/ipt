@@ -80,10 +80,8 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private List<DataPackageFieldMapping> fields;
   @Getter
   private Map<String, Integer> fieldsIndices;
-  @Setter
   @Getter
   private List<String> newTableSchemas = new ArrayList<>();
-  @Setter
   @Getter
   private List<String> newSources = new ArrayList<>();
 
@@ -505,6 +503,16 @@ public class DataPackageMappingAction extends ManagerBaseAction {
     ActionInvocation invocation = ActionContext.getContext().getActionInvocation();
     String actionMethod = invocation.getProxy().getMethod();
     return "delete".equals(actionMethod);
+  }
+
+  @StrutsParameter(depth = 2)
+  public List<String> getNewSources() {
+    return newSources;
+  }
+
+  @StrutsParameter(depth = 2)
+  public List<String> getNewTableSchemas() {
+    return newTableSchemas;
   }
 
   @StrutsParameter(depth = 2)
