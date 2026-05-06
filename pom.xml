@@ -73,9 +73,9 @@
     <jakarta.jaxb-api.version>4.0.5</jakarta.jaxb-api.version>
     <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
     <jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
-    <jaxb-core.version>4.0.7</jaxb-core.version>
-    <jaxb-impl.version>4.0.7</jaxb-impl.version>
-    <jaxb-runtime.version>4.0.7</jaxb-runtime.version>
+    <jaxb-core.version>4.0.8</jaxb-core.version>
+    <jaxb-impl.version>4.0.8</jaxb-impl.version>
+    <jaxb-runtime.version>4.0.8</jaxb-runtime.version>
     <jetty-maven-plugin.version>12.1.8</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
