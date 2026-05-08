@@ -206,7 +206,7 @@
                 theme: 'bootstrap4'
             });
 
-            var docBookDescription = `${eml.description!}`;
+            var docBookDescription = "${eml.description!?js_string}";
             var htmlDescription = convertToHtml(docBookDescription);
 
             const descriptionEditor = $('#description-editor');

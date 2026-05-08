@@ -19,13 +19,13 @@
                 $('body, html').animate({scrollTop: pos});
             }
 
-            var docBookPurpose = `${eml.purpose!}`;
+            var docBookPurpose = "${eml.purpose!?js_string}";
             var htmlPurpose = convertToHtml(docBookPurpose);
 
-            var docBookGettingStarted = `${eml.gettingStarted!}`;
+            var docBookGettingStarted = "${eml.gettingStarted!?js_string}";
             var htmlGettingStarted = convertToHtml(docBookGettingStarted);
 
-            var docBookIntroduction = `${eml.introduction!}`;
+            var docBookIntroduction = "${eml.introduction!?js_string}";
             var htmlIntroduction = convertToHtml(docBookIntroduction);
 
             const purposeEditor = $('#purpose-editor');

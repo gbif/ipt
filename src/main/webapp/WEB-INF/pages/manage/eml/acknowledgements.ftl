@@ -8,7 +8,7 @@
     <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <script>
         $(document).ready(function() {
-            var docBookAcknowledgements = `${eml.acknowledgements!}`;
+            var docBookAcknowledgements = "${eml.acknowledgements!?js_string}";
             var htmlAcknowledgements = convertToHtml(docBookAcknowledgements);
 
             const acknowledgementsEditor = $('#acknowledgements-editor');
