@@ -392,10 +392,10 @@
                                     <@headerLines/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
+                                    <@input name="fileSource.fieldsTerminatedByEscaped" value=fileSource.fieldsTerminatedByEscaped! help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
+                                    <@input name="fileSource.fieldsEnclosedByEscaped" value=fileSource.fieldsEnclosedByEscaped! help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
                                 </div>
                                 <div class="col-lg-6">
                                     <@multivalue/>
@@ -411,10 +411,10 @@
                                     <@headerLines/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="source.fieldsTerminatedByEscaped" i18nkey="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
+                                    <@input name="source.fieldsTerminatedByEscaped" value=source.fieldsTerminatedByEscaped! i18nkey="fileSource.fieldsTerminatedByEscaped" help="i18n" helpOptions={"\\t":"[ \\t ] Tab",",":"[ , ] Comma",";":"[ ; ] Semicolon","|":"[ | ] Pipe"}/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@input name="source.fieldsEnclosedByEscaped" i18nkey="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
+                                    <@input name="source.fieldsEnclosedByEscaped" value=source.fieldsEnclosedByEscaped! i18nkey="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
                                 </div>
                                 <div class="col-lg-6">
                                     <@multivalue/>
