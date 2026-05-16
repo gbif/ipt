@@ -81,7 +81,7 @@
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>6.0.3</junit.version>
     <log4j.version>2.26.0</log4j.version>
-    <mockito.version>4.11.0</mockito.version>
+    <mockito.version>5.23.0</mockito.version>
     <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
     <struts2.version>7.1.1</struts2.version>
