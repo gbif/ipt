@@ -251,6 +251,12 @@
             });
         });
 
+        $('#metadata-modal').on('show.bs.modal', function() {
+            $("#emlReplace").hide();
+            $("#eml-validate").hide();
+            $("#emlFile").prop("value", "");
+        });
+
         $("#emlFile").change(function() {
             var usedFileName = $("#emlFile").prop("value");
             if(usedFileName !== "") {
@@ -1413,9 +1419,9 @@
 
                     <div>
                         <div class="my-auto me-3">
-                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
+                            <span class="fs-smaller-2 text-nowrap type-pill dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
                             <#if resourceSubtypeLowerCase?has_content>
-                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
+                                <span class="fs-smaller-2 text-nowrap subtype-pill dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
                             </#if>
                             <#assign isStatusPending = resource.pendingStatus?has_content && resource.status != resource.pendingStatus>
                             <#if isStatusPending>
@@ -1426,7 +1432,7 @@
                                 </#if>
                             </#if>
                             <#if isStatusPending>
-                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.pendingStatus!?lower_case}">
+                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.pendingStatus!?lower_case}">
                                     <#if  resource.pendingStatus == "PUBLIC" || resource.pendingStatus == "PRIVATE">
                                         <i class="bi bi-circle fs-smaller-2"></i>
                                     <#else>
@@ -1435,7 +1441,7 @@
                                     <span><@s.text name="manage.home.visible.pending.${resource.pendingStatus!?lower_case}"/></span>
                                 </span>
                             <#elseif resource.status?has_content>
-                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status!?lower_case}">
+                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.status!?lower_case}">
                                     <#if  resource.status == "PUBLIC" || resource.status == "PRIVATE">
                                         <i class="bi bi-circle fs-smaller-2"></i>
                                     <#else>
@@ -2757,7 +2763,7 @@
                         <input type="submit" form="upload-metadata-form" value="Replace" id="datapackageMetadataReplace" name="datapackageMetadataReplace" class="btn btn-sm btn-outline-gbif-primary confirmDatapackageMetadataReplace" style="">
                         <button id="datapackageMetadataCancel" type="button" class="btn btn-sm btn-outline-secondary " data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                     <#else>
-                        <input type="submit" form="upload-metadata-form" value="Replace" id="emlReplace" name="emlReplace" class="btn btn-sm btn-outline-gbif-primary confirmEmlReplace" style="">
+                        <input type="submit" form="upload-metadata-form" value="Replace" id="emlReplace" name="emlReplace" class="btn btn-sm btn-outline-gbif-primary confirmEmlReplace" style="display:none;">
                         <button id="emlCancel" type="button" class="btn btn-sm btn-outline-secondary " data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                     </#if>
                 </div>
