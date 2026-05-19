@@ -48,7 +48,7 @@ pipeline {
         WARS_B         = 'africa,asia,bid,clb,eca,ee,eia,eubon,ewt,gb-dissco,griis,icipe,lac,nz,oceania,pa,to,training-ipt-a,training-ipt-b,training-ipt-c,uz,uy'
         WEBAPPS        = '/var/lib/tomcat11/webapps'
         WAR_FILE       = "/tmp/ipt-${params.VERSION}.war"
-        DEPLOY_USER    = 'tomcat'
+        DEPLOY_USER    = 'jenkins'
     }
 
     stages {
