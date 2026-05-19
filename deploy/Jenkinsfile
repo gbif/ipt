@@ -42,13 +42,13 @@ pipeline {
     environment {
         REPOSITORY_URL = 'https://repository.gbif.org/repository/gbif'
         ARTIFACT_PATH  = 'org/gbif/ipt'
-        SERVER_A       = 'prodtomcat11a-vh.gbif.org'
-        SERVER_B       = 'prodtomcat11b-vh.gbif.org'
+        SERVER_A       = 'tomcat-a.gbif.org'
+        SERVER_B       = 'tomcat-b.gbif.org'
         WARS_A         = 'ipt,us,us-obis,us-vertnet'
         WARS_B         = 'africa,asia,bid,clb,eca,ee,eia,eubon,ewt,gb-dissco,griis,icipe,lac,nz,oceania,pa,to,training-ipt-a,training-ipt-b,training-ipt-c,uz,uy'
         WEBAPPS        = '/var/lib/tomcat11/webapps'
         WAR_FILE       = "/tmp/ipt-${params.VERSION}.war"
-        DEPLOY_USER    = 'jenkins'
+        DEPLOY_USER    = 'tomcat'
     }
 
     stages {
