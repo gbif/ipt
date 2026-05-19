@@ -94,7 +94,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sshagent(['your-ssh-credential-id']) {
+                sshagent(['ipt-deploy-tomcat-ssh-key']) {
                     script {
                         def warsA    = env.WARS_A.split(',') as Set
                         def warsB    = env.WARS_B.split(',') as Set
