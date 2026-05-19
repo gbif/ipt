@@ -1,4 +1,5 @@
 pipeline {
+    agent any
     parameters {
         string(
             name: 'VERSION',
@@ -14,18 +15,27 @@ pipeline {
             name: 'WARS',
             description: 'Select WARs to deploy (ignored if Deploy All is checked)',
             choiceType: 'PT_CHECKBOX',
-            script: groovyScript(
-                scriptText: '''
-                    return [
-                        'ipt', 'us', 'us-obis', 'us-vertnet',
-                        'africa', 'asia', 'bid', 'clb', 'eca', 'ee', 'eia',
-                        'eubon', 'ewt', 'gb-dissco', 'griis', 'icipe', 'lac',
-                        'nz', 'oceania', 'pa', 'to', 'training-ipt-a',
-                        'training-ipt-b', 'training-ipt-c', 'uz', 'uy'
-                    ]
-                ''',
-                fallbackScript: groovyScript(scriptText: 'return []')
-            )
+            script: [
+                $class: 'GroovyScript',
+                script: [
+                    classpath: [],
+                    sandbox: true,
+                    script: '''
+                        return [
+                            'ipt', 'us', 'us-obis', 'us-vertnet',
+                            'africa', 'asia', 'bid', 'clb', 'eca', 'ee', 'eia',
+                            'eubon', 'ewt', 'gb-dissco', 'griis', 'icipe', 'lac',
+                            'nz', 'oceania', 'pa', 'to', 'training-ipt-a',
+                            'training-ipt-b', 'training-ipt-c', 'uz', 'uy'
+                        ]
+                    '''
+                ],
+                fallbackScript: [
+                    classpath: [],
+                    sandbox: true,
+                    script: 'return []'
+                ]
+            ]
         )
     }
 
