@@ -1,0 +1,128 @@
+pipeline {
+    parameters {
+        string(
+            name: 'VERSION',
+            defaultValue: '3.3.2',
+            description: 'IPT version to deploy, e.g. 3.3.2 or 3.3.2-SNAPSHOT'
+        )
+        booleanParam(
+            name: 'DEPLOY_ALL',
+            defaultValue: false,
+            description: 'Deploy all WARs (ignores selection below)'
+        )
+        activeChoice(
+            name: 'WARS',
+            description: 'Select WARs to deploy (ignored if Deploy All is checked)',
+            choiceType: 'PT_CHECKBOX',
+            script: groovyScript(
+                scriptText: '''
+                    return [
+                        'ipt', 'us', 'us-obis', 'us-vertnet',
+                        'africa', 'asia', 'bid', 'clb', 'eca', 'ee', 'eia',
+                        'eubon', 'ewt', 'gb-dissco', 'griis', 'icipe', 'lac',
+                        'nz', 'oceania', 'pa', 'to', 'training-ipt-a',
+                        'training-ipt-b', 'training-ipt-c', 'uz', 'uy'
+                    ]
+                ''',
+                fallbackScript: groovyScript(scriptText: 'return []')
+            )
+        )
+    }
+
+    environment {
+        REPOSITORY_URL = 'https://repository.gbif.org/repository/gbif'
+        ARTIFACT_PATH  = 'org/gbif/ipt'
+        SERVER_A       = 'prodtomcat11a-vh.gbif.org'
+        SERVER_B       = 'prodtomcat11b-vh.gbif.org'
+        WARS_A         = 'ipt,us,us-obis,us-vertnet'
+        WARS_B         = 'africa,asia,bid,clb,eca,ee,eia,eubon,ewt,gb-dissco,griis,icipe,lac,nz,oceania,pa,to,training-ipt-a,training-ipt-b,training-ipt-c,uz,uy'
+        WEBAPPS        = '/var/lib/tomcat11/webapps'
+        WAR_FILE       = "/tmp/ipt-${params.VERSION}.war"
+    }
+
+    stages {
+        stage('Resolve version') {
+            steps {
+                script {
+                    if (params.VERSION.endsWith('-SNAPSHOT')) {
+                        echo "SNAPSHOT version detected, resolving latest build..."
+
+                        def metadataUrl = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/maven-metadata.xml"
+                        def metadata = sh(
+                            script: "curl --fail --silent '${metadataUrl}'",
+                            returnStdout: true
+                        ).trim()
+
+                        // Extract the most recent snapshotVersion for type=war
+                        def matcher = metadata =~ /(?s)<snapshotVersion>.*?<extension>war<\/extension>.*?<value>([^<]+)<\/value>.*?<\/snapshotVersion>/
+                        if (!matcher.find()) {
+                            error "Could not find WAR snapshotVersion in metadata from ${metadataUrl}"
+                        }
+                        def timestampedVersion = matcher.group(1)
+                        echo "Resolved snapshot to: ${timestampedVersion}"
+
+                        env.WAR_URL = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/ipt-${timestampedVersion}.war"
+                    } else {
+                        env.WAR_URL = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/ipt-${params.VERSION}.war"
+                    }
+                    echo "WAR URL: ${env.WAR_URL}"
+                }
+            }
+        }
+
+        stage('Download WAR') {
+            steps {
+                sh """
+                    echo "Checking WAR exists..."
+                    curl --fail --head --silent '${env.WAR_URL}'
+
+                    echo "Downloading..."
+                    curl --fail --output '${env.WAR_FILE}' '${env.WAR_URL}'
+                """
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sshagent(['your-ssh-credential-id']) {
+                    script {
+                        def warsA    = env.WARS_A.split(',') as Set
+                        def warsB    = env.WARS_B.split(',') as Set
+                        def allWars  = (warsA + warsB) as List
+
+                        def selected = params.DEPLOY_ALL
+                            ? allWars
+                            : params.WARS.split(',') as List
+
+                        // Upload WAR to each host once
+                        def hostsNeeded = selected.collect { war ->
+                            warsA.contains(war) ? env.SERVER_A : env.SERVER_B
+                        }.toSet()
+
+                        for (host in hostsNeeded) {
+                            echo "Uploading WAR to ${host}..."
+                            sh "scp '${env.WAR_FILE}' ${host}:/tmp/"
+                        }
+
+                        // Deploy each selected WAR
+                        for (war in selected) {
+                            def host = warsA.contains(war) ? env.SERVER_A : env.SERVER_B
+                            echo "Deploying ${war}.war on ${host}..."
+                            sh "ssh ${host} 'cp ${env.WAR_FILE} ${env.WEBAPPS}/${war}.war'"
+                            sleep 10
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployed ${params.DEPLOY_ALL ? 'all WARs' : params.WARS} at version ${params.VERSION}"
+        }
+        failure {
+            echo "Deployment failed. No WARs were replaced on the servers if failure was in Download stage."
+        }
+    }
+}
