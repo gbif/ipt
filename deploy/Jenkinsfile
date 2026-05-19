@@ -48,6 +48,7 @@ pipeline {
         WARS_B         = 'africa,asia,bid,clb,eca,ee,eia,eubon,ewt,gb-dissco,griis,icipe,lac,nz,oceania,pa,to,training-ipt-a,training-ipt-b,training-ipt-c,uz,uy'
         WEBAPPS        = '/var/lib/tomcat11/webapps'
         WAR_FILE       = "/tmp/ipt-${params.VERSION}.war"
+        DEPLOY_USER    = 'tomcat'
     }
 
     stages {
@@ -111,14 +112,14 @@ pipeline {
 
                         for (host in hostsNeeded) {
                             echo "Uploading WAR to ${host}..."
-                            sh "scp '${env.WAR_FILE}' ${host}:/tmp/"
+                            sh "scp '${env.WAR_FILE}' ${env.DEPLOY_USER}@${host}:/tmp/"
                         }
 
                         // Deploy each selected WAR
                         for (war in selected) {
                             def host = warsA.contains(war) ? env.SERVER_A : env.SERVER_B
                             echo "Deploying ${war}.war on ${host}..."
-                            sh "ssh ${host} 'cp ${env.WAR_FILE} ${env.WEBAPPS}/${war}.war'"
+                            sh "ssh ${env.DEPLOY_USER}@${host} 'cp ${env.WAR_FILE} ${env.WEBAPPS}/${war}.war'"
                             sleep 10
                         }
                     }
