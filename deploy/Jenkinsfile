@@ -105,6 +105,10 @@ pipeline {
                             ? allWars
                             : params.WARS.split(',') as List
 
+                        if (selected.isEmpty() || (selected.size() == 1 && selected[0] == '')) {
+                            error "No WARs selected. Check DEPLOY_ALL or select at least one WAR."
+                        }
+
                         // Upload WAR to each host once
                         def hostsNeeded = selected.collect { war ->
                             warsA.contains(war) ? env.SERVER_A : env.SERVER_B
