@@ -1,6 +1,6 @@
 # create_users.groovy
 
-A Groovy script that automates bulk user creation via a web UI using Selenide (Chrome browser automation). It reads users from a CSV file and creates each one through the admin panel of your application.
+A Groovy script that automates bulk user creation via a web UI using Selenide (Chrome browser automation). It reads users from a CSV file and creates each one through the admin panel of the IPT.
 
 ---
 
