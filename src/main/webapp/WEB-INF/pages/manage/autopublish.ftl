@@ -292,6 +292,13 @@
 
                     <@checkbox name="skipDrop" value=skipDrop i18nkey="manage.autopublish.options.skipDrop"/>
 
+                    <@checkbox name="notifyPublicationFailure" value=notifyFailure i18nkey="manage.autopublish.options.notifyFailure"/>
+                    <#if !publicationFailureEmailConfigured>
+                        <div class="callout callout-warning text-smaller mt-2">
+                            <@s.text name="manage.autopublish.options.notifyFailure.notConfigured"/>
+                        </div>
+                    </#if>
+
                     <div id="dropThresholdContainer" class="mt-2" style="display: none;">
                         <div class="row">
                             <div class="col-lg-4">

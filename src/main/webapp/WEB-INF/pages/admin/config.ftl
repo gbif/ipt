@@ -136,6 +136,31 @@
             </div>
 
             <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
+                <@s.text name="admin.config.section.email"/>
+            </h4>
+            <div class="row g-3 mb-5">
+                <div class="col-lg-6">
+                    <@input name="mailSmtpHost" value=mailSmtpHost! i18nkey="admin.config.mailSmtpHost" help="i18n" size=80/>
+                </div>
+
+                <div class="col-lg-6">
+                    <@input name="mailSmtpPort" value=mailSmtpPort! i18nkey="admin.config.mailSmtpPort" help="i18n" size=80/>
+                </div>
+
+                <div class="col-lg-6">
+                    <@input name="mailSmtpUsername" value=mailSmtpUsername! i18nkey="admin.config.mailSmtpUsername" help="i18n" size=80/>
+                </div>
+
+                <div class="col-lg-6">
+                    <@input name="mailSmtpPassword" i18nkey="admin.config.mailSmtpPassword" help="i18n" size=80 type="password"/>
+                </div>
+
+                <div class="col-12">
+                    <@checkbox name="mailSmtpStartTlsEnable" value=mailSmtpStartTlsEnable i18nkey="admin.config.mailSmtpStartTlsEnable" help="i18n"/>
+                </div>
+            </div>
+
+            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
                 <@s.text name="admin.config.section.localization"/>
             </h4>
             <div class="row g-3 mb-5">

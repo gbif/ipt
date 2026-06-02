@@ -25,6 +25,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.PublicationFailureEmailUtils;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import jakarta.inject.Inject;
@@ -104,6 +105,7 @@ public class AutoPublishAction extends ManagerBaseAction {
     // auto-publication options
     boolean skipUnchanged = Boolean.parseBoolean(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_SKIP_UNCHANGED));
     boolean skipDrop = Boolean.parseBoolean(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_SKIP_DROP));
+    boolean notifyFailure = Boolean.parseBoolean(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_NOTIFY_FAILURE));
 
     String recordsDropThresholdRaw = Optional.ofNullable(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_DROP_THRESHOLD))
         .map(StringUtils::trimToNull)
@@ -137,7 +139,12 @@ public class AutoPublishAction extends ManagerBaseAction {
 
     resource.setSkipPublicationIfNotChanged(skipUnchanged);
     resource.setSkipPublicationIfRecordsDrop(skipDrop);
+    resource.setNotifyPublicationFailure(notifyFailure);
     resource.setRecordsDropThreshold(recordsDropThreshold);
+
+    if (notifyFailure && !isPublicationFailureEmailConfigured()) {
+      addActionWarning(getText("manage.autopublish.options.notifyFailure.notConfigured"));
+    }
 
     // update next published date
     resourceManager.updatePublicationMode(resource);
@@ -215,6 +222,14 @@ public class AutoPublishAction extends ManagerBaseAction {
 
   public boolean isSkipDrop() {
     return resource.isSkipPublicationIfRecordsDrop();
+  }
+
+  public boolean isNotifyFailure() {
+    return resource.isNotifyPublicationFailure();
+  }
+
+  public boolean isPublicationFailureEmailConfigured() {
+    return PublicationFailureEmailUtils.isConfigured(cfg);
   }
 
   public int getRecordsDropThreshold() {

@@ -189,6 +189,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   @Getter
   private boolean skipPublicationIfRecordsDrop = false;
   @Getter
+  private boolean notifyPublicationFailure = false;
+  @Getter
   private int recordsDropThreshold = 10;
 
   public void addManager(User manager) {
@@ -1757,6 +1759,10 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public void setSkipPublicationIfRecordsDrop(boolean skipPublicationIfRecordsDrop) {
     this.skipPublicationIfRecordsDrop = skipPublicationIfRecordsDrop;
+  }
+
+  public void setNotifyPublicationFailure(boolean notifyPublicationFailure) {
+    this.notifyPublicationFailure = notifyPublicationFailure;
   }
 
   public void setRecordsDropThreshold(int recordsDropThreshold) {
