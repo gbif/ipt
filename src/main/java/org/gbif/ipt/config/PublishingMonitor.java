@@ -88,10 +88,15 @@ public class PublishingMonitor {
 
           // might as well check if we can handle more publishing jobs
           ThreadPoolExecutor executor = resourceManager.getExecutor();
-          if (executor.getMaximumPoolSize() - executor.getActiveCount() > 0) {
+          int availableSlots = executor.getMaximumPoolSize() - executor.getActiveCount();
+          if (availableSlots > 0) {
             Date now = new Date();
             List<Resource> resources = resourceManager.list();
+            int submitted = 0;
             for (Resource resource : resources) {
+              if (submitted >= availableSlots) {
+                break;
+              }
               if (resource.usesAutoPublishing()) {
                 Date next = resource.getNextPublished();
                 BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
@@ -115,6 +120,7 @@ public class PublishingMonitor {
                           LOG.debug("Monitor: {} v#{} due to be auto-published: {}",
                               resource.getTitleAndShortname(), nextVersion.toPlainString(), next);
                           resourceManager.publish(resource, nextVersion, null, options);
+                          submitted++;
                         } catch (PublicationException e) {
                           if (PublicationException.TYPE.LOCKED == e.getType()) {
                             LOG.error("Monitor: {} cannot be auto-published, because it is currently being published",
