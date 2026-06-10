@@ -67,7 +67,7 @@
     <jackson-dataformat-yaml.version>2.14.0</jackson-dataformat-yaml.version> <!-- Fixed to 2.14.0 for now because of issues with jackson-datatype-jts -->
     <jackson-datatype-jts.version>2.21.0</jackson-datatype-jts.version>
     <jakarta.activation-api.version>2.1.4</jakarta.activation-api.version>
-    <jakarta.inject-api.version>2.0.1</jakarta.inject-api.version>
+    <jakarta.inject-api.version>2.0.1.MR</jakarta.inject-api.version>
     <jakarta.mail-api.version>2.1.5</jakarta.mail-api.version>
     <jakarta.el-api.version>5.0.1</jakarta.el-api.version>
     <jakarta.jaxb-api.version>4.0.5</jakarta.jaxb-api.version>
