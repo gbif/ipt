@@ -133,7 +133,13 @@
                 hideFields();
             }
 
-            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
+            $('.confirm').jConfirmAction({
+                titleQuestion: "<@s.text name="basic.confirm"/>",
+                yesAnswer: "<@s.text name="basic.yes"/>",
+                cancelAnswer: "<@s.text name="basic.no"/>",
+                buttonType: "danger",
+                baseUrl: "${baseURL}"
+            });
 
             $("#idColumn").select2({
                 placeholder: '<@s.text name="manage.mapping.noid"/>',
@@ -223,7 +229,11 @@
 <#--    1. Interpret backticked text as code-->
 <#--    2. Interpret text like []() as a link-->
     <#macro processDescription description>
-        ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("'", "&#39;")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")?no_esc}
+        ${description
+        ?replace("`(.*?)`", "<code>$1</code>", "r")
+        ?replace("'", "&#39;")
+        ?replace("\\[([^\\]]+)\\]\\(([^\\)]+)\\)", "<a href=\"$2\">$1</a>", "r")
+        ?no_esc}
     </#macro>
 
     <#macro sourceSample index tableSchemaName fieldsIndex>

@@ -76,6 +76,7 @@
     <#assign anchor_citation>#anchor-citation</#assign>
     <#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
     <#assign publishedOnText><@s.text name='manage.overview.published.released'/></#assign>
+    <#assign publishedOnText = publishedOnText?markup_string>
     <#assign download_dp_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
     <#assign download_metadata_url>${baseURL}/metadata.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.metadataVersion.toPlainString()}</#if></#assign>
     <#assign isPreviewPage = action.isPreview() />
@@ -87,7 +88,6 @@
         }
     </style>
 
-    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -654,7 +654,8 @@
             question: "<@s.text name='portal.resource.confirm.delete.version'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
             yesAnswer: "<@s.text name='basic.yes'/>",
             cancelAnswer: "<@s.text name='basic.no'/>",
-            buttonType: "danger"
+            buttonType: "danger",
+            baseUrl: "${baseURL}"
         });
 
         $(function () {

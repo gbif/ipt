@@ -86,7 +86,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
         <div class="container-fluid bg-body border-bottom">
@@ -154,7 +154,7 @@
                                         <div id="keyword-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
                                             <div class="d-flex">
                                                 <div class="flex-grow-1">
-                                                    <@input name="metadata.keywords[${item_index}]" i18nkey="datapackagemetadata.keyword" withLabel=false />
+                                                    <@input name="metadata.keywords[${item_index}]" value=item! i18nkey="datapackagemetadata.keyword" withLabel=false />
                                                 </div>
                                                 <div class="columnLinks mt-2 d-flex justify-content-end">
                                                     <a id="keyword-removeLink-${item_index}" href="" class="removeKeywordLink metadata-action-link custom-link">
@@ -204,5 +204,7 @@
             </div>
         </div>
     </div>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

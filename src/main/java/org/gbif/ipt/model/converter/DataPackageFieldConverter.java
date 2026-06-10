@@ -75,7 +75,7 @@ public class DataPackageFieldConverter implements Converter {
     }
 
     if (field == null) {
-      LOG.warn("Cant unmarshall field " + reader.getValue());
+      LOG.warn("Cant unmarshall field {}", reader.getValue());
     }
 
     return field;

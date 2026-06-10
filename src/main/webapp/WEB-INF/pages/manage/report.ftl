@@ -4,9 +4,50 @@
     <@s.text name='manage.report.title'/>
 </h5>
 
-<p>
-    <span class="small">${now?datetime?string.full}</span>
-</p>
+<#attempt>
+    <#if report.messages?has_content>
+        <#list report.messages as message>
+            <#assign publicationStartTimestamp = message.timestamp />
+            <#break>
+        </#list>
+    </#if>
+
+    <#assign elapsedSec = (now?long - publicationStartTimestamp?long) / 1000>
+    <#assign hours   = (elapsedSec / 3600)?floor>
+    <#assign minutes = ((elapsedSec % 3600) / 60)?floor>
+    <#assign seconds = (elapsedSec % 60)>
+
+    <div class="mb-2">
+        <div class="small">
+            <@s.text name="manage.report.publication.started"/>: ${publicationStartTimestamp?number_to_datetime?string.full}
+        </div>
+        <div class="small">
+            <@s.text name="manage.report.publication.time"/>: ${hours?string["00"]}:${minutes?string["00"]}:${seconds?string["00"]}
+        </div>
+        <div class="small">
+            <@s.text name="manage.report.publication.status"/>:
+            <#if report.hasException()>
+                <i class="bi bi-x-circle-fill text-gbif-danger"></i>
+                <@s.text name="admin.config.publish.failed"/>
+            <#elseif report.completed>
+                <i class="bi bi-check-circle-fill text-gbif-primary"></i>
+                <@s.text name="admin.config.publish.completed"/>
+            <#else>
+                <@s.text name="admin.config.publish.inProgress"/>
+                <div class="inline-spinner" aria-hidden="true">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </#if>
+        </div>
+    </div>
+<#recover>
+    <p>
+        <span class="small">${now?datetime?string.full}</span><br>
+    </p>
+</#attempt>
 
 <#if report??>
 
@@ -71,7 +112,9 @@
     <h5 class="text-gbif-header fw-400">
         <@s.text name='manage.report.finished'/>
     </h5>
+    <#if (resource.shortname)?has_content>
     <p>
         <@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text>
     </p>
+    </#if>
 </#if>

@@ -15,7 +15,7 @@
     <#if resource.identifierStatus == "UNRESERVED">
         <form id="doiForm" action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingBasicMetadata?string}"/>
             <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                 <@s.text name="button.cancel"/>
             </button>
@@ -23,7 +23,7 @@
     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
         <form id="doiForm" action='resource-deleteDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingBasicMetadata?string}"/>
             <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                 <@s.text name="button.cancel"/>
             </button>
@@ -31,7 +31,7 @@
     <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
         <form id="doiForm" action='resource-reserveDoi.do' method='post'>
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingMetadata?string}"/>
+            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingBasicMetadata?string}"/>
             <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                 <@s.text name="button.cancel"/>
             </button>
@@ -86,41 +86,48 @@
             console.log("Failed to initialize tooltips")
         }
 
-        $(".source-item-link").click(function (e) {
+        $(".source-item").click(function (e) {
+            // Ignore clicks on actions or anything inside them
+            if ($(e.target).closest(".source-item-actions, .delete-source").length) {
+                return;
+            }
+
             e.preventDefault();
+            displayProcessing();
             openSourceDetails(e);
         });
 
         function openSourceDetails(e) {
-            var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
-            var source = e.currentTarget.attributes["data-ipt-source"].nodeValue;
+            const $item = $(e.currentTarget).find(".source-item-link");
+            const resource = $item.data("ipt-resource");
+            const source = $item.data("ipt-source");
             location.href = 'source.do?r=' + resource + '&id=' + source;
         }
 
-        $(".mapping-item-link").click(function (e) {
+        $(".mapping-item").click(function (e) {
+            // Ignore clicks on actions or anything inside them
+            if ($(e.target).closest(".mapping-item-actions, .delete-mapping").length) {
+                return;
+            }
+
             e.preventDefault();
             displayProcessing();
             openMappingDetails(e);
         });
 
         function openMappingDetails(e) {
-            var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
-            var extension = e.currentTarget.attributes["data-ipt-extension"].nodeValue;
-            var mapping = e.currentTarget.attributes["data-ipt-mapping"].nodeValue;
-            location.href = 'mapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
-        }
+            const $row = $(e.currentTarget);
+            const isSchemaMapping = $row.hasClass("schema-mapping-item");
 
-        $(".schema-mapping-item-link").click(function (e) {
-            e.preventDefault();
-            displayProcessing();
-            openSchemaMappingDetails(e);
-        });
+            const linkSelector = isSchemaMapping ? ".schema-mapping-item-link" : ".mapping-item-link";
+            const $item = $row.find(linkSelector).first();
 
-        function openSchemaMappingDetails(e) {
-            var resource = e.currentTarget.attributes["data-ipt-resource"].nodeValue;
-            var extension = e.currentTarget.attributes["data-ipt-extension"].nodeValue;
-            var mapping = e.currentTarget.attributes["data-ipt-mapping"].nodeValue;
-            location.href = 'dataPackageMapping.do?r=' + resource + '&id=' + extension + '&mid=' + mapping;
+            const resource = $item.data("ipt-resource");
+            const extension = $item.data("ipt-extension");
+            const mapping = $item.data("ipt-mapping");
+
+            const target = isSchemaMapping ? "dataPackageMapping.do" : "mapping.do";
+            location.href = target + "?r=" + resource + "&id=" + extension + "&mid=" + mapping;
         }
 
         $(".network-item-link").click(function (e) {
@@ -162,30 +169,37 @@
             location.href = '${baseURL}/resource/preview?r=${resource.shortname}';
         }
 
-        <#if resource.status=="PRIVATE">
+        <#if action.isNextVisibilityPrivate()>
             <#assign resourceVisibility="private" />
-        <#elseif resource.status=="PUBLIC" || resource.status=="REGISTERED" || resource.status=="DELETED">
+        <#elseif action.isNextVisibilityPublic() || resource.status=="DELETED">
             <#assign resourceVisibility="public" />
         </#if>
 
-        $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
-        $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary", processing: true});
-        $('.confirmMakePrivate').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.make.private'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
-        $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
-        $('.confirmDatapackageMetadataReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
-        $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmDeletionFromIptOnly').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptOnly.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmUndeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+        $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary", processing: true, baseUrl: "${baseURL}"});
+        $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        $('.confirmDatapackageMetadataReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}"});
+        $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", baseUrl: "${baseURL}"});
+        $('.confirmDeletionFromIptOnly').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptOnly.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", baseUrl: "${baseURL}"});
+        $('.confirmUndeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
 
-        $('.confirmReserveDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
-        $('.confirmDeleteDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>"});
-        $('.confirmPublish').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary"});
+        $('.confirmReserveDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        $('.confirmDeleteDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", baseUrl: "${baseURL}"});
+        <#if !outdatedExtensions>
+        $('.confirmPublish').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
         $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary"});
-        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary"});
+        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        <#else>
+        $('.confirmPublish').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br><@s.text name='manage.overview.publishing.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br><@s.text name='manage.overview.publishing.doi.minorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br><@s.text name='manage.overview.publishing.doi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br><@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        </#if>
 
-        $('.delete-source').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
-        $('.delete-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
+        $('.delete-source').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
+        $('.delete-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
+        $('.delete-core-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/><br><br><@s.text name ="manage.mapping.confirmation.message.core"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
 
         // spy scroll and manage sidebar menu
         $(window).scroll(function () {
@@ -235,6 +249,12 @@
             $(this).click(function() {
                 $(this).parent('form').submit();
             });
+        });
+
+        $('#metadata-modal').on('show.bs.modal', function() {
+            $("#emlReplace").hide();
+            $("#eml-validate").hide();
+            $("#emlFile").prop("value", "");
         });
 
         $("#emlFile").change(function() {
@@ -563,6 +583,16 @@
             showMakePublicModal();
         });
 
+        $('#makePrivate').click(function (e) {
+            e.preventDefault();
+            showMakePrivateModal();
+        });
+
+        $('#cancelVisibilityChange').click(function (e) {
+            e.preventDefault();
+            showCancelVisibilityChangeModal();
+        });
+
         // make public modal window
         function showMakePublicModal() {
             var dialogWindow = $("#make-public-modal");
@@ -578,6 +608,17 @@
                 $("#makePublicDateTimeWrapper").show();
                 $("#makePublicDateTime").show();
             }
+        }
+
+        // make public modal window
+        function showMakePrivateModal() {
+            var dialogWindow = $("#make-private-modal");
+            dialogWindow.modal('show');
+        }
+
+        function showCancelVisibilityChangeModal() {
+            var dialogWindow = $("#cancel-visibility-change-modal");
+            dialogWindow.modal('show');
         }
 
         // hide/show input on radio change
@@ -602,6 +643,11 @@
                 $("#makePublicDateTime").val("");
             }
 
+            $(this).submit();
+        });
+
+        $("#make-private-modal-form").one('submit', function (e) {
+            e.preventDefault();
             $(this).submit();
         });
 
@@ -775,12 +821,13 @@
 
         var selectedFiles = [];
 
-        document.getElementById("chooseFilesButton").addEventListener("click", function () {
-            document.getElementById("fileInput").click();
+        $("#chooseFilesButton").on("click", function (e) {
+            e.preventDefault();
+            $("#fileInput").click();
         });
 
-        document.getElementById("fileInput").addEventListener("change", function () {
-            var newlySelectedFiles = Array.from(document.getElementById("fileInput").files);
+        $("#fileInput").on("change", function () {
+            var newlySelectedFiles = Array.from(this.files);
             selectedFiles = selectedFiles.concat(newlySelectedFiles);
             refreshFileList();
 
@@ -791,10 +838,9 @@
             }
         });
 
-        document.getElementById("sendButton").addEventListener("click", async function () {
-            var uploadButton = $("#sendButton");
-            uploadButton.addClass("clicked")
-            uploadButton.hide();
+        $("#sendButton").on("click", async function () {
+            $(this).addClass("clicked");
+            $(this).hide();
 
             var fileItems = document.querySelectorAll(".fileItem");
             var promises = [];
@@ -1135,59 +1181,61 @@
         // Spy confirm overwrite warnings and enable/disable submit button
         const fileListDiv = document.getElementById('fileList');
 
-        const observer = new MutationObserver(function() {
-            var fileErrors = $(".fileError");
-            var fileOutOfSpaceCallout = $("#callout-not-enough-space");
-            var fileItems = $(".fileItem");
+        if (fileListDiv) {
+            const observer = new MutationObserver(function () {
+                var fileErrors = $(".fileError");
+                var fileOutOfSpaceCallout = $("#callout-not-enough-space");
+                var fileItems = $(".fileItem");
 
-            if (totalFreeSpace - totalFilesSize < 0) {
-                fileOutOfSpaceCallout.show();
-            } else {
-                fileOutOfSpaceCallout.hide();
-            }
+                if (totalFreeSpace - totalFilesSize < 0) {
+                    fileOutOfSpaceCallout.show();
+                } else {
+                    fileOutOfSpaceCallout.hide();
+                }
 
-            var outOfSpaceDisplayed = fileOutOfSpaceCallout.css("display") !== "none";
+                var outOfSpaceDisplayed = fileOutOfSpaceCallout.css("display") !== "none";
 
-            if (fileErrors.length > 0 || outOfSpaceDisplayed) {
-                sendButton.hide();
-            } else if (!sendButton.hasClass("clicked")) {
-                sendButton.show();
-            }
+                if (fileErrors.length > 0 || outOfSpaceDisplayed) {
+                    sendButton.hide();
+                } else if (!sendButton.hasClass("clicked")) {
+                    sendButton.show();
+                }
 
-            if (fileItems.length === 0) {
-                sendButton.hide();
-            }
-        });
-
-        const config = { attributes: true, childList: true, subtree: true };
-
-        observer.observe(fileListDiv, config);
-
-        // remove error classes/icons if confirmed
-        $('#fileList').on('click', '.confirmOverwriteSourceFileLink', function() {
-            var fileIndex = $(this).data('index');
-
-            var fileItemElement = $('.fileItem[data-file-index="' + fileIndex + '"]');
-            fileItemElement.find('.fileError').remove();
-
-            var fileNameWithExtension = fileItemElement.find('.fileName').text();
-            var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.')).replace(/\s/g, "");
-
-            confirmedFiles.push(fileNameWithoutExtension);
-
-            var fileWarningIconElement = fileItemElement.find('.fileWarningIcon');
-            var fileDoneIconElement = fileItemElement.find('.fileDoneIcon');
-
-            fileWarningIconElement.css({
-                'display': 'none',
-                'visibility': 'hidden'
+                if (fileItems.length === 0) {
+                    sendButton.hide();
+                }
             });
 
-            fileDoneIconElement.css({'display': 'block'});
+            const config = {attributes: true, childList: true, subtree: true};
 
-            // Prevent the default link behavior
-            return false;
-        });
+            observer.observe(fileListDiv, config);
+
+            // remove error classes/icons if confirmed
+            $('#fileList').on('click', '.confirmOverwriteSourceFileLink', function () {
+                var fileIndex = $(this).data('index');
+
+                var fileItemElement = $('.fileItem[data-file-index="' + fileIndex + '"]');
+                fileItemElement.find('.fileError').remove();
+
+                var fileNameWithExtension = fileItemElement.find('.fileName').text();
+                var fileNameWithoutExtension = fileNameWithExtension.substring(0, fileNameWithExtension.lastIndexOf('.')).replace(/\s/g, "");
+
+                confirmedFiles.push(fileNameWithoutExtension);
+
+                var fileWarningIconElement = fileItemElement.find('.fileWarningIcon');
+                var fileDoneIconElement = fileItemElement.find('.fileDoneIcon');
+
+                fileWarningIconElement.css({
+                    'display': 'none',
+                    'visibility': 'hidden'
+                });
+
+                fileDoneIconElement.css({'display': 'block'});
+
+                // Prevent the default link behavior
+                return false;
+            });
+        }
 
         $("#rowType").select2({
             placeholder: '',
@@ -1305,6 +1353,17 @@
             var dialogWindow = $("#datapackage-metadata-modal");
             dialogWindow.modal('show');
         });
+
+        $('.show-metadata-validation-result').on('click', function (e) {
+            e.preventDefault();
+            var dialogWindow = $("#metadata-validation-result-modal");
+            dialogWindow.modal('show');
+        });
+
+        $('.go-to-publication-settings').on('click', function (e) {
+            e.preventDefault();
+            window.location.href = "publication-settings.do?r=${resource.shortname}";
+        });
     });
 </script>
 
@@ -1361,12 +1420,29 @@
 
                     <div>
                         <div class="my-auto me-3">
-                            <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
+                            <span class="fs-smaller-2 text-nowrap type-pill dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
                             <#if resourceSubtypeLowerCase?has_content>
-                                <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
+                                <span class="fs-smaller-2 text-nowrap subtype-pill dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
                             </#if>
-                            <#if resource.status??>
-                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status!?lower_case}">
+                            <#assign isStatusPending = resource.pendingStatus?has_content && resource.status != resource.pendingStatus>
+                            <#if isStatusPending>
+                                <#if resource.pendingStatus == "PUBLIC">
+                                    <#assign pendingStatusColor = "primary"/>
+                                <#else>
+                                    <#assign pendingStatusColor = "text"/>
+                                </#if>
+                            </#if>
+                            <#if isStatusPending>
+                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.pendingStatus!?lower_case}">
+                                    <#if  resource.pendingStatus == "PUBLIC" || resource.pendingStatus == "PRIVATE">
+                                        <i class="bi bi-circle fs-smaller-2"></i>
+                                    <#else>
+                                        <i class="bi bi-circle-fill fs-smaller-2"></i>
+                                    </#if>
+                                    <span><@s.text name="manage.home.visible.pending.${resource.pendingStatus!?lower_case}"/></span>
+                                </span>
+                            <#elseif resource.status?has_content>
+                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.status!?lower_case}">
                                     <#if  resource.status == "PUBLIC" || resource.status == "PRIVATE">
                                         <i class="bi bi-circle fs-smaller-2"></i>
                                     <#else>
@@ -1376,6 +1452,13 @@
                                 </span>
                             </#if>
                         </div>
+                        <#if isStatusPending>
+                            <div class="mt-2">
+                                <span class="fs-smaller-2 text-discreet">
+                                    <@s.text name="manage.overview.changed.publication.status.description"/>: <b class="text-gbif-${pendingStatusColor}">${resource.pendingStatus}</b>. <@s.text name="manage.overview.changed.publication.status.republication"/>
+                                </span>
+                            </div>
+                        </#if>
                         <div class="mt-2">
                             <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.name)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
                         </div>
@@ -1402,22 +1485,22 @@
                                 <#if resource.key?? && resource.status == "REGISTERED">
                                     <form action="resource-delete.do" method='post' style="display: none;">
                                         <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIptAndGbif"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="deleteFlag" key="button.delete.fromIptAndGbif"/>
                                     </form>
                                     <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
                                         <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="delete" key="button.delete.fromIpt"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="deleteFlag" key="button.delete.fromIpt"/>
                                     </form>
-                                    <button class="btn btn-sm btn-outline-gbif-danger top-button button-show-delete-resource-modal" name="delete"><@s.text name="button.delete"/></button>
+                                    <button class="btn btn-sm btn-outline-gbif-danger top-button button-show-delete-resource-modal" name="deleteFlag"><@s.text name="button.delete"/></button>
                                 <#else>
                                     <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
                                         <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly top-button" name="delete" key="button.delete.fromIpt"/>
+                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly top-button" name="deleteFlag" key="button.delete.fromIpt"/>
                                     </form>
-                                    <button class="btn btn-sm btn-outline-gbif-danger top-button proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete"/></button>
+                                    <button class="btn btn-sm btn-outline-gbif-danger top-button proxy-button-delete-from-ipt" name="deleteFlag"><@s.text name="button.delete"/></button>
                                 </#if>
                             <#else>
-                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-disabled-modal top-button" name="delete"><@s.text name="button.delete"/></button>
+                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-disabled-modal top-button" name="deleteFlag"><@s.text name="button.delete"/></button>
                             </#if>
                         </#if>
 
@@ -1425,7 +1508,7 @@
                     </div>
 
                     <p class="mt-3 mb-0 text-smaller fst-italic">
-                        <#if dataPackageResource>
+                        <#if isDataPackage>
                             <@s.text name="manage.overview.dataPackageSchema.description"/>
                         <#elseif resource.coreType?has_content && resource.coreType==metadataType>
                             <@s.text name="manage.overview.description.metadataOnly"/>
@@ -1451,13 +1534,12 @@
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             <#else>
                                 <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='manage.overview.source.data'/></a></li>
-                                <li><a href="#anchor-mappings" class="sidebar-navigation-link"><#if dataPackageResource><@s.text name='manage.overview.mappings'/><#else><@s.text name='manage.overview.DwC.Mappings'/></#if></a></li>
+                                <li><a href="#anchor-mappings" class="sidebar-navigation-link"><#if isDataPackage><@s.text name='manage.overview.mappings'/><#else><@s.text name='manage.overview.DwC.Mappings'/></#if></a></li>
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             </#if>
                             <li><a href="#anchor-visibility" class="sidebar-navigation-link"><@s.text name='manage.overview.visibility'/></a></li>
                             <li><a href="#anchor-publish" class="sidebar-navigation-link"><@s.text name='manage.overview.published'/></a></li>
                             <li><a href="#anchor-registration" class="sidebar-navigation-link"><@s.text name='manage.overview.registration'/></a></li>
-                            <li><a href="#anchor-autopublish" class="sidebar-navigation-link"><@s.text name='manage.overview.autopublish.title'/></a></li>
                             <li><a href="#anchor-networks" class="sidebar-navigation-link"><@s.text name='manage.overview.networks.title'/></a></li>
                             <li><a href="#anchor-managers" class="sidebar-navigation-link"><@s.text name='manage.overview.resource.managers'/></a></li>
                         </ul>
@@ -1488,7 +1570,7 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <#if resource.status=="PRIVATE">
+                                <#if action.canBeMadePublic()>
                                     <#assign actionMethod>makePublic</#assign>
                                     <form action='resource-${actionMethod}.do' method='post'>
                                         <input name="r" type="hidden" value="${resource.shortname}"/>
@@ -1499,18 +1581,25 @@
                                             <@s.text name='button.change'/>
                                         </button>
                                     </form>
-                                <#elseif resource.status=="PUBLIC" && (resource.identifierStatus=="PUBLIC_PENDING_PUBLICATION" || resource.identifierStatus == "UNRESERVED")>
+                                <#elseif action.canBeMadePrivate()>
                                     <#assign actionMethod>makePrivate</#assign>
                                     <form action='resource-${actionMethod}.do' method='post'>
                                         <input name="r" type="hidden" value="${resource.shortname}"/>
                                         <input name="unpublish" type="hidden" value="Change"/>
-                                        <button class="confirmMakePrivate text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
+                                        <button id="makePrivate" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
                                             <svg viewBox="0 0 24 24" class="overview-action-button-icon">
                                                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                                             </svg>
                                             <@s.text name='button.change'/>
                                         </button>
                                     </form>
+                                <#elseif resource.pendingStatus?has_content>
+                                    <button id="cancelVisibilityChange" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
+                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                        </svg>
+                                        <@s.text name='button.change'/>
+                                    </button>
                                 <#else>
                                     <button id="show-visibility-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
                                         <svg viewBox="0 0 24 24" class="overview-action-button-icon">
@@ -1523,6 +1612,17 @@
                         </div>
 
                         <div class="mt-4">
+                            <#if isStatusPending>
+                                <#if resource.pendingStatus=="PRIVATE">
+                                    <p>
+                                        <@s.text name="manage.resource.status.intro.pending.private"/> <@s.text name="manage.overview.changed.publication.status.republication"/>
+                                    </p>
+                                <#elseif resource.pendingStatus=="PUBLIC">
+                                    <p>
+                                        <@s.text name="manage.resource.status.intro.pending.public"/> <@s.text name="manage.overview.changed.publication.status.republication"/>
+                                    </p>
+                                </#if>
+                            <#else>
                             <p class="mb-0">
                                 <#if resource.status=="PRIVATE">
                                     <#if resource.makePublicDate?has_content>
@@ -1540,6 +1640,7 @@
                                     <@s.text name="manage.resource.status.intro.deleted"/>
                                 </#if>
                             </p>
+                            </#if>
                         </div>
                     </div>
 
@@ -1551,7 +1652,7 @@
                                     <#assign overviewTitleInfo>
                                         <#if resource.coreType?has_content && resource.coreType==metadataType>
                                             <@s.text name="manage.overview.published.description.metadataOnly"/>
-                                        <#elseif resource.dataPackage??>
+                                        <#elseif resource.dataPackage==true>
                                             <@s.text name="manage.overview.published.description.dp"/>
                                         <#else>
                                             <@s.text name="manage.overview.published.description"/>
@@ -1583,6 +1684,12 @@
                             </#if>
 
                             <div class="col-4 d-flex justify-content-end">
+                                <a id="edit-publication-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button me-2" type="button" href="publication-settings.do?r=${resource.shortname}">
+                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                    </svg>
+                                    <@s.text name="button.edit"/>
+                                </a>
                                 <#if displayDoiFunctionality>
                                     <a title="${doiActionName!}" id="reserve-doi" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
                                         <svg class="overview-action-button-icon" viewBox="0 0 24 24">
@@ -1596,15 +1703,20 @@
                         </div>
 
                         <div class="mt-4">
+                            <p class="mb-2">
+                                <#if resource.usesAutoPublishing()>
+                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
+                                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
+                                    </span>
+                                    <@s.text name="manage.overview.autopublish.intro.activated"/>
+                                </#if>
+                            </p>
+
+                            <#if (resource.organisation.name)?has_content>
                             <div class="mb-2">
-                                <@s.text name="eml.publishingOrganisation"/>: <i>${(resource.organisation.name)!""}</i>
-                                <a id="change-publishing-organization" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
-                                    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                    </svg>
-                                    <@s.text name="button.change"/>
-                                </a>
+                                <@s.text name="eml.publishingOrganisation"/>: <i>${resource.organisation.name}</i>
                             </div>
+                            </#if>
 
                             <p class="mb-0">
                                 <@s.text name="manage.overview.published.intro"/>
@@ -1665,7 +1777,7 @@
                                                     <#if resource.isAlreadyAssignedDoi()>
                                                         <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-current mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
                                                     </#if>
-                                                    <#if !resource.isDataPackage()>
+                                                    <#if !isDataPackage>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
                                                     <#else>
                                                         <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
@@ -1756,7 +1868,12 @@
                                     </#if>
 
                                     <div class="col-xl-6" style="height: 100%">
-                                        <#assign nextVersionStatus>${resource.status?lower_case}</#assign>
+                                        <#if resource.pendingStatus?has_content>
+                                            <#assign nextVersionStatus>${resource.pendingStatus?lower_case}</#assign>
+                                        <#else>
+                                            <#assign nextVersionStatus>${resource.status?lower_case}</#assign>
+                                        </#if>
+
                                         <#assign nextVersionStatus = nextVersionStatus?markup_string>
 
                                         <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
@@ -1790,13 +1907,13 @@
                                                 <#if resource.doi??>
                                                     <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-next mt-2 mb-1"><strong>DOI</strong> ${resource.doi!}</span>
                                                 </#if>
-                                                <#if (resource.eml)?has_content && !resource.isDataPackage()>
+                                                <#if (resource.eml)?has_content && !isDataPackage>
                                                     <#if resource.getEml().parseLicenseUrl()?has_content>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
                                                     <#else>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                     </#if>
-                                                <#elseif resource.isDataPackage()>
+                                                <#elseif isDataPackage>
                                                     <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                     <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
@@ -1812,7 +1929,7 @@
                                             </div>
 
                                             <div class="d-flex justify-content-end my-auto version-item-actions">
-                                                <#if !missingMetadata>
+                                                <#if validMetadata>
                                                     <a title="<@s.text name="button.preview"/>" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
                                                         <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
@@ -1829,7 +1946,7 @@
                                                     </a>
 
                                                     <ul class="dropdown-menu" aria-labelledby="dropdown-version-item-actions-pending">
-                                                        <#if !missingMetadata>
+                                                        <#if validMetadata>
                                                             <li>
                                                                 <a class="dropdown-item action-link" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
                                                                     <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -2031,49 +2148,6 @@
                         </div>
                     </div>
 
-                    <span class="anchor anchor-overview-page" id="anchor-autopublish"></span>
-                    <div class="py-5 border-bottom section" id="autopublish">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <@popoverPropertyInfo "manage.overview.autopublish.description"/>
-                                    <@s.text name="manage.overview.autopublish.title"/>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <a id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="auto-publish.do?r=${resource.shortname}">
-                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                    </svg>
-                                    <@s.text name="button.edit"/>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <p class="mb-0">
-                                <#if resource.usesAutoPublishing()>
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
-                                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
-                                    </span>
-                                    <@s.text name="manage.overview.autopublish.intro.activated"/>
-                                <#else>
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-disabled">
-                                        <@s.text name="manage.overview.autopublish.disabled"/>
-                                    </span>
-                                    <@s.text name="manage.overview.autopublish.intro.deactivated"/>
-                                </#if>
-                            </p>
-
-                            <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="manage.overview.autopublish.deprecated.warning.button" escapeHtml=true/>
-                                </div>
-                            </#if>
-                        </div>
-                    </div>
-
                     <span class="anchor anchor-overview-page" id="anchor-networks"></span>
                     <div class="py-5 border-bottom section" id="networks">
                         <div class="d-flex justify-content-between">
@@ -2269,7 +2343,25 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="modal-title w-100" id="make-public-modal-title"><@s.text name="manage.overview.visibility.change.public"/></h5>
-                    <div class="pt-2">
+
+                    <div class="border rounded px-3 py-1 mt-3">
+                        <div class="simpleCallout">
+                            <div class="simpleCallout-inner">
+                                <div class="simpleCalloutInfo simpleCalloutInfo-message">
+                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                        <i class="bi bi-info-circle text-gbif-primary"></i>
+                                    </div>
+                                    <div class="simpleCalloutMeta">
+                                        <div class="simpleCalloutMessage">
+                                            <@s.text name="manage.overview.visibility.change.republish"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="makePublicOptions" id="makePublicImmediately" value="makePublicImmediately" <#if !resource.makePublicDate?has_content>checked</#if> >
                             <label class="form-check-label" for="inlineRadio1"><@s.text name="manage.overview.visibility.change.public.immediately"/></label>
@@ -2290,7 +2382,7 @@
                                     <input id="makePublicDateTime" name="makePublicDateTime" class="form-control form-control-sm" type="datetime-local" value="${makePublicDateTime!}" />
                                 </#if>
                             </form>
-                            <form id="cancel-make-public" action="resource-cancelMakePublic.do" method="post">
+                            <form id="cancel-make-public" action="resource-cancelVisibilityChange.do" method="post">
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                             </form>
                         </div>
@@ -2302,6 +2394,74 @@
                     <#if resource.makePublicDate?has_content>
                         <button id="cancelMakePublic" type="submit" form="cancel-make-public" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.reset"/></button>
                     </#if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="make-private-modal" class="modal fade" tabindex="-1" aria-labelledby="make-private-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
+                </div>
+                <div class="modal-body">
+                    <h5 class="modal-title w-100" id="make-private-modal-title"><@s.text name="manage.overview.visibility.change.private"/></h5>
+
+                    <div class="border rounded px-3 py-1 mt-3">
+                        <div class="simpleCallout">
+                            <div class="simpleCallout-inner">
+                                <div class="simpleCalloutInfo simpleCalloutInfo-warning">
+                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                        <i class="bi bi-info-circle text-gbif-danger"></i>
+                                    </div>
+                                    <div class="simpleCalloutMeta">
+                                        <div class="simpleCalloutMessage">
+                                            <@s.text name="manage.overview.visibility.change.republish"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <form id="make-private-modal-form" action="resource-makePrivate.do" method="post">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                            <input name="unpublish" type="hidden" value="Change"/>
+                        </form>
+                        <@s.text name="manage.overview.visibility.confirm.make.private"/>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                    <button id="changeStateSubmit" type="submit" form="make-private-modal-form" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.submit"/></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cancel-visibility-change-modal" class="modal fade" tabindex="-1" aria-labelledby="cancel-visibility-change-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
+                </div>
+                <div class="modal-body">
+                    <h5 class="modal-title w-100" id="cancel-visibility-change-modal-title"><@s.text name="manage.overview.visibility.change.cancel"/></h5>
+
+                    <div class="mt-3">
+                        <form id="cancel-visibility-change-modal-form" action="resource-cancelVisibilityChange.do" method="post">
+                            <input name="r" type="hidden" value="${resource.shortname}"/>
+                        </form>
+                        <@s.text name="manage.overview.visibility.confirm.cancel.change"><@s.param>${resource.status!}</@s.param><@s.param>${resource.pendingStatus!}</@s.param></@s.text>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                    <button id="changeStateSubmit" type="submit" form="cancel-visibility-change-modal-form" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.submit"/></button>
                 </div>
             </div>
         </div>
@@ -2522,7 +2682,7 @@
                                 </select>
                             </form>
                         <#else>
-                            <#if dataPackageResource>
+                            <#if isDataPackage>
                                 <@s.text name="manage.overview.mappings.cantdo"/>
                             <#else>
                                 <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
@@ -2550,7 +2710,7 @@
                 <div class="modal-body">
                     <h5 class="modal-title w-100" id="metadata-modal-title"><@s.text name="manage.overview.metadata"/></h5>
                     <div>
-                        <#if dataPackageResource>
+                        <#if isDataPackage>
                             <form id="upload-metadata-form" action='replace-datapackage-metadata.do' method='post' enctype="multipart/form-data">
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <div class="row">
@@ -2580,7 +2740,7 @@
                                     </div>
 
                                     <div id="datapackage-metadata-validate" class="col-12 text-smaller" style="display: none;">
-                                        <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" value="${validateDatapackageMetadata?c}"/>
+                                        <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" />
                                     </div>
                                 </div>
                             </form>
@@ -2592,7 +2752,7 @@
                                         <@s.file name="emlFile" cssClass="form-control form-control-sm my-1"/>
                                     </div>
                                     <div id="eml-validate" class="col-12" style="display: none;">
-                                        <@checkbox name="validateEml" i18nkey="button.validate" value="${validateEml?c}"/>
+                                        <@checkbox name="validateEml" i18nkey="button.validate" />
                                     </div>
                                 </div>
                             </form>
@@ -2600,11 +2760,11 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <#if dataPackageResource>
+                    <#if isDataPackage>
                         <input type="submit" form="upload-metadata-form" value="Replace" id="datapackageMetadataReplace" name="datapackageMetadataReplace" class="btn btn-sm btn-outline-gbif-primary confirmDatapackageMetadataReplace" style="">
                         <button id="datapackageMetadataCancel" type="button" class="btn btn-sm btn-outline-secondary " data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                     <#else>
-                        <input type="submit" form="upload-metadata-form" value="Replace" id="emlReplace" name="emlReplace" class="btn btn-sm btn-outline-gbif-primary confirmEmlReplace" style="">
+                        <input type="submit" form="upload-metadata-form" value="Replace" id="emlReplace" name="emlReplace" class="btn btn-sm btn-outline-gbif-primary confirmEmlReplace" style="display:none;">
                         <button id="emlCancel" type="button" class="btn btn-sm btn-outline-secondary " data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                     </#if>
                 </div>
@@ -2628,13 +2788,41 @@
                         </p>
 
                         <!-- resources cannot be published if the mandatory metadata is missing -->
-                    <#elseif missingMetadata>
-                        <p class="mb-0">
+                    <#elseif missingBasicMetadata>
+                        <p>
                             <@s.text name="manage.overview.published.missing.metadata"/>
                         </p>
 
+                        <#if !isDataPackage>
+                            <p class="mb-0">
+                                <@s.text name="manage.overview.published.metadata.validation.report"/>
+                            </p>
+                        </#if>
+
+                        <!-- resources cannot be published if the metadata is invalid -->
+                    <#elseif !validMetadata>
+                        <p>
+                            <@s.text name="manage.overview.published.metadata.invalid"/>
+                        </p>
+
+                        <#if !isDataPackage>
+                        <p class="mb-0">
+                            <@s.text name="manage.overview.published.metadata.validation.report"/>
+                        </p>
+                        </#if>
+
+                        <!-- DwC-A resources cannot be published if the publishing organization is missing -->
+                    <#elseif !isDataPackage && !resource.organisation?has_content>
+                        <p class="mb-0">
+                            <@s.text name="manage.overview.published.missing.organisation"/>
+                        </p>
+
+                        <p class="mb-0">
+                            <@s.text name="manage.overview.published.missing.organisation.link"/>
+                        </p>
+
                       <!-- resources cannot be published if mappings are missing (for DPs) -->
-                    <#elseif dataPackageResource && dataPackageMappingsMissing>
+                    <#elseif isDataPackage && dataPackageMappingsMissing>
                         <p class="mb-0">
                             <@s.text name="manage.overview.published.missing.mappings"/>
                         </p>
@@ -2762,7 +2950,7 @@
                 </div>
 
                 <div class="modal-footer justify-content-center">
-                    <input type="submit" form="addNetworkForm" value="Add" id="add-network" name="add" class="btn btn-sm btn-outline-primary" style="display: none;">
+                    <input type="submit" form="addNetworkForm" value="Add" id="add-network" name="add" class="btn btn-sm btn-outline-gbif-primary" style="display: none;">
                     <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                         <@s.text name="button.cancel"/>
                     </button>
@@ -2777,6 +2965,8 @@
                 <div class="modal-header flex-column">
                     <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
                 </div>
+
+                <#assign hasToBePublishedFirst=false/>
 
                 <div class="modal-body">
                     <h5 class="modal-title w-100" id="registration-modal-title"><@s.text name="manage.overview.registration"/></h5>
@@ -2828,6 +3018,7 @@
                             <p class="mb-0">
                                 <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
                             </p>
+                            <#assign hasToBePublishedFirst=true/>
                         <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
                             <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
                             <p class="mb-0">
@@ -2838,6 +3029,11 @@
                 </div>
 
                 <div class="modal-footer justify-content-center">
+                    <#if hasToBePublishedFirst>
+                        <button id="publish-button" type="button" class="btn btn-sm btn-outline-gbif-primary ${buttonClass!"confirmPublishMinorVersion"}" data-bs-dismiss="modal">
+                            <@s.text name="button.publish"/>
+                        </button>
+                    </#if>
                     <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                         <@s.text name="button.cancel"/>
                     </button>
@@ -2931,29 +3127,6 @@
         </div>
     </div>
 
-    <div id="change-publishing-organization-modal" class="modal fade" tabindex="-1" aria-labelledby="change-publishing-organization-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                </div>
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="change-publishing-organization-modal-title"><@s.text name="eml.publishingOrganisation"/></h5>
-                    <form id="changePublishingOrganizationForm" action='resource-changePublishingOrganization.do' method='post'>
-                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                        <@selectList name="publishingOrganizationKey" options=organisations objValue="key" objTitle="name" withLabel=false />
-                    </form>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <input type="submit" form="changePublishingOrganizationForm" value="Change" id="changePublishingOrganization-submit" name="change" class="btn btn-sm btn-outline-gbif-primary">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="delete-resource-modal" class="modal fade" tabindex="-1" aria-labelledby="delete-resource-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
@@ -3018,5 +3191,92 @@
             </div>
         </div>
     </div>
+
+    <#if !isDataPackage>
+    <div id="metadata-validation-result-modal" class="modal fade" tabindex="-1" aria-labelledby="metadata-validation-result-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <#assign isMetadataValid=!errorCollector.hasErrors() />
+
+                <div class="modal-header flex-column">
+                    <#if isMetadataValid>
+                        <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
+                    <#else>
+                        <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
+                    </#if>
+                </div>
+                <div class="modal-body" style="text-align: left !important;">
+                    <h5 class="modal-title w-100 mb-0" id="metadata-validation-result-modal">
+                        <@s.text name="manage.overview.metadata.modal.result"/>:
+                        <#if isMetadataValid>
+                            <span class="text-gbif-primary"><@s.text name="manage.overview.metadata.modal.valid"/></span>
+                        <#else>
+                            <span class="text-gbif-danger"><@s.text name="manage.overview.metadata.modal.invalid"/></span>
+                        </#if>
+                    </h5>
+
+                    <#assign metadataSections = {
+                    "BASIC_SECTION": "basic",
+                    "CONTACTS_SECTION": "contacts",
+                    "ACKNOWLEDGEMENTS_SECTION": "acknowledgements",
+                    "GEOGRAPHIC_COVERAGE_SECTION": "geocoverage",
+                    "TAXANOMIC_COVERAGE_SECTION": "taxcoverage",
+                    "TEMPORAL_COVERAGE_SECTION": "tempcoverage",
+                    "ADDITIONAL_DESCRIPTION_SECTION": "additionalDescription",
+                    "PROJECT_SECTION": "project",
+                    "METHODS_SECTION": "methods",
+                    "CITATIONS_SECTION": "citations",
+                    "COLLECTIONS_SECTION": "collections",
+                    "PHYSICAL_SECTION": "physical",
+                    "KEYWORDS_SECTION": "keywords",
+                    "ADDITIONAL_SECTION": "additional"
+                    }/>
+
+
+                    <#if !isMetadataValid>
+                        <div class="mt-2">
+                            <#list errorCollector.result?keys as key>
+                                <#if errorCollector.result[key].hasErrors()>
+                                    <div>
+                                        <div>
+                                            <i class="bi bi-x text-gbif-danger"></i>
+                                            <span class="text-gbif-danger me-2">
+                                                <b><@s.text name="submenu.${metadataSections[key]!key}"/></b>
+                                            </span>
+                                            <a class="metadata-action-link custom-link" type="button" href="${baseURL}/manage/metadata-${metadataSections[key]!key}.do?r=${resource.shortname}">
+                                                <span>
+                                                    <svg class="link-icon link-icon-primary" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                                    </svg>
+                                                </span>
+                                                <span>
+                                                    <@s.text name="button.edit"/>
+                                                </span>
+                                            </a>
+                                        </div>
+
+                                        <ul>
+                                            <#list (errorCollector.result[key].fieldErrors)! as fe>
+                                                <li>${fe}</li>
+                                            </#list>
+                                            <#list (errorCollector.result[key].actionErrors)! as ae>
+                                                <li>${ae}</li>
+                                            </#list>
+                                        </ul>
+                                    </div>
+                                </#if>
+                            </#list>
+                        </div>
+                    </#if>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
+                        <@s.text name="button.cancel"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </#if>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

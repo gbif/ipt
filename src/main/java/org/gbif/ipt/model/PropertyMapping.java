@@ -15,12 +15,15 @@ package org.gbif.ipt.model;
 
 import org.gbif.dwc.ArchiveField;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
 public class PropertyMapping extends ArchiveField implements Serializable, Comparable<PropertyMapping> {
 
+  @Serial
   private static final long serialVersionUID = 775627548L;
+
   private Map<String, String> translation;
 
   public PropertyMapping() {

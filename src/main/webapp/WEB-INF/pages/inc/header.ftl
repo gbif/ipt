@@ -47,8 +47,8 @@
 
     <!-- for support of old browsers, like IE8. See http://modernizr.com/docs/#html5inie -->
     <script src="${baseURL}/js/modernizr.js"></script>
-    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
-    <script src="${baseURL}/js/jquery/jquery-ui.min-1.12.1.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-3.7.1.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery-ui-1.14.2.min.js"></script>
     <script src="${baseURL}/js/global.js"></script>
 
     <script>

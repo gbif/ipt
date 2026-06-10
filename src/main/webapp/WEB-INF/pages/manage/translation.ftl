@@ -8,8 +8,14 @@
 
 <script>
     $(document).ready(function(){
-        $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
-        $("table input").focus(function() {
+        $('.confirm').jConfirmAction({
+            titleQuestion: "<@s.text name="basic.confirm"/>",
+            yesAnswer: "<@s.text name="basic.yes"/>",
+            cancelAnswer: "<@s.text name="basic.no"/>",
+            buttonType: "danger",
+            baseUrl: "${baseURL}"
+        });
+        $("table input").focus(function () {
             $(this).parent().parent().addClass("highlight");
         });
         $("table input").blur(function() {
@@ -123,7 +129,7 @@
         function showAddNewTranslationModal() {
             var dialogWindow = $("#dialog");
 
-            $("#add-button").on("click", function () {
+            $("#add-button").off('click').on("click", function () {
                 addNewTranslation();
             });
 
@@ -201,7 +207,7 @@
                                     </li>
                                 </#if>
                                 <li>
-                                    <@s.submit form="translation" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                    <@s.submit form="translation" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
                                 </li>
                             </ul>
                         </div>
@@ -363,7 +369,7 @@
                     <select name="addNewTranslation" id="addNewTranslation" class="form-select">
                         <option value="" disabled selected><@s.text name="manage.translation.select"/></option>
                         <#list sourceValuesMap as key, val>
-                            <#if tmap?? && tmap['${key}']??>
+                            <#if tmap?? && tmap[key]??>
                             <#else>
                                 <option id="option-${key}" value="${val}">
                                     ${val}

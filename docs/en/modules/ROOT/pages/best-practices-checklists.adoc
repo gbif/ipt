@@ -355,7 +355,7 @@ The sharing of vernacular name data associated with taxa in taxonomic checklists
 
 image::figures/myristica_fragrans.png[]
 
-Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 693 language code] for sharing language information. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilize the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes].
+Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 639 language code] for sharing language information. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilize the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166-1 country codes].
 
 == Sharing Species Descriptions
 
@@ -371,7 +371,7 @@ The sharing of distribution data is supported. Distribution data are shared as a
 
 The recommended best practice for specifying a distinct area is via a resolve-able or well-known area identifier published via the dwc:localityID element.
 
-If the dwc:country element is used, it is recommended that the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes] be used.
+If the dwc:country element is used, it is recommended that the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166-1 country codes] be used.
 
 == Sharing References
 
@@ -479,3 +479,27 @@ Use this extension to share data relating to one or more specimens or type refer
 Latest version issued: {latest-resource-relation}[{date-resource-relation}]
 
 This extension is used to describe one or more relationships that the core taxon has with other taxa, either in the source list or included in the record. This extension could be used, for example, to provide a list of plant species (one record per species) pollinated by a bee species listed in the core species list.
+
+=== Measurement or Facts Extension 
+
+Latest version issued: {latest-measurement-or-facts}[{date-measurement-or-facts}]   
+
+Use this extension to provide quantitative measurements or qualitative facts associated with a taxon. Multiple measurements or facts can be linked to the same taxon via the taxonID. 
+
+=== Species Profile Extension 
+
+Latest version issued: {latest-species-profile}[{date-species-profile}] 
+
+Use this extension to provide characteristics in addition to the textual description covered by the Description Extension. This is typically in the form of TRUE/FALSE statements for the Boolean elements and short answers for the rest. For taxa that have different combinations of values (e.g. different habitats for different life stages), multiple characteristics can be linked to the same taxon via the taxonID. 
+
+=== Simple Multimedia Extension 
+
+Latest version issued: {latest-simple-multimedia}[{date-simple-multimedia}] 
+
+Use this extension to share multimedia objects for a taxon and document their related metadata. It allows you to share a link to the media file using an identifier. Multiple multimedia files can be linked to the same taxon via the taxonID. 
+
+=== Audiovisual Media Description Extension  
+
+Latest version issued: {latest-audiovisual-description}[{date-audiovisual-description}] 
+
+Use this extension for media requiring exhaustive description beyond what the Simple Multimedia Extension provides. Multiple multimedia files can be linked to the same taxon via the taxonID. 

@@ -11,10 +11,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.model.datapackage.metadata;
+package org.gbif.ipt.model;
 
-/**
- * License interface
- */
-public interface License {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class ExtensionPropertyTranslation {
+
+  private String language;
+  private String label;
+  private String comments;
+  private String description;
+  private String examples;
 }

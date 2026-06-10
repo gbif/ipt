@@ -30,9 +30,9 @@ import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.metadata.eml.ipt.model.Agent;
 
+import jakarta.inject.Inject;
 import java.util.Date;
 import java.util.UUID;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -40,7 +40,6 @@ import org.apache.logging.log4j.Logger;
 
 public class OrganisationSupport {
 
-  // logging
   private static final Logger LOG = LogManager.getLogger(OrganisationSupport.class);
 
   private RegistryManager registryManager;

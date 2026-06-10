@@ -234,7 +234,7 @@ public class OverviewActionTest extends IptBaseTest {
     Resource r = new Resource();
     r.setStatus(PublicationStatus.DELETED);
     action.setResource(r);
-    action.setDelete("true");
+    action.setDeleteFlag("true");
     assertEquals("input", action.delete());
     assertEquals(1, action.getActionWarnings().size());
   }
@@ -249,7 +249,7 @@ public class OverviewActionTest extends IptBaseTest {
     r.setDoi(DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX));
     r.setStatus(PublicationStatus.PUBLIC);
     action.setResource(r);
-    action.setDelete("true");
+    action.setDeleteFlag("true");
     assertNull(action.getOrganisationWithPrimaryDoiAccount());
     assertEquals("input", action.delete());
     assertEquals(1, action.getActionErrors().size());

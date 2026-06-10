@@ -140,7 +140,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -166,7 +166,9 @@
 
                     <div class="text-center mt-2">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save" />
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back" />
+                        <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                            <@s.text name="button.back"/>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -217,13 +219,13 @@
                                                 </a>
                                             </div>
                                             <div>
-                                                <@input name="eml.collections[${item_index}].collectionName" help="i18n" i18nkey="eml.collectionName" requiredField=true/>
+                                                <@input name="eml.collections[${item_index}].collectionName" value=item.collectionName help="i18n" i18nkey="eml.collectionName" requiredField=true/>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="eml.collections[${item_index}].collectionId" help="i18n" i18nkey="eml.collectionId"/>
+                                                <@input name="eml.collections[${item_index}].collectionId" value=item.collectionId help="i18n" i18nkey="eml.collectionId"/>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="eml.collections[${item_index}].parentCollectionId" help="i18n" i18nkey="eml.parentCollectionId" />
+                                                <@input name="eml.collections[${item_index}].parentCollectionId" value=item.parentCollectionId help="i18n" i18nkey="eml.parentCollectionId" />
                                             </div>
                                         </div>
                                     </#list>
@@ -306,25 +308,25 @@
                                                         <#if type=="COUNT_RANGE">
                                                             <div id="range-${item_index}" class="row g-3">
                                                                 <div class="col-lg-6">
-                                                                    <@input name="eml.jgtiCuratorialUnits[${item_index}].rangeStart" i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
+                                                                    <@input name="eml.jgtiCuratorialUnits[${item_index}].rangeStart" value=item.rangeStart i18nkey="eml.jgtiCuratorialUnits.rangeStart" size=40/>
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    <@input name="eml.jgtiCuratorialUnits[${item_index}].rangeEnd" i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
+                                                                    <@input name="eml.jgtiCuratorialUnits[${item_index}].rangeEnd" value=item.rangeEnd i18nkey="eml.jgtiCuratorialUnits.rangeEnd" size=40/>
                                                                 </div>
                                                             </div>
                                                         <#elseif type=="COUNT_WITH_UNCERTAINTY">
                                                             <div id="uncertainty-${item_index}" class="row g-3">
                                                                 <div class="col-lg-6">
-                                                                    <@input name="eml.jgtiCuratorialUnits[${item_index}].rangeMean" i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
+                                                                    <@input name="eml.jgtiCuratorialUnits[${item_index}].rangeMean" value=item.rangeMean i18nkey="eml.jgtiCuratorialUnits.rangeMean" size=40/>
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    <@input name="eml.jgtiCuratorialUnits[${item_index}].uncertaintyMeasure" i18nkey="eml.jgtiCuratorialUnits.uncertaintyMeasure" size=40/>
+                                                                    <@input name="eml.jgtiCuratorialUnits[${item_index}].uncertaintyMeasure" value=item.uncertaintyMeasure i18nkey="eml.jgtiCuratorialUnits.uncertaintyMeasure" size=40/>
                                                                 </div>
                                                             </div>
                                                         </#if>
                                                     </div>
                                                     <div class="unittype col-lg-6">
-                                                        <@input name="eml.jgtiCuratorialUnits[${item_index}].unitType" i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
+                                                        <@input name="eml.jgtiCuratorialUnits[${item_index}].unitType" value=item.unitType i18nkey="eml.jgtiCuratorialUnits.unitType" size=40/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -444,5 +446,7 @@
             </div>
         </div>
     </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -16,13 +16,17 @@ package org.gbif.ipt.model.datapackage.metadata;
 import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.ValidUrl;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -36,8 +40,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A contributor to this descriptor.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FrictionlessContributor implements Contributor, Serializable {
+public class FrictionlessContributor implements Serializable {
 
+  @Serial
   private final static long serialVersionUID = -288140518286006582L;
 
   /**
@@ -125,7 +130,7 @@ public class FrictionlessContributor implements Contributor, Serializable {
    */
   @JsonProperty("path")
   public void setPath(String path) {
-    this.path = path;
+    this.path = StringUtils.trimToNull(path);
   }
 
   /**

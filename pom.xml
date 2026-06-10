@@ -5,11 +5,11 @@
   <parent>
     <groupId>org.gbif</groupId>
     <artifactId>motherpom</artifactId>
-    <version>59</version>
+    <version>61</version>
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>3.2.0-dwc-dp-SNAPSHOT</version>
+  <version>3.3.3-dwc-dp-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
@@ -17,9 +17,9 @@
   <url>https://github.com/gbif/ipt</url>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <java.version>11</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <java.version>17</java.version>
 
     <!--
       maven treats properties as strings only, so we cannot negate a boolean devMode value.
@@ -38,74 +38,72 @@
     <test.datadir>/tmp/test-datadir</test.datadir>
 
     <!-- GBIF dependencies -->
-    <dwc-api.version>2.1.4</dwc-api.version>
-    <dwca-io.version>3.0.0</dwca-io.version>
-    <gbif-api.version>2.1.13</gbif-api.version>
-    <gbif-common.version>0.60</gbif-common.version>
-    <gbif-doi.version>2.21</gbif-doi.version>
-    <gbif-metadata-profile.version>2.8</gbif-metadata-profile.version>
-    <gbif-parsers.version>0.67</gbif-parsers.version>
+    <dwc-api.version>2.1.11</dwc-api.version>
+    <dwca-io.version>3.0.2</dwca-io.version>
+    <gbif-api.version>2.4.5</gbif-api.version>
+    <gbif-common.version>1.0</gbif-common.version>
+    <gbif-doi.version>3.0.3</gbif-doi.version>
+    <gbif-metadata-profile.version>2.11</gbif-metadata-profile.version>
+    <gbif-parsers.version>0.68</gbif-parsers.version>
     <gbif-httputils.version>1.4</gbif-httputils.version>
 
     <!-- Third party dependencies -->
-    <apache-poi.version>5.4.1</apache-poi.version>
+    <apache-poi.version>5.5.1</apache-poi.version>
     <bcrypt.version>0.10.2</bcrypt.version>
-    <commons-digester.version>2.1</commons-digester.version>
-    <commons-io.version>2.20.0</commons-io.version>
-    <commons-lang3.version>3.18.0</commons-lang3.version>
+    <commons-digester.version>3.2</commons-digester.version>
+    <commons-io.version>2.22.0</commons-io.version>
+    <commons-lang3.version>3.20.0</commons-lang3.version>
     <commons-collections4.version>4.5.0</commons-collections4.version>
-    <commons-validator.version>1.10.0</commons-validator.version>
-    <commons-text.version>1.14.0</commons-text.version>
+    <commons-validator.version>1.10.1</commons-validator.version>
+    <commons-text.version>1.15.0</commons-text.version>
     <excel-streaming-reader.version>4.4.0</excel-streaming-reader.version>
     <freemarker.version>2.3.34</freemarker.version>
-    <frictionless.datapackage-java.version>0.9.8-gbif-SNAPSHOT</frictionless.datapackage-java.version>
-    <frictionless.tableschema-java.version>0.9.8-gbif-SNAPSHOT</frictionless.tableschema-java.version>
-    <gson.version>2.13.1</gson.version>
-    <guava.version>31.0.1-jre</guava.version>
+    <frictionless.datapackage-java.version>0.9.8-gbif</frictionless.datapackage-java.version>
+    <frictionless.tableschema-java.version>0.9.8-gbif</frictionless.tableschema-java.version>
+    <gson.version>2.14.0</gson.version>
     <httpclient.version>4.5.14</httpclient.version>
     <httpcore.version>4.4.16</httpcore.version>
     <jackson.version>2.15.1</jackson.version> <!-- Fixed to the version used in tableschema-java -->
     <jackson-dataformat-yaml.version>2.14.0</jackson-dataformat-yaml.version> <!-- Fixed to 2.14.0 for now because of issues with jackson-datatype-jts -->
-    <jackson-datatype-jts.version>2.14</jackson-datatype-jts.version>
-    <javassist.version>3.12.1.GA</javassist.version>
-    <javax.inject.version>1</javax.inject.version>
-    <javax.mail.version>1.4.7</javax.mail.version>
-    <jersey.version>1.19.4</jersey.version>
-    <jetty-maven-plugin.version>9.4.57.v20241219</jetty-maven-plugin.version>
+    <jackson-datatype-jts.version>2.21.0</jackson-datatype-jts.version>
+    <jakarta.activation-api.version>2.1.4</jakarta.activation-api.version>
+    <jakarta.inject-api.version>2.0.1</jakarta.inject-api.version>
+    <jakarta.mail-api.version>2.1.5</jakarta.mail-api.version>
+    <jakarta.el-api.version>5.0.1</jakarta.el-api.version>
+    <jakarta.jaxb-api.version>4.0.5</jakarta.jaxb-api.version>
+    <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+    <jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
+    <jaxb-core.version>4.0.8</jaxb-core.version>
+    <jaxb-impl.version>4.0.8</jaxb-impl.version>
+    <jaxb-runtime.version>4.0.8</jaxb-runtime.version>
+    <jetty-maven-plugin.version>12.1.9</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
-    <junit.version>5.13.4</junit.version>
-    <log4j.version>2.25.1</log4j.version>
+    <junit.version>6.0.3</junit.version>
+    <log4j.version>2.26.0</log4j.version>
     <mockito.version>4.11.0</mockito.version>
     <openrtf.version>1.2.1</openrtf.version>
     <owasp-java-html-sanitizer.version>20220608.1</owasp-java-html-sanitizer.version>
-    <servlet-api.version>3.1.0</servlet-api.version>
-    <struts2.version>6.7.4</struts2.version>
-    <tika.version>2.9.4</tika.version>
-    <validation-api.version>2.0.1.Final</validation-api.version>
-    <hibernate-validator.version>6.2.5.Final</hibernate-validator.version>
-    <jakarta.el.version>3.0.4</jakarta.el.version>
-    <javax.el.version>3.0.0</javax.el.version>
+    <struts2.version>7.1.1</struts2.version>
+    <tika.version>3.3.0</tika.version>
+    <hibernate-validator.version>8.0.3.Final</hibernate-validator.version>
+    <glassfish.jakarata.el.version>5.0.0-M1</glassfish.jakarata.el.version>
     <!-- NB XStream does not use semantic versioning.  Take care when upgrading, as we need to
          ensure the IPT can still load existing resource.xml and other configuration files -->
     <xstream.version>1.4.21</xstream.version>
-    <jaxb-api.version>2.3.1</jaxb-api.version>
-    <jaxb-runtime.version>2.3.9</jaxb-runtime.version>
-    <jaxb-impl.version>2.3.9</jaxb-impl.version>
-    <jaxb-core.version>2.3.0.1</jaxb-core.version>
-    <javax.activation.version>1.1.1</javax.activation.version>
 
     <!-- JDBC drivers -->
     <jtds.version>1.3.1</jtds.version>
-    <mssql-jdbc.version>12.10.1.jre8</mssql-jdbc.version>
-    <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
-    <ojdbc.version>23.8.0.25.04</ojdbc.version>
-    <postgresql.version>42.7.7</postgresql.version>
+    <mssql-jdbc.version>13.4.0.jre11</mssql-jdbc.version>
+    <mysql-connector-java.version>9.7.0</mysql-connector-java.version>
+    <ojdbc.version>23.26.2.0.0</ojdbc.version>
+    <postgresql.version>42.7.11</postgresql.version>
+    <duckdb.version>1.5.2.1</duckdb.version>
 
     <!-- Plugins -->
     <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
     <native2ascii-maven-plugin.version>2.1.1</native2ascii-maven-plugin.version>
-    <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
+    <maven-war-plugin.version>3.5.1</maven-war-plugin.version>
   </properties>
 
   <developers>
@@ -163,6 +161,10 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
+    </repository>
   </repositories>
 
   <build>
@@ -195,18 +197,17 @@
       -->
 
       <plugin>
-        <!--
-          http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin
-        -->
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
+        <groupId>org.eclipse.jetty.ee10</groupId>
+        <artifactId>jetty-ee10-maven-plugin</artifactId>
         <version>${jetty-maven-plugin.version}</version>
         <configuration>
-          <webAppConfig>
+          <webApp>
             <contextPath>/</contextPath>
-          </webAppConfig>
+          </webApp>
+          <jvmArgs>
+            --add-opens java.base/java.util=ALL-UNNAMED
+          </jvmArgs>
           <!-- no scan, don't detect changed classes -->
-          <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopKey>stop</stopKey>
           <stopPort>9362</stopPort>
           <systemProperties>
@@ -395,6 +396,10 @@
           <groupId>org.gbif</groupId>
           <artifactId>name-parser-v1</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>javax.validation</groupId>
+          <artifactId>validation-api</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -411,7 +416,7 @@
     <dependency>
       <!-- To redirect calls to SLF4J from dwca-reader & gbif-common to Log4J -->
       <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
+      <artifactId>log4j-slf4j2-impl</artifactId>
       <version>${log4j.version}</version>
       <scope>runtime</scope>
     </dependency>
@@ -428,13 +433,7 @@
       <artifactId>struts2-json-plugin</artifactId>
       <version>${struts2.version}</version>
     </dependency>
-    <!-- required by OGNL/struts2 since version 2.2.x -->
-    <dependency>
-      <groupId>javassist</groupId>
-      <artifactId>javassist</artifactId>
-      <version>${javassist.version}</version>
-      <scope>runtime</scope>
-    </dependency>
+
     <dependency>
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
@@ -448,35 +447,30 @@
       <version>${struts2.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>${guava.version}</version>
-    </dependency>
     <!-- Used to validate email addresses -->
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>${javax.mail.version}</version>
+      <groupId>jakarta.mail</groupId>
+      <artifactId>jakarta.mail-api</artifactId>
+      <version>${jakarta.mail-api.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${servlet-api.version}</version>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>${jakarta.servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-      <version>${javax.inject.version}</version>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
+      <version>${jakarta.inject-api.version}</version>
     </dependency>
 
     <!-- Accessing different external databases to suck in data alternatively to text files -->
     <!-- JDBC driver to support a variety of external datasources -->
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
       <version>${mysql-connector-java.version}</version>
       <scope>runtime</scope>
     </dependency>
@@ -502,6 +496,12 @@
       <groupId>com.oracle.database.jdbc</groupId>
       <artifactId>ojdbc8</artifactId>
       <version>${ojdbc.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.duckdb</groupId>
+      <artifactId>duckdb_jdbc</artifactId>
+      <version>${duckdb.version}</version>
       <scope>runtime</scope>
     </dependency>
 
@@ -593,9 +593,9 @@
 
     <!-- Validation -->
     <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <version>${validation-api.version}</version>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>${jakarta.validation-api.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
@@ -603,22 +603,21 @@
       <version>${hibernate-validator.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.el</groupId>
-      <artifactId>javax.el-api</artifactId>
-      <version>${javax.el.version}</version>
+      <groupId>jakarta.el</groupId>
+      <artifactId>jakarta.el-api</artifactId>
+      <version>${jakarta.el-api.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>jakarta.el</artifactId>
-      <version>${jakarta.el.version}</version>
-      <scope>test</scope>
+      <version>${glassfish.jakarata.el.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!-- Simple XML Parsing -->
     <dependency>
-      <groupId>commons-digester</groupId>
-      <artifactId>commons-digester</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-digester3</artifactId>
       <version>${commons-digester.version}</version>
     </dependency>
 
@@ -650,17 +649,6 @@
       <version>${openrtf.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-core</artifactId>
-      <version>${jersey.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
-      <version>${jersey.version}</version>
-    </dependency>
-
     <!-- JSON representation -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -687,11 +675,10 @@
       <version>${owasp-java-html-sanitizer.version}</version>
     </dependency>
 
-    <!-- JAXB (needed for java 11) -->
     <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>${jaxb-api.version}</version>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>${jakarta.jaxb-api.version}</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
@@ -709,9 +696,9 @@
       <version>${jaxb-core.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.activation</groupId>
-      <artifactId>activation</artifactId>
-      <version>${javax.activation.version}</version>
+      <groupId>jakarta.activation</groupId>
+      <artifactId>jakarta.activation-api</artifactId>
+      <version>${jakarta.activation-api.version}</version>
     </dependency>
 
     <!-- Password hashing -->

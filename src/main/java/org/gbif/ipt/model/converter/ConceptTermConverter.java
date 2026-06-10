@@ -59,7 +59,7 @@ public class ConceptTermConverter implements Converter {
       t = extension.getProperty(reader.getValue());
     }
     if (t == null) {
-      LOG.warn("Cant unmarshall concept " + reader.getValue());
+      LOG.warn("Cant unmarshall concept {}", reader.getValue());
       t = UnknownTerm.build(reader.getValue(), reader.getValue());
     }
 

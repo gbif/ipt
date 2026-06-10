@@ -14,7 +14,8 @@
                         question: "<@s.text name="admin.user.delete.confirmation.message"/>",
                         yesAnswer: "<@s.text name="basic.yes"/>",
                         cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger"
+                        buttonType: "danger",
+                        baseUrl: "${baseURL}"
                     });
 
                     $('.confirmPasswordReset').jConfirmAction({
@@ -22,7 +23,8 @@
                         question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
                         yesAnswer: "<@s.text name="basic.yes"/>",
                         cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger"
+                        buttonType: "danger",
+                        baseUrl: "${baseURL}"
                     });
                 } else {
                     setTimeout(initConfirmationModal, 100); // check again in a moment
@@ -38,14 +40,16 @@
                         question: "<@s.text name="admin.user.delete.confirmation.message"/>",
                         yesAnswer: "<@s.text name="basic.yes"/>",
                         cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger"
+                        buttonType: "danger",
+                        baseUrl: "${baseURL}"
                     });
                     $('.confirmPasswordReset').jConfirmAction({
                         titleQuestion: "<@s.text name="basic.confirm"/>",
                         question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
                         yesAnswer: "<@s.text name="basic.yes"/>",
                         cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger"
+                        buttonType: "danger",
+                        baseUrl: "${baseURL}"
                     });
                 });
             }

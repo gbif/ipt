@@ -15,7 +15,7 @@ package org.gbif.ipt.task;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.Level;
 

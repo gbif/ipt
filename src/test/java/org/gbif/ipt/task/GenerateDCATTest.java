@@ -66,7 +66,8 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+
 import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -138,7 +139,7 @@ public class GenerateDCATTest extends IptBaseTest {
     assertTrue(dcat.contains("dcat:themeTaxonomy <http://eurovoc.europa.eu/218403>"));
     assertTrue(dcat.contains("dct:license <https://creativecommons.org/publicdomain/zero/1.0/>"));
     assertTrue(dcat.contains(
-      "dct:spatial [ a dct:Location ; locn:geometry \"{ \\\"type\\\": \\\"Point\\\", \\\"coordinates\\\": [ 0.0,0.0 ] }\" ]"));
+        "dct:spatial [ a dct:Location ; locn:geometry \"{ \\\"type\\\": \\\"Point\\\", \\\"coordinates\\\": [ 0.0,0.0 ] }\" ]"));
     assertTrue(dcat.contains("a skos:ConceptScheme"));
   }
 
@@ -174,7 +175,7 @@ public class GenerateDCATTest extends IptBaseTest {
     assertTrue(dcat.contains("dcat:keyword \"" + "Phytosociology" + "\"" + " , " + "\"" + "Occurrence" + "\"" + " , " + "\"" + "Observation" + "\"" + " ;"));
     assertTrue(dcat.contains("dcat:theme <http://eurovoc.europa.eu/5463>"));
     assertTrue(dcat.contains(
-      "dcat:contactPoint [ a vcard:Individual ; vcard:fn \"Eric Stienen\"; vcard:hasEmail <mailto:eric.stienen@inbo.be> ]"));
+        "dcat:contactPoint [ a vcard:Individual ; vcard:fn \"Eric Stienen\"; vcard:hasEmail <mailto:eric.stienen@inbo.be> ]"));
     assertTrue(dcat.contains("dcat:distribution <distributionURL>"));
   }
 
@@ -229,7 +230,6 @@ public class GenerateDCATTest extends IptBaseTest {
    * Generates a test Resource from zipped resource folder, and populates resource with license, contacts, etc.
    *
    * @param resourceXML resource (XML) configuration file defining column mapping of sourceFile
-   *
    * @return test Resource
    */
   private Resource getResource(@NotNull File resourceXML) throws Exception {
@@ -256,7 +256,7 @@ public class GenerateDCATTest extends IptBaseTest {
 
     // construct occurrence core Extension
     InputStream occurrenceCoreIs =
-      GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_occurrence_2015-04-24.xml");
+        GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_occurrence_2015-04-24.xml");
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
     ExtensionManager extensionManager = mock(ExtensionManager.class);
     ExtensionsHolder extensionsHolder = mock(ExtensionsHolder.class);
@@ -303,23 +303,23 @@ public class GenerateDCATTest extends IptBaseTest {
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
-      new ResourceManagerImpl(
-          mockAppConfig,
-          mockDataDir,
-          mockResourceConvertersManager,
-          mockSourceManager,
-          extensionManager,
-          mockSchemaManager,
-          mockRegistryManager,
-          mockDwcaFactory,
-          mock(GenerateDataPackageFactory.class),
-          passwordEncrypter,
-          mockEml2Rtf,
-          mockVocabulariesManager,
-          mockSimpleTextProvider,
-          mockRegistrationManager,
-          mock(MetadataReader.class),
-          mock(ResourceMetadataInferringService.class));
+        new ResourceManagerImpl(
+            mockAppConfig,
+            mockDataDir,
+            mockResourceConvertersManager,
+            mockSourceManager,
+            extensionManager,
+            mockSchemaManager,
+            mockRegistryManager,
+            mockDwcaFactory,
+            mock(GenerateDataPackageFactory.class),
+            passwordEncrypter,
+            mockEml2Rtf,
+            mockVocabulariesManager,
+            mockSimpleTextProvider,
+            mockRegistrationManager,
+            mock(MetadataReader.class),
+            mock(ResourceMetadataInferringService.class));
 
     // creator
     User creator = new User();
@@ -356,7 +356,7 @@ public class GenerateDCATTest extends IptBaseTest {
 
     // CCO
     resource.getEml().setIntellectualRights(
-      "This work is licensed under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\">Creative Commons CCZero (CC0) 1.0 License</a>.");
+        "This work is licensed under <a href=\"http://creativecommons.org/publicdomain/zero/1.0/legalcode\">Creative Commons CCZero (CC0) 1.0 License</a>.");
     assertEquals("http://creativecommons.org/publicdomain/zero/1.0/legalcode", resource.getEml().parseLicenseUrl());
 
     // set creator, contact, and metadata provider

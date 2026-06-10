@@ -33,7 +33,8 @@ $(document).ready(function(){
             specimenPreservationMethodItemsCount = -1;
     }
 
-    if ($("#inferTaxonomicCoverageAutomatically").is(':checked')) {
+    let $inferTaxCoverageAutomaticallyCheckbox = $("#resource\\.inferTaxonomicCoverageAutomatically");
+    if ($inferTaxCoverageAutomaticallyCheckbox.is(':checked')) {
         $("[id^=item-]").remove();
         $('.intro').hide();
         $('#items').hide();
@@ -43,8 +44,8 @@ $(document).ready(function(){
         $('#dateInferred').show();
     }
 
-    $("#inferTaxonomicCoverageAutomatically").click(function() {
-        if ($("#inferTaxonomicCoverageAutomatically").is(':checked')) {
+    $inferTaxCoverageAutomaticallyCheckbox.click(function() {
+        if ($inferTaxCoverageAutomaticallyCheckbox.is(':checked')) {
             $("[id^=item-]").remove();
             $('.intro').hide();
             $('#items').hide();

@@ -16,7 +16,7 @@ package org.gbif.ipt.model.converter;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.UserAccountManager;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;

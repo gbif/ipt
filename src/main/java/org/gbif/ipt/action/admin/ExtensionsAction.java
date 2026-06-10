@@ -13,14 +13,11 @@
  */
 package org.gbif.ipt.action.admin;
 
-import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
-import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -33,46 +30,59 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
-import java.io.File;
+import jakarta.inject.Inject;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
+
+import lombok.Getter;
 
 /**
  * The Action responsible for all user input relating to extension management.
  */
 public class ExtensionsAction extends POSTAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = -8804785290324044090L;
+
   private static final Logger LOG = LogManager.getLogger(ExtensionsAction.class);
 
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;
   private final RegistryManager registryManager;
   // list of the latest registered extension versions
+  @Getter
   private List<Extension> latestExtensionVersions;
+  @Getter
   private List<Extension> extensions;
+  @Getter
+  private List<Vocabulary> vocabularies;
+  @Getter
   private Map<String, List<ExtensionProperty>> propertiesByGroup = new HashMap<>();
+  @Getter
   private Extension extension;
   private String url;
   private Boolean synchronise = false;
+  @Getter
   private Date lastSynchronised;
+  @Getter
   private List<Extension> newExtensions;
   private ConfigWarnings configWarnings;
   private ResourceManager resourceManager;
+  // true if all installed extensions are the latest version, false otherwise
+  @Getter
   private boolean upToDate = true;
 
   @Inject
@@ -100,14 +110,14 @@ public class ExtensionsAction extends POSTAction {
       for (Resource r : resourceManager.list()) {
         if (!r.getMappings(id).isEmpty()) {
           LOG.warn("Extension mapped in resource {}", r.getShortname());
-          String msg = getText("admin.extension.delete.error.mapped", new String[] {r.getShortname()});
+          String msg = getText("admin.extension.delete.error.mapped", new String[]{r.getShortname()});
           throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.EXTENSION_MAPPED, msg);
         }
       }
       extensionManager.uninstallSafely(id);
-      addActionMessage(getText("admin.extension.delete.success", new String[] {id}));
+      addActionMessage(getText("admin.extension.delete.success", new String[]{id}));
     } catch (DeletionNotAllowedException e) {
-      addActionWarning(getText("admin.extension.delete.error", new String[] {id}));
+      addActionWarning(getText("admin.extension.delete.error", new String[]{id}));
       addActionExceptionWarning(e);
     }
     return SUCCESS;
@@ -149,24 +159,12 @@ public class ExtensionsAction extends POSTAction {
         }
       }
 
-      addActionMessage(getText("admin.extension.update.success", new String[] {id}));
+      addActionMessage(getText("admin.extension.update.success", new String[]{id}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.extension.update.error", new String[] {e.getMessage()}), e);
+      addActionWarning(getText("admin.extension.update.error", new String[]{e.getMessage()}), e);
     }
     return SUCCESS;
-  }
-
-  public Extension getExtension() {
-    return extension;
-  }
-
-  public List<Extension> getExtensions() {
-    return extensions;
-  }
-
-  public List<Extension> getNewExtensions() {
-    return newExtensions;
   }
 
   /**
@@ -187,9 +185,9 @@ public class ExtensionsAction extends POSTAction {
       } catch (Exception e) {
         String errorMsg = e.getMessage();
         if (e instanceof RegistryException) {
-          errorMsg = RegistryException.logRegistryException(((RegistryException)e), this);
+          errorMsg = RegistryException.logRegistryException(((RegistryException) e), this);
         }
-        addActionWarning(getText("admin.extensions.synchronise.error", new String[] {errorMsg}));
+        addActionWarning(getText("admin.extensions.synchronise.error", new String[]{errorMsg}));
         LOG.error(e);
       }
     }
@@ -198,8 +196,13 @@ public class ExtensionsAction extends POSTAction {
     extensions = extensionManager.list();
     extensions.sort(Comparator.comparing(Extension::getTitle));
 
+    // retrieve all vocabularies
+    vocabularies = vocabManager.list();
+    vocabularies.sort(Comparator.comparing(Vocabulary::getTitle));
+
     // update each installed extension indicating whether it is the latest version (for its rowType) or not
     updateIsLatest(extensions);
+    updateIsLatestVocabularies(vocabularies);
 
     // populate list of uninstalled extensions, removing extensions installed already, showing only latest versions
     newExtensions = getLatestExtensionVersions();
@@ -241,10 +244,6 @@ public class ExtensionsAction extends POSTAction {
     }
   }
 
-  public Map<String, List<ExtensionProperty>> getPropertiesByGroup() {
-    return propertiesByGroup;
-  }
-
   /**
    * Method used for 1) updating each extensions' isLatest field, and 2) for action logging (logging if at least
    * one extension is not up-to-date).
@@ -267,13 +266,13 @@ public class ExtensionsAction extends POSTAction {
               if (issuedOne == null && issuedTwo != null) {
                 setUpToDate(false);
                 extension.setLatest(false);
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " has no issued date. A newer version issued " + issuedTwo + " exists.");
+                LOG.debug("Installed extension with rowType {} has no issued date. A newer version issued {} exists.", extension.getRowType(), issuedTwo);
               } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
                 setUpToDate(false);
                 extension.setLatest(false);
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " was issued " + issuedOne + ". A newer version issued " + issuedTwo + " exists.");
+                LOG.debug("Installed extension with rowType {} was issued {}. A newer version issued {} exists.", extension.getRowType(), issuedOne, issuedTwo);
               } else {
-                LOG.debug("Installed extension with rowType " + extension.getRowType() + " is the latest version");
+                LOG.debug("Installed extension with rowType {} is the latest version", extension.getRowType());
               }
               break;
             }
@@ -286,7 +285,48 @@ public class ExtensionsAction extends POSTAction {
         LOG.error(msg);
 
         // add startup error message that explains the consequence of the Registry error
-        msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
+        msg = getText("admin.extensions.couldnt.load", new String[]{cfg.getRegistryUrl()});
+        configWarnings.addStartupError(msg);
+        LOG.error(msg);
+      }
+    }
+  }
+
+  protected void updateIsLatestVocabularies(List<Vocabulary> vocabularies) {
+    if (!vocabularies.isEmpty()) {
+      try {
+        // complete list of registered vocabularies (latest and non-latest versions)
+        List<Vocabulary> registered = registryManager.getVocabularies();
+        for (Vocabulary vocabulary : vocabularies) {
+          vocabulary.setLatest(true);
+          for (Vocabulary rVocabulary : registered) {
+            // check if registered vocabulary is latest, and if it is, try to use it in comparison
+            if (rVocabulary.isLatest() && vocabulary.getUriString().equalsIgnoreCase(rVocabulary.getUriString())) {
+              Date issuedOne = vocabulary.getIssued();
+              Date issuedTwo = rVocabulary.getIssued();
+              if (issuedOne == null && issuedTwo != null) {
+                setUpToDate(false);
+                vocabulary.setLatest(false);
+                LOG.debug("Installed vocabulary {} has no issued date. A newer version issued {} exists.", vocabulary.getUriString(), issuedTwo);
+              } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
+                setUpToDate(false);
+                vocabulary.setLatest(false);
+                LOG.debug("Installed vocabulary {} was issued {}. A newer version issued {} exists.", vocabulary.getUriString(), issuedOne, issuedTwo);
+              } else {
+                LOG.debug("Installed vocabulary {} is the latest version", vocabulary.getUriString());
+              }
+              break;
+            }
+          }
+        }
+      } catch (RegistryException e) {
+        // add startup error message about Registry error
+        String msg = RegistryException.logRegistryException(e, this);
+        configWarnings.addStartupError(msg);
+        LOG.error(msg);
+
+        // add startup error message that explains the consequence of the Registry error
+        msg = getText("admin.extensions.vocabularies.couldnt.load", new String[]{cfg.getRegistryUrl()});
         configWarnings.addStartupError(msg);
         LOG.error(msg);
       }
@@ -311,7 +351,7 @@ public class ExtensionsAction extends POSTAction {
       LOG.error(msg);
 
       // add startup error message that explains the consequence of the Registry error
-      msg = getText("admin.extensions.couldnt.load", new String[] {cfg.getRegistryUrl()});
+      msg = getText("admin.extensions.couldnt.load", new String[]{cfg.getRegistryUrl()});
       configWarnings.addStartupError(msg);
       LOG.error(msg);
     } finally {
@@ -327,14 +367,13 @@ public class ExtensionsAction extends POSTAction {
    * is determined by its issued date.
    *
    * @param extensions unfiltered list of all registered extensions
-   *
    * @return filtered list of extensions
    */
   protected List<Extension> getLatestVersions(List<Extension> extensions) {
     // sort extensions by issued date, starting with latest issued
     List<Extension> sorted = extensions.stream()
         .sorted(Comparator.comparing(Extension::getIssued, Comparator.nullsLast(Comparator.reverseOrder())))
-        .collect(Collectors.toList());
+        .toList();
 
     // populate list of latest extension versions
     Map<String, Extension> extensionsByRowtype = new HashMap<>();
@@ -354,10 +393,10 @@ public class ExtensionsAction extends POSTAction {
   public String save() {
     try {
       extensionManager.install(new URL(url));
-      addActionMessage(getText("admin.extension.install.success", new String[] {url}));
+      addActionMessage(getText("admin.extension.install.success", new String[]{url}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.extension.install.error", new String[] {url}), e);
+      addActionWarning(getText("admin.extension.install.error", new String[]{url}), e);
     }
     return SUCCESS;
   }
@@ -368,8 +407,8 @@ public class ExtensionsAction extends POSTAction {
    * Then synchronises all installed extensions and vocabularies with registry to make sure their content is
    * up-to-date.
    *
-   * @throws IOException if an extension or vocabulary file cannot be downloaded
-   * @throws RegistryException if the list of registered extensions or vocabularies cannot be loaded from Registry
+   * @throws IOException            if an extension or vocabulary file cannot be downloaded
+   * @throws RegistryException      if the list of registered extensions or vocabularies cannot be loaded from Registry
    * @throws InvalidConfigException if any of the extensions or vocabularies synchronised is invalid (e.g. bad URL)
    */
   private void synchronise() throws IOException, RegistryException, InvalidConfigException {
@@ -377,20 +416,18 @@ public class ExtensionsAction extends POSTAction {
     vocabManager.installOrUpdateDefaults();
 
     LOG.info("Updating content of all installed vocabularies...");
-    for (Vocabulary v : vocabManager.list()) {
-      LOG.debug("Updating vocabulary " + v.getUriString());
-      vocabManager.updateIfChanged(v.getUriString());
-    }
+    vocabManager.updateIfChanged();
 
     LOG.info("Updating content of all installed extensions...");
-    for (Extension ex : extensionManager.list()) {
-      LOG.debug("Updating extension " + ex.getRowType());
-      extensionManager.updateIfChanged(ex.getRowType());
-    }
+    extensionManager.updateIfChanged();
   }
 
   public void setExtension(Extension extension) {
     this.extension = extension;
+  }
+
+  public boolean getSynchronise() {
+    return synchronise;
   }
 
   /**
@@ -402,33 +439,22 @@ public class ExtensionsAction extends POSTAction {
     this.synchronise = StringUtils.trimToNull(synchronise) != null;
   }
 
-  public void setUrl(String url) {
-    this.url = url;
+  @StrutsParameter
+  public void setSynchronise(boolean synchronise) {
+    this.synchronise = synchronise;
   }
 
-  /**
-   * @return list of the latest registered extensions
-   */
-  public List<Extension> getLatestExtensionVersions() {
-    return latestExtensionVersions;
+  @StrutsParameter
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public void setLatestExtensionVersions(List<Extension> latestExtensionVersions) {
     this.latestExtensionVersions = latestExtensionVersions;
   }
 
-  /**
-   * @return true if all installed extensions are the latest version, false otherwise
-   */
-  public boolean isUpToDate() {
-    return upToDate;
-  }
-
   public void setUpToDate(boolean upToDate) {
     this.upToDate = upToDate;
   }
 
-  public Date getLastSynchronised() {
-    return lastSynchronised;
-  }
 }

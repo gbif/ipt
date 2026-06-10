@@ -3,7 +3,7 @@
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <title><@s.text name='manage.metadata.additionalDescription.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script src="${baseURL}/js/docbook/docbook.js"></script>
+    <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
@@ -19,50 +19,89 @@
                 $('body, html').animate({scrollTop: pos});
             }
 
-            var docBookPurpose = `${eml.purpose!}`;
+            var docBookPurpose = "${eml.purpose!?js_string}";
             var htmlPurpose = convertToHtml(docBookPurpose);
 
-            var docBookGettingStarted = `${eml.gettingStarted!}`;
+            var docBookGettingStarted = "${eml.gettingStarted!?js_string}";
             var htmlGettingStarted = convertToHtml(docBookGettingStarted);
 
-            var docBookIntroduction = `${eml.introduction!}`;
+            var docBookIntroduction = "${eml.introduction!?js_string}";
             var htmlIntroduction = convertToHtml(docBookIntroduction);
 
-            $('#purpose-editor').summernote({
+            const purposeEditor = $('#purpose-editor');
+            purposeEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        purposeEditor.summernote('focus');
+                        purposeEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
-            $('#purpose-editor').summernote('code', htmlPurpose);
+            purposeEditor.summernote('code', htmlPurpose);
 
-            $('#gettingStarted-editor').summernote({
+            const gettingStartedEditor = $('#gettingStarted-editor');
+            gettingStartedEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        gettingStartedEditor.summernote('focus');
+                        gettingStartedEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
-            $('#gettingStarted-editor').summernote('code', htmlGettingStarted);
+            gettingStartedEditor.summernote('code', htmlGettingStarted);
 
-            $('#introduction-editor').summernote({
+            const introductionEditor = $('#introduction-editor');
+            introductionEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        introductionEditor.summernote('focus');
+                        introductionEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
-            $('#introduction-editor').summernote('code', htmlIntroduction);
+            introductionEditor.summernote('code', htmlIntroduction);
 
             // Form submission events
             $('#additional-description-form').submit(function(event) {
@@ -146,7 +185,7 @@
         </div>
     </div>
 
-    <form id="additional-description-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <form id="additional-description-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
         <div class="container-fluid bg-body border-bottom">
@@ -182,7 +221,9 @@
 
                     <div class="text-center mt-2">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                        <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                            <@s.text name="button.back"/>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -250,5 +291,7 @@
             </div>
         </div>
     </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

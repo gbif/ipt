@@ -11,7 +11,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.model.datapackage.metadata;
+package org.gbif.ipt.i18n;
 
-public interface Contributor {
+public interface I18n {
+  String getText(String key);
+  String getText(String key, String... args);
 }

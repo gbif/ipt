@@ -38,6 +38,14 @@ asciidoc:
     date-typesandspecimen:       "2015-02-13"
     latest-vernacularname:       https://rs.gbif.org/terms/1.0/VernacularName
     date-vernacularname:         "2015-02-13"
+    latest-audiovisual-description:  https://rs.gbif.org/extension/ac/audiovisual_2026-02-24.xml 
+    date-audiovisual-description:    "2026-04-10" 
+    latest-measurement-or-facts:     https://rs.gbif.org/extension/dwc/measurements_or_facts_2025-07-10.xml 
+    date-measurement-or-facts:       "2025-12-16" 
+    latest-species-profile:          https://rs.gbif.org/extension/gbif/1.0/speciesprofile_2019-01-29.xml 
+    date-species-profile:            "2019-01-29" 
+    latest-simple-multimedia:        https://rs.gbif.org/extension/gbif/1.0/multimedia.xml 
+    date-simple-multimedia:          "2015-02-13" 
     # Vocabularies
     latest-basis-of-record:      https://rs.gbif.org/vocabulary/dwc/basis_of_record_2024-02-19.xml
     date-basis-of-record:        "2024-02-19"

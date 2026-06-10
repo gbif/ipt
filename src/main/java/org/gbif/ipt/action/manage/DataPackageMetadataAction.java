@@ -45,17 +45,19 @@ import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 
+import jakarta.inject.Inject;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,9 +70,10 @@ import static org.gbif.ipt.service.manage.impl.ResourceManagerImpl.CAMTRAP_TEMPO
 
 public class DataPackageMetadataAction extends ManagerBaseAction {
 
-  private static final Logger LOG = LogManager.getLogger(DataPackageMetadataAction.class);
-
+  @Serial
   private static final long serialVersionUID = -1669636958170716515L;
+
+  private static final Logger LOG = LogManager.getLogger(DataPackageMetadataAction.class);
 
   private final ResourceMetadataInferringService metadataInferringService;
   private final DataPackageMetadataValidator metadataValidator;
@@ -434,9 +437,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
         }
       }
     } else {
-      if (inferredMetadata instanceof InferredCamtrapMetadata) {
-        InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
-
+      if (inferredMetadata instanceof InferredCamtrapMetadata inferredCamtrapMetadata) {
         if (inferredCamtrapMetadata.getInferredGeographicScope() != null) {
           if (inferredCamtrapMetadata.getInferredGeographicScope().isInferred()
               && inferredCamtrapMetadata.getInferredGeographicScope().getErrors().isEmpty()) {
@@ -473,9 +474,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
 
     if (resource.isInferTaxonomicCoverageAutomatically()) {
-      if (inferredMetadata instanceof InferredCamtrapMetadata) {
-        InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
-
+      if (inferredMetadata instanceof InferredCamtrapMetadata inferredCamtrapMetadata) {
         if (inferredCamtrapMetadata.getInferredTaxonomicScope() != null
             && inferredCamtrapMetadata.getInferredTaxonomicScope().isInferred()
             && inferredCamtrapMetadata.getInferredTaxonomicScope().getErrors().isEmpty()) {
@@ -490,9 +489,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     CamtrapMetadata camtrapMetadata = (CamtrapMetadata) resource.getDataPackageMetadata();
 
     if (resource.isInferTemporalCoverageAutomatically()) {
-      if (inferredMetadata instanceof InferredCamtrapMetadata) {
-        InferredCamtrapMetadata inferredCamtrapMetadata = (InferredCamtrapMetadata) inferredMetadata;
-
+      if (inferredMetadata instanceof InferredCamtrapMetadata inferredCamtrapMetadata) {
         if (inferredCamtrapMetadata.getInferredTemporalScope() != null
             && inferredCamtrapMetadata.getInferredTemporalScope().isInferred()
             && inferredCamtrapMetadata.getInferredTemporalScope().getErrors().isEmpty()) {
@@ -549,6 +546,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
     return section.getName();
   }
 
+  @StrutsParameter(depth = 8)
   public DataPackageMetadata getMetadata() {
     return resource.getDataPackageMetadata();
   }

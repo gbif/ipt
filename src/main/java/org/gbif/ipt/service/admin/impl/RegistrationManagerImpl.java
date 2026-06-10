@@ -143,7 +143,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   @Override
   public Organisation addHostingOrganisation(Organisation organisation) {
     if (organisation != null) {
-      LOG.debug("Adding hosting organisation " + organisation.getKey() + " - " + organisation.getName());
+      LOG.debug("Adding hosting organisation {} - {}", organisation.getKey(), organisation.getName());
       registration.setHostingOrganisation(organisation);
     }
     return organisation;
@@ -347,8 +347,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       }
 
     } catch (FileNotFoundException e) {
-      LOG.warn("Registration information not existing, " + PERSISTENCE_FILE_V2
-               + " file missing  (This is normal when IPT is not registered yet)");
+      LOG.warn("Registration information not existing, {} file missing  (This is normal when IPT is not registered yet)", PERSISTENCE_FILE_V2);
     } catch (ClassNotFoundException e) {
       LOG.error(e.getMessage(), e);
     } catch (IOException e) {
@@ -517,7 +516,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
           organisation.setPrimaryContactEmail(StringUtils.trimToNull(o.getPrimaryContactEmail()));
           organisation.setPrimaryContactPhone(StringUtils.trimToNull(o.getPrimaryContactPhone()));
           organisation.setPrimaryContactType(StringUtils.trimToNull(o.getPrimaryContactType()));
-          LOG.debug("Organisation (" + key + ") updated with latest metadata from Registry");
+          LOG.debug("Organisation ({}) updated with latest metadata from Registry", key);
         } else {
           LOG.debug("Update of organisation failed: organisation retrieved from Registry was missing name");
         }

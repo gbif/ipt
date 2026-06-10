@@ -49,7 +49,7 @@
 
         <#list peek as row><#if row??>
             <tr<#if (row_index % 2) == 0> class="even"<#else> class="odd"</#if>>
-                <#list row as col><td>${col!"<em>null</em>"}</td></#list>
+                <#list row as col><td>${(col)!("<em>null</em>"?no_esc)}</td></#list>
             </tr>
         </#if></#list>
     </table>

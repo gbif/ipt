@@ -3,8 +3,16 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
     <script>
-        $(document).ready(function(){
-            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='admin.extension.update.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary"});
+        $(document).ready(function () {
+            $('.confirm').jConfirmAction({
+                titleQuestion: "<@s.text name="basic.confirm"/>",
+                question: "<@s.text name='admin.extension.update.confirm'/>",
+                yesAnswer: "<@s.text name='basic.yes'/>",
+                cancelAnswer: "<@s.text name='basic.no'/>",
+                buttonType: "primary",
+                baseUrl: "${baseURL}",
+                logo: "success"
+            });
         });
 
         $("#synchronise").on("click", displayProcessing);
@@ -63,6 +71,47 @@
                                 <@s.text name="button.remove"/>
                             </button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </#macro>
+
+    <#macro installedVocabularyItem vocab>
+        <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
+            <div class="extension-item border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
+                <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
+                    <div>
+                        <h4 class="d-flex fs-regular mt-1 mb-0">
+                            ${vocab.title}
+                        </h4>
+                        <p class="color-fg-muted mb-0 fs-smaller-2">
+                            ${vocab.uriString}
+                        </p>
+                        <#if vocab.isLatest()>
+                            <p class="text-gbif-primary mb-0 fs-smaller-2">
+                                <#if vocab.issued??>${vocab.issued?date?string["d MMMM yyyy"]}<#else>-</#if>
+                            </p>
+                        <#else>
+                            <p class="text-gbif-danger mb-0 fs-smaller-2">
+                                <#if vocab.issued??>${vocab.issued?date?string["d MMMM yyyy"]}<#else>-</#if>
+                            </p>
+                        </#if>
+                    </div>
+                </div>
+                <div class="d-flex flex-column flex-auto flex-justify-between">
+                    <div class="d-flex flex-justify-between flex-items-center text-break pt-2 pb-0 px-4 fs-smaller">
+                        <div>
+                            <#if !vocab.isLatest()>
+                                <span class="text-gbif-danger"><@s.text name="admin.extension.version.warning.short"/></span><br>
+                            </#if>
+                            ${vocab.description!?truncate(300)}
+                        </div>
+                    </div>
+                    <div class="d-flex pt-2 pb-4 px-4">
+                        <a href="vocabulary.do?id=${vocab.uriString?url}" title="" class="action-link-button action-link-button-primary">
+                            <@s.text name="button.view"/>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -198,8 +247,9 @@
             </p>
 
             <form action='extensions.do' method='post'>
+                <input type="hidden" name="synchronise" value="true"/>
                 <div class="col-12 mt-2">
-                    <button id="synchronise" name="synchronise" type="submit" class="action-link-button action-link-button-primary">
+                    <button id="synchronise" type="submit" class="action-link-button action-link-button-primary">
                         <svg class="overview-action-button-icon" viewBox="0 0 24 24">
                             <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
                         </svg>
@@ -229,8 +279,7 @@
                 </div>
             </#if>
         </div>
-
-        <div class="">
+        <div>
             <div class="flex-auto">
                 <div class="d-flex flex-items-stretch flex-wrap">
                     <#list extensions as ext>
@@ -244,12 +293,23 @@
 
         <div class="my-3 p-3">
             <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                <@s.text name="admin.extension.vocabularies"/>
+            </h5>
+        </div>
+        <div>
+            <div class="flex-auto">
+                <div class="d-flex flex-items-stretch flex-wrap">
+                    <#list vocabularies as vocab>
+                        <@installedVocabularyItem vocab/>
+                    </#list>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-3 p-3">
+            <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                 <@s.text name="extension.further.title"/>
             </h5>
-
-            <p class="mb-0">
-                <@s.text name="extension.further.title.help"/>
-            </p>
 
             <#if !newExtensions?has_content>
                 <div class="callout callout-info">

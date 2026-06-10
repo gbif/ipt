@@ -67,7 +67,7 @@ public class DownloadFileManager {
         .whenComplete(
             (result, error) -> {
               if (error != null) {
-                LOG.error("Error downloading file from url " + url, error);
+                LOG.error("Error downloading file from url {}", url, error);
                 errorCallback.accept(error);
               } else {
                 successCallback.accept(result);

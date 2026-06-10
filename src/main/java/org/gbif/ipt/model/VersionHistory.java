@@ -21,13 +21,16 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
+
+import lombok.Setter;
 
 /**
  * Class representing all the essential information about a historical version of a resource.
  */
+@Setter
 public class VersionHistory {
 
   private DOI doi;
@@ -38,7 +41,6 @@ public class VersionHistory {
   private User modifiedBy;
   private String changeSummary;
   private int recordsPublished;
-  // record counts by extension: Map<rowType, count>
   private Map<String, Integer> recordsByExtension = new HashMap<>();
 
   public VersionHistory(BigDecimal version, Date released, PublicationStatus publicationStatus) {
@@ -60,10 +62,6 @@ public class VersionHistory {
     return doi;
   }
 
-  public void setDoi(DOI doi) {
-    this.doi = doi;
-  }
-
   /**
    * @return the version number
    */
@@ -72,19 +70,11 @@ public class VersionHistory {
     return version;
   }
 
-  public void setVersion(String version) {
-    this.version = version;
-  }
-
   /**
    * @return the date this version was released
    */
   public Date getReleased() {
     return released;
-  }
-
-  public void setReleased(Date released) {
-    this.released = released;
   }
 
   /**
@@ -95,20 +85,12 @@ public class VersionHistory {
     return status;
   }
 
-  public void setStatus(IdentifierStatus status) {
-    this.status = status;
-  }
-
   /**
    * @return the user that last modified the history (the change summary is editable after publication)
    */
   @Nullable
   public User getModifiedBy() {
     return modifiedBy;
-  }
-
-  public void setModifiedBy(User modifiedBy) {
-    this.modifiedBy = modifiedBy;
   }
 
   /**
@@ -119,19 +101,11 @@ public class VersionHistory {
     return changeSummary;
   }
 
-  public void setChangeSummary(String changeSummary) {
-    this.changeSummary = changeSummary;
-  }
-
   /**
    * @return the number of records published in this version
    */
   public int getRecordsPublished() {
     return recordsPublished;
-  }
-
-  public void setRecordsPublished(int recordsPublished) {
-    this.recordsPublished = recordsPublished;
   }
 
   /**
@@ -142,10 +116,6 @@ public class VersionHistory {
     return publicationStatus;
   }
 
-  public void setPublicationStatus(PublicationStatus publicationStatus) {
-    this.publicationStatus = publicationStatus;
-  }
-
   /**
    * @return map containing record counts (map value) by extension (map key)
    */
@@ -153,10 +123,4 @@ public class VersionHistory {
     return recordsByExtension;
   }
 
-  /**
-   * @param recordsByExtension map of record counts (map value) by extension (map key)
-   */
-  public void setRecordsByExtension(Map<String, Integer> recordsByExtension) {
-    this.recordsByExtension = recordsByExtension;
-  }
 }

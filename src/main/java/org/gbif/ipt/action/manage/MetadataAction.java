@@ -23,7 +23,6 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredMetadata;
-import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -36,8 +35,10 @@ import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.validation.ActionErrorCollector;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
+import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.metadata.eml.ipt.model.Address;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
@@ -45,8 +46,10 @@ import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
 import org.gbif.metadata.eml.ipt.model.UserId;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -57,19 +60,27 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.TreeMap;
-import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
-import com.opensymphony.xwork2.ActionContext;
+import lombok.Getter;
+import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.DATASET_TYPE_METADATA_IDENTIFIER;
 
-public class MetadataAction extends ManagerBaseAction {
+public class MetadataAction extends ManagerBaseAction implements UploadedFilesAware {
+
+  @Serial
+  private static final long serialVersionUID = 3996112876438145205L;
 
   private static final Logger LOG = LogManager.getLogger(MetadataAction.class);
 
@@ -85,15 +96,28 @@ public class MetadataAction extends ManagerBaseAction {
 
   private MetadataSection section = MetadataSection.BASIC_SECTION;
   private MetadataSection next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
+  @Getter
   private Map<String, String> languages;
+  // A map of countries
+  @Getter
   private Map<String, String> countries;
+  // A map of Ranks
+  @Getter
   private Map<String, String> ranks;
+  @Getter
   private Map<String, String> roles;
+  // A map of preservation methods
+  @Getter
   private Map<String, String> preservationMethods;
+  @Getter
   private Map<String, String> types;
+  // A list of dataset subtypes used to populate the dataset subtype dropdown on the Basic Metadata page.
+  @Getter
   private Map<String, String> datasetSubtypes;
+  // On the basic metadata page, this map populates the update frequencies dropdown.
+  // The map is derived from the vocabulary http://rs.gbif.org/vocabulary/eml/update_frequency.xml .
+  @Getter
   private Map<String, String> frequencies;
-  private Map<String, String> organisations;
 
   // to group dataset subtype vocabulary keys
   private List<String> checklistSubtypeKeys;
@@ -102,8 +126,14 @@ public class MetadataAction extends ManagerBaseAction {
 
   private static final CountryParser COUNTRY_PARSER = CountryParser.getInstance();
 
+  // The very first contact entered, or a new instance of Agent if no contacts exist yet.
+  // The first contact entered is considered the primary contact.
+  // Other contact forms can be entered by copying from the primary contact.
+  @Setter
+  @Getter
   private Agent primaryContact;
   private boolean doiReservedOrAssigned = false;
+  @Getter
   private InferredEmlMetadata inferredMetadata;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
@@ -113,8 +143,8 @@ public class MetadataAction extends ManagerBaseAction {
   private static Map<String, String> licenseUrls;
   private static Map<String, String> userIdDirectories;
 
-  private DataDir dataDir;
-  private File file;
+  private final DataDir dataDir;
+  private List<UploadedFile> uploadedFiles = new ArrayList<>();
 
   @Inject
   public MetadataAction(
@@ -134,43 +164,13 @@ public class MetadataAction extends ManagerBaseAction {
     this.dataDir = dataDir;
   }
 
-  /**
-   * @return a map of countries
-   */
-  public Map<String, String> getCountries() {
-    return countries;
-  }
-
   public String getCurrentSideMenu() {
     return section.getName();
   }
 
+  @StrutsParameter(depth = 8)
   public Eml getEml() {
     return resource.getEml();
-  }
-
-  public boolean isInferGeocoverageAutomatically() {
-    return resource.isInferGeocoverageAutomatically();
-  }
-
-  public void setInferGeocoverageAutomatically(boolean inferGeocoverageAutomatically) {
-    resource.setInferGeocoverageAutomatically(inferGeocoverageAutomatically);
-  }
-
-  public boolean isInferTaxonomicCoverageAutomatically() {
-    return resource.isInferTaxonomicCoverageAutomatically();
-  }
-
-  public void setInferTaxonomicCoverageAutomatically(boolean inferTaxonomicCoverageAutomatically) {
-    resource.setInferTaxonomicCoverageAutomatically(inferTaxonomicCoverageAutomatically);
-  }
-
-  public boolean isInferTemporalCoverageAutomatically() {
-    return resource.isInferTemporalCoverageAutomatically();
-  }
-
-  public void setInferTemporalCoverageAutomatically(boolean inferTemporalCoverageAutomatically) {
-    resource.setInferTemporalCoverageAutomatically(inferTemporalCoverageAutomatically);
   }
 
   public Map<String, String> getJGTICuratorialUnitTypeOptions() {
@@ -185,14 +185,10 @@ public class MetadataAction extends ManagerBaseAction {
     return null;
   }
 
-  public Map<String, String> getLanguages() {
-    return languages;
-  }
-
   /*
    * Called from Basic Metadata page.
    *
-   * Determine which license is specified in the intellectual rights. If the intellectual rights contains the name of
+   * Determine which license is specified in the intellectual rights. If the intellectual rights contain the name of
    * a license the IPT supports (e.g. CC-BY 4.0), the key corresponding to that license (e.g. ccby) is returned. This
    * is used to pre-select the license dropdown when the basic metadata page loads.
    */
@@ -201,7 +197,7 @@ public class MetadataAction extends ManagerBaseAction {
     if (StringUtils.isNotBlank(licenseText)) {
       // can be old-fashioned license, with version outside parenthesis
       String licenseTextUpdated = licenseText.replace(") 4.0", " 4.0)");
-      for (Map.Entry<String, String> entry: licenses.entrySet()) {
+      for (Map.Entry<String, String> entry : licenses.entrySet()) {
         String licenseName = entry.getValue();
         if (StringUtils.isNotBlank(licenseName) && licenseTextUpdated.contains(licenseName)) {
           return entry.getKey();
@@ -209,7 +205,7 @@ public class MetadataAction extends ManagerBaseAction {
       }
 
       // Try URL instead (MDT style)
-      for (Map.Entry<String, String> entry: licenseUrls.entrySet()) {
+      for (Map.Entry<String, String> entry : licenseUrls.entrySet()) {
         String licenseUrl = entry.getValue();
         if (StringUtils.isNotBlank(licenseUrl) && licenseTextUpdated.contains(licenseUrl)) {
           return entry.getKey();
@@ -277,39 +273,12 @@ public class MetadataAction extends ManagerBaseAction {
     return next.getName();
   }
 
-  /**
-   * @return a map of preservation methods
-   */
-  public Map<String, String> getPreservationMethods() {
-    return preservationMethods;
-  }
-
-  /**
-   * @return a map of Ranks
-   */
-  public Map<String, String> getRanks() {
-    return ranks;
-  }
-
-  @Override
-  public Resource getResource() {
-    return resource;
-  }
-
-  public Map<String, String> getRoles() {
-    return roles;
-  }
-
   public String getSection() {
     return section.getName();
   }
 
   public Map<String, String> getTempTypes() {
     return TemporalCoverageType.HTML_SELECT_MAP;
-  }
-
-  public Map<String, String> getTypes() {
-    return types;
   }
 
   @Override
@@ -348,7 +317,7 @@ public class MetadataAction extends ManagerBaseAction {
         inferredMetadata = (InferredEmlMetadata) inferredMetadataRaw;
       } else {
         LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
-                InferredEmlMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
+            InferredEmlMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
         inferredMetadata = new InferredEmlMetadata();
       }
       resource.setInferredMetadata(inferredMetadata);
@@ -358,7 +327,7 @@ public class MetadataAction extends ManagerBaseAction {
         inferredMetadata = (InferredEmlMetadata) resource.getInferredMetadata();
       } else {
         LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
-                InferredEmlMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
+            InferredEmlMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
         inferredMetadata = new InferredEmlMetadata();
       }
     }
@@ -385,10 +354,10 @@ public class MetadataAction extends ManagerBaseAction {
         frequencies = new LinkedHashMap<>();
         // temporary fix: remove "unkown" from vocabulary
         vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false)
-          .entrySet()
-          .stream()
-          .filter(p -> !"unkown".equals(p.getKey()))
-          .forEach(p -> frequencies.put(p.getKey(), p.getValue()));
+            .entrySet()
+            .stream()
+            .filter(p -> !"unkown".equals(p.getKey()))
+            .forEach(p -> frequencies.put(p.getKey(), p.getValue()));
 
         // sanitize intellectualRights - pre-v2.2 text was manually entered and may have characters that break js
         if (getEml().getIntellectualRights() != null) {
@@ -419,10 +388,7 @@ public class MetadataAction extends ManagerBaseAction {
           configWarnings.addStartupError(e.getMessage(), e);
         }
 
-        // load organisations map
-        loadOrganisations();
-
-        // if IPT isn't registered there are no publishing organisations to choose from, so set to "No organisation"
+        // if IPT isn't registered, there are no publishing organisations to choose from, so set to "No organisation"
         if (getRegisteredIpt() == null && getDefaultOrganisation() != null) {
           resource.setOrganisation(getDefaultOrganisation());
           addActionWarning(getText("manage.overview.visibility.missing.organisation"));
@@ -430,16 +396,6 @@ public class MetadataAction extends ManagerBaseAction {
 
         if (isHttpPost()) {
           resource.getEml().setIntellectualRights(null);
-
-          // publishing organisation, if provided must match organisation
-          String id = getId();
-          Organisation organisation = (id == null) ? null : registrationManager.get(id);
-          if (organisation != null) {
-            // set organisation: note organisation is locked after 1) DOI assigned, or 2) after registration with GBIF
-            if (!resource.isAlreadyAssignedDoi() && !resource.isRegistered()) {
-              resource.setOrganisation(organisation);
-            }
-          }
         }
         break;
 
@@ -503,7 +459,7 @@ public class MetadataAction extends ManagerBaseAction {
         }
         doiReservedOrAssigned = hasDoiReservedOrAssigned(resource);
         if (doiReservedOrAssigned && !isHttpPost()) {
-            addActionMessage(
+          addActionMessage(
               "The DOI reserved or registered for this resource is being used as the citation identifier");
         }
         break;
@@ -533,7 +489,8 @@ public class MetadataAction extends ManagerBaseAction {
         }
         break;
 
-      default: break;
+      default:
+        break;
     }
   }
 
@@ -541,13 +498,13 @@ public class MetadataAction extends ManagerBaseAction {
   public String save() throws Exception {
     // before saving, the minimum amount of mandatory metadata must have been provided, and the current metadata section
     // must be valid, otherwise an error is displayed
-    if (emlValidator.isSectionValid(this, resource, section)) {
+    if (emlValidator.isSectionValid(resource, section, new ActionErrorCollector(this), new StrutsI18n(this))) {
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[] {getText("submenu." + section.getName())}));
+      addActionMessage(getText("manage.success", new String[]{getText("submenu." + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
       // progress to next section, since save succeeded
@@ -594,7 +551,8 @@ public class MetadataAction extends ManagerBaseAction {
         case ADDITIONAL_SECTION:
           next = MetadataSection.BASIC_SECTION;
           break;
-        default: break;
+        default:
+          break;
       }
     } else {
       // stay on the same section, since save failed
@@ -607,16 +565,7 @@ public class MetadataAction extends ManagerBaseAction {
   @Override
   public void validateHttpPostOnly() {
     validatorRes.validate(this, resource);
-    emlValidator.validate(this, resource, section);
-  }
-
-  /**
-   * A list of dataset subtypes used to populate the dataset subtype dropdown on the Basic Metadata page.
-   *
-   * @return list of dataset subtypes
-   */
-  public Map<String, String> getDatasetSubtypes() {
-    return datasetSubtypes;
+    emlValidator.validate(resource, section, new ActionErrorCollector(this), new StrutsI18n(this));
   }
 
   /**
@@ -673,7 +622,7 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * Group dataset subtypes into 2 lists: one for checklist subtypes and the other for occurrence subtype keys.
-   * The way this grouping is done, is that DatasetSubtype Enum.name gets converted into vocabulary.identifier,
+   * The way this grouping is done is that DatasetSubtype Enum.name gets converted into vocabulary.identifier,
    * for ex: TAXONOMIC_IDENTIFIER -> taxonomiciIdentifier
    * As long as the DatasetSubtype is extended properly in accordance with the DatasetSubtype vocabulary, simply
    * updating the version of gbif-common-api dependency is the only change needed to update the subtype list.
@@ -726,28 +675,6 @@ public class MetadataAction extends ManagerBaseAction {
     return resource.hasCore() ? "true" : "false";
   }
 
-  /**
-   * On the basic metadata page, this map populates the update frequencies dropdown. The map is derived from the
-   * vocabulary <a href="http://rs.gbif.org/vocabulary/eml/update_frequency.xml">http://rs.gbif.org/vocabulary/eml/update_frequency.xml</a>.
-   *
-   * @return update frequencies map
-   */
-  public Map<String, String> getFrequencies() {
-    return frequencies;
-  }
-
-  /**
-   * @return the very first contact entered, or a new instance of Agent if no contacts exist yet. The first contact
-   * entered is considered the primary contact. Other contact forms can be entered by copying from the primary contact.
-   */
-  public Agent getPrimaryContact() {
-    return primaryContact;
-  }
-
-  public void setPrimaryContact(Agent primaryContact) {
-    this.primaryContact = primaryContact;
-  }
-
   public Map<String, String> getUserIdDirectories() {
     if (userIdDirectories == null) {
       loadDirectories(getText("eml.contact.noDirectory"));
@@ -757,18 +684,17 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * @return Properties from licenses properties file
-   *
-   * @throws InvalidConfigException if licenses properties file could not be loaded
+   * @throws InvalidConfigException if the licenses properties file could not be loaded
    */
   public static synchronized Properties licenseProperties() throws InvalidConfigException {
     if (licenseProperties == null) {
       Properties p = new Properties();
       try {
         p.load(MetadataAction.class.getResourceAsStream(LICENSES_PROPFILE_PATH));
-        LOG.debug("Loaded licenses from " + LICENSES_PROPFILE_PATH);
+        LOG.debug("Loaded licenses from {}", LICENSES_PROPFILE_PATH);
       } catch (IOException e) {
         throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
-          "Failed to load licenses from " + LICENSES_PROPFILE_PATH);
+            "Failed to load licenses from " + LICENSES_PROPFILE_PATH);
       } finally {
         licenseProperties = p;
       }
@@ -778,7 +704,6 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * @return Properties from directories properties file
-   *
    * @throws InvalidConfigException if directories properties file could not be loaded
    */
   public static synchronized Properties directoriesProperties() throws InvalidConfigException {
@@ -786,10 +711,10 @@ public class MetadataAction extends ManagerBaseAction {
       Properties p = new Properties();
       try {
         p.load(MetadataAction.class.getResourceAsStream(DIRECTORIES_PROPFILE_PATH));
-        LOG.debug("Loaded directories from " + DIRECTORIES_PROPFILE_PATH);
+        LOG.debug("Loaded directories from {}", DIRECTORIES_PROPFILE_PATH);
       } catch (IOException e) {
         throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_PROPERTIES_FILE,
-          "Failed to load directories from " + DIRECTORIES_PROPFILE_PATH);
+            "Failed to load directories from " + DIRECTORIES_PROPFILE_PATH);
       } finally {
         directoriesProperties = p;
       }
@@ -799,11 +724,10 @@ public class MetadataAction extends ManagerBaseAction {
 
   /**
    * Load license maps: #1) license names - used to populate select on Basic Metadata Page
-   *                    #2) license texts - used to populate text area on Basic Metadata Page
-   *                    #3) license URLs
+   * #2) license texts - used to populate text area on Basic Metadata Page
+   * #3) license URLs
    *
    * @param firstOption the default select option for the license names (e.g. no license selected)
-   *
    * @throws InvalidConfigException if the licenses properties file was badly configured
    */
   public static synchronized void loadLicenseMaps(String firstOption) throws InvalidConfigException {
@@ -823,7 +747,7 @@ public class MetadataAction extends ManagerBaseAction {
 
           if (keyMinusPrefix != null) {
             String licenseText =
-              StringUtils.trimToNull(properties.getProperty(LICENSE_TEXT_PROPERTY_PREFIX + keyMinusPrefix));
+                StringUtils.trimToNull(properties.getProperty(LICENSE_TEXT_PROPERTY_PREFIX + keyMinusPrefix));
             String licenseUrl =
                 StringUtils.trimToNull(properties.getProperty(LICENSE_URL_PROPERTY_PREFIX + keyMinusPrefix));
 
@@ -851,7 +775,6 @@ public class MetadataAction extends ManagerBaseAction {
    * Load directories map used to populate select on Basic Metadata Page
    *
    * @param firstOption the default select option for the directory names (e.g. no directory selected)
-   *
    * @throws InvalidConfigException if the directories properties file was badly configured
    */
   public static synchronized void loadDirectories(String firstOption) throws InvalidConfigException {
@@ -900,7 +823,7 @@ public class MetadataAction extends ManagerBaseAction {
       // contacts list
       Agent firstContact = null;
       if (!resource.getEml().getContacts().isEmpty()) {
-        for (Agent contact: resource.getEml().getContacts()) {
+        for (Agent contact : resource.getEml().getContacts()) {
           // capture first contact, used as primary contact to copy in contact form details
           if (firstContact == null) {
             firstContact = contact;
@@ -915,7 +838,7 @@ public class MetadataAction extends ManagerBaseAction {
         }
       }
 
-      // always populate the primary contact, used to auto-fill parties and project personnel
+      // always populate the primary contact, used to autofill parties and project personnel
       if (firstContact == null) {
         firstContact = new Agent();
       }
@@ -927,7 +850,7 @@ public class MetadataAction extends ManagerBaseAction {
 
       // creator list
       if (!resource.getEml().getCreators().isEmpty()) {
-        for (Agent creator: resource.getEml().getCreators()) {
+        for (Agent creator : resource.getEml().getCreators()) {
           String countryValue = creator.getAddress().getCountry();
           if (countryValue != null) {
             ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
@@ -937,7 +860,7 @@ public class MetadataAction extends ManagerBaseAction {
       }
       // metadata provider list
       if (!resource.getEml().getMetadataProviders().isEmpty()) {
-        for (Agent metadataProvider: resource.getEml().getMetadataProviders()) {
+        for (Agent metadataProvider : resource.getEml().getMetadataProviders()) {
           String countryValue = metadataProvider.getAddress().getCountry();
           if (countryValue != null) {
             ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
@@ -965,13 +888,6 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   /**
-   * @return list of organisations associated to IPT that can publish resources
-   */
-  public Map<String, String> getOrganisations() {
-    return organisations;
-  }
-
-  /**
    * Determine whether a DOI has been reserved or registered for the resource.
    *
    * @return true if a DOI has been reserved or registered for the resource, or false otherwise
@@ -990,37 +906,8 @@ public class MetadataAction extends ManagerBaseAction {
   }
 
   /**
-   * Populate organisations dropdown options/list, with placeholder option, followed by list of organisations able to
-   * host resources. There must be more than the default organisation "No organisation" in order to include the
-   * placeholder option.
-   */
-  private void loadOrganisations() {
-    List<Organisation> associatedOrganisations = registrationManager.list();
-    organisations = new LinkedHashMap<>();
-    if (!associatedOrganisations.isEmpty()) {
-
-      // add placeholder if there is more than the default organisation "No organisation"
-      if (associatedOrganisations.size() > 1) {
-        organisations.put("", getText("admin.organisation.name.select"));
-      }
-
-      // add default organisation "No organisation" as first option
-      Organisation noOrganisation = getDefaultOrganisation();
-      if (noOrganisation != null) {
-        organisations.put(noOrganisation.getKey().toString(), getText("eml.publishingOrganisation.none"));
-      }
-
-      // then add remaining organisations in the order they have been sorted, excluding the default organisation
-      for (Organisation o : associatedOrganisations) {
-        if (!Constants.DEFAULT_ORG_KEY.equals(o.getKey())) {
-          organisations.put(o.getKey().toString(), o.getName());
-        }
-      }
-    }
-  }
-
-  /**
-   * Remove all newline characters from string. Used to sanitize string for javascript, otherwise an
+   * Remove all newline characters from string.
+   * Used to sanitize string for JavaScript, otherwise an
    * "Unexpected Token ILLEGAL" error may occur.
    */
   protected String removeNewlineCharacters(String s) {
@@ -1030,16 +917,11 @@ public class MetadataAction extends ManagerBaseAction {
     return s;
   }
 
-  public InferredEmlMetadata getInferredMetadata() {
-    return inferredMetadata;
-  }
-
-  public void setFile(File file) {
-    this.file = file;
-  }
-
   public String uploadLogo() {
-    if (file != null) {
+    UploadedFile upload = requireSingleUpload();
+    File uploadedTempFile = (File) upload.getContent();
+
+    if (uploadedTempFile != null) {
       // remove any previous logo file
       for (String suffix : Constants.IMAGE_TYPES) {
         FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
@@ -1047,23 +929,40 @@ public class MetadataAction extends ManagerBaseAction {
       // inspect file type
       String type = "jpeg";
       String fileContentType = Optional.ofNullable(ActionContext.getContext())
-        .map(ActionContext::getParameters)
-        .map(p -> p.get("fileContentType"))
-        .map(Parameter::getValue)
-        .orElse(null);
+          .map(ActionContext::getParameters)
+          .map(p -> p.get("fileContentType"))
+          .map(Parameter::getValue)
+          .orElse(null);
 
       if (fileContentType != null) {
         type = StringUtils.substringAfterLast(fileContentType, "/");
       }
       File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
       try {
-        FileUtils.copyFile(file, logoFile);
+        FileUtils.copyFile(uploadedTempFile, logoFile);
       } catch (IOException e) {
         LOG.warn(e.getMessage());
       }
       // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
     }
     return INPUT;
+  }
+
+  private UploadedFile requireSingleUpload() {
+    if (uploadedFiles == null || uploadedFiles.isEmpty()) {
+      throw new IllegalArgumentException("Failed to upload logo");
+    }
+
+    UploadedFile upload = uploadedFiles.get(0);
+    if (upload == null || upload.getContent() == null) {
+      throw new IllegalArgumentException("Logo upload: file was empty");
+    }
+    return upload;
+  }
+
+  @Override
+  public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+    this.uploadedFiles = uploadedFiles;
   }
 
   /**
@@ -1075,9 +974,9 @@ public class MetadataAction extends ManagerBaseAction {
 
     @Override
     public int compare(String o1, String o2) {
-      if (StringUtils.equals(o1, o2)) {
+      if (Strings.CS.equals(o1, o2)) {
         return 0;
-      } else if (!StringUtils.equalsAny("cczero", o1, o2)) {
+      } else if (!Strings.CS.equalsAny("cczero", o1, o2)) {
         // if not cczero - just compare them
         return o1.compareTo(o2);
       } else if ("cczero".equals(o1) && !o2.isEmpty()) {

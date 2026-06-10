@@ -73,7 +73,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -99,7 +99,9 @@
 
                     <div class="text-center mt-2">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save" />
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back" />
+                        <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                            <@s.text name="button.back"/>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -134,7 +136,7 @@
                                                 <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></span>
                                             </a>
                                         </div>
-                                        <@input name="eml.keywords[${item_index}].keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
+                                        <@input name="eml.keywords[${item_index}].keywordThesaurus" value=(item.keywordThesaurus)! i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
                                         <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
                                         <#-- TODO: remove check for "null" after fixing problem in gbif-metadata-profile -->
                                         <#assign keywordList = item.keywordsString />
@@ -182,5 +184,7 @@
             </div>
         </div>
     </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

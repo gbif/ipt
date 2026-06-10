@@ -22,7 +22,7 @@ public class IptValidator extends BaseValidator {
 
   public void validate(BaseAction action, Ipt ipt) {
     validateBasic(action, ipt, "ipt");
-    if (ipt.getWsPassword() == null || ipt.getWsPassword().length() < 1) {
+    if (ipt.getWsPassword() == null || ipt.getWsPassword().isEmpty()) {
       action.addFieldError("ipt.wsPassword", action.getText("validation.ipt.password.required"));
     }
     if (ipt.getWsPassword() != null && ipt.getWsPassword().length() < 6) {
@@ -42,20 +42,20 @@ public class IptValidator extends BaseValidator {
 
 
   private void validateBasic(BaseAction action, Ipt ipt, String fieldPrefix) {
-    if (ipt.getName() == null || ipt.getName().length() < 1) {
+    if (ipt.getName() == null || ipt.getName().isEmpty()) {
       action.addFieldError(fieldPrefix + ".name", action.getText("validation.ipt.name.required"));
     }
     if (ipt.getName() != null && ipt.getName().length() < 3) {
       action.addFieldError(fieldPrefix + ".name", action.getText("validation.ipt.name.short"));
     }
-    if (ipt.getDescription() == null || ipt.getDescription().length() < 1) {
+    if (ipt.getDescription() == null || ipt.getDescription().isEmpty()) {
       action.addFieldError(fieldPrefix + ".description",
         action.getText("validation.required", new String[] {action.getText("basic.description")}));
     }
-    if (ipt.getPrimaryContactName() == null || ipt.getPrimaryContactName().length() < 1) {
+    if (ipt.getPrimaryContactName() == null || ipt.getPrimaryContactName().isEmpty()) {
       action.addFieldError(fieldPrefix + ".primaryContactName", action.getText("validation.ipt.contactName.required"));
     }
-    if (ipt.getPrimaryContactEmail() == null || ipt.getPrimaryContactEmail().length() < 1) {
+    if (ipt.getPrimaryContactEmail() == null || ipt.getPrimaryContactEmail().isEmpty()) {
       action.addFieldError(fieldPrefix + ".primaryContactEmail", action.getText("validation.ipt.contactEmail.required"));
     }
     if (ipt.getPrimaryContactEmail() != null && ipt.getPrimaryContactEmail().length() < 6) {

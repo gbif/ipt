@@ -20,18 +20,18 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.LocaleProvider;
-import com.opensymphony.xwork2.LocaleProviderFactory;
-import com.opensymphony.xwork2.inject.Container;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.inject.Container;
+import org.apache.struts2.locale.LocaleProvider;
+import org.apache.struts2.locale.LocaleProviderFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class BaseActionTest extends IptBaseTest {
@@ -50,25 +50,35 @@ public class BaseActionTest extends IptBaseTest {
    */
   @Test
   public void testGetLocaleOnActionContext() {
-    // Create a real ActionContext with a test ValueStack
-    HashMap<String, Object> contextMap = new HashMap<>();
-    Container mockContainer = mock(Container.class);
+    Map<String, Object> contextMap = new HashMap<>();
 
-    // Mocking only the required objects inside the container
-    LocaleProviderFactory mockLocaleProviderFactory = mock(LocaleProviderFactory.class);
-    LocaleProvider mockLocaleProvider = mock(LocaleProvider.class);
-    when(mockLocaleProvider.getLocale()).thenReturn(Locale.JAPANESE);
-    when(mockLocaleProviderFactory.createLocaleProvider()).thenReturn(mockLocaleProvider);
-    when(mockContainer.getInstance(LocaleProviderFactory.class)).thenReturn(mockLocaleProviderFactory);
+    Container container = mock(Container.class);
 
-    // Set up a real ActionContext
-    ActionContext testActionContext = ActionContext.of(contextMap);
-    testActionContext.withContainer(mockContainer);
+    LocaleProviderFactory localeProviderFactory = mock(LocaleProviderFactory.class);
+    LocaleProvider localeProvider = mock(LocaleProvider.class);
 
-    // Bind this new ActionContext to the current thread
-    ActionContext.bind(testActionContext);
+    when(localeProvider.getLocale()).thenReturn(Locale.JAPANESE);
+    when(localeProviderFactory.createLocaleProvider()).thenReturn(localeProvider);
+    when(container.getInstance(LocaleProviderFactory.class))
+        .thenReturn(localeProviderFactory);
 
-    BaseAction action = new BaseAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class));
-    assertEquals(Locale.JAPANESE, action.getLocale());
+    ActionContext actionContext = ActionContext.of(contextMap)
+        .withContainer(container);
+
+    ActionContext.bind(actionContext);
+
+    try {
+      BaseAction action = new BaseAction(
+          mock(SimpleTextProvider.class),
+          mock(AppConfig.class),
+          mock(RegistrationManager.class)
+      );
+
+      Locale locale = action.getLocale();
+
+      assertEquals(Locale.JAPANESE, locale);
+    } finally {
+      ActionContext.clear();
+    }
   }
 }

@@ -87,7 +87,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form id="geographic-scope-form" class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
+    <form id="geographic-scope-form track-unsaved" class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
         <div class="container-fluid bg-body border-bottom">
@@ -141,7 +141,7 @@
                     <div class="bd-content">
                         <div class="mb-md-3 ps-3 py-3">
                             <div class="mt-4">
-                                <@checkbox name="resource.inferGeocoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="i18n" value="${resource.inferGeocoverageAutomatically?c}" />
+                                <@checkbox name="resource.inferGeocoverageAutomatically" value=resource.inferGeocoverageAutomatically i18nkey="datapackagemetadata.infer.automatically" help="i18n"/>
                             </div>
 
                             <div id="actual-metadata-block" class="mt-3">
@@ -244,5 +244,7 @@
             </div>
         </div>
     </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

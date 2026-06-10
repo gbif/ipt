@@ -4,7 +4,7 @@
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script src="${baseURL}/js/docbook/docbook.js"></script>
+    <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
@@ -34,15 +34,6 @@
             var hasCore="${resourceHasCore!}";
             if (hasCore === "true") {
                 $("#resource\\.coreType").attr('disabled','disabled');
-            }
-
-            // publishing organisation selection is only disabled, if resource has been registered with GBIF or assigned a DOI (no matter if it's reserved or public).
-            var isRegisteredWithGBIF="${resource.key!}";
-            var isAssignedDOI="${resource.doi!}";
-            if (isRegisteredWithGBIF !== "") {
-                $("#id").attr('disabled','disabled');
-            } else if (isAssignedDOI !== "") {
-                $("#id").attr('disabled','disabled');
             }
 
             function getList(list){
@@ -109,31 +100,30 @@
             $("#eml\\.intellectualRights\\.license").change(function() {
                 $('.confirm').unbind('click');
 
-                var nameRights=$("#eml\\.intellectualRights\\.license").val();
+                var nameRights = $("#eml\\.intellectualRights\\.license").val();
                 $("#eml\\.intellectualRights\\.license").val(nameRights);
 
-                if(nameRights) {
-
+                if (nameRights) {
                     var licenseText=$("input:text#" + nameRights).val();
 
                     if (licenseText) {
-                        $("#intellectualRightsDiv").html(licenseText);
+                        $("#intellectualRightsDiv .cc_text").html(licenseText);
                         $("#intellectualRightsDiv").show();
                         $("#intellectualRights").val(licenseText);
                         $("#eml\\.intellectualRights").val(licenseText);
 
-                        $("#disclaimerRigths").css('display', '');
+                        $("#disclaimerRights").css('display', '');
                     }
-
                 } else {
-                    $("#intellectualRightsDiv").html('');
+                    $("#intellectualRightsDiv .cc_text").html('');
                     $("#intellectualRightsDiv").hide();
 
                     $("#intellectualRights").val('');
-                    $("#disclaimerRigths").css('display', 'none');
+                    $("#disclaimerRights").css('display', 'none');
                     $("#eml\\.intellectualRights").val('');
                 }
-            });// end intellectual rights
+            });
+            // end intellectual rights
 
             $('#metadata-section').change(function () {
                 var metadataSection = $('#metadata-section').find(':selected').val()
@@ -169,17 +159,6 @@
                 },
                 width: "100%",
                 minimumResultsForSearch: 'Infinity',
-                theme: 'bootstrap4'
-            });
-            $('select#id').select2({
-                placeholder: '${action.getText("admin.organisation.name.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                minimumResultsForSearch: 15,
                 theme: 'bootstrap4'
             });
             $('select#eml\\.language').select2({
@@ -227,17 +206,30 @@
                 theme: 'bootstrap4'
             });
 
-            var docBookDescription = `${eml.description!}`;
+            var docBookDescription = "${eml.description!?js_string}";
             var htmlDescription = convertToHtml(docBookDescription);
 
-            $('#description-editor').summernote({
+            const descriptionEditor = $('#description-editor');
+            descriptionEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: false,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        descriptionEditor.summernote('focus');
+                        descriptionEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
             $('#description-editor').summernote('code', htmlDescription);
@@ -323,7 +315,7 @@
     </div>
 </div>
 
-<form id="basic-metadata-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+<form id="basic-metadata-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
     <input type="hidden" name="r" value="${resource.shortname}" />
 
     <div class="container-fluid bg-body border-bottom">
@@ -359,7 +351,10 @@
 
                 <div class="text-center mt-2">
                     <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                    <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                        <@s.text name="button.back"/>
+                    </button>
+
                 </div>
             </div>
         </div>
@@ -382,22 +377,23 @@
 
                         <div class="row g-3">
                             <div class="col-12">
-                                <@input name="eml.title" help="i18n" requiredField=true />
+                                <@input name="eml.title" value=eml.title! help="i18n" requiredField=true />
                             </div>
                         </div>
 
                         <div class="row g-3 mt-0">
                             <div class="col-lg-6">
-                                <@input name="eml.shortName" help="i18n" />
+                                <@input name="eml.shortName" value=eml.shortName! help="i18n" />
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="col-lg-6">
-                                <#if resource.organisation??>
-                                    <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations value="${resource.organisation.key!''}" requiredField=true />
-                                <#else>
-                                    <@select name="id" i18nkey="eml.publishingOrganisation" help="i18n" options=organisations requiredField=true />
-                                </#if>
-                            </div>
+                    <div class="my-0 px-3 py-0">
+                        <div class="callout callout-info text-smaller">
+                            <@s.text name="manage.metadata.basic.organisation.moved"/>
+                            <a href="${baseURL}/manage/publication-settings.do?r=${resource.shortname}" target="_blank">
+                                <@s.text name="manage.publicationSettings.title"/>
+                            </a>.
                         </div>
                     </div>
 
@@ -433,20 +429,24 @@
                             <div class="col-12">
                                 <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" requiredField=true/>
 
-                                <div id="intellectualRightsDiv" class="mt-3 p-3 fs-smaller">
-                                    <@licenseLogoClass eml.intellectualRights!/>
+                                <div id="intellectualRightsDiv" class="mt-3 p-3 fs-smaller cc_main_container">
+                                    <div class="cc_logo">
+                                        <@licenseLogoClass eml.intellectualRights!/>
+                                    </div>
 
-                                    <#if eml.intellectualRights?has_content>
-                                        <#if eml.intellectualRights.contains("CC-BY-NC")>
-                                            <@s.text name='eml.intellectualRights.licence.ccbync'/>
-                                        <#elseif eml.intellectualRights.contains("CC-BY")>
-                                            <@s.text name='eml.intellectualRights.licence.ccby'/>
-                                        <#elseif eml.intellectualRights.contains("CC0")>
-                                            <@s.text name='eml.intellectualRights.licence.cczero'/>
-                                        <#else>
-                                            ${eml.intellectualRights!}
+                                    <div class="cc_text">
+                                        <#if eml.intellectualRights?has_content>
+                                            <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                                <@s.text name='eml.intellectualRights.licence.ccbync'/>
+                                            <#elseif eml.intellectualRights.contains("CC-BY")>
+                                                <@s.text name='eml.intellectualRights.licence.ccby'/>
+                                            <#elseif eml.intellectualRights.contains("CC0")>
+                                                <@s.text name='eml.intellectualRights.licence.cczero'/>
+                                            <#else>
+                                                ${eml.intellectualRights!}
+                                            </#if>
                                         </#if>
-                                    </#if>
+                                    </div>
                                 </div>
                                 <!-- internal parameter -->
                                 <input id="eml.intellectualRights" name="eml.intellectualRights" type="hidden" value="${eml.intellectualRights!}" />
@@ -456,7 +456,7 @@
                                     <input type="text" id="${k}" value="${licenseTexts[k]}" style="display: none"/>
                                 </#list>
 
-                                <div id='disclaimerRigths' style='display: none'>
+                                <div id='disclaimerRights' style='display: none'>
                                     <p class="mt-3">
                                         <@s.text name='eml.intellectualRights.license.disclaimer'/>
                                     </p>
@@ -487,7 +487,7 @@
                         <div class="row g-3 mt-0">
                             <div class="col-12">
                                 <!-- Maintenance Update Frequency -->
-                                <@text name="eml.updateFrequencyDescription" i18nkey="eml.updateFrequencyDescription" help="i18n" />
+                                <@text name="eml.updateFrequencyDescription" value=eml.updateFrequencyDescription! i18nkey="eml.updateFrequencyDescription" help="i18n" />
                             </div>
                         </div>
                     </div>
@@ -497,4 +497,6 @@
     </div>
 </form>
 
-    <#include "/WEB-INF/pages/inc/footer.ftl">
+<#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
+
+<#include "/WEB-INF/pages/inc/footer.ftl">

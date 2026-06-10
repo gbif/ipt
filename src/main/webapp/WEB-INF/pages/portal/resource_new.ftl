@@ -163,8 +163,8 @@
     }
 </style>
 
-<script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
+<script src="${baseURL}/js/docbook/docbook-v2.js"></script>
 <script>
     $(document).ready(function() {
         // spy scroll and manage sidebar menu
@@ -192,6 +192,23 @@
                 }
             });
         })
+
+        function renderDocBook(fieldValue, elementId) {
+            if (!fieldValue || fieldValue.trim().length === 0) return;
+
+            const el = document.getElementById(elementId);
+            if (el) el.innerHTML = convertToHtml(fieldValue);
+        }
+
+        const fields = [
+            { value: '${eml.description!}',      id: 'description-container' },
+            { value: '${eml.introduction!}',     id: 'introduction-container' },
+            { value: '${eml.purpose!}',          id: 'purpose-container' },
+            { value: '${eml.acknowledgements!}', id: 'acknowledgements-container' },
+            { value: '${eml.gettingStarted!}',   id: 'gettingStarted-container' }
+        ];
+
+        fields.forEach(f => renderDocBook(f.value, f.id));
     })
 </script>
 
@@ -399,7 +416,7 @@
                                                     <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                                     <@s.text name='portal.resource.download'/>
                                                 </a>
-                                                <#if !resource.dataPackageIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?c?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
+                                                <#if !resource.dataPackageIdentifier??>${resource.recordsPublished!0?c} <@s.text name='portal.resource.records'/>&nbsp;</#if><#if eml.language?has_content && languages[eml.language]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.language]?cap_first!}</@s.param></@s.text></#if> (${dwcaSizeForVersion!})<#if eml.updateFrequency?has_content && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content>&nbsp;-&nbsp;${updateFrequencyTitle?lower_case?cap_first}:&nbsp;${frequencies[eml.updateFrequency.identifier]?lower_case}</#if>
                                             </td>
                                         </#if>
                                     </tr>
@@ -498,7 +515,7 @@
                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name='portal.resource.description'/>
                     </h4>
-                    <div property="dc:abstract" class="mt-3 overflow-x-auto">
+                    <div id="description-container" property="dc:abstract" class="mt-3 overflow-x-auto">
                         <#if (eml.description??)>
                             <@eml.description?interpret />
                         <#else>
@@ -1092,25 +1109,33 @@
                                     <#if eml.acknowledgements?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='manage.metadata.acknowledgements'/></th>
-                                            <td><@eml.acknowledgements?interpret /></td>
+                                            <td>
+                                                <div id="acknowledgements-container"></div>
+                                            </td>
                                         </tr>
                                     </#if>
                                     <#if eml.introduction?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='manage.metadata.introduction'/></th>
-                                            <td><@eml.introduction?interpret /></td>
+                                            <td>
+                                                <div id="introduction-container"></div>
+                                            </td>
                                         </tr>
                                     </#if>
                                     <#if eml.gettingStarted?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='manage.metadata.gettingStarted'/></th>
-                                            <td><@eml.gettingStarted?interpret /></td>
+                                            <td>
+                                                <div id="gettingStarted-container"></div>
+                                            </td>
                                         </tr>
                                     </#if>
                                     <#if eml.purpose?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.purpose'/></th>
-                                            <td><@eml.purpose?interpret /></td>
+                                            <td>
+                                                <div id="purpose-container"></div>
+                                            </td>
                                         </tr>
                                     </#if>
                                     <#if eml.updateFrequencyDescription?has_content>
@@ -1152,7 +1177,8 @@
         question : "<@s.text name='portal.resource.confirm.delete.version'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
         yesAnswer : "<@s.text name='basic.yes'/>",
         cancelAnswer : "<@s.text name='basic.no'/>",
-        buttonType: "danger"
+        buttonType: "danger",
+        baseUrl: "${baseURL}"
     });
 
     $(function() {

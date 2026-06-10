@@ -3,6 +3,7 @@
   "extends": [
     "config:base"
   ],
+  "baseBranches": ["dev"],
   "automerge": true,
   "automergeType": "pr",
   "packageRules": [
@@ -18,10 +19,14 @@
     {
       "matchPackageNames": ["com.microsoft.sqlserver:mssql-jdbc"],
       "versioning": "regex:^(?<major>\\d+)(\\.(?<minor>\\d+))?(\\.(?<patch>\\d+))?(\\.(?<compatibility>.*))?$",
-      "description": "Take into account mssql-jdbc compatibility suffix (jre8 currently)"
+      "description": "Take into account mssql-jdbc compatibility suffix (jre11 currently)"
     },
     {
       "matchPackageNames": ["com.google.guava:guava"],
+      "automerge": false
+    },
+    {
+      "matchPackageNames": ["jakarta.servlet:jakarta.servlet-api"],
       "automerge": false
     },
     {

@@ -11,7 +11,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.model.datapackage.metadata;
+package org.gbif.ipt.i18n;
 
-public interface Source {
+import org.gbif.ipt.action.BaseAction;
+
+public class StrutsI18n implements I18n {
+
+  private final BaseAction action;
+
+  public StrutsI18n(BaseAction action) {
+    this.action = action;
+  }
+
+  @Override
+  public String getText(String key) {
+    return action.getText(key);
+  }
+
+  @Override
+  public String getText(String key, String... args) {
+    return action.getText(key, args);
+  }
 }

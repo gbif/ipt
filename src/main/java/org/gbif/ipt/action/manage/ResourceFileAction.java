@@ -20,11 +20,12 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import javax.inject.Inject;
+import java.io.Serial;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,10 +37,10 @@ import lombok.Getter;
  */
 public class ResourceFileAction extends ManagerBaseAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(ResourceFileAction.class);
-
+  @Serial
   private static final long serialVersionUID = -3304799051086050164L;
+
+  private static final Logger LOG = LogManager.getLogger(ResourceFileAction.class);
 
   private final DataDir dataDir;
   @Getter

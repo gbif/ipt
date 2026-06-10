@@ -48,9 +48,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.opensymphony.xwork2.DefaultLocaleProviderFactory;
-import com.opensymphony.xwork2.LocaleProviderFactory;
-import com.opensymphony.xwork2.inject.Container;
+import org.apache.struts2.inject.Container;
+import org.apache.struts2.locale.DefaultLocaleProviderFactory;
+import org.apache.struts2.locale.LocaleProviderFactory;
 
 import freemarker.template.TemplateException;
 
@@ -159,7 +159,7 @@ public class ResourceActionTest extends IptBaseTest {
     when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
     action = new ResourceAction(textProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
-      mockDataDir, mock(ExtensionManager.class), mock(MetadataReader.class));
+        mockDataDir, mock(ExtensionManager.class), mock(MetadataReader.class));
     action.setResource(resource);
     action.setContainer(container);
   }
@@ -167,7 +167,7 @@ public class ResourceActionTest extends IptBaseTest {
   @Test
   public void testSetOrganizedTaxonomicCoverages() {
     List<OrganizedTaxonomicCoverage> coverages =
-      action.constructOrganizedTaxonomicCoverages(resource.getEml().getTaxonomicCoverages());
+        action.constructOrganizedTaxonomicCoverages(resource.getEml().getTaxonomicCoverages());
     assertEquals(1, coverages.size());
     assertEquals(3, coverages.get(0).getKeywords().size());
     assertEquals("Plantae (Plants)", coverages.get(0).getKeywords().get(0).getDisplayNames().get(0));
@@ -251,7 +251,7 @@ public class ResourceActionTest extends IptBaseTest {
     // simulate manager being logged in
     Map<String, Object> session = new HashMap<>();
     session.put(Constants.SESSION_USER, MANAGER);
-    action.setSession(session);
+    action.withSession(session);
 
     assertNotNull(action.getCurrentUser());
 

@@ -1,5 +1,5 @@
 # Use this section for releases
-%define nr_ver 3.1.7
+%define nr_ver 3.3.2
 %define nr_ver_extra 1
 %define source0url https://repository.gbif.org/repository/gbif/org/gbif/ipt/%{nr_ver}/ipt-%{nr_ver}.war
 # Use this section for release candidates
@@ -25,11 +25,7 @@ BuildArch: noarch
 
 BuildRequires: systemd-rpm-macros
 
-%if 0%{?el7}
-Requires: java >= 1:1.8.0
-%else
-Requires: java-11-headless >= 10.0.0
-%endif
+Requires: java-headless >= 17
 Requires: jetty-runner
 
 Requires(pre): /usr/sbin/useradd, /usr/bin/getent

@@ -32,13 +32,14 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
 import org.apache.commons.lang3.RegExUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.hibernate.validator.HibernateValidator;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -68,7 +69,7 @@ public class DataPackageMetadataValidator {
    * Validate that all metadata sections are valid. For the first section encountered that doesn't validate, an
    * error message will appear for that section only.
    *
-   * @param action Action
+   * @param action   Action
    * @param metadata metadata
    */
   public void validate(BaseAction action, DataPackageMetadata metadata) throws InvalidMetadataException {
@@ -99,7 +100,7 @@ public class DataPackageMetadataValidator {
     boolean problemsEncountered = false;
     validate(action, resource, section);
     if ((action.hasActionErrors() || action.hasFieldErrors())) {
-      action.addActionError(action.getText("manage.failed", new String[] {action.getText("submenu.datapackagemetadata.camtrap." + section.getName())}));
+      action.addActionError(action.getText("manage.failed", new String[]{action.getText("submenu.datapackagemetadata.camtrap." + section.getName())}));
       problemsEncountered = true;
     }
     return !problemsEncountered;
@@ -110,9 +111,9 @@ public class DataPackageMetadataValidator {
    * </br>
    * For each section, validation only proceeds if at least one field in the section's form has been entered.
    *
-   * @param action BaseAction
+   * @param action   BaseAction
    * @param resource resource
-   * @param section EML document section name
+   * @param section  EML document section name
    */
   public void validate(BaseAction action, Resource resource, @Nullable DataPackageMetadataSection section) {
     if (resource != null) {
@@ -131,9 +132,9 @@ public class DataPackageMetadataValidator {
    * </br>
    * For each section, validation only proceeds if at least one field in the section's form has been entered.
    *
-   * @param action BaseAction
+   * @param action   BaseAction
    * @param metadata data package metadata
-   * @param section EML document section name
+   * @param section  EML document section name
    */
   public void validateCamtrap(BaseAction action, CamtrapMetadata metadata, @Nullable CamtrapMetadataSection section) {
     // set default
@@ -147,7 +148,7 @@ public class DataPackageMetadataValidator {
             = validator.validate(metadata, BasicMetadata.class);
 
         for (ConstraintViolation<DataPackageMetadata> violation : basicSectionViolations) {
-          if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
+          if (Strings.CS.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
             action.addActionError(action.getText(violation.getMessage()));
           } else {
             if (violation.getMessage().equals("validation.datapackage.metadata.license.name.required")) {
@@ -234,9 +235,9 @@ public class DataPackageMetadataValidator {
    * </br>
    * For each section, validation only proceeds if at least one field in the section's form has been entered.
    *
-   * @param action BaseAction
+   * @param action   BaseAction
    * @param metadata data package metadata
-   * @param section EML document section name
+   * @param section  EML document section name
    */
   public void validateFrictionless(BaseAction action, DataPackageMetadata metadata, @Nullable FrictionlessMetadataSection section) {
     // set default
@@ -246,18 +247,18 @@ public class DataPackageMetadataValidator {
 
     if (section == FrictionlessMetadataSection.BASIC_SECTION) {
       Set<ConstraintViolation<DataPackageMetadata>> basicSectionViolations
-        = validator.validate(metadata, BasicMetadata.class);
+          = validator.validate(metadata, BasicMetadata.class);
 
       for (ConstraintViolation<DataPackageMetadata> violation : basicSectionViolations) {
-        if (StringUtils.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
+        if (Strings.CS.equalsAny(violation.getPropertyPath().toString(), "licenses", "licenses.name", "contributors", "sources")) {
           action.addActionError(action.getText(violation.getMessage()));
         } else {
           if (violation.getMessage().equals("validation.datapackage.metadata.license.name.required")) {
             // remove all characters, we need the index
             String index = RegExUtils.removeAll(violation.getPropertyPath().toString(), "[a-zA-z.\\[\\]]*");
             action.addFieldError(
-              "metadata.licenses[" + index + "].name",
-              action.getText(action.getText(violation.getMessage()))
+                "metadata.licenses[" + index + "].name",
+                action.getText(action.getText(violation.getMessage()))
             );
           } else {
             addDefaultFieldError(action, violation);
@@ -270,7 +271,7 @@ public class DataPackageMetadataValidator {
   /**
    * Validate ColMetadata.
    *
-   * @param action BaseAction
+   * @param action   BaseAction
    * @param metadata col metadata
    */
   public void validateColMetadata(BaseAction action, ColMetadata metadata) {
@@ -296,9 +297,7 @@ public class DataPackageMetadataValidator {
   }
 
   private void validateVernacularNames(BaseAction action, DataPackageMetadata metadata) {
-    if (metadata instanceof CamtrapMetadata) {
-      CamtrapMetadata camtrapMetadata = (CamtrapMetadata) metadata;
-
+    if (metadata instanceof CamtrapMetadata camtrapMetadata) {
       List<Taxonomic> taxonomics = camtrapMetadata.getTaxonomic();
 
       for (int taxonomicIndex = 0; taxonomicIndex < taxonomics.size(); taxonomicIndex++) {
@@ -312,8 +311,8 @@ public class DataPackageMetadataValidator {
         for (int vernacularNameIndex = 0; vernacularNameIndex < listKeys.size(); vernacularNameIndex++) {
           if (!VERNACULAR_NAME_KEY_PATTERN.matcher(listKeys.get(vernacularNameIndex)).matches()) {
             action.addFieldError(
-              "vernacularNames-key-" + taxonomicIndex + "-" + vernacularNameIndex,
-              action.getText("validation.camtrap.metadata.taxonomic.vernacularNames"));
+                "vernacularNames-key-" + taxonomicIndex + "-" + vernacularNameIndex,
+                action.getText("validation.camtrap.metadata.taxonomic.vernacularNames"));
           }
         }
       }

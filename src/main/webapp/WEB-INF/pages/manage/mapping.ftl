@@ -26,6 +26,11 @@
         .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
              line-height: 1.5;
         }
+
+        .popover {
+            width: 50%;
+            max-width: 600px;
+        }
     </style>
     <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
     <script>
@@ -124,7 +129,14 @@
                 hideRedundantGroups();
             }
 
-            $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger"});
+            $('.confirm').jConfirmAction({
+                titleQuestion: "<@s.text name="basic.confirm"/>",
+                question: "<@s.text name ="manage.mapping.confirmation.message"/>",
+                yesAnswer: "<@s.text name="basic.yes"/>",
+                cancelAnswer: "<@s.text name="basic.no"/>",
+                buttonType: "danger",
+                baseUrl: "${baseURL}"
+            });
 
             $("#save").on("click", displayProcessing);
 
@@ -333,13 +345,13 @@
 <#macro threeButtons>
     <div class="col-12 my-3">
         <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-        <@s.submit cssClass="confirm btn btn-outline-gbif-danger" name="delete" key="button.delete"/>
+        <@s.submit cssClass="confirm btn btn-outline-gbif-danger" name="deleteFlag" key="button.delete"/>
         <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
     </div>
 </#macro>
 
 <#macro sourceSample index fieldsIndex>
-    <div id="fSIdx${fieldsIndex}" class="text-collapse sample mappingText mx-lg-3">
+    <div id="fSIdx${fieldsIndex}" class="text-collapse sample mappingText mx-lg-4">
         <@s.text name='manage.mapping.sourceSample' />:
         <em>
             <#list peek! as row>
@@ -380,80 +392,102 @@
     <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
 
     <div class="row py-1 g-1 mappingRow border-bottom text-smaller">
-            <div class="col-lg-4 pt-1">
+        <div class="col-lg-4 pt-1">
+            <div class="d-flex align-items-start gap-2 mappingRow">
                 <#assign fieldPopoverInfo>
-                    <#if p.description?has_content><@processSurroundedWithBackticksAsCode p.description /><br/><br/></#if>
+                    <#if p.qualifiedName()?has_content><a href="${p.qualifiedName()}">${p.qualifiedName()}</a><#else>${p.name!}</#if><br/><br/>
+                    <#if (p.translations[currentLocale].description)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].description/><br/><br/><#elseif p.description?has_content>${p.description}<br/><br/></#if>
+                    <#if (p.translations[currentLocale].comments)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].comments/><br/><br/><#elseif p.comments?has_content>${p.comments}<br/><br/></#if>
                     <#if p.vocabulary??><@s.text name="extension.vocabulary"/> <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">${p.vocabulary.title!}</a><br/><br/></#if>
                     <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
                     <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><br/><br/></#if>
-                    <#if p.examples?has_content>
+                    <#if (p.translations[currentLocale].examples)?has_content>
+                        <em><@s.text name="basic.examples"/></em>:
+                        <@processSurroundedWithBackticksAsCode p.translations[currentLocale].examples />
+                    <#elseif p.examples?has_content>
                         <em><@s.text name="basic.examples"/></em>:
                         <@processSurroundedWithBackticksAsCode p.examples />
                     </#if>
                 </#assign>
                 <@popoverTextInfo fieldPopoverInfo />
 
-                <strong>
-                    <#if !p.namespace()?starts_with("http://purl.org/dc/")>
-                        ${p.name}
-                    <#elseif p.namespace()?starts_with("http://purl.org/dc/terms")>
-                        dcterms:${p.name}
-                    <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>
-                        dc:${p.name}
-                    </#if>
-                    <span class="text-gbif-danger"><#if p.required>&#42;</#if></span>
-                </strong>
-            </div>
-
-            <div class="col-lg-4">
-                <select id="fIdx${fieldsIndex}" class="fidx form-select form-select-sm" name="fields[${fieldsIndex}].index">
-                    <option value="" <#if !field.index??> selected="selected"</#if>></option>
-                    <#list columns as col>
-                        <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
-                    </#list>
-                </select>
-            </div>
-
-            <div class="col-lg-4">
-                <#if p.vocabulary??>
-                    <#assign vocab=vocabTerms[p.vocabulary.uriString] />
-
-                    <div class="input-group input-group-sm">
-                        <select id="fVal${fieldsIndex}" class="fval fval-select form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
-                            <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
-                            <#list vocab?keys as code>
-                                <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>
-                            </#list>
-                        </select>
+                <div class="field-label">
+                    <div class="field-label__main">
+                        <strong>
+                            ${(p.translations[currentLocale].label)!p.label!p.name}
+                            <span class="text-gbif-danger"><#if p.required>&#42;</#if></span>
+                        </strong>
                     </div>
-                <#else>
-                    <input id="fVal${fieldsIndex}" class="fval form-control form-control-sm" name="fields[${fieldsIndex}].defaultValue" value="${field.defaultValue!}"/>
-                </#if>
+                    <div class="field-label__original">
+                        <small>
+                            <i>
+                                <#if p.namespace()?starts_with("http://rs.tdwg.org/dwc/terms/")>
+                                    dwc:${p.name}
+                                <#elseif p.namespace()?starts_with("http://purl.org/dc/terms")>
+                                    dcterms:${p.name}
+                                <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>
+                                    dc:${p.name}
+                                <#elseif p.namespace()?starts_with("http://rs.tdwg.org/ac/terms/")>
+                                    ac:${p.name}
+                                <#else>
+                                    ${p.name}
+                                </#if>
+                            </i>
+                        </small>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <#if field.index??>
-                <small><@sourceSample field.index fieldsIndex/></small>
-                <div id="fTIdx${fieldsIndex}" class="sample mappingText">
-                    <small class="mx-lg-3"><@s.text name='manage.mapping.translation' />:</small>
-                    <small>
-                        <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
-                            <#if (((field.translation?size)!0)>0)>
-                                ${(field.translation?size)!0} terms
-                            <#else>
-                                <@s.text name="button.add"/>
-                            </#if>
-                        </a>
-                    </small>
-                </div>
-            </#if>
+        <div class="col-lg-4">
+            <select id="fIdx${fieldsIndex}" class="fidx form-select form-select-sm" name="fields[${fieldsIndex}].index">
+                <option value="" <#if !field.index??> selected="selected"</#if>></option>
+                <#list columns as col>
+                    <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
+                </#list>
+            </select>
+        </div>
 
-            <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
-                <div class="sample mappingText">
-                    <#-- option to use DOI as datasetID -->
-                    <@datasetDoiCheckbox idAttr="cVal${fieldsIndex}" name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" classAttr="cval datasetDoiCheckbox form-check-input" requiredField=false value="${doiUsedForDatasetId?string}" errorfield="" />
+        <div class="col-lg-4">
+            <#if p.vocabulary??>
+                <#assign vocab=vocabTerms[p.vocabulary.uriString] />
+
+                <div class="input-group input-group-sm">
+                    <select id="fVal${fieldsIndex}" class="fval fval-select form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
+                        <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
+                        <#list vocab?keys as code>
+                            <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>
+                        </#list>
+                    </select>
                 </div>
+            <#else>
+                <input id="fVal${fieldsIndex}" class="fval form-control form-control-sm" name="fields[${fieldsIndex}].defaultValue" value="${field.defaultValue!}"/>
             </#if>
         </div>
+
+        <#if field.index??>
+            <small><@sourceSample field.index fieldsIndex/></small>
+            <div id="fTIdx${fieldsIndex}" class="sample mappingText">
+                <small class="mx-lg-4"><@s.text name='manage.mapping.translation' />:</small>
+                <small>
+                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
+                        <#if (((field.translation?size)!0)>0)>
+                            ${(field.translation?size)!0} terms
+                        <#else>
+                            <@s.text name="button.add"/>
+                        </#if>
+                    </a>
+                </small>
+            </div>
+        </#if>
+
+        <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
+            <div class="sample mappingText">
+                <#-- option to use DOI as datasetID -->
+                <@datasetDoiCheckbox idAttr="cVal${fieldsIndex}" name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" classAttr="cval datasetDoiCheckbox form-check-input" requiredField=false value="${doiUsedForDatasetId?string}" errorfield="" />
+            </div>
+        </#if>
+    </div>
 </#macro>
 
 <form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
@@ -489,7 +523,6 @@
                 </div>
 
                 <h5 property="dc:title" class="rtitle pt-2 text-gbif-header fs-2 fw-400 text-center">
-<#--                    <@popoverPropertyInfo "manage.mapping.intro"/>-->
                     <@s.text name='manage.mapping.title'/>
                 </h5>
 
@@ -506,7 +539,7 @@
 
                 <div class="mt-2">
                     <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                    <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="delete" key="button.delete"/>
+                    <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="deleteFlag" key="button.delete"/>
                     <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
                 </div>
 
@@ -565,7 +598,7 @@
 
                     <div class="d-flex align-content-between" style="margin-left: -10px;">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary me-1" name="save" key="button.save"/>
-                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger me-1" name="delete" key="button.delete"/>
+                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger me-1" name="deleteFlag" key="button.delete"/>
                         <@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/>
                     </div>
                 </nav>
@@ -598,18 +631,24 @@
                         <div class="col-lg-4 pt-1" id="coreID">
                             <#if coreid??>
                                 <#assign text1>
-                                    <#if coreid.description?has_content>${coreid.description}</#if>
-                                    <#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}" target="_blank">${coreid.link}</a></#if>
+                                    <#if coreid.qualifiedName()?has_content><a href="${coreid.qualifiedName()}">${coreid.qualifiedName()}</a><#else>${coreid.name!}</#if><br/><br/>
+                                    <#if (coreid.translations[currentLocale].description)?has_content><@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].description/><br/><br/><#elseif coreid.description?has_content>${coreid.description}<br/><br/></#if>
+                                    <#if (coreid.translations[currentLocale].comments)?has_content><@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].comments/><br/><br/><#elseif coreid.comments?has_content>${coreid.comments}<br/><br/></#if>
+                                    <#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}" target="_blank">${coreid.link}</a><br/><br/></#if>
                                     <span class="idSuffix">
-                                    <@s.text name='manage.mapping.info.linenumbers'/>
-                                </span>
-                                    <#if coreid.examples?has_content>
-                                        <em><@s.text name="basic.examples"/></em>: <code>${coreid.examples}</code>
+                                        <@s.text name='manage.mapping.info.linenumbers'/>
+                                    </span>
+                                    <#if (coreid.translations[currentLocale].examples)?has_content>
+                                        <em><@s.text name="basic.examples"/></em>:
+                                        <@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].examples />
+                                    <#elseif coreid.examples?has_content>
+                                        <em><@s.text name="basic.examples"/></em>:
+                                        <@processSurroundedWithBackticksAsCode coreid.examples />
                                     </#if>
                                 </#assign>
                                 <@popoverTextInfo text1/>
                             </#if>
-                            <strong>${coreid.name!"Record ID"}</strong>
+                            <strong class="ps-1">${(coreid.translations[currentLocale].label)!coreid.label!coreid.name!"Record ID"}</strong>
                         </div>
 
                         <div class="col-lg-4">
@@ -642,7 +681,7 @@
                         <div class="row pt-2 pb-3 g-2 mappingFiler">
                             <div class="col-lg-1 pt-1" id="filter">
                                 <@popoverPropertyInfo "manage.mapping.info" />
-                                <strong><@s.text name='manage.mapping.filter'/></strong>
+                                <strong class="ps-1"><@s.text name='manage.mapping.filter'/></strong>
                             </div>
 
                             <div class="col-lg-3">

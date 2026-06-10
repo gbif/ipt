@@ -14,14 +14,15 @@
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
-import org.gbif.ipt.model.datapackage.metadata.License;
 import org.gbif.ipt.validation.BasicMetadata;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -35,6 +36,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CamtrapLicense extends FrictionlessLicense {
 
+  @Serial
   private final static long serialVersionUID = -6253983938937199264L;
 
   /**
@@ -106,9 +108,9 @@ public class CamtrapLicense extends FrictionlessLicense {
     }
   }
 
-  public static class CamtrapLicenseDeserializer extends JsonDeserializer<License> {
+  public static class CamtrapLicenseDeserializer extends JsonDeserializer<CamtrapLicense> {
     @Override
-    public License deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public CamtrapLicense deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
       return jsonParser.getCodec().treeToValue(node, CamtrapLicense.class);
     }

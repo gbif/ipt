@@ -13,12 +13,13 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
-
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
+
+import jakarta.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -28,6 +29,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Ipt extends AgentBase implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 78945123624747L;
 
   private UUID organisationKey;
@@ -42,15 +44,6 @@ public class Ipt extends AgentBase implements Serializable {
   @Nullable
   public Date getCreated() {
     return created;
-  }
-
-  /**
-   * @return the description
-   */
-  @Override
-  @Nullable
-  public String getDescription() {
-    return description;
   }
 
   /**

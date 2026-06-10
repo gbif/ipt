@@ -13,7 +13,10 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.col;
 
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessSource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -21,5 +24,5 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * Frictionless metadata for ColDP.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class FrictionlessColMetadata extends FrictionlessMetadata {
+public class FrictionlessColMetadata extends FrictionlessMetadata<FrictionlessContributor, FrictionlessLicense, FrictionlessSource> {
 }

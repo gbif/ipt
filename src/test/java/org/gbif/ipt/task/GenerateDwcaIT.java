@@ -77,7 +77,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+
 import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -115,7 +116,8 @@ public class GenerateDwcaIT extends IptBaseTest {
 
     private String password;
 
-    public DbConfiguration() {}
+    public DbConfiguration() {
+    }
 
     public void setUsername(String username) {
       this.username = username;
@@ -153,8 +155,8 @@ public class GenerateDwcaIT extends IptBaseTest {
     basisOfRecords.put("occurrence", "Occurrence");
 
     when(
-      mockVocabulariesManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false))
-      .thenReturn(basisOfRecords);
+        mockVocabulariesManager.getI18nVocab(Constants.VOCAB_URI_BASIS_OF_RECORDS, Locale.ENGLISH.getLanguage(), false))
+        .thenReturn(basisOfRecords);
   }
 
   @BeforeEach
@@ -188,12 +190,12 @@ public class GenerateDwcaIT extends IptBaseTest {
     sqlSource.setUsername(dbCfg.getUsername());
     // column order matches occurrence.txt file, and corresponds to resource.xml mapping
     sqlSource.setSql(
-      "SELECT n.id, scientificName, basisOfRecord, kingdom FROM name n, (VALUES(1, null, 'occurrence', 'Animalia')) AS t (occurrenceID, scientificName, basisOfRecord, kingdom) where n.id = t.occurrenceID;");
+        "SELECT n.id, scientificName, basisOfRecord, kingdom FROM name n, (VALUES(1, null, 'occurrence', 'Animalia')) AS t (occurrenceID, scientificName, basisOfRecord, kingdom) where n.id = t.occurrenceID;");
     sqlSource.setPassword(dbCfg.getPassword());
     resource.getMappings().get(0).setSource(sqlSource);
 
     generateDwca =
-      new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
+        new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig, mockVocabulariesManager);
     Map<String, Integer> recordsByExtension = generateDwca.call();
     // count for occurrence core only
     assertEquals(1, recordsByExtension.size());
@@ -244,7 +246,6 @@ public class GenerateDwcaIT extends IptBaseTest {
    *
    * @param resourceXML resource (XML) configuration file defining column mapping of sourceFile
    * @param sourceFile  source file
-   *
    * @return test Resource
    */
   private Resource getResource(@NotNull File resourceXML, @NotNull File sourceFile) throws Exception {
@@ -273,7 +274,7 @@ public class GenerateDwcaIT extends IptBaseTest {
 
     // construct occurrence core Extension
     InputStream occurrenceCoreIs =
-      GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_occurrence_2015-04-24.xml");
+        GenerateDwcaTest.class.getResourceAsStream("/extensions/dwc_occurrence_2015-04-24.xml");
     Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
     ExtensionManager extensionManager = mock(ExtensionManager.class);
     ExtensionsHolder extensionsHolder = mock(ExtensionsHolder.class);
@@ -317,23 +318,23 @@ public class GenerateDwcaIT extends IptBaseTest {
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
-      new ResourceManagerImpl(
-          mockAppConfig,
-          mockDataDir,
-          mockResourceConvertersManager,
-          mockSourceManager,
-          extensionManager,
-          mockSchemaManager,
-          mockRegistryManager,
-          mockDwcaFactory,
-          mock(GenerateDataPackageFactory.class),
-          passwordEncrypter,
-          mockEml2Rtf,
-          mockVocabulariesManager,
-          mockSimpleTextProvider,
-          mockRegistrationManager,
-          mock(MetadataReader.class),
-          mock(ResourceMetadataInferringService.class));
+        new ResourceManagerImpl(
+            mockAppConfig,
+            mockDataDir,
+            mockResourceConvertersManager,
+            mockSourceManager,
+            extensionManager,
+            mockSchemaManager,
+            mockRegistryManager,
+            mockDwcaFactory,
+            mock(GenerateDataPackageFactory.class),
+            passwordEncrypter,
+            mockEml2Rtf,
+            mockVocabulariesManager,
+            mockSimpleTextProvider,
+            mockRegistrationManager,
+            mock(MetadataReader.class),
+            mock(ResourceMetadataInferringService.class));
 
     // create a new resource.
     // create user
@@ -365,7 +366,7 @@ public class GenerateDwcaIT extends IptBaseTest {
 
     // mock creation of versioned zipped dwca in resource directory
     when(mockDataDir.resourceDwcaFile(anyString(), any(BigDecimal.class)))
-      .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
+        .thenReturn(new File(resourceDir, VERSIONED_ARCHIVE_FILENAME));
 
     return resource;
   }

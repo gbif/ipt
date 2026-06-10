@@ -30,7 +30,9 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMappingValidator;
 
+import jakarta.inject.Inject;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,12 +41,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -56,6 +58,7 @@ import static org.gbif.ipt.config.Constants.CANCEL;
  */
 public class DataPackageMappingAction extends ManagerBaseAction {
 
+  @Serial
   private static final long serialVersionUID = -2005597864256786458L;
 
   private static final Pattern FIELD_FORBIDDEN_CHARACTERS_PATTERN = Pattern.compile("[\\W\\s_0-9]+");
@@ -73,15 +76,12 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private List<String> columns;
   @Getter
   private List<String[]> peek;
-  @Getter
   @Setter
   private List<DataPackageFieldMapping> fields;
   @Getter
   private Map<String, Integer> fieldsIndices;
-  @Setter
   @Getter
   private List<String> newTableSchemas = new ArrayList<>();
-  @Setter
   @Getter
   private List<String> newSources = new ArrayList<>();
 
@@ -145,7 +145,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
         columns = sourceManager.columns(src);
       }
       if (columns.isEmpty() && src.getName() != null) {
-        addActionWarning(getText("manage.mapping.source.no.columns", new String[] {src.getName()}));
+        addActionWarning(getText("manage.mapping.source.no.columns", new String[]{src.getName()}));
       }
     }
   }
@@ -219,7 +219,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       mid = resource.addDataPackageMapping(newMapping);
     }
 
-    addActionMessage(getText("manage.mapping.multiple.created", new String[] {String.valueOf(newMappingsNumber)}));
+    addActionMessage(getText("manage.mapping.multiple.created", new String[]{String.valueOf(newMappingsNumber)}));
 
     return SUCCESS;
   }
@@ -316,7 +316,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       if (mappingEmpty) {
         int automapped = automap();
         if (automapped > 0) {
-          addActionMessage(getText("manage.mapping.automaped", new String[] {String.valueOf(automapped)}));
+          addActionMessage(getText("manage.mapping.automaped", new String[]{String.valueOf(automapped)}));
         }
       }
 
@@ -338,7 +338,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
     DataPackageMappingValidator.ValidationStatus v = validator.validate(mapping, resource, columns);
     if (v != null && !v.isValid()) {
       for (DataPackageField field : v.getMissingRequiredFields()) {
-        addActionWarning(getText("validation.required", new String[] {field.getName()}));
+        addActionWarning(getText("validation.required", new String[]{field.getName()}));
       }
     }
   }
@@ -422,7 +422,6 @@ public class DataPackageMappingAction extends ManagerBaseAction {
    * the existing DataSchemaFieldMapping. Otherwise, creates a brand new DataSchemaFieldMapping.
    *
    * @param field DataSchemaField
-   *
    * @return DataSchemaFieldMapping created
    */
   private DataPackageFieldMapping populateDataSchemaFieldMapping(DataPackageField field) {
@@ -457,13 +456,13 @@ public class DataPackageMappingAction extends ManagerBaseAction {
         .orElse("unknown");
 
     if (resource.deleteMapping(mapping)) {
-      addActionMessage(getText("manage.mapping.deleted", new String[] {sourceName + " → " + tableSchemaName}));
+      addActionMessage(getText("manage.mapping.deleted", new String[]{sourceName + " → " + tableSchemaName}));
       // set mappings modified date
       resource.setMappingsModified(new Date());
       // save resource
       saveResource();
     } else {
-      addActionMessage(getText("manage.mapping.couldnt.delete", new String[] {sourceName + " → " + tableSchemaName}));
+      addActionMessage(getText("manage.mapping.couldnt.delete", new String[]{sourceName + " → " + tableSchemaName}));
     }
     return SUCCESS;
   }
@@ -486,7 +485,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
 
     // get a list of all columns mapped to fields
     for (DataPackageFieldMapping field : fields) {
-      if (field.getIndex() != null && field.getIndex() >=0 && field.getIndex() < columns.size()) {
+      if (field.getIndex() != null && field.getIndex() >= 0 && field.getIndex() < columns.size()) {
         String sourceColumn = columns.get(field.getIndex());
         if (sourceColumn != null) {
           mapped.add(sourceColumn);
@@ -504,5 +503,20 @@ public class DataPackageMappingAction extends ManagerBaseAction {
     ActionInvocation invocation = ActionContext.getContext().getActionInvocation();
     String actionMethod = invocation.getProxy().getMethod();
     return "delete".equals(actionMethod);
+  }
+
+  @StrutsParameter(depth = 2)
+  public List<String> getNewSources() {
+    return newSources;
+  }
+
+  @StrutsParameter(depth = 2)
+  public List<String> getNewTableSchemas() {
+    return newTableSchemas;
+  }
+
+  @StrutsParameter(depth = 2)
+  public List<DataPackageFieldMapping> getFields() {
+    return fields;
   }
 }

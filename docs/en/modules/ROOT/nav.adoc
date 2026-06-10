@@ -22,7 +22,6 @@
 * Best Practice Guides
 ** xref:gbif-metadata-profile.adoc[Resource metadata]
 ** xref:best-practices-checklists.adoc[Checklist Data]
-** Occurrence Data (pending)
 ** xref:best-practices-sampling-event-data.adoc[Sampling Event Data]
 * xref:faq.adoc[]
 * Contributing

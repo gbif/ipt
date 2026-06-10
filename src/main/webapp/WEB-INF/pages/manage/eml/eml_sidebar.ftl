@@ -13,6 +13,8 @@
 
     <div class="d-flex align-content-between" style="margin-left: -10px;">
         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary me-1" name="save" key="button.save"/>
-        <@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/>
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.history.back();">
+            <@s.text name="button.back"/>
+        </button>
     </div>
 </nav>

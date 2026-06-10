@@ -59,14 +59,18 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
+import io.frictionlessdata.datapackage.exceptions.DataPackageValidationException;
+import io.frictionlessdata.datapackage.resource.FilebasedResource;
 import io.frictionlessdata.datapackage.JSONBase;
 import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
+import io.frictionlessdata.tableschema.exception.ForeignKeyException;
+import io.frictionlessdata.tableschema.exception.PrimaryKeyException;
 import io.frictionlessdata.tableschema.exception.ValidationException;
-import io.frictionlessdata.datapackage.resource.FilebasedResource;
 import io.frictionlessdata.tableschema.field.Field;
 import io.frictionlessdata.tableschema.fk.ForeignKey;
 import io.frictionlessdata.tableschema.schema.Schema;
@@ -195,30 +199,19 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   @Override
   protected String currentState() {
-    switch (state) {
-      case WAITING:
-        return "Not started yet";
-      case STARTED:
-        return "Starting Data Package generation";
-      case DATARESOURCES:
-        return "Processing record " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
-      case METADATA:
-        return "Creating metadata files";
-      case BUNDLING:
-        return "Compressing Data Package (archive)";
-      case COMPLETED:
-        return "Data Package generated!";
-      case VALIDATING:
-        return "Validating Data Package, " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
-      case ARCHIVING:
-        return "Archiving version of data package";
-      case CANCELLED:
-        return "Data Package generation cancelled";
-      case FAILED:
-        return "Data Package generation failed";
-      default:
-        return "You should never see this";
-    }
+    return switch (state) {
+      case WAITING -> "Not started yet";
+      case STARTED -> "Starting Data Package generation";
+      case DATARESOURCES -> "Processing record " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
+      case METADATA -> "Creating metadata files";
+      case BUNDLING -> "Compressing Data Package (archive)";
+      case COMPLETED -> "Data Package generated!";
+      case VALIDATING ->
+          "Validating Data Package, " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
+      case ARCHIVING -> "Archiving version of data package";
+      case CANCELLED -> "Data Package generation cancelled";
+      case FAILED -> "Data Package generation failed";
+    };
   }
 
   /**
@@ -234,6 +227,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     File zip = null;
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
+      // check keys first
+      checkRelationsAndPrimaryKeys();
+
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
       if (DWC_DP.equals(resource.getCoreType())) {
@@ -257,6 +253,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       }
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while bundling data package", e);
+    } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
+      throw new GeneratorException(e.getMessage());
     } finally {
       // cleanup zip directory, if compression was incomplete, for example, due to Exception
       // if moving zip to data dir was successful, it won't exist any more and cleanup will be skipped
@@ -807,7 +805,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         // Escape double quotes if present
         if (containsDoubleQuotes) {
           // escape double quotes
-          columns[i] = StringUtils.replace(columns[i], "\"", "\"\"");
+          columns[i] = Strings.CS.replace(columns[i], "\"", "\"\"");
         }
 
         // commas break the whole line, wrap in double quotes
@@ -976,9 +974,12 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   private void checkRelationsAndPrimaryKeys() throws Exception {
+    boolean isFkValidationEnabled = cfg.isDatapackageForeignKeysValidationEnabled();
     Set<String> foreignKeyValidationErrors = new HashSet<>();
     for (io.frictionlessdata.datapackage.resource.Resource dataPackageResource : dataPackage.getResources()) {
-      foreignKeyValidationErrors.addAll(dataPackageResource.checkRelationsV2(dataPackage));
+      if (isFkValidationEnabled) {
+        foreignKeyValidationErrors.addAll(dataPackageResource.checkRelationsV2(dataPackage));
+      }
 //      dataPackageResource.checkPrimaryKeys();
     }
 

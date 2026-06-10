@@ -14,7 +14,7 @@
             buttonType: "primary",
             processing: false,
             closeModal: true,
-            baseURL: "${baseURL}",
+            baseUrl: "${baseURL}",
             logo: "warning"
         });
 
@@ -47,7 +47,7 @@
 
 
         // button is not created right away, set click on document
-        $(document).on('click','#yes-button', function(){
+        $(document).on('click', '#yes-button', function () {
             $("#dialog-confirm").modal('hide');
         })
 
@@ -56,7 +56,7 @@
 
         function loadReport() {
             $("#bulkReport").load("${baseURL}/admin/bulkReport.do?", function () {
-                if ($(".completed").length > 0) {
+                if ($(".running").length === 0 && $(".completed").length > 0) {
                     clearInterval(reporter);
                 }
             });
@@ -158,7 +158,9 @@
 
         <div class="my-3 p-3">
             <fieldset>
-                <legend class="text-gbif-header-2"><@s.text name="admin.config.publish.options"/></legend>
+                <h5 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                    <@s.text name="admin.config.publish.options"/>
+                </h5>
 
                 <label class="py-1">
                     <input class="form-check-input" type="radio" name="publishMode" value="ALL" checked>
@@ -178,7 +180,11 @@
                 <div id="selectedDatasets" class="dataset-dropdown ms-3 mb-2" style="display: none;">
                     <select name="selectedResources" id="selectedResources" class="form-control" multiple size="6">
                         <#list resources as res>
-                            <option value="${res.shortname}">${res.shortname}</option>
+                            <#if res.title?has_content>
+                                <option value="${res.shortname}">${res.title} [${res.shortname}]</option>
+                            <#else>
+                                <option value="${res.shortname}">${res.shortname}</option>
+                            </#if>
                         </#list>
                     </select>
                 </div>

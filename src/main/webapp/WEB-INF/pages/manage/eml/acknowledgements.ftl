@@ -5,23 +5,36 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
     <title><@s.text name='manage.metadata.acknowledgements.title'/></title>
-    <script src="${baseURL}/js/docbook/docbook.js"></script>
+    <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <script>
         $(document).ready(function() {
-            var docBookAcknowledgements = `${eml.acknowledgements!}`;
+            var docBookAcknowledgements = "${eml.acknowledgements!?js_string}";
             var htmlAcknowledgements = convertToHtml(docBookAcknowledgements);
 
-            $('#acknowledgements-editor').summernote({
+            const acknowledgementsEditor = $('#acknowledgements-editor');
+            acknowledgementsEditor.summernote({
                 height: 200,
                 minHeight: null,
                 maxHeight: null,
                 focus: true,
                 toolbar: [
                     ['insert', ['codeview']]
-                ]
+                ],
+                // clean up HTML and styles when copy/paste
+                callbacks: {
+                    onPaste: function (e) {
+                        e.preventDefault();
+                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
+                        const text = clipboardData.getData('text/plain');
+                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
+
+                        acknowledgementsEditor.summernote('focus');
+                        acknowledgementsEditor.summernote('pasteHTML', cleaned);
+                    }
+                }
             });
 
-            $('#acknowledgements-editor').summernote('code', htmlAcknowledgements);
+            acknowledgementsEditor.summernote('code', htmlAcknowledgements);
 
             // Form submission event
             $('#acknowledgements-form').submit(function(event) {
@@ -75,7 +88,7 @@
         </div>
     </div>
 
-    <form id="acknowledgements-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <form id="acknowledgements-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
         <div class="container-fluid bg-body border-bottom">
@@ -111,7 +124,9 @@
 
                     <div class="text-center mt-2">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                        <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                            <@s.text name="button.back"/>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -152,5 +167,7 @@
             </div>
         </div>
     </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -9,9 +9,9 @@ docker build --pull --build-arg GIT_REVISION=$(git rev-parse --verify --short=7 
 mvnVersion=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 echo "Project version from Maven is $mvnVersion"
 
-echo "Tagging for docker.gbif.org"
+echo "Tagging as docker.gbif.org/ipt:$mvnVersion"
 docker tag gbif/ipt:master "docker.gbif.org/ipt:$mvnVersion"
-echo "Pushing to docker.gbif.org"
+echo "Pushing to docker.gbif.org/ipt:"
 docker push "docker.gbif.org/ipt:$mvnVersion"
 
 if [[ "${IS_M2RELEASEBUILD:-false}" == "true" ]]; then
@@ -23,19 +23,19 @@ if [[ "${IS_M2RELEASEBUILD:-false}" == "true" ]]; then
   echo "Building Docker image for release $dockerTag using $gitTag"
   docker build --pull --build-arg GIT_REVISION=$(git rev-parse --verify --short=7 HEAD) -t gbif/ipt:$dockerTag -f package/docker/Dockerfile .
 
-  echo "Tagging release $dockerTag as latest"
+  echo "Tagging release $dockerTag as gbif/ipt:latest"
   docker tag "gbif/ipt:$dockerTag" "gbif/ipt:latest"
-  echo "Tagging release $dockerTag as latest for docker.gbif.org"
+  echo "Tagging release $dockerTag as latest for docker.gbif.org/ipt:latest"
   docker tag "gbif/ipt:$dockerTag" "docker.gbif.org/ipt:latest"
-  echo "Tagging release $dockerTag for docker.gbif.org"
+  echo "Tagging release $dockerTag for docker.gbif.org/ipt:$dockerTag"
   docker tag "gbif/ipt:$dockerTag" "docker.gbif.org/ipt:$dockerTag"
-  echo "Pushing release $dockerTag to docker.gbif.org"
+  echo "Pushing release $dockerTag to docker.gbif.org/ipt:$dockerTag"
   docker push "docker.gbif.org/ipt:$dockerTag"
-  echo "Pushing release $dockerTag to Docker hub"
+  echo "Pushing release $dockerTag to Docker hub gbif/ipt:$dockerTag"
   docker push "gbif/ipt:$dockerTag"
-  echo "Pushing latest to docker.gbif.org"
+  echo "Pushing latest to docker.gbif.org/ipt:latest"
   docker push "docker.gbif.org/ipt:latest"
-  echo "Pushing release latest to Docker hub"
+  echo "Pushing release latest to Docker hub gbif/ipt:latest"
   docker push "gbif/ipt:latest"
 
   echo "Checking out master"

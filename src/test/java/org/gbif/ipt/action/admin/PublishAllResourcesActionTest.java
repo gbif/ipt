@@ -26,9 +26,12 @@ import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
@@ -171,6 +174,9 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
 
     // populate a source mapping, and assign it to resource
     ExtensionMapping em = new ExtensionMapping();
+    Source src = new TextFileSource();
+    src.setProcessing(false);
+    em.setSource(src);
     PropertyMapping pm = new PropertyMapping();
     pm.setTerm(DwcTerm.occurrenceID);
     pm.setIndex(1);

@@ -1,4 +1,5 @@
-    <#include "/WEB-INF/pages/inc/header.ftl">
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MetadataAction" -->
+<#include "/WEB-INF/pages/inc/header.ftl">
 <title xmlns="http://www.w3.org/1999/html"><@s.text name='manage.metadata.geocoverage.title'/></title>
     <#assign currentMetadataPage = "geocoverage"/>
     <#assign currentMenu="manage"/>
@@ -32,13 +33,15 @@
                 history.replaceState(null, '', url);
             }
 
+            var $inferAutomaticallyCheckbox = $('#resource\\.inferGeocoverageAutomatically');
+
             // Function to check if query param exists and update checkbox accordingly
             function checkUrlParams() {
                 // if "inferAutomatically" present and true, tick the inferGeocoverageAutomatically checkbox
                 const urlParams = new URLSearchParams(window.location.search);
                 const checkboxParam = urlParams.get('inferAutomatically');
                 if (checkboxParam === 'true') {
-                    $('#inferGeocoverageAutomatically').prop('checked', true);
+                    $inferAutomaticallyCheckbox.prop('checked', true);
                 }
 
                 // remove "reinferMetadata" param on load
@@ -49,7 +52,7 @@
             }
 
             // add/remove "inferAutomatically" param when clicking checkbox
-            $('#inferGeocoverageAutomatically').change(function() {
+            $inferAutomaticallyCheckbox.change(function() {
                 if ($(this).is(':checked')) {
                     updateQueryParam('inferAutomatically', 'true');
                 } else {
@@ -151,11 +154,10 @@
             });
 
             if ($("#globalCoverage").is(':checked')) {
-                $('#inferGeocoverageAutomaticallyWrapper').hide();
                 $('.intro').hide();
             }
 
-            if ($("#inferGeocoverageAutomatically").is(':checked')) {
+            if ($inferAutomaticallyCheckbox.is(':checked')) {
                 $('#globalCoverageWrapper').hide();
                 $('#coordinates').hide();
                 $('.intro').hide();
@@ -166,8 +168,8 @@
                 setInferredCoordinatesToInputs();
             }
 
-            $("#inferGeocoverageAutomatically").click(function() {
-                if ($("#inferGeocoverageAutomatically").is(':checked')) {
+            $inferAutomaticallyCheckbox.click(function() {
+                if ($inferAutomaticallyCheckbox.is(':checked')) {
                     $('#globalCoverageWrapper').hide();
                     $('#coordinates').hide();
                     $('.intro').hide();
@@ -177,7 +179,7 @@
                     adjustMapWithInferredCoordinates(true)
                     setInferredCoordinatesToInputs()
                     $("#globalCoverage").prop("checked", false);
-                    $("#inferGeocoverageAutomatically").prop("checked", true);
+                    $inferAutomaticallyCheckbox.prop("checked", true);
                     $("#coordinates").hide();
                     $("#static-coordinates").show();
                 } else {
@@ -229,7 +231,6 @@
                     $("#" + minLatId).val(MIN_LAT_VAL_LIMIT);
                     $("#" + maxLatId).val(MAX_LAT_VAL_LIMIT);
                     $("#coordinates").hide();
-                    $('#inferGeocoverageAutomaticallyWrapper').hide();
                     $('.intro').hide();
                     locationFilter.disable();
                     map.fitWorld();
@@ -243,7 +244,6 @@
                     $("#" + minLatId).val(minLatVal);
                     $("#" + maxLatId).val(maxLatVal);
                     $("#coordinates").show();
-                    $('#inferGeocoverageAutomaticallyWrapper').show();
                     $('.intro').show();
                     locationFilter.enable();
                     locationFilter.setBounds(L.latLngBounds(L.latLng(minLatVal, minLngVal), L.latLng(maxLatVal, maxLngVal)));
@@ -259,7 +259,7 @@
             locationFilter.on("change", function (e) {
                 if (!e.skipMapAdjustment) {
                     // manual adjustments - stop inferring automatically
-                    $("#inferGeocoverageAutomatically").prop("checked", false);
+                    $inferAutomaticallyCheckbox.prop("checked", false);
                     $("#coordinates").show();
                     $("#globalCoverageWrapper").show();
                     $("#static-coordinates").hide();
@@ -463,7 +463,7 @@
             </#if>
         </div>
 
-<form id="geocoverage-form" class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+<form id="geocoverage-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
     <div class="container-fluid bg-body border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
             <div class="container my-3 p-3">
@@ -489,7 +489,9 @@
 
                 <div class="text-center mt-2">
                     <input type="submit" value="<@s.text name='button.save'/>" id="top-save" name="save" class="button btn btn-sm btn-outline-gbif-primary top-button">
-                    <input type="submit" value="<@s.text name='button.back'/>" id="top-cancel" name="cancel" class="button btn btn-sm btn-outline-secondary top-button">
+                    <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                        <@s.text name="button.back"/>
+                    </button>
                 </div>
             </div>
         </div>
@@ -509,7 +511,7 @@
                         <#if resource.dataPackage==false>
                         <div class="row g-2 mt-0">
                             <div class="col-md-6">
-                                <@checkbox name="inferGeocoverageAutomatically" value="${inferGeocoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
+                                <@checkbox name="resource.inferGeocoverageAutomatically" value=resource.inferGeocoverageAutomatically i18nkey="eml.inferAutomatically"/>
                             </div>
 
                             <div id="preview-links" class="col-md-6">
@@ -629,5 +631,7 @@
         </div>
     </div>
 </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

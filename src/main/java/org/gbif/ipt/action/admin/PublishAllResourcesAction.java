@@ -28,24 +28,25 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
 
+import jakarta.inject.Inject;
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class PublishAllResourcesAction extends BaseAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(PublishAllResourcesAction.class);
-
+  @Serial
   private static final long serialVersionUID = -2717994514136947049L;
+
+  private static final Logger LOG = LogManager.getLogger(PublishAllResourcesAction.class);
 
   protected ResourceManager resourceManager;
   protected RegistryManager registryManager;
@@ -53,11 +54,8 @@ public class PublishAllResourcesAction extends BaseAction {
   private final DataPackageMetadataValidator dpMetadataValidator;
   @Getter
   private List<Resource> resources;
-  @Setter
   private List<String> selectedResources;
-  @Setter
   private List<String> excludedResources;
-  @Setter
   private BulkPublicationType publishMode;
 
   @Inject
@@ -111,7 +109,7 @@ public class PublishAllResourcesAction extends BaseAction {
       resources = allResources.stream()
           .filter(res -> !excludedResources.contains(res.getShortname()))
           .collect(Collectors.toList());
-    } else if (publishMode == BulkPublicationType.CHANGED){
+    } else if (publishMode == BulkPublicationType.CHANGED) {
       resources = allResources;
       skipIfNotChanged = true;
     } else {
@@ -145,21 +143,21 @@ public class PublishAllResourcesAction extends BaseAction {
           } else {
             // alert user publication failed
             addActionError(getText("publishing.failed",
-              new String[] {nextVersion.toPlainString(), resource.getShortname(),
-                getText("manage.overview.published.missing.metadata")}));
+                new String[]{nextVersion.toPlainString(), resource.getShortname(),
+                    getText("manage.overview.published.missing.metadata")}));
           }
         } else {
           addActionError(getText("publishing.skipping",
-            new String[] {String.valueOf(resource.getNextVersion()), resource.getTitleAndShortname()}));
+              new String[]{String.valueOf(resource.getNextVersion()), resource.getTitleAndShortname()}));
         }
       } catch (PublicationException e) {
         if (PublicationException.TYPE.LOCKED == e.getType()) {
           addActionError(
-            getText("manage.overview.resource.being.published", new String[] {resource.getTitleAndShortname()}));
+              getText("manage.overview.resource.being.published", new String[]{resource.getTitleAndShortname()}));
         } else {
           // alert user publication failed
           addActionError(
-            getText("publishing.failed", new String[] {nextVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
+              getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
           resourceManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
@@ -168,9 +166,11 @@ public class PublishAllResourcesAction extends BaseAction {
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed
         String msg =
-          getText("publishing.failed", new String[] {nextVersion.toPlainString(), resource.getShortname(), e.getMessage()});
+            getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()});
         LOG.error(msg, e);
         addActionError(msg);
+      } catch (Exception e) {
+        LOG.error(e.getMessage(), e);
       }
     }
 
@@ -183,6 +183,7 @@ public class PublishAllResourcesAction extends BaseAction {
         LOG.error("Thread waiting during publish all resources was interrupted", e);
       }
     }
+
     // only display sinlge message: that publish all finished
     clearMessages();
     addActionMessage(getText("admin.config.updateMetadata.summary"));
@@ -202,6 +203,21 @@ public class PublishAllResourcesAction extends BaseAction {
       }
       LOG.info("Resource registrations updated successfully!");
     }
+  }
+
+  @StrutsParameter
+  public void setSelectedResources(List<String> selectedResources) {
+    this.selectedResources = selectedResources;
+  }
+
+  @StrutsParameter
+  public void setExcludedResources(List<String> excludedResources) {
+    this.excludedResources = excludedResources;
+  }
+
+  @StrutsParameter
+  public void setPublishMode(BulkPublicationType publishMode) {
+    this.publishMode = publishMode;
   }
 
   public enum BulkPublicationType {

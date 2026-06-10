@@ -15,6 +15,7 @@ package org.gbif.ipt.model.factory;
 
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.ExtensionPropertyTranslation;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 
@@ -74,9 +75,9 @@ public class ExtensionFactory {
           extensions.add(e);
         }
       } catch (IOException e) {
-        LOG.error("Unable to access extension definition defined at " + urlAsString, e);
+        LOG.error("Unable to access extension definition defined at {}", urlAsString, e);
       } catch (SAXException e) {
-        LOG.error("Unable to parse extension definition defined at " + urlAsString, e);
+        LOG.error("Unable to parse extension definition defined at {}", urlAsString, e);
       }
     }
 
@@ -144,14 +145,57 @@ public class ExtensionFactory {
     digester.addCallMethod("*/property", "setLink", 1);
     digester.addRule("*/property", new CallParamNoNSRule(0, "relation"));
 
+    digester.addCallMethod("*/property", "setLabel", 1);
+    digester.addCallParam("*/property", 0, "label");
+
     digester.addCallMethod("*/property", "setDescription", 1);
     digester.addRule("*/property", new CallParamNoNSRule(0, "description"));
 
     digester.addCallMethod("*/property", "setExamples", 1);
     digester.addCallParam("*/property", 0, "examples");
 
+    digester.addCallMethod("*/property", "setComments", 1);
+    digester.addCallParam("*/property", 0, "comments");
+
     digester.addCallMethod("*/property", "setType", 1);
     digester.addCallParam("*/property", 0, "type");
+
+    // build translations
+    digester.addObjectCreate("*/property/translation", ExtensionPropertyTranslation.class);
+
+    // Set ALL non-namespaced attributes (label, comments, etc.)
+    digester.addSetProperties("*/property/translation");
+
+    // Robustly set xml:lang regardless of namespace-awareness
+    digester.addRule("*/property/translation", new org.apache.commons.digester.Rule() {
+      @Override
+      public void begin(String ns, String name, org.xml.sax.Attributes attrs) {
+        ExtensionPropertyTranslation t =
+            (ExtensionPropertyTranslation) getDigester().peek();
+
+        // try qName first (e.g. "xml:lang")
+        String lang = attrs.getValue("xml:lang");
+        if (lang == null) {
+          // try namespace-aware form
+          lang = attrs.getValue("http://www.w3.org/XML/1998/namespace", "lang");
+        }
+        if (lang == null) {
+          // final fallback: scan attributes for *:lang
+          for (int i = 0; i < attrs.getLength(); i++) {
+            String qn = attrs.getQName(i);
+            if (qn != null && (qn.equals("xml:lang") || qn.endsWith(":lang"))) {
+              lang = attrs.getValue(i);
+              break;
+            }
+          }
+        }
+        if (lang != null) {
+          t.setLanguage(lang);
+        }
+      }
+    });
+
+    digester.addSetNext("*/property/translation", "addTranslation");
 
     // This is a special rule that will use the url2ThesaurusMap
     // to set the Vocabulary based on the attribute "thesaurus"
@@ -180,11 +224,11 @@ public class ExtensionFactory {
         // copy stream to local file
         try (InputStream is = entity.getContent()) {
           Extension e = build(is);
-          LOG.info("Successfully parsed extension: " + e.getTitle());
+          LOG.info("Successfully parsed extension: {}", e.getTitle());
           return e;
 
         } catch (SAXException e) {
-          LOG.error("Unable to parse XML for extension: " + e.getMessage(), e);
+          LOG.error("Unable to parse XML for extension: {}", e.getMessage(), e);
         }
         // close http connection
         EntityUtils.consume(entity);

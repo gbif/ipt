@@ -1,6 +1,6 @@
 <#ftl output_format="HTML">
 
-    <#macro input name value="-99999" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1 withLabel=true tabindex=-1 placeholder="">
+    <#macro input name value="" i18nkey="" errorfield="" type="text" size=-1 disabled=false help="" helpOptions=[] date=false requiredField=false maxlength=-1 withLabel=true tabindex=-1 placeholder="">
         <div>
             <#if withLabel>
                 <div class="d-flex text-smaller">
@@ -15,7 +15,7 @@
                     name="${name}"
                     placeholder="${placeholder}"
                     <#if (tabindex>0)>tabindex="${tabindex}" </#if>
-                    value="<#if value=="-99999"><@s.property value="${name}"/><#else>${value}</#if>"
+                    value="${value!}"
                     <#if (size>0)>size="${size}"</#if>
                     <#if (maxlength>0)>maxlength="${maxlength}"</#if>
                     <#if disabled>readonly="readonly"</#if>
@@ -111,14 +111,12 @@
         </div>
     </#macro>
 
-    <#macro checkbox name i18nkey="" errorfield="" disabled=false value="-99999" help="" requiredField=false>
+    <#macro checkbox name i18nkey="" errorfield="" disabled=false value=false help="" requiredField=false>
         <div class="form-check">
-            <#if value=="-99999">
-                <#assign val><@s.property value="${name}"/></#assign>
-                <@s.checkbox cssClass="form-check-input" key="${name}" id="${name}" disabled=disabled value=val />
-            <#else>
-                <@s.checkbox cssClass="form-check-input" key="${name}" id="${name}" disabled=disabled value=value />
-            </#if>
+            <@s.checkbox name="${name}" id="${name}" cssClass="form-check-input" fieldValue="true" value="${value?c}" disabled=disabled />
+            <#-- Struts sends only true value (when checkbox is checked).Send false additionaly because it only sends true. -->
+            <#-- Send false additionaly. It is picked when the first value is absent otherwise ignored. -->
+            <input type="hidden" name="${name}" value="false">
             <div class="d-flex">
                 <#include "/WEB-INF/pages/macros/form_checkbox_label.ftl">
                 <#include "/WEB-INF/pages/macros/help_icon.ftl">
@@ -184,14 +182,20 @@
         <#if rights?contains("CC-BY-NC")>
             <a rel="license" id="cc_by_nc" class="cc_logo cc_by_nc"
                href="http://creativecommons.org/licenses/by-nc/4.0/legalcode"
-               title="Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License">&nbsp;</a>
+               title="Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License">
+                <img src="${baseURL}/images/icons/cc-by-nc.svg" alt="Sample Image">
+            </a>
         <#elseif rights?contains("CC-BY")>
             <a rel="license" id="cc_by" class="cc_logo cc_by"
                href="http://creativecommons.org/licenses/by/4.0/legalcode"
-               title="Creative Commons Attribution (CC-BY) 4.0 License">&nbsp;</a>
+               title="Creative Commons Attribution (CC-BY) 4.0 License">
+                <img src="${baseURL}/images/icons/cc-by.svg" alt="Sample Image">
+            </a>
         <#elseif rights?contains("CC0")>
             <a rel="license" id="cc_zero" class="cc_logo cc_zero"
                href="http://creativecommons.org/publicdomain/zero/1.0/legalcode"
-               title="Creative Commons CCZero (CC0) 1.0 License">&nbsp;</a>
+               title="Creative Commons CCZero (CC0) 1.0 License">
+                <img src="${baseURL}/images/icons/cc-by-nc.svg" alt="Sample Image">
+            </a>
         </#if>
     </#macro>

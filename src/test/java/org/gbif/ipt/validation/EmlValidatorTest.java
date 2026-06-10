@@ -20,6 +20,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
+import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.EmlFactory;
@@ -194,11 +195,8 @@ public class EmlValidatorTest extends IptBaseTest {
 
   @Test
   public void testBasicPartPublishingOrganisationMissing() {
-    // invalid
+    // valid - organisation is no more part of the basic metadata
     resource.setOrganisation(null);
-    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
-    // valid
-    resource.setOrganisation(organisation);
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
@@ -730,6 +728,6 @@ public class EmlValidatorTest extends IptBaseTest {
     empty.addCreator(agent);
     empty.addMetadataProvider(agent);
 
-    assertTrue(validator.areAllSectionsValid(action, resource));
+    assertTrue(validator.areAllSectionsValid(resource, new SectionErrorCollector(), new StrutsI18n(action)));
   }
 }

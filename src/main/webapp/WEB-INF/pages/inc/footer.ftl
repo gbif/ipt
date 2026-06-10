@@ -37,6 +37,129 @@
 <script src="${baseURL}/js/form-validation.js"></script>
 <script src='${baseURL}/js/sortable/html5sortable-0.13.3.js'></script>
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modalEl = document.getElementById('unsavedChangesModal');
+        const stayButton = document.getElementById('stayButton');
+        const leaveButton = document.getElementById('leaveButton');
+
+        if (!modalEl || !leaveButton) {
+            console.warn("Unsaved changes modal not found.");
+            return;
+        }
+
+        const bsModal = new bootstrap.Modal(modalEl);
+        let hasUnsavedChanges = false;
+        let redirectUrl = null;
+        let isIntentionalUnload = false;
+
+        // Track form changes
+        const form = document.querySelector('.track-unsaved');
+
+        form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                isIntentionalUnload = true;
+                hasUnsavedChanges = false;
+            });
+        });
+
+        if (form) {
+            // inputs
+            form.addEventListener('input', () => {
+                hasUnsavedChanges = true;
+            });
+
+            // dropdowns (select2)
+            $(document).on('select2:select select2:unselect change', 'select', function () {
+                if ($(this).data('select2')) {
+                    hasUnsavedChanges = true;
+                }
+            });
+
+            // copy agent button
+            document.getElementById('copy-agent-button')?.addEventListener('click', () => {
+                hasUnsavedChanges = true;
+            });
+
+            // Disable warning before submitting the form
+            form.addEventListener('submit', () => {
+                isIntentionalUnload = true;
+                hasUnsavedChanges = false;
+            });
+        }
+
+        // Warn before browser unload (refresh, close tab)
+        window.addEventListener('beforeunload', (e) => {
+            if (!hasUnsavedChanges || isIntentionalUnload) {
+                return;
+            }
+
+            e.preventDefault();
+            e.returnValue = '';
+        });
+
+        // Intercept internal link clicks
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Skip links that should not trigger the unsaved-changes modal
+                if (link.id === 're-infer-link') {
+                    console.log("link.id=" + link.id);
+                    console.log("skipping!")
+                    isIntentionalUnload = true;
+                    hasUnsavedChanges = false;
+                    return;
+                }
+
+                const href = link.getAttribute('href');
+
+                // Ignore non-links and JS links
+                if (!href ||
+                    href === '#' ||
+                    href.startsWith('#') ||
+                    href.startsWith('javascript:') ||
+                    link.target === '_blank') {
+                    return;
+                }
+
+                // Compute resolved URL
+                const targetUrl = new URL(link.href);
+                const currentUrl = new URL(window.location.href);
+
+                // Only warn if the target is a DIFFERENT page
+                const isRealNavigation =
+                    targetUrl.pathname !== currentUrl.pathname ||
+                    targetUrl.search !== currentUrl.search ||
+                    targetUrl.hash === '' && currentUrl.hash !== '';
+
+                if (!isRealNavigation) {
+                    return;
+                }
+
+                if (hasUnsavedChanges) {
+                    e.preventDefault();
+                    redirectUrl = link.href;
+                    bsModal.show();
+                }
+            });
+        });
+
+        // Stay -> close modal only
+        if (stayButton) {
+            stayButton.addEventListener('click', () => {
+                redirectUrl = null;
+            });
+        }
+
+        // Leave -> proceed to stored URL
+        leaveButton.addEventListener('click', () => {
+            if (redirectUrl) {
+                isIntentionalUnload = true;
+                hasUnsavedChanges = false;
+                window.location.href = redirectUrl;
+            }
+        });
+    });
+</script>
+<script>
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)

@@ -13,10 +13,10 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import org.gbif.ipt.model.datapackage.metadata.Contributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -38,6 +38,7 @@ import org.gbif.ipt.validation.NotNullLastNameForPeopleContributors;
 @NotNullLastNameForPeopleContributors(message = "validation.input.required", groups = BasicMetadata.class)
 public class CamtrapContributor extends FrictionlessContributor {
 
+  @Serial
   private static final long serialVersionUID = -8059939413339566278L;
 
   /**
@@ -101,9 +102,9 @@ public class CamtrapContributor extends FrictionlessContributor {
         .toString();
   }
 
-  public static class CamtrapContributorDeserializer extends JsonDeserializer<Contributor> {
+  public static class CamtrapContributorDeserializer extends JsonDeserializer<CamtrapContributor> {
     @Override
-    public Contributor deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+    public CamtrapContributor deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
       JsonNode node = jsonParser.readValueAsTree();
       return jsonParser.getCodec().treeToValue(node, CamtrapContributor.class);
     }

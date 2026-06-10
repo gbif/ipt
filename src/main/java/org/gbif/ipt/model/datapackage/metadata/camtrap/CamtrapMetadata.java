@@ -13,10 +13,7 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.camtrap;
 
-import org.gbif.ipt.model.datapackage.metadata.Contributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
-import org.gbif.ipt.model.datapackage.metadata.License;
-import org.gbif.ipt.model.datapackage.metadata.Source;
 import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.GeographicScopeMetadata;
 import org.gbif.ipt.validation.HasGbifCompatibleLicense;
@@ -27,32 +24,38 @@ import org.gbif.ipt.validation.TemporalScopeMetadata;
 import org.gbif.ipt.validation.ValidGeojson;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.StringJoiner;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import org.apache.struts2.util.Element;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.opensymphony.xwork2.util.Element;
 
 /**
  * <a href="https://rs.gbif.org/data-packages/camtrap-dp/1.0/profile/camtrap-dp-profile.json">Camtrap DP profile</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CamtrapMetadata extends FrictionlessMetadata {
+public class CamtrapMetadata extends FrictionlessMetadata<CamtrapContributor, CamtrapLicense, CamtrapSource> {
 
+  @Serial
   private final static long serialVersionUID = 7011607601336714408L;
 
   /**
@@ -244,11 +247,12 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Override
   @JsonProperty("contributors")
   @JsonDeserialize(contentUsing = CamtrapContributor.CamtrapContributorDeserializer.class)
+  @JsonSetter(contentNulls = Nulls.SKIP)
   @Element(CamtrapContributor.class)
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
   @Valid
   @Size(min = 1, message = "validation.datapackage.metadata.contributors.size", groups = BasicMetadata.class)
-  public List<Contributor> getContributors() {
+  public List<CamtrapContributor> getContributors() {
     return super.getContributors();
   }
 
@@ -259,7 +263,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("contributors")
-  public void setContributors(List<Contributor> contributors) {
+  public void setContributors(List<CamtrapContributor> contributors) {
     super.setContributors(contributors);
   }
 
@@ -366,9 +370,10 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Override
   @JsonProperty("sources")
   @JsonDeserialize(contentUsing = CamtrapSource.CamtrapSourceDeserializer.class)
+  @JsonSetter(contentNulls = Nulls.SKIP)
   @Element(CamtrapSource.class)
   @Valid
-  public List<Source> getSources() {
+  public List<CamtrapSource> getSources() {
     return super.getSources();
   }
 
@@ -378,7 +383,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("sources")
-  public void setSources(List<Source> sources) {
+  public void setSources(List<CamtrapSource> sources) {
     super.setSources(sources);
   }
 
@@ -389,6 +394,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @Override
   @JsonProperty("licenses")
   @JsonDeserialize(contentUsing = CamtrapLicense.CamtrapLicenseDeserializer.class)
+  @JsonSetter(contentNulls = Nulls.SKIP)
   @Element(CamtrapLicense.class)
   @Size(min = 2, message = "validation.camtrap.metadata.licenses.size", groups = BasicMetadata.class)
   @HasGbifCompatibleLicense(
@@ -397,7 +403,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
   @HasOpenDefinitionCompatibleLicense(
       message = "validation.camtrap.metadata.licenses.openDefinitionCompatible.required",
       groups = BasicMetadata.class)
-  public List<License> getLicenses() {
+  public List<CamtrapLicense> getLicenses() {
     return super.getLicenses();
   }
 
@@ -407,7 +413,7 @@ public class CamtrapMetadata extends FrictionlessMetadata {
    */
   @Override
   @JsonProperty("licenses")
-  public void setLicenses(List<License> licenses) {
+  public void setLicenses(List<CamtrapLicense> licenses) {
     super.setLicenses(licenses);
   }
 

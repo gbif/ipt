@@ -19,6 +19,8 @@
                 history.replaceState(null, '', url);
             }
 
+            var $inferAutomaticallyCheckbox = $('#resource\\.inferTaxonomicCoverageAutomatically');
+
             // Function to check if query param exists and update checkbox accordingly
             function checkUrlParams() {
                 // if "inferAutomatically" present and true, tick the inferTaxonomicCoverageAutomatically checkbox
@@ -26,7 +28,7 @@
                 const checkboxParam = urlParams.get('inferAutomatically');
                 if (checkboxParam === 'true') {
                     // select checkbox
-                    $('#inferTaxonomicCoverageAutomatically').prop('checked', true);
+                    $inferAutomaticallyCheckbox.prop('checked', true);
                     // enable description input
                     $('div#static-taxanomic textarea').show().prop('disabled', false);
                 }
@@ -38,14 +40,14 @@
                 }
             }
 
-            var isInferAutomaticallyChecked = $('#inferTaxonomicCoverageAutomatically').is(":checked");
+            var isInferAutomaticallyChecked = $inferAutomaticallyCheckbox.is(":checked");
             if (isInferAutomaticallyChecked) {
                 // enable description input
                 $('div#static-taxanomic textarea').show().prop('disabled', false);
             }
 
             // add/remove "inferAutomatically" param when clicking checkbox
-            $('#inferTaxonomicCoverageAutomatically').change(function() {
+            $inferAutomaticallyCheckbox.change(function() {
                 if ($(this).is(':checked')) {
                     updateQueryParam('inferAutomatically', 'true');
                     $('div#static-taxanomic textarea').show().prop('disabled', false);
@@ -215,7 +217,7 @@
                 </#if>
             </div>
 
-    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -241,7 +243,9 @@
 
                     <div class="text-center mt-2">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                        <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                            <@s.text name="button.back"/>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -262,7 +266,7 @@
                             <#if resource.dataPackage==false>
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
-                                    <@checkbox name="inferTaxonomicCoverageAutomatically" value="${inferTaxonomicCoverageAutomatically?c}" i18nkey="eml.inferAutomatically"/>
+                                    <@checkbox name="resource.inferTaxonomicCoverageAutomatically" value=resource.inferTaxonomicCoverageAutomatically i18nkey="eml.inferAutomatically"/>
                                 </div>
 
                                 <div id="preview-links" class="col-md-6">
@@ -366,11 +370,11 @@
                                                     <div id="subItem-${item_index}-${subItem_index}" class="sub-item" data-ipt-item-index="${item_index}">
                                                         <div class="row g-3 py-1">
                                                             <div class="col-lg-4">
-                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" requiredField=true withLabel=false />
+                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" value=subItem.scientificName! requiredField=true withLabel=false />
                                                             </div>
 
                                                             <div class="col-lg-4">
-                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" withLabel=false />
+                                                                <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" value=subItem.commonName! withLabel=false />
                                                             </div>
 
                                                             <div class="col-lg-4 d-flex">
@@ -574,5 +578,7 @@
         </div>
 
     </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -21,11 +21,12 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import javax.inject.Inject;
+import java.io.Serial;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +36,9 @@ import org.apache.logging.log4j.Logger;
  */
 public class AppFileAction extends PortalBaseAction {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = 7600127945674199976L;
+
   private static final Logger LOG = LogManager.getLogger(AppFileAction.class);
 
   private final DataDir dataDir;

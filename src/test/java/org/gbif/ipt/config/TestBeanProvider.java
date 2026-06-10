@@ -21,7 +21,8 @@ import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
 import org.gbif.utils.PreemptiveAuthenticationInterceptor;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
+
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.IOException;

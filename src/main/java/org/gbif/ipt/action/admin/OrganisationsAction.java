@@ -29,18 +29,20 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.OrganisationSupport;
 
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -48,10 +50,10 @@ import org.apache.struts2.ServletActionContext;
  */
 public class OrganisationsAction extends POSTAction {
 
-  // logging
-  private static final Logger LOG = LogManager.getLogger(OrganisationsAction.class);
-
+  @Serial
   private static final long serialVersionUID = 7297470324204084809L;
+
+  private static final Logger LOG = LogManager.getLogger(OrganisationsAction.class);
 
   private static final String SESSION_ORGANISATIONS_KEY = "organisations";
   private static final String SESSION_ORGANISATIONS_LAST_UPDATED_KEY = "organisations.lastUpdated";
@@ -107,6 +109,8 @@ public class OrganisationsAction extends POSTAction {
         addActionError("Failed to load organisations");
         organisations = new ArrayList<>();
       }
+    } else {
+      organisations = sessionOrganisations;
     }
   }
 
@@ -147,16 +151,11 @@ public class OrganisationsAction extends POSTAction {
     return INPUT;
   }
 
-  /**
-   * @return the linkedOrganisations
-   */
   public List<Organisation> getLinkedOrganisations() {
     return linkedOrganisations;
   }
 
-  /**
-   * @return the organisation
-   */
+  @StrutsParameter(depth = 2)
   public Organisation getOrganisation() {
     return organisation;
   }
@@ -176,9 +175,6 @@ public class OrganisationsAction extends POSTAction {
     return cfg.getRegistryUrl() + "/registry/";
   }
 
-  /**
-   * @return the resourceManager
-   */
   public ResourceManager getResourceManager() {
     return resourceManager;
   }
@@ -247,7 +243,7 @@ public class OrganisationsAction extends POSTAction {
       registrationManager.save();
       return SUCCESS;
     } catch (IOException e) {
-      LOG.error("The organisation association couldn't be saved: " + e.getMessage(), e);
+      LOG.error("The organisation association couldn't be saved: {}", e.getMessage(), e);
       addActionError(getText("admin.organisation.error.save"));
       addActionError(e.getMessage());
       return INPUT;

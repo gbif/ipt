@@ -76,7 +76,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation" action="metadata-${section}.do" method="post" novalidate>
+    <form class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -102,7 +102,9 @@
 
                     <div class="text-center mt-2">
                         <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save" />
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back" />
+                        <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
+                            <@s.text name="button.back"/>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -125,11 +127,11 @@
 
                             <div id="sampling" class="row g-3 mt-1">
                                 <div class="col-lg-12">
-                                    <@text name="eml.studyExtent"  i18nkey="eml.studyExtent" help="i18n" requiredField=true />
+                                    <@text name="eml.studyExtent"  i18nkey="eml.studyExtent" help="i18n" />
                                 </div>
 
                                 <div class="col-lg-12">
-                                    <@text name="eml.sampleDescription" i18nkey="eml.sampleDescription" help="i18n" requiredField=true />
+                                    <@text name="eml.sampleDescription" i18nkey="eml.sampleDescription" help="i18n" />
                                 </div>
                             </div>
 
@@ -154,7 +156,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-12">
-                                                <@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n" requiredField=true/>
+                                                <@text name="eml.methodSteps[${item_index}]" i18nkey="eml.methodSteps" help="i18n" />
                                             </div>
                                         </div>
                                     </#list>
@@ -187,7 +189,7 @@
                                     </a>
                                 </div>
                                 <div class="col-lg-12">
-                                    <@text name="" i18nkey="eml.methodSteps" help="i18n" requiredField=true />
+                                    <@text name="" i18nkey="eml.methodSteps" help="i18n" />
                                 </div>
                             </div>
 
@@ -197,5 +199,7 @@
             </div>
         </div>
     </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

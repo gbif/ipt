@@ -312,7 +312,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form id="taxonomic-metadata-form" class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
+    <form id="taxonomic-metadata-form track-unsaved" class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
         <div class="container-fluid bg-body border-bottom">
@@ -366,12 +366,19 @@
                     <div class="bd-content">
                         <div class="mb-md-3 ps-3 py-3">
                             <#assign removeTaxonLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
+                            <#assign removeTaxonLink = removeTaxonLink?markup_string>
                             <#assign addTaxonLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxon'/></#assign>
+                            <#assign addTaxonLink = addTaxonLink?markup_string>
                             <#assign removeVernacularNameLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
+                            <#assign removeVernacularNameLink = removeVernacularNameLink?markup_string>
                             <#assign addVernacularNameLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.taxonomic.vernacularName'/></#assign>
+                            <#assign addVernacularNameLink = addVernacularNameLink?markup_string>
 
                             <div class="mt-4">
-                                <@checkbox name="resource.inferTaxonomicCoverageAutomatically" i18nkey="datapackagemetadata.infer.automatically" help="datapackagemetadata.infer.automatically.short.help" value="${resource.inferTaxonomicCoverageAutomatically?c}" />
+                                <#assign inferAutomaticallyPopupInfo>
+                                    <@s.text name='datapackagemetadata.infer.automatically.short.help'/>
+                                </#assign>
+                                <@checkbox name="resource.inferTaxonomicCoverageAutomatically" value=resource.inferTaxonomicCoverageAutomatically i18nkey="datapackagemetadata.infer.automatically" />
                             </div>
 
                             <div id="actual-metadata-block" class="mt-3">
@@ -537,5 +544,7 @@
           <input class="form-control" type="text" id="vernacularNames-value" name="vernacularNames-value" value="">
         </div>
     </div>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

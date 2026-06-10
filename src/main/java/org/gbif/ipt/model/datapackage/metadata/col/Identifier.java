@@ -17,7 +17,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
-import javax.validation.Valid;
+
+import jakarta.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -60,7 +61,7 @@ public class Identifier {
   @Override
   public String toString() {
     return new StringJoiner(", ", Identifier.class.getSimpleName() + "[", "]")
-      .add("additionalProperties=" + additionalProperties)
-      .toString();
+        .add("additionalProperties=" + additionalProperties)
+        .toString();
   }
 }

@@ -58,7 +58,6 @@
         }
     </style>
 
-    <script src="${baseURL}/js/jquery/jquery-3.7.0.min.js"></script>
     <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -139,6 +138,13 @@
                                     <#assign createdLongShortDate>
                                         ${dpMetadata.created?date?string("MMM d, yyyy")}
                                     </#assign>
+                                <#else>
+                                    <#assign createdLongDate>
+                                        ${.now?date?string.long}
+                                    </#assign>
+                                    <#assign createdLongShortDate>
+                                        ${.now?date?string("MMM d, yyyy")}
+                                    </#assign>
                                 </#if>
 
                                 <#if !resource.organisation?has_content ||
@@ -146,7 +152,6 @@
                                     ${publishedOnText?lower_case}<span>${createdLongDate!}</span>
                                 <#else>
                                     <@s.text name='portal.resource.publishedOn'><@s.param>${(resource.organisation.name)!}</@s.param></@s.text> <span>${createdLongShortDate}</span>
-                                    <span style="display: none">${(resource.organisation.name)!}</span>
                                 </#if>
                             </span>
                         </div>
@@ -545,22 +550,28 @@
                             <#list dpMetadata.taxonomic as tx>
                                 <div class="table-responsive">
                                     <table class="text-smaller table table-sm table-borderless">
-                                        <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonId"/></th>
-                                            <td>${tx.taxonID!}</td>
-                                        </tr>
+                                        <#if tx.taxonID?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonId"/></th>
+                                                <td>${tx.taxonID!}</td>
+                                            </tr>
+                                        </#if>
                                         <tr>
                                             <th class="col-4"><@s.text name="portal.resource.taxonomic.scientificName"/></th>
                                             <td>${tx.scientificName!}</td>
                                         </tr>
-                                        <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonRank"/></th>
-                                            <td>${tx.taxonRank!}</td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4"><@s.text name="portal.resource.taxonomic.vernacularNames"/></th>
-                                            <td><#if tx.vernacularNames?has_content><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></#if></td>
-                                        </tr>
+                                        <#if tx.taxonRank?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.taxonomic.taxonRank"/></th>
+                                                <td>${tx.taxonRank!}</td>
+                                            </tr>
+                                        </#if>
+                                        <#if tx.vernacularNames?has_content>
+                                            <tr>
+                                                <th class="col-4"><@s.text name="portal.resource.taxonomic.vernacularNames"/></th>
+                                                <td><#list tx.vernacularNames as key, value>${value} [${key}]<#sep>, </#sep></#list></td>
+                                            </tr>
+                                        </#if>
                                     </table>
                                 </div>
                             </#list>
@@ -717,7 +728,8 @@
             question : "<@s.text name='portal.resource.confirm.delete.version'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
             yesAnswer : "<@s.text name='basic.yes'/>",
             cancelAnswer : "<@s.text name='basic.no'/>",
-            buttonType: "danger"
+            buttonType: "danger",
+            baseUrl: "${baseURL}"
         });
 
         $(function() {

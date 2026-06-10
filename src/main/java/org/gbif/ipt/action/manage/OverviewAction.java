@@ -32,6 +32,7 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
@@ -40,6 +41,7 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
+import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
@@ -66,8 +68,12 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.validation.ActionValidationResult;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
+import org.gbif.ipt.i18n.I18n;
+import org.gbif.ipt.validation.SectionErrorCollector;
+import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Citation;
@@ -76,10 +82,13 @@ import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 
+import jakarta.inject.Inject;
+import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -99,8 +108,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -109,6 +116,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.xml.sax.SAXException;
 
 import lombok.Getter;
@@ -123,9 +133,11 @@ import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.ORGANISATION_NOT_ASSOCIATED_TO_IPT;
 import static org.gbif.ipt.task.GenerateDwca.CHARACTER_ENCODING;
 
-public class OverviewAction extends ManagerBaseAction implements ReportHandler {
+public class OverviewAction extends ManagerBaseAction implements ReportHandler, UploadedFilesAware {
 
-  // logging
+  @Serial
+  private static final long serialVersionUID = -8224519285804551170L;
+
   private static final Logger LOG = LogManager.getLogger(OverviewAction.class);
 
   private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -136,7 +148,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   @Getter
   private List<User> potentialManagers;
   private List<KeyNamePair> allNetworks = new ArrayList<>();
-  @Getter
   private List<KeyNamePair> potentialNetworks = new ArrayList<>();
   @Getter
   private List<Extension> potentialCores;
@@ -145,13 +156,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   @Getter
   private List<Organisation> organisations;
   private Organisation doiAccount;
-  @Setter
-  @Getter
-  private String publishingOrganizationKey;
   private final EmlValidator emlValidator;
   private final DataPackageMetadataValidator dataPackageMetadataValidator;
   @Getter
-  private boolean missingMetadata;
+  private boolean missingBasicMetadata;
+  @Getter
+  private boolean validMetadata;
+  @Getter
+  private SectionErrorCollector errorCollector;
   private boolean missingRegistrationMetadata;
 
   // true if resource is missing valid publishing organisation, false otherwise.
@@ -172,9 +184,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private StatusReport report;
   @Getter
   private Date now;
-  @Setter
-  @Getter
-  private File emlFile;
+  private List<UploadedFile> uploadedFiles = new ArrayList<>();
   @Setter
   private File datapackageMetadataFile;
   @Getter
@@ -184,16 +194,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private boolean deleteDoi = false;
   private boolean undelete = false;
   private boolean publish = false;
-  @Setter
   @Getter
   private boolean validateEml = false;
   @Getter
   private boolean networksAvailable = true;
-  @Setter
+  @Getter
+  private boolean outdatedExtensions = false;
   @Getter
   private boolean validateDatapackageMetadata = false;
   private String summary;
-  @Setter
   @Getter
   private String makePublicDateTime;
   @Getter
@@ -208,7 +217,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   private List<String> columns;
   @Getter
   private List<String[]> peek;
-  @Setter
   @Getter
   private Integer mid;
   private static final int PEEK_ROWS = 100;
@@ -256,7 +264,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     try {
       registryManager.addResourceToNetwork(resource, id);
       saveResource();
-      Optional<KeyNamePair> keyNameNetwork = allNetworks.stream().filter(n -> n.getKey().equals(id)).findFirst();
+      Optional<KeyNamePair> keyNameNetwork = getAllNetworks().stream().filter(n -> n.getKey().equals(id)).findFirst();
       if (keyNameNetwork.isPresent()) {
         addActionMessage(getText("manage.overview.networks.add.success", new String[]{keyNameNetwork.get().getName()}));
       } else {
@@ -279,33 +287,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     User u = userManager.get(id);
     if (u != null && !potentialManagers.contains(u)) {
-      addActionError(getText("manage.overview.manager.not.available", new String[] {id}));
+      addActionError(getText("manage.overview.manager.not.available", new String[]{id}));
     } else if (u != null) {
       resource.addManager(u);
-      addActionMessage(getText("manage.overview.user.added", new String[] {u.getName()}));
+      addActionMessage(getText("manage.overview.user.added", new String[]{u.getName()}));
       saveResource();
       potentialManagers.remove(u);
     }
-    return execute();
-  }
-
-  /**
-   * Triggered by change publishing organization button on overview page
-   */
-  public String changePublishingOrganization() throws Exception {
-    if (resource == null) {
-      return NOT_FOUND;
-    }
-
-    if (publishingOrganizationKey != null) {
-      for (Organisation org : organisations) {
-        if (org.getKey().toString().equals(publishingOrganizationKey)) {
-          resource.setOrganisation(org);
-          break;
-        }
-      }
-    }
-
     return execute();
   }
 
@@ -322,10 +310,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     boolean cancelled = resourceManager.cancelPublishing(resource.getShortname(), this);
     if (cancelled) {
-
       // final logging
       BigDecimal version = resource.getMetadataVersion();
-      String msg = getText("publishing.cancelled", new String[] {version.toPlainString(), resource.getShortname()});
+      String msg = getText("publishing.cancelled", new String[]{version.toPlainString(), resource.getShortname()});
       LOG.warn(msg);
       addActionError(msg);
 
@@ -350,13 +337,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     if (delete) {
       if (resource.getStatus().equals(PublicationStatus.DELETED)) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
             resource.getStatus().toString()}));
         return INPUT;
       }
       try {
         resourceManager.deleteResourceFromIpt(resource);
-        addActionMessage(getText("manage.overview.resource.deleteFromIpt.successful", new String[] {resource.getShortname()}));
+        addActionMessage(getText("manage.overview.resource.deleteFromIpt.successful", new String[]{resource.getShortname()}));
         return HOME;
       } catch (IOException e) {
         String msg = getText("manage.resource.delete.failed");
@@ -365,7 +352,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         addActionExceptionWarning(e);
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
           resource.getStatus().toString()}));
     }
     return SUCCESS;
@@ -392,8 +379,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     if (delete) {
       if (resource.getStatus().equals(PublicationStatus.DELETED)) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-          resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+            resource.getStatus().toString()}));
         return INPUT;
       }
       try {
@@ -415,15 +402,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           // next try to deactivate as many DOIs assigned to the resource as possible (and delete DOI if reserved)
           doDeactivateDOI(doi);
           resource.setIdentifierStatus(
-            resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION)
-              ? IdentifierStatus.UNRESERVED : IdentifierStatus.UNAVAILABLE);
+              resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION)
+                  ? IdentifierStatus.UNRESERVED : IdentifierStatus.UNAVAILABLE);
 
           // delete previously assigned DOIs also
           Set<String> deleted = new HashSet<>();
           deleted.add(doi.toString());
 
           if (!resource.getVersionHistory().isEmpty()) {
-            for (VersionHistory history: resource.getVersionHistory()) {
+            for (VersionHistory history : resource.getVersionHistory()) {
               DOI formerDoi = history.getDoi();
               if (formerDoi != null && !deleted.contains(formerDoi.toString())) {
                 doDeactivateDOI(formerDoi);
@@ -436,7 +423,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           resource.updateAlternateIdentifierForDOI();
           resource.updateCitationIdentifierForDOI(); // unset DOI as citation identifier
           saveResource();
-          addActionMessage(getText("manage.overview.resource.deleted", new String[] {resource.toString()}));
+          LOG.info("Resource {} is deleted by {}", resource.toString(), getCurrentUser().getEmail());
+          addActionMessage(getText("manage.overview.resource.deleted", new String[]{resource.toString()}));
         } else {
           // de-register resource, and delete resource directory
           resourceManager.delete(resource, true);
@@ -449,8 +437,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         addActionExceptionWarning(e);
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+          resource.getStatus().toString()}));
     }
     return SUCCESS;
   }
@@ -459,7 +447,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * Resolve DOI, then depending on its state delete it (if reserved) or deactivate it (if registered).
    *
    * @param doi DOI to delete/deactivate
-   *
    * @throws org.gbif.ipt.service.DeletionNotAllowedException if deletion failed
    */
   private void doDeactivateDOI(DOI doi) throws DeletionNotAllowedException {
@@ -469,25 +456,24 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
       if (doiData.getStatus() != null) {
         if (doiData.getStatus().equals(DoiStatus.RESERVED)) {
-          LOG.info("Deleting reserved DOI: " + doi + "...");
+          LOG.info("Deleting reserved DOI: {}...", doi);
           registrationManager.getDoiService().delete(doi);
-          String msg = getText("manage.overview.publishing.doi.delete.success", new String[] {doi.toString()});
+          String msg = getText("manage.overview.publishing.doi.delete.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
-          LOG.info("Deactivating registered DOI: " + doi + "...");
+          LOG.info("Deactivating registered DOI: {}...", doi);
           registrationManager.getDoiService().delete(doi);
           String msg = getText("manage.overview.publishing.doi.deactivate.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } else {
-          LOG.error(
-            "Not appropriate to delete DOI: " + doi + ". DOI status=" + doiData.getStatus().toString());
+          LOG.error("Not appropriate to delete DOI: {}. DOI status={}", doi, doiData.getStatus().toString());
         }
       } else {
         throw new DeletionNotAllowedException(
             DeletionNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
-            getText("manage.overview.publishing.doi.delete.failed.notResolved", new String[] {doi.toString()}));
+            getText("manage.overview.publishing.doi.delete.failed.notResolved", new String[]{doi.toString()}));
       }
     } catch (DoiException e) {
       throw new DeletionNotAllowedException(
@@ -516,10 +502,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     if (undelete) {
       if (!resource.getStatus().equals(PublicationStatus.DELETED)) {
         addActionWarning(getText("manage.overview.resource.invalid.operation",
-          new String[] {resource.getShortname(), resource.getStatus().toString()}));
+            new String[]{resource.getShortname(), resource.getStatus().toString()}));
         return INPUT;
       }
-      // note: the DOI of last published version is undeleted
+      // note: the DOI of the last published version is undeleted
       DOI doi = resource.getAssignedDoi();
       if (doi != null) {
         try {
@@ -534,7 +520,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           Organisation organisation = resource.getOrganisation();
           if (organisation == null) {
             throw new InvalidConfigException(InvalidConfigException.TYPE.RESOURCE_CONFIG,
-              "Resource being undeleted missing publishing organisation!");
+                "Resource being undeleted missing publishing organisation!");
           } else {
             Organisation retrieved = registrationManager.get(organisation.getKey());
             if (retrieved == null) {
@@ -542,7 +528,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                   ORGANISATION_NOT_ASSOCIATED_TO_IPT,
                   getText(
                       "manage.overview.publishing.doi.undelete.failed.noOrganisation",
-                      new String[] {organisation.getKey().toString()}));
+                      new String[]{organisation.getKey().toString()}));
             } else {
               Organisation doiAccountActivated = registrationManager.findPrimaryDoiAgencyAccount();
               if (doiAccountActivated != null && doiAccountActivated.getDoiPrefix() != null
@@ -551,7 +537,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                     DOI_PREFIX_NOT_MATCHING,
                     getText(
                         "manage.overview.publishing.doi.undelete.failed.badPrefix",
-                        new String[] {doi.toString(), doiAccountActivated.getDoiPrefix()}));
+                        new String[]{doi.toString(), doiAccountActivated.getDoiPrefix()}));
               }
             }
           }
@@ -562,7 +548,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           UUID key = resource.getKey();
           File versionToUndeleteEmlFile = cfg.getDataDir().resourceEmlFile(shortname, versionToUndelete);
           Resource reconstructed = ResourceUtils.reconstructVersion(versionToUndelete, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), doi, organisation,
-            resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile, key);
+              resource.findVersionHistory(versionToUndelete), versionToUndeleteEmlFile, key);
           URI target = cfg.getResourceUri(shortname);
           // perform undelete
           doUndeleteDOI(doi, reconstructed, target);
@@ -581,10 +567,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                 // reconstruct version being undeleted
                 BigDecimal formerVersionToUndelete = new BigDecimal(history.getVersion());
                 File formerVersionToUndeleteEmlFile =
-                  cfg.getDataDir().resourceEmlFile(shortname, formerVersionToUndelete);
+                    cfg.getDataDir().resourceEmlFile(shortname, formerVersionToUndelete);
                 Resource formerVersionReconstructed = ResourceUtils
-                  .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), formerDoi, organisation,
-                    resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile, key);
+                    .reconstructVersion(formerVersionToUndelete, shortname, resource.getCoreType(), resource.getDataPackageIdentifier(), formerDoi, organisation,
+                        resource.findVersionHistory(formerVersionToUndelete), formerVersionToUndeleteEmlFile, key);
                 // prepare target URI equal to version resource page
                 URI formerTarget = cfg.getResourceVersionUri(shortname, formerVersionToUndelete);
                 // perform undelete
@@ -605,7 +591,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
           saveResource();
           addActionMessage(
-            getText("manage.overview.resource.undeleted", new String[] {resource.getTitleAndShortname()}));
+              getText("manage.overview.resource.undeleted", new String[]{resource.getTitleAndShortname()}));
           return SUCCESS;
         } catch (UndeletNotAllowedException | IllegalArgumentException e) {
           String msg = getText("manage.resource.undelete.failed");
@@ -616,11 +602,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       } else {
         addActionWarning(getText("manage.overview.resource.invalid.operation",
-          new String[] {resource.getShortname(), resource.getStatus().toString()}));
+            new String[]{resource.getShortname(), resource.getStatus().toString()}));
       }
     } else {
       addActionWarning(getText("manage.overview.resource.invalid.operation",
-        new String[] {resource.getShortname(), resource.getStatus().toString()}));
+          new String[]{resource.getShortname(), resource.getStatus().toString()}));
     }
     return INPUT;
   }
@@ -628,10 +614,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   /**
    * Resolve DOI, then depending on its state reactivate/undelete it if deleted.
    *
-   * @param doi DOI to undelete
+   * @param doi      DOI to undelete
    * @param resource resource version to undelete
-   * @param target target URI of DOI to undelete
-   *
+   * @param target   target URI of DOI to undelete
    * @throws org.gbif.ipt.service.UndeletNotAllowedException if undelete failed
    */
   private void doUndeleteDOI(DOI doi, Resource resource, URI target) throws UndeletNotAllowedException {
@@ -642,7 +627,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     try {
       DoiData doiData = registrationManager.getDoiService().resolve(doi);
       if (doiData.getStatus() == DoiStatus.NEW || doiData.getStatus() == DoiStatus.DELETED) {
-        LOG.info("Undeleting deleted DOI: " + doi + "...");
+        LOG.info("Undeleting deleted DOI: {}...", doi);
         DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
         registrationManager.getDoiService().register(doi, target, dataCiteMetadata);
         String msg = getText("manage.overview.publishing.doi.undelete.success", new String[]{doi.toString()});
@@ -653,14 +638,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             DOI_NOT_DELETED,
             getText(
                 "manage.overview.publishing.doi.undelete.failed.badStatus",
-                new String[] {doi.toString(), doiData.getStatus().toString()}));
+                new String[]{doi.toString(), doiData.getStatus().toString()}));
       }
     } catch (DoiException e) {
       throw new UndeletNotAllowedException(
           UndeletNotAllowedException.Reason.DOI_REGISTRATION_AGENCY_ERROR,
           getText(
               "manage.overview.publishing.doi.undelete.failed.exception",
-              new String[] {doi.toString(), e.getMessage()}));
+              new String[]{doi.toString(), e.getMessage()}));
     }
   }
 
@@ -675,7 +660,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       registryManager.removeResourceFromNetwork(resource, id);
       saveResource();
 
-      Optional<KeyNamePair> keyNameNetwork = allNetworks.stream().filter(n -> n.getKey().equals(id)).findFirst();
+      Optional<KeyNamePair> keyNameNetwork = getAllNetworks().stream().filter(n -> n.getKey().equals(id)).findFirst();
       if (keyNameNetwork.isPresent()) {
         addActionMessage(getText("manage.overview.networks.delete.success", new String[]{keyNameNetwork.get().getName()}));
       } else {
@@ -683,7 +668,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
 
       Optional<KeyNamePair> potentialNetwork =
-          allNetworks.stream().filter(n -> Objects.equals(n.getKey(), id)).findFirst();
+          getAllNetworks().stream().filter(n -> Objects.equals(n.getKey(), id)).findFirst();
       potentialNetwork.ifPresent(potentialNetworks::add);
     } catch (IllegalArgumentException e) {
       addActionError(getText("manage.overview.networks.delete.failed"));
@@ -701,10 +686,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
     User u = userManager.get(id);
     if (u == null || !resource.getManagers().contains(u)) {
-      addActionError(getText("manage.overview.manager.not.available", new String[] {id}));
+      addActionError(getText("manage.overview.manager.not.available", new String[]{id}));
     } else {
       resource.getManagers().remove(u);
-      addActionMessage(getText("manage.overview.user.removed", new String[] {u.getName()}));
+      addActionMessage(getText("manage.overview.user.removed", new String[]{u.getName()}));
       saveResource();
       potentialManagers.add(u);
     }
@@ -723,7 +708,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * Determine whether the metadata has been modified since the last publication.
    *
    * @param resource resource
-   *
    * @return true if metadata has been modified since last publication, false otherwise
    */
   public boolean setMetadataModifiedSinceLastPublication(@NotNull Resource resource) {
@@ -741,7 +725,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * Determine whether the source mappings has been modified since the last publication.
    *
    * @param resource resource
-   *
    * @return true if source mappings has been modified since last publication, false otherwise
    */
   public boolean setMappingsModifiedSinceLastPublication(@NotNull Resource resource) {
@@ -759,7 +742,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * Determine whether the sources have been modified since the last publication.
    *
    * @param resource resource
-   *
    * @return true if sources have been modified since last publication, false otherwise
    */
   public boolean setSourcesModifiedSinceLastPublication(@NotNull Resource resource) {
@@ -797,7 +779,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * @return true if the resource meets the minimum requirements to be published
    */
   private boolean hasMinimumRegistryInfo(Resource resource) {
-    if (missingMetadata) {
+    if (missingBasicMetadata) {
       return false;
     }
     return resource.isPublished();
@@ -838,18 +820,22 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         // makePrivate
         try {
           resourceManager.visibilityToPrivate(resource, this);
-          addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
-            .toString()}));
+          if (resource.getPendingStatus() != null) {
+            addActionMessage(
+                getText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
+                    + " "
+                    + getText("manage.overview.changed.publication.status.republication"));
+          }
         } catch (InvalidConfigException e) {
-          LOG.error("Cant unpublish resource " + resource, e);
+          LOG.error("Cant unpublish resource {}", resource, e);
         }
       } else {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-          resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+            resource.getStatus().toString()}));
       }
     } else {
       addActionWarning(getText("manage.overview.resource.invalid.operation",
-        new String[] {resource.getShortname(), resource.getStatus().toString()}));
+          new String[]{resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -865,33 +851,41 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           Date date = DATE_FORMAT.parse(makePublicDateTime);
           resource.setMakePublicDate(date);
           saveResource();
-          addActionMessage(getText("manage.overview.changed.publication.status.become.public", new String[] {DATE_FORMAT_UI.format(date)}));
+          addActionMessage(
+              getText("manage.overview.changed.publication.status.become.public", new String[]{DATE_FORMAT_UI.format(date)})
+                  + " "
+                  + getText("manage.overview.changed.publication.status.republication"));
         } catch (Exception e) {
-          LOG.error("Can't set make public date " + resource, e);
+          LOG.error("Can't set make public date {}", resource, e);
         }
       } else {
         try {
           resourceManager.visibilityToPublic(resource, this);
-          addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
-              .toString()}));
+          if (resource.getPendingStatus() != null) {
+            addActionMessage(
+                getText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
+                    + " "
+                    + getText("manage.overview.changed.publication.status.republication"));
+          }
         } catch (InvalidConfigException e) {
-          LOG.error("Can't publish resource " + resource, e);
+          LOG.error("Can't publish resource {}", resource, e);
         }
       }
     } else {
       addActionWarning(getText("manage.overview.resource.invalid.operation",
-        new String[] {resource.getShortname(), resource.getStatus().toString()}));
+          new String[]{resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
   }
 
-  public String cancelMakePublic() throws Exception {
+  public String cancelVisibilityChange() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
     }
+    resource.setPendingStatus(null);
     resource.setMakePublicDate(null);
     saveResource();
-    addActionMessage(getText("manage.overview.changed.publication.status", new String[] {resource.getStatus()
+    addActionMessage(getText("manage.overview.changed.publication.status", new String[]{resource.getStatus()
         .toString()}));
 
     return execute();
@@ -928,20 +922,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       }
       DOI existingDoi = findExistingDoi(resource);
       if ((existingDoi == null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
-        .isAlreadyAssignedDoi()) || (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource
-        .isAlreadyAssignedDoi())) {
+          .isAlreadyAssignedDoi()) || (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC && resource
+          .isAlreadyAssignedDoi())) {
         DOI doi = DOIUtils.mintDOI(doiAccount.getDoiRegistrationAgency(), doiAccount.getDoiPrefix());
-        LOG.info("Reserving " + doi + " for " + resource.getTitleAndShortname());
+        LOG.info("Reserving {} for {}", doi, resource.getTitleAndShortname());
         try {
           doReserveDOI(doi, resource);
-          String msg = getText("manage.overview.publishing.doi.reserve.success", new String[] {doi.toString()});
+          String msg = getText("manage.overview.publishing.doi.reserve.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } catch (DoiExistsException e) {
-          LOG.error("Failed to reserve " + doi + " because it exists already. Trying again...", e);
+          LOG.error("Failed to reserve {} because it exists already. Trying again...", doi, e);
           reserveDoi();
         } catch (InvalidMetadataException e) {
-          String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.metadata", new String[] {doi.toString(), e.getMessage()});
+          String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.metadata", new String[]{doi.toString(), e.getMessage()});
           LOG.error(errorMsg, e);
           addActionError(errorMsg);
         } catch (DoiException e) {
@@ -950,7 +944,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           addActionError(errorMsg);
         }
       } else if (existingDoi != null && resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED && !resource
-        .isAlreadyAssignedDoi()) {
+          .isAlreadyAssignedDoi()) {
 
         String prefixAllowed = doiAccount.getDoiPrefix();
         // ensure the prefix of the DOI account configured for this IPT matches the prefix of the existing DOI
@@ -959,13 +953,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             DoiData doiData = registrationManager.getDoiService().resolve(existingDoi);
             // verify the existing DOI is either reserved or registered already
             if (doiData.getStatus().equals(DoiStatus.RESERVED)) {
-              LOG.info("Assigning " + existingDoi + " (existing reserved DOI) to " + resource.getTitleAndShortname());
+              LOG.info("Assigning {} (existing reserved DOI) to {}", existingDoi, resource.getTitleAndShortname());
               doReuseDOI(existingDoi, resource);
             } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
-              LOG.info("Assigning " + existingDoi + " (existing registered DOI) to " + resource.getTitleAndShortname());
+              LOG.info("Assigning {} (existing registered DOI) to {}", existingDoi, resource.getTitleAndShortname());
 
               // the DOI is registered and should resolve to this resource's public homepage, so verify the homepage is publicly accessible
-              LOG.debug("Resource " + resource.getShortname() + " has status=" + resource.getStatus());
+              LOG.debug("Resource {} has status={}", resource.getShortname(), resource.getStatus());
               if (!resource.isPubliclyAvailable()) {
                 String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.notPublic", new String[]{existingDoi.toString()});
                 LOG.error(errorMsg);
@@ -973,7 +967,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               } else {
                 // the DOI is registered and its target URI should be equal to the public resource homepage URI
                 URI target = doiData.getTarget();
-                LOG.debug(existingDoi + " has target URI=" + target);
+                LOG.debug("{} has target URI={}", existingDoi, target);
                 URI homepage = cfg.getResourceUri(resource.getShortname());
                 if (target != null && target.equals(homepage)) {
                   LOG.debug("Verified target URI of existing registered DOI is equal to public resource homepage URI");
@@ -985,25 +979,25 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
                 }
               }
             } else {
-              String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed", new String[] {existingDoi.toString()});
+              String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed", new String[]{existingDoi.toString()});
               LOG.error(errorMsg);
               addActionError(errorMsg);
             }
           } catch (DoiException e) {
-            String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed.exception", new String[] {existingDoi.toString(), e.getMessage()});
+            String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed.exception", new String[]{existingDoi.toString(), e.getMessage()});
             LOG.error(errorMsg, e);
             addActionError(errorMsg);
           }
         } else {
-          addActionError(getText("manage.overview.publishing.doi.reserve.notRreused", new String[] {existingDoi.toString(), prefixAllowed}));
+          addActionError(getText("manage.overview.publishing.doi.reserve.notRreused", new String[]{existingDoi.toString(), prefixAllowed}));
         }
       } else {
         addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
-          new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
+            new String[]{resource.getShortname(), resource.getIdentifierStatus().toString()}));
       }
     } else {
       addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
-        new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
+          new String[]{resource.getShortname(), resource.getIdentifierStatus().toString()}));
     }
     return execute();
   }
@@ -1011,7 +1005,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   /**
    * Do the changes to the resource, necessary to reuse an existing DOI.
    *
-   * @param doi existing DOI to reuse
+   * @param doi      existing DOI to reuse
    * @param resource resource to apply changes to
    */
   private void doReuseDOI(DOI doi, Resource resource) {
@@ -1021,7 +1015,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     resource.updateAlternateIdentifierForDOI();
     resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
     saveResource();
-    String msg = getText("manage.overview.publishing.doi.reserve.reused", new String[] {doi.toString()});
+    String msg = getText("manage.overview.publishing.doi.reserve.reused", new String[]{doi.toString()});
     LOG.info(msg);
     addActionMessage(msg);
   }
@@ -1031,7 +1025,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    *
    * @param doi      DOI to reserve
    * @param resource resource to reserve DOI for
-   *
    * @throws DoiExistsException if the DOI being reserved already exists so that reserving can be retried with new DOI
    */
   private void doReserveDOI(DOI doi, Resource resource) throws DoiException {
@@ -1050,10 +1043,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   /**
    * Delete a DOI for the resource. Optionally reassign DOI.
    *
-   * @param reservedDoi DOI to delete
-   * @param resource resource to delete DOI for (optional)
+   * @param reservedDoi   DOI to delete
+   * @param resource      resource to delete DOI for (optional)
    * @param reassignedDoi DOI to reassign
-   *
    * @throws DoiException if the deletion failed
    */
   private void doDeleteReservedDOI(DOI reservedDoi, Resource resource, @Nullable DOI reassignedDoi) throws DoiException {
@@ -1062,11 +1054,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     // safeguard - prevent deleting existing registered DOIs
     DoiData doiData = registrationManager.getDoiService().resolve(reservedDoi);
     if (doiData.getStatus() != null && !doiData.getStatus().equals(DoiStatus.REGISTERED)) {
-      LOG.debug("Deleting reserved DOI=" + reservedDoi.toString());
+      LOG.debug("Deleting reserved DOI={}", reservedDoi.toString());
       // delete reserved DOI for this resource
       registrationManager.getDoiService().delete(reservedDoi);
     } else {
-      LOG.debug("Deleting reserved DOI bypassed because this is an existing registered DOI: " + reservedDoi.toString());
+      LOG.debug("Deleting reserved DOI bypassed because this is an existing registered DOI: {}", reservedDoi.toString());
     }
 
     // reset resource DOI
@@ -1108,7 +1100,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   /**
    * Deletes a reserved DOI.
-   *
+   * <p>
    * Can only be done to a resource whose DOI is reserved but not public. If the resource previously had been assigned
    * a DOI, that DOI is reassigned.
    */
@@ -1122,43 +1114,43 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       addActionError(msg);
     }
     if (deleteDoi) {
-        DOI reservedDoi = resource.getDoi();
-        if (reservedDoi != null && resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
-          DOI assignedDoi = resource.getAssignedDoi();
-          if (assignedDoi != null) {
-            LOG.info("Deleting reserved " + reservedDoi + " and reassigning " + assignedDoi);
-            try {
-              // delete reserved DOI, reassign previous DOI to resource, and update EML alternateIdentifier list
-              doDeleteReservedDOI(reservedDoi, resource, assignedDoi);
-              String msg = getText("manage.overview.publishing.doi.delete.reassign.success", new String[] {reservedDoi.toString(), assignedDoi.toString()});
-              LOG.info(msg);
-              addActionMessage(msg);
-            } catch (DoiException e) {
-              String errorMsg = getText("manage.overview.publishing.doi.delete.failed.exception", new String[] {resource.getDoi().toString(), e.getMessage()});
-              LOG.error(errorMsg, e);
-              addActionError(errorMsg);
-            }
-          } else {
-            LOG.info("Deleting reserved " + reservedDoi);
-            try {
-              // delete reserved DOI, and update EML alternateIdentifier list
-              doDeleteReservedDOI(reservedDoi, resource, null);
-              String msg = getText("manage.overview.publishing.doi.delete.success", new String[] {reservedDoi.toString()});
-              LOG.info(msg);
-              addActionMessage(msg);
-            } catch (DoiException e) {
-              String errorMsg = getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
-              LOG.error(errorMsg, e);
-              addActionError(errorMsg);
-            }
+      DOI reservedDoi = resource.getDoi();
+      if (reservedDoi != null && resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION) {
+        DOI assignedDoi = resource.getAssignedDoi();
+        if (assignedDoi != null) {
+          LOG.info("Deleting reserved {} and reassigning {}", reservedDoi, assignedDoi);
+          try {
+            // delete reserved DOI, reassign previous DOI to resource, and update EML alternateIdentifier list
+            doDeleteReservedDOI(reservedDoi, resource, assignedDoi);
+            String msg = getText("manage.overview.publishing.doi.delete.reassign.success", new String[]{reservedDoi.toString(), assignedDoi.toString()});
+            LOG.info(msg);
+            addActionMessage(msg);
+          } catch (DoiException e) {
+            String errorMsg = getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
+            LOG.error(errorMsg, e);
+            addActionError(errorMsg);
           }
         } else {
-          addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
-            new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
+          LOG.info("Deleting reserved {}", reservedDoi);
+          try {
+            // delete reserved DOI, and update EML alternateIdentifier list
+            doDeleteReservedDOI(reservedDoi, resource, null);
+            String msg = getText("manage.overview.publishing.doi.delete.success", new String[]{reservedDoi.toString()});
+            LOG.info(msg);
+            addActionMessage(msg);
+          } catch (DoiException e) {
+            String errorMsg = getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
+            LOG.error(errorMsg, e);
+            addActionError(errorMsg);
+          }
         }
+      } else {
+        addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+            new String[]{resource.getShortname(), resource.getIdentifierStatus().toString()}));
+      }
     } else {
       addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
-        new String[] {resource.getShortname(), resource.getIdentifierStatus().toString()}));
+          new String[]{resource.getShortname(), resource.getIdentifierStatus().toString()}));
     }
     return execute();
   }
@@ -1170,6 +1162,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // refresh archive report
       updateReport();
 
+      // check all extensions are up to date
+      outdatedExtensions = resource.getMappings().stream()
+          .map(ExtensionMapping::getExtension)
+          .anyMatch(e -> !e.isLatest());
+
       try {
         if (COL_DP.equals(resource.getCoreType())) {
           File metadataFile = cfg.getDataDir().resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
@@ -1177,20 +1174,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         }
       } catch (Exception e) {
         LOG.error("Failed to read ColDP metadata", e);
-      }
-
-      // get potential new networks
-      try {
-        allNetworks = registryManager.getNetworksBrief();
-        potentialNetworks = new ArrayList<>(allNetworks);
-        for (Network net : getResourceNetworks()) {
-          potentialNetworks.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
-        }
-        networksAvailable = true;
-      } catch (RegistryException e) {
-        String msg = RegistryException.logRegistryException(e, this);
-        addActionWarning(getText("manage.overview.networks.registryAccessUrl", new String[] {cfg.getRegistryUrl()}) + msg);
-        networksAvailable = false;
       }
 
       // get potential new managers
@@ -1209,6 +1192,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // indicate the resource hasCore is true
       for (ExtensionMapping em : resource.getCoreMappings()) {
         if (em.getFields().isEmpty()) {
+          LOG.debug("Deleting mapping {}→{} for resource {}: no mapped fields",
+              Optional.ofNullable(em.getSource()).map(Source::getName).orElse("NULL"),
+              Optional.ofNullable(em.getExtension()).map(Extension::getName).orElse("NULL"),
+              resource.getShortname());
           resource.deleteMapping(em);
         }
       }
@@ -1223,7 +1210,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         if (coreRowType != null) {
           Extension core = extensionManager.get(coreRowType);
           if (core == null) {
-            addActionError(getText("manage.overview.no.DwC.extension", new String[] {coreRowType}));
+            addActionError(getText("manage.overview.no.DwC.extension", new String[]{coreRowType}));
           } else {
             // core always appears first in list
             potentialCores.add(core);
@@ -1246,9 +1233,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
       // check metadata
       if (!isDataPackageResource()) {
-        missingMetadata = !emlValidator.isValid(resource, null);
+        errorCollector = new SectionErrorCollector();
+        I18n i18n = new StrutsI18n(this);
+        validMetadata = emlValidator.areAllSectionsValid(resource, errorCollector, i18n);
+
+        ActionValidationResult basicMetadataValidationResult
+            = errorCollector.getResult().get(MetadataSection.BASIC_SECTION.toString());
+        ActionValidationResult contactsValidationResult
+            = errorCollector.getResult().get(MetadataSection.CONTACTS_SECTION.toString());
+
+        missingBasicMetadata = basicMetadataValidationResult.hasErrors()
+            || contactsValidationResult.hasErrors();
       } else {
-        missingMetadata = !dataPackageMetadataValidator.isValid(resource);
+        validMetadata = dataPackageMetadataValidator.isValid(resource);
       }
 
       // check resource has been assigned a valid publishing organisation
@@ -1266,20 +1263,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       autoPublishFrequencies = new LinkedHashMap<>();
 
       Map<String, String> filteredFrequencies =
-              vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
+          vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
       MapUtils.removeNonMatchingKeys(filteredFrequencies, MaintenanceUpdateFrequency.NON_ZERO_DAYS_UPDATE_PERIODS);
       autoPublishFrequencies.putAll(filteredFrequencies);
 
       usableSpace = cfg.getDataDir().getDataDirUsableSpace();
       freeDiscSpaceReadable = org.apache.commons.io.FileUtils.byteCountToDisplaySize(usableSpace);
-
-      if (resource.isPublished()
-          && resource.getEml() != null
-          && resource.getEml().getProject() != null
-          && resource.getEml().getProject().getTitle() != null
-          && resource.getEml().getProject().getPersonnel().isEmpty()) {
-        addActionWarning(getText("validation.personnel.now.required"));
-      }
     }
   }
 
@@ -1312,7 +1301,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
    * this safeguard in place, a resource can auto-publish in an endless number of failures.
    *
    * @return Struts2 result string
-   *
    * @throws Exception if method fails
    */
   public String publish() throws Exception {
@@ -1341,21 +1329,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           DoiData doiData = registrationManager.getDoiService().resolve(resource.getDoi());
           if (doiData.getStatus() != null) {
             if (doiData.getStatus().compareTo(DoiStatus.RESERVED) == 0 || doiData.getStatus().compareTo(DoiStatus.REGISTERED) == 0) {
-              LOG.info("Pre-publication check: successfully resolved " + resource.getDoi().toString());
+              LOG.info("Pre-publication check: successfully resolved {}", resource.getDoi().toString());
             } else {
-              String errorMsg = getText("manage.overview.publishing.doi.publish.check.registered.failed", new String[] {resource.getDoi().toString(), doiData.getStatus().toString()});
+              String errorMsg = getText("manage.overview.publishing.doi.publish.check.registered.failed", new String[]{resource.getDoi().toString(), doiData.getStatus().toString()});
               LOG.error(errorMsg);
               addActionError(errorMsg);
               return INPUT;
             }
           } else {
-            String errorMsg = getText("manage.overview.publishing.doi.publish.check.existing.failed", new String[] {resource.getDoi().toString()});
+            String errorMsg = getText("manage.overview.publishing.doi.publish.check.existing.failed", new String[]{resource.getDoi().toString()});
             LOG.error(errorMsg);
             addActionError(errorMsg);
             return INPUT;
           }
         } catch (DoiException e) {
-          String errorMsg = getText("manage.overview.publishing.doi.publish.check.existing.failed.exception", new String[] {resource.getDoi().toString(), e.getMessage()});
+          String errorMsg = getText("manage.overview.publishing.doi.publish.check.existing.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
           LOG.error(errorMsg, e);
           addActionError(errorMsg);
           return INPUT;
@@ -1365,7 +1353,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       // clear the processFailures for the resource, allowing auto-publication to proceed
       if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
         logProcessFailures(resource);
-        LOG.info("Clearing publish event failures for resource: " + resource.getTitleAndShortname());
+        LOG.info("Clearing publish event failures for resource: {}", resource.getTitleAndShortname());
         resourceManager.getProcessFailures().remove(resource.getShortname());
       }
 
@@ -1377,7 +1365,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       try {
         // publish a new version of the resource
         if (resourceManager.publish(resource, nextVersion, this)) {
-          addActionMessage(getText("publishing.started", new String[] {String.valueOf(nextVersion), resource.getShortname()}));
+          addActionMessage(getText("publishing.started", new String[]{String.valueOf(nextVersion), resource.getShortname()}));
           // refresh archive report
           updateReport();
           return PUBLISHING;
@@ -1403,16 +1391,22 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       } catch (PublicationException e) {
         LOG.error("Exception while publishing", e);
         if (PublicationException.TYPE.LOCKED == e.getType()) {
-          LOG.error("Publication exception: resource {} is currently being published", resource.getShortname());
-          addActionError(getText("manage.overview.resource.being.published",
-            new String[] {resource.getTitleAndShortname()}));
+          if (e.getAdditionalParameter("source") != null) {
+            LOG.error("Publication exception: {}", e.getMessage());
+            addActionError(getText("manage.overview.resource.source.being.processed",
+                new String[]{(String) e.getAdditionalParameter("source")}));
+          } else {
+            LOG.error("Publication exception: resource {} is currently being published", resource.getShortname());
+            addActionError(getText("manage.overview.resource.being.published",
+                new String[]{resource.getTitleAndShortname()}));
+          }
         } else {
           LOG.error("Publication exception: resource {} publication failed. Reason: {}",
               resource.getShortname(),
               e.getMessage());
           // alert user publication failed
           addActionError(getText("publishing.failed",
-            new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()}));
+              new String[]{String.valueOf(nextVersion), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
           resourceManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
@@ -1421,7 +1415,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed
         String msg =
-          getText("publishing.failed", new String[] {String.valueOf(nextVersion), resource.getShortname(), e.getMessage()});
+            getText("publishing.failed", new String[]{String.valueOf(nextVersion), resource.getShortname(), e.getMessage()});
         LOG.error(msg, e);
         addActionError(msg);
       }
@@ -1465,8 +1459,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-          resource.getStatus().toString()}));
+        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+            resource.getStatus().toString()}));
 
       } else {
         // plain managers are not allowed to register a resource
@@ -1511,7 +1505,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
             addActionError(msg);
             LOG.error(msg);
 
-            // add error message that explains the consequence of the Registry error
+            // add an error message that explains the consequence of the Registry error
             msg = getText("manage.overview.failed.resource.registration");
             addActionError(msg);
             LOG.error(msg);
@@ -1524,8 +1518,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
         }
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[] {resource.getShortname(),
-        resource.getStatus().toString()}));
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+          resource.getStatus().toString()}));
     }
     return execute();
   }
@@ -1599,9 +1593,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
               return isSupported;
             }
           } catch (Exception e) {
-            LOG.error(
-                "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
-                    .getMessage(), e);
+            LOG.error("Failed to check if last published version of resource has been assigned a GBIF-supported license: {}", e
+                .getMessage(), e);
           }
         }
       }
@@ -1625,8 +1618,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
           Eml eml = EmlFactory.build(in);
           return eml.parseLicenseUrl();
         } catch (Exception e) {
-          LOG.error(
-            "Failed to check if last published version of resource has been assigned a GBIF-supported license: " + e
+          LOG.error("Failed to check if last published version of resource has been assigned a GBIF-supported license: {}", e
               .getMessage(), e);
         }
       }
@@ -1636,52 +1628,65 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   /**
    * To hold the state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param unpublish form variable
    */
+  @StrutsParameter
   public void setUnpublish(String unpublish) {
     this.unpublish = StringUtils.trimToNull(unpublish) != null;
   }
 
   /**
    * To hold the identifier state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param reserveDoi form variable
    */
+  @StrutsParameter
   public void setReserveDoi(String reserveDoi) {
     this.reserveDoi = StringUtils.trimToNull(reserveDoi) != null;
   }
 
   /**
    * To hold the identifier state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param deleteDoi form variable
    */
+  @StrutsParameter
   public void setDeleteDoi(String deleteDoi) {
     this.deleteDoi = StringUtils.trimToNull(deleteDoi) != null;
   }
 
   /**
    * To hold the state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param undelete form variable
    */
+  @StrutsParameter
   public void setUndelete(String undelete) {
     this.undelete = StringUtils.trimToNull(undelete) != null;
   }
 
   /**
    * To hold the publish request, so the same request triggered purely by a URL will not work.
-   *
-   * @param publish form variable
    */
+  @StrutsParameter
   public void setPublish(String publish) {
     this.publish = StringUtils.trimToNull(publish) != null;
   }
 
+  @StrutsParameter
+  public void setValidateDatapackageMetadata(boolean validateDatapackageMetadata) {
+    this.validateDatapackageMetadata = validateDatapackageMetadata;
+  }
+
+  @StrutsParameter
+  public void setMid(Integer mid) {
+    this.mid = mid;
+  }
+
+  @StrutsParameter
+  public void setMakePublicDateTime(String makePublicDateTime) {
+    this.makePublicDateTime = makePublicDateTime;
+  }
+
   public String replaceEml() {
     try {
-      resourceManager.replaceEml(resource, emlFile, validateEml);
+      UploadedFile upload = requireSingleUpload("EML");
+      File uploadedTempFile = (File) upload.getContent();
+
+      resourceManager.replaceEml(resource, uploadedTempFile, validateEml);
       addActionMessage(getText("manage.overview.success.replace.eml"));
       return SUCCESS;
     } catch (ImportException e) {
@@ -1692,7 +1697,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
       LOG.error("Failed to create EML validator", e);
       addActionError(getText("manage.overview.failed.replace.eml.validator"));
       return ERROR;
-    } catch (IOException e) {
+    } catch (IllegalArgumentException | IOException e) {
       LOG.error("Failed to read EML from file", e);
       addActionError(getText("manage.overview.failed.replace.eml.read"));
       return ERROR;
@@ -1705,7 +1710,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
 
   public String replaceDatapackageMetadata() {
     try {
-      resourceManager.replaceDatapackageMetadata(this, resource, datapackageMetadataFile, validateDatapackageMetadata);
+      UploadedFile upload = requireSingleUpload("Metadata");
+      File uploadedTempFile = (File) upload.getContent();
+
+      resourceManager.replaceDatapackageMetadata(this, resource, uploadedTempFile, validateDatapackageMetadata);
       addActionMessage(getText("manage.overview.success.replace.metadata"));
       return SUCCESS;
     } catch (ImportException e) {
@@ -1828,7 +1836,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
 
     report = (exception == null) ? new StatusReport(true, "succeeded", report.getMessages())
-      : new StatusReport(exception, "failed", messages);
+        : new StatusReport(exception, "failed", messages);
 
     return SUCCESS;
   }
@@ -1847,7 +1855,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
   }
 
   /**
-   *
    * @param summary change summary for new published version, entered by the user in the confirm dialog defaulting to
    *                empty string
    */
@@ -1870,9 +1877,47 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     return resource.getDataPackageMappings().isEmpty();
   }
 
+  public boolean isVisibilityChangePending() {
+    return resource != null && resource.getPendingStatus() != null;
+  }
+
+  public PublicationStatus getCurrentVisibilityStatus() {
+    return resource != null ? resource.getStatus() : null;
+  }
+
+  public PublicationStatus getNextVisibilityStatus() {
+    if (resource == null) {
+      return null;
+    }
+    return resource.getPendingStatus() != null ? resource.getPendingStatus() : resource.getStatus();
+  }
+
+  public boolean isNextVisibilityPublic() {
+    PublicationStatus nextStatus = getNextVisibilityStatus();
+    return PublicationStatus.PUBLIC == nextStatus || PublicationStatus.REGISTERED == nextStatus;
+  }
+
+  public boolean isNextVisibilityPrivate() {
+    return PublicationStatus.PRIVATE == getNextVisibilityStatus();
+  }
+
+  public boolean canBeMadePublic() {
+    return resource != null
+        && PublicationStatus.PRIVATE == resource.getStatus()
+        && resource.getPendingStatus() == null;
+  }
+
+  public boolean canBeMadePrivate() {
+    return resource != null
+        && PublicationStatus.PUBLIC == resource.getStatus()
+        && resource.getPendingStatus() == null
+        && (resource.getIdentifierStatus() == IdentifierStatus.PUBLIC_PENDING_PUBLICATION
+        || resource.getIdentifierStatus() == IdentifierStatus.UNRESERVED);
+  }
+
   /**
-  * Resource's organisation is not synchronized, use this method to make sure use actual data.
-  */
+   * Resource's organisation is not synchronized, use this method to make sure use actual data.
+   */
   public boolean isResourceOrganisationAssociatedWithDoiAgency() {
     if (resource.getOrganisation() != null && resource.getOrganisation().getKey() != null) {
       Optional<Organisation> firstOrganisationMatch = organisations.stream()
@@ -1885,5 +1930,58 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler {
     }
 
     return false;
+  }
+
+  // Lazy getter
+  public List<KeyNamePair> getAllNetworks() {
+    if (allNetworks == null || allNetworks.isEmpty()) {
+      try {
+        allNetworks = registryManager.getNetworksBrief();
+        networksAvailable = true;
+      } catch (RegistryException e) {
+        String msg = RegistryException.logRegistryException(e, this);
+        addActionWarning(getText(
+            "manage.overview.networks.registryAccessUrl",
+            new String[]{cfg.getRegistryUrl()}
+        ) + msg);
+        networksAvailable = false;
+        allNetworks = Collections.emptyList();
+      }
+    }
+    return allNetworks;
+  }
+
+  // Lazy getter
+  public List<KeyNamePair> getPotentialNetworks() {
+    if (potentialNetworks == null || potentialNetworks.isEmpty()) {
+      List<KeyNamePair> networksCopy = new ArrayList<>(getAllNetworks());
+      for (Network net : getResourceNetworks()) {
+        networksCopy.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
+      }
+      potentialNetworks = networksCopy;
+    }
+    return potentialNetworks;
+  }
+
+  @StrutsParameter
+  public void setValidateEml(boolean validateEml) {
+    this.validateEml = validateEml;
+  }
+
+  private UploadedFile requireSingleUpload(String label) {
+    if (uploadedFiles == null || uploadedFiles.isEmpty()) {
+      throw new IllegalArgumentException(getText("manage.overview.failed.replace.eml.read"));
+    }
+
+    UploadedFile upload = uploadedFiles.get(0);
+    if (upload == null || upload.getContent() == null) {
+      throw new IllegalArgumentException(label + " upload: file was empty");
+    }
+    return upload;
+  }
+
+  @Override
+  public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+    this.uploadedFiles = uploadedFiles;
   }
 }

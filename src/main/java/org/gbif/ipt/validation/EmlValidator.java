@@ -16,6 +16,8 @@ package org.gbif.ipt.validation;
 import org.gbif.api.vocabulary.Language;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.i18n.I18n;
+import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -55,8 +57,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import jakarta.inject.Inject;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -166,7 +168,9 @@ public class EmlValidator extends BaseValidator {
 
   public boolean isValid(Resource resource, @Nullable MetadataSection section) {
     BaseAction action = new BaseAction(simpleTextProvider, cfg, regManager);
-    validate(action, resource, section);
+    ErrorCollector ec = new ActionErrorCollector(action);
+    I18n i18n = new StrutsI18n(action);
+    validate(resource, section, ec, i18n);
     return !(action.hasActionErrors() || action.hasFieldErrors());
   }
 
@@ -174,28 +178,31 @@ public class EmlValidator extends BaseValidator {
    * Validate if all metadata sections are valid. For the first section encountered that doesn't validate, an
    * error message will appear for that section only.
    *
-   * @param action Action
    * @param resource resource
+   * @param ec error collector
+   * @param i18n i18n
    * @return whether all sections validated or not
    */
-  public boolean areAllSectionsValid(BaseAction action, Resource resource) {
+  public boolean areAllSectionsValid(Resource resource, SectionErrorCollector ec, I18n i18n) {
     boolean problemsEncountered = false;
     for (MetadataSection section : MetadataSection.values()) {
-      validate(action, resource, section);
-      // only highlight first section has errors
-      if ((action.hasActionErrors() || action.hasFieldErrors()) && !problemsEncountered) {
-        action.addActionError(action.getText("manage.failed", new String[] {action.getText("submenu." + section.getName())}));
+      ec.setCurrentSection(section);
+      validate(resource, section, ec, i18n);
+      if (ec.hasErrors()) {
         problemsEncountered = true;
       }
     }
     return !problemsEncountered;
   }
 
-  public boolean isSectionValid(BaseAction action, Resource resource, MetadataSection section) {
-    validate(action, resource, section);
+  public boolean isSectionValid(Resource resource, MetadataSection section, ErrorCollector ec, I18n i18n) {
+    validate(resource, section, ec, i18n);
 
-    if (action.hasActionErrors() || action.hasFieldErrors()) {
-      action.addActionError(action.getText("manage.failed", new String[] {action.getText("submenu." + section.getName())}));
+    if (ec.hasActionErrors() || ec.hasFieldErrors()) {
+      ec.addActionError(
+          i18n.getText(
+              "manage.failed",
+              i18n.getText("submenu." + section.getName())));
       return false;
     }
 
@@ -207,11 +214,12 @@ public class EmlValidator extends BaseValidator {
    * </br>
    * For each section, validation only proceeds if at least one field in the section's form has been entered.
    *
-   * @param action BaseAction
    * @param resource resource
    * @param section EML document section name
+   * @param ec error collector
+   * @param i18n i18n
    */
-  public void validate(BaseAction action, Resource resource, @Nullable MetadataSection section) {
+  public void validate(Resource resource, @Nullable MetadataSection section, ErrorCollector ec, I18n i18n) {
     if (resource != null) {
 
       Eml eml = (resource.getEml() == null) ? new Eml() : resource.getEml();
@@ -227,13 +235,13 @@ public class EmlValidator extends BaseValidator {
 
           // Title - mandatory
           if (StringUtils.isBlank(eml.getTitle())) {
-            action.addFieldError("eml.title",
-              action.getText("validation.required", new String[] {action.getText("eml.title")}));
+            ec.addFieldError("eml.title",
+              i18n.getText("validation.required", new String[] {i18n.getText("eml.title")}));
           }
 
           // Title - not a short name of the resource
           if (resource.getShortname() != null && resource.getShortname().equals(eml.getTitle())) {
-            action.addActionWarning(action.getText("eml.title.shortname.match"));
+            ec.addActionWarning(i18n.getText("eml.title.shortname.match"));
           }
 
           String strippedDescription = Optional.ofNullable(eml.getDescription())
@@ -244,14 +252,14 @@ public class EmlValidator extends BaseValidator {
 
           // description - mandatory
           if (StringUtils.isEmpty(strippedDescription)) {
-            action.addActionError(
-                action.getText("validation.required", new String[] {action.getText("eml.description")}));
+            ec.addActionError(
+                i18n.getText("validation.required", new String[] {i18n.getText("eml.description")}));
           } else if (!exists(strippedDescription, 5)) {
             // ensure description is longer than min length
-            action.addActionError(
-                action.getText("validation.short", new String[] {action.getText("eml.description"), "5"}));
+            ec.addActionError(
+                i18n.getText("validation.short", new String[] {i18n.getText("eml.description"), "5"}));
           } else if (emlProfileValidator == null) {
-            action.addActionError(action.getText("validation.cannnot.be.performed"));
+            ec.addActionError(i18n.getText("validation.cannnot.be.performed"));
           } else {
             try {
               Eml stubValidationEml = getStubEml();
@@ -264,46 +272,44 @@ public class EmlValidator extends BaseValidator {
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("eml.description"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.invalid.ext",
+                      i18n.getText("eml.description"),
+                      simplifyDocBookValidationErrorMessage(e.getMessage())));
             } catch (Exception e) {
-              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("eml.description")}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.failed.see.logs",
+                      i18n.getText("eml.description")));
               LOG.error("Failed to validate description", e);
             }
           }
 
           // intellectual rights - mandatory
           if (StringUtils.isBlank(eml.getIntellectualRights())) {
-            action.addFieldError("eml.intellectualRights.license",
-              action.getText("validation.required", new String[] {action.getText("eml.intellectualRights.license")}));
-          }
-
-          // publishing organisation - mandatory
-          if (resource.getOrganisation() == null) {
-            action.addFieldError("id",
-              action.getText("validation.required", new String[] {action.getText("portal.home.organisation")}));
-          } else if (regManager.get(resource.getOrganisation().getKey()) == null) {
-            action.addFieldError("id",
-              action.getText("eml.publishingOrganisation.notFound", new String[] {resource.getOrganisation().getKey().toString()}));
+            ec.addFieldError("eml.intellectualRights.license",
+                i18n.getText("validation.required", i18n.getText("eml.intellectualRights.license")));
           }
 
           // type - mandatory
           if (StringUtils.isBlank(resource.getCoreType())) {
-            action.addFieldError("resource.coreType",
-              action.getText("validation.required", new String[] {action.getText("resource.coreType")}));
+            ec.addFieldError("resource.coreType",
+                i18n.getText("validation.required", i18n.getText("resource.coreType")));
           }
 
           // 3 Mandatory fields with default values set: metadata language, data language, and update frequency
 
           // metadata language - mandatory (defaults to 3 letter ISO code for English)
           if (StringUtils.isBlank(eml.getMetadataLanguage())) {
-            action.addActionWarning(action.getText("eml.metadataLanguage.default"));
+            ec.addActionWarning(i18n.getText("eml.metadataLanguage.default"));
             eml.setMetadataLanguage(Language.ENGLISH.getIso3LetterCode());
           }
 
           // data language - mandatory unless resource is metadata-only (defaults to English)
           if (StringUtils.isBlank(eml.getLanguage()) && resource.getCoreType() != null &&
               !resource.getCoreType().equalsIgnoreCase(Resource.CoreRowType.METADATA.toString())) {
-            action.addActionWarning(action.getText("eml.language.default"));
+            ec.addActionWarning(i18n.getText("eml.language.default"));
             eml.setLanguage(Language.ENGLISH.getIso3LetterCode());
           }
 
@@ -311,9 +317,12 @@ public class EmlValidator extends BaseValidator {
           if (eml.getUpdateFrequency() == null) {
             if (resource.getUpdateFrequency() != null) {
               eml.setUpdateFrequency(resource.getUpdateFrequency().getIdentifier());
-              action.addActionWarning(action.getText("eml.updateFrequency.default.interval", new String[] {resource.getUpdateFrequency().getIdentifier()}));
+              ec.addActionWarning(
+                  i18n.getText(
+                      "eml.updateFrequency.default.interval",
+                      resource.getUpdateFrequency().getIdentifier()));
             } else {
-              action.addActionWarning(action.getText("eml.updateFrequency.default"));
+              ec.addActionWarning(i18n.getText("eml.updateFrequency.default"));
               eml.setUpdateFrequency(MaintenanceUpdateFrequency.UNKNOWN.getIdentifier());
             }
           }
@@ -323,46 +332,59 @@ public class EmlValidator extends BaseValidator {
         case CONTACTS_SECTION:
           // Contacts list: at least one field has to have had data entered into it to qualify for validation
           if (isAgentsListEmpty(eml.getContacts())) {
-            action.addActionError(action.getText("eml.contact.required"));
+            ec.addActionError(i18n.getText("eml.contact.required"));
           } else {
             for (int index = 0; index < eml.getContacts().size(); index++) {
               Agent c = eml.getContacts().get(index);
 
               // firstName - optional. But if firstName exists, lastName have to exist
               if (exists(c.getFirstName()) && !exists(c.getLastName())) {
-                action.addFieldError("eml.contacts[" + index + "].lastName",
-                    action.getText("validation.firstname.lastname"));
+                ec.addFieldError("eml.contacts[" + index + "].lastName",
+                    i18n.getText("validation.firstname.lastname"));
               }
 
               // directory and personnel id both required (if either is supplied)
               if (!c.getUserIds().isEmpty()) {
                 for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
                   if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        action.getText("validation.personnel"));
+                    ec.addFieldError(
+                        "eml.contacts[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        i18n.getText("validation.personnel"));
                   } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].directory",
-                        action.getText("validation.directory"));
+                    ec.addFieldError(
+                        "eml.contacts[" + index + "].userIds[" + identifierIndex + "].directory",
+                        i18n.getText("validation.directory"));
                   } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.contact.identifier")}));
-                    action.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].directory",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.contact.directory")}));
+                    ec.addFieldError(
+                        "eml.contacts[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.contact.identifier")));
+                    ec.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].directory",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.contact.directory")));
                   }
                 }
               }
 
               // At least one of organisation, position, or a lastName have to exist
               if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
-                action.addActionError(action.getText("validation.lastname.organisation.position"));
-                action.addFieldError("eml.contacts[" + index + "].organisation", action
-                    .getText("validation.required", new String[] {action.getText("eml.contact.organisation")}));
-                action.addFieldError("eml.contacts[" + index + "].lastName",
-                    action.getText("validation.required", new String[] {action.getText("eml.contact.lastName")}));
-                action.addFieldError("eml.contacts[" + index + "].position",
-                    action.getText("validation.required", new String[] {action.getText("eml.contact.position")}));
+                ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
+                ec.addFieldError(
+                    "eml.contacts[" + index + "].organisation",
+                    i18n.getText("validation.required", i18n.getText("eml.contact.organisation")));
+                ec.addFieldError(
+                    "eml.contacts[" + index + "].lastName",
+                    i18n.getText("validation.required", i18n.getText("eml.contact.lastName")));
+                ec.addFieldError(
+                    "eml.contacts[" + index + "].position",
+                    i18n.getText("validation.required", i18n.getText("eml.contact.position")));
+              }
+
+              if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
+                ec.addFieldError("eml.contacts[" + index + "].organisation",
+                    i18n.getText("validation.short", i18n.getText("eml.contact.organisation"), "2"));
               }
 
               /* address(es) are optional. But if they exist, they should not be empty */
@@ -371,8 +393,11 @@ public class EmlValidator extends BaseValidator {
                   && !c.getAddress().getAddress().isEmpty()) {
                 for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
                   if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
-                    action.addFieldError("eml.contacts[" + index + "].address.address[" + addressIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.address.address")}));
+                    ec.addFieldError(
+                        "eml.contacts[" + index + "].address.address[" + addressIndex + "]",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.contact.address.address")));
                   }
                 }
               }
@@ -381,8 +406,8 @@ public class EmlValidator extends BaseValidator {
               if (!c.getPosition().isEmpty()) {
                 for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
                   if (StringUtils.isBlank(c.getPosition().get(positionIndex))) {
-                    action.addFieldError("eml.contacts[" + index + "].position[" + positionIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.position")}));
+                    ec.addFieldError("eml.contacts[" + index + "].position[" + positionIndex + "]",
+                        i18n.getText("validation.invalid", i18n.getText("eml.contact.position")));
                   }
                 }
               }
@@ -393,9 +418,12 @@ public class EmlValidator extends BaseValidator {
                 for (int emailIndex = 0; emailIndex < c.getEmail().size(); emailIndex++) {
                   emailValidationResult = checkEmailValid(c.getEmail().get(emailIndex));
                   if (!emailValidationResult.isValid()) {
-                    action.addFieldError(
+                    ec.addFieldError(
                         "eml.contacts[" + index + "].email[" + emailIndex + "]",
-                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
+                        i18n.getText(
+                            EMAIL_ERROR_TRANSLATIONS.getOrDefault(
+                                emailValidationResult.getMessage(),
+                                "validation.email.invalid"))
                     );
                   }
                 }
@@ -405,8 +433,8 @@ public class EmlValidator extends BaseValidator {
               if (!c.getPhone().isEmpty()) {
                 for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
                   if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
-                    action.addFieldError("eml.contacts[" + index + "].phone[" + phoneIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.phone")}));
+                    ec.addFieldError("eml.contacts[" + index + "].phone[" + phoneIndex + "]",
+                        i18n.getText("validation.invalid", i18n.getText("eml.contact.phone")));
                   }
                 }
               }
@@ -415,9 +443,11 @@ public class EmlValidator extends BaseValidator {
               if (!c.getHomepage().isEmpty()) {
                 for (int homepageIndex = 0; homepageIndex < c.getHomepage().size(); homepageIndex++) {
                   if (formatURL(c.getHomepage().get(homepageIndex)) == null) {
-                    action.addFieldError("eml.contacts[" + index + "].homepage[" + homepageIndex + "]",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.contact.homepage")}));
+                    ec.addFieldError(
+                        "eml.contacts[" + index + "].homepage[" + homepageIndex + "]",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.contact.homepage")));
                   } else {
                     c.getHomepage().set(homepageIndex, formatURL(c.getHomepage().get(homepageIndex)));
                   }
@@ -429,46 +459,66 @@ public class EmlValidator extends BaseValidator {
           // Creators' list: at least one contact is required, and
           // at least one field has to have had data entered into it to qualify for validation
           if (isAgentsListEmpty(eml.getCreators())) {
-            action.addActionError(action.getText("eml.resourceCreator.required"));
+            ec.addActionError(i18n.getText("eml.resourceCreator.required"));
           } else {
             for (int index = 0; index < eml.getCreators().size(); index++) {
               Agent c = eml.getCreators().get(index);
 
               // firstName - optional. But if firstName exists, lastName have to exist
               if (exists(c.getFirstName()) && !exists(c.getLastName())) {
-                action.addFieldError("eml.creators[" + index + "].lastName",
-                    action.getText("validation.firstname.lastname"));
+                ec.addFieldError("eml.creators[" + index + "].lastName",
+                    i18n.getText("validation.firstname.lastname"));
               }
 
               // directory and personnel id both required (if either is supplied)
               if (!c.getUserIds().isEmpty()) {
                 for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
                   if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.creators[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        action.getText("validation.personnel"));
+                    ec.addFieldError(
+                        "eml.creators[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        i18n.getText("validation.personnel"));
                   } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.creators[" + index + "].userIds[" + identifierIndex + "].directory",
-                        action.getText("validation.directory"));
+                    ec.addFieldError(
+                        "eml.creators[" + index + "].userIds[" + identifierIndex + "].directory",
+                        i18n.getText("validation.directory"));
                   } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.creators[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.contact.identifier")}));
-                    action.addFieldError("eml.creators[" + index + "].userIds[" + identifierIndex + "].directory",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.contact.directory")}));
+                    ec.addFieldError(
+                        "eml.creators[" + index + "].userIds[" + identifierIndex + "].identifier",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.contact.identifier")));
+                    ec.addFieldError(
+                        "eml.creators[" + index + "].userIds[" + identifierIndex + "].directory",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.contact.directory")));
                   }
                 }
               }
 
               // At least one of organisation, position, or a lastName have to exist
               if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
-                action.addActionError(action.getText("validation.lastname.organisation.position"));
-                action.addFieldError("eml.creators[" + index + "].organisation", action
-                    .getText("validation.required", new String[] {action.getText("eml.resourceCreator.organisation")}));
-                action.addFieldError("eml.creators[" + index + "].lastName",
-                    action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.lastName")}));
-                action.addFieldError("eml.creators[" + index + "].position",
-                    action.getText("validation.required", new String[] {action.getText("eml.resourceCreator.position")}));
+                ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
+                ec.addFieldError(
+                    "eml.creators[" + index + "].organisation",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.resourceCreator.organisation")));
+                ec.addFieldError(
+                    "eml.creators[" + index + "].lastName",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.resourceCreator.lastName")));
+                ec.addFieldError(
+                    "eml.creators[" + index + "].position",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.resourceCreator.position")));
+              }
+
+              if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
+                ec.addFieldError("eml.creators[" + index + "].organisation",
+                    i18n.getText("validation.short", i18n.getText("eml.resourceCreator.organisation"), "2"));
               }
 
               /* address(es) are optional. But if they exist, they should not be empty */
@@ -477,8 +527,11 @@ public class EmlValidator extends BaseValidator {
                   && !c.getAddress().getAddress().isEmpty()) {
                 for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
                   if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
-                    action.addFieldError("eml.creators[" + index + "].address.address[" + addressIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.address.address")}));
+                    ec.addFieldError(
+                        "eml.creators[" + index + "].address.address[" + addressIndex + "]",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.contact.address.address")));
                   }
                 }
               }
@@ -487,8 +540,11 @@ public class EmlValidator extends BaseValidator {
               if (!c.getPosition().isEmpty()) {
                 for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
                   if (StringUtils.isBlank(c.getPosition().get(positionIndex))) {
-                    action.addFieldError("eml.creators[" + index + "].position[" + positionIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.position")}));
+                    ec.addFieldError(
+                        "eml.creators[" + index + "].position[" + positionIndex + "]",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.contact.position")));
                   }
                 }
               }
@@ -499,9 +555,12 @@ public class EmlValidator extends BaseValidator {
                 for (int emailIndex = 0; emailIndex < c.getEmail().size(); emailIndex++) {
                   emailValidationResult = checkEmailValid(c.getEmail().get(emailIndex));
                   if (!emailValidationResult.isValid()) {
-                    action.addFieldError(
+                    ec.addFieldError(
                         "eml.creators[" + index + "].email[" + emailIndex + "]",
-                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
+                        i18n.getText(
+                            EMAIL_ERROR_TRANSLATIONS.getOrDefault(
+                                emailValidationResult.getMessage(),
+                                "validation.email.invalid"))
                     );
                   }
                 }
@@ -511,8 +570,11 @@ public class EmlValidator extends BaseValidator {
               if (!c.getPhone().isEmpty()) {
                 for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
                   if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
-                    action.addFieldError("eml.creators[" + index + "].phone[" + phoneIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.resourceCreator.phone")}));
+                    ec.addFieldError(
+                        "eml.creators[" + index + "].phone[" + phoneIndex + "]",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.resourceCreator.phone")));
                   }
                 }
               }
@@ -521,9 +583,11 @@ public class EmlValidator extends BaseValidator {
               if (!c.getHomepage().isEmpty()) {
                 for (int homepageIndex = 0; homepageIndex < c.getHomepage().size(); homepageIndex++) {
                   if (formatURL(c.getHomepage().get(homepageIndex)) == null) {
-                    action.addFieldError("eml.creators[" + index + "].homepage[" + homepageIndex + "]",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.resourceCreator.homepage")}));
+                    ec.addFieldError(
+                        "eml.creators[" + index + "].homepage[" + homepageIndex + "]",
+                        i18n.getText(
+                            "validation.invalid",
+                            i18n.getText("eml.resourceCreator.homepage")));
                   } else {
                     c.getHomepage().set(homepageIndex, formatURL(c.getHomepage().get(homepageIndex)));
                   }
@@ -533,206 +597,272 @@ public class EmlValidator extends BaseValidator {
           }
 
           // MetadataProviders list: at least one field has to have had data entered into it to qualify for validation
-          if (!isAgentsListEmpty(eml.getMetadataProviders())) {
-            for (int index = 0; index < eml.getMetadataProviders().size(); index++) {
-              Agent c = eml.getMetadataProviders().get(index);
+          for (int index = 0; index < eml.getMetadataProviders().size(); index++) {
+            Agent c = eml.getMetadataProviders().get(index);
 
-              // firstName - optional. But if firstName exists, lastName have to exist
-              if (exists(c.getFirstName()) && !exists(c.getLastName())) {
-                action.addFieldError("eml.metadataProviders[" + index + "].lastName",
-                    action.getText("validation.firstname.lastname"));
-              }
+            // firstName - optional. But if firstName exists, lastName have to exist
+            if (exists(c.getFirstName()) && !exists(c.getLastName())) {
+              ec.addFieldError(
+                  "eml.metadataProviders[" + index + "].lastName",
+                  i18n.getText("validation.firstname.lastname"));
+            }
 
-              // directory and personnel id both required (if either is supplied)
-              if (!c.getUserIds().isEmpty()) {
-                for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
-                  if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        action.getText("validation.personnel"));
-                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].directory",
-                        action.getText("validation.directory"));
-                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.contact.identifier")}));
-                    action.addFieldError("eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].directory",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.contact.directory")}));
-                  }
+            // directory and personnel id both required (if either is supplied)
+            if (!c.getUserIds().isEmpty()) {
+              for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
+                if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].identifier",
+                      i18n.getText("validation.personnel"));
+                } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].directory",
+                      i18n.getText("validation.directory"));
+                } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].identifier",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.contact.identifier")));
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].directory",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.contact.directory")));
                 }
               }
+            }
 
-              // At least one of organisation, position, or a lastName have to exist
-              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
-                action.addActionError(action.getText("validation.lastname.organisation.position"));
-                action.addFieldError("eml.metadataProviders[" + index + "].organisation", action
-                    .getText("validation.required", new String[] {action.getText("eml.metadataProvider.organisation")}));
-                action.addFieldError("eml.metadataProviders[" + index + "].lastName",
-                    action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.lastName")}));
-                action.addFieldError("eml.metadataProviders[" + index + "].position",
-                    action.getText("validation.required", new String[] {action.getText("eml.metadataProvider.position")}));
-              }
+            // At least one of organisation, position, or a lastName have to exist
+            if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
+              ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
+              ec.addFieldError(
+                  "eml.metadataProviders[" + index + "].organisation",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.metadataProvider.organisation")));
+              ec.addFieldError(
+                  "eml.metadataProviders[" + index + "].lastName",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.metadataProvider.lastName")));
+              ec.addFieldError(
+                  "eml.metadataProviders[" + index + "].position",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.metadataProvider.position")));
+            }
 
-              /* address(es) are optional. But if they exist, they should not be empty */
-              if (c.getAddress() != null
-                  && c.getAddress().getAddress() != null
-                  && !c.getAddress().getAddress().isEmpty()) {
-                for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
-                  if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
-                    action.addFieldError("eml.metadataProviders[" + index + "].address.address[" + addressIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.address.address")}));
-                  }
+            if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
+              ec.addFieldError("eml.metadataProviders[" + index + "].organisation",
+                  i18n.getText("validation.short", i18n.getText("eml.metadataProvider.organisation"), "2"));
+            }
+
+            /* address(es) are optional. But if they exist, they should not be empty */
+            if (c.getAddress() != null
+                && c.getAddress().getAddress() != null
+                && !c.getAddress().getAddress().isEmpty()) {
+              for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
+                if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].address.address[" + addressIndex + "]",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.contact.address.address")));
                 }
               }
+            }
 
-              /* position(s) are optional. But if they exist, they should not be empty */
-              if (!c.getPosition().isEmpty()) {
-                for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
-                  if (StringUtils.isBlank(c.getPosition().get(positionIndex))) {
-                    action.addFieldError("eml.metadataProviders[" + index + "].position[" + positionIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.position")}));
-                  }
+            /* position(s) are optional. But if they exist, they should not be empty */
+            if (!c.getPosition().isEmpty()) {
+              for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
+                if (StringUtils.isBlank(c.getPosition().get(positionIndex))) {
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].position[" + positionIndex + "]",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.contact.position")));
                 }
               }
+            }
 
-              /* email(s) are optional. But if they exist, they should be valid email addresses */
-              ValidationResult emailValidationResult;
-              if (!c.getEmail().isEmpty()) {
-                for (int emailIndex = 0; emailIndex < c.getEmail().size(); emailIndex++) {
-                  emailValidationResult = checkEmailValid(c.getEmail().get(emailIndex));
-                  if (!emailValidationResult.isValid()) {
-                    action.addFieldError(
-                        "eml.metadataProviders[" + index + "].email[" + emailIndex + "]",
-                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
-                    );
-                  }
+            /* email(s) are optional. But if they exist, they should be valid email addresses */
+            ValidationResult emailValidationResult;
+            if (!c.getEmail().isEmpty()) {
+              for (int emailIndex = 0; emailIndex < c.getEmail().size(); emailIndex++) {
+                emailValidationResult = checkEmailValid(c.getEmail().get(emailIndex));
+                if (!emailValidationResult.isValid()) {
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].email[" + emailIndex + "]",
+                      i18n.getText(
+                          EMAIL_ERROR_TRANSLATIONS.getOrDefault(
+                              emailValidationResult.getMessage(),
+                              "validation.email.invalid"))
+                  );
                 }
               }
+            }
 
-              /* phone(s) are optional. But if they exist, should match the pattern */
-              if (!c.getPhone().isEmpty()) {
-                for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
-                  if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
-                    action.addFieldError("eml.metadataProviders[" + index + "].phone[" + phoneIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.metadataProvider.phone")}));
-                  }
+            /* phone(s) are optional. But if they exist, should match the pattern */
+            if (!c.getPhone().isEmpty()) {
+              for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
+                if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].phone[" + phoneIndex + "]",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.metadataProvider.phone")));
                 }
               }
+            }
 
-              /* Validate the homepage URL from each contact */
-              if (!c.getHomepage().isEmpty()) {
-                for (int homepageIndex = 0; homepageIndex < c.getHomepage().size(); homepageIndex++) {
-                  if (formatURL(c.getHomepage().get(homepageIndex)) == null) {
-                    action.addFieldError("eml.metadataProviders[" + index + "].homepage[" + homepageIndex + "]",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.metadataProvider.homepage")}));
-                  } else {
-                    c.getHomepage().set(homepageIndex, formatURL(c.getHomepage().get(homepageIndex)));
-                  }
+            /* Validate the homepage URL from each contact */
+            if (!c.getHomepage().isEmpty()) {
+              for (int homepageIndex = 0; homepageIndex < c.getHomepage().size(); homepageIndex++) {
+                if (formatURL(c.getHomepage().get(homepageIndex)) == null) {
+                  ec.addFieldError(
+                      "eml.metadataProviders[" + index + "].homepage[" + homepageIndex + "]",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.metadataProvider.homepage")));
+                } else {
+                  c.getHomepage().set(homepageIndex, formatURL(c.getHomepage().get(homepageIndex)));
                 }
               }
             }
           }
 
           // Associated parties list: at least one field has to have had data entered into it to qualify for validation
-          if (!isAgentsListEmpty(eml.getAssociatedParties())) {
-            for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
-              Agent ap = eml.getAssociatedParties().get(index);
+          for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
+            Agent ap = eml.getAssociatedParties().get(index);
 
-              // firstName - optional. But if firstName exists, lastName have to exist
-              if (exists(ap.getFirstName()) && !exists(ap.getLastName())) {
-                action.addFieldError("eml.associatedParties[" + index + "].lastName",
-                    action.getText("validation.firstname.lastname"));
-              }
+            // firstName - optional. But if firstName exists, lastName have to exist
+            if (exists(ap.getFirstName()) && !exists(ap.getLastName())) {
+              ec.addFieldError(
+                  "eml.associatedParties[" + index + "].lastName",
+                  i18n.getText("validation.firstname.lastname"));
+            }
 
-              // directory and personnel id both required (if either is supplied)
-              if (!ap.getUserIds().isEmpty()) {
-                for (int identifierIndex = 0; identifierIndex < ap.getUserIds().size(); identifierIndex++) {
-                  if (exists(ap.getUserIds().get(identifierIndex).getDirectory()) && !exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        action.getText("validation.personnel"));
-                  } else if (!exists(ap.getUserIds().get(identifierIndex).getDirectory()) && exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].directory",
-                        action.getText("validation.directory"));
-                  } else if (!exists(ap.getUserIds().get(identifierIndex).getDirectory()) && !exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
-                    action.addFieldError("eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.associatedParties.identifier")}));
-                    action.addFieldError("eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].directory",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.associatedParties.directory")}));
-                  }
+            // directory and personnel id both required (if either is supplied)
+            if (!ap.getUserIds().isEmpty()) {
+              for (int identifierIndex = 0; identifierIndex < ap.getUserIds().size(); identifierIndex++) {
+                if (exists(ap.getUserIds().get(identifierIndex).getDirectory()) && !exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].identifier",
+                      i18n.getText("validation.personnel"));
+                } else if (!exists(ap.getUserIds().get(identifierIndex).getDirectory()) && exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].directory",
+                      i18n.getText("validation.directory"));
+                } else if (!exists(ap.getUserIds().get(identifierIndex).getDirectory()) && !exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].identifier",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.associatedParties.identifier")));
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].directory",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.associatedParties.directory")));
                 }
               }
+            }
 
-              // At least one of organisation, position, or a lastName have to exist
-              if (!exists(ap.getOrganisation()) && !exists(ap.getLastName()) && (ap.getPosition().isEmpty() || !exists(ap.getPosition().get(0)))) {
-                action.addActionError(action.getText("validation.lastname.organisation.position"));
-                action.addFieldError("eml.associatedParties[" + index + "].organisation", action
-                    .getText("validation.required", new String[] {action.getText("eml.associatedParties.organisation")}));
-                action.addFieldError("eml.associatedParties[" + index + "].lastName",
-                    action.getText("validation.required", new String[] {action.getText("eml.associatedParties.lastName")}));
-                action.addFieldError("eml.associatedParties[" + index + "].position",
-                    action.getText("validation.required", new String[] {action.getText("eml.associatedParties.position")}));
-              }
+            // At least one of organisation, position, or a lastName have to exist
+            if (!exists(ap.getOrganisation()) && !exists(ap.getLastName()) && (ap.getPosition().isEmpty() || !exists(ap.getPosition().get(0)))) {
+              ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
+              ec.addFieldError(
+                  "eml.associatedParties[" + index + "].organisation",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.associatedParties.organisation")));
+              ec.addFieldError(
+                  "eml.associatedParties[" + index + "].lastName",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.associatedParties.lastName")));
+              ec.addFieldError(
+                  "eml.associatedParties[" + index + "].position",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.associatedParties.position")));
+            }
 
-              /* address(es) are optional. But if they exist, they should not be empty */
-              if (ap.getAddress() != null
-                  && ap.getAddress().getAddress() != null
-                  && !ap.getAddress().getAddress().isEmpty()) {
-                for (int addressIndex = 0; addressIndex < ap.getAddress().getAddress().size(); addressIndex++) {
-                  if (StringUtils.isBlank(ap.getAddress().getAddress().get(addressIndex))) {
-                    action.addFieldError("eml.associatedParties[" + index + "].address.address[" + addressIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.address.address")}));
-                  }
+            if (StringUtils.isNotEmpty(ap.getOrganisation()) && ap.getOrganisation().length() < 2) {
+              ec.addFieldError("eml.associatedParties[" + index + "].organisation",
+                  i18n.getText("validation.short", i18n.getText("eml.associatedParties.organisation"), "2"));
+            }
+
+            /* address(es) are optional. But if they exist, they should not be empty */
+            if (ap.getAddress() != null
+                && ap.getAddress().getAddress() != null
+                && !ap.getAddress().getAddress().isEmpty()) {
+              for (int addressIndex = 0; addressIndex < ap.getAddress().getAddress().size(); addressIndex++) {
+                if (StringUtils.isBlank(ap.getAddress().getAddress().get(addressIndex))) {
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].address.address[" + addressIndex + "]",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.contact.address.address")));
                 }
               }
+            }
 
-              /* position(s) are optional. But if they exist, they should not be empty */
-              if (!ap.getPosition().isEmpty()) {
-                for (int positionIndex = 0; positionIndex < ap.getPosition().size(); positionIndex++) {
-                  if (StringUtils.isBlank(ap.getPosition().get(positionIndex))) {
-                    action.addFieldError("eml.associatedParties[" + index + "].position[" + positionIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.contact.position")}));
-                  }
+            /* position(s) are optional. But if they exist, they should not be empty */
+            if (!ap.getPosition().isEmpty()) {
+              for (int positionIndex = 0; positionIndex < ap.getPosition().size(); positionIndex++) {
+                if (StringUtils.isBlank(ap.getPosition().get(positionIndex))) {
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].position[" + positionIndex + "]",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.contact.position")));
                 }
               }
+            }
 
-              /* email(s) are optional. But if they exist, they should be valid email addresses */
-              ValidationResult emailValidationResult;
-              if (!ap.getEmail().isEmpty()) {
-                for (int emailIndex = 0; emailIndex < ap.getEmail().size(); emailIndex++) {
-                  emailValidationResult = checkEmailValid(ap.getEmail().get(emailIndex));
-                  if (!emailValidationResult.isValid()) {
-                    action.addFieldError(
-                        "eml.associatedParties[" + index + "].email[" + emailIndex + "]",
-                        action.getText(EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid"))
-                    );
-                  }
+            /* email(s) are optional. But if they exist, they should be valid email addresses */
+            ValidationResult emailValidationResult;
+            if (!ap.getEmail().isEmpty()) {
+              for (int emailIndex = 0; emailIndex < ap.getEmail().size(); emailIndex++) {
+                emailValidationResult = checkEmailValid(ap.getEmail().get(emailIndex));
+                if (!emailValidationResult.isValid()) {
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].email[" + emailIndex + "]",
+                      i18n.getText(
+                          EMAIL_ERROR_TRANSLATIONS.getOrDefault(
+                              emailValidationResult.getMessage(),
+                              "validation.email.invalid"))
+                  );
                 }
               }
+            }
 
-              /* phone(s) are optional. But if they exist, should match the pattern */
-              if (!ap.getPhone().isEmpty()) {
-                for (int phoneIndex = 0; phoneIndex < ap.getPhone().size(); phoneIndex++) {
-                  if (!isValidPhoneNumber(ap.getPhone().get(phoneIndex))) {
-                    action.addFieldError("eml.associatedParties[" + index + "].phone[" + phoneIndex + "]",
-                        action.getText("validation.invalid", new String[] {action.getText("eml.associatedParties.phone")}));
-                  }
+            /* phone(s) are optional. But if they exist, should match the pattern */
+            if (!ap.getPhone().isEmpty()) {
+              for (int phoneIndex = 0; phoneIndex < ap.getPhone().size(); phoneIndex++) {
+                if (!isValidPhoneNumber(ap.getPhone().get(phoneIndex))) {
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].phone[" + phoneIndex + "]",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.associatedParties.phone")));
                 }
               }
+            }
 
-              /* Validate the homepage URL from each contact */
-              if (!ap.getHomepage().isEmpty()) {
-                for (int homepageIndex = 0; homepageIndex < ap.getHomepage().size(); homepageIndex++) {
-                  if (formatURL(ap.getHomepage().get(homepageIndex)) == null) {
-                    action.addFieldError("eml.associatedParties[" + index + "].homepage[" + homepageIndex + "]",
-                        action.getText("validation.invalid",
-                            new String[] {action.getText("eml.associatedParties.homepage")}));
-                  } else {
-                    ap.getHomepage().set(homepageIndex, formatURL(ap.getHomepage().get(homepageIndex)));
-                  }
+            /* Validate the homepage URL from each contact */
+            if (!ap.getHomepage().isEmpty()) {
+              for (int homepageIndex = 0; homepageIndex < ap.getHomepage().size(); homepageIndex++) {
+                if (formatURL(ap.getHomepage().get(homepageIndex)) == null) {
+                  ec.addFieldError(
+                      "eml.associatedParties[" + index + "].homepage[" + homepageIndex + "]",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.associatedParties.homepage")));
+                } else {
+                  ap.getHomepage().set(homepageIndex, formatURL(ap.getHomepage().get(homepageIndex)));
                 }
               }
             }
@@ -742,7 +872,7 @@ public class EmlValidator extends BaseValidator {
 
         case ACKNOWLEDGEMENTS_SECTION:
           if (emlProfileValidator == null) {
-            action.addActionError(action.getText("validation.cannnot.be.performed"));
+            ec.addActionError(i18n.getText("validation.cannnot.be.performed"));
           } else {
             try {
               Eml stubValidationEml = getStubEml();
@@ -755,9 +885,16 @@ public class EmlValidator extends BaseValidator {
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("manage.metadata.acknowledgements"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.invalid.ext",
+                      i18n.getText("manage.metadata.acknowledgements"),
+                      simplifyDocBookValidationErrorMessage(e.getMessage())));
             } catch (Exception e) {
-              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.acknowledgements")}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.failed.see.logs",
+                      i18n.getText("manage.metadata.acknowledgements")));
               LOG.error("Failed to validate acknowledgements", e);
             }
           }
@@ -774,71 +911,93 @@ public class EmlValidator extends BaseValidator {
               if (!eml.getGeospatialCoverages().isEmpty()) {
                 coord1 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude();
                 if (coord1 == null) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude", action
-                    .getText("validation.required",
-                      new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")));
                 } else if (Double.isNaN(coord1)) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude", action
-                    .getText("validation.invalid",
-                      new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")));
                 }
 
                 coord2 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude();
                 if (coord2 == null) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude", action
-                    .getText("validation.required",
-                      new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")));
                 } else if (Double.isNaN(coord2)) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude", action
-                    .getText("validation.invalid",
-                      new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")));
                 }
 
                 coord1 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude();
                 if (coord1 == null) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude", action
-                    .getText("validation.required",
-                      new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")));
                 } else if (Double.isNaN(coord1)) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude", action
-                    .getText("validation.invalid",
-                      new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")));
                 }
 
                 coord2 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude();
                 if (coord2 == null) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude", action
-                    .getText("validation.required",
-                      new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")));
                 } else if (Double.isNaN(coord2)) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude", action
-                    .getText("validation.invalid",
-                      new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
+                      i18n.getText(
+                          "validation.invalid",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")));
                 }
 
                 if (coord1 != null && coord2 != null && coord1 < coord2) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude", action
-                      .getText("validation.coordinates.swapped.less",
-                          new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude"),
-                              action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")}));
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude", action
-                      .getText("validation.coordinates.swapped.greater",
-                          new String[] {action.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude"),
-                              action.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
+                      i18n.getText(
+                          "validation.coordinates.swapped.less",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude"),
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
+                      i18n.getText(
+                          "validation.coordinates.swapped.greater",
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude"),
+                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")));
                 }
 
               /* description - mandatory and greater than 2 chars */
                 if (StringUtils.isBlank(eml.getGeospatialCoverages().get(index).getDescription())) {
-                  action
-                    .addFieldError(
+                  ec.addFieldError(
                       "eml.geospatialCoverages[" + index + "].description",
-                      action
-                        .getText("validation.required",
-                          new String[] {action.getText("eml.geospatialCoverages.description")}));
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.geospatialCoverages.description")));
                 } else if (!exists(eml.getGeospatialCoverages().get(index).getDescription(), 2)) {
-                  action.addFieldError("eml.geospatialCoverages[" + index + "].description", action
-                    .getText("validation.short",
-                      new String[] {action.getText("eml.geospatialCoverages.description"), "2"}));
+                  ec.addFieldError(
+                      "eml.geospatialCoverages[" + index + "].description",
+                      i18n.getText(
+                          "validation.short",
+                          i18n.getText("eml.geospatialCoverages.description"),
+                          "2"));
                 }
               }
             }
@@ -859,9 +1018,11 @@ public class EmlValidator extends BaseValidator {
               if (tc != null) {
                 for (TaxonKeyword k : tc.getTaxonKeywords()) {
                   if (!exists(k.getScientificName())) {
-                    action.addFieldError("eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName",
-                        action.getText("validation.required",
-                            new String[]{action.getText("eml.taxonomicCoverages.taxonKeyword.scientificName")}));
+                    ec.addFieldError(
+                        "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + kw + "].scientificName",
+                        i18n.getText(
+                            "validation.required",
+                            i18n.getText("eml.taxonomicCoverages.taxonKeyword.scientificName")));
                   }
                   kw++;
                 }
@@ -880,35 +1041,41 @@ public class EmlValidator extends BaseValidator {
             for (TemporalCoverage tc : eml.getTemporalCoverages()) {
               if (tc != null) {
                 if (tc.getType() == TemporalCoverageType.SINGLE_DATE && !exists(tc.getStartDate())) {
-                  action
-                          .addFieldError("eml.temporalCoverages[" + index + "].startDate",
-                                  action.getText("validation.required",
-                                          new String[]{action.getText("eml.temporalCoverages.startDate")}));
+                  ec.addFieldError(
+                      "eml.temporalCoverages[" + index + "].startDate",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.temporalCoverages.startDate")));
                 }
                 if (tc.getType() == TemporalCoverageType.DATE_RANGE) {
                   if (!exists(tc.getStartDate())) {
-                    action.addFieldError("eml.temporalCoverages[" + index + "].startDate", action
-                            .getText("validation.required", new String[]{action.getText("eml.temporalCoverages.startDate")}));
+                    ec.addFieldError(
+                        "eml.temporalCoverages[" + index + "].startDate",
+                        i18n.getText(
+                            "validation.required",
+                            i18n.getText("eml.temporalCoverages.startDate")));
                   }
                   if (!exists(tc.getEndDate())) {
-                    action
-                            .addFieldError("eml.temporalCoverages[" + index + "].endDate",
-                                    action.getText("validation.required",
-                                            new String[]{action.getText("eml.temporalCoverages.endDate")}));
+                    ec.addFieldError(
+                        "eml.temporalCoverages[" + index + "].endDate",
+                        i18n.getText(
+                            "validation.required",
+                            i18n.getText("eml.temporalCoverages.endDate")));
                   }
                 }
                 if (tc.getType() == TemporalCoverageType.FORMATION_PERIOD && !exists(tc.getFormationPeriod())) {
-                  action
-                          .addFieldError(
-                                  "eml.temporalCoverages[" + index + "].formationPeriod",
-                                  action
-                                          .getText("validation.required",
-                                                  new String[]{action.getText("eml.temporalCoverages.formationPeriod")}));
+                  ec.addFieldError(
+                      "eml.temporalCoverages[" + index + "].formationPeriod",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.temporalCoverages.formationPeriod")));
                 }
                 if (tc.getType() == TemporalCoverageType.LIVING_TIME_PERIOD && !exists(tc.getLivingTimePeriod())) {
-                  action.addFieldError("eml.temporalCoverages[" + index + "].livingTimePeriod", action
-                          .getText("validation.required",
-                                  new String[]{action.getText("eml.temporalCoverages.livingTimePeriod")}));
+                  ec.addFieldError(
+                      "eml.temporalCoverages[" + index + "].livingTimePeriod",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.temporalCoverages.livingTimePeriod")));
                 }
               }
               index++;
@@ -919,7 +1086,7 @@ public class EmlValidator extends BaseValidator {
 
         case ADDITIONAL_DESCRIPTION_SECTION:
           if (emlProfileValidator == null) {
-            action.addActionError(action.getText("validation.cannnot.be.performed"));
+            ec.addActionError(i18n.getText("validation.cannnot.be.performed"));
           } else {
             try {
               Eml stubValidationEml = getStubEml();
@@ -932,9 +1099,16 @@ public class EmlValidator extends BaseValidator {
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("eml.purpose"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.invalid.ext",
+                      i18n.getText("eml.purpose"),
+                      simplifyDocBookValidationErrorMessage(e.getMessage())));
             } catch (Exception e) {
-              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("eml.purpose")}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.failed.see.logs",
+                      i18n.getText("eml.purpose")));
               LOG.error("Failed to validate purpose", e);
             }
 
@@ -949,9 +1123,16 @@ public class EmlValidator extends BaseValidator {
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("manage.metadata.gettingStarted"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.invalid.ext",
+                      i18n.getText("manage.metadata.gettingStarted"),
+                      simplifyDocBookValidationErrorMessage(e.getMessage())));
             } catch (Exception e) {
-              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.gettingStarted")}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.failed.see.logs",
+                      i18n.getText("manage.metadata.gettingStarted")));
               LOG.error("Failed to validate getting started", e);
             }
 
@@ -966,9 +1147,16 @@ public class EmlValidator extends BaseValidator {
               String emlString = IptEmlWriter.writeEmlAsString(stubValidationEml);
               emlProfileValidator.validate(emlString);
             } catch (InvalidEmlException e) {
-              action.addActionError(action.getText("validation.invalid.ext", new String[] {action.getText("manage.metadata.introduction"), simplifyDocBookValidationErrorMessage(e.getMessage())}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.invalid.ext",
+                      i18n.getText("manage.metadata.introduction"),
+                      simplifyDocBookValidationErrorMessage(e.getMessage())));
             } catch (Exception e) {
-              action.addActionError(action.getText("validation.failed.see.logs", new String[] {action.getText("manage.metadata.introduction")}));
+              ec.addActionError(
+                  i18n.getText(
+                      "validation.failed.see.logs",
+                      i18n.getText("manage.metadata.introduction")));
               LOG.error("Failed to validate introduction", e);
             }
           }
@@ -980,12 +1168,18 @@ public class EmlValidator extends BaseValidator {
             int index = 0;
             for (KeywordSet ks : eml.getKeywords()) {
               if (!exists(ks.getKeywordsString())) {
-                action.addFieldError("eml.keywords[" + index + "].keywordsString",
-                  action.getText("validation.required", new String[] {action.getText("eml.keywords.keywordsString")}));
+                ec.addFieldError(
+                    "eml.keywords[" + index + "].keywordsString",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.keywords.keywordsString")));
               }
               if (!exists(ks.getKeywordThesaurus())) {
-                action.addFieldError("eml.keywords[" + index + "].keywordThesaurus",
-                  action.getText("validation.required", new String[] {action.getText("eml.keywords.keywordThesaurus")}));
+                ec.addFieldError(
+                    "eml.keywords[" + index + "].keywordThesaurus",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.keywords.keywordThesaurus")));
               }
               index++;
             }
@@ -998,8 +1192,11 @@ public class EmlValidator extends BaseValidator {
 
             // title is required
             if (!exists(eml.getProject().getTitle()) || eml.getProject().getTitle().trim().isEmpty()) {
-              action.addFieldError("eml.project.title",
-                action.getText("validation.required", new String[] {action.getText("eml.project.title")}));
+              ec.addFieldError(
+                  "eml.project.title",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.project.title")));
             }
 
             // Project awards list: title and funder name required
@@ -1008,14 +1205,20 @@ public class EmlValidator extends BaseValidator {
 
               // title
               if (!exists(pa.getTitle())) {
-                action.addFieldError("eml.project.awards[" + index + "].title",
-                    action.getText("validation.required", new String[] {action.getText("eml.project.award.title")}));
+                ec.addFieldError(
+                    "eml.project.awards[" + index + "].title",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.project.award.title")));
               }
 
               // funder name
               if (!exists(pa.getFunderName())) {
-                action.addFieldError("eml.project.awards[" + index + "].funderName",
-                    action.getText("validation.required", new String[] {action.getText("eml.project.award.funderName")}));
+                ec.addFieldError(
+                    "eml.project.awards[" + index + "].funderName",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.project.award.funderName")));
               }
             }
 
@@ -1025,36 +1228,46 @@ public class EmlValidator extends BaseValidator {
 
               // related project title
               if (!exists(rp.getTitle())) {
-                action.addFieldError("eml.project.relatedProjects[" + index + "].title",
-                    action.getText("validation.required", new String[] {action.getText("eml.project.relatedProject.title")}));
+                ec.addFieldError(
+                    "eml.project.relatedProjects[" + index + "].title",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.project.relatedProject.title")));
               }
 
               // related project personnel
               if (isAgentsListEmpty(rp.getPersonnel())) {
-                action.addActionError(action.getText("eml.project.relatedProject.personnel.required"));
+                ec.addActionError(
+                    i18n.getText("eml.project.relatedProject.personnel.required"));
               } else {
                 for (int personnelIndex = 0; personnelIndex < eml.getProject().getRelatedProjects().get(index).getPersonnel().size(); personnelIndex++) {
                   Agent p = eml.getProject().getRelatedProjects().get(index).getPersonnel().get(personnelIndex);
 
                   // firstName - optional. But if firstName exists, lastName have to exist
                   if (exists(p.getFirstName()) && !exists(p.getLastName())) {
-                    action.addFieldError("eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].lastName",
-                        action.getText("validation.firstname.lastname"));
+                    ec.addFieldError(
+                        "eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].lastName",
+                        i18n.getText("validation.firstname.lastname"));
                   }
                   // At least a lastName has to exist
                   else if (!exists(p.getLastName())) {
-                    action.addFieldError("eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].lastName",
-                        action.getText("validation.required", new String[] {action.getText("eml.project.personnel.lastName")}));
+                    ec.addFieldError(
+                        "eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].lastName",
+                        i18n.getText(
+                            "validation.required",
+                            i18n.getText("eml.project.personnel.lastName")));
                   }
 
                   // directory and personnel id both required (if either is supplied)
                   if (!p.getUserIds().isEmpty()) {
                     if (exists(p.getUserIds().get(0).getDirectory()) && !exists(p.getUserIds().get(0).getIdentifier())) {
-                      action.addFieldError("eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].userIds[0].identifier",
-                          action.getText("validation.personnel"));
+                      ec.addFieldError(
+                          "eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].userIds[0].identifier",
+                          i18n.getText("validation.personnel"));
                     } else if (!exists(p.getUserIds().get(0).getDirectory()) && exists(p.getUserIds().get(0).getIdentifier())) {
-                      action.addFieldError("eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].userIds[0].directory",
-                          action.getText("validation.directory"));
+                      ec.addFieldError(
+                          "eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].userIds[0].directory",
+                          i18n.getText("validation.directory"));
                     }
                   }
                 }
@@ -1063,30 +1276,37 @@ public class EmlValidator extends BaseValidator {
 
             // Personnel list
             if (isAgentsListEmpty(eml.getProject().getPersonnel())) {
-              action.addActionError(action.getText("eml.project.personnel.required"));
+              ec.addActionError(
+                  i18n.getText("eml.project.personnel.required"));
             } else {
               for (int index = 0; index < eml.getProject().getPersonnel().size(); index++) {
                 Agent p = eml.getProject().getPersonnel().get(index);
 
                 // firstName - optional. But if firstName exists, lastName have to exist
                 if (exists(p.getFirstName()) && !exists(p.getLastName())) {
-                  action.addFieldError("eml.project.personnel[" + index + "].lastName",
-                      action.getText("validation.firstname.lastname"));
+                  ec.addFieldError(
+                      "eml.project.personnel[" + index + "].lastName",
+                      i18n.getText("validation.firstname.lastname"));
                 }
                 // At least a lastName has to exist
                 else if (!exists(p.getLastName())) {
-                  action.addFieldError("eml.project.personnel[" + index + "].lastName",
-                      action.getText("validation.required", new String[] {action.getText("eml.project.personnel.lastName")}));
+                  ec.addFieldError(
+                      "eml.project.personnel[" + index + "].lastName",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.project.personnel.lastName")));
                 }
 
                 // directory and personnel id both required (if either is supplied)
                 if (!p.getUserIds().isEmpty()) {
                   if (exists(p.getUserIds().get(0).getDirectory()) && !exists(p.getUserIds().get(0).getIdentifier())) {
-                    action.addFieldError("eml.project.personnel[" + index + "].userIds[0].identifier",
-                        action.getText("validation.personnel"));
+                    ec.addFieldError(
+                        "eml.project.personnel[" + index + "].userIds[0].identifier",
+                        i18n.getText("validation.personnel"));
                   } else if (!exists(p.getUserIds().get(0).getDirectory()) && exists(p.getUserIds().get(0).getIdentifier())) {
-                    action.addFieldError("eml.project.personnel[" + index + "].userIds[0].directory",
-                        action.getText("validation.directory"));
+                    ec.addFieldError(
+                        "eml.project.personnel[" + index + "].userIds[0].directory",
+                        i18n.getText("validation.directory"));
                   }
                 }
               }
@@ -1114,8 +1334,11 @@ public class EmlValidator extends BaseValidator {
                   eml.getMethodSteps().clear();
                   break;
                 } else {
-                  action.addFieldError("eml.methodSteps[" + index + "]",
-                    action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
+                  ec.addFieldError(
+                      "eml.methodSteps[" + index + "]",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("validation.field.required")));
                 }
               }
               index++;
@@ -1123,12 +1346,18 @@ public class EmlValidator extends BaseValidator {
             // both study extent and sampling description required if either one is present
             if (!emptyFields) {
               if (StringUtils.isNotBlank(eml.getSampleDescription()) && StringUtils.isBlank(eml.getStudyExtent())) {
-                action.addFieldError("eml.studyExtent",
-                  action.getText("validation.required", new String[] {action.getText("eml.studyExtent")}));
+                ec.addFieldError(
+                    "eml.studyExtent",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.studyExtent")));
               }
               if (StringUtils.isNotBlank(eml.getStudyExtent()) && StringUtils.isBlank(eml.getSampleDescription())) {
-                action.addFieldError("eml.sampleDescription",
-                  action.getText("validation.required", new String[] {action.getText("eml.sampleDescription")}));
+                ec.addFieldError(
+                    "eml.sampleDescription",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.sampleDescription")));
               }
             }
           }
@@ -1152,28 +1381,37 @@ public class EmlValidator extends BaseValidator {
               // citation identifier must be between 2 and 200 characters long
               if (StringUtils.isNotBlank(eml.getCitation().getIdentifier())
                   && !existsInRange(eml.getCitation().getIdentifier(), 2, 200)) {
-                action.addFieldError("eml.citation.identifier",
-                  action.getText("validation.field.invalidSize", new String[]
-                    {action.getText("eml.citation.identifier"), "2", "200"}));
+                ec.addFieldError(
+                    "eml.citation.identifier",
+                    i18n.getText(
+                        "validation.field.invalidSize",
+                        i18n.getText("eml.citation.identifier"), "2", "200"));
               }
               // citation text is required, while identifier attribute is optional
               if (exists(eml.getCitation().getIdentifier()) && !exists(eml.getCitation().getCitation())) {
-                action.addFieldError("eml.citation.citation",
-                  action.getText("validation.required", new String[] {action.getText("eml.citation.citation")}));
+                ec.addFieldError(
+                    "eml.citation.citation",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.citation.citation")));
               }
             }
 
             int index = 0;
             for (Citation citation : eml.getBibliographicCitations()) {
               if (StringUtils.isNotBlank(citation.getIdentifier()) && !exists(citation.getIdentifier())) {
-                action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier",
-                  action
-                    .getText("validation.field.blank",
-                      new String[] {action.getText("eml.bibliographicCitationSet.bibliographicCitations.identifier")}));
+                ec.addFieldError(
+                    "eml.bibliographicCitationSet.bibliographicCitations[" + index + "].identifier",
+                    i18n.getText(
+                        "validation.field.blank",
+                        i18n.getText("eml.bibliographicCitationSet.bibliographicCitations.identifier")));
               }
               if (!exists(citation.getCitation())) {
-                action.addFieldError("eml.bibliographicCitationSet.bibliographicCitations[" + index + "].citation",
-                  action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
+                ec.addFieldError(
+                    "eml.bibliographicCitationSet.bibliographicCitations[" + index + "].citation",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("validation.field.required")));
               }
               index++;
             }
@@ -1186,7 +1424,7 @@ public class EmlValidator extends BaseValidator {
 
             // at least one collection with name filled in is required
             if (eml.getCollections().isEmpty()) {
-              action.addActionError(action.getText("eml.collection.required"));
+              ec.addActionError(i18n.getText("eml.collection.required"));
             }
 
             for (int index = 0; index < eml.getCollections().size(); index++) {
@@ -1194,8 +1432,11 @@ public class EmlValidator extends BaseValidator {
 
               // collection name is required, collection id and parent collection id are NOT required
               if (!exists(c.getCollectionName())) {
-                action.addFieldError("eml.collections[" + index + "].collectionName",
-                  action.getText("validation.required", new String[] {action.getText("eml.collectionName")}));
+                ec.addFieldError(
+                    "eml.collections[" + index + "].collectionName",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.collectionName")));
               }
             }
 
@@ -1205,8 +1446,11 @@ public class EmlValidator extends BaseValidator {
 
               // collection name is required, collection id and parent collection id are NOT required
               if (StringUtils.isBlank(preservationMethod)) {
-                action.addFieldError("eml.specimenPreservationMethods[" + index + "]",
-                  action.getText("validation.required", new String[] {action.getText("eml.specimenPreservationMethod")}));
+                ec.addFieldError(
+                    "eml.specimenPreservationMethods[" + index + "]",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.specimenPreservationMethod")));
               }
             }
 
@@ -1214,30 +1458,43 @@ public class EmlValidator extends BaseValidator {
             for (JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {
               if (jcu.getType() == JGTICuratorialUnitType.COUNT_RANGE) {
                 if (!exists(jcu.getRangeStart())) {
-                  action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeStart",
-                    action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
+                  ec.addFieldError(
+                      "eml.jgtiCuratorialUnits[" + index + "].rangeStart",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("validation.field.required")));
                 }
                 if (!exists(jcu.getRangeEnd())) {
-                  action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeEnd",
-                    action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
+                  ec.addFieldError(
+                      "eml.jgtiCuratorialUnits[" + index + "].rangeEnd",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("validation.field.required")));
                 }
               }
               if (jcu.getType() == JGTICuratorialUnitType.COUNT_WITH_UNCERTAINTY) {
                 if (!exists(jcu.getRangeMean())) {
-                  action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].rangeMean",
-                    action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
+                  ec.addFieldError(
+                      "eml.jgtiCuratorialUnits[" + index + "].rangeMean",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("validation.field.required")));
                 }
                 if (!exists(jcu.getUncertaintyMeasure())) {
-                  action.addFieldError("eml.jgtiCuratorialUnits[" + index + "].uncertaintyMeasure",
-                    action.getText("validation.required", new String[] {action.getText("validation.field.required")}));
+                  ec.addFieldError(
+                      "eml.jgtiCuratorialUnits[" + index + "].uncertaintyMeasure",
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("validation.field.required")));
                 }
               }
               if (!exists(jcu.getUnitType())) {
-                action
+                ec
                   .addFieldError(
                     "eml.jgtiCuratorialUnits[" + index + "].unitType",
-                    action.getText("validation.required",
-                      new String[] {action.getText("eml.jgtiCuratorialUnits.unitType")}));
+                      i18n.getText(
+                          "validation.required",
+                          i18n.getText("eml.jgtiCuratorialUnits.unitType")));
               }
               index++;
             }
@@ -1252,8 +1509,11 @@ public class EmlValidator extends BaseValidator {
               // retrieve a formatted homepage URL including scheme component
               String formattedUrl = formatURL(eml.getDistributionUrl());
               if (!isWellFormedURI(formattedUrl)) {
-                action.addFieldError("eml.distributionUrl",
-                  action.getText("validation.invalid", new String[] {action.getText("eml.distributionUrl")}));
+                ec.addFieldError(
+                    "eml.distributionUrl",
+                    i18n.getText(
+                        "validation.invalid",
+                        i18n.getText("eml.distributionUrl")));
               } else {
                 eml.setDistributionUrl(formattedUrl);
               }
@@ -1264,23 +1524,33 @@ public class EmlValidator extends BaseValidator {
             for (PhysicalData pd : eml.getPhysicalData()) {
               // name required
               if (!exists(pd.getName())) {
-                action.addFieldError("eml.physicalData[" + index + "].name",
-                  action.getText("validation.required", new String[] {action.getText("eml.physicalData.name")}));
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].name",
+                    i18n.getText("validation.required", i18n.getText("eml.physicalData.name")));
               }
               // character set required
               if (!exists(pd.getCharset())) {
-                action.addFieldError("eml.physicalData[" + index + "].charset",
-                  action.getText("validation.required", new String[] {action.getText("eml.physicalData.charset")}));
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].charset",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.physicalData.charset")));
               }
               // download URL required
               if (!exists(pd.getDistributionUrl())) {
-                action.addFieldError("eml.physicalData[" + index + "].distributionUrl", action
-                  .getText("validation.required", new String[] {action.getText("eml.physicalData.distributionUrl")}));
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].distributionUrl",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.physicalData.distributionUrl")));
               }
               // data format required
               if (!exists(pd.getFormat())) {
-                action.addFieldError("eml.physicalData[" + index + "].format",
-                  action.getText("validation.required", new String[] {action.getText("eml.physicalData.format")}));
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].format",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.physicalData.format")));
               }
 
               // data format version is optional - so skip
@@ -1288,8 +1558,11 @@ public class EmlValidator extends BaseValidator {
             /* Validate distribution URL form each Physical data */
               String formattedDistributionUrl = formatURL(pd.getDistributionUrl());
               if (!isWellFormedURI(formattedDistributionUrl)) {
-                action.addFieldError("eml.physicalData[" + index + "].distributionUrl", action
-                  .getText("validation.invalid", new String[] {action.getText("eml.physicalData.distributionUrl")}));
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].distributionUrl",
+                    i18n.getText(
+                        "validation.invalid",
+                        i18n.getText("eml.physicalData.distributionUrl")));
               } else {
                 pd.setDistributionUrl(formattedDistributionUrl);
               }
@@ -1305,8 +1578,11 @@ public class EmlValidator extends BaseValidator {
             int index = 0;
             for (String ai : eml.getAlternateIdentifiers()) {
               if (!exists(ai)) {
-                action.addFieldError("eml.alternateIdentifiers[" + index + "]",
-                  action.getText("validation.required", new String[] {action.getText("eml.alternateIdentifier")}));
+                ec.addFieldError(
+                    "eml.alternateIdentifiers[" + index + "]",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.alternateIdentifier")));
               }
               index++;
             }
@@ -1463,10 +1739,11 @@ public class EmlValidator extends BaseValidator {
       int uncertainty = (unit.getUncertaintyMeasure() == null) ? 0 : unit.getUncertaintyMeasure();
       int mean = (unit.getRangeMean() == null) ? 0 : unit.getRangeMean();
 
-      return (StringUtils.isBlank(unitType) &&
-        rangeEnd == 0 &&
-        rangeStart == 0 &&
-        uncertainty == 0 && mean == 0);
+      return unitType == null
+          && rangeEnd == 0
+          && rangeStart == 0
+          && uncertainty == 0
+          && mean == 0;
     }
     return true;
   }

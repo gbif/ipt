@@ -13,22 +13,29 @@
  */
 package org.gbif.ipt.struts2;
 
+import java.io.IOException;
+import java.io.Serial;
+
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.views.freemarker.FreemarkerResult;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
-
-import com.opensymphony.xwork2.ActionInvocation;
 import freemarker.template.TemplateException;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A Struts2 Result using Freemarker, but also setting an HTTP status.
  * <p>
  * Compare HttpHeaderResult.
  */
+@Setter
+@Getter
 public class FreemarkerWithStatusResult extends FreemarkerResult {
 
+  @Serial
   private static final long serialVersionUID = -2494293347333549306L;
 
   private int status = -1;
@@ -40,14 +47,6 @@ public class FreemarkerWithStatusResult extends FreemarkerResult {
   public FreemarkerWithStatusResult(int status) {
     this();
     this.status = status;
-  }
-
-  public void setStatus(int status) {
-    this.status = status;
-  }
-
-  public int getStatus() {
-    return status;
   }
 
   @Override
