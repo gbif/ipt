@@ -26,7 +26,9 @@ pipeline {
                             'africa', 'asia', 'bid', 'clb', 'eca', 'ee', 'eia',
                             'eubon', 'ewt', 'gb-dissco', 'griis', 'icipe', 'lac',
                             'nz', 'oceania', 'pa', 'to', 'training-ipt-a',
-                            'training-ipt-b', 'training-ipt-c', 'uz', 'uy'
+                            'training-ipt-b', 'training-ipt-c', 'uz', 'uy',
+                            'ipt (dev)', 'ipt (test)', 'ipt-dwcdp', 'ipt-eubon',
+                            'ipt-spnhc', 'ipt-worldfair', 'ipt-xprize'
                         ]
                     '''
                 ],
@@ -44,9 +46,14 @@ pipeline {
         ARTIFACT_PATH  = 'org/gbif/ipt'
         SERVER_A       = 'tomcat-a.gbif.org'
         SERVER_B       = 'tomcat-b.gbif.org'
+        SERVER_DEV     = 'devtomcat11-vh.gbif-dev.org'
+        SERVER_TEST    = 'testtomcat10-vh.gbif-test.org'
         WARS_A         = 'ipt,us,us-obis,us-vertnet'
         WARS_B         = 'africa,asia,bid,clb,eca,ee,eia,eubon,ewt,gb-dissco,griis,icipe,lac,nz,oceania,pa,to,training-ipt-a,training-ipt-b,training-ipt-c,uz,uy'
+        WARS_DEV       = 'ipt (dev)'
+        WARS_TEST      = 'ipt (test),ipt-dwcdp,ipt-eubon,ipt-spnhc,ipt-worldfair,ipt-xprize'
         WEBAPPS        = '/var/lib/tomcat11/webapps'
+        WEBAPPS_TEST   = '/var/lib/tomcat10/webapps'
         WAR_FILE       = "/tmp/ipt-${params.VERSION}.war"
         DEPLOY_USER    = 'tomcat'
     }
@@ -97,9 +104,14 @@ pipeline {
             steps {
                 sshagent(['ipt-deploy-tomcat-ssh-key']) {
                     script {
-                        def warsA    = env.WARS_A.split(',') as Set
-                        def warsB    = env.WARS_B.split(',') as Set
-                        def allWars  = (warsA + warsB) as List
+                        def serverConfig = [
+                            (env.SERVER_A)    : [wars: env.WARS_A.split(',') as Set,    webapps: env.WEBAPPS],
+                            (env.SERVER_B)    : [wars: env.WARS_B.split(',') as Set,    webapps: env.WEBAPPS],
+                            (env.SERVER_DEV)  : [wars: env.WARS_DEV.split(',') as Set,  webapps: env.WEBAPPS],
+                            (env.SERVER_TEST) : [wars: env.WARS_TEST.split(',') as Set, webapps: env.WEBAPPS_TEST],
+                        ]
+
+                        def allWars = serverConfig.values().collectMany { it.wars as List }
 
                         def selected = params.DEPLOY_ALL
                             ? allWars
@@ -110,20 +122,25 @@ pipeline {
                         }
 
                         // Upload WAR to each host once
-                        def hostsNeeded = selected.collect { war ->
-                            warsA.contains(war) ? env.SERVER_A : env.SERVER_B
-                        }.toSet()
+                        def hostsNeeded = serverConfig.findAll { entry -> entry.value.wars.any { it in selected } }
 
-                        for (host in hostsNeeded) {
+                        for (entry in hostsNeeded) {
+                            def host = entry.key
                             echo "Uploading WAR to ${host}..."
                             sh "scp '${env.WAR_FILE}' ${env.DEPLOY_USER}@${host}:/tmp/"
                         }
 
                         // Deploy each selected WAR
                         for (war in selected) {
-                            def host = warsA.contains(war) ? env.SERVER_A : env.SERVER_B
-                            echo "Deploying ${war}.war on ${host}..."
-                            sh "ssh ${env.DEPLOY_USER}@${host} 'cp ${env.WAR_FILE} ${env.WEBAPPS}/${war}.war'"
+                            def entry = serverConfig.find { entry -> war in entry.value.wars }
+                            if (!entry) {
+                                error "No server configured for WAR: ${war}"
+                            }
+                            def host        = entry.key
+                            def webapps     = entry.value.webapps
+                            def warFileName = war.replaceAll(/\s*\(.*?\)/, '').trim()
+                            echo "Deploying ${warFileName}.war on ${host} to ${webapps}..."
+                            sh "ssh ${env.DEPLOY_USER}@${host} 'cp /tmp/${env.WAR_FILE} ${webapps}/${warFileName}.war'"
                             sleep 10
                         }
                     }
