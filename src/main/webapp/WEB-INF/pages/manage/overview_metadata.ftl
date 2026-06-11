@@ -91,7 +91,8 @@
                         </a>
                     </li>
 
-                    <#if resource.isDatapackage() && resource.dataPackageIdentifier?contains("dwc-dp")>
+                    <#assign isDataPackage = resource.isDataPackage() />
+                    <#if isDataPackage && resource.dataPackageIdentifier?contains("dwc-dp")>
                         <li>
                             <a id="edit-metadata-button" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" type="button" href="metadata-basic.do?r=${resource.shortname}">
                                 Edit EML
