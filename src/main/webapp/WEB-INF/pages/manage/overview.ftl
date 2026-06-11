@@ -117,10 +117,13 @@
 
         function openMappingDetails(e) {
             const $row = $(e.currentTarget);
-            const isSchemaMapping = $row.hasClass("schema-mapping-item");
 
-            const linkSelector = isSchemaMapping ? ".schema-mapping-item-link" : ".mapping-item-link";
-            const $item = $row.find(linkSelector).first();
+            // Try schema mapping link first, fall back to regular mapping link
+            let $item = $row.find(".schema-mapping-item-link").first();
+            const isSchemaMapping = $item.length > 0;
+            if (!isSchemaMapping) {
+                $item = $row.find(".mapping-item-link").first();
+            }
 
             const resource = $item.data("ipt-resource");
             const extension = $item.data("ipt-extension");
