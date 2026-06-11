@@ -76,7 +76,7 @@
     <jaxb-core.version>4.0.9</jaxb-core.version>
     <jaxb-impl.version>4.0.9</jaxb-impl.version>
     <jaxb-runtime.version>4.0.9</jaxb-runtime.version>
-    <jetty-maven-plugin.version>12.1.9</jetty-maven-plugin.version>
+    <jetty-maven-plugin.version>12.1.10</jetty-maven-plugin.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>6.0.3</junit.version>
