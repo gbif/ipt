@@ -3,6 +3,8 @@
 <!-- temp fix to protocol differences -->
 <#assign userIdDirecotriesExtended =
 {"": "",
+"http://ror.org/": "https://ror.org/",
+"https://ror.org/": "https://ror.org/",
 "https://orcid.org/": "https://orcid.org/",
 "http://orcid.org/": "https://orcid.org/",
 "http://www.researcherid.com/rid/": "http://www.researcherid.com/rid/",
