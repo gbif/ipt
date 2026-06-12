@@ -121,13 +121,13 @@ public class MetadataActionTest extends IptBaseTest {
 
   @Test
   public void testDirectoriesProperties() {
-    assertEquals(5, MetadataAction.directoriesProperties().size());
+    assertEquals(6, MetadataAction.directoriesProperties().size());
   }
 
   @Test
   public void testLoadDirectoriesMap() {
     MetadataAction.loadDirectories("Select a directory");
-    assertEquals(6, action.getUserIdDirectories().size()); // includes "select a license"
+    assertEquals(7, action.getUserIdDirectories().size()); // includes "select a license"
     assertEquals("Select a directory", action.getUserIdDirectories().get(""));
   }
 
