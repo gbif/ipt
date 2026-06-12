@@ -12,18 +12,19 @@
         </#list>
     </#if>
 
-    <#assign elapsedSec = (now?long - publicationStartTimestamp?long) / 1000>
-    <#assign hours   = (elapsedSec / 3600)?floor>
-    <#assign minutes = ((elapsedSec % 3600) / 60)?floor>
-    <#assign seconds = (elapsedSec % 60)>
-
     <div class="mb-2">
+        <#if publicationStartTimestamp??>
+        <#assign elapsedSec = (now?long - publicationStartTimestamp?long) / 1000>
+        <#assign hours   = (elapsedSec / 3600)?floor>
+        <#assign minutes = ((elapsedSec % 3600) / 60)?floor>
+        <#assign seconds = (elapsedSec % 60)>
         <div class="small">
             <@s.text name="manage.report.publication.started"/>: ${publicationStartTimestamp?number_to_datetime?string.full}
         </div>
         <div class="small">
             <@s.text name="manage.report.publication.time"/>: ${hours?string["00"]}:${minutes?string["00"]}:${seconds?string["00"]}
         </div>
+        </#if>
         <div class="small">
             <@s.text name="manage.report.publication.status"/>:
             <#if report.hasException()>
