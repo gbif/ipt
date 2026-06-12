@@ -76,7 +76,7 @@
             </p>
         <#else>
             <p>
-                <@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?id=${resource.shortname}</@s.param></@s.text>
+                <@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?r=${resource.shortname}</@s.param></@s.text>
             </p>
             <div class="alert alert-warning" role="alert">
                 ${report.state?no_esc}
