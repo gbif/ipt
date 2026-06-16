@@ -319,6 +319,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       // restore the previous version of the resource
       resourceManager.restoreVersion(resource, version, this);
 
+      // update next publication date
+      resourceManager.updatePublicationMode(resource);
+
       // Struts finishes before callable has a finish to update status report, therefore,
       // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
       report = new StatusReport(true, GenerateDwca.CANCELLED_STATE_MSG, report.getMessages());

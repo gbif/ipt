@@ -26,15 +26,18 @@ import org.gbif.ipt.utils.PublicationFailureEmailUtils;
 import jakarta.inject.Inject;
 import jakarta.mail.MessagingException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.collections4.ListValuedMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,12 +49,16 @@ public class PublishingMonitor {
 
   // 10-seconds interval
   public static final int MONITOR_INTERVAL_MS = 10000;
+  // wait at least this long after a failed auto-publication before retrying, to avoid re-attempting
+  // publication on every monitor cycle right after a failure
+  public static final int RETRY_DELAY_MS = 3 * 60 * 1000;
   private static Thread monitorThread;
   private static final Logger LOG = LogManager.getLogger(PublishingMonitor.class);
   private AtomicBoolean running;
   private final ResourceManager resourceManager;
   private final AppConfig cfg;
   private final BaseAction baseAction;
+  private final Map<String, LocalDate> lastLoggedSkips = new ConcurrentHashMap<>();
 
   @Inject
   public PublishingMonitor(
@@ -106,6 +113,7 @@ public class PublishingMonitor {
     ThreadPoolExecutor executor = resourceManager.getExecutor();
     if (executor.getMaximumPoolSize() - executor.getActiveCount() > 0) {
       Date now = new Date();
+      LocalDate today = LocalDate.now();
       List<Resource> resources = resourceManager.list();
       for (Resource resource : resources) {
         if (resource.usesAutoPublishing()) {
@@ -117,7 +125,22 @@ public class PublishingMonitor {
               // ensure resource isn't already being published
               if (!shortNames.contains(resource.getShortname())) {
                 // ensure resource has not exceeded the maximum number of publication failures
-                if (!resourceManager.hasMaxProcessFailures(resource)) {
+                if (resourceManager.hasMaxProcessFailures(resource)) {
+                  // once the limit is reached, only log once per day to avoid flooding the logs every interval
+                  if (shouldSkipExcessiveLogging(resource.getShortname(), today)) {
+                    LOG.debug("Skipping auto-publication for [{}] since it has exceeded the maximum number of failed publish attempts. " +
+                        "Please try to publish this resource individually to fix the problem(s)",
+                        resource.getTitleAndShortname());
+                    lastLoggedSkips.put(resource.getShortname(), today);
+                  }
+                } else if (isWithinRetryCooldown(resource, now)) {
+                  // avoid logging every time for the duration of the cooldown
+                  if (shouldSkipExcessiveLogging(resource.getShortname(), today)) {
+                    // recently failed - wait before retrying instead of re-attempting on the next monitor cycle
+                    LOG.debug("Skipping auto-publication for [{}] since it failed recently; waiting before retrying",
+                        resource.getTitleAndShortname());
+                  }
+                } else {
                   try {
                     // reset version change summary
                     resource.setChangeSummary(null);
@@ -152,11 +175,6 @@ public class PublishingMonitor {
                         nextVersion.toPlainString(), resource.getShortname(), e.getMessage(), e);
                     sendPublicationFailureEmail(resource, nextVersion, e.getMessage());
                   }
-
-                } else {
-                  LOG.debug("Skipping auto-publication for [{}] since it has exceeded the maximum number of failed publish attempts. " +
-                      "Please try to publish this resource individually to fix the problem(s)",
-                      resource.getTitleAndShortname());
                 }
               } else {
                 LOG.debug("Skipping auto-publication for [{}] since it is already in progress",
@@ -177,6 +195,32 @@ public class PublishingMonitor {
         }
       }
     }
+  }
+
+  /**
+   * Determines whether a resource failed to auto-publish too recently to be retried yet. This prevents the monitor
+   * from re-attempting publication on every cycle right after a failure, since a failed auto-publication does not
+   * always push the next publication date into the future.
+   *
+   * @param resource resource to check
+   * @param now current time
+   * @return true if the resource's most recent failure happened within the retry delay window
+   */
+  private boolean isWithinRetryCooldown(Resource resource, Date now) {
+    ListValuedMap<String, Date> processFailures = resourceManager.getProcessFailures();
+    if (processFailures.containsKey(resource.getShortname())) {
+      List<Date> failures = processFailures.get(resource.getShortname());
+      if (!failures.isEmpty()) {
+        Date lastFailure = failures.get(failures.size() - 1);
+        return now.getTime() - lastFailure.getTime() < RETRY_DELAY_MS;
+      }
+    }
+    return false;
+  }
+
+  private boolean shouldSkipExcessiveLogging(String shortname, LocalDate today) {
+    LocalDate last = lastLoggedSkips.put(shortname, today);
+    return last == null || !last.equals(today);
   }
 
   private void sendPublicationFailureEmail(Resource resource, BigDecimal version, String reason) {

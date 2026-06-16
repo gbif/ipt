@@ -30,10 +30,16 @@ import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 
 import jakarta.inject.Inject;
 import java.io.Serial;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -50,6 +56,9 @@ public class AutoPublishAction extends ManagerBaseAction {
   private static final String COLON = ":";
   private static final String DEFAULT_TIME = "12:00";
   private static final String DEFAULT_THRESHOLD = "10";
+  private static final String EMAIL_SEPARATOR = ",";
+  private static final Pattern EMAIL_PATTERN =
+      Pattern.compile("^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$");
 
   private final VocabulariesManager vocabManager;
 
@@ -112,6 +121,23 @@ public class AutoPublishAction extends ManagerBaseAction {
         .orElse(DEFAULT_THRESHOLD);
     int recordsDropThreshold = Integer.parseInt(recordsDropThresholdRaw);
 
+    String failureEmailsRaw = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FAILURE_EMAILS);
+    List<String> failureEmails = parseFailureEmails(failureEmailsRaw);
+
+    if (notifyFailure && failureEmails.isEmpty()) {
+      addActionError(getText("manage.autopublish.options.notifyFailure.emails.required"));
+      return INPUT;
+    }
+
+    List<String> invalidEmails = failureEmails.stream()
+        .filter(email -> !EMAIL_PATTERN.matcher(email).matches())
+        .collect(Collectors.toList());
+    if (notifyFailure && !invalidEmails.isEmpty()) {
+      addActionError(getText("manage.autopublish.options.notifyFailure.emails.invalid",
+          new String[]{String.join(", ", invalidEmails)}));
+      return INPUT;
+    }
+
     if (OFF_FREQUENCY.equals(updateFrequency)) {
       addActionMessage(getText("manage.autopublish.message.off"));
       LOG.debug("Turning off auto-publishing for [{}]", resource.getShortname());
@@ -141,6 +167,7 @@ public class AutoPublishAction extends ManagerBaseAction {
     resource.setSkipPublicationIfRecordsDrop(skipDrop);
     resource.setNotifyPublicationFailure(notifyFailure);
     resource.setRecordsDropThreshold(recordsDropThreshold);
+    resource.setPublicationFailureEmails(notifyFailure ? failureEmails : new ArrayList<>());
 
     if (notifyFailure && !isPublicationFailureEmailConfigured()) {
       addActionWarning(getText("manage.autopublish.options.notifyFailure.notConfigured"));
@@ -202,6 +229,20 @@ public class AutoPublishAction extends ManagerBaseAction {
     }
   }
 
+  /**
+   * Parses a raw comma-separated string of email addresses into a trimmed, de-duplicated, non-blank list.
+   */
+  private List<String> parseFailureEmails(String raw) {
+    if (StringUtils.isBlank(raw)) {
+      return Collections.emptyList();
+    }
+    return Arrays.stream(raw.split(EMAIL_SEPARATOR))
+        .map(StringUtils::trimToNull)
+        .filter(StringUtils::isNotBlank)
+        .distinct()
+        .collect(Collectors.toList());
+  }
+
   private void setServerTimeZone() {
     req.setAttribute("serverTimeZone", TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT));
   }
@@ -230,6 +271,12 @@ public class AutoPublishAction extends ManagerBaseAction {
 
   public boolean isPublicationFailureEmailConfigured() {
     return PublicationFailureEmailUtils.isConfigured(cfg);
+  }
+
+  public String getFailureEmails() {
+    return resource.getPublicationFailureEmails() == null
+        ? ""
+        : String.join(", ", resource.getPublicationFailureEmails());
   }
 
   public int getRecordsDropThreshold() {
