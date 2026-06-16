@@ -1861,6 +1861,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * @param summary change summary for new published version, entered by the user in the confirm dialog defaulting to
    *                empty string
    */
+  @StrutsParameter
   public void setSummary(String summary) {
     this.summary = StringUtils.trimToEmpty(summary);
   }
