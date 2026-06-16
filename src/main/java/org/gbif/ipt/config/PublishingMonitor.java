@@ -111,7 +111,8 @@ public class PublishingMonitor {
 
     // might as well check if we can handle more publishing jobs
     ThreadPoolExecutor executor = resourceManager.getExecutor();
-    if (executor.getMaximumPoolSize() - executor.getActiveCount() > 0) {
+    int availableSlots = executor.getMaximumPoolSize() - executor.getActiveCount();
+    if (availableSlots > 0) {
       Date now = new Date();
       LocalDate today = LocalDate.now();
       List<Resource> resources = resourceManager.list();
