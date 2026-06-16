@@ -189,7 +189,11 @@ public class Resource implements Serializable, Comparable<Resource> {
   @Getter
   private boolean skipPublicationIfRecordsDrop = false;
   @Getter
+  private boolean notifyPublicationFailure = false;
+  @Getter
   private int recordsDropThreshold = 10;
+  @Getter
+  private List<String> publicationFailureEmails = new ArrayList<>();
 
   public void addManager(User manager) {
     if (manager != null) {
@@ -1759,7 +1763,17 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.skipPublicationIfRecordsDrop = skipPublicationIfRecordsDrop;
   }
 
+  public void setNotifyPublicationFailure(boolean notifyPublicationFailure) {
+    this.notifyPublicationFailure = notifyPublicationFailure;
+  }
+
   public void setRecordsDropThreshold(int recordsDropThreshold) {
     this.recordsDropThreshold = recordsDropThreshold;
+  }
+
+  public void setPublicationFailureEmails(List<String> publicationFailureEmails) {
+    this.publicationFailureEmails = publicationFailureEmails == null
+        ? new ArrayList<>()
+        : new ArrayList<>(publicationFailureEmails);
   }
 }

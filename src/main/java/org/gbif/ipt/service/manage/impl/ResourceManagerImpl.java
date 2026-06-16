@@ -119,6 +119,7 @@ import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.MetadataUtils;
+import org.gbif.ipt.utils.PublicationFailureEmailUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.metadata.eml.EMLProfileVersion;
@@ -186,6 +187,8 @@ import javax.annotation.Nullable;
 
 import jakarta.validation.constraints.NotNull;
 
+import jakarta.mail.MessagingException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -243,6 +246,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private Map<String, LocalDate> lastLoggedFailures = new ConcurrentHashMap<>();
   private Map<String, StatusReport> processReports = new ConcurrentHashMap<>();
   private List<String> resourcesToSkip = new CopyOnWriteArrayList<>();
+  private Set<String> resourcesToNotifyPublicationFailure = ConcurrentHashMap.newKeySet();
   private Eml2Rtf eml2Rtf;
   private VocabulariesManager vocabManager;
   private SimpleTextProvider textProvider;
@@ -1675,6 +1679,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
                 action.getText("publishing.success", new String[]{version.toPlainString(), resource.getShortname()});
             StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
             processReports.put(shortname, updated);
+            resourcesToNotifyPublicationFailure.remove(resource.getShortname());
           } else {
             boolean failedDueToDataNotChanged = !dataOrMetadataChanged;
             boolean failedDueToRecordsDrop = !noSignificantRecordsDrop;
@@ -1719,9 +1724,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             if (!failedDueToDataNotChanged) {
               // keep track of how many failures on auto publication have happened
               processFailures.put(resource.getShortname(), new Date());
+              sendPublicationFailureEmail(resource, version, reasonFailed);
             }
 
             resourcesToSkip.remove(resource.getShortname());
+            resourcesToNotifyPublicationFailure.remove(resource.getShortname());
           }
         }
         return false;
@@ -1770,6 +1777,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Override
   public boolean isLocked(String shortname) {
     return isLocked(shortname, new BaseAction(textProvider, cfg, registrationManager));
+  }
+
+  private void sendPublicationFailureEmail(Resource resource, BigDecimal version, String reason) {
+    if (resourcesToNotifyPublicationFailure.contains(resource.getShortname())
+        && PublicationFailureEmailUtils.isConfigured(cfg)) {
+      try {
+        PublicationFailureEmailUtils.send(cfg, resource, version, reason);
+      } catch (MessagingException e) {
+        LOG.error("Failed to send publication failure email for resource {}", resource.getShortname(), e);
+      }
+    }
   }
 
   @Override
@@ -2697,6 +2715,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (!options.isSkipPublicationIfNotChanged()) {
       resourcesToSkip.remove(shortname);
     }
+    if (options.isNotifyPublicationFailure()) {
+      resourcesToNotifyPublicationFailure.add(shortname);
+    } else {
+      resourcesToNotifyPublicationFailure.remove(shortname);
+    }
 
     // Abort further publication for Metadata Only - no changes (if skipIfNotChanged activated)
     if (resource.isMetadataOnly() && options.isSkipPublicationIfNotChanged()) {
@@ -2709,35 +2732,40 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         String metadataNotChangedStatus = action.getText("publishing.metadataNotChanged");
         StatusReport updated = new StatusReport(true, metadataNotChangedStatus, getTaskMessages(shortname));
         processReports.put(shortname, updated);
+        resourcesToNotifyPublicationFailure.remove(shortname);
 
         return false;
       }
     }
 
-    preventPublicationForSourcesInProcessingState(resource);
+    try {
+      preventPublicationForSourcesInProcessingState(resource);
 
-    publishMetadata(resource, version, action);
-    publishRtf(resource, version);
+      publishMetadata(resource, version, action);
+      publishRtf(resource, version);
 
-    // (re)generate archive (DwC-A/DP) asynchronously
-    boolean archive = false;
-    if (resource.hasAnyMappedData()) {
-      // for bulk publication keep resources to be skipped
-      if (options.isSkipPublicationIfNotChanged()) {
-        resourcesToSkip.add(shortname);
+      // (re)generate archive (DwC-A/DP) asynchronously
+      boolean archive = false;
+      if (resource.hasAnyMappedData()) {
+        // for bulk publication keep resources to be skipped
+        if (options.isSkipPublicationIfNotChanged()) {
+          resourcesToSkip.add(shortname);
+        }
+        generateArchive(resource);
+        archive = true;
+      } else {
+        // set number of records published
+        resource.setRecordsPublished(0);
+        // finish publication now
+        publishEnd(resource, action, version);
       }
-      generateArchive(resource);
-      archive = true;
-    } else {
-      // set number of records published
-      resource.setRecordsPublished(0);
-      // finish publication now
-      publishEnd(resource, action, version);
+
+      return archive;
+    } catch (RuntimeException e) {
+      resourcesToNotifyPublicationFailure.remove(shortname);
+      throw e;
     }
 
-
-
-    return archive;
   }
 
   private void preventPublicationForSourcesInProcessingState(Resource resource) {

@@ -22,5 +22,6 @@ public class PublicationOptions {
 
   private boolean skipPublicationIfNotChanged;
   private boolean skipPublicationIfRecordsDrop;
+  private boolean notifyPublicationFailure;
   private int recordsDropThreshold = 10;
 }
