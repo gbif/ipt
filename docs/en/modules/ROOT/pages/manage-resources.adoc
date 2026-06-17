@@ -667,6 +667,8 @@ When automated publishing is on, the publishing interval and next published date
 
 In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
 
+If SMTP is configured in *IPT Settings → Email Notifications*, email notifications can be enabled by selecting "Email the IPT administrator if auto-publication fails".
+
 === Visibility
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.
 
