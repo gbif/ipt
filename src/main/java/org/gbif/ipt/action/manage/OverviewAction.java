@@ -314,15 +314,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       BigDecimal version = resource.getMetadataVersion();
       String msg = getText("publishing.cancelled", new String[]{version.toPlainString(), resource.getShortname()});
       LOG.warn(msg);
-      addActionError(msg);
+      addActionMessage(msg);
 
       // restore the previous version of the resource
       resourceManager.restoreVersion(resource, version, this);
 
+      // update next publication date if auto-publication is enabled
+      resourceManager.updatePublicationMode(resource);
+
       // Struts finishes before callable has a finish to update status report, therefore,
       // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
       report = new StatusReport(true, GenerateDwca.CANCELLED_STATE_MSG, report.getMessages());
-      return execute();
+      return SUCCESS;
     }
     addActionError(getText("manage.overview.failed.stop.publishing"));
     return ERROR;
@@ -1858,6 +1861,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * @param summary change summary for new published version, entered by the user in the confirm dialog defaulting to
    *                empty string
    */
+  @StrutsParameter
   public void setSummary(String summary) {
     this.summary = StringUtils.trimToEmpty(summary);
   }

@@ -897,6 +897,15 @@ public class ResourceTest extends IptBaseTest {
   }
 
   @Test
+  public void testSetNotifyPublicationFailure() {
+    Resource r = getResource();
+    assertFalse(r.isNotifyPublicationFailure());
+
+    r.setNotifyPublicationFailure(true);
+    assertTrue(r.isNotifyPublicationFailure());
+  }
+
+  @Test
   public void testGetLastPublishedVersionsVersion() {
     assertEquals(new BigDecimal("3.0"), getResource().getLastPublishedVersionsVersion());
   }

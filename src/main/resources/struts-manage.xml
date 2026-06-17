@@ -86,6 +86,10 @@
     </action>
 
     <action name="resource" class="org.gbif.ipt.action.manage.OverviewAction">
+      <interceptor-ref name="messageStore">
+        <param name="operationMode">RETRIEVE</param>
+      </interceptor-ref>
+      <interceptor-ref name="managerStack"/>
       <result>/WEB-INF/pages/manage/overview.ftl</result>
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
     </action>
@@ -98,7 +102,10 @@
 
     <action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
       <interceptor-ref name="ajaxStack"/>
-      <result>/WEB-INF/pages/manage/overview.ftl</result>
+      <interceptor-ref name="messageStore">
+        <param name="operationMode">STORE</param>
+      </interceptor-ref>
+      <result type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
       <result name="error">/WEB-INF/pages/manage/locked.ftl</result>
     </action>
 

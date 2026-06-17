@@ -48,7 +48,7 @@
     <!-- previously published resources without a DOI, or that haven't been registered yet can be republished whenever by any manager -->
     <#elseif resource.lastPublished?? && resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">
 
-        <form action="publish.do" method="post">
+        <form action="publish.do?r=${resource.shortname}" method="post">
             <input name="r" type="hidden" value="${resource.shortname}"/>
             <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
@@ -82,8 +82,7 @@
             <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
                 <!-- and the resource has never been published before, the first publication is a new major version -->
                 <#if !resource.lastPublished??>
-                    <form action="publish.do" method="post">
-                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <form action="publish.do?r=${resource.shortname}" method="post">
                         <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
                         <#if dataPackageResource>
@@ -97,8 +96,7 @@
 
                 <!-- and the resource has been published before, the next publication is a new minor version -->
                 <#else>
-                    <form action="publish.do" method="post">
-                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <form action="publish.do?r=${resource.shortname}" method="post">
                         <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
                         <#if dataPackageResource>
@@ -113,8 +111,7 @@
 
             <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
             <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
-                <form action="publish.do" method="post">
-                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                <form action="publish.do?r=${resource.shortname}" method="post">
                     <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
                     <#if dataPackageResource>
@@ -129,8 +126,7 @@
 
         <!-- publishing a new minor version -->
         <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()>
-            <form action="publish.do" method="post">
-                <input name="r" type="hidden" value="${resource.shortname}"/>
+            <form action="publish.do?r=${resource.shortname}" method="post">
                 <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
                 <#if dataPackageResource>
@@ -144,8 +140,7 @@
 
         <!-- publishing a new version registered with GBIF -->
         <#elseif resource.status == "REGISTERED">
-            <form action="publish.do" method="post">
-                <input name="r" type="hidden" value="${resource.shortname}"/>
+            <form action="publish.do?r=${resource.shortname}" method="post">
                 <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
                 <#if dataPackageResource>
@@ -160,8 +155,7 @@
 
     <!-- first time any resource not assigned a DOI is published is always new major version -->
     <#elseif !resource.lastPublished?? && resource.identifierStatus == "UNRESERVED">
-        <form action="publish.do" method="post">
-            <input name="r" type="hidden" value="${resource.shortname}"/>
+        <form action="publish.do?r=${resource.shortname}" method="post">
             <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
             <#if dataPackageResource>
