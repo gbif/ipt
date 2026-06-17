@@ -105,7 +105,7 @@
       <interceptor-ref name="messageStore">
         <param name="operationMode">STORE</param>
       </interceptor-ref>
-      <result type="redirect">/manage/resource.do?r=%{#parameters.r}</result>
+      <result type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
       <result name="error">/WEB-INF/pages/manage/locked.ftl</result>
     </action>
 
