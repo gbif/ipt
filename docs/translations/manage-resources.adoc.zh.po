@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2025-12-19 15:05+0000\n"
-"PO-Revision-Date: 2025-12-19 15:18\n"
+"POT-Creation-Date: 2026-06-17 13:22+0000\n"
+"PO-Revision-Date: 2026-06-17 14:27\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -2538,344 +2538,365 @@ msgstr "啟用自動發布後，發布間隔和下一次發布日期將會清楚
 msgid "In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables."
 msgstr "在失敗的情況下，發布將自動重試最多三次，以防止無限循環的發布。設定為自動發布但未成功完成的資源，其下一次發布日期將設置為過去的時間，並在公開和資源管理表格中被突出標記。"
 
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:671
+msgid "If SMTP is configured in *IPT Settings → Email Notifications*, email notifications can be enabled by selecting \"Email the IPT administrator if auto-publication fails\"."
+msgstr ""
+
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:670
+#: en/modules/ROOT/pages/manage-resources.adoc:672
 #, no-wrap
 msgid "Visibility"
 msgstr "公開狀態"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:672
+#: en/modules/ROOT/pages/manage-resources.adoc:674
 msgid "The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below."
 msgstr "在「資源管理」頁面的「公開狀態」部分，擁有資源管理員權限的使用者可以更改資源的公開狀態。資源的公開狀態決定了誰可以查看它，以及該資源是否可以註冊到 GBIF。預設情況下，每個資源僅對創建者和在 IPT 上具有管理員角色的使用者可見。關於每種公開狀態的詳細說明，請參考以下資訊。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:674
+#: en/modules/ROOT/pages/manage-resources.adoc:676
 #, no-wrap
 msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured.\n"
 msgstr "*私有* - 私有資源僅對創建者、在 IPT 上被授權管理該資源的使用者或具有管理員角色的使用者可見。這主要用於保護資源不被公開，直到其配置完成且正確無誤。\n"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:676
+#: en/modules/ROOT/pages/manage-resources.adoc:678
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityPrivate.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:679
+#: en/modules/ROOT/pages/manage-resources.adoc:681
 msgid "When the resource is ready for public visibility, click on the \"Change\" option. This will display a modal window with two options. You can make the resource public right away or at a set date"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:680
+#: en/modules/ROOT/pages/manage-resources.adoc:682
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
 msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:682
+#: en/modules/ROOT/pages/manage-resources.adoc:684
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 msgstr "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:685
+#: en/modules/ROOT/pages/manage-resources.adoc:687
 msgid "After submitting the form a message will appear at the top of the page saying that the status has been changed to \"Public\"."
 msgstr "提交表單後，頁面頂部將顯示一個表示狀態已更改為「公開」的消息。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:688
+#: en/modules/ROOT/pages/manage-resources.adoc:690
 #, no-wrap
 msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).\n"
 msgstr "*公開* - 公開資源對於使用該 IPT 實例的任何人都可見（在 IPT 首頁的公開資源表格中）。資源最終可以通過網際網路被任何知道其主頁 URL 的人訪問。不過，該資源只有在註冊到 GBIF 註冊庫後才能通過 GBIF 網站全域搜尋到（參見 <<註冊資源>> 部分）。\n"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:690
+#: en/modules/ROOT/pages/manage-resources.adoc:692
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityPublic.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:693
+#: en/modules/ROOT/pages/manage-resources.adoc:695
 msgid "Clicking on the option labelled \"Change\" will display a modal window"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:694
+#: en/modules/ROOT/pages/manage-resources.adoc:696
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 msgstr "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:697
+#: en/modules/ROOT/pages/manage-resources.adoc:699
 msgid "Clicking on the button labelled \"Yes\" will remove the resource entirely from public visibility and return it to the private state."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:700
+#: en/modules/ROOT/pages/manage-resources.adoc:702
 #, no-wrap
 msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.\n"
 msgstr "*已註冊* - 已註冊的資源可通過 GBIF 網站搜尋，並可在 GBIF 平台上索引及訪問其資料。請注意，註冊後可能需要最多一小時，資料才會被 GBIF 完成索引。註冊完成後，有關該資源的註冊資訊將顯示在 <<註冊資源>> 部分。\n"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:702
-#: en/modules/ROOT/pages/manage-resources.adoc:729
+#: en/modules/ROOT/pages/manage-resources.adoc:704
+#: en/modules/ROOT/pages/manage-resources.adoc:731
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityRegistered.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:705
+#: en/modules/ROOT/pages/manage-resources.adoc:707
 msgid "If the resource has already been registered, every time the \"Publish\" button is clicked, its registration information in the GBIF Registry also gets updated. The visibility of a registered resource can not be changed to private. If a resource must be removed from the GBIF Registry, follow the procedure described in the \"Delete a Resource\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section."
 msgstr "如果資源已註冊，每次點擊「發布」按鈕時，其註冊資訊也會在 GBIF 註冊庫中被更新。已註冊資源的公開狀態無法更改為私有。如果需要從 GBIF 註冊庫中移除資源，請按照「選單：資源管理」部分中「資源概覽」標題下的「刪除資源」部分所述的步驟進行。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:707
+#: en/modules/ROOT/pages/manage-resources.adoc:709
 #, no-wrap
 msgid "Registration"
 msgstr "註冊資源"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:710
+#: en/modules/ROOT/pages/manage-resources.adoc:712
 msgid "The resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry."
 msgstr "如果資源尚未被註冊到 GBIF 註冊庫上，使用者將無法在 GBIF 網頁上成功全域搜尋該資源。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:711
+#: en/modules/ROOT/pages/manage-resources.adoc:713
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceRegistration.png"
 msgstr "ipt2/manage/IPTManageResourceRegistration.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:714
+#: en/modules/ROOT/pages/manage-resources.adoc:716
 msgid "Registration is enabled when:"
 msgstr "註冊資源的啟用條件包括："
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:716
+#: en/modules/ROOT/pages/manage-resources.adoc:718
 msgid "the required metadata for the resource are complete,"
 msgstr "資源的必需詮釋資料已完成；"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:717
+#: en/modules/ROOT/pages/manage-resources.adoc:719
 msgid "the resource has been published (see the explanation of the <<Publication>> area of the Resource Overview page, below), and"
 msgstr "資源已被發布（請參考下方資源概覽頁的 <<資源發布>> 章節）；"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:718
+#: en/modules/ROOT/pages/manage-resources.adoc:720
 msgid "the user has the role \"Manager with registration rights\" (see the explanation for Role in the \"Create a new user\" section under the \"Configure User accounts\" heading of the \"Administration Menu\" section). A user having the Admin role can grant the \"Manager with registration rights\" to any user."
 msgstr "使用者擁有「具有註冊權限的管理員」角色（請參考「選單：系統管理」章節「管理使用者帳戶」部分中「建立新使用者」的角色說明）。具有管理員角色的使用者可將「具有註冊權限的管理員」角色授予其他使用者。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:720
+#: en/modules/ROOT/pages/manage-resources.adoc:722
 msgid "Click on the option labelled \"Register\" to register the resource with the GBIF Registry."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:722
+#: en/modules/ROOT/pages/manage-resources.adoc:724
 msgid "If you want this resource to update an existing registered DiGIR, BioCASe, or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
 msgstr "如果希望此資源更新現有的已註冊 DiGIR、BioCASe 或 TAPIR 資源，請參考下方 <<遷移資源>> 部分。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:724
+#: en/modules/ROOT/pages/manage-resources.adoc:726
 msgid "Clicking on this option will open a dialog box with which to confirm that you have read and understood the GBIF data sharing agreement, to which a link is given. Click on the check box to indicate that you agree with these terms. Doing so will cause a button labelled \"Yes\" to appear at the bottom of the dialog box. Click on \"Yes\" to register the resource, or click on \"No\" to defer the decision and close the dialog box."
 msgstr "點擊此選項將開啟一個對話框，用以確認您已閱讀並理解 GBIF 資料共享協議（含連結）。勾選複選框以表示您同意這些條款。只有在勾選同意後，對話框底部才會出現一個標記為「是」的按鈕。點擊「是」以註冊該資源，或者點擊「否」以延遲決定並關閉對話框。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:725
+#: en/modules/ROOT/pages/manage-resources.adoc:727
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:728
+#: en/modules/ROOT/pages/manage-resources.adoc:730
 msgid "If the attempt to register is successful, a message will appear at the top of the page saying that the status has been changed to \"Registered\". Registration section when the resource is registered:"
 msgstr "如果註冊成功，頁面頂部將出現一條訊息，表示狀態已更改為「已註冊」。當資源註冊成功時，註冊區域將顯示以下內容："
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:731
+#: en/modules/ROOT/pages/manage-resources.adoc:733
 #, no-wrap
 msgid "Networks"
 msgstr "網路"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:734
+#: en/modules/ROOT/pages/manage-resources.adoc:736
 msgid "This section allows the resource to be included in one or more GBIF networks — collections of datasets potentially from many publishers, usually on a single theme. The largest network in GBIF is the https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[Ocean Biodiversity Information System (OBIS)]."
 msgstr "此區域允許資源加入一個或多個 GBIF 網絡——這些網絡是基於特定主題的多個發布者的資料集集合。GBIF 最大的網絡是 https://www.gbif.org/network/2b7c7b4f-4d4f-40d3-94de-c28b6fa054a6[海洋生物多樣性資訊系統 (OBIS)]。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:735
+#: en/modules/ROOT/pages/manage-resources.adoc:737
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceNetworks.png"
 msgstr "ipt2/manage/IPTManageResourceNetworks.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:738
+#: en/modules/ROOT/pages/manage-resources.adoc:740
 msgid "To add the resource to a network, click on the \"Add\" option. To remove it, click the \"Delete\"."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:740
+#: en/modules/ROOT/pages/manage-resources.adoc:742
 msgid "Please only add your resource to a network with the approval of the network managers or the GBIF Help Desk."
 msgstr "請僅在獲得網絡管理員或 GBIF 支援中心的批准後，才將您的資源添加到某個網絡。"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:741
+#: en/modules/ROOT/pages/manage-resources.adoc:743
 #, no-wrap
 msgid "Resource Managers"
 msgstr "資源管理者"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:743
+#: en/modules/ROOT/pages/manage-resources.adoc:745
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagers.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:746
+#: en/modules/ROOT/pages/manage-resources.adoc:748
 msgid "Each resource has one or more explicitly assigned managers who are allowed to view, change, and remove the resource. The user who creates a resource automatically has these capabilities. Additional managers can be associated with a resource and given these same capabilities by selecting them by name from the select box in this area of the Resource Overview page, then clicking on the option labelled \"Add\". Any manager associated with a resource and having the role \"Manager with registration rights\" may also register the resource and update it in the GBIF registry. All users having the Admin role automatically have complete managerial roles for all resources in the IPT instance. The area shows the name and email address of the creator of the resource. If any managers have been added, their names and email addresses will be listed under the creator. Any added manager can have the managerial role for the resource removed by clicking on the option labelled \"Delete\"."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:747
+#: en/modules/ROOT/pages/manage-resources.adoc:749
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagerAdded.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:749
+#: en/modules/ROOT/pages/manage-resources.adoc:751
 #, no-wrap
 msgid "Delete a Resource"
 msgstr "刪除資源"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:752
+#: en/modules/ROOT/pages/manage-resources.adoc:754
 msgid "Clicking on the button labelled \"Delete\" on the Resource Overview page will display a modal confirmation window."
 msgstr "在資源概覽頁面上點擊標記為「刪除」的按鈕，將顯示一個確認視窗。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:753
+#: en/modules/ROOT/pages/manage-resources.adoc:755
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDelete.png"
 msgstr "ipt2/manage/IPTManageResourceDelete.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:756
+#: en/modules/ROOT/pages/manage-resources.adoc:758
 msgid "For registered with GBIF resources, it will display a modal window with two options."
 msgstr "對於已在 GBIF 註冊的資源，將彈出一個提供兩個選項的視窗："
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:757
+#: en/modules/ROOT/pages/manage-resources.adoc:759
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDeleteRegistered.png"
 msgstr "ipt2/manage/IPTManageResourceDeleteRegistered.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:760
+#: en/modules/ROOT/pages/manage-resources.adoc:762
 #, no-wrap
 msgid "*Delete from the IPT and GBIF.org*\n"
 msgstr "*從 IPT 和 GBIF.org 中刪除*\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:761
+#: en/modules/ROOT/pages/manage-resources.adoc:763
 #, no-wrap
 msgid "*Delete from the IPT only (Orphan)*\n"
 msgstr "*僅從 IPT 中刪除（未註冊）*\n"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:763
+#: en/modules/ROOT/pages/manage-resources.adoc:765
 msgid "Either options will remove the resource from the IPT and all of the related documents from the file system.  The first will also delete the resource from GBIF.org."
 msgstr "無論選擇哪個選項，都會將資源從 IPT 中移除，並從文件系統中刪除相關的所有檔案。第一個選項也將會從 GBIF.org 中刪除該資源。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:765
+#: en/modules/ROOT/pages/manage-resources.adoc:767
 msgid "Before deleting the resource, you can make a copy of the data in case you wish to restore it later.  To do this, look on the server inside the IPT's data directory, in the \"resources\" directory.  Copy the directory (with the short name for the resource) to safe storage, somewhere outside the IPT's data directory.  A resource saved in this way can be re-integrated into the IPT, or integrated with a different IPT instance by following the procedure described in the \"Integrate an existing resource configuration folder\" section under the \"Create a New Resource\" heading in the \"Manage Resources Menu\" section."
 msgstr "在刪除資源之前，您可以備份資料以便日後恢復。為此，請查看 IPT 的資料目錄內的伺服器，在資源資料夾中找到目標資源的目錄（以資源的簡短名稱命名）。將該目錄複製到 IPT 資料目錄之外的安全存儲位置。這樣保存的資源可以通過「選單：資源管理」部分「創建新資源」標題下的「整合現有資源配置資料夾」步驟，重新整合到 IPT 中或與另一個 IPT 實例整合。"
 
 #. type: Title ==
-#: en/modules/ROOT/pages/manage-resources.adoc:766
+#: en/modules/ROOT/pages/manage-resources.adoc:768
 #, no-wrap
 msgid "Migrate a Resource"
 msgstr "遷移資源"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:769
+#: en/modules/ROOT/pages/manage-resources.adoc:771
 msgid "There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or DwC-A resources to an IPT. This allows the existing resource to preserve its GBIF Registry UUID."
 msgstr "現在有一種方式可以將現有已註冊的 DiGIR、BioCASe、TAPIR 或 DwC-A 資源遷移到 IPT。這使現有資源能夠保留其 GBIF 註冊庫的 UUID。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:771
+#: en/modules/ROOT/pages/manage-resources.adoc:773
 msgid "The way this works, is that the IPT resource is configured to update the existing registered resource that it corresponds to in the GBIF Registry."
 msgstr "此方法只需要將 IPT 資源配置更新為其在 GBIF 註冊庫中對應的已註冊資源。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:773
+#: en/modules/ROOT/pages/manage-resources.adoc:775
 msgid "To migrate an *existing registered resource* to your *IPT resource*, follow these instructions:"
 msgstr "要將現有已註冊資源遷移到您的 IPT 資源，請遵循以下指示："
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:775
+#: en/modules/ROOT/pages/manage-resources.adoc:777
 msgid "Ensure that the *IPT resource's* visibility is public and NOT registered."
 msgstr "確保 IPT 資源是公開且未註冊。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:776
+#: en/modules/ROOT/pages/manage-resources.adoc:778
 msgid "Determine the owning organization of the *existing registered resource*, ensure that it is added to the IPT as an organization, and that it is configured to publish datasets. To do so, please refer to the xref:administration.adoc#add-organization[Add Organization] section."
 msgstr "確定擁有*現有已註冊資源*的組織已配置為可發布資料集的組織，並且已添加至 IPT。請參閱 xref:administration.adoc#add-organization[添加組織] 部分以瞭解更多資訊。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:777
+#: en/modules/ROOT/pages/manage-resources.adoc:779
 msgid "Select the owning organization from the drop-down list on the Basic Metadata page. Don't forget to save the Basic Metadata page."
 msgstr "在基本詮釋資料頁面上的下拉選單中點選擁有該資源的組織。請記得儲存基本詮釋資料頁面。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:778
+#: en/modules/ROOT/pages/manage-resources.adoc:780
 msgid "Go to the GBIF Dataset page of the *existing registered resource*. Depending on whether you are running the IPT in test or production mode, you would visit https://www.gbif-uat.org/dataset or https://www.gbif.org/dataset respectively."
 msgstr "前往*現有已註冊資源*的 GBIF 資料集頁面。根據 IPT 運行的模式（測試或生產），您需要分別訪問 https://www.gbif-uat.org/dataset 或 https://www.gbif.org/dataset。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:779
+#: en/modules/ROOT/pages/manage-resources.adoc:781
 msgid "Ensure the GBIF Dataset page shows the correct *owning organization* of the *existing registered resource*."
 msgstr "確保 GBIF 資料集頁面顯示*現有已註冊資源*正確配對相應的*資源所屬組織*。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:781
+#: en/modules/ROOT/pages/manage-resources.adoc:783
 msgid "if it shows a different *owning organization*, the GBIF Registry must be updated before you can proceed with the remaining steps. Send an email to helpdesk@gbif.org alerting them to the update needed."
 msgstr "如果顯示的*資源所屬組織*不同，必須先更新 GBIF 註冊庫才能繼續執行後續步驟。請發送電子郵件至 helpdesk@gbif.org 來請求更新。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:783
+#: en/modules/ROOT/pages/manage-resources.adoc:785
 msgid "Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-cb64-4863-a12b-78b4e1a56628`."
 msgstr "從 GBIF 資料集頁面的 URL 複製 GBIF 註冊庫的 UUID，例如 `5d637678-cb64-4863-a12b-78b4e1a56628`。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:784
+#: en/modules/ROOT/pages/manage-resources.adoc:786
 msgid "Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page."
 msgstr "將此 UUID 添加到 IPT 資源 的「其他詮釋資料」頁面上的替代識別碼列表中。請記得儲存「其他詮釋資料」頁面。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:785
+#: en/modules/ROOT/pages/manage-resources.adoc:787
+msgid "Camtrap DP resources do not support alternative identifiers. Instead, add a new related identifier in the *Other Metadata* section, as shown below:"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/manage-resources.adoc:788
+#, no-wrap
+msgid "ipt2/manage/IPTCamtrapRelatedIdentifier.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:791
+msgid "Be sure to use the correct link to the GBIF portal as a related identifier."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:793
 msgid "Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first."
 msgstr "確保 IPT 中沒有其他公開或已註冊的資源使用該 UUID 作為它們的替代識別碼。如果您正在嘗試替換 IPT 中現有的已註冊資源，則必須先刪除該資源。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:786
+#: en/modules/ROOT/pages/manage-resources.adoc:794
 msgid "On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed."
 msgstr "在資源概覽頁面上，點擊「註冊」按鈕。您需要確認已閱讀並理解 GBIF 資料共享協議，才能執行註冊。"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:788
+#: en/modules/ROOT/pages/manage-resources.adoc:796
 msgid "You will receive a confirmation message like this, showing the existing dataset in GBIF has been updated."
 msgstr "您將收到確認消息，顯示 GBIF 中的現有資料集已被更新。"
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:789
+#: en/modules/ROOT/pages/manage-resources.adoc:797
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 msgstr "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:791
+#: en/modules/ROOT/pages/manage-resources.adoc:799
 msgid "If applicable, email helpdesk@gbif.org alerting them whether the DiGIR/BioCASe/TAPIR/IPT technical installation that used to serve the resource has been deprecated, and whether it can be deleted from the GBIF Registry"
 msgstr "如果適用，請發送電子郵件至 helpdesk@gbif.org，通知他們 DiGIR/BioCASe/TAPIR/IPT 支援該資源的技術安裝是否已棄用，以及是否可以從 GBIF 註冊庫中刪除。"
 
