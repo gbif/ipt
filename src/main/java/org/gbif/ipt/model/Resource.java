@@ -795,7 +795,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public List<Source> getSources() {
-    return sources.stream()
+    return new ArrayList<>(sources).stream()
         .sorted(Comparator.nullsLast((first, last) -> StringUtils.compare(first.getName(), last.getName(), false)))
         .collect(Collectors.toList());
   }
