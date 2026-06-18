@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-06-17 13:22+0000\n"
-"PO-Revision-Date: 2026-06-17 14:27\n"
+"PO-Revision-Date: 2026-06-18 20:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2541,7 +2541,7 @@ msgstr "En caso de fallo, la publicación se reintentará automáticamente hasta
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:671
 msgid "If SMTP is configured in *IPT Settings → Email Notifications*, email notifications can be enabled by selecting \"Email the IPT administrator if auto-publication fails\"."
-msgstr ""
+msgstr "Si SMTP está configurado en *Configuración de IPT → Notificaciones por correo electrónico*, las notificaciones por correo electrónico se pueden habilitar seleccionando \"Enviar un correo electrónico al administrador de IPT si falla la publicación automática\"."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/manage-resources.adoc:672
@@ -2862,7 +2862,7 @@ msgstr "Agregue este UUID a la lista de identificadores alternativos del *recurs
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:787
 msgid "Camtrap DP resources do not support alternative identifiers. Instead, add a new related identifier in the *Other Metadata* section, as shown below:"
-msgstr ""
+msgstr "Los recursos de Camtrap DP no admiten identificadores alternativos. En su lugar, agregue un nuevo identificador relacionado en la sección *Otros Metadatos*, como se muestra a continuación:"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/manage-resources.adoc:788
