@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-06-17 13:22+0000\n"
-"PO-Revision-Date: 2026-06-17 14:27\n"
+"PO-Revision-Date: 2026-06-18 20:31\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -54,19 +54,19 @@ msgstr "Esta página permite a un usuario con el rol Administrador, realizar y c
 #: en/modules/ROOT/pages/administration.adoc:12
 #, no-wrap
 msgid "ipt2/administration/IPTAdminConfigIPT1-1.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminConfigIPT1-1.png"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:13
 #, no-wrap
 msgid "ipt2/administration/IPTAdminConfigIPT1-2.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminConfigIPT1-2.png"
 
 #. type: Target for macro image
 #: en/modules/ROOT/pages/administration.adoc:14
 #, no-wrap
 msgid "ipt2/administration/IPTAdminConfigIPT1-3.png"
-msgstr ""
+msgstr "ipt2/administration/IPTAdminConfigIPT1-3.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:17
@@ -132,42 +132,42 @@ msgstr "actualice los metadatos para el IPT como se describe en la siguiente sec
 #: en/modules/ROOT/pages/administration.adoc:36
 #, no-wrap
 msgid "*Email notifications* - Configure SMTP settings to enable email notifications from the IPT. These notifications are used to inform the IPT administrator if auto-publication fails.\n"
-msgstr ""
+msgstr "*Notificaciones por correo electrónico*: configure los ajustes SMTP para habilitar las notificaciones por correo electrónico del IPT. Estas notificaciones se utilizan para informar al administrador del IPT si falla la publicación automática.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:38
 msgid "The following SMTP settings are available:"
-msgstr ""
+msgstr "Las siguientes opciones de configuración SMTP están disponibles:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:40
 #, no-wrap
 msgid "*SMTP host* - The SMTP server used to send notification emails. Leave empty to disable email notifications.\n"
-msgstr ""
+msgstr "*Servidor SMTP* - El servidor SMTP utilizado para enviar correos electrónicos de notificación. Déjelo en blanco para desactivar las notificaciones por correo electrónico.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:41
 #, no-wrap
 msgid "*SMTP port* - The port used to connect to the SMTP server. Defaults to 25 if left empty.\n"
-msgstr ""
+msgstr "*Puerto SMTP* - El puerto utilizado para conectarse al servidor SMTP. Si se deja vacío, se utiliza el valor predeterminado 25.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:42
 #, no-wrap
 msgid "*SMTP username* - Optional username for SMTP authentication.\n"
-msgstr ""
+msgstr "*Nombre de usuario SMTP* - Nombre de usuario opcional para la autenticación SMTP.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:43
 #, no-wrap
 msgid "*SMTP password* - Optional password for SMTP authentication. Leave blank to keep the current password.\n"
-msgstr ""
+msgstr "*Contraseña SMTP* - Contraseña opcional para la autenticación SMTP. Déjela en blanco para mantener la contraseña actual.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:44
 #, no-wrap
 msgid "*Enable SMTP STARTTLS* - Enables STARTTLS for secure communication with the SMTP server.\n"
-msgstr ""
+msgstr "*Habilitar SMTP STARTTLS* - Habilita STARTTLS para una comunicación segura con el servidor SMTP.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:46
