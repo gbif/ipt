@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-06-17 13:22+0000\n"
-"PO-Revision-Date: 2026-06-18 20:31\n"
+"PO-Revision-Date: 2026-06-18 21:35\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -2868,12 +2868,12 @@ msgstr "Los recursos de Camtrap DP no admiten identificadores alternativos. En s
 #: en/modules/ROOT/pages/manage-resources.adoc:788
 #, no-wrap
 msgid "ipt2/manage/IPTCamtrapRelatedIdentifier.png"
-msgstr ""
+msgstr "ipt2/manage/IPTCamtrapRelatedIdentifier.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:791
 msgid "Be sure to use the correct link to the GBIF portal as a related identifier."
-msgstr ""
+msgstr "Asegúrese de utilizar el enlace correcto al portal GBIF como identificador relacionado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/manage-resources.adoc:793
