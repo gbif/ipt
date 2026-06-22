@@ -64,6 +64,16 @@
         });
     </script>
 
+    [#-- Analytics common --]
+    [#if (cfg.googleAnalyticsKey!"")?length>1 || (cfg.plausibleAnalyticsScriptURL!"")?length>1]
+        <script>
+        window._trackEventCallbacks = [];
+        function _trackEvent(args) {
+            for (const callback of window._trackEventCallbacks)
+                callback(args);
+        }
+        </script>
+    [/#if]
 
     [#-- GOOGLE ANALYTICS - asynchronous: https://support.google.com/analytics/answer/10271001?hl=en#zippy=%2Cin-this-article --]
     [#if (cfg.googleAnalyticsKey!"")?length>1]
@@ -73,6 +83,7 @@
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${cfg.googleAnalyticsKey}');
+            window._trackEventCallbacks.push(args => _gaq.push(['_trackEvent', ...args]));
         </script>
     [/#if]
 
@@ -111,6 +122,13 @@
 
                 return location.href; // unchanged original
             })() });
+            window._trackEventCallbacks.push(args => {
+                const category = args[0];
+                const action = args[1];
+                const label = args[2];
+                const value = args[3];
+                plausible(category + " - " + action, { props: { event_label: label, event_value: value } });
+            });
         </script>
     [/#if]
 
