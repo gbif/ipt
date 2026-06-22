@@ -74,7 +74,9 @@ public class AppConfig {
   public static final String DEBUG = "debug";
   public static final String ARCHIVAL_MODE = "archivalMode";
   public static final String ARCHIVAL_LIMIT = "archivalLimit";
-  public static final String ANALYTICS_KEY = "analytics.key";
+  public static final String GOOGLE_ANALYTICS_KEY = "analytics.key";
+  public static final String PLAUSIBLE_ANALYTICS_SCRIPT_URL = "analytics.plausible.scriptUrl";
+  public static final String PLAUSIBLE_ANALYTICS_ENDPOINT_URL = "analytics.plausible.endpointUrl";
   public static final String IPT_LATITUDE = "location.lat";
   public static final String IPT_LONGITUDE = "location.lon";
   public static final String DEV_VERSION = "dev.version";
@@ -201,8 +203,16 @@ public class AppConfig {
     return !"false".equalsIgnoreCase(properties.getProperty("dev.devmode"));
   }
 
-  public String getAnalyticsKey() {
-    return properties.getProperty(ANALYTICS_KEY);
+  public String getGoogleAnalyticsKey() {
+    return properties.getProperty(GOOGLE_ANALYTICS_KEY);
+  }
+
+  public String getPlausibleAnalyticsScriptURL() {
+    return properties.getProperty(PLAUSIBLE_ANALYTICS_SCRIPT_URL);
+  }
+
+  public String getPlausibleAnalyticsEndpointURL() {
+    return properties.getProperty(PLAUSIBLE_ANALYTICS_ENDPOINT_URL);
   }
 
   public String getBaseUrl() {

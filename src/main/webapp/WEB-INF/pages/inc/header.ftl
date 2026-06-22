@@ -65,14 +65,52 @@
     </script>
 
 
-    [#-- GOOGLE ANALYTICS - asynchroneous: https://support.google.com/analytics/answer/10271001?hl=en#zippy=%2Cin-this-article --]
-    [#if (cfg.analyticsKey!"")?length>1]
-        <script async src="https://www.googletagmanager.com/gtag/js?id=${cfg.analyticsKey}"></script>
+    [#-- GOOGLE ANALYTICS - asynchronous: https://support.google.com/analytics/answer/10271001?hl=en#zippy=%2Cin-this-article --]
+    [#if (cfg.googleAnalyticsKey!"")?length>1]
+        <script async src="https://www.googletagmanager.com/gtag/js?id=${cfg.googleAnalyticsKey}"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${cfg.analyticsKey}');
+            gtag('config', '${cfg.googleAnalyticsKey}');
+        </script>
+    [/#if]
+
+    [#-- PLAUSIBLE ANALYTICS - Privacy-friendly analytics --]
+    [#if (cfg.plausibleAnalyticsScriptURL!"")?length>1]
+        <script async src="${cfg.plausibleAnalyticsScriptURL}"></script>
+        <script>
+            window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+            plausible.init({
+                [#if (cfg.plausibleAnalyticsEndpointURL!"")?length>1]
+                endpoint: "${cfg.plausibleAnalyticsEndpointURL}",
+                [/#if]
+                fileDownloads: {
+                    fileExtensions: ["zip", "xml", "rtf"],
+                },
+                customProperties: {
+                    is_logged_in: (!!document.querySelector("#accountDropdownLink")).toString(),
+                    lang: document.body?.parentElement?.lang?.split("-")?.[0] || undefined,
+                    resource_title: document.querySelector("*[property='dc:title']")?.innerText || undefined,
+                    resource_publisher: document.querySelector("*[property='dc:publisher']")?.innerText || undefined,
+                    resource_subject: document.querySelector("*[property='dc:subject']")?.innerText || undefined,
+                },
+                autoCapturePageviews: false,
+            });
+            plausible("pageview", { url: (() => {
+                const url = new URL(location.href);
+                const queryParams = new URLSearchParams(location.search);
+                
+                // Report /resource?r=TITLE as /resource/TITLE so that it gets preserved in Top Pages
+                // (see: https://plausible.io/docs/custom-query-params)
+                if (url.pathname === "/resource" && queryParams.has("r")) {
+                    const r = encodeURIComponent(queryParams.get("r"));
+                    queryParams.delete("r");
+                    return (url.origin + "/resource/" + r + "?" + queryParams).replace(/\?$/, "");
+                }
+
+                return location.href; // unchanged original
+            })() });
         </script>
     [/#if]
 

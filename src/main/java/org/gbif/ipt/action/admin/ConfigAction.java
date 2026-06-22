@@ -70,7 +70,9 @@ public class ConfigAction extends POSTAction {
   protected String proxy;
   protected String logoRedirectUrl;
   protected Boolean debug;
-  protected String analyticsKey;
+  protected String googleAnalyticsKey;
+  protected String plausibleAnalyticsScriptURL;
+  protected String plausibleAnalyticsEndpointURL;
   protected String adminEmail;
   protected Double latitude;
   protected Double longitude;
@@ -95,8 +97,16 @@ public class ConfigAction extends POSTAction {
     this.resourceManager = resourceManager;
   }
 
-  public String getAnalyticsKey() {
-    return cfg.getAnalyticsKey();
+  public String getGoogleAnalyticsKey() {
+    return cfg.getGoogleAnalyticsKey();
+  }
+
+  public String getPlausibleAnalyticsScriptURL() {
+    return cfg.getPlausibleAnalyticsScriptURL();
+  }
+
+  public String getPlausibleAnalyticsEndpointURL() {
+    return cfg.getPlausibleAnalyticsEndpointURL();
   }
 
   public String getAdminEmail() {
@@ -289,11 +299,29 @@ public class ConfigAction extends POSTAction {
     }
 
     // Google Analytics
-    if (analyticsKey != null) {
+    if (googleAnalyticsKey != null) {
       try {
-        configManager.setAnalyticsKey(analyticsKey);
+        configManager.setGoogleAnalyticsKey(googleAnalyticsKey);
       } catch (InvalidConfigException e) {
-        addActionError(getText("admin.config.analyticsKey.error"));
+        addActionError(getText("admin.config.googleAnalyticsKey.error"));
+        return INPUT;
+      }
+    }
+
+    // Plausible Analytics
+    if (plausibleAnalyticsScriptURL != null) {
+      try {
+        configManager.setPlausibleAnalyticsScriptURL(plausibleAnalyticsScriptURL);
+      } catch (InvalidConfigException e) {
+        addActionError(getText("admin.config.plausibleAnalyticsScriptURL.error"));
+        return INPUT;
+      }
+    }
+    if (plausibleAnalyticsEndpointURL != null) {
+      try {
+        configManager.setPlausibleAnalyticsEndpointURL(plausibleAnalyticsEndpointURL);
+      } catch (InvalidConfigException e) {
+        addActionError(getText("admin.config.plausibleAnalyticsEndpointURL.error"));
         return INPUT;
       }
     }
@@ -330,8 +358,18 @@ public class ConfigAction extends POSTAction {
   }
 
   @StrutsParameter
-  public void setAnalyticsKey(String analyticsKey) {
-    this.analyticsKey = analyticsKey;
+  public void setGoogleAnalyticsKey(String googleAnalyticsKey) {
+    this.googleAnalyticsKey = googleAnalyticsKey;
+  }
+
+  @StrutsParameter
+  public void setPlausibleAnalyticsScriptURL(String scriptURL) {
+    this.plausibleAnalyticsScriptURL = scriptURL;
+  }
+
+  @StrutsParameter
+  public void setPlausibleAnalyticsEndpointURL(String endpointURL) {
+    this.plausibleAnalyticsEndpointURL = endpointURL;
   }
 
   @StrutsParameter

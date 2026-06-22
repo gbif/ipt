@@ -333,8 +333,18 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   @Override
-  public void setAnalyticsKey(String key) throws InvalidConfigException {
-    cfg.setProperty(AppConfig.ANALYTICS_KEY, StringUtils.trimToEmpty(key));
+  public void setGoogleAnalyticsKey(String key) throws InvalidConfigException {
+    cfg.setProperty(AppConfig.GOOGLE_ANALYTICS_KEY, StringUtils.trimToEmpty(key));
+  }
+
+  @Override
+  public void setPlausibleAnalyticsScriptURL(String scriptURL) throws InvalidConfigException {
+    cfg.setProperty(AppConfig.PLAUSIBLE_ANALYTICS_SCRIPT_URL, StringUtils.trimToEmpty(scriptURL));
+  }
+
+  @Override
+  public void setPlausibleAnalyticsEndpointURL(String endpointURL) throws InvalidConfigException {
+    cfg.setProperty(AppConfig.PLAUSIBLE_ANALYTICS_ENDPOINT_URL, StringUtils.trimToEmpty(endpointURL));
   }
 
   @Override
