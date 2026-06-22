@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-06-22 13:22+0000\n"
-"PO-Revision-Date: 2026-06-22 19:11\n"
+"PO-Revision-Date: 2026-06-22 20:07\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -120,17 +120,17 @@ msgstr "Si necesita ayuda adicional, diríjase a la guía xref:best-practices-ch
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:27
 msgid "link:{attachmentsdir}/downloads/event_ipt_template_v3.2.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/event_ipt_template_v3.2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
-msgstr ""
+msgstr "link:{attachmentsdir}/downloads/event_ipt_template_v3.2.xlsx[image:ipt2/excel-template2.png[Plantilla de Excel]] link:{attachmentsdir}/downloads/event_ipt_template_v3.2_example_data.xlsx[image:ipt2/excel-template-data2.png[Plantilla de Excel (con datos de ejemplo)]]"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:29
 msgid "Populate it and upload it to the IPT. Try to augment it with as many https://rs.gbif.org/extensions.html[GBIF-supported Event Core terms and extensions] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list]."
-msgstr ""
+msgstr "Complételo y cárguelo en el IPT. Intente ampliarla con tantos https://rs.gbif.org/extensions.html[GBIF- Elementos soportados en el Taxon Core y extensiones] como pueda. Puede ampliar su tabla principal con columnas DwC adicionales, pero sólo con elementos DwC de esta {latest-dwc-taxon}[lista]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:33
 msgid "You can review the required and recommended fields in the https://techdocs.gbif.org/en/data-publishing/data-quality-recommendations#data-quality-requirements-for-sampling-events[Data quality requirements for sampling events]."
-msgstr ""
+msgstr "Puedes consultar los campos obligatorios y recomendados en el documento https://techdocs.gbif.org/en/data-publishing/data-quality-recommendations#data-quality-requirements-for-sampling-events[Requisitos de calidad de los datos para eventos de muestreo]."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:37
