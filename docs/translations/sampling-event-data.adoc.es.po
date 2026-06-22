@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-06-22 13:22+0000\n"
-"PO-Revision-Date: 2026-06-22 14:43\n"
+"PO-Revision-Date: 2026-06-22 19:11\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -44,7 +44,7 @@ msgstr "Plantillas"
 #: en/modules/ROOT/pages/sampling-event-data.adoc:30
 #, no-wrap
 msgid "Required and recommended DwC fields"
-msgstr ""
+msgstr "Campos DwC requeridos y recomendados"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:28
