@@ -17,12 +17,12 @@ asciidoc:
     # EML — if this disappears (again), a version can be retrieved from https://eml.ecoinformatics.org/#older-versions-deprecated
     eml-location: https://sbclter.msi.ucsb.edu/external/InformationManagement/EML_211_schema/docs/eml-2.1.1
     # Cores
-    latest-dwc-occurrence:   https://rs.gbif.org/core/dwc_occurrence_2024-02-23.xml
-    date-dwc-occurrence:     "2024-02-23"
-    latest-dwc-taxon:        https://rs.gbif.org/core/dwc_taxon_2024-02-19.xml
-    date-dwc-taxon:          "2024-02-19"
-    latest-dwc-event:        https://rs.gbif.org/core/dwc_event_2024-02-19.xml
-    date-dwc-event:          "2024-02-19"
+    latest-dwc-occurrence:   https://rs.gbif.org/core/dwc_occurrence_2025-07-10.xml
+    date-dwc-occurrence:     "2026-02-12"
+    latest-dwc-taxon:        https://rs.gbif.org/core/dwc_taxon_2025-07-10.xml
+    date-dwc-taxon:          "2026-02-12"
+    latest-dwc-event:        https://rs.gbif.org/core/dwc_event_2025-07-10.xml
+    date-dwc-event:          "2026-02-12"
     # Extensions
     latest-resource-relation:    https://rs.gbif.org/extension/dwc/resource_relation_2022-02-02.xml
     date-resource-relation:      "2022-02-02"

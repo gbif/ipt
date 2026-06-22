@@ -22,27 +22,14 @@ For extra guidance, you can refer to the guide xref:best-practices-sampling-even
 
 === Templates
 
-link:{attachmentsdir}/downloads/event_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Excel Template]]
-link:{attachmentsdir}/downloads/event_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]
+link:{attachmentsdir}/downloads/event_ipt_template_v3.2.xlsx[image:ipt2/excel-template2.png[Excel Template]]
+link:{attachmentsdir}/downloads/event_ipt_template_v3.2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]
 
-Populate it and upload it to the IPT.
+Populate it and upload it to the IPT. Try to augment it with as many https://rs.gbif.org/extensions.html[GBIF-supported Event Core terms and extensions] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list].
 
-=== Required DwC fields
+=== Required and recommended DwC fields
 
-* https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - also required for associated occurrence data (to link them together)
-* https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]
-* https://dwc.tdwg.org/terms/#dwc:samplingProtocol[samplingProtocol]
-
-=== Recommended DwC fields
-
-* https://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]
-* https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - in situations where the event is part of an event series
-* https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event
-* https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier
-* https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location
-* https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - to provide a specific shape location
-* https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]
-* https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - only for associated occurrence data to record presence/absence data.
+You can  review the required and recommended fields in the https://techdocs.gbif.org/en/data-publishing/data-quality-recommendations#data-quality-requirements-for-sampling-events[Data quality requirements for sampling events].
 
 === Exemplar datasets
 
