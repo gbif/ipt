@@ -3001,7 +3001,7 @@
                             <p class="mb-0">
                                 <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
                             </p>
-                        <#elseif resource.dataPackage && resource.coreType != "camtrap-dp" && resource.coreType != "coldp">
+                        <#elseif resource.dataPackage && resource.coreType != "camtrap-dp" && resource.coreType != "coldp" && resource.coreType != "dwc-dp">
                             <!-- Show warning: registration is not available now -->
                             <p class="mb-0">
                                 <@s.text name="manage.resource.status.registration.forbiddenTypes"/>
