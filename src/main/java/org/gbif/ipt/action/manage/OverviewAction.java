@@ -127,6 +127,7 @@ import lombok.Setter;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.DWC_DP;
 import static org.gbif.ipt.config.Constants.GBIF_SUPPORTED_LICENSES_CODES;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING;
@@ -1450,7 +1451,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     // prevent registration if last published version was not assigned a GBIF-supported license
     // this requirement applies to occurrence datasets, or datasets with associated occurrence records
     // not applicable for data packages
-    if (resource.getDataPackageIdentifier() == null && resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
+    if (!resource.isDataPackage() && resource.hasOccurrenceMapping() && !isLastPublishedVersionAssignedGBIFSupportedLicense(resource)) {
       String msg = getText("manage.overview.prevented.resource.registration.noGBIFLicense");
       addActionError(msg);
       LOG.error(msg);
@@ -1525,7 +1526,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   }
 
   /**
-   * Used before registering current (last) published version.
+   * Used before registering the current (last) published version.
    *
    * @return true if the last published version has been assigned a GBIF-supported license, false otherwise
    */
@@ -1537,11 +1538,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
       if (resource.isDataPackage()) {
         if (CAMTRAP_DP.equals(resource.getCoreType())) {
-          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata) {
-            CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
-
+          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata metadata) {
             Optional<CamtrapLicense> dataLicenceWrapped = metadata.getLicenses().stream()
-                .map(license -> (CamtrapLicense) license)
                 .filter(camtrapLicense -> camtrapLicense.getScope() == CamtrapLicense.Scope.DATA)
                 .findFirst();
 
@@ -1556,9 +1554,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
             return false;
           }
         } else if (COL_DP.equals(resource.getCoreType())) {
-          if (resource.getDataPackageMetadata() instanceof ColMetadata) {
-            ColMetadata metadata = (ColMetadata) resource.getDataPackageMetadata();
-
+          if (resource.getDataPackageMetadata() instanceof ColMetadata metadata) {
             Optional<String> license = Optional.ofNullable(metadata.getLicense());
 
             return license
@@ -1571,33 +1567,44 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
                 resource.getDataPackageMetadata().getClass().getSimpleName());
             return false;
           }
+        } else if (DWC_DP.equals(resource.getCoreType())) {
+          return isLastPublishedVersionAssignedGBIFSupportedLicenseEML(resource, latestVersion);
+        } else {
+          LOG.error("Unknown core type for resource {}: {}", resource.getShortname(), resource.getCoreType());
         }
       } else {
-        File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
-        if (emlFile.exists()) {
-          try {
-            LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
-            InputStream in = new FileInputStream(emlFile);
-            Eml eml = EmlFactory.build(in);
-            String licenseUrlString = eml.parseLicenseUrl();
-            if (licenseUrlString != null) {
-              LOG.debug("Checking if license (URL={}) is supported by GBIF..", licenseUrlString);
-              boolean isSupported = Constants.GBIF_SUPPORTED_LICENSES.stream()
-                  .anyMatch(supportedLicense -> supportedLicense.contains(licenseUrlString));
-              if (isSupported) {
-                LOG.debug("License URL {} is supported", licenseUrlString);
-              } else {
-                LOG.debug("License URL {} is not supported", licenseUrlString);
-              }
-
-              return isSupported;
-            }
-          } catch (Exception e) {
-            LOG.error("Failed to check if last published version of resource has been assigned a GBIF-supported license: {}", e
-                .getMessage(), e);
-          }
-        }
+        return isLastPublishedVersionAssignedGBIFSupportedLicenseEML(resource, latestVersion);
       }
+    }
+    return false;
+  }
+
+  private boolean isLastPublishedVersionAssignedGBIFSupportedLicenseEML(Resource resource, BigDecimal latestVersion) {
+    File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
+    if (emlFile.exists()) {
+      try {
+        LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
+        InputStream in = new FileInputStream(emlFile);
+        Eml eml = EmlFactory.build(in);
+        String licenseUrlString = eml.parseLicenseUrl();
+        if (licenseUrlString != null) {
+          LOG.debug("Checking if license (URL={}) is supported by GBIF..", licenseUrlString);
+          boolean isSupported = Constants.GBIF_SUPPORTED_LICENSES.stream()
+              .anyMatch(supportedLicense -> supportedLicense.contains(licenseUrlString));
+          if (isSupported) {
+            LOG.debug("License URL {} is supported", licenseUrlString);
+          } else {
+            LOG.debug("License URL {} is not supported", licenseUrlString);
+          }
+
+          return true;
+        }
+      } catch (Exception e) {
+        LOG.error("Failed to check if last published version of resource has been assigned a GBIF-supported license: {}", e
+            .getMessage(), e);
+      }
+    } else {
+      LOG.error("EML file for resource {} version {} does not exist", resource.getShortname(), latestVersion);
     }
     return false;
   }
