@@ -248,6 +248,15 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
           FileUtils.forceDelete(versionedFile);
         }
         FileUtils.moveFile(zip, versionedFile);
+
+        // create a versioned EML for DwC-DP
+        if (DWC_DP.equals(resource.getCoreType())) {
+          File versionedEML = dataDir.resourceEmlFile(resource.getShortname(), version);
+          if (versionedEML.exists()) {
+            FileUtils.forceDelete(versionedEML);
+          }
+          FileUtils.moveFile(dataDir.resourceEmlFile(resource.getShortname()), versionedEML);
+        }
       } else {
         throw new GeneratorException("Archive bundling failed: temp archive not created: " + zip.getAbsolutePath());
       }
