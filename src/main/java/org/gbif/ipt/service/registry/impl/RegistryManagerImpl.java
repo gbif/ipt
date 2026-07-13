@@ -96,6 +96,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private static final String SERVICE_TYPE_EML = "EML";
   private static final String SERVICE_TYPE_CAMTRAP_DP = "CAMTRAP_DP";
   private static final String SERVICE_TYPE_COLDP = "COLDP";
+  private static final String SERVICE_TYPE_DWC_DP = "DWC-DP";
   private static final String SERVICE_TYPE_OCCURRENCE = "DWC-ARCHIVE-OCCURRENCE";
   private static final String SERVICE_TYPE_MATERIAL_ENTITY = "DWC-ARCHIVE-MATERIAL-ENTITY";
   private static final String SERVICE_TYPE_CHECKLIST = "DWC-ARCHIVE-CHECKLIST";
@@ -205,6 +206,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       return buildRegistryParametersForColDP(resource);
     } else if (CAMTRAP_DP.equals(resource.getCoreType())) {
       return buildRegistryParametersForCamtrapDP(resource);
+    } else if (resource.isDwcDp()) {
+      return buildRegistryParametersForDwcDP(resource);
     } else {
       LOG.error("Unknown data package type: {}", resource.getCoreType());
       return Collections.emptyList();
@@ -269,6 +272,28 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return data;
   }
 
+  private List<NameValuePair> buildRegistryParametersForDwcDP(Resource resource) {
+    List<NameValuePair> data = new ArrayList<>();
+
+    DataPackageMetadata metadata = resource.getDataPackageMetadata();
+
+    data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
+        : StringUtils.trimToEmpty(resource.getShortname())));
+
+    data.add(new BasicNameValuePair("description", metadata.getDescription()));
+
+    // Use resource creator as a primary contact. May use one of the contributors in the future.
+    data.add(new BasicNameValuePair("primaryContactType", CONTACT_TYPE_TECHNICAL));
+    data.add(new BasicNameValuePair("primaryContactEmail", resource.getCreator().getEmail()));
+    data.add(new BasicNameValuePair("primaryContactName", resource.getCreator().getFirstname()));
+
+    RegistryServices services = buildServiceTypeParamsDwcDp(resource);
+    data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
+    data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
+
+    return data;
+  }
+
   /**
    * Builds service type parameters used in push or post to Registry. There can only be 4 different types of Services
    * that the IPT registers: EML, DWC-ARCHIVE-OCCURRENCE, DWC-ARCHIVE-CHECKLIST, DWC-ARCHIVE-SAMPLING-EVENT - that's it.
@@ -311,6 +336,21 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     } else {
       LOG.debug("Resource has no published data, therefore only the EML Service will be registered");
     }
+    return rs;
+  }
+
+  private RegistryServices buildServiceTypeParamsDwcDp(Resource resource) {
+    RegistryServices rs = new RegistryServices();
+
+    LOG.debug("Registering EML & DwC DP Service");
+
+    rs.serviceTypes = SERVICE_TYPE_EML;
+    rs.serviceURLs = cfg.getResourceEmlUrl(resource.getShortname());
+
+    // service type and url
+    rs.serviceTypes += "|" + SERVICE_TYPE_DWC_DP;
+    rs.serviceURLs += "|" + cfg.getResourceArchiveUrl(resource.getShortname());
+
     return rs;
   }
 
