@@ -2321,7 +2321,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void loadMetadata(Resource resource) {
-    if (resource.isDataPackage() && DWC_DP.equals(resource.getCoreType())) {
+    if (resource.isDataPackage() && resource.isDwcDp()) {
       loadDatapackageMetadata(resource);
       loadEml(resource);
     } else if (resource.isDataPackage()) {
@@ -2470,9 +2470,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
         // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
         // also convert/rename eml, rtf, and dwca versioned files also
-        BigDecimal converted = convertVersion(resource);
-        if (converted != null) {
-          updateResourceVersion(resource, resource.getMetadataVersion(), converted);
+        if (!resource.isDataPackage()) {
+          BigDecimal converted = convertVersion(resource);
+          if (converted != null) {
+            updateResourceVersion(resource, resource.getMetadataVersion(), converted);
+          }
         }
 
         // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
@@ -2552,7 +2554,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   /**
-   * Update a resource's version, and rename its eml, rtf, and dwca versioned files to have the new version also.
+   * Update a resource's version and rename its eml, rtf, and dwca versioned files to have the new version also.
    *
    * @param resource   resource to update
    * @param oldVersion old version number
@@ -3309,6 +3311,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void publishMetadata(Resource resource, BigDecimal version, BaseAction action) throws PublicationException {
     if (resource.isDataPackage()) {
       publishDataPackageMetadata(resource, version);
+      if (resource.isDwcDp()) {
+        publishEml(resource, version, action);
+      }
     } else {
       publishEml(resource, version, action);
     }
@@ -3445,8 +3450,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // update metadata version
     resource.setMetadataVersion(version);
-    if (resource.getDataPackageMetadata() instanceof FrictionlessMetadata) {
-      FrictionlessMetadata frictionlessMetadata = (FrictionlessMetadata) resource.getDataPackageMetadata();
+    if (resource.getDataPackageMetadata() instanceof FrictionlessMetadata frictionlessMetadata) {
       frictionlessMetadata.setCreated(new Date());
     }
 

@@ -27,10 +27,14 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.metadata.eml.EMLProfileVersion;
+import org.gbif.metadata.eml.EmlValidator;
+import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -74,6 +78,7 @@ import io.frictionlessdata.tableschema.exception.ValidationException;
 import io.frictionlessdata.tableschema.field.Field;
 import io.frictionlessdata.tableschema.fk.ForeignKey;
 import io.frictionlessdata.tableschema.schema.Schema;
+import org.xml.sax.SAXException;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
@@ -232,7 +237,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
-      if (DWC_DP.equals(resource.getCoreType())) {
+      if (resource.isDwcDp()) {
         checkRelationsAndPrimaryKeys();
         dataPackage.write(zip, this::writeEMLMetadata, true);
       } else if (COL_DP.equals(resource.getCoreType())) {
@@ -248,15 +253,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
           FileUtils.forceDelete(versionedFile);
         }
         FileUtils.moveFile(zip, versionedFile);
-
-        // create a versioned EML for DwC-DP
-        if (DWC_DP.equals(resource.getCoreType())) {
-          File versionedEML = dataDir.resourceEmlFile(resource.getShortname(), version);
-          if (versionedEML.exists()) {
-            FileUtils.forceDelete(versionedEML);
-          }
-          FileUtils.moveFile(dataDir.resourceEmlFile(resource.getShortname()), versionedEML);
-        }
       } else {
         throw new GeneratorException("Archive bundling failed: temp archive not created: " + zip.getAbsolutePath());
       }
@@ -902,6 +898,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         addColMetadata();
       } else if (DWC_DP.equals(type)) {
         addDataPackageMetadata();
+        addEml();
       } else {
         addMessage(Level.WARN, "Metadata was not added: unknown type " + type);
       }
@@ -945,6 +942,32 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
     dataPackage = new Package(metadataFile.toPath(), false);
     setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
+  }
+
+  private void addEml() throws Exception {
+    // validate EML
+    try {
+      addMessage(Level.INFO, "? Validating EML file");
+      EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
+
+      try (InputStream is = FileUtils.openInputStream(dataDir.resourceEmlFile(resource.getShortname()))) {
+        emlValidator.validate(is);
+        addMessage(Level.INFO, "✓ Validated EML file");
+      }
+    } catch (IOException | SAXException e) {
+      // some error validating this file, report
+      log.error("Exception caught while validating EML file", e);
+      addMessage(Level.ERROR, "Failed to validate EML file");
+      setState(e);
+      throw new GeneratorException("Problem occurred while validating DwC-A (EML)", e);
+    } catch (InvalidEmlException e) {
+      // InvalidEmlException - log ERROR, but still proceed
+      log.error("Invalid EML", e);
+      addMessage(Level.ERROR, "Invalid EML file: " + e.getMessage());
+    }
+
+    // final reporting
+    addMessage(Level.INFO, "EML file added");
   }
 
   private void setDataPackageProperty(String name, Object property) {

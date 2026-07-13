@@ -117,6 +117,37 @@ public class ResourceFileAction extends PortalBaseAction {
     return execute();
   }
 
+  public String eml() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+
+    // if no specific version is requested, use the latest published version
+    if (version == null) {
+      BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
+      if (latestVersion == null) {
+        return NOT_FOUND;
+      } else {
+        version = latestVersion;
+      }
+    }
+
+    // construct download filename
+    StringBuilder sb = new StringBuilder();
+
+    data = dataDir.resourceEmlFile(resource.getShortname(), version);
+    mimeType = "text/xml";
+    sb.append("eml-").append(resource.getShortname());
+    if (version != null) {
+      sb.append("-v").append(version.toPlainString());
+    }
+    sb.append(".xml");
+
+    filename = sb.toString();
+
+    return execute();
+  }
+
   /**
    * Handles metadata file download request. Specific versions can also be resolved depending on the optional parameter
    * "version". If no specific version is requested, the latest published version is used.
@@ -138,7 +169,7 @@ public class ResourceFileAction extends PortalBaseAction {
       }
     }
 
-    boolean isDataPackageResource = resource.getDataPackageIdentifier() != null;
+    boolean isDataPackageResource = resource.isDataPackage();
     // construct download filename
     StringBuilder sb = new StringBuilder();
 

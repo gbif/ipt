@@ -49,7 +49,9 @@
     <#assign publishedOnText = publishedOnText?markup_string>
     <#assign download_dp_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
     <#assign download_metadata_url>${baseURL}/metadata.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.metadataVersion.toPlainString()}</#if></#assign>
+    <#assign download_eml_url>${baseURL}/eml.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.emlVersion.toPlainString()}</#if></#assign>
     <#assign isPreviewPage = action.isPreview() />
+    <#assign isDwcDp = resource.dataPackageIdentifier?contains("dwc-dp") />
 
     <style>
         <#-- For HTML headers inside description -->
@@ -275,6 +277,17 @@
                                             (${metadataSizeForVersion!"-"})
                                         </td>
                                     </tr>
+                                    <#if eml?has_content && isDwcDp>
+                                        <th class="p-0"><@s.text name='portal.resource.metadata.verbose'/></th>
+                                        <td class="p-0">
+                                            <a href="${download_eml_url}" onClick="_gaq.push(['_trackEvent', 'EML', 'Download', '${resource.shortname}']);" download>
+                                                <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
+                                                <@s.text name='portal.resource.download'/>
+                                            </a>
+
+                                            <#if eml.metadataLanguage?has_content && languages[eml.metadataLanguage]?has_content><@s.text name='eml.language.available'><@s.param>${languages[eml.metadataLanguage]!?cap_first}</@s.param></@s.text></#if> (${emlSizeForVersion})
+                                        </td>
+                                    </#if>
                                 </table>
                             </div>
                         </div>

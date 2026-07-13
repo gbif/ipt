@@ -44,7 +44,7 @@
     </action>
 
     <!-- data dir files -->
-    <action name="eml" class="org.gbif.ipt.action.portal.ResourceFileAction" method="metadata">
+    <action name="eml" class="org.gbif.ipt.action.portal.ResourceFileAction" method="eml">
       <result name="success" type="stream">
         <param name="contentType">${mimeType}</param>
         <param name="contentCharSet">UTF-8</param>

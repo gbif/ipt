@@ -1567,7 +1567,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
                 resource.getDataPackageMetadata().getClass().getSimpleName());
             return false;
           }
-        } else if (DWC_DP.equals(resource.getCoreType())) {
+        } else if (resource.isDwcDp()) {
           return isLastPublishedVersionAssignedGBIFSupportedLicenseEML(resource, latestVersion);
         } else {
           LOG.error("Unknown core type for resource {}: {}", resource.getShortname(), resource.getCoreType());

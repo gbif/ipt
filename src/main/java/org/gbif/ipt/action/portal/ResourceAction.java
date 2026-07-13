@@ -483,6 +483,14 @@ public class ResourceAction extends PortalBaseAction {
         setRecordsByExtensionForVersion(history.getRecordsByExtension());
       }
     }
+
+    if (resource.isDwcDp()) {
+      languages = vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true);
+
+      // determine EML file size
+      File emlFile = dataDir.resourceEmlFile(name, version);
+      emlSizeForVersion = FileUtils.formatSize(emlFile.length(), 0);
+    }
   }
 
   /**
@@ -721,11 +729,21 @@ public class ResourceAction extends PortalBaseAction {
             new String[] {cfg.getBaseUrl() + "/resource?r=" + resource.getShortname()}));
       }
 
-      if (resource.getDataPackageIdentifier() != null) {
+      if (resource.isDataPackage()) {
         dpMetadata = loadDataPackageMetadataFromFile(name, resource.getCoreType(), version);
       } else {
         // load EML instance for version requested
         eml = loadEmlFromFile(name, version);
+      }
+
+      if (resource.isDwcDp()) {
+        try {
+          eml = loadEmlFromFile(name, version);
+        } catch (Exception e) {
+          // Catch any exception that may occur while loading EML for DWC DP separately
+          LOG.error("Error loading EML version #{} for DwC DP resource {}: {}",
+              getStringVersion(), name, e.getMessage());
+        }
       }
     } catch (FileNotFoundException e) {
       LOG.error("Metadata file version #{} for resource {} not found", getStringVersion(), name);

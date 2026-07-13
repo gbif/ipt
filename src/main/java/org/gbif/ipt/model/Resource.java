@@ -66,6 +66,7 @@ import org.apache.logging.log4j.Logger;
 import lombok.Getter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.DWC_DP;
 
 /**
  * The main class to represent an IPT resource.
@@ -1735,6 +1736,10 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   public boolean isDataPackage() {
     return dataPackageIdentifier != null;
+  }
+
+  public boolean isDwcDp() {
+    return dataPackageIdentifier != null && dataPackageIdentifier.contains(DWC_DP);
   }
 
   public boolean isMetadataOnly() {
