@@ -1783,7 +1783,9 @@
                                                     <#if !isDataPackage>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
                                                     <#else>
-                                                        <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
+                                                        <#if isDwcDp>
+                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
+                                                        <#elseif !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
                                                             <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                         <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
                                                             <#list resource.dataPackageMetadata.licenses as license>
@@ -1917,7 +1919,13 @@
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                     </#if>
                                                 <#elseif isDataPackage>
-                                                    <#if !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
+                                                    <#if isDwcDp>
+                                                        <#if resource.getEml().parseLicenseUrl()?has_content>
+                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
+                                                        <#else>
+                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
+                                                        </#if>
+                                                    <#elseif !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
                                                         <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
                                                     <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
                                                         <#list resource.dataPackageMetadata.licenses as license>
