@@ -160,7 +160,7 @@ The other way to proceed is to work directly in the IPT directory. Before you st
 * Restart the IPT (restart Tomcat, restart the IPT service, etc),
 * Check that no error message appears in your IPT when you click publish.
 
-In addition to that, *please contact the GBIF Help Desk and ask that the organization be updated in the GBIF Registry* (this part is very important).
+In addition to that, *please contact the GBIF Help Desk (helpdesk@gbif.org) and ask that the organization be updated in the GBIF Registry* (this part is very important and the change will not be visible on gbif.org until it is done). In your email, please include a brief explanation of why the change was made, the link to the dataset, and the UUID of the new publisher. 
 
 
 === How do I change the type of existing resource?
