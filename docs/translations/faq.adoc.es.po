@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2025-05-21 13:32+0000\n"
-"PO-Revision-Date: 2025-06-20 22:50\n"
+"POT-Creation-Date: 2026-07-15 08:04+0000\n"
+"PO-Revision-Date: 2026-07-15 13:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -17,10 +17,10 @@ msgstr ""
 "X-Crowdin-File-ID: 124\n"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/checklist-data.adoc:40
+#: en/modules/ROOT/pages/checklist-data.adoc:32
 #: en/modules/ROOT/pages/faq.adoc:1
-#: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:54
+#: en/modules/ROOT/pages/occurrence-data.adoc:36
+#: en/modules/ROOT/pages/sampling-event-data.adoc:41
 #, no-wrap
 msgid "FAQ"
 msgstr "Preguntas frecuentes"
@@ -417,8 +417,8 @@ msgstr "Compruebe que no aparezca ningún mensaje de error en su IPT al hacer cl
 
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:164
-msgid "In addition to that, *please contact the GBIF Help Desk and ask that the organization be updated in the GBIF Registry* (this part is very important)."
-msgstr "Además de eso, *por favor contacte a la Mesa de ayuda de GBIF y pida que la organización sea actualizada en el Registro de GBIF* (esta parte es muy importante)."
+msgid "In addition to that, *please contact the GBIF Help Desk (helpdesk@gbif.org) and ask that the organization be updated in the GBIF Registry* (this part is very important and the change will not be visible on gbif.org until it is done). In your email, please include a brief explanation of why the change was made, the link to the dataset, and the UUID of the new publisher."
+msgstr "Además, por favor contacte con el servicio de asistencia de GBIF (helpdesk@gbif.org) y solicite que se actualice la información de la organización en el Registro de GBIF (este paso es muy importante, ya que el cambio no será visible en gbif.org hasta que se haya realizado). En su correo electrónico, incluya una breve explicación del motivo del cambio, el enlace al conjunto de datos y el UUID del nuevo editor."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:166
