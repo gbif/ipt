@@ -15,6 +15,7 @@ package org.gbif.ipt.model.legacy;
 
 import org.gbif.ipt.model.AgentBase;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class LegacyOrganisation extends AgentBase implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 2238765436256564L;
 
   private String password;

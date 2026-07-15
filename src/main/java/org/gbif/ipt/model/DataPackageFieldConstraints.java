@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DataPackageFieldConstraints implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 3098053774204591658L;
 
   private Boolean required;

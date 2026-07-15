@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +33,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DataPackageMapping implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -8441887797416795559L;
 
   private static final Logger LOG = LogManager.getLogger(DataPackageMapping.class);
@@ -56,7 +58,7 @@ public class DataPackageMapping implements Serializable {
       for (int count = 0; count < columnsCount; count++) {
         String value = null;
         for (String[] row : peek) {
-          if (row[count] != null && !(row[count].length() == 0)) {
+          if (row[count] != null && !(row[count].isEmpty())) {
             // add column number and first value as example
             // e.g. Column #2 - Puma conco...
             value = row[count].length() > 10 ? row[count].substring(0, 10) + "..." : row[count];

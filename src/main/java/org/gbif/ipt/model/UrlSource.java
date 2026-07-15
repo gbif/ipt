@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.io.Serial;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -43,6 +44,7 @@ import lombok.Setter;
 
 public class UrlSource extends SourceBase implements RowIterable, SourceWithHeader {
 
+  @Serial
   private static final long serialVersionUID = 5509301114753152587L;
   private static final Logger LOG = LogManager.getLogger(UrlSource.class);
 

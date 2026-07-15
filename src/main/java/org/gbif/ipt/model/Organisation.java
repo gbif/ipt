@@ -16,6 +16,7 @@ package org.gbif.ipt.model;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 public class Organisation extends AgentBase implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 2283765436256564L;
 
   private Password password = new Password();

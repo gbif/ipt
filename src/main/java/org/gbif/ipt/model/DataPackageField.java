@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DataPackageField implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 2049952968649028260L;
 
   private String name;

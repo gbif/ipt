@@ -18,6 +18,7 @@ import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -51,6 +52,7 @@ import lombok.Setter;
  */
 public class ExcelFileSource extends SourceBase implements FileSource {
 
+  @Serial
   private static final long serialVersionUID = 1457018220676830122L;
 
   private static final Logger LOG = LogManager.getLogger(ExcelFileSource.class);

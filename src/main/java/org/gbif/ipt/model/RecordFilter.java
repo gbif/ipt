@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class RecordFilter implements Serializable {
     AfterTranslation, BeforeTranslation
   }
 
+  @Serial
   private static final long serialVersionUID = 98709027465L;
 
   private Comparator comparator;

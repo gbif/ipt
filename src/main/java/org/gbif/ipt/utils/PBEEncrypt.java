@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.utils;
 
+import java.io.Serial;
 import java.security.spec.KeySpec;
 
 import javax.crypto.Cipher;
@@ -25,6 +26,7 @@ public class PBEEncrypt {
 
   public static class EncryptionException extends Exception {
 
+    @Serial
     private static final long serialVersionUID = 4781222329218307597L;
 
     public EncryptionException(String text, Exception chain) {

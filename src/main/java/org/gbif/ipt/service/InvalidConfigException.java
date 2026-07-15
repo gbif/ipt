@@ -13,14 +13,14 @@
  */
 package org.gbif.ipt.service;
 
+import java.io.Serial;
+
 /**
  * The base class used to indicate types of configuration errors. All configuration must provide a message and a cause.
  */
 public class InvalidConfigException extends RuntimeException {
 
-  /**
-   * Generated.
-   */
+  @Serial
   private static final long serialVersionUID = 8567781101282056985L;
 
   public enum TYPE {

@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,6 +31,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
  */
 public class VocabularyConcept implements Comparable, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 900099923L;
 
   private Vocabulary vocabulary;

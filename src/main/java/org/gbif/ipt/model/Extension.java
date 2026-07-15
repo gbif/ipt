@@ -17,6 +17,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.metadata.eml.ipt.util.DateUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,6 +41,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Extension implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 54294388543L;
   private String title; // human title
   private String name; // table, file & xml tag naming. no whitespace allowed

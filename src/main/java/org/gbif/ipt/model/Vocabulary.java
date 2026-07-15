@@ -15,6 +15,7 @@ package org.gbif.ipt.model;
 
 import org.gbif.metadata.eml.ipt.util.DateUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -35,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Vocabulary implements Comparable<Object>, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 22000013267L;
   @SerializedName("identifier")
   private String uriString; // identifier

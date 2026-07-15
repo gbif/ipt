@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Date;
@@ -29,6 +30,7 @@ import lombok.Data;
 @Builder
 public class DataPackageSchema implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -3130006092545816514L;
 
   /**

@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model.legacy;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -23,6 +24,7 @@ import java.util.TreeMap;
  */
 public class LegacyRegistration implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 899864527700L;
 
   private SortedMap<String, LegacyOrganisation> associatedOrganisations = new TreeMap<>();

@@ -16,6 +16,7 @@ package org.gbif.ipt.model;
 import org.gbif.dwc.ArchiveField.DataType;
 import org.gbif.dwc.terms.Term;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class ExtensionProperty implements Comparable<ExtensionProperty>, Term, Serializable {
 
+  @Serial
   private static final long serialVersionUID = 698996553L;
   private Extension extension;
   private String name;

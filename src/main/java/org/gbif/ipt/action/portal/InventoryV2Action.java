@@ -24,6 +24,7 @@ import org.gbif.ipt.utils.ResourceUtils;
 
 import jakarta.inject.Inject;
 import java.io.File;
+import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,6 +51,7 @@ import lombok.Setter;
  */
 public class InventoryV2Action extends ActionSupport {
 
+  @Serial
   private static final long serialVersionUID = 2207415310987539257L;
 
   private static final Logger LOG = LogManager.getLogger(InventoryV2Action.class);

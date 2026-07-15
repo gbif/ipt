@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -22,6 +23,7 @@ import java.util.TreeMap;
  */
 public class Registration implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 989864521100L;
 
   private SortedMap<String, Organisation> associatedOrganisations = new TreeMap<>();

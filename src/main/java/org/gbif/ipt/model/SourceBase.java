@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public abstract class SourceBase implements Comparable<Source>, Serializable, Source {
 
+  @Serial
   private static final long serialVersionUID = 119920000112L;
 
   protected Resource resource;

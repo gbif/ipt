@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DataPackageFieldMapping implements Serializable, Comparable<DataPackageFieldMapping> {
 
+  @Serial
   private static final long serialVersionUID = 521368321389202377L;
 
   private Integer index;

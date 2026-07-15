@@ -16,6 +16,8 @@ package org.gbif.ipt.struts2;
 import org.gbif.ipt.config.AppConfig;
 
 import jakarta.inject.Inject;
+
+import java.io.Serial;
 import java.util.Locale;
 
 import org.apache.commons.lang3.LocaleUtils;
@@ -29,6 +31,7 @@ import org.apache.struts2.interceptor.I18nInterceptor;
  */
 public class IptI18nInterceptor extends I18nInterceptor {
 
+  @Serial
   private static final long serialVersionUID = -177385481327691899L;
   private static final Logger LOG = LogManager.getLogger(IptI18nInterceptor.class);
 
