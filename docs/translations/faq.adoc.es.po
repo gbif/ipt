@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-07-15 08:04+0000\n"
-"PO-Revision-Date: 2026-07-15 09:34\n"
+"PO-Revision-Date: 2026-07-15 13:05\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -418,7 +418,7 @@ msgstr "Compruebe que no aparezca ningún mensaje de error en su IPT al hacer cl
 #. type: Plain text
 #: en/modules/ROOT/pages/faq.adoc:164
 msgid "In addition to that, *please contact the GBIF Help Desk (helpdesk@gbif.org) and ask that the organization be updated in the GBIF Registry* (this part is very important and the change will not be visible on gbif.org until it is done). In your email, please include a brief explanation of why the change was made, the link to the dataset, and the UUID of the new publisher."
-msgstr ""
+msgstr "Además, por favor contacte con el servicio de asistencia de GBIF (helpdesk@gbif.org) y solicite que se actualice la información de la organización en el Registro de GBIF (este paso es muy importante, ya que el cambio no será visible en gbif.org hasta que se haya realizado). En su correo electrónico, incluya una breve explicación del motivo del cambio, el enlace al conjunto de datos y el UUID del nuevo editor."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/faq.adoc:166
