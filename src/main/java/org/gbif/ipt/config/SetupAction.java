@@ -199,6 +199,14 @@ public class SetupAction extends BaseAction {
   }
 
   public String setupDataDirectory() {
+    // this step only owns the data directory itself: once it's configured, never allow it to be
+    // changed again via this action, regardless of whether the rest of the wizard (registry
+    // type, admin user) has completed yet
+    if (dataDir.isConfigured()) {
+      LOG.info("Skipping setup data directory step");
+      return SUCCESS;
+    }
+
     if ((dataDir.dataDir != null && (!dataDir.dataDir.exists() || dataDir.isConfiguredButEmpty()))
         || (isHttpPost() && dataDirPath != null)) {
 
@@ -243,25 +251,23 @@ public class SetupAction extends BaseAction {
   }
 
   public String setupDefaultAdministrator() {
-    // check if everything is already configured
-    if (configManager.setupComplete() && configManager.isBaseURLValid()) {
-      addActionMessage(getText("admin.config.setup2.existingFound"));
-      return SUCCESS;
-    }
-
     // check if a data directory exists
     if (!dataDir.isConfigured()) {
       addActionWarning(getText("admin.config.setup2.datadir.notExist"));
       return ERROR;
     }
 
-    // check if the selected datadir contains an admin user already
+    // this step only owns "does an admin user exist yet": once one does, never allow another
+    // to be created via this action, regardless of whether later wizard steps are done
     List<User> admins = userManager.list(Role.Admin);
-    if (!isHttpPost() && admins != null && !admins.isEmpty()) {
+    if (admins != null && !admins.isEmpty()) {
+      if (isHttpPost()) {
+        addActionMessage(getText("admin.config.setup2.existingFound"));
+      }
       return SUCCESS;
     }
 
-    // if validation passed - redirect to next step
+    // if validation passed, redirect to next step
     if (isHttpPost()) {
       user.setRole(Role.Admin);
 
@@ -292,16 +298,19 @@ public class SetupAction extends BaseAction {
   }
 
   public String setupMode() {
-    // check if everything is already configured
-    if (configManager.setupComplete() && configManager.isBaseURLValid()) {
+    // this step only owns the registry type: once it's been selected, never allow it to be
+    // changed again via this action, regardless of whether later wizard steps are done
+    if (cfg.getRegistryType() != null) {
       return SUCCESS;
     }
 
     // check if the selected datadir contains an admin user already
     List<User> admins = userManager.list(Role.Admin);
-    if (!isHttpPost() && admins.isEmpty()) {
+    if (admins == null || admins.isEmpty()) {
       return ERROR;
-    } else if (isHttpPost()) {
+    }
+
+    if (isHttpPost()) {
       if (getModeSelected() == null) {
         addFieldError("modeSelected", getText("admin.config.setup2.nomode"));
         return INPUT;
@@ -323,12 +332,14 @@ public class SetupAction extends BaseAction {
   }
 
   public String setupPublicUrl() {
-    // check if everything but public URL is already configured (it must be for this step)
-    if (configManager.setupComplete()) {
-      if (configManager.isBaseURLValid()) {
-        return SUCCESS;
-      }
-    } else {
+    // this step only owns the base URL: once one has been successfully set, never allow it to
+    // be changed again via this unauthenticated setup action, regardless of momentary reachability
+    if (StringUtils.trimToNull(cfg.getBaseUrl()) != null) {
+      return SUCCESS;
+    }
+
+    // check if previous steps are done
+    if (!dataDir.isConfigured() || userManager.list(Role.Admin).isEmpty()) {
       return ERROR;
     }
 
@@ -407,20 +418,28 @@ public class SetupAction extends BaseAction {
       return ERROR;
     }
 
-    // install or update the latest version of all default vocabularies
-    // (Done in loadDataDirConfig method).
-    try {
-      configManager.loadDataDirConfig();
-      session.put(Constants.SESSION_USER, userManager.getSetupUser());
-    } catch (InvalidConfigException e) {
-      String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[]{e.getMessage()});
-      LOG.error(msg, e);
-      addActionWarning(msg, e);
-    } catch (RegistryException e) {
-      String msg = RegistryException.logRegistryException(e, this);
-      LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
-      addActionError(msg);
-      addActionExceptionWarning(e);
+    // this step logs the newly created setup admin into the session. That must only ever
+    // happen once, immediately after setup - getSetupUser() acts as a one-time token here.
+    // Once consumed (or if this action is hit without ever having gone through setup in this
+    // session), never authenticate the caller as a side effect of calling this action.
+    User setupUser = userManager.getSetupUser();
+    if (setupUser != null) {
+      try {
+        configManager.loadDataDirConfig();
+        session.put(Constants.SESSION_USER, setupUser);
+      } catch (InvalidConfigException e) {
+        String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[]{e.getMessage()});
+        LOG.error(msg, e);
+        addActionWarning(msg, e);
+      } catch (RegistryException e) {
+        String msg = RegistryException.logRegistryException(e, this);
+        LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
+        addActionError(msg);
+        addActionExceptionWarning(e);
+      } finally {
+        // consume the one-time token so this can't be replayed
+        userManager.setSetupUser(null);
+      }
     }
 
     List<Extension> extensions = extensionManager.listCore();
