@@ -28,8 +28,9 @@
 <struts>
 
   <constant name="struts.objectFactory" value="spring"/>
-
   <constant name="struts.multipart.parser" value="jakarta"/>
+  <!-- Restore legacy constructor autowiring for Struts actions (broken by WW-3647 in Struts 7.2.x) -->
+  <constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="false" />
 
 <!--  <constant name="struts.devMode" value="true"/>-->
 <!--  <constant name="struts.interceptor.params.logParameters" value="true"/>-->
