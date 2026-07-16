@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-06-11 15:02+0000\n"
-"PO-Revision-Date: 2025-01-21 09:41\n"
+"POT-Creation-Date: 2026-04-15 14:02+0000\n"
+"PO-Revision-Date: 2026-04-15 15:42\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -963,8 +963,8 @@ msgstr "figures/myristica_fragrans.png"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:359
-msgid "Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 693 language code] for sharing language information. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilize the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes]."
-msgstr "俗名需透過延伸資料集參照，因此必須與父核心資料檔案中的命名分類單元連結。此外，建議在俗名紀錄中提供語言參照，標識該俗名使用所代表的語言。最佳做法是使用 http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 639 語言代碼]來分享語言資訊。俗名可能具有特定地區的用法，可透過 dwc:locality 元素或使用較低精度的 dwc:country 元素來指明。建議國家名稱使用 http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166-1 Alpha-2 國家代碼]。"
+msgid "Vernacular names are referenced via an extension, therefore they must be linked to a named taxon in the parent core data file. It is further recommended that a vernacular names record provide a language reference that identifies the language represented by the vernacular name use. The best practice is to use the http://rs.gbif.org/vocabulary/iso/639-1.xml[ISO 639 language code] for sharing language information. Vernacular names may also have distinct regional uses and this can be specified through a dwc:locality element or, at a less precise level, using a dwc:country term. It is recommended that country names utilize the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166-1 country codes]."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:360
@@ -1006,8 +1006,8 @@ msgstr "建議使用可解析或已知的區域識別碼，並透過 dwc:localit
 
 #. type: Plain text
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:375
-msgid "If the dwc:country element is used, it is recommended that the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 6133 country codes] be used."
-msgstr "如果使用 dwc:country 元素，建議使用 http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166-1 Alpha-2 國家代碼]。"
+msgid "If the dwc:country element is used, it is recommended that the http://rs.gbif.org/vocabulary/iso/3166-1_alpha2.xml[ISO 3166-1 country codes] be used."
+msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/best-practices-checklists.adoc:376
@@ -1261,7 +1261,72 @@ msgid "Latest version issued: {latest-resource-relation}[{date-resource-relation
 msgstr "最新版本發布： {latest-resource-relation}[{date-resource-relation}]"
 
 #. type: Plain text
-#: en/modules/ROOT/pages/best-practices-checklists.adoc:481
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:482
 msgid "This extension is used to describe one or more relationships that the core taxon has with other taxa, either in the source list or included in the record. This extension could be used, for example, to provide a list of plant species (one record per species) pollinated by a bee species listed in the core species list."
 msgstr "此延伸資料集用於描述核心分類群與其他分類群之間的一個或多個關係，無論是在來源列表中還是紀錄中。例如，此延伸資料集可以用於提供一個由核心物種列表中的某個蜜蜂物種進行授粉的植物物種列表（每條紀錄對應一個物種）。"
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:483
+#, no-wrap
+msgid "Measurement or Facts Extension "
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:486
+#, no-wrap
+msgid "Latest version issued: {latest-measurement-or-facts}[{date-measurement-or-facts}]   \n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:488
+msgid "Use this extension to provide quantitative measurements or qualitative facts associated with a taxon. Multiple measurements or facts can be linked to the same taxon via the taxonID."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:489
+#, no-wrap
+msgid "Species Profile Extension "
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:492
+msgid "Latest version issued: {latest-species-profile}[{date-species-profile}]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:494
+msgid "Use this extension to provide characteristics in addition to the textual description covered by the Description Extension. This is typically in the form of TRUE/FALSE statements for the Boolean elements and short answers for the rest. For taxa that have different combinations of values (e.g. different habitats for different life stages), multiple characteristics can be linked to the same taxon via the taxonID."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:495
+#, no-wrap
+msgid "Simple Multimedia Extension "
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:498
+msgid "Latest version issued: {latest-simple-multimedia}[{date-simple-multimedia}]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:500
+msgid "Use this extension to share multimedia objects for a taxon and document their related metadata. It allows you to share a link to the media file using an identifier. Multiple multimedia files can be linked to the same taxon via the taxonID."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:501
+#, no-wrap
+msgid "Audiovisual Media Description Extension  "
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:504
+msgid "Latest version issued: {latest-audiovisual-description}[{date-audiovisual-description}]"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/best-practices-checklists.adoc:505
+msgid "Use this extension for media requiring exhaustive description beyond what the Simple Multimedia Extension provides. Multiple multimedia files can be linked to the same taxon via the taxonID."
+msgstr ""
 

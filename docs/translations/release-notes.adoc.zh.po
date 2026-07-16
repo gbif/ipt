@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-02-06 08:33+0000\n"
-"PO-Revision-Date: 2024-02-06 09:24\n"
+"POT-Creation-Date: 2026-04-22 12:58+0000\n"
+"PO-Revision-Date: 2026-04-22 13:01\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -39,7 +39,7 @@ msgstr ""
 
 #. type: Title ==
 #: en/modules/ROOT/pages/launch.adoc:40
-#: en/modules/ROOT/pages/release-notes.adoc:75
+#: en/modules/ROOT/pages/release-notes.adoc:77
 #, no-wrap
 msgid "When all else fails"
 msgstr ""
@@ -53,7 +53,7 @@ msgstr "發布通知"
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:4
 #, no-wrap
-msgid "*IPT Versions: pass:[3.0.*]*\n"
+msgid "*IPT Versions: pass:[3.3.*]*\n"
 msgstr ""
 
 #. type: Plain text
@@ -114,7 +114,7 @@ msgstr ""
 #: en/modules/ROOT/pages/release-notes.adoc:37
 #, no-wrap
 msgid "# Roll back to a previous, stable version:\n"
-"yum downgrade ipt-2.7.5\n"
+"yum downgrade ipt-3.2.3\n"
 msgstr ""
 
 #. type: delimited block -
@@ -199,11 +199,16 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/release-notes.adoc:74
-msgid "IPT 3.0.0 requires Tomcat 8 or 9. Tomcat 7 is not supported anymore."
+msgid "IPT 3.3.0 requires Java 17."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/release-notes.adoc:77
+#: en/modules/ROOT/pages/release-notes.adoc:76
+msgid "IPT 3.3.0 requires Tomcat 10.1 or 11. Tomcat 8/9 are not supported anymore."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/release-notes.adoc:79
 msgid "See the xref:faq.adoc[FAQ], which continues to be updated with good questions, or ask the https://lists.gbif.org/mailman/listinfo/ipt/[IPT mailing list]."
 msgstr ""
 
