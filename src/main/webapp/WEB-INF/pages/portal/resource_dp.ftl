@@ -356,7 +356,7 @@
                         <div class="mt-3 overflow-x-auto">
                             <#if (dpMetadata.description)?has_content>
                                 <p>
-                                    <@dpMetadata.description?interpret />
+                                    ${dpMetadata.description?no_esc}
                                 </p>
                             <#else>
                                 <p><@s.text name='portal.resource.no.description'/></p>

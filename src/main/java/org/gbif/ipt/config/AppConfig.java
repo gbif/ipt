@@ -79,6 +79,11 @@ public class AppConfig {
   public static final String IPT_LONGITUDE = "location.lon";
   public static final String DEV_VERSION = "dev.version";
   public static final String ADMIN_EMAIL = "admin.email";
+  public static final String MAIL_SMTP_HOST = "mail.smtp.host";
+  public static final String MAIL_SMTP_PORT = "mail.smtp.port";
+  public static final String MAIL_SMTP_USERNAME = "mail.smtp.username";
+  public static final String MAIL_SMTP_PASSWORD = "mail.smtp.password";
+  public static final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
   public static final String DEFAULT_LOCALE = "defaultLocale";
   public static final String LOGO_REDIRECT_URL = "logoRedirectUrl";
   public static final String SESSION_TIMEOUT_PROPERTY = "session.timeout";
@@ -210,6 +215,26 @@ public class AppConfig {
 
   public String getAdminEmail() {
     return properties.getProperty(ADMIN_EMAIL);
+  }
+
+  public String getMailSmtpHost() {
+    return properties.getProperty(MAIL_SMTP_HOST);
+  }
+
+  public String getMailSmtpPort() {
+    return properties.getProperty(MAIL_SMTP_PORT);
+  }
+
+  public String getMailSmtpUsername() {
+    return properties.getProperty(MAIL_SMTP_USERNAME);
+  }
+
+  public String getMailSmtpPassword() {
+    return properties.getProperty(MAIL_SMTP_PASSWORD);
+  }
+
+  public boolean isMailSmtpStartTlsEnabled() {
+    return Boolean.parseBoolean(properties.getProperty(MAIL_SMTP_STARTTLS_ENABLE));
   }
 
   public String getDefaultLocale() {

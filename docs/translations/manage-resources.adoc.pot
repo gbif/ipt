@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2025-12-19 15:05+0000\n"
+"POT-Creation-Date: 2026-06-17 13:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2989,14 +2989,22 @@ msgid ""
 "the public and manage resource tables."
 msgstr ""
 
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:671
+msgid ""
+"If SMTP is configured in *IPT Settings → Email Notifications*, email "
+"notifications can be enabled by selecting \"Email the IPT administrator if "
+"auto-publication fails\"."
+msgstr ""
+
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:670
+#: en/modules/ROOT/pages/manage-resources.adoc:672
 #, no-wrap
 msgid "Visibility"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:672
+#: en/modules/ROOT/pages/manage-resources.adoc:674
 msgid ""
 "The Visibility area of the Manage Resources page allows users having manager "
 "rights for the resource to change its visibility state. The visibility of a "
@@ -3008,19 +3016,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:674
+#: en/modules/ROOT/pages/manage-resources.adoc:676
 #, no-wrap
 msgid "*Private* - A private resource is visible only to those who created it, or those who have been granted permission to manage it within the IPT, or by a user having the Admin role. This is primarily meant to preserve the resource from public visibility until it has been completely and properly configured.\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:676
+#: en/modules/ROOT/pages/manage-resources.adoc:678
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityPrivate.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:679
+#: en/modules/ROOT/pages/manage-resources.adoc:681
 msgid ""
 "When the resource is ready for public visibility, click on the \"Change\" "
 "option. This will display a modal window with two options. You can make the "
@@ -3028,69 +3036,69 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:680
+#: en/modules/ROOT/pages/manage-resources.adoc:682
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic1.png"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:682
+#: en/modules/ROOT/pages/manage-resources.adoc:684
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePublic2.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:685
+#: en/modules/ROOT/pages/manage-resources.adoc:687
 msgid ""
 "After submitting the form a message will appear at the top of the page "
 "saying that the status has been changed to \"Public\"."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:688
+#: en/modules/ROOT/pages/manage-resources.adoc:690
 #, no-wrap
 msgid "*Public* - A public resource is visible to anyone using the IPT instance where the resource is installed (on the table of public resource on the IPT Home page). The resource is ultimately accessible via the Internet to anyone who knows its homepage URL. However, the resource is not globally discoverable through the GBIF website until it has been registered with the GBIF Registry (see <<Registration>>).\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:690
+#: en/modules/ROOT/pages/manage-resources.adoc:692
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityPublic.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:693
+#: en/modules/ROOT/pages/manage-resources.adoc:695
 msgid "Clicking on the option labelled \"Change\" will display a modal window"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:694
+#: en/modules/ROOT/pages/manage-resources.adoc:696
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityMakePrivate.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:697
+#: en/modules/ROOT/pages/manage-resources.adoc:699
 msgid ""
 "Clicking on the button labelled \"Yes\" will remove the resource entirely "
 "from public visibility and return it to the private state."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:700
+#: en/modules/ROOT/pages/manage-resources.adoc:702
 #, no-wrap
 msgid "*Registered* - A resource that has been registered with the GBIF network is discoverable through the GBIF website and the data from the resource can be indexed by and accessed from the GBIF portal. Be aware it can take up to one hour for data to be indexed by GBIF following registration. A summary of information registered with GBIF will appear in the <<Registration>> area when registration is complete.\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:702
-#: en/modules/ROOT/pages/manage-resources.adoc:729
+#: en/modules/ROOT/pages/manage-resources.adoc:704
+#: en/modules/ROOT/pages/manage-resources.adoc:731
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityRegistered.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:705
+#: en/modules/ROOT/pages/manage-resources.adoc:707
 msgid ""
 "If the resource has already been registered, every time the \"Publish\" "
 "button is clicked, its registration information in the GBIF Registry also "
@@ -3101,43 +3109,43 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:707
+#: en/modules/ROOT/pages/manage-resources.adoc:709
 #, no-wrap
 msgid "Registration"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:710
+#: en/modules/ROOT/pages/manage-resources.adoc:712
 msgid ""
 "The resource is not globally discoverable through the GBIF website until it "
 "has been registered with the GBIF Registry."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:711
+#: en/modules/ROOT/pages/manage-resources.adoc:713
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceRegistration.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:714
+#: en/modules/ROOT/pages/manage-resources.adoc:716
 msgid "Registration is enabled when:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:716
+#: en/modules/ROOT/pages/manage-resources.adoc:718
 msgid "the required metadata for the resource are complete,"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:717
+#: en/modules/ROOT/pages/manage-resources.adoc:719
 msgid ""
 "the resource has been published (see the explanation of the <<Publication>> "
 "area of the Resource Overview page, below), and"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:718
+#: en/modules/ROOT/pages/manage-resources.adoc:720
 msgid ""
 "the user has the role \"Manager with registration rights\" (see the "
 "explanation for Role in the \"Create a new user\" section under the "
@@ -3147,21 +3155,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:720
+#: en/modules/ROOT/pages/manage-resources.adoc:722
 msgid ""
 "Click on the option labelled \"Register\" to register the resource with the "
 "GBIF Registry."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:722
+#: en/modules/ROOT/pages/manage-resources.adoc:724
 msgid ""
 "If you want this resource to update an existing registered DiGIR, BioCASe, "
 "or TAPIR resource, please refer to the section <<Migrate a Resource>> below"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:724
+#: en/modules/ROOT/pages/manage-resources.adoc:726
 msgid ""
 "Clicking on this option will open a dialog box with which to confirm that "
 "you have read and understood the GBIF data sharing agreement, to which a "
@@ -3172,13 +3180,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:725
+#: en/modules/ROOT/pages/manage-resources.adoc:727
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceVisibilityRegisterAgreement.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:728
+#: en/modules/ROOT/pages/manage-resources.adoc:730
 msgid ""
 "If the attempt to register is successful, a message will appear at the top "
 "of the page saying that the status has been changed to \"Registered\". "
@@ -3186,13 +3194,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:731
+#: en/modules/ROOT/pages/manage-resources.adoc:733
 #, no-wrap
 msgid "Networks"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:734
+#: en/modules/ROOT/pages/manage-resources.adoc:736
 msgid ""
 "This section allows the resource to be included in one or more GBIF networks "
 "— collections of datasets potentially from many publishers, usually on a "
@@ -3202,39 +3210,39 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:735
+#: en/modules/ROOT/pages/manage-resources.adoc:737
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceNetworks.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:738
+#: en/modules/ROOT/pages/manage-resources.adoc:740
 msgid ""
 "To add the resource to a network, click on the \"Add\" option. To remove it, "
 "click the \"Delete\"."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:740
+#: en/modules/ROOT/pages/manage-resources.adoc:742
 msgid ""
 "Please only add your resource to a network with the approval of the network "
 "managers or the GBIF Help Desk."
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:741
+#: en/modules/ROOT/pages/manage-resources.adoc:743
 #, no-wrap
 msgid "Resource Managers"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:743
+#: en/modules/ROOT/pages/manage-resources.adoc:745
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagers.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:746
+#: en/modules/ROOT/pages/manage-resources.adoc:748
 msgid ""
 "Each resource has one or more explicitly assigned managers who are allowed "
 "to view, change, and remove the resource. The user who creates a resource "
@@ -3253,57 +3261,57 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:747
+#: en/modules/ROOT/pages/manage-resources.adoc:749
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceManagerAdded.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/manage-resources.adoc:749
+#: en/modules/ROOT/pages/manage-resources.adoc:751
 #, no-wrap
 msgid "Delete a Resource"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:752
+#: en/modules/ROOT/pages/manage-resources.adoc:754
 msgid ""
 "Clicking on the button labelled \"Delete\" on the Resource Overview page "
 "will display a modal confirmation window."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:753
+#: en/modules/ROOT/pages/manage-resources.adoc:755
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDelete.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:756
+#: en/modules/ROOT/pages/manage-resources.adoc:758
 msgid ""
 "For registered with GBIF resources, it will display a modal window with two "
 "options."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:757
+#: en/modules/ROOT/pages/manage-resources.adoc:759
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourceDeleteRegistered.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:760
+#: en/modules/ROOT/pages/manage-resources.adoc:762
 #, no-wrap
 msgid "*Delete from the IPT and GBIF.org*\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:761
+#: en/modules/ROOT/pages/manage-resources.adoc:763
 #, no-wrap
 msgid "*Delete from the IPT only (Orphan)*\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:763
+#: en/modules/ROOT/pages/manage-resources.adoc:765
 msgid ""
 "Either options will remove the resource from the IPT and all of the related "
 "documents from the file system.  The first will also delete the resource "
@@ -3311,7 +3319,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:765
+#: en/modules/ROOT/pages/manage-resources.adoc:767
 msgid ""
 "Before deleting the resource, you can make a copy of the data in case you "
 "wish to restore it later.  To do this, look on the server inside the IPT's "
@@ -3325,13 +3333,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/manage-resources.adoc:766
+#: en/modules/ROOT/pages/manage-resources.adoc:768
 #, no-wrap
 msgid "Migrate a Resource"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:769
+#: en/modules/ROOT/pages/manage-resources.adoc:771
 msgid ""
 "There is now a way to migrate existing registered DiGIR, BioCASe, TAPIR, or "
 "DwC-A resources to an IPT. This allows the existing resource to preserve its "
@@ -3339,27 +3347,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:771
+#: en/modules/ROOT/pages/manage-resources.adoc:773
 msgid ""
 "The way this works, is that the IPT resource is configured to update the "
 "existing registered resource that it corresponds to in the GBIF Registry."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:773
+#: en/modules/ROOT/pages/manage-resources.adoc:775
 msgid ""
 "To migrate an *existing registered resource* to your *IPT resource*, follow "
 "these instructions:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:775
+#: en/modules/ROOT/pages/manage-resources.adoc:777
 msgid ""
 "Ensure that the *IPT resource's* visibility is public and NOT registered."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:776
+#: en/modules/ROOT/pages/manage-resources.adoc:778
 msgid ""
 "Determine the owning organization of the *existing registered resource*, "
 "ensure that it is added to the IPT as an organization, and that it is "
@@ -3368,14 +3376,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:777
+#: en/modules/ROOT/pages/manage-resources.adoc:779
 msgid ""
 "Select the owning organization from the drop-down list on the Basic Metadata "
 "page. Don't forget to save the Basic Metadata page."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:778
+#: en/modules/ROOT/pages/manage-resources.adoc:780
 msgid ""
 "Go to the GBIF Dataset page of the *existing registered resource*. Depending "
 "on whether you are running the IPT in test or production mode, you would "
@@ -3384,14 +3392,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:779
+#: en/modules/ROOT/pages/manage-resources.adoc:781
 msgid ""
 "Ensure the GBIF Dataset page shows the correct *owning organization* of the "
 "*existing registered resource*."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:781
+#: en/modules/ROOT/pages/manage-resources.adoc:783
 msgid ""
 "if it shows a different *owning organization*, the GBIF Registry must be "
 "updated before you can proceed with the remaining steps. Send an email to "
@@ -3399,14 +3407,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:783
+#: en/modules/ROOT/pages/manage-resources.adoc:785
 msgid ""
 "Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-"
 "cb64-4863-a12b-78b4e1a56628`."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:784
+#: en/modules/ROOT/pages/manage-resources.adoc:786
 msgid ""
 "Add this UUID to the list of the *IPT resource's* alternative identifiers on "
 "the Additional Metadata page. Don't forget to save the Additional Metadata "
@@ -3414,7 +3422,26 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:785
+#: en/modules/ROOT/pages/manage-resources.adoc:787
+msgid ""
+"Camtrap DP resources do not support alternative identifiers. Instead, add a "
+"new related identifier in the *Other Metadata* section, as shown below:"
+msgstr ""
+
+#. type: Target for macro image
+#: en/modules/ROOT/pages/manage-resources.adoc:788
+#, no-wrap
+msgid "ipt2/manage/IPTCamtrapRelatedIdentifier.png"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:791
+msgid ""
+"Be sure to use the correct link to the GBIF portal as a related identifier."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/manage-resources.adoc:793
 msgid ""
 "Ensure that no other public or registered resource in your IPT includes this "
 "UUID in their list of alternative identifiers. In cases where you are trying "
@@ -3423,7 +3450,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:786
+#: en/modules/ROOT/pages/manage-resources.adoc:794
 msgid ""
 "On the resource overview page, click the register button. Similar to any "
 "other registration, you will have to confirm that you have read and "
@@ -3432,20 +3459,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:788
+#: en/modules/ROOT/pages/manage-resources.adoc:796
 msgid ""
 "You will receive a confirmation message like this, showing the existing "
 "dataset in GBIF has been updated."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/manage-resources.adoc:789
+#: en/modules/ROOT/pages/manage-resources.adoc:797
 #, no-wrap
 msgid "ipt2/manage/IPTManageResourcePublishOverwrite.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/manage-resources.adoc:791
+#: en/modules/ROOT/pages/manage-resources.adoc:799
 msgid ""
 "If applicable, email helpdesk@gbif.org alerting them whether the DiGIR/"
 "BioCASe/TAPIR/IPT technical installation that used to serve the resource has "

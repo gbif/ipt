@@ -36,7 +36,7 @@
             <span class="text-start d-inline-block">
                 <#if (hostingOrganisationName)??>
                     <#if (iptDescription)??>
-                        <@iptDescription?interpret />
+                        ${iptDescription?no_esc}
                     <#else>
                         <@s.text name="about.installation"/> ${hostingOrganisationName}
                     </#if>

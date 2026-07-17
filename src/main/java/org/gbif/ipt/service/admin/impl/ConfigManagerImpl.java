@@ -531,6 +531,16 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
   }
 
   @Override
+  public void setMailSettings(String smtpHost, String smtpPort, String smtpUsername, String smtpPassword,
+                              Boolean smtpStartTlsEnable) {
+    cfg.setProperty(AppConfig.MAIL_SMTP_HOST, smtpHost);
+    cfg.setProperty(AppConfig.MAIL_SMTP_PORT, smtpPort);
+    cfg.setProperty(AppConfig.MAIL_SMTP_USERNAME, smtpUsername);
+    cfg.setProperty(AppConfig.MAIL_SMTP_PASSWORD, smtpPassword);
+    cfg.setProperty(AppConfig.MAIL_SMTP_STARTTLS_ENABLE, Boolean.toString(Boolean.TRUE.equals(smtpStartTlsEnable)));
+  }
+
+  @Override
   public void setDefaultLocale(String defaultLocale) {
     Optional.ofNullable(defaultLocale)
         .filter(cfg::isSupportedLanguage)

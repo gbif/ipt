@@ -22,6 +22,11 @@
       "description": "Take into account mssql-jdbc compatibility suffix (jre11 currently)"
     },
     {
+      "matchPackageNames": ["com.oracle.database.jdbc:ojdbc8"],
+      "allowedVersions": "<23.4.0 || >=23.27.0",
+      "description": "Avoid Oracle JDBC 23.4.x through 23.26.x due to Oracle CSPU May 2026 TLS vulnerabilities"
+    },
+    {
       "matchPackageNames": ["com.google.guava:guava"],
       "automerge": false
     },

@@ -1,0 +1,165 @@
+pipeline {
+    agent any
+    parameters {
+        string(
+                name: 'VERSION',
+                defaultValue: '3.3.2',
+                description: 'IPT version to deploy, e.g. 3.3.2 or 3.3.2-SNAPSHOT'
+        )
+        booleanParam(
+                name: 'DEPLOY_ALL',
+                defaultValue: false,
+                description: 'Deploy all WARs (ignores selection below)'
+        )
+        activeChoice(
+                name: 'WARS',
+                description: 'Select WARs to deploy (ignored if Deploy All is checked)',
+                choiceType: 'PT_CHECKBOX',
+                script: [
+                        $class        : 'GroovyScript',
+                        script        : [
+                                classpath: [],
+                                sandbox  : true,
+                                script   : '''
+                        return [
+                            'ipt', 'us', 'us-obis', 'us-vertnet',
+                            'africa', 'asia', 'bid', 'clb', 'eca', 'ee', 'eia',
+                            'eubon', 'ewt', 'gb-dissco', 'griis', 'icipe', 'lac',
+                            'nz', 'oceania', 'pa', 'to', 'training-ipt-a',
+                            'training-ipt-b', 'training-ipt-c', 'uz', 'uy',
+                            'ipt (dev)', 'ipt (test)', 'ipt-dwcdp', 'ipt-eubon',
+                            'ipt-spnhc', 'ipt-worldfair', 'ipt-xprize'
+                        ]
+                    '''
+                        ],
+                        fallbackScript: [
+                                classpath: [],
+                                sandbox  : true,
+                                script   : 'return []'
+                        ]
+                ]
+        )
+    }
+
+    environment {
+        REPOSITORY_URL = 'https://repository.gbif.org/repository/gbif'
+        ARTIFACT_PATH = 'org/gbif/ipt'
+        SERVER_PROD_A = 'tomcat-a.gbif.org'
+        SERVER_PROD_B = 'tomcat-b.gbif.org'
+        SERVER_DEV = 'devtomcat11-vh.gbif-dev.org'
+        SERVER_TEST = 'testtomcat10-vh.gbif-test.org'
+        WARS_A = 'ipt,us,us-obis,us-vertnet'
+        WARS_B = 'africa,asia,bid,clb,eca,ee,eia,eubon,ewt,gb-dissco,griis,icipe,lac,nz,oceania,pa,to,training-ipt-a,training-ipt-b,training-ipt-c,uz,uy'
+        WARS_DEV = 'ipt (dev)'
+        WARS_TEST = 'ipt (test),ipt-dwcdp,ipt-eubon,ipt-spnhc,ipt-worldfair,ipt-xprize'
+        WEBAPPS = '/var/lib/tomcat11/webapps'
+        WEBAPPS_TEST = '/var/lib/tomcat10/webapps'
+        WAR_FILE = "/tmp/ipt-${params.VERSION}.war"
+        DEPLOY_USER = 'tomcat'
+    }
+
+    stages {
+        stage('Resolve version') {
+            steps {
+                script {
+                    if (params.VERSION.endsWith('-SNAPSHOT')) {
+                        echo "SNAPSHOT version detected, resolving latest build..."
+
+                        def metadataUrl = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/maven-metadata.xml"
+                        def metadata = sh(
+                                script: "curl --fail --silent '${metadataUrl}'",
+                                returnStdout: true
+                        ).trim()
+
+                        // Extract the most recent snapshotVersion for type=war
+                        def matcher = metadata =~ /(?s)<snapshotVersion>.*?<extension>war<\/extension>.*?<value>([^<]+)<\/value>.*?<\/snapshotVersion>/
+                        if (!matcher.find()) {
+                            error "Could not find WAR snapshotVersion in metadata from ${metadataUrl}"
+                        }
+                        def timestampedVersion = matcher.group(1)
+                        echo "Resolved snapshot to: ${timestampedVersion}"
+
+                        env.WAR_URL = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/ipt-${timestampedVersion}.war"
+                    } else {
+                        env.WAR_URL = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/ipt-${params.VERSION}.war"
+                    }
+                    echo "WAR URL: ${env.WAR_URL}"
+                }
+            }
+        }
+
+        stage('Download WAR') {
+            steps {
+                sh """
+                    echo "Checking WAR exists..."
+                    curl --fail --head --silent '${env.WAR_URL}'
+
+                    echo "Downloading..."
+                    curl --fail --output '${env.WAR_FILE}' '${env.WAR_URL}'
+                """
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sshagent(['ipt-deploy-tomcat-ssh-key']) {
+                    script {
+                        def serverConfig = [
+                                A: [server: env.SERVER_PROD_A, wars: env.WARS_A.split(',') as Set, webapps: env.WEBAPPS],
+                                B: [server: env.SERVER_PROD_B, wars: env.WARS_B.split(',') as Set, webapps: env.WEBAPPS],
+                                DEV: [server: env.SERVER_DEV, wars: env.WARS_DEV.split(',') as Set, webapps: env.WEBAPPS],
+                                TEST: [server: env.SERVER_TEST, wars: env.WARS_TEST.split(',') as Set, webapps: env.WEBAPPS_TEST],
+                        ]
+
+                        def allWars = serverConfig.values().collectMany { it.wars as List }
+
+                        def selected = params.DEPLOY_ALL
+                                ? allWars
+                                : params.WARS.split(',') as List
+
+                        if (selected.isEmpty() || (selected.size() == 1 && selected[0] == '')) {
+                            error "No WARs selected. Check DEPLOY_ALL or select at least one WAR."
+                        }
+
+                        // Upload WAR to each host once
+                        def hostList = serverConfig.entrySet().toList()
+                                .findAll { it.value.wars.any { war -> war in selected } }
+                                .collect { it.value.server }
+                                .unique()
+
+                        for (int i = 0; i < hostList.size(); i++) {
+                            def host = hostList[i]
+                            echo "Uploading WAR to ${host}..."
+                            sh "scp '${env.WAR_FILE}' ${env.DEPLOY_USER}@${host}:/tmp/"
+                        }
+
+                        // Deploy each selected WAR
+                        def selectedList = selected.toList()
+                        for (int i = 0; i < selectedList.size(); i++) {
+                            def war = selectedList[i]
+                            def entry = serverConfig.entrySet().toList().find { war in it.value.wars }
+                            if (!entry) {
+                                error "No server configured for WAR: ${war}"
+                            }
+                            def host = entry.value.server
+                            def webapps = entry.value.webapps
+                            def warFileName = war.replaceAll(/\s*\(.*?\)/, '').trim()
+                            echo "Deploying ${warFileName}.war on ${host} to ${webapps}..."
+                            sh "ssh ${env.DEPLOY_USER}@${host} 'cp ${env.WAR_FILE} ${webapps}/${warFileName}.war'"
+                            sleep 10
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployed ${params.DEPLOY_ALL ? 'all WARs' : params.WARS} at version ${params.VERSION}"
+        }
+        failure {
+            echo "Deployment failed. No WARs were replaced on the servers if failure was in Download stage."
+        }
+    }
+}

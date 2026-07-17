@@ -14,7 +14,7 @@ RUN perl -pi -e 's(\${buildNumber})('${GIT_REVISION}')' src/main/resources/appli
     mvn -DskipTests install && \
     rm target/*.war && mv target/ipt-* target/ipt
 
-FROM tomcat:11.0.20-jdk17-temurin
+FROM tomcat:11.0.22-jdk17-temurin
 LABEL maintainers="Mikhail Podolskiy <mpodolskiy@gbif.org>, Matthew Blissett <mblissett@gbif.org>"
 
 # Argument for IPT name

@@ -28,8 +28,9 @@
 <struts>
 
   <constant name="struts.objectFactory" value="spring"/>
-
   <constant name="struts.multipart.parser" value="jakarta"/>
+  <!-- Restore legacy constructor autowiring for Struts actions (broken by WW-3647 in Struts 7.2.x) -->
+  <constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="false" />
 
 <!--  <constant name="struts.devMode" value="true"/>-->
 <!--  <constant name="struts.interceptor.params.logParameters" value="true"/>-->
@@ -68,6 +69,9 @@
       <!-- extended i18n default interceptor to support other Locales not supported by the Java runtime environment, e.g. Persian (fa) -->
       <interceptor name="i18n" class="org.gbif.ipt.struts2.IptI18nInterceptor"/>
 
+      <!-- For storing validation messages after a redirect -->
+      <!-- for example, when cancelling publication and redirecting back to the resource page -->
+      <interceptor name="messageStore" class="org.apache.struts2.interceptor.MessageStoreInterceptor"/>
 
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">

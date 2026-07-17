@@ -77,6 +77,11 @@ public class ConfigAction extends POSTAction {
   protected Boolean archivalMode;
   protected Integer archivalLimit;
   protected String defaultLocale;
+  protected String mailSmtpHost;
+  protected String mailSmtpPort;
+  protected String mailSmtpUsername;
+  protected String mailSmtpPassword;
+  protected Boolean mailSmtpStartTlsEnable;
 
   @Inject
   public ConfigAction(
@@ -96,6 +101,22 @@ public class ConfigAction extends POSTAction {
 
   public String getAdminEmail() {
     return cfg.getAdminEmail();
+  }
+
+  public String getMailSmtpHost() {
+    return cfg.getMailSmtpHost();
+  }
+
+  public String getMailSmtpPort() {
+    return cfg.getMailSmtpPort();
+  }
+
+  public String getMailSmtpUsername() {
+    return cfg.getMailSmtpUsername();
+  }
+
+  public Boolean getMailSmtpStartTlsEnable() {
+    return cfg.isMailSmtpStartTlsEnabled();
   }
 
   public String getBaseUrl() {
@@ -212,6 +233,13 @@ public class ConfigAction extends POSTAction {
       return INPUT;
     }
 
+    configManager.setMailSettings(
+        mailSmtpHost,
+        mailSmtpPort,
+        mailSmtpUsername,
+        mailSmtpPassword == null ? cfg.getMailSmtpPassword() : mailSmtpPassword,
+        mailSmtpStartTlsEnable);
+
     // http proxy
     try {
       configManager.setProxy(proxy);
@@ -309,6 +337,31 @@ public class ConfigAction extends POSTAction {
   @StrutsParameter
   public void setAdminEmail(String adminEmail) {
     this.adminEmail = adminEmail;
+  }
+
+  @StrutsParameter
+  public void setMailSmtpHost(String mailSmtpHost) {
+    this.mailSmtpHost = StringUtils.trimToNull(mailSmtpHost);
+  }
+
+  @StrutsParameter
+  public void setMailSmtpPort(String mailSmtpPort) {
+    this.mailSmtpPort = StringUtils.trimToNull(mailSmtpPort);
+  }
+
+  @StrutsParameter
+  public void setMailSmtpUsername(String mailSmtpUsername) {
+    this.mailSmtpUsername = StringUtils.trimToNull(mailSmtpUsername);
+  }
+
+  @StrutsParameter
+  public void setMailSmtpPassword(String mailSmtpPassword) {
+    this.mailSmtpPassword = StringUtils.trimToNull(mailSmtpPassword);
+  }
+
+  @StrutsParameter
+  public void setMailSmtpStartTlsEnable(Boolean mailSmtpStartTlsEnable) {
+    this.mailSmtpStartTlsEnable = mailSmtpStartTlsEnable;
   }
 
   @StrutsParameter

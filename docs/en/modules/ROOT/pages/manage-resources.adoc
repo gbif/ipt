@@ -667,6 +667,8 @@ When automated publishing is on, the publishing interval and next published date
 
 In case of failure, publishing will be retried automatically up to 3 more times. This safeguards against infinite publishing loops. Resources configured to publish automatically, but that failed to finish successfully will have a next publication date in the past, and will be highlighted in the public and manage resource tables.
 
+If SMTP is configured in *IPT Settings → Email Notifications*, email notifications can be enabled by selecting "Email the IPT administrator if auto-publication fails".
+
 === Visibility
 The Visibility area of the Manage Resources page allows users having manager rights for the resource to change its visibility state. The visibility of a resource determines who will be able to view it, and whether the resource can be registered with GBIF. By default, each resource is visible only to the user who created it and any other users who have the Admin role on the IPT where the resource is created. For explanations of each visibility state refer to the information below.
 
@@ -781,6 +783,12 @@ WARNING: if it shows a different *owning organization*, the GBIF Registry must b
 
 . Copy the GBIF Registry UUID from the GBIF Dataset page URL, e.g `5d637678-cb64-4863-a12b-78b4e1a56628`.
 . Add this UUID to the list of the *IPT resource's* alternative identifiers on the Additional Metadata page. Don't forget to save the Additional Metadata page.
+.. Camtrap DP resources do not support alternative identifiers. Instead, add a new related identifier in the *Other Metadata* section, as shown below:
++
+image::ipt2/manage/IPTCamtrapRelatedIdentifier.png[]
++
+Be sure to use the correct link to the GBIF portal as a related identifier.
+
 . Ensure that no other public or registered resource in your IPT includes this UUID in their list of alternative identifiers. In cases where you are trying to replace a registered resource that already exists in your IPT, the other resource has to be deleted first.
 . On the resource overview page, click the register button. Similar to any other registration, you will have to confirm that you have read and understood the GBIF data sharing agreement before the registration will be executed.
 +

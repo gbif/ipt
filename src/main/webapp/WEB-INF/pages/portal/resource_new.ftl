@@ -517,7 +517,7 @@
                     </h4>
                     <div id="description-container" property="dc:abstract" class="mt-3 overflow-x-auto">
                         <#if (eml.description??)>
-                            <@eml.description?interpret />
+                            ${eml.description?no_esc}
                         <#else>
                             <p><@s.text name='portal.resource.no.description'/></p>
                         </#if>
@@ -686,7 +686,7 @@
 
                             <p property="dc:subject">
                                 <#if (eml.subject)??>
-                                    <@eml.subject?interpret />
+                                    ${eml.subject?no_esc}
                                 <#else>
                                     ${no_description}
                                 </#if>
@@ -751,7 +751,7 @@
 
                             <p property="dc:spatial">
                                 <#if (eml.geospatialCoverages[0].description)??>
-                                    <@eml.geospatialCoverages[0].description?interpret />
+                                    ${eml.geospatialCoverages[0].description?no_esc}
                                 <#else>
                                     ${no_description}
                                 </#if>
@@ -779,7 +779,7 @@
                             <#list organizedCoverages as item>
                                 <p>
                                     <#if (item.description)??>
-                                        <@item.description?interpret />
+                                        ${item.description?no_esc}
                                     <#else>
                                         ${no_description}
                                     </#if>
@@ -861,7 +861,7 @@
 
                             <p>
                                 <#if (eml.project.description)??>
-                                    <@eml.project.description?interpret />
+                                    ${eml.project.description?no_esc}
                                 <#else>
                                     ${no_description}
                                 </#if>
@@ -872,31 +872,31 @@
                                     <#if eml.project.title?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.title'/></th>
-                                            <td><@eml.project.title?interpret /></td>
+                                            <td>${eml.project.title?no_esc}</td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.identifier?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.identifier'/></th>
-                                            <td><@eml.project.identifier?interpret /></td>
+                                            <td>${eml.project.identifier?no_esc}</td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.funding?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.funding'/></th>
-                                            <td><@eml.project.funding?interpret /></td>
+                                            <td>${eml.project.funding?no_esc}</td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.studyAreaDescription.descriptorValue?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.studyAreaDescription.descriptorValue'/></th>
-                                            <td><@eml.project.studyAreaDescription.descriptorValue?interpret /></td>
+                                            <td>${eml.project.studyAreaDescription.descriptorValue?no_esc}</td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.designDescription?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.designDescription'/></th>
-                                            <td><@eml.project.designDescription?interpret /></td>
+                                            <td>${eml.project.designDescription?no_esc}</td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.awards?has_content>
@@ -955,7 +955,7 @@
 
                             <p class="overflow-x-auto">
                                 <#if (eml.sampleDescription)??>
-                                    <@eml.sampleDescription?interpret />
+                                    ${eml.sampleDescription?no_esc}
                                 <#else>
                                     ${no_description}
                                 </#if>
@@ -966,14 +966,14 @@
                                     <#if eml.studyExtent?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.studyExtent'/></th>
-                                            <td><@eml.studyExtent?interpret /></td>
+                                            <td>${eml.studyExtent?no_esc}</td>
                                         </tr>
                                     </#if>
 
                                     <#if eml.qualityControl?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.qualityControl'/></th>
-                                            <td><@eml.qualityControl?interpret /></td>
+                                            <td>${eml.qualityControl?no_esc}</td>
                                         </tr>
                                     </#if>
                                 </table>
@@ -987,7 +987,7 @@
                                     <#list eml.methodSteps as item>
                                         <#if (eml.methodSteps[item_index]?has_content)>
                                             <li>
-                                                <@eml.methodSteps[item_index]?interpret />
+                                                ${eml.methodSteps[item_index]?no_esc}
                                             </li>
                                         </#if>
                                     </#list>
@@ -1082,7 +1082,7 @@
                                 <#list eml.bibliographicCitationSet.bibliographicCitations as item>
                                     <#if item.citation?has_content>
                                         <li property="dc:references">
-                                            <@item.citation?interpret /> <@textWithFormattedLink item.identifier!/>
+                                            ${item.citation?no_esc} <@textWithFormattedLink item.identifier!/>
                                         </li>
                                     </#if>
                                 </#list>
@@ -1102,7 +1102,7 @@
 
                         <div>
                             <#if (eml.additionalInfo)?has_content>
-                                <p class="overflow-x-auto"><@eml.additionalInfo?interpret /></p>
+                                <p class="overflow-x-auto">${eml.additionalInfo?no_esc}</p>
                             </#if>
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
@@ -1141,7 +1141,7 @@
                                     <#if eml.updateFrequencyDescription?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.updateFrequencyDescription'/></th>
-                                            <td><@eml.updateFrequencyDescription?interpret /></td>
+                                            <td>${eml.updateFrequencyDescription?no_esc}</td>
                                         </tr>
                                     </#if>
                                     <#if (eml.alternateIdentifiers?size > 0)>
