@@ -80,7 +80,7 @@
                     <li>
                         <a class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" id="download-metadata-button"
                            href="${baseURL}/manage/eml.do?r=${resource.shortname}"
-                           onclick="_gaq.push(['_trackEvent', 'EML', 'Download', 'test-empty-organization']);"
+                           onclick="_trackEvent(['EML', 'Download', 'test-empty-organization']);"
                            download>
                             <@s.text name="button.download"/>
                         </a>

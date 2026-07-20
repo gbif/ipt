@@ -53,10 +53,22 @@ public interface ConfigManager {
   void saveConfig() throws InvalidConfigException;
 
   /**
-   * Simple wrapper around AppConfig to set the google analytics key for the IPT
+   * Simple wrapper around AppConfig to set the Google analytics key for the IPT
    * The modified AppConfig is not immediately persisted - remember to call save() at some point!
    */
-  void setAnalyticsKey(String key) throws InvalidConfigException;
+  void setGoogleAnalyticsKey(String key) throws InvalidConfigException;
+
+  /**
+   * Simple wrapper around AppConfig to set the Plausible analytics script URL for the IPT
+   * The modified AppConfig is not immediately persisted - remember to call save() at some point!
+   */
+  void setPlausibleAnalyticsScriptURL(String scriptURL) throws InvalidConfigException;
+
+  /**
+   * Simple wrapper around AppConfig to set the Plausible analytics endpoint URL for the IPT
+   * The modified AppConfig is not immediately persisted - remember to call save() at some point!
+   */
+  void setPlausibleAnalyticsEndpointURL(String endpointURL) throws InvalidConfigException;
 
   /**
    * Sets the base URL for the IPT installation.
