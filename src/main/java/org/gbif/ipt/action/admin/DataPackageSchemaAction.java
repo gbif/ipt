@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,8 +63,9 @@ public class DataPackageSchemaAction extends POSTAction {
   private List<DataPackageSchema> latestDataSchemasVersions;
   @Getter
   private List<DataPackageSchema> schemas;
+  @Setter
   @Getter
-  private List<DataPackageSchema> newSchemas;
+  private List<DataPackageSchema> allAvailableSchemas;
   @Setter
   private String schemaName;
   @Getter
@@ -175,13 +178,6 @@ public class DataPackageSchemaAction extends POSTAction {
     // also update isUpdatable field
     updateComputableFields(schemas);
 
-    // populate the list of uninstalled data schemas, removing data schemas installed already, showing only the latest versions
-    newSchemas = getLatestDataSchemasVersions();
-    List<String> installedSchemasIdentifiers = schemas.stream()
-        .map(DataPackageSchema::getIdentifier)
-        .toList();
-    newSchemas.removeIf(ds -> installedSchemasIdentifiers.contains(ds.getIdentifier()));
-
     return SUCCESS;
   }
 
@@ -211,7 +207,7 @@ public class DataPackageSchemaAction extends POSTAction {
     super.prepare();
 
     // load the latest data schema versions from Registry
-    loadLatestDataSchemasVersions();
+    loadAllDataSchemasVersions();
 
     if (id != null) {
       dataPackageSchema = schemaManager.get(id);
@@ -219,17 +215,19 @@ public class DataPackageSchemaAction extends POSTAction {
     }
   }
 
-  /**
-   * Reload the list of registered data schemas, loading only the latest data schema versions.
-   */
-  private void loadLatestDataSchemasVersions() {
+  private void loadAllDataSchemasVersions() {
     try {
-      // list of all registered data schemas
-      List<DataPackageSchema> all = registryManager.getLatestDataPackageSchemas();
-      if (!all.isEmpty()) {
-        // list of latest data schema versions
-        setLatestDataSchemasVersions(getLatestVersions(all));
-      }
+      List<DataPackageSchema> all = registryManager.getAllDataPackageSchemas();
+
+      Set<String> installedKeys = schemaManager.list().stream()
+          .map(s -> s.getIdentifier() + "@" + s.getVersion())
+          .collect(Collectors.toSet());
+
+      List<DataPackageSchema> notInstalled = all.stream()
+          .filter(s -> !installedKeys.contains(s.getIdentifier() + "@" + s.getVersion()))
+          .collect(Collectors.toList());
+
+      setAllAvailableSchemas(notInstalled);
     } catch (RegistryException e) {
       // add startup error message that explains why the Registry error occurred
       String msg = RegistryException.logRegistryException(e, this);
@@ -242,8 +240,8 @@ public class DataPackageSchemaAction extends POSTAction {
       LOG.error(msg);
     } finally {
       // initialize list as empty list if the list could not be populated
-      if (getLatestDataSchemasVersions() == null) {
-        setLatestDataSchemasVersions(new ArrayList<>());
+      if (getAllAvailableSchemas() == null) {
+        setAllAvailableSchemas(new ArrayList<>());
       }
     }
   }

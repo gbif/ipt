@@ -415,6 +415,15 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   @Override
+  public List<DataPackageSchema> getAllDataPackageSchemas() throws RegistryException {
+    Map<String, List<DataPackageSchema>> jSONDataSchemas = gson
+      .fromJson(requestHttpGetFromRegistry(getAllDataSchemasURL()).getContent(),
+        new TypeToken<Map<String, List<DataPackageSchema>>>() {
+        }.getType());
+    return (jSONDataSchemas.get("dataPackages") == null) ? new ArrayList<>() : jSONDataSchemas.get("dataPackages");
+  }
+
+  @Override
   public List<DataPackageSchema> getLatestDataPackageSchemas() throws RegistryException {
     Map<String, List<DataPackageSchema>> jSONDataSchemas = gson
         .fromJson(requestHttpGetFromRegistry(getDataSchemasURL()).getContent(),
@@ -472,6 +481,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   private String getExtensionsURL(boolean json) {
     return String.format("%s%s%s", cfg.getRegistryUrl(), "/registry/extensions", json ? ".json" : "/");
+  }
+
+  // TODO: replace with cfg.getRegistryUrl()
+  private String getAllDataSchemasURL() {
+    return "http://localhost:8090/registry/dataPackages/versions.json";
   }
 
   /**

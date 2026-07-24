@@ -57,8 +57,19 @@ public interface RegistryManager {
 
   /**
    * Gets a list of all registered data package schemas from the Registry.
+   * Could be multiple versions of the same schema.
    *
-   * @return list of data package schemas, or an empty list if none were retrieved from valid response
+   * @return list of data package schemas, or an empty list if none were retrieved from a valid response
+   *
+   * @throws RegistryException if the list of data package schemas couldn't be populated
+   */
+  List<DataPackageSchema> getAllDataPackageSchemas() throws RegistryException;
+
+  /**
+   * Gets a list of all latest registered data package schemas from the Registry.
+   * Only the latest version of each schema is returned.
+   *
+   * @return list of data package schemas, or an empty list if none were retrieved from a valid response
    *
    * @throws RegistryException if the list of data package schemas couldn't be populated
    */
