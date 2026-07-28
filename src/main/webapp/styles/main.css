@@ -2966,3 +2966,24 @@ span.contact-citation-banner {
 @keyframes dt-loader-1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
 @keyframes dt-loader-2 { 0% { transform: translateX(0); } 100% { transform: translateX(12px); } }
 @keyframes dt-loader-3 { 0% { transform: scale(1); } 100% { transform: scale(0); } }
+
+/* Data package schema status pills */
+.schema-status {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-right: 4px;
+}
+.schema-status-installed {
+    background: #e6f4ea;
+    color: #1e7e34;
+}
+.schema-status-update {
+    background: #fff3cd;
+    color: #856404;
+}
+.schema-status-not-installed {
+    background: #f1f1f1;
+    color: #767676;
+}

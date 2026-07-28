@@ -3,7 +3,7 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
     <#macro installedSchemaItem ds>
-        <div class="d-flex flex-column col-lg-4 col-md-6 col-sm-6 col-12 px-2">
+        <div class="d-flex flex-column col-lg-6 col-12 px-2">
             <div class="data-package-schema-item border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
                 <div class="d-flex flex-justify-between px-4 pt-4 pb-0">
                     <div class="me-2">
@@ -15,7 +15,19 @@
                         </p>
                     </div>
                     <div class="fs-smaller pt-1">
-                        v${ds.version!}
+                        <span class="schema-status schema-status-installed">
+                            v${ds.version!}
+                        </span>
+
+                        <#if ds.latest>
+                            <span class="schema-status schema-status-installed">
+                                <@s.text name="admin.dataPackages.dataPackage.latest"/>
+                            </span>
+                        <#else>
+                            <span class="schema-status schema-status-update">
+                                <@s.text name="admin.dataPackages.dataPackage.updateAvailable"/>
+                            </span>
+                        </#if>
                     </div>
                 </div>
                 <div class="d-flex flex-column flex-auto flex-justify-between">
