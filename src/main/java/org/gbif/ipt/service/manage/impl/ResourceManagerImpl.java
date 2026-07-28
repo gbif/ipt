@@ -821,8 +821,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
+    String schemaVersion = schemaManager.getVersion(schemaIdentifier);
     if (schemaIdentifier != null) {
       res.setDataPackageIdentifier(schemaIdentifier);
+      res.setDataPackageVersion(schemaVersion);
     }
 
     res.setCoreType(type);
@@ -2469,8 +2471,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         for (Source src : resource.getSources()) {
           src.setResource(resource);
           src.setProcessing(false);
-          if (src instanceof FileSource) {
-            FileSource frSrc = (FileSource) src;
+          if (src instanceof FileSource frSrc) {
             frSrc.setFile(dataDir.sourceFile(resource, frSrc));
           }
         }
@@ -2501,7 +2502,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           resource.addVersionHistory(history);
         }
 
-        if (resource.getDataPackageIdentifier() == null) {
+        if (!resource.isDataPackage()) {
           // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
           if (resource.getLastPublishedVersionsVersion() != null) {
             renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
@@ -2512,7 +2513,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
 
         // clean up data package mappings (remove dangling field mappings)
-        cleanUpDataPackageMappings(resource);
+        // backfill data package version if not set
+        if (resource.isDataPackage()) {
+          cleanUpDataPackageMappings(resource);
+          backfillDataPackageVersion(resource);
+        }
 
         LOG.debug("Read resource configuration for {}", shortname);
         return resource;
@@ -2537,6 +2542,27 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void cleanUpDataPackageMappings(Resource resource) {
     for (DataPackageMapping dpm : resource.getDataPackageMappings()) {
       dpm.getFields().removeIf(f -> onlyFieldIndexPresent(f) || emptyMapping(f));
+    }
+  }
+
+  /**
+   * Backfill the data package version if not set.
+   *
+   * @param resource resource
+   */
+  private void backfillDataPackageVersion(Resource resource) {
+    if (resource.getDataPackageVersion() == null) {
+      String identifier = resource.getDataPackageIdentifier();
+      String installedVersion = schemaManager.getVersion(identifier);
+      if (installedVersion != null) {
+        resource.setDataPackageVersion(installedVersion);
+        save(resource);
+        LOG.warn("Backfilled dataPackageVersion={} for resource {} (schema {})",
+            installedVersion, resource.getShortname(), identifier);
+      } else {
+        LOG.error("Could not backfill dataPackageVersion for resource {}: schema {} not installed",
+            resource.getShortname(), identifier);
+      }
     }
   }
 

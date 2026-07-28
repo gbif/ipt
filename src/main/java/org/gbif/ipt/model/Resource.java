@@ -64,6 +64,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.DWC_DP;
@@ -173,7 +174,11 @@ public class Resource implements Serializable, Comparable<Resource> {
   @Getter
   private List<ExtensionMapping> mappings = new ArrayList<>();
   private List<DataPackageMapping> dataPackageMappings = new ArrayList<>();
+  @Setter
   private String dataPackageIdentifier;
+  @Getter
+  @Setter
+  private String dataPackageVersion;
 
   // the change summary, explaining what has changed in this version compared with the last
   @Getter
@@ -454,10 +459,6 @@ public class Resource implements Serializable, Comparable<Resource> {
   @Nullable
   public String getDataPackageIdentifier() {
     return dataPackageIdentifier;
-  }
-
-  public void setDataPackageIdentifier(String dataPackageIdentifier) {
-    this.dataPackageIdentifier = dataPackageIdentifier;
   }
 
   /**
