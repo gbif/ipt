@@ -227,6 +227,16 @@
                 <@s.text name='manage.overview.mappings.description'/>
             </p>
 
+            <#if !dataPackageMappingsMissing && dataPackageSchemaChanged>
+                <p class="text-gbif-danger">
+                    <@s.text name='manage.overview.mappings.schemaChanged'>
+                        <@s.param><b>${installedSchemaName!"?"}</b></@s.param>
+                        <@s.param><b>v${resource.dataPackageVersion!"?"}</b></@s.param>
+                        <@s.param><b>v${installedSchemaVersion!"?"}</b></@s.param>
+                    </@s.text>
+                </p>
+            </#if>
+
             <#if resource.dataPackageIdentifier?has_content>
                 <#if resource.dataPackageIdentifier?contains("dwc-dp")>
                     <#assign eventMappings =

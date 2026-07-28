@@ -42,6 +42,13 @@ public interface DataPackageSchemaManager {
   DataPackageSchema get(String identifier);
 
   /**
+   * Get a locally installed data schema's version by its identifier or name.
+   *
+   * @return version of the schema by identifier/name or null if not installed
+   */
+  String getVersion(String identifier);
+
+  /**
    * Get locally installed data schema's raw data by its identifier or name.
    *
    * @return data schema for that identifier/name or null if not installed

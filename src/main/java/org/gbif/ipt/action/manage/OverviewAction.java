@@ -27,6 +27,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.KeyNamePair;
@@ -210,6 +211,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private long usableSpace;
   @Getter
   private String freeDiscSpaceReadable;
+  @Getter
+  private boolean dataPackageSchemaChanged;
+  @Getter
+  private String installedSchemaVersion;
+  @Getter
+  private String installedSchemaName;
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
@@ -1232,6 +1239,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           if (potentialCores.isEmpty()) {
             addActionError(getText("manage.overview.no.DwC.extensions"));
           }
+        }
+      }
+
+      if (isDataPackageResource()) {
+        DataPackageSchema dataPackageSchema = schemaManager.get(resource.getDataPackageIdentifier());
+        if (dataPackageSchema != null && !Objects.equals(dataPackageSchema.getVersion(), resource.getDataPackageVersion())) {
+          dataPackageSchemaChanged = true;
+          installedSchemaName = dataPackageSchema.getName();
+          installedSchemaVersion = dataPackageSchema.getVersion();
         }
       }
 

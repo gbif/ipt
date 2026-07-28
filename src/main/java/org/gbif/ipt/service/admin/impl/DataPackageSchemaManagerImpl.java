@@ -168,6 +168,25 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
         .orElse(null);
   }
 
+  @Override
+  public String getVersion(String identifier) {
+    if (identifier == null) {
+      return null;
+    }
+
+    // load data packages if empty
+    if (dataPackageSchemas.isEmpty()) {
+      load();
+    }
+
+    return Optional.ofNullable(dataPackageSchemasByIdentifiers.get(identifier))
+        .or(() -> getWithoutProtocol(identifier))
+        .or(() -> getByAlternativeIdentifiers(identifier))
+        .or(() -> getByName(identifier))
+        .map(DataPackageSchema::getVersion)
+        .orElse(null);
+  }
+
   private Optional<DataPackageSchema> getWithoutProtocol(String identifier) {
     return dataPackageSchemasByIdentifiers.entrySet().stream()
         .filter(e -> org.gbif.ipt.utils.StringUtils.equalsWithoutProtocol(e.getKey(), identifier))

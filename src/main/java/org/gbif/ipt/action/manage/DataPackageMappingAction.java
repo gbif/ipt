@@ -117,6 +117,9 @@ public class DataPackageMappingAction extends ManagerBaseAction {
           .reduce(0, Integer::sum);
       mapping.setFieldsMapped(fieldsMapped);
     }
+    // update schema version
+    resource.setDataPackageVersion(dataPackageSchema.getVersion());
+
     // update last modified dates
     Date lastModified = new Date();
     mapping.setLastModified(lastModified);

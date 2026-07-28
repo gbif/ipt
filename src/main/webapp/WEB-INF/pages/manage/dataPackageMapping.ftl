@@ -388,7 +388,6 @@
 
                     <div class="text-center">
                         <h1 class="pt-2 text-gbif-header fs-2 fw-400 text-center">
-<#--                            <@popoverPropertyInfo "manage.mapping.intro"/>-->
                             <@s.text name='manage.mapping.title'/>
                         </h1>
 
@@ -428,6 +427,16 @@
                                 <@s.param><a href="${baseURL}/admin/dataPackage.do?id=${mapping.dataPackageSchema.identifier!}#anchor-${(mapping.dataPackageTableSchemaName.name)!}" target="_blank">${(mapping.dataPackageSchema.name)!}/${(mapping.dataPackageTableSchemaName.name)!}</a></@s.param>
                             </@s.text>
                         </p>
+
+                        <#if dataPackageSchema.version != resource.dataPackageVersion>
+                        <p class="text-smaller text-gbif-danger">
+                            <@s.text name='manage.overview.mappings.schemaChanged'>
+                                <@s.param><b>${dataPackageSchema.name}</b></@s.param>
+                                <@s.param><b>v${resource.dataPackageVersion!"unknown"}</b></@s.param>
+                                <@s.param><b>v${dataPackageSchema.version}</b></@s.param>
+                            </@s.text>
+                        </p>
+                        </#if>
                     </div>
                 </div>
             </div>
