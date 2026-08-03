@@ -13,6 +13,10 @@
  */
 package org.gbif.ipt.task;
 
+import org.gbif.datapackage.DataPackage;
+import org.gbif.datapackage.DataPackageConstants;
+import org.gbif.datapackage.DataPackageForeignKey;
+import org.gbif.datapackage.DataPackageResource;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
@@ -67,17 +71,6 @@ import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
-import io.frictionlessdata.datapackage.exceptions.DataPackageValidationException;
-import io.frictionlessdata.datapackage.resource.FilebasedResource;
-import io.frictionlessdata.datapackage.JSONBase;
-import io.frictionlessdata.datapackage.Package;
-import io.frictionlessdata.datapackage.Profile;
-import io.frictionlessdata.tableschema.exception.ForeignKeyException;
-import io.frictionlessdata.tableschema.exception.PrimaryKeyException;
-import io.frictionlessdata.tableschema.exception.ValidationException;
-import io.frictionlessdata.tableschema.field.Field;
-import io.frictionlessdata.tableschema.fk.ForeignKey;
-import io.frictionlessdata.tableschema.schema.Schema;
 import org.xml.sax.SAXException;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -101,7 +94,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private STATE state = STATE.WAITING;
   private Exception exception;
   private File dataPackageFolder;
-  private Package dataPackage;
+  private DataPackage dataPackage;
   private int currRecords = 0;
   private int currRecordsSkipped = 0;
   private String currSchema;
@@ -232,18 +225,18 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     File zip = null;
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
+      // TODO: primary keys check was here
       // check keys first
-      checkRelationsAndPrimaryKeys();
+//      checkRelationsAndPrimaryKeys();
 
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
       if (resource.isDwcDp()) {
-        checkRelationsAndPrimaryKeys();
-        dataPackage.write(zip, this::writeEMLMetadata, true);
+        dataPackage.write(zip, dataPackageFolder, this::writeEMLMetadata);
       } else if (COL_DP.equals(resource.getCoreType())) {
-        dataPackage.write(zip, this::writeCustomColDPMetadata, true);
+        dataPackage.write(zip, dataPackageFolder, this::writeCustomColDPMetadata);
       } else {
-        dataPackage.write(zip, true);
+        dataPackage.write(zip, dataPackageFolder);
       }
 
       if (zip.exists()) {
@@ -258,8 +251,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       }
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while bundling data package", e);
-    } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
-      throw new GeneratorException(e.getMessage());
+      // TODO: does not throw those exceptions anymore
+//    } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
+//      throw new GeneratorException(e.getMessage());
     } finally {
       // cleanup zip directory, if compression was incomplete, for example, due to Exception
       // if moving zip to data dir was successful, it won't exist any more and cleanup will be skipped
@@ -511,36 +505,32 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     // create resource from file
-    @SuppressWarnings({"rawtypes"})
-    io.frictionlessdata.datapackage.resource.Resource packageResource =
-        new FilebasedResource(
-            tableSchema.getName(),
-            Collections.singleton(new File(fn)),
-            dataPackageFolder);
-    packageResource.setProfile(Profile.PROFILE_TABULAR_DATA_RESOURCE);
-    packageResource.setFormat(io.frictionlessdata.datapackage.resource.Resource.FORMAT_CSV);
+    DataPackageResource packageResource = DataPackageResource.fromFile(tableSchema.getName(), fn);
+    packageResource.setProfile(DataPackageConstants.PROFILE_TABULAR_DATA_RESOURCE);
+    packageResource.setFormat(DataPackageConstants.FORMAT_CSV);
     if (tableSchema.getUrl() != null) {
-      ((JSONBase) packageResource).getOriginalReferences().put(JSONBase.JSON_KEY_SCHEMA, tableSchema.getUrl().toString());
+      packageResource.setSchemaUrl(tableSchema.getUrl().toString());
     }
 
     try {
-      Schema schema = Schema.fromJson(tableSchema.getUrl(), true);
+      org.gbif.datapackage.DataPackageTableSchema schema
+          = org.gbif.datapackage.DataPackageTableSchema.fromUrl(tableSchema.getUrl());
 
       // for example, for DwC DP add only mapped fields, not all the schema
       if (filterMapped) {
         schema.getFields().removeIf(f -> isUnusedField(f, mappedFieldNames));
         schema.getForeignKeys().removeIf(f -> isUnusedForeignKey(f, mappedFieldNames));
-        packageResource.setShouldSerializeSchemaToFile(false);
-        packageResource.setShouldSerializeFullSchema(true);
+        packageResource.setInlineSchema(true);
       }
 
-      packageResource.setSchema(schema);
-    } catch (ValidationException e) {
-      log.error("Failed to validate schema {}. Errors: {}", tableSchema.getName(), e.getMessages(), e);
-      addMessage(Level.ERROR, "Failed to validate schema " + tableSchema.getName());
-      // set the last error report!
-      setState(e);
-      throw new GeneratorException("Validation error while adding schema file", e);
+      packageResource.setTableSchema(schema);
+      // TODO: validate schema?
+//    } catch (ValidationException e) {
+//      log.error("Failed to validate schema {}. Errors: {}", tableSchema.getName(), e.getMessages(), e);
+//      addMessage(Level.ERROR, "Failed to validate schema " + tableSchema.getName());
+//      // set the last error report!
+//      setState(e);
+//      throw new GeneratorException("Validation error while adding schema file", e);
     } catch (Exception e) {
       log.error("Fatal Package Generator Error encountered while adding schema data {}", tableSchema.getIdentifier(), e);
       addMessage(Level.ERROR, "Error while adding schema data " + tableSchema.getIdentifier());
@@ -551,10 +541,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
     // add resource to package
     if (dataPackage == null) {
-      dataPackage = new Package(Collections.singleton(packageResource));
-    } else {
-      dataPackage.addResource(packageResource);
+      dataPackage = new DataPackage();
     }
+    dataPackage.addResource(packageResource);
 
     // final reporting
     addMessage(Level.INFO, "Data Resource " + currTableSchema + " created with " + currRecords + " records and "
@@ -785,7 +774,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Generates a single comma delimited row from the list of values of the provided array.
+   * Generates a single comma-delimited row from the list of values of the provided array.
    * </br>
    * Note all line breaking characters in the value get replaced with an empty string before its added to the row.
    * </br>
@@ -793,7 +782,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    *
    * @param columns the array of values from the source
    *
-   * @return the comma delimited String, {@code null} if provided array only contained null values
+   * @return the comma-delimited String, {@code null} if provided array only contained null values
    */
   protected String commaRow(String[] columns) {
     Objects.requireNonNull(columns);
@@ -893,7 +882,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       String type = resource.getCoreType();
 
       if (CAMTRAP_DP.equals(type)) {
-        addCamtrapMetadata();
+        addDataPackageMetadata();
       } else if (COL_DP.equals(type)) {
         addColMetadata();
       } else if (DWC_DP.equals(type)) {
@@ -930,17 +919,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     colMetadata.getAdditionalProperties().forEach((key, value) -> dataPackage.setProperty(key, value));
   }
 
-  private void addCamtrapMetadata() throws Exception {
-    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-
-    dataPackage = new Package(metadataFile.toPath(), false);
-    setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
-  }
-
   private void addDataPackageMetadata() throws Exception {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-
-    dataPackage = new Package(metadataFile.toPath(), false);
+    dataPackage = DataPackage.load(metadataFile);
     setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
   }
 
@@ -989,37 +970,19 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
   }
 
-  private boolean isUnusedField(Field field, Set<String> mappedFieldNames) {
+  private boolean isUnusedField(org.gbif.datapackage.DataPackageField field, Set<String> mappedFieldNames) {
     return !mappedFieldNames.contains(field.getName());
   }
 
-  private boolean isUnusedForeignKey(ForeignKey fk, Set<String> mappedFieldNames) {
+  private boolean isUnusedForeignKey(DataPackageForeignKey fk, Set<String> mappedFieldNames) {
     boolean result;
 
-    if (!fk.getFieldNames().isEmpty()) {
-      result = !mappedFieldNames.contains(fk.getFieldNames().get(0));
+    if (!fk.getFields().isEmpty()) {
+      result = !mappedFieldNames.contains(fk.getFields().get(0));
     } else {
       result = true;
     }
 
     return result;
-  }
-
-  private void checkRelationsAndPrimaryKeys() throws Exception {
-    boolean isFkValidationEnabled = cfg.isDatapackageForeignKeysValidationEnabled();
-    Set<String> foreignKeyValidationErrors = new HashSet<>();
-    for (io.frictionlessdata.datapackage.resource.Resource dataPackageResource : dataPackage.getResources()) {
-      if (isFkValidationEnabled) {
-        foreignKeyValidationErrors.addAll(dataPackageResource.checkRelationsV2(dataPackage));
-      }
-//      dataPackageResource.checkPrimaryKeys();
-    }
-
-    if (!foreignKeyValidationErrors.isEmpty()) {
-      for (String fkve : foreignKeyValidationErrors) {
-        addMessage(Level.ERROR, fkve);
-      }
-      throw new ValidationException("Failed to validate primary and/or foreign keys. See report for more details.");
-    }
   }
 }
