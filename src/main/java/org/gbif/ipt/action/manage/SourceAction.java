@@ -213,6 +213,11 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
 
           // import each file from the archive
           for (File f : files) {
+            if (isXmlFile(f)) {
+              LOG.debug("Skipping XML file {}", f.getName());
+              continue;
+            }
+
             String created = addDataFileAndReturnSourceName(f, f.getName());
             if (created != null) {
               createdSourceNames.add(created);
@@ -298,6 +303,10 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
           || lower.endsWith(".rar");
     }
     return false;
+  }
+
+  private boolean isXmlFile(File f) {
+    return f.getName().toLowerCase().endsWith(".xml");
   }
 
   private String addDataFileAndReturnSourceName(File f, String filename) throws InvalidFilenameException {
