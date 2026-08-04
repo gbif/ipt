@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import org.apache.tika.Tika;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
@@ -63,6 +64,8 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   private static final long serialVersionUID = 3324051864626106131L;
 
   private static final Logger LOG = LogManager.getLogger(SourceAction.class);
+
+  private static final Tika TIKA = new Tika();
 
   private SourceManager sourceManager;
   private JdbcSupport jdbcSupport;
@@ -197,7 +200,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
 
       // uploaded a new file. Is it compressed?
       // application/zip, application/x-gzip
-      if (Strings.CS.endsWithAny(contentType.toLowerCase(), "zip", "gzip", "compressed")) {
+      if (isCompressed(content, contentType, originalName)) {
         try {
           File tmpDir = dataDir.tmpDir();
           // override auto-generated name
@@ -270,6 +273,31 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     }
 
     return SUCCESS;
+  }
+
+  private boolean isCompressed(File content, String contentType, String originalName) {
+    boolean compressed;
+    try {
+      String realType = TIKA.detect(content);
+      compressed = realType.contains("zip") || realType.contains("gzip") || realType.contains("tar");
+    } catch (IOException e) {
+      LOG.error("Failed to detect content type of file {}, inferring it from an extension.", content.getName(), e);
+      compressed = looksCompressed(contentType, originalName);
+    }
+    return compressed;
+  }
+
+  private boolean looksCompressed(String contentType, String originalName) {
+    if (Strings.CS.endsWithAny(contentType, "zip", "gzip", "compressed", "x-tar", "x-7z-compressed")) {
+      return true;
+    }
+    if (originalName != null) {
+      String lower = originalName.toLowerCase();
+      return lower.endsWith(".zip") || lower.endsWith(".gz") || lower.endsWith(".tgz")
+          || lower.endsWith(".tar") || lower.endsWith(".tar.gz") || lower.endsWith(".7z")
+          || lower.endsWith(".rar");
+    }
+    return false;
   }
 
   private String addDataFileAndReturnSourceName(File f, String filename) throws InvalidFilenameException {
