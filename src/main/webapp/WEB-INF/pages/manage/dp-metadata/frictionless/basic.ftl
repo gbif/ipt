@@ -296,7 +296,7 @@
                         <div class="my-md-3 p-3">
                             <div class="row g-3">
                                 <div class="col-12">
-                                    <@input name="metadata.title" help="i18n" i18nkey="datapackagemetadata.title" requiredField=true/>
+                                    <@input name="metadata.title" value=metadata.title! help="i18n" i18nkey="datapackagemetadata.title" requiredField=true/>
                                 </div>
 
                                 <div class="col-12">
@@ -304,11 +304,11 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.homepage" help="i18n" i18nkey="datapackagemetadata.homepage" type="url" />
+                                    <@input name="metadata.homepage" value=metadata.homepage! help="i18n" i18nkey="datapackagemetadata.homepage" type="url" />
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="metadata.image" help="i18n" i18nkey="datapackagemetadata.image" type="url" />
+                                    <@input name="metadata.image" value=metadata.image! help="i18n" i18nkey="datapackagemetadata.image" type="url" />
                                 </div>
                             </div>
                         </div>
@@ -336,19 +336,19 @@
                                                 </a>
                                             </div>
                                             <div>
-                                                <@input name="metadata.contributors[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
+                                                <@input name="metadata.contributors[${item_index}].title" value=item.title! help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.contributor.path" />
+                                                <@input name="metadata.contributors[${item_index}].path" value=item.path! help="i18n" i18nkey="datapackagemetadata.contributor.path" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].email" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
+                                                <@input name="metadata.contributors[${item_index}].email" value=item.email! help="i18n" i18nkey="datapackagemetadata.contributor.email" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].role" help="i18n" i18nkey="datapackagemetadata.contributor.role" />
+                                                <@input name="metadata.contributors[${item_index}].role" value=item.role! help="i18n" i18nkey="datapackagemetadata.contributor.role" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].organization" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
+                                                <@input name="metadata.contributors[${item_index}].organization" value=item.organization! help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
                                             </div>
                                         </div>
                                     </#list>
