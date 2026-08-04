@@ -74,7 +74,11 @@ If the user requires a change of email address, the recommended procedure is to 
 --
 * *First name* - The first name of the user.
 * *Last name* - The last name of the user.
-* *Role* - The role the user will have with respect to this installation of the IPT. Admin users can make changes to all aspects of the instance of the IPT. Users having the role "Manager without registration rights" are able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Users having the role "Manager with registration rights" have the additional capability to register resources with the GBIF network. Other users can log in to the IPT and view resources, but cannot make any changes.
+* *Role* - The role the user will have with respect to this installation of the IPT.
+** *Admin* - Can make changes to all aspects of the instance of the IPT.
+** *Manager without registration rights* - Able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Note, users with this role cannot register resources with GBIF. Moreover, if a resource already has a reserved or registered DOI, or is already registered with GBIF, they cannot publish it.
+** *Manager with registration rights* - Has the additional capability to register resources with the GBIF network.
+** *Other users* - Can log in to the IPT and view resources, but cannot make any changes.
 * *Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.
 +
 --
