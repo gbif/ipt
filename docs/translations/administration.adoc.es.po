@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-08-04 09:42+0000\n"
-"PO-Revision-Date: 2026-08-05 15:13\n"
+"PO-Revision-Date: 2026-08-05 16:18\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -301,13 +301,13 @@ msgstr "*Gestor sin derechos de registro*: puede crear, editar, eliminar y gesti
 #: en/modules/ROOT/pages/administration.adoc:81
 #, no-wrap
 msgid "*Manager with registration rights* - Has the additional capability to register resources with the GBIF network.\n"
-msgstr ""
+msgstr "*Gestor con derechos de registro* – Cuenta con la capacidad adicional de registrar recursos en la red de GBIF.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:82
 #, no-wrap
 msgid "*Other users* - Can log in to the IPT and view resources, but cannot make any changes.\n"
-msgstr ""
+msgstr "*Otros usuarios* - Pueden iniciar sesión en el IPT y ver recursos, pero no pueden realizar cambios.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:83
