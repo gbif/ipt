@@ -106,6 +106,8 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDarwinCoreDataPackage;
+import org.gbif.ipt.task.GenerateDarwinCoreDataPackageFactory;
 import org.gbif.ipt.task.GenerateDataPackage;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
@@ -214,7 +216,6 @@ import lombok.Getter;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP_OBSERVATIONS;
 import static org.gbif.ipt.config.Constants.COL_DP;
-import static org.gbif.ipt.config.Constants.DWC_DP;
 import static org.gbif.ipt.config.Constants.EML_2_1_1_SCHEMA;
 import static org.gbif.ipt.config.Constants.EML_2_2_0_SCHEMA;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
@@ -242,6 +243,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Getter
   private GenerateDwcaFactory dwcaFactory;
   private GenerateDataPackageFactory dataPackageFactory;
+  private GenerateDarwinCoreDataPackageFactory dwcDpFactory;
   private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
   private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
   private Map<String, LocalDate> lastLoggedFailures = new ConcurrentHashMap<>();
@@ -262,7 +264,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, ResourceConvertersManager resourceConvertersManager,
                              SourceManager sourceManager, ExtensionManager extensionManager,
                              DataPackageSchemaManager schemaManager, RegistryManager registryManager,
-                             GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory,
+                             GenerateDwcaFactory dwcaFactory, GenerateDataPackageFactory dataPackageFactory, GenerateDarwinCoreDataPackageFactory dwcDpFactory,
                              PasswordEncrypter passwordEncrypter, Eml2Rtf eml2Rtf, VocabulariesManager vocabManager,
                              SimpleTextProvider textProvider, RegistrationManager registrationManager,
                              MetadataReader metadataReader, ResourceMetadataInferringService resourceMetadataInferringService) {
@@ -273,6 +275,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     this.registryManager = registryManager;
     this.dwcaFactory = dwcaFactory;
     this.dataPackageFactory = dataPackageFactory;
+    this.dwcDpFactory = dwcDpFactory;
     this.eml2Rtf = eml2Rtf;
     this.vocabManager = vocabManager;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
@@ -1334,7 +1337,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   // Generic method for DwC-A and data packages
   private void generateArchive(Resource resource) {
-    if (resource.isDataPackage()) {
+    if (resource.isDwcDp()) {
+      generateDwcDP(resource);
+    } else if (resource.isDataPackage()) {
       generateDataPackage(resource);
     } else {
       generateDwca(resource);
@@ -1359,6 +1364,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private void generateDataPackage(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDataPackage worker = dataPackageFactory.create(resource, this);
+    Future<Map<String, Integer>> f = executor.submit(worker);
+    processFutures.put(resource.getShortname(), f);
+    // make sure we have at least a first report for this resource
+    worker.report();
+  }
+
+  /**
+   * @see #isLocked(String, BaseAction) for removing jobs from internal maps
+   */
+  private void generateDwcDP(Resource resource) {
+    // use threads to run in the background as sql sources might take a long time
+    GenerateDarwinCoreDataPackage worker = dwcDpFactory.create(resource, this);
     Future<Map<String, Integer>> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
     // make sure we have at least a first report for this resource
@@ -1702,7 +1719,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
             // update StatusReport on publishing page
             if (cause != null) {
-              StatusReport updated = new StatusReport(new Exception(cause), msg, getTaskMessages(shortname));
+              // TODO: add copy constructor?
+              StatusReport previous = processReports.get(shortname);
+              StatusReport updated = new StatusReport(cause, msg, previous.getStep(), getTaskMessages(shortname));
               processReports.put(shortname, updated);
             }
 

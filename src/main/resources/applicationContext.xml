@@ -178,6 +178,13 @@
     <constructor-arg ref="metadataReader" />
   </bean>
 
+  <bean id="dwcDpFactory" class="org.gbif.ipt.task.GenerateDarwinCoreDataPackageFactoryImpl">
+    <constructor-arg ref="dataDir" />
+    <constructor-arg ref="sourceManager" />
+    <constructor-arg ref="appConfig" />
+    <constructor-arg ref="metadataReader" />
+  </bean>
+
   <bean id="userAccountManager" class="org.gbif.ipt.service.admin.impl.UserAccountManagerImpl">
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="dataDir"/>
@@ -201,6 +208,7 @@
     <constructor-arg ref="registryManager"/>
     <constructor-arg ref="dwcaFactory"/>
     <constructor-arg ref="dataPackageFactory"/>
+    <constructor-arg ref="dwcDpFactory"/>
     <constructor-arg ref="passwordEncrypter"/>
     <constructor-arg ref="eml2Rtf"/>
     <constructor-arg ref="vocabulariesManager"/>

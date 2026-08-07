@@ -30,6 +30,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDarwinCoreDataPackageFactory;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
@@ -70,6 +71,7 @@ public class AutoPublishedTest extends IptBaseTest {
       mock(RegistryManager.class),
       mock(GenerateDwcaFactory.class),
       mock(GenerateDataPackageFactory.class),
+      mock(GenerateDarwinCoreDataPackageFactory.class),
       mock(PasswordEncrypter.class),
       mock(Eml2Rtf.class),
       mock(VocabulariesManager.class),

@@ -62,6 +62,7 @@ import org.gbif.ipt.service.manage.impl.ResourceManagerImplTest;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDarwinCoreDataPackageFactory;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
@@ -306,6 +307,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mockRegistryManager,
         mockDwcaFactory,
         mock(GenerateDataPackageFactory.class),
+        mock(GenerateDarwinCoreDataPackageFactory.class),
         passwordEncrypter,
         mockEml2Rtf,
         mockVocabulariesManager,

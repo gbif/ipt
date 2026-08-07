@@ -328,6 +328,7 @@ public class GenerateDwcaIT extends IptBaseTest {
             mockRegistryManager,
             mockDwcaFactory,
             mock(GenerateDataPackageFactory.class),
+            mock(GenerateDarwinCoreDataPackageFactory.class),
             passwordEncrypter,
             mockEml2Rtf,
             mockVocabulariesManager,

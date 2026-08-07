@@ -73,6 +73,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
+import org.gbif.ipt.task.GenerateDarwinCoreDataPackageFactory;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.utils.DOIUtils;
@@ -274,6 +275,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
         mockRegistryManager,
         mockDwcaFactory,
         mock(GenerateDataPackageFactory.class),
+        mock(GenerateDarwinCoreDataPackageFactory.class),
         passwordEncrypter,
         mockEml2Rtf,
         mockVocabulariesManager,
@@ -1089,6 +1091,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
         mockRegistryManager,
         mockDwcaFactory,
         mock(GenerateDataPackageFactory.class),
+        mock(GenerateDarwinCoreDataPackageFactory.class),
         mockPasswordEncrypter,
         mockEml2Rtf,
         mockVocabulariesManager,
