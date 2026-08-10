@@ -2446,16 +2446,16 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     filter: alpha(opacity=50); /* in IE */
 }
 
-/* Setup sidebar */
- .setup-stepper-vertical {
-     display: -webkit-box;
-     display: -webkit-flex;
-     display: -ms-flexbox;
-     display: flex;
-     -webkit-flex-direction: column;
-     -ms-flex-direction: column;
-     flex-direction: column;
- }
+/* Setup vertical step sidebar */
+.setup-stepper-vertical {
+ display: -webkit-box;
+ display: -webkit-flex;
+ display: -ms-flexbox;
+ display: flex;
+ -webkit-flex-direction: column;
+ -ms-flex-direction: column;
+ flex-direction: column;
+}
 
 .setup-step-connector-vertical {
     -webkit-flex: 1 1 auto;
@@ -2552,6 +2552,123 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     display: block;
     -webkit-transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+
+/* Publication horizontal step block */
+.publication-stepper-wrapper {
+    padding-top: 32px;
+}
+
+/*.css-1ji4vc9 {*/
+.publication-stepper-horizontal {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-direction: row;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: flex-start;
+}
+
+/*.css-10oaqdv {*/
+.publication-step-horizontal {
+    flex: 1;
+    position: relative;
+}
+
+/*.css-190asdv {*/
+.publication-StepLabel-horizontal {
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/*.css-y60zf6 {*/
+.publication-StepLabel-iconContainer {
+    flex-shrink: 0;
+    display: flex;
+}
+
+/*.css-1apltql {*/
+.publication-StepIcon-root {
+    user-select: none;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    fill: currentColor;
+    font-size: 1.5rem;
+    display: block;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: rgba(0, 0, 0, 0.38);
+}
+
+/*.css-1apltql.Mui-completed, .css-1apltql.Mui-active {*/
+.publication-StepIcon-root.completed, .publication-StepIcon-root.active {
+    color: rgb(var(--color-gbif-primary));
+}
+
+.publication-StepIcon-root.error {
+    color: rgb(var(--color-gbif-danger));
+}
+
+/*.css-1mmktmc {*/
+.publication-StepIcon-text {
+    fill: #fff;
+    font-size: 0.675rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.publication-StepLabel-label {
+    font-size: 0.875rem;
+}
+
+/*.css-wry6rr {*/
+.publication-StepLabel-labelContainer {
+    width: 100%;
+    color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+/*.css-xy0inm.Mui-active {*/
+.publication-StepLabel-label.active {
+    color: #575757;
+    font-weight: 500;
+}
+
+/*.css-xy0inm.Mui-completed {*/
+.publication-StepLabel-label.completed {
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 400;
+}
+
+.publication-StepLabel-label.error {
+    color: rgb(var(--color-gbif-danger));
+    font-weight: 500;
+}
+
+/*connector root*/
+/*.css-1ssdz5r {*/
+.publication-StepConnector-horizontal {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    position: absolute;
+    top: 12px;
+    left: calc(-50% + 20px);
+    right: calc(50% + 20px);
+}
+
+/*connector*/
+/*.css-1dd0g7e {*/
+.publication-StepConnector-line {
+    display: block;
+    border-color: #bdbdbd;
+    border-top-style: solid;
+    border-top-width: 1px;
 }
 
 

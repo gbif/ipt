@@ -205,6 +205,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
@@ -570,15 +571,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     try {
       FileUtils.copyFile(metadataFile, dataDirMetadataFile);
     } catch (IOException e) {
-      LOG.error("Unable to copy datapackage metadata file");
+      LOG.error("Unable to copy datapackage metadata file {}", e.getMessage(), e);
     }
 
     DataPackageMetadata metadata;
     try {
-      metadata = metadataReader.readValue(dataDirMetadataFile, metadataClassForType(datapackageType));
-    } catch (Exception e) {
+      metadata = metadataReader.readValue(
+          dataDirMetadataFile,
+          metadataClassForType(datapackageType));
+    } catch (JsonMappingException e) {
+      throw new ImportException("Invalid metadata document: " + e.getOriginalMessage());
+    } catch (IOException e) {
+      LOG.error("Unable to read datapackage metadata file", e);
       deleteDirectoryContainingSingleFile(dataDirMetadataFile);
-      throw new ImportException("Invalid metadata document", e);
+      throw new ImportException("Unable to read metadata document.");
     }
 
     return metadata;
@@ -888,6 +894,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       // try to read metadata
       if (metadataFile != null) {
         DataPackageMetadata metadata = readDataPackageMetadata(resource.getShortname(), packageType, metadataFile, alog);
+
+        if (metadata == null) {
+          throw new ImportException("Failed to read/parse data package metadata from " + metadataFile.getName());
+        }
 
         if (metadata instanceof FrictionlessMetadata frictionlessMetadata) {
           // set name, erase some internal fields
@@ -3765,12 +3775,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       alog.info("manage.resource.read.datapackage.metadata");
       return metadata;
     } catch (ImportException e) {
-      String msg = "Cant read data package metadata: " + e.getMessage();
+      String msg = "Cannot read data package metadata: " + e.getMessage();
       LOG.warn(msg);
       alog.warn(msg);
       return null;
     } catch (Exception e) {
-      LOG.warn("Cant read data package metadata", e);
+      LOG.warn("Cannot read data package metadata", e);
     }
 
     alog.warn("manage.resource.read.problem");

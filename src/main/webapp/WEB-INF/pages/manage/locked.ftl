@@ -5,9 +5,10 @@
     $(document).ready(function(){
         loadReport();
         var reporter = setInterval(loadReport, 1000);
-        function loadReport(){
-            $("#report").load("${baseURL}/manage/report.do?r=${resource.shortname}", function() {
-                if ($(".completed").length > 0){
+
+        function loadReport() {
+            $("#report").load("${baseURL}/manage/report.do?r=${resource.shortname}", function () {
+                if ($("#report-block.completed").length > 0) {
                     // stop timer and hide gif
                     clearInterval(reporter);
                 }
@@ -49,7 +50,7 @@
 </div>
 
 <main class="container main-content-container">
-    <div class="my-3 py-3">
+    <div class="mb-3 mt-4 pb-3">
         <div id="report"></div>
     </div>
 </main>

@@ -90,11 +90,25 @@ public abstract class ReportingTask {
    */
   public StatusReport report() {
     Exception e = currentException();
+
     if (e != null) {
-      lastReport = new StatusReport(e, currentState(), messages);
+      String failedStep = null;
+      if (e instanceof GeneratorException ge) {
+        failedStep = ge.getFailedStep();
+      }
+
+      lastReport = new StatusReport(
+          e,
+          currentState(),
+          failedStep,
+          messages);
     } else {
-      lastReport = new StatusReport(completed(), currentState(), messages);
+      lastReport = new StatusReport(
+          completed(),
+          currentState(),
+          messages);
     }
+
     handler.report(resourceShortname, lastReport);
     return lastReport;
   }

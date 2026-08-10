@@ -123,9 +123,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   public Map<String, Integer> call() throws Exception {
     try {
       checkForInterruption();
-      Thread.sleep(4000);
+      Thread.sleep(2000);
       setState(STATE.STARTED);
-      Thread.sleep(4000);
 
       // initial reporting
       addMessage(Level.INFO, "Data Package generation started for version #" + resource.getDataPackageMetadataVersion());
@@ -224,7 +223,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void validateArchive() throws Exception {
     checkForInterruption();
     setState(STATE.VALIDATING);
-    Thread.sleep(4000);
+    Thread.sleep(2000);
 
     List<ResourceAnalysisResult> results;
     try {
@@ -260,7 +259,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private File bundleArchive() throws Exception {
     checkForInterruption();
     setState(STATE.BUNDLING);
-    Thread.sleep(4000);
+    Thread.sleep(2000);
     File zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
     try {
       if (resource.isDwcDp()) {
@@ -293,7 +292,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void archive(File zip) throws Exception {
     checkForInterruption();
     setState(STATE.ARCHIVING);
-    Thread.sleep(4000);
+    Thread.sleep(2000);
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
       File versionedFile = dataDir.resourceDataPackageFile(resource.getShortname(), version);
@@ -411,7 +410,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void createDataResources() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.DATARESOURCES);
-    Thread.sleep(4000);
+    Thread.sleep(2000);
     if (resource.getDataPackageIdentifier() == null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
       throw new GeneratorException("Data package identifier or mappings are not set");
     }
@@ -936,7 +935,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void addMetadata() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.METADATA);
-    Thread.sleep(4000);
+    Thread.sleep(2000);
     try {
       String type = resource.getCoreType();
 

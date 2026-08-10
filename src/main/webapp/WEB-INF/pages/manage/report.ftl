@@ -1,6 +1,123 @@
 <#setting url_escaping_charset="UTF-8">
 
-<h5 class="text-gbif-header-2 fw-400">
+<#if resource.isDwcDp()>
+    <#if report.state == "Not started yet">
+        <#assign currentStep = "WAITING">
+    <#elseif report.state == "Starting Data Package generation">
+        <#assign currentStep = "STARTED">
+    <#elseif report.state?starts_with("Processing record")>
+        <#assign currentStep = "DATARESOURCES">
+    <#elseif report.state == "Creating metadata files">
+        <#assign currentStep = "METADATA">
+    <#elseif report.state == "Compressing Data Package (archive)">
+        <#assign currentStep = "BUNDLING">
+    <#elseif report.state == "Data Package generated!">
+        <#assign currentStep = "COMPLETED">
+    <#elseif report.state == "Validating Data Package">
+        <#assign currentStep = "VALIDATING">
+    <#elseif report.state == "Archiving version of data package">
+        <#assign currentStep = "ARCHIVING">
+    <#else>
+        <#assign currentStep = "COMPLETED">
+    </#if>
+
+    <#assign steps = [
+    {"id":"WAITING",       "label":"Waiting"},
+    {"id":"STARTED",       "label":"Started"},
+    {"id":"METADATA",      "label":"Metadata"},
+    {"id":"DATARESOURCES", "label":"Resources"},
+    {"id":"BUNDLING",      "label":"Bundling"},
+    {"id":"VALIDATING",    "label":"Validating"},
+    {"id":"ARCHIVING",     "label":"Archiving"},
+    {"id":"COMPLETED",     "label":"Completed"}
+    ]>
+
+    <#assign stateOrder = {
+    "WAITING":0,
+    "STARTED":1,
+    "METADATA":2,
+    "DATARESOURCES":3,
+    "BUNDLING":4,
+    "VALIDATING":5,
+    "ARCHIVING":6,
+    "COMPLETED":7,
+    "FAILED":7
+    }>
+
+    <#assign failedIndex = -1>
+    <#if currentStep == "COMPLETED" && report.step?has_content>
+        <#assign failedIndex = stateOrder[report.step]>
+    </#if>
+
+    <div id="state-stepper" class="px-3 pb-3 border rounded-2 publication-stepper-wrapper">
+        <div class="publication-box-root">
+            <ol class="publication-stepper-root publication-stepper-horizontal publication-stepper-label-horizontal">
+                <#list steps as step>
+                    <#assign stepIndex = stateOrder[step.id]>
+                    <#assign currentIndex = stateOrder[currentStep]>
+
+                    <#if failedIndex != -1>
+                        <#if stepIndex == failedIndex>
+                            <#assign css = "error">
+                        <#elseif stepIndex < failedIndex>
+                            <#assign css = "completed">
+                        <#else>
+                            <#assign css = "disabled">
+                        </#if>
+                    <#else>
+                        <#if stepIndex < currentIndex>
+                            <#assign css = "completed">
+                        <#elseif step.id == currentStep>
+                            <#assign css = "active">
+                        <#else>
+                            <#assign css = "disabled">
+                        </#if>
+                    </#if>
+
+                    <li class="publication-step-root publication-step-horizontal publication-step-label ${css}">
+                        <#if step_index != 0>
+                            <div class="publication-StepConnector-root publication-StepConnector-horizontal publication-StepConnector-label active">
+                                <span class="publication-StepConnector-line"></span>
+                            </div>
+                        </#if>
+                        <span class="publication-stepLabel-root publication-StepLabel-horizontal publication-StepLabel-label">
+                            <#if css=="completed">
+                                <span class="publication-StepLabel-iconContainer completed publication-StepLabel-label">
+                                    <svg class="publication-SvgIcon-root publication-SvgIcon-fontSizeMedium publication-StepIcon-root completed"
+                                         focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm-2 17l-5-5 1.4-1.4 3.6 3.6 7.6-7.6L19 8l-9 9z"></path>
+                                    </svg>
+                                </span>
+                            <#elseif css=="error">
+                                <span class="publication-StepLabel-iconContainer active publication-StepLabel-label">
+                                    <svg class="publication-SvgIcon-root publication-SvgIcon-fontSizeMedium publication-StepIcon-root active error"
+                                         focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
+                                    </svg>
+                                </span>
+                            <#else>
+                                <span class="publication-StepLabel-iconContainer ${css} publication-StepLabel-label">
+                                <svg class="publication-SvgIcon-root publication-SvgIcon-fontSizeMedium publication-StepIcon-root ${css}"
+                                     focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="12"></circle>
+                                    <text class="publication-StepIcon-text" x="12" y="12"
+                                          text-anchor="middle" dominant-baseline="central">${step_index}</text>
+                                </svg>
+                        </span>
+                            </#if>
+                            <span class="publication-StepLabel-labelContainer publication-StepLabel-label">
+                                <span class="publication-StepLabel-label ${css}">${step.label}</span>
+                            </span>
+                        </span>
+                    </li>
+
+                </#list>
+            </ol>
+        </div>
+    </div>
+</#if>
+
+<h5 class="text-gbif-header-2 fw-400 mt-4">
     <@s.text name='manage.report.title'/>
 </h5>
 
@@ -52,7 +169,7 @@
 
 <#if report??>
 
-    <div<#if report.completed> class="completed"</#if>>
+    <div id="report-block" <#if report.completed> class="completed"</#if>>
 
         <#if report.completed>
             <#if !report.hasException() >

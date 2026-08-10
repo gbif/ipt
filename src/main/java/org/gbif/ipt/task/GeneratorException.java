@@ -13,21 +13,44 @@
  */
 package org.gbif.ipt.task;
 
+import lombok.Getter;
+
 /**
  * Exception thrown when generating a dwc archive fails.
  */
 public class GeneratorException extends Exception {
 
+  @Getter
+  private final String failedStep;
+
   public GeneratorException(String message) {
     super(message);
+    this.failedStep = null;
+  }
+
+  public GeneratorException(String message, String failedStep) {
+    super(message);
+    this.failedStep = failedStep;
   }
 
   public GeneratorException(String message, Throwable cause) {
     super(message, cause);
+    this.failedStep = null;
+  }
+
+  public GeneratorException(String message, Throwable cause, String failedStep) {
+    super(message, cause);
+    this.failedStep = failedStep;
   }
 
   public GeneratorException(Throwable cause) {
     super(cause);
+    this.failedStep = null;
+  }
+
+  public GeneratorException(Throwable cause, String failedStep) {
+    super(cause);
+    this.failedStep = failedStep;
   }
 
 }

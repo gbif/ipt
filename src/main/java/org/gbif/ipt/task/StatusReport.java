@@ -25,22 +25,43 @@ import lombok.Getter;
 public class StatusReport {
 
   private final boolean completed;
-  private final Exception exception;
+  private final Throwable exception;
   private final long timestamp;
-  private final String state;
+  private final String state; // human-readable state
+  private final String step; // step name (e.g., METADATA or VALIDATING)
   private final List<TaskMessage> messages;
 
   public StatusReport(boolean completed, String state, List<TaskMessage> messages) {
     this.completed = completed;
     this.state = state;
+    this.step = null;
     this.messages = messages;
     this.timestamp = new Date().getTime();
     this.exception = null;
   }
 
-  public StatusReport(Exception exception, String state, List<TaskMessage> messages) {
+  public StatusReport(boolean completed, String state, String step, List<TaskMessage> messages) {
+    this.completed = completed;
+    this.state = state;
+    this.step = null;
+    this.messages = messages;
+    this.timestamp = new Date().getTime();
+    this.exception = null;
+  }
+
+  public StatusReport(Throwable exception, String state, List<TaskMessage> messages) {
     this.completed = true;
     this.state = state;
+    this.step = null;
+    this.messages = messages;
+    this.timestamp = new Date().getTime();
+    this.exception = exception;
+  }
+
+  public StatusReport(Throwable exception, String state, String step, List<TaskMessage> messages) {
+    this.completed = true;
+    this.state = state;
+    this.step = step;
     this.messages = messages;
     this.timestamp = new Date().getTime();
     this.exception = exception;
@@ -49,6 +70,7 @@ public class StatusReport {
   public StatusReport(String state, List<TaskMessage> messages) {
     this.completed = false;
     this.state = state;
+    this.step = null;
     this.messages = messages;
     this.timestamp = new Date().getTime();
     this.exception = null;
