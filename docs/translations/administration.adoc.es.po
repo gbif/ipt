@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-08-04 09:42+0000\n"
-"PO-Revision-Date: 2026-08-05 16:18\n"
+"PO-Revision-Date: 2026-08-10 17:32\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -289,7 +289,7 @@ msgstr "*Rol* - El rol que tendrá el usuario con respecto a esta instalación d
 #: en/modules/ROOT/pages/administration.adoc:79
 #, no-wrap
 msgid "*Admin* - Can make changes to all aspects of the instance of the IPT.\n"
-msgstr "*Administrador* - Puede realizar cambios en todos los aspectos de la instancia de IPT.\n"
+msgstr "*Administrador* - Puede realizar cambios en todos los aspectos de la instancia IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:80
