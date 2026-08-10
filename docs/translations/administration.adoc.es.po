@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-08-04 09:42+0000\n"
-"PO-Revision-Date: 2026-08-10 17:32\n"
+"PO-Revision-Date: 2026-08-10 19:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -295,13 +295,13 @@ msgstr "*Administrador* - Puede realizar cambios en todos los aspectos de la ins
 #: en/modules/ROOT/pages/administration.adoc:80
 #, no-wrap
 msgid "*Manager without registration rights* - Able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Note, users with this role cannot register resources with GBIF. Moreover, if a resource already has a reserved or registered DOI, or is already registered with GBIF, they cannot publish it.\n"
-msgstr "*Gestor sin derechos de registro*: puede crear, editar, eliminar y gestionar recursos que haya creado o para cuya gestión haya sido invitado dentro de la instancia del IPT. Cabe señalar que los usuarios con este rol no pueden registrar recursos ante GBIF. Además, si un recurso ya cuenta con un DOI reservado o registrado, o ya está registrado en GBIF, no pueden publicarlo.\n"
+msgstr "*Administrador sin derechos de registro*: puede crear, editar, eliminar y gestionar recursos que haya creado o para cuya gestión haya sido invitado dentro de la instancia IPT. Cabe señalar que los usuarios con este rol no pueden registrar recursos ante GBIF. Además, si un recurso ya cuenta con un DOI reservado o registrado, o ya está registrado en GBIF, no pueden publicarlo.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:81
 #, no-wrap
 msgid "*Manager with registration rights* - Has the additional capability to register resources with the GBIF network.\n"
-msgstr "*Gestor con derechos de registro* – Cuenta con la capacidad adicional de registrar recursos en la red de GBIF.\n"
+msgstr "*Administrador con derechos de registro* – Cuenta con la capacidad adicional de registrar recursos en la red de GBIF.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:82
