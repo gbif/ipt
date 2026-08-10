@@ -130,6 +130,7 @@ public final class Constants {
   public static final String DWC_ARCHIVE_EXTENSION = ".zip";
   public static final String DATA_PACKAGE_NAME = "datapackage";
   public static final String DATA_PACKAGE_EXTENSION = ".zip";
+  public static final String DATA_PACKAGE_VALIDATION_REPORT = "datapackage-validation-report.json";
 
   // Set of GBIF supported licenses
   public static final Set<String> GBIF_SUPPORTED_LICENSES;

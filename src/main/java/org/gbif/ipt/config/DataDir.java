@@ -37,6 +37,7 @@ import org.apache.logging.log4j.Logger;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
+import static org.gbif.ipt.config.Constants.DATA_PACKAGE_VALIDATION_REPORT;
 import static org.gbif.ipt.config.Constants.DWC_ARCHIVE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DWC_ARCHIVE_NAME;
 
@@ -237,7 +238,7 @@ public class DataDir {
    *
    * @param resourceName resource short name
    * @param version      version
-   * @return DwC-A file having specific version
+   * @return DwC-A file having a specific version
    */
   public File resourceDwcaFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = DWC_ARCHIVE_NAME + "-" + version.toPlainString() + DWC_ARCHIVE_EXTENSION;
@@ -260,7 +261,7 @@ public class DataDir {
    *
    * @param resourceName resource short name
    * @param version      version
-   * @return data package file having specific version
+   * @return data package file having a specific version
    */
   public File resourceDataPackageFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = DATA_PACKAGE_NAME + "-" + version.toPlainString() + DATA_PACKAGE_EXTENSION;
@@ -268,10 +269,20 @@ public class DataDir {
   }
 
   /**
+   * Retrieves the data package validation report for the last publication.
+   *
+   * @param resourceName resource short name
+   * @return data package validation report file
+   */
+  public File resourceDataPackageValidationReportFile(@NotNull String resourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DATA_PACKAGE_VALIDATION_REPORT);
+  }
+
+  /**
    * Retrieves DwC-A file for a resource.
    *
    * @param resourceName resource short name
-   * @return DwC-A file having specific version
+   * @return DwC-A file having a specific version
    */
   public File resourceDwcaFile(@NotNull String resourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/" + DWCA_FILENAME);
@@ -282,7 +293,7 @@ public class DataDir {
    *
    * @param resourceName resource short name
    * @param version      version
-   * @return EML file having specific version
+   * @return EML file having a specific version
    */
   public File resourceEmlFile(@NotNull String resourceName, @NotNull BigDecimal version) {
     String fn = "eml-" + version.toPlainString() + ".xml";

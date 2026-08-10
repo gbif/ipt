@@ -1715,6 +1715,13 @@
                                 </#if>
                             </p>
 
+                            <p class="mb-2">
+                                Last validation report:
+                                <a href="${baseURL}/manage/validationReport.do?r=${resource.shortname}">
+                                    link
+                                </a>
+                            </p>
+
                             <#if (resource.organisation.name)?has_content>
                             <div class="mb-2">
                                 <@s.text name="eml.publishingOrganisation"/>: <i>${resource.organisation.name}</i>

@@ -234,6 +234,10 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
+    <action name="validationReport" class="org.gbif.ipt.action.manage.ValidationReportAction">
+      <result>/WEB-INF/pages/manage/dp_validation_report.ftl</result>
+    </action>
+
     <action name="dataPackageMappingSourceNew" class="org.gbif.ipt.action.manage.DataPackageMappingAction" method="source">
       <result name="input">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
       <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
