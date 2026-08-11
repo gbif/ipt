@@ -123,8 +123,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   public Map<String, Integer> call() throws Exception {
     try {
       checkForInterruption();
-      Thread.sleep(2000);
       setState(STATE.STARTED);
+      Thread.sleep(2000);
 
       // initial reporting
       addMessage(Level.INFO, "Data Package generation started for version #" + resource.getDataPackageMetadataVersion());
@@ -986,25 +986,11 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   }
 
   private void addEml() throws Exception {
-    // validate EML
     try {
-      addMessage(Level.INFO, "? Validating EML file");
-      EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
-
-      try (InputStream is = FileUtils.openInputStream(dataDir.resourceEmlFile(resource.getShortname()))) {
-        emlValidator.validate(is);
-        addMessage(Level.INFO, "✓ Validated EML file");
-      }
-    } catch (IOException | SAXException e) {
-      // some error validating this file, report
-      log.error("Exception caught while validating EML file", e);
-      addMessage(Level.ERROR, "Failed to validate EML file");
-      setState(e);
-      throw new GeneratorException("Problem occurred while validating EML", e);
-    } catch (InvalidEmlException e) {
-      // InvalidEmlException - log ERROR, but still proceed
-      log.error("Invalid EML", e);
-      addMessage(Level.ERROR, "Invalid EML file: " + e.getMessage());
+      FileUtils.copyFile(dataDir.resourceEmlFile(resource.getShortname()), new File(dataPackageFolder,
+          DataDir.EML_XML_FILENAME));
+    } catch (IOException e) {
+      throw new GeneratorException("Problem occurred while adding EML file to DwC-A folder", e);
     }
 
     // final reporting
