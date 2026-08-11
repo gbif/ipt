@@ -17,9 +17,13 @@ import org.gbif.ipt.validation.BasicMetadata;
 import org.gbif.ipt.validation.KeywordsMetadata;
 import org.gbif.ipt.validation.ValidURI;
 
+import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
 import java.net.URI;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,7 +44,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 
 /**
  * Frictionless metadata
@@ -121,6 +128,7 @@ public class FrictionlessMetadata<C extends FrictionlessContributor, L extends F
    */
   @JsonProperty("created")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonDeserialize(using = Rfc3339DateDeserializer.class)
   private Date created;
 
   /**
@@ -332,6 +340,7 @@ public class FrictionlessMetadata<C extends FrictionlessContributor, L extends F
    */
   @JsonProperty("created")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonDeserialize(using = Rfc3339DateDeserializer.class)
   public Date getCreated() {
     return created;
   }
@@ -343,6 +352,7 @@ public class FrictionlessMetadata<C extends FrictionlessContributor, L extends F
    */
   @JsonProperty("created")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonDeserialize(using = Rfc3339DateDeserializer.class)
   public void setCreated(Date created) {
     this.created = created;
   }
@@ -511,5 +521,30 @@ public class FrictionlessMetadata<C extends FrictionlessContributor, L extends F
         .add("sources=" + sources)
         .add("additionalProperties=" + additionalProperties)
         .toString();
+  }
+
+  public static class Rfc3339DateDeserializer extends JsonDeserializer<Date> {
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
+    @Override
+    public Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+      String value = p.getText();
+      if (value == null || value.trim().isEmpty()) {
+        return null;
+      }
+
+      String normalized = value.trim();
+      try {
+        OffsetDateTime odt = OffsetDateTime.parse(normalized, FORMATTER);
+        return Date.from(odt.toInstant());
+      } catch (DateTimeParseException e) {
+        throw ctxt.weirdStringException(
+            value,
+            Date.class,
+            "not a valid RFC3339 datetime (expected format like 2024-01-15T10:30:00Z or 2024-01-15T10:30:00+02:00)"
+        );
+      }
+    }
   }
 }
