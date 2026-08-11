@@ -191,6 +191,9 @@
             <p>
                 <@s.text name='portal.publication.download.log'/> <a target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
             </p>
+            <p>
+                <@s.text name='portal.publication.validation.report.info'><@s.param><a target="_blank" href="${baseURL}/manage/validationReport.do?r=${resource.shortname}"><@s.text name='portal.publication.validation.report'/></a></@s.param></@s.text>
+            </p>
         <#else>
             <p>
                 <@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?r=${resource.shortname}</@s.param></@s.text>
