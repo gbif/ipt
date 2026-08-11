@@ -389,10 +389,10 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.license.title" />
+                                                <@input name="metadata.licenses[${item_index}].title" value=item.title! help="i18n" i18nkey="datapackagemetadata.license.title" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.licenses[${item_index}].name" help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
+                                                <@input name="metadata.licenses[${item_index}].name" value=item.name! help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
                                             </div>
                                         </div>
                                     </#list>
@@ -433,13 +433,13 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].title" help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
+                                                <@input name="metadata.sources[${item_index}].title" value=item.title! help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].path" help="i18n" i18nkey="datapackagemetadata.source.path" />
+                                                <@input name="metadata.sources[${item_index}].path" value=item.path! help="i18n" i18nkey="datapackagemetadata.source.path" />
                                             </div>
                                             <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].email" help="i18n" i18nkey="datapackagemetadata.source.email" />
+                                                <@input name="metadata.sources[${item_index}].email" value=item.email! help="i18n" i18nkey="datapackagemetadata.source.email" />
                                             </div>
                                         </div>
                                     </#list>
