@@ -27,9 +27,13 @@
     }
 
     .accordion-button:not(.collapsed) {
-        background: #f1f7ee;
+        background: rgb(var(--alert-success-background-color));
         color: #2c2c2c;
         box-shadow: none;
+    }
+
+    .accordion-item:has(.alert-danger) .accordion-button:not(.collapsed) {
+        background: rgb(var(--alert-danger-background-color)) !important;
     }
 
     .accordion-button:focus {
@@ -51,6 +55,12 @@
     .badge.text-bg-success {
         background-color: rgb(var(--alert-success-background-color)) !important;
         color: rgb(var(--alert-success-text-color)) !important;
+        font-weight: 400;
+    }
+
+    .badge.text-bg-danger {
+        background-color: rgb(var(--alert-danger-background-color)) !important;
+        color: rgb(var(--alert-danger-text-color)) !important;
         font-weight: 400;
     }
 
