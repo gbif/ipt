@@ -13,6 +13,18 @@
  */
 package org.gbif.datapackage;
 
+import org.gbif.dp.analysis.DefaultDataPackageAnalysisOrchestrator;
+import org.gbif.dp.analysis.api.AnalysisFeature;
+import org.gbif.dp.analysis.api.DataAnalyser;
+import org.gbif.dp.analysis.api.DataPackageAnalysisOrchestrator;
+import org.gbif.dp.analysis.api.DatapackageAnalysisResult;
+import org.gbif.dp.analysis.api.ValidationOptions;
+import org.gbif.dp.analysis.duckdb.DuckDbDataPackageAnalyser;
+import org.gbif.dp.analysis.duckdb.DuckDbDialectRenderer;
+import org.gbif.dp.analysis.duckdb.DuckDbResourceLoader;
+import org.gbif.dp.common.descriptor.JacksonDataPackageParser;
+import org.gbif.dp.descriptor.DataPackageParser;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -35,15 +47,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.gbif.dp.analysis.api.AnalysisFeature;
-import org.gbif.dp.analysis.api.DataAnalyser;
-import org.gbif.dp.analysis.api.ResourceAnalysisResult;
-import org.gbif.dp.analysis.api.ValidationOptions;
-import org.gbif.dp.analysis.duckdb.DuckDbDataPackageAnalyser;
-import org.gbif.dp.analysis.duckdb.DuckDbDialectRenderer;
-import org.gbif.dp.analysis.duckdb.DuckDbResourceLoader;
-import org.gbif.dp.common.descriptor.JacksonDataPackageParser;
-import org.gbif.dp.descriptor.DataPackageParser;
 
 /**
  * Equivalent to io.frictionlessdata.datapackage.Package.
@@ -81,6 +84,7 @@ public class DataPackage {
   private final DuckDbDialectRenderer dialectRenderer = new DuckDbDialectRenderer();
   private final DuckDbResourceLoader loader = new DuckDbResourceLoader(dialectRenderer);
   private final DataAnalyser analyser = new DuckDbDataPackageAnalyser(parser, loader);
+  private final DataPackageAnalysisOrchestrator dpAnalysisOrchestrator = new DefaultDataPackageAnalysisOrchestrator(analyser);
 
   public DataPackage() {
   }
@@ -170,18 +174,14 @@ public class DataPackage {
     write(zipFile, baseDir, null);
   }
 
-  public List<ResourceAnalysisResult> validate(File baseDir) throws IOException {
+  public DatapackageAnalysisResult validate(File baseDir) throws IOException {
     Path descriptorPath = baseDir.toPath().resolve("datapackage.json");
     Files.write(descriptorPath, MAPPER.writeValueAsBytes(this));
     try {
-      return analyser.analyse(
+      return dpAnalysisOrchestrator.analyse(
           descriptorPath.toString(),
           new ValidationOptions(20),
-          List.of(AnalysisFeature.FOREIGN_KEY_CONSTRAINT,
-              AnalysisFeature.PRIMARY_KEY_UNIQUE,
-              AnalysisFeature.DATA_TYPE_CONSTRAINT,
-              AnalysisFeature.COUNT,
-              AnalysisFeature.COUNT_DISTINCT));
+          AnalysisFeature.ALL_FEATURES);
     } catch (SQLException e) {
       throw new IOException("Data package validation could not be executed", e);
     }

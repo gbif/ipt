@@ -17,7 +17,7 @@ import org.gbif.datapackage.DataPackage;
 import org.gbif.datapackage.DataPackageConstants;
 import org.gbif.datapackage.DataPackageForeignKey;
 import org.gbif.datapackage.DataPackageResource;
-import org.gbif.dp.analysis.api.ResourceAnalysisResult;
+import org.gbif.dp.analysis.api.DatapackageAnalysisResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
@@ -225,7 +225,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     setState(STATE.VALIDATING);
     Thread.sleep(2000);
 
-    List<ResourceAnalysisResult> results;
+    DatapackageAnalysisResult results;
     try {
       results = dataPackage.validate(dataPackageFolder);
     } catch (IOException e) {
@@ -236,10 +236,12 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     // dir that gets wiped in call()'s finally block, so it can't live there
     writeValidationReport(results);
 
-    boolean hasViolations = results.stream().anyMatch(r ->
+    boolean hasViolations = results.resourceAnalysisResults().stream().anyMatch(r ->
         !r.foreignKeyViolations().isEmpty()
             || r.primaryKeyViolation() != null
-            || !r.dataTypeViolations().isEmpty());
+            || !r.dataTypeViolations().isEmpty())
+        || !results.emlValidation().valid()
+        || !results.descriptorValidation().valid();
 
     if (hasViolations) {
       addMessage(Level.ERROR, "Data package failed validation, see validation report for details");
@@ -310,7 +312,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     addMessage(Level.INFO, "Archive version #" + version + " saved");
   }
 
-  private void writeValidationReport(List<ResourceAnalysisResult> results) throws GeneratorException {
+  private void writeValidationReport(DatapackageAnalysisResult results) {
     try {
       File reportFile = dataDir.resourceDataPackageValidationReportFile(resource.getShortname());
       objectMapper.writeValue(reportFile, results);

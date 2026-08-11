@@ -13,9 +13,9 @@
  */
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dp.analysis.api.DatapackageAnalysisResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.TableValidationResult;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -23,8 +23,6 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +53,7 @@ public class ValidationReportAction extends ManagerBaseAction {
   private String shortname;
 
   @Getter
-  private List<TableValidationResult> validationReport = new ArrayList<>();
+  private DatapackageAnalysisResult validationReport = null;
 
   @Inject
   public ValidationReportAction(
@@ -81,8 +79,7 @@ public class ValidationReportAction extends ManagerBaseAction {
     }
 
     try {
-      validationReport = objectMapper.readValue(reportFile, objectMapper.getTypeFactory()
-          .constructCollectionType(List.class, TableValidationResult.class));
+      validationReport = objectMapper.readValue(reportFile, DatapackageAnalysisResult.class);
     } catch (IOException e) {
       LOG.error("Failed to read validation report for resource {}: {}", shortname,
           e.getMessage(), e);

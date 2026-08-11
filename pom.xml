@@ -43,7 +43,7 @@
     <gbif-api.version>2.4.13</gbif-api.version>
     <gbif-common.version>1.0</gbif-common.version>
     <gbif-doi.version>3.0.3</gbif-doi.version>
-    <gbif-dwc-dp-analyser.version>0.0.9</gbif-dwc-dp-analyser.version>
+    <gbif-dwc-dp-analyser.version>0.0.11-SNAPSHOT</gbif-dwc-dp-analyser.version>
     <gbif-metadata-profile.version>3.0</gbif-metadata-profile.version>
     <gbif-parsers.version>0.68</gbif-parsers.version>
     <gbif-httputils.version>1.4</gbif-httputils.version>
@@ -79,6 +79,7 @@
     <jaxb-impl.version>4.0.9</jaxb-impl.version>
     <jaxb-runtime.version>4.0.9</jaxb-runtime.version>
     <jetty-maven-plugin.version>12.1.11</jetty-maven-plugin.version>
+    <json-schema-validator.version>2.0.4</json-schema-validator.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <junit.version>6.1.2</junit.version>
@@ -476,6 +477,12 @@
       <groupId>jakarta.inject</groupId>
       <artifactId>jakarta.inject-api</artifactId>
       <version>${jakarta.inject-api.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.networknt</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>${json-schema-validator.version}</version>
     </dependency>
 
     <!-- Accessing different external databases to suck in data alternatively to text files -->

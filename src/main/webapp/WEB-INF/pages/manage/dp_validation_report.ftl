@@ -92,13 +92,13 @@
     </div>
 </div>
 
-<div class="container py-4">
-    <#if validationReport?has_content>
-        <#assign totalTables = validationReport?size>
+<div class="container py-4 px-0">
+    <#if validationReport?has_content && validationReport.resourceAnalysisResults?has_content>
+        <#assign totalTables = validationReport.resourceAnalysisResults?size>
         <#assign totalRowsAllTables = 0>
         <#assign totalIssues = 0>
         <#assign tablesWithIssues = 0>
-        <#list validationReport as t>
+        <#list validationReport.resourceAnalysisResults as t>
             <#assign totalRowsAllTables = totalRowsAllTables + t.totalRows>
             <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
             <#assign totalIssues = totalIssues + tableIssueCount>
@@ -167,7 +167,7 @@
 
         <#--    per table accordion-->
         <div class="accordion" id="validationAccordion">
-            <#list validationReport as t>
+            <#list validationReport.resourceAnalysisResults as t>
                 <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
                 <#assign panelId = "table-" + t.name?replace("[^a-zA-Z0-9]", "-", "r")>
                 <div class="accordion-item">
