@@ -147,7 +147,7 @@
             <#assign dvErrorCount = 0>
             <#list dv.issues as issue><#if issue.severity == 'ERROR'><#assign dvErrorCount = dvErrorCount + 1></#if></#list>
 
-            <h2 class="fs-4 fw-500 mb-3"><@s.text name="manage.validation.descriptor.title"/></h2>
+            <h5 class="py-2 mb-3 text-gbif-header fw-400"><@s.text name="manage.validation.descriptor.title"/></h5>
 
             <#if dvIssueCount == 0>
                 <div class="alert alert-success alert-dismissible fade show d-flex mb-4" role="alert">
@@ -193,7 +193,7 @@
             <#assign evErrorCount = 0>
             <#list ev.issues as issue><#if issue.severity == 'ERROR'><#assign evErrorCount = evErrorCount + 1></#if></#list>
 
-            <h2 class="fs-4 fw-500 mb-3"><@s.text name="manage.validation.eml.title"/></h2>
+            <h5 class="py-2 mb-3 text-gbif-header fw-400"><@s.text name="manage.validation.eml.title"/></h5>
 
             <#if !ev.emlPresent>
                 <div class="alert alert-secondary alert-dismissible fade show d-flex mb-4" role="alert">
@@ -237,7 +237,7 @@
         </#if>
 
         <#if validationReport.resourceAnalysisResults?has_content>
-            <h2 class="fs-4 fw-500 mb-3"><@s.text name="manage.validation.data.title"/></h2>
+            <h5 class="py-2 mb-3 text-gbif-header fw-400"><@s.text name="manage.validation.data.title"/></h5>
             <#assign totalTables = validationReport.resourceAnalysisResults?size>
             <#assign totalRowsAllTables = 0>
             <#assign totalIssues = 0>
