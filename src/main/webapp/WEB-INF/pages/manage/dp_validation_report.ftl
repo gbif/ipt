@@ -1,16 +1,5 @@
 <#setting url_escaping_charset="UTF-8">
 
-<#assign totalTables = validationReport?size>
-<#assign totalRowsAllTables = 0>
-<#assign totalIssues = 0>
-<#assign tablesWithIssues = 0>
-<#list validationReport as t>
-    <#assign totalRowsAllTables = totalRowsAllTables + t.totalRows>
-    <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
-    <#assign totalIssues = totalIssues + tableIssueCount>
-    <#if tableIssueCount gt 0><#assign tablesWithIssues = tablesWithIssues + 1></#if>
-</#list>
-
 <#include "/WEB-INF/pages/inc/header.ftl">
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -104,155 +93,170 @@
 </div>
 
 <div class="container py-4">
-    <#--    Summary cards-->
-    <div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="small text-muted text-uppercase"><@s.text name="manage.validation.tables">Tables</@s.text></div>
-                    <div class="fs-3 fw-500">${totalTables}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="small text-muted text-uppercase"><@s.text name="manage.validation.rows">Total rows</@s.text></div>
-                    <div class="fs-3 fw-500">${totalRowsAllTables?string.number}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="small text-muted text-uppercase"><@s.text name="manage.validation.tablesClean">Tables with no issues</@s.text></div>
-                    <div class="fs-3 fw-500 <#if tablesWithIssues == 0>text-gbif-primary<#else>text-gbif-danger</#if>">
-                        ${totalTables - tablesWithIssues} / ${totalTables}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="small text-muted text-uppercase"><@s.text name="manage.validation.issues">Integrity issues</@s.text></div>
-                    <div class="fs-3 fw-500 <#if totalIssues == 0>text-gbif-primary<#else>text-gbif-danger</#if>">
-                        ${totalIssues}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <#if totalIssues == 0>
-        <div class="alert alert-success alert-dismissible fade show d-flex" role="alert">
-            <div class="me-3">
-                <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
-            </div>
-            <div class="overflow-x-hidden pt-1">
-                <span><@s.text name="manage.validation.allClean"/></span>
-            </div>
-        </div>
-    <#else>
-        <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
-            <div class="me-3">
-                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-            </div>
-            <div class="overflow-x-hidden pt-1">
-                <span><@s.text name="manage.validation.someIssues"><@s.param>${totalIssues}</@s.param><@s.param>${tablesWithIssues}</@s.param></@s.text></span>
-            </div>
-        </div>
-    </#if>
-
-    <#--    per table accordion-->
-    <div class="accordion" id="validationAccordion">
+    <#if validationReport?has_content>
+        <#assign totalTables = validationReport?size>
+        <#assign totalRowsAllTables = 0>
+        <#assign totalIssues = 0>
+        <#assign tablesWithIssues = 0>
         <#list validationReport as t>
+            <#assign totalRowsAllTables = totalRowsAllTables + t.totalRows>
             <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
-            <#assign panelId = "table-" + t.name?replace("[^a-zA-Z0-9]", "-", "r")>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading-${panelId}">
-                    <button class="accordion-button <#if tableIssueCount == 0>collapsed</#if>" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#${panelId}"
-                            aria-expanded="<#if tableIssueCount gt 0>true<#else>false</#if>" aria-controls="${panelId}">
-                        <span class="me-2 fw-500">${t.name}</span>
-                        <span class="small text-muted me-3"><@s.text name="manage.validation.rowsLower"><@s.param>${t.totalRows?string.number}</@s.param></@s.text></span>
-                        <#if tableIssueCount == 0>
-                            <span class="badge rounded-pill text-bg-success"><i class="bi bi-check2-circle"></i> <@s.text name="manage.validation.ok"/></span>
-                        <#else>
-                            <span class="badge rounded-pill text-bg-danger"><@s.text name="manage.validation.issuesLower"><@s.param>${tableIssueCount}</@s.param></@s.text></span>
-                        </#if>
-                    </button>
-                </h2>
-                <div id="${panelId}" class="accordion-collapse collapse <#if tableIssueCount gt 0>show</#if>"
-                     aria-labelledby="heading-${panelId}" data-bs-parent="#validationAccordion">
-                    <div class="accordion-body">
+            <#assign totalIssues = totalIssues + tableIssueCount>
+            <#if tableIssueCount gt 0><#assign tablesWithIssues = tablesWithIssues + 1></#if>
+        </#list>
 
-                        <#-- integrity violations -->
-                        <#if t.primaryKeyViolation??>
-                            <div class="alert alert-danger py-2 mb-2">
-                                <strong><@s.text name="manage.validation.pkViolation"/></strong> ${t.primaryKeyViolation}
-                            </div>
-                        </#if>
-                        <#if t.foreignKeyViolations?has_content>
-                            <div class="alert alert-danger py-2 mb-2">
-                                <strong><@s.text name="manage.validation.fkViolations"/>:</strong>
-                                <ul class="mb-0">
-                                    <#list t.foreignKeyViolations as fk>
-                                        <li>${fk}</li>
-                                    </#list>
-                                </ul>
-                            </div>
-                        </#if>
-                        <#if t.dataTypeViolations?has_content>
-                            <div class="alert alert-danger py-2 mb-2">
-                                <strong><@s.text name="manage.validation.typeViolations"/>:</strong>
-                                <ul class="mb-0">
-                                    <#list t.dataTypeViolations as dt>
-                                        <li>${dt}</li>
-                                    </#list>
-                                </ul>
-                            </div>
-                        </#if>
-
-                        <#-- column analysis -->
-                        <div class="table-responsive">
-                            <table class="table table-sm table-hover align-middle mb-0">
-                                <thead>
-                                    <tr>
-                                        <th><@s.text name="manage.validation.column"/></th>
-                                        <th style="width: 30%;"><@s.text name="manage.validation.completeness"/></th>
-                                        <th class="text-end"><@s.text name="manage.validation.unique"/></th>
-                                        <th class="text-end"><@s.text name="manage.validation.note"/></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <#list t.columnAnalyses as col>
-                                        <#assign pct = (t.totalRows gt 0)?then((col.populatedValues / t.totalRows * 100)?round, 0)>
-                                        <tr>
-                                            <td><code>${col.name}</code></td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <div class="progress flex-grow-1" style="height: 6px;">
-                                                        <div class="progress-bar <#if pct == 100>bg-success<#elseif pct == 0>bg-secondary<#else>bg-info</#if>"
-                                                             role="progressbar" style="width: ${pct}%;"
-                                                             aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <span class="small text-muted" style="min-width: 3.5em; text-align: right;">${pct}%</span>
-                                                </div>
-                                            </td>
-                                            <td class="text-end">${col.uniqueValues?string.number}</td>
-                                            <td class="text-end small text-muted">
-                                            </td>
-                                        </tr>
-                                    </#list>
-                                </tbody>
-                            </table>
+        <#--    Summary cards-->
+        <div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="small text-muted text-uppercase"><@s.text name="manage.validation.tables">Tables</@s.text></div>
+                        <div class="fs-3 fw-500">${totalTables}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="small text-muted text-uppercase"><@s.text name="manage.validation.rows">Total rows</@s.text></div>
+                        <div class="fs-3 fw-500">${totalRowsAllTables?string.number}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="small text-muted text-uppercase"><@s.text name="manage.validation.tablesClean">Tables with no issues</@s.text></div>
+                        <div class="fs-3 fw-500 <#if tablesWithIssues == 0>text-gbif-primary<#else>text-gbif-danger</#if>">
+                            ${totalTables - tablesWithIssues} / ${totalTables}
                         </div>
                     </div>
                 </div>
             </div>
-        </#list>
-    </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="small text-muted text-uppercase"><@s.text name="manage.validation.issues">Integrity issues</@s.text></div>
+                        <div class="fs-3 fw-500 <#if totalIssues == 0>text-gbif-primary<#else>text-gbif-danger</#if>">
+                            ${totalIssues}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <#if totalIssues == 0>
+            <div class="alert alert-success alert-dismissible fade show d-flex" role="alert">
+                <div class="me-3">
+                    <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
+                </div>
+                <div class="overflow-x-hidden pt-1">
+                    <span><@s.text name="manage.validation.allClean"/></span>
+                </div>
+            </div>
+        <#else>
+            <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
+                <div class="me-3">
+                    <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
+                </div>
+                <div class="overflow-x-hidden pt-1">
+                    <span><@s.text name="manage.validation.someIssues"><@s.param>${totalIssues}</@s.param><@s.param>${tablesWithIssues}</@s.param></@s.text></span>
+                </div>
+            </div>
+        </#if>
+
+        <#--    per table accordion-->
+        <div class="accordion" id="validationAccordion">
+            <#list validationReport as t>
+                <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
+                <#assign panelId = "table-" + t.name?replace("[^a-zA-Z0-9]", "-", "r")>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-${panelId}">
+                        <button class="accordion-button <#if tableIssueCount == 0>collapsed</#if>" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#${panelId}"
+                                aria-expanded="<#if tableIssueCount gt 0>true<#else>false</#if>" aria-controls="${panelId}">
+                            <span class="me-2 fw-500">${t.name}</span>
+                            <span class="small text-muted me-3"><@s.text name="manage.validation.rowsLower"><@s.param>${t.totalRows?string.number}</@s.param></@s.text></span>
+                            <#if tableIssueCount == 0>
+                                <span class="badge rounded-pill text-bg-success"><i class="bi bi-check2-circle"></i> <@s.text name="manage.validation.ok"/></span>
+                            <#else>
+                                <span class="badge rounded-pill text-bg-danger"><@s.text name="manage.validation.issuesLower"><@s.param>${tableIssueCount}</@s.param></@s.text></span>
+                            </#if>
+                        </button>
+                    </h2>
+                    <div id="${panelId}" class="accordion-collapse collapse <#if tableIssueCount gt 0>show</#if>"
+                         aria-labelledby="heading-${panelId}" data-bs-parent="#validationAccordion">
+                        <div class="accordion-body">
+
+                            <#-- integrity violations -->
+                            <#if t.primaryKeyViolation??>
+                                <div class="alert alert-danger py-2 mb-2">
+                                    <strong><@s.text name="manage.validation.pkViolation"/></strong> ${t.primaryKeyViolation}
+                                </div>
+                            </#if>
+                            <#if t.foreignKeyViolations?has_content>
+                                <div class="alert alert-danger py-2 mb-2">
+                                    <strong><@s.text name="manage.validation.fkViolations"/>:</strong>
+                                    <ul class="mb-0">
+                                        <#list t.foreignKeyViolations as fk>
+                                            <li>${fk}</li>
+                                        </#list>
+                                    </ul>
+                                </div>
+                            </#if>
+                            <#if t.dataTypeViolations?has_content>
+                                <div class="alert alert-danger py-2 mb-2">
+                                    <strong><@s.text name="manage.validation.typeViolations"/>:</strong>
+                                    <ul class="mb-0">
+                                        <#list t.dataTypeViolations as dt>
+                                            <li>${dt}</li>
+                                        </#list>
+                                    </ul>
+                                </div>
+                            </#if>
+
+                            <#-- column analysis -->
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th><@s.text name="manage.validation.column"/></th>
+                                            <th style="width: 30%;"><@s.text name="manage.validation.completeness"/></th>
+                                            <th class="text-end"><@s.text name="manage.validation.unique"/></th>
+                                            <th class="text-end"><@s.text name="manage.validation.note"/></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <#list t.columnAnalyses as col>
+                                            <#assign pct = (t.totalRows gt 0)?then((col.populatedValues / t.totalRows * 100)?round, 0)>
+                                            <tr>
+                                                <td><code>${col.name}</code></td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <div class="progress flex-grow-1" style="height: 6px;">
+                                                            <div class="progress-bar <#if pct == 100>bg-success<#elseif pct == 0>bg-secondary<#else>bg-info</#if>"
+                                                                 role="progressbar" style="width: ${pct}%;"
+                                                                 aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                        <span class="small text-muted" style="min-width: 3.5em; text-align: right;">${pct}%</span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-end">${col.uniqueValues?string.number}</td>
+                                                <td class="text-end small text-muted">
+                                                </td>
+                                            </tr>
+                                        </#list>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </#list>
+        </div>
+    <#else>
+        <div class="text-center">No validation report found</div>
+    </#if>
 </div>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
