@@ -132,7 +132,7 @@
                             <td><@severityBadge issue.severity/></td>
                             <td class="small text-muted">${issue.violationType}</td>
                             <td class="small">${issue.message}</td>
-                            <td class="small"><code>${issue.location}</code></td>
+                            <td class="small"><#if issue.location?has_content><code>${issue.location!}</code></#if></td>
                         </tr>
                     </#list>
                     </tbody>
