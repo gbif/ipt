@@ -51,13 +51,13 @@
 
             if (file.name.endsWith('.zip')) {
                 JSZip.loadAsync(file).then(function (zip) {
-                    const jsonFile = zip.file('datapackage.json');
-                    const emlFile = zip.file('eml.xml');
+                    const jsonPath = Object.keys(zip.files).find(path => path.endsWith('/datapackage.json') || path === 'datapackage.json');
+                    const emlPath = Object.keys(zip.files).find(path => path.endsWith('/eml.xml') || path === 'eml.xml');
 
-                    if (jsonFile) {
-                        jsonFile.async('string').then(processDatapackageJson);
-                    } else if (emlFile) {
-                        emlFile.async('string').then(processEmlXml);
+                    if (jsonPath) {
+                        zip.file(jsonPath).async('string').then(processDatapackageJson);
+                    } else if (emlPath) {
+                        zip.file(emlPath).async('string').then(processEmlXml);
                     } else {
                         console.log('Neither datapackage.json nor eml.xml found in archive.');
                     }
@@ -85,7 +85,7 @@
             try {
                 const json = JSON.parse(jsonText);
                 const profile = (json.profile || '').toLowerCase();
-                const resources = (json.resources || []);
+                const resources = json.resources || [];
 
                 let datasetType = '';
                 if (profile.includes('dwc-dp')) {
@@ -95,13 +95,13 @@
                 } else if (profile.includes('coldp')) {
                     datasetType = datasetTypeMap['coldp'];
                 } else if (profile.includes('data-package')) {
-                    resources.forEach(function(item) {
-                        if (item.schema && typeof item.schema === 'string' && item.schema.includes('coldp')) {
-                            datasetType = datasetTypeMap['coldp'];
-                        } else if (item.schema && item.schema.identifier && item.schema.identifier.includes('dwc-dp')) {
-                            datasetType = datasetTypeMap['dwc-dp'];
-                        }
-                    });
+                    const identifier = resources[0]?.schema?.identifier?.toLowerCase() || '';
+
+                    if (identifier.includes('dwc-dp')) {
+                        datasetType = datasetTypeMap['dwc-dp'];
+                    } else if (identifier.includes('coldp')) {
+                        datasetType = datasetTypeMap['coldp'];
+                    }
                 }
 
                 applyDatasetType(datasetType);
