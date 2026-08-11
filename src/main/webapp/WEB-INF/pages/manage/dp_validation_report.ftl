@@ -29,6 +29,10 @@
         background: rgb(var(--alert-warning-background-color)) !important;
     }
 
+    .accordion-item:has(.text-bg-danger) .accordion-button:not(.collapsed) {
+        background: rgb(var(--alert-danger-background-color)) !important;
+    }
+
     .accordion-button:focus {
         box-shadow: none;
         border-color: #e3e5e0;
