@@ -17,6 +17,7 @@ import org.gbif.datapackage.DataPackage;
 import org.gbif.datapackage.DataPackageConstants;
 import org.gbif.datapackage.DataPackageForeignKey;
 import org.gbif.datapackage.DataPackageResource;
+import org.gbif.dp.analysis.api.AnalysisExecution;
 import org.gbif.dp.analysis.api.DatapackageAnalysisResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
@@ -32,14 +33,10 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
-import org.gbif.metadata.eml.EMLProfileVersion;
-import org.gbif.metadata.eml.EmlValidator;
-import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -71,9 +68,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
-import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
@@ -89,6 +88,11 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
   private static final Pattern ESCAPE_CHARS = Pattern.compile("[\t\n\r]");
 
+  private static final ObjectMapper MAPPER = JsonMapper.builder()
+      .addModule(new JavaTimeModule())
+      .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+      .build();;
+
   private final Resource resource;
   private final SourceManager sourceManager;
   private MetadataReader metadataReader;
@@ -103,7 +107,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private String currTableSchema;
   // record counts by extension <rowType, count>
   private Map<String, Integer> recordsByTableSchema = new HashMap<>();
-  private final ObjectMapper objectMapper = new ObjectMapper();
 
   public GenerateDarwinCoreDataPackage(
       Resource resource,
@@ -225,23 +228,23 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     setState(STATE.VALIDATING);
     Thread.sleep(2000);
 
-    DatapackageAnalysisResult results;
+    AnalysisExecution<DatapackageAnalysisResult> validationResult;
     try {
-      results = dataPackage.validate(dataPackageFolder);
+      validationResult = dataPackage.validate(dataPackageFolder);
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while validating data package", e, STATE.VALIDATING.name());
     }
 
     // persist the report to the permanent resource dir - dataPackageFolder is a temp
     // dir that gets wiped in call()'s finally block, so it can't live there
-    writeValidationReport(results);
+    writeValidationReport(validationResult);
 
-    boolean hasViolations = results.resourceAnalysisResults().stream().anyMatch(r ->
+    boolean hasViolations = validationResult.result().resourceAnalysisResults().stream().anyMatch(r ->
         !r.foreignKeyViolations().isEmpty()
             || r.primaryKeyViolation() != null
             || !r.dataTypeViolations().isEmpty())
-        || !results.emlValidation().valid()
-        || !results.descriptorValidation().valid();
+        || !validationResult.result().emlValidation().valid()
+        || !validationResult.result().descriptorValidation().valid();
 
     if (hasViolations) {
       addMessage(Level.ERROR, "Data package failed validation, see validation report for details");
@@ -312,10 +315,10 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     addMessage(Level.INFO, "Archive version #" + version + " saved");
   }
 
-  private void writeValidationReport(DatapackageAnalysisResult results) {
+  private void writeValidationReport(AnalysisExecution<DatapackageAnalysisResult> results) {
     try {
       File reportFile = dataDir.resourceDataPackageValidationReportFile(resource.getShortname());
-      objectMapper.writeValue(reportFile, results);
+      MAPPER.writeValue(reportFile, results);
     } catch (IOException e) {
       // don't let a report-writing failure mask the real validation outcome, but don't hide it either
       log.error("Failed to write data package validation report", e);

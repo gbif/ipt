@@ -111,7 +111,7 @@
 </div>
 
 <div class="container py-4">
-    <#if validationReport?has_content>
+    <#if (validationReport.result)?has_content>
 
         <#-- helper macro: severity badge-->
         <#macro severityBadge severity>
@@ -145,8 +145,8 @@
         </#macro>
 
         <#-- Metadata (descriptor) validation-->
-        <#if validationReport.descriptorValidation??>
-            <#assign dv = validationReport.descriptorValidation>
+        <#if validationReport.result.descriptorValidation??>
+            <#assign dv = validationReport.result.descriptorValidation>
             <#assign dvIssueCount = dv.issues?size>
             <#assign dvErrorCount = 0>
             <#list dv.issues as issue><#if issue.severity == 'ERROR'><#assign dvErrorCount = dvErrorCount + 1></#if></#list>
@@ -191,8 +191,8 @@
         </#if>
 
         <#-- EML validation-->
-        <#if validationReport.emlValidation??>
-            <#assign ev = validationReport.emlValidation>
+        <#if validationReport.result.emlValidation??>
+            <#assign ev = validationReport.result.emlValidation>
             <#assign evIssueCount = ev.issues?size>
             <#assign evErrorCount = 0>
             <#list ev.issues as issue><#if issue.severity == 'ERROR'><#assign evErrorCount = evErrorCount + 1></#if></#list>
@@ -240,13 +240,13 @@
             </#if>
         </#if>
 
-        <#if validationReport.resourceAnalysisResults?has_content>
+        <#if validationReport.result.resourceAnalysisResults?has_content>
             <h5 class="py-2 mb-3 text-gbif-header fw-400"><@s.text name="manage.validation.data.title"/></h5>
-            <#assign totalTables = validationReport.resourceAnalysisResults?size>
+            <#assign totalTables = validationReport.result.resourceAnalysisResults?size>
             <#assign totalRowsAllTables = 0>
             <#assign totalIssues = 0>
             <#assign tablesWithIssues = 0>
-            <#list validationReport.resourceAnalysisResults as t>
+            <#list validationReport.result.resourceAnalysisResults as t>
                 <#assign totalRowsAllTables = totalRowsAllTables + t.totalRows>
                 <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
                 <#assign totalIssues = totalIssues + tableIssueCount>
@@ -315,7 +315,7 @@
 
             <#-- per table accordion-->
             <div class="accordion" id="validationAccordion">
-                <#list validationReport.resourceAnalysisResults as t>
+                <#list validationReport.result.resourceAnalysisResults as t>
                     <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
                     <#assign panelId = "table-" + t.name?replace("[^a-zA-Z0-9]", "-", "r")>
                     <div class="accordion-item">

@@ -14,6 +14,7 @@
 package org.gbif.datapackage;
 
 import org.gbif.dp.analysis.DefaultDataPackageAnalysisOrchestrator;
+import org.gbif.dp.analysis.api.AnalysisExecution;
 import org.gbif.dp.analysis.api.AnalysisFeature;
 import org.gbif.dp.analysis.api.DataAnalyser;
 import org.gbif.dp.analysis.api.DataPackageAnalysisOrchestrator;
@@ -174,11 +175,11 @@ public class DataPackage {
     write(zipFile, baseDir, null);
   }
 
-  public DatapackageAnalysisResult validate(File baseDir) throws IOException {
+  public AnalysisExecution<DatapackageAnalysisResult> validate(File baseDir) throws IOException {
     Path descriptorPath = baseDir.toPath().resolve("datapackage.json");
     Files.write(descriptorPath, MAPPER.writeValueAsBytes(this));
     try {
-      return dpAnalysisOrchestrator.analyse(
+      return dpAnalysisOrchestrator.analyseWithFullReport(
           descriptorPath.toString(),
           new ValidationOptions(20),
           AnalysisFeature.ALL_FEATURES);

@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dp.analysis.api.AnalysisExecution;
 import org.gbif.dp.analysis.api.DatapackageAnalysisResult;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
@@ -26,7 +27,11 @@ import java.io.Serial;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.inject.Inject;
 
 import lombok.Getter;
@@ -46,14 +51,18 @@ public class ValidationReportAction extends ManagerBaseAction {
   // Adjust to wherever your validation step actually writes the report.
   private static final String REPORT_FILENAME = "datapackage-validation-report.json";
 
+  private static final ObjectMapper MAPPER = JsonMapper.builder()
+      .addModule(new JavaTimeModule())
+      .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+      .build();
+
   private final DataDir dataDir;
-  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Getter
   private String shortname;
 
   @Getter
-  private DatapackageAnalysisResult validationReport = null;
+  private AnalysisExecution<DatapackageAnalysisResult> validationReport = null;
 
   @Inject
   public ValidationReportAction(
@@ -79,7 +88,11 @@ public class ValidationReportAction extends ManagerBaseAction {
     }
 
     try {
-      validationReport = objectMapper.readValue(reportFile, DatapackageAnalysisResult.class);
+      validationReport = MAPPER.readValue(
+          reportFile,
+          new TypeReference<>() {
+          }
+      );
     } catch (IOException e) {
       LOG.error("Failed to read validation report for resource {}: {}", shortname,
           e.getMessage(), e);
