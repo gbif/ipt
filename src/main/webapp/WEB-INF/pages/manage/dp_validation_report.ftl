@@ -1,6 +1,7 @@
 <#setting url_escaping_charset="UTF-8">
 
 <#include "/WEB-INF/pages/inc/header.ftl">
+<title><@s.text name="manage.validation.data.title"/></title>
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <style>
@@ -105,6 +106,10 @@
                 <h1 class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     <@s.text name="manage.validation.title"/>
                 </h1>
+
+                <div class="text-smaller">
+                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                </div>
             </div>
         </div>
     </div>

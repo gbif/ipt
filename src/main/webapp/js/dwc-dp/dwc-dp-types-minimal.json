@@ -229,5 +229,11 @@
   },
   "usage-policy": {
     "type": "Entity"
+  },
+  "survey-survey-target": {
+    "type": "Join"
+  },
+  "survey-target-descriptor": {
+    "type": "Entity"
   }
 }
