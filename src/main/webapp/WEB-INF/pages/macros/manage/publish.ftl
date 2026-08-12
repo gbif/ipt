@@ -35,9 +35,11 @@
 
     <!-- resources cannot be published if the mandatory metadata is missing -->
     <!-- resources cannot be published if mappings are missing (for DPs) -->
+    <!-- resources cannot be published if some required fields are not mapped (for DPs) -->
     <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
     <#elseif !validMetadata
         || (dataPackageResource && dataPackageMappingsMissing)
+        || (dataPackageResource && !allRequiredFieldsMappedDataPackage)
         || (resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense())>
         <@showPublicationWarningButton/>
 

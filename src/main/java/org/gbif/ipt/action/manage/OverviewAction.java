@@ -128,7 +128,6 @@ import lombok.Setter;
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
 import static org.gbif.ipt.config.Constants.COL_DP;
-import static org.gbif.ipt.config.Constants.DWC_DP;
 import static org.gbif.ipt.config.Constants.GBIF_SUPPORTED_LICENSES_CODES;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_PREFIX_NOT_MATCHING;
@@ -213,6 +212,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private String freeDiscSpaceReadable;
   @Getter
   private boolean dataPackageSchemaChanged;
+  @Getter
+  private boolean allRequiredFieldsMappedDataPackage;
   @Getter
   private String installedSchemaVersion;
   @Getter
@@ -1249,6 +1250,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           installedSchemaName = dataPackageSchema.getName();
           installedSchemaVersion = dataPackageSchema.getVersion();
         }
+
+        allRequiredFieldsMappedDataPackage = computeAllRequiredFieldsMappedDataPackage();
       }
 
       // check metadata
@@ -1902,6 +1905,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
   public boolean isDataPackageMappingsMissing() {
     return resource.getDataPackageMappings().isEmpty();
+  }
+
+  private boolean computeAllRequiredFieldsMappedDataPackage() {
+    if (resource.getDataPackageMappings() == null) {
+      return false;
+    }
+    try {
+      return resource.getDataPackageMappings().stream()
+          .allMatch(m -> m.getMissingRequiredFields().isEmpty());
+    } catch (RuntimeException e) {
+      LOG.error("Failed to check if all required fields are mapped for data package resource {}",
+          resource.getShortname(), e);
+      return false;
+    }
   }
 
   public boolean isVisibilityChangePending() {

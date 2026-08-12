@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,5 +90,35 @@ public class DataPackageMapping implements Serializable {
       }
     }
     return null;
+  }
+
+  public DataPackageTableSchema getTableSchema() {
+    if (dataPackageSchema == null || dataPackageTableSchemaName == null) {
+      return null;
+    }
+    DataPackageTableSchema result = dataPackageSchema.tableSchemaByName(dataPackageTableSchemaName.getName());
+    if (result == null) {
+      LOG.warn("No table schema found for name '{}'. Available: {}",
+          dataPackageTableSchemaName,
+          dataPackageSchema.getTableSchemas().stream().map(DataPackageTableSchema::getName).toList());
+    }
+    return result;
+  }
+
+  public List<DataPackageField> getMissingRequiredFields() {
+    DataPackageTableSchema table = getTableSchema();
+    if (table == null || table.getFields() == null) {
+      return List.of();
+    }
+
+    return table.getFields().stream()
+        .filter(DataPackageField::isRequired)
+        .filter(field -> !isFieldMapped(field))
+        .collect(Collectors.toList());
+  }
+
+  private boolean isFieldMapped(DataPackageField field) {
+    DataPackageFieldMapping fm = getField(field.getName());
+    return fm != null && fm.isMapped();
   }
 }

@@ -17,6 +17,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,5 +53,9 @@ public class DataPackageFieldMapping implements Serializable, Comparable<DataPac
   @Override
   public int compareTo(DataPackageFieldMapping fieldMapping) {
     return field.getName().compareTo(fieldMapping.getField().getName());
+  }
+
+  public boolean isMapped() {
+    return index != null || StringUtils.isNotBlank(defaultValue);
   }
 }

@@ -2845,6 +2845,11 @@
                             <@s.text name="manage.overview.published.missing.mappings"/>
                         </p>
 
+                    <#elseif isDataPackage && !allRequiredFieldsMappedDataPackage>
+                        <p class="mb-0">
+                            <@s.text name="manage.overview.published.missing.requiredFields"/>
+                        </p>
+
                         <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
                     <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
                         <p class="mb-0">

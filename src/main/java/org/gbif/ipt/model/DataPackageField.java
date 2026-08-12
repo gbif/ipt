@@ -43,4 +43,8 @@ public class DataPackageField implements Serializable {
   public String qualifiedName(String namespace) {
     return namespace + '/' + name;
   }
+
+  public boolean isRequired() {
+    return constraints != null && Boolean.TRUE.equals(constraints.getRequired());
+  }
 }
