@@ -397,8 +397,10 @@ public class DataPackageMappingAction extends ManagerBaseAction {
 
   /**
    * Normalizes an incoming column name so that it can later be compared against a schema's field name.
-   * This method converts the incoming string to lower case, and will take the substring up to, but not including the
+   * This method converts the incoming string to lower case and will take the substring up to, but not including the
    * first ":".
+   * <p>
+   * Columns like <code>_id</code>, <code>*_pk</code> and <code>*fk</code> are excluded from character stripping.
    *
    * @param col column name
    * @return the normalized column name, or null if the incoming name was null or empty
@@ -406,11 +408,12 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private String normalizeColumnName(String col) {
     String result;
     if (StringUtils.isNotBlank(col)) {
-      // exclude _id field
-      if (!"_id".equals(col.trim())) {
-        result = FIELD_FORBIDDEN_CHARACTERS_PATTERN.matcher(col.toLowerCase()).replaceAll("");
+      String trimmed = col.trim();
+      // exclude _id field and *_pk fields from character stripping
+      if ("_id".equals(trimmed) || trimmed.toLowerCase().endsWith("_pk") || trimmed.toLowerCase().endsWith("fk")) {
+        result = trimmed.toLowerCase();
       } else {
-        result = col.trim();
+        result = FIELD_FORBIDDEN_CHARACTERS_PATTERN.matcher(col.toLowerCase()).replaceAll("");
       }
       if (result.contains(":")) {
         result = StringUtils.substringAfter(col, ":");
