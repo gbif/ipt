@@ -15,6 +15,10 @@
         box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
     }
 
+    .accordion-button {
+        color: #4E565F !important;
+    }
+
     .accordion-button:not(.collapsed) {
         background: rgb(var(--alert-success-background-color));
         color: #2c2c2c;
@@ -106,7 +110,7 @@
     </div>
 </div>
 
-<div class="container py-4 px-0">
+<div class="container py-4">
     <#if validationReport?has_content>
 
         <#-- helper macro: severity badge-->
@@ -158,7 +162,7 @@
                 </div>
             <#else>
                 <div class="alert <#if dvErrorCount gt 0>alert-danger<#else>alert-warning</#if> alert-dismissible fade show d-flex mb-3" role="alert">
-                    <div class="me-3"><i class="bi bi-exclamation-circle fs-bigger-2 me-2"></i></div>
+                    <div class="me-3"><i class="bi bi-exclamation-circle <#if dvErrorCount gt 0>alert-red-2</#if> fs-bigger-2 me-2"></i></div>
                     <div class="overflow-x-hidden pt-1">
                         <span><@s.text name="manage.validation.descriptor.someIssues"><@s.param>${dvIssueCount}</@s.param></@s.text></span>
                         <#if !dv.canProceedToDataAnalysis>
@@ -211,7 +215,7 @@
                 </div>
             <#else>
                 <div class="alert <#if evErrorCount gt 0>alert-danger<#else>alert-warning</#if> alert-dismissible fade show d-flex mb-3" role="alert">
-                    <div class="me-3"><i class="bi bi-exclamation-circle fs-bigger-2 me-2"></i></div>
+                    <div class="me-3"><i class="bi bi-exclamation-circle <#if evErrorCount gt 0>alert-red-2</#if> fs-bigger-2 me-2"></i></div>
                     <div class="overflow-x-hidden pt-1">
                         <span><@s.text name="manage.validation.eml.someIssues"><@s.param>${evIssueCount}</@s.param></@s.text></span>
                     </div>
