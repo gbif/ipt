@@ -566,6 +566,11 @@ table {
     border-left-width: 0.25rem !important;
 }
 
+.mapping-item-dwc-dp-other {
+    border-left-color: #d3d3d3 !important;
+    border-left-width: 0.25rem !important;
+}
+
 @media (max-width: 576px) {
     .mapping-item-link, .source-item-link {
         max-width: 80% !important;
