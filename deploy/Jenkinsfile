@@ -42,7 +42,8 @@ pipeline {
     }
 
     environment {
-        REPOSITORY_URL = 'https://repository.gbif.org/repository/gbif'
+        REPOSITORY_RELEASE_URL = 'https://repository.gbif.org/repository/gbif'
+        REPOSITORY_SNAPSHOT_URL = 'https://repository-snapshots.gbif.org/repository/snapshots'
         ARTIFACT_PATH = 'org/gbif/ipt'
         SERVER_PROD_A = 'tomcat-a.gbif.org'
         SERVER_PROD_B = 'tomcat-b.gbif.org'
@@ -63,9 +64,11 @@ pipeline {
             steps {
                 script {
                     if (params.VERSION.endsWith('-SNAPSHOT')) {
+                        repositoryUrl = env.REPOSITORY_SNAPSHOT_URL
+
                         echo "SNAPSHOT version detected, resolving latest build..."
 
-                        def metadataUrl = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/maven-metadata.xml"
+                        def metadataUrl = "${repositoryUrl}/${env.ARTIFACT_PATH}/${params.VERSION}/maven-metadata.xml"
                         def metadata = sh(
                                 script: "curl --fail --silent '${metadataUrl}'",
                                 returnStdout: true
@@ -79,9 +82,11 @@ pipeline {
                         def timestampedVersion = matcher.group(1)
                         echo "Resolved snapshot to: ${timestampedVersion}"
 
-                        env.WAR_URL = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/ipt-${timestampedVersion}.war"
+                        env.WAR_URL = "${repositoryUrl}/${env.ARTIFACT_PATH}/${params.VERSION}/ipt-${timestampedVersion}.war"
                     } else {
-                        env.WAR_URL = "${env.REPOSITORY_URL}/${env.ARTIFACT_PATH}/${params.VERSION}/ipt-${params.VERSION}.war"
+                        repositoryUrl = env.REPOSITORY_RELEASE_URL
+
+                        env.WAR_URL = "${repositoryUrl}/${env.ARTIFACT_PATH}/${params.VERSION}/ipt-${params.VERSION}.war"
                     }
                     echo "WAR URL: ${env.WAR_URL}"
                 }
