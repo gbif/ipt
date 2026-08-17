@@ -27,6 +27,7 @@ import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -99,6 +100,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -214,6 +216,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private boolean dataPackageSchemaChanged;
   @Getter
   private boolean allRequiredFieldsMappedDataPackage;
+  @Getter
+  private Map<String, List<DataPackageField>> missingRequiredFieldsDataPackage;
   @Getter
   private String installedSchemaVersion;
   @Getter
@@ -1251,7 +1255,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           installedSchemaVersion = dataPackageSchema.getVersion();
         }
 
-        allRequiredFieldsMappedDataPackage = computeAllRequiredFieldsMappedDataPackage();
+        missingRequiredFieldsDataPackage = computeAllRequiredFieldsMappedDataPackage();
+        allRequiredFieldsMappedDataPackage = missingRequiredFieldsDataPackage.isEmpty();
       }
 
       // check metadata
@@ -1907,17 +1912,29 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return resource.getDataPackageMappings().isEmpty();
   }
 
-  private boolean computeAllRequiredFieldsMappedDataPackage() {
+  private Map<String, List<DataPackageField>> computeAllRequiredFieldsMappedDataPackage() {
+    Map<String, List<DataPackageField>> result = new HashMap<>();
+
     if (resource.getDataPackageMappings() == null) {
-      return false;
+      return result;
     }
+
     try {
-      return resource.getDataPackageMappings().stream()
-          .allMatch(m -> m.getMissingRequiredFields().isEmpty());
+      resource.getDataPackageMappings()
+          .stream()
+          .filter(p -> !p.getMissingRequiredFields().isEmpty())
+          .forEach(p ->
+              result.put(
+                  p.getDataPackageTableSchemaName().getName(),
+                  p.getMissingRequiredFields()
+              )
+          );
+      return result;
     } catch (RuntimeException e) {
-      LOG.error("Failed to check if all required fields are mapped for data package resource {}",
+      LOG.error(
+          "Failed to check if all required fields are mapped for data package resource {}",
           resource.getShortname(), e);
-      return false;
+      return new HashMap<>();
     }
   }
 
