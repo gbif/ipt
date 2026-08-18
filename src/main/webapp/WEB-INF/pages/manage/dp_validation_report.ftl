@@ -236,7 +236,7 @@
                             </button>
                         </h2>
                         <div id="eml-issues" class="accordion-collapse collapse" aria-labelledby="heading-eml-issues" data-bs-parent="#emlAccordion">
-                            <div class="accordion-body p-0">
+                            <div class="accordion-body">
                                 <@issuesTable ev.issues/>
                             </div>
                         </div>
