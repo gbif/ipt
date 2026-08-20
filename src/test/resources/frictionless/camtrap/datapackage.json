@@ -1,0 +1,422 @@
+{
+  "name": "dagma-otus_fototrampeotest",
+  "profile": "https://rs.gbif.org/sandbox/data-packages/camtrap-dp/1.0/profile/camtrap-dp-profile.json",
+  "title": "Monitoreo de biodiversidad utilizando cámaras trampa en la Estructura Ecológica Principal de Santiago de Cali",
+  "description": "Proyecto para fortalecer la gestión integral de la Biodiversidad en Colombia a través del monitoreo de fauna con cámaras trampa, en el marco de la iniciativa denominada “RED OTUS”, en los predios de conservación y centros integrados de la ruralidad, dentro de la Estructura Ecológica Principal de Santiago de Cali.",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0",
+      "scope": "data"
+    },
+    {
+      "name": "CC-BY-NC-4.0",
+      "scope": "media"
+    }
+  ],
+  "sources": [
+    {
+      "title": "source 1",
+      "path": "/source1",
+      "email": "source1@mail",
+      "version": "1.0"
+    },
+    {
+      "title": "source 2",
+      "email": "source2@mail",
+      "version": "2.0"
+    }
+  ],
+  "created": "2026-06-03T09:19:36Z",
+  "contributors": [
+    {
+      "title": "Catalina Silva",
+      "firstName": "Catalina",
+      "lastName": "Silva",
+      "email": "prediosecosistemas@gmail.com",
+      "role": "contact",
+      "organization": "Departamento Administrativo de Gestión del Medio Ambiente-DAGM"
+    },
+    {
+      "title": "Angélica Diaz",
+      "firstName": "Angélica",
+      "lastName": "Diaz",
+      "email": "adiaz@humboldt.org.co",
+      "role": "contact",
+      "organization": "Investigación de Recursos biológicos Alexander von Humboldt"
+    },
+    {
+      "title": " Infraestructura Institucional de Datos",
+      "email": "i2d@humboldt.org.co",
+      "role": "publisher",
+      "organization": "Investigación de Recursos biológicos Alexander von Humboldt"
+    }
+  ],
+  "resources": [
+    {
+      "name": "deployments",
+      "profile": "tabular-data-resource",
+      "encoding": "UTF-8",
+      "format": "csv",
+      "schema": "http://rs.gbif.org/sandbox/data-packages/camtrap-dp/1.0/table-schemas/deployments.json",
+      "path": "deployments.csv"
+    },
+    {
+      "name": "media",
+      "profile": "tabular-data-resource",
+      "encoding": "UTF-8",
+      "format": "csv",
+      "schema": "http://rs.gbif.org/sandbox/data-packages/camtrap-dp/1.0/table-schemas/media.json",
+      "path": "media.csv"
+    },
+    {
+      "name": "observations",
+      "profile": "tabular-data-resource",
+      "encoding": "UTF-8",
+      "format": "csv",
+      "schema": "http://rs.gbif.org/sandbox/data-packages/camtrap-dp/1.0/table-schemas/observations.json",
+      "path": "observations.csv"
+    }
+  ],
+  "version": "2",
+  "keywords": [
+    "Mamíferos, aves, cámaras trampa"
+  ],
+  "image": "https://gitlab.com/sib-colombia/logos/-/raw/main/socio-SiB-dagma.png",
+  "bibliographicCitation": " (2025). DAGMA_OTUS. Version 1. Camtrap DP dataset. https://ipt.biodiversidad.co/sib/resource?r=dagma-otus_fototrampeo&amp;v=1",
+  "project": {
+    "title": "RED OTUS en la Estructura Ecológica Principal de Santiago de Cali",
+    "description": "Proyecto para fortalecer la gestión integral de la Biodiversidad en Colombia a través del monitoreo de fauna con cámaras trampa, en el marco de la iniciativa denominada “RED OTUS”, en los predios de conservación y centros integrados de la ruralidad, dentro de la Estructura Ecológica Principal de Santiago de Cali.\r\n\r\nEl diseño de muestreo se estableció con el propósito de registrar principalmente mamíferos y aves de hábitos terrestres. Para ello, se garantizó una equidistancia entre estaciones, instalando una cámara trampa aproximadamente cada kilómetro. El diseño abarcó los predios de conservación del DAGMA, así como humedales, ecoparques urbanos y las áreas intermedias entre estos, con el fin de definir un territorio conectado a través de la red de cámaras. Para la ubicación precisa de cada cámara trampa en campo, se priorizó la maximización de la captura fotográfica, seleccionando sitios con evidencia de actividad de fauna, como rastros, comederos naturales o senderos utilizados por los animales.",
+    "samplingDesign": "systematicRandom",
+    "captureMethod": [
+      "activityDetection"
+    ],
+    "observationLevel": [
+      "media"
+    ],
+    "individualAnimals": false
+  },
+  "spatial": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -76.66415,
+          3.3176
+        ],
+        [
+          -76.535,
+          3.3176
+        ],
+        [
+          -76.535,
+          3.465278
+        ],
+        [
+          -76.66415,
+          3.465278
+        ],
+        [
+          -76.66415,
+          3.3176
+        ]
+      ]
+    ]
+  },
+  "temporal": {
+    "start": "2025-10-04",
+    "end": "2025-12-06"
+  },
+  "taxonomic": [
+    {
+      "scientificName": "Eira barbara"
+    },
+    {
+      "scientificName": "Dasyprocta punctata"
+    },
+    {
+      "scientificName": "Sciuridae"
+    },
+    {
+      "scientificName": "Cetartiodactyla"
+    },
+    {
+      "scientificName": "Catharus"
+    },
+    {
+      "scientificName": "Herpailurus yagouaroundi"
+    },
+    {
+      "scientificName": "Megascops"
+    },
+    {
+      "scientificName": "Aramides cajaneus"
+    },
+    {
+      "scientificName": "Canis familiaris"
+    },
+    {
+      "scientificName": "Turdus"
+    },
+    {
+      "scientificName": "Felis catus"
+    },
+    {
+      "scientificName": "Pitangus sulphuratus"
+    },
+    {
+      "scientificName": "Trochilidae"
+    },
+    {
+      "scientificName": "Tinamidae"
+    },
+    {
+      "scientificName": "Leopardus"
+    },
+    {
+      "scientificName": "Geotrygon montana"
+    },
+    {
+      "scientificName": "Catharus ustulatus"
+    },
+    {
+      "scientificName": "Nyctidromus albicollis"
+    },
+    {
+      "scientificName": "Leptotila verreauxi"
+    },
+    {
+      "scientificName": "Grallaria guatimalensis"
+    },
+    {
+      "scientificName": "Sporophila"
+    },
+    {
+      "scientificName": "Cerdocyon thous"
+    },
+    {
+      "scientificName": "Rattus rattus"
+    },
+    {
+      "scientificName": "Phimosus infuscatus"
+    },
+    {
+      "scientificName": "Chiroptera"
+    },
+    {
+      "scientificName": "Didelphis"
+    },
+    {
+      "scientificName": "Iguana iguana"
+    },
+    {
+      "scientificName": "Rupornis magnirostris"
+    },
+    {
+      "scientificName": "Tamandua tetradactyla"
+    },
+    {
+      "scientificName": "Caprimulgidae"
+    },
+    {
+      "scientificName": "Nasua nasua"
+    },
+    {
+      "scientificName": "Didelphidae"
+    },
+    {
+      "scientificName": "Leptotila plumbeiceps"
+    },
+    {
+      "scientificName": "Rodentia"
+    },
+    {
+      "scientificName": "Sporophila funerea"
+    },
+    {
+      "scientificName": "Colaptes punctigula"
+    },
+    {
+      "scientificName": "Canidae"
+    },
+    {
+      "scientificName": "Leopardus wiedii"
+    },
+    {
+      "scientificName": "Bos taurus"
+    },
+    {
+      "scientificName": "Mustela frenata"
+    },
+    {
+      "scientificName": "Seiurus aurocapilla"
+    },
+    {
+      "scientificName": "Passeriformes"
+    },
+    {
+      "scientificName": "Coragyps atratus"
+    },
+    {
+      "scientificName": "Sicalis flaveola"
+    },
+    {
+      "scientificName": "Tinamus"
+    },
+    {
+      "scientificName": "Zenaida auriculata"
+    },
+    {
+      "scientificName": "Mionectes"
+    },
+    {
+      "scientificName": "Equus caballus"
+    },
+    {
+      "scientificName": "Momotus aequatorialis"
+    },
+    {
+      "scientificName": "Animalia"
+    },
+    {
+      "scientificName": "Puma concolor"
+    },
+    {
+      "scientificName": "Columbina talpacoti"
+    },
+    {
+      "scientificName": "Grallaria ruficapilla"
+    },
+    {
+      "scientificName": "Sciurus granatensis"
+    },
+    {
+      "scientificName": "Geotrygon"
+    },
+    {
+      "scientificName": "Turdus ignobilis"
+    },
+    {
+      "scientificName": "Tayassuidae"
+    },
+    {
+      "scientificName": "Zentrygon frenata"
+    },
+    {
+      "scientificName": "Crypturellus soui"
+    },
+    {
+      "scientificName": "Saltator maximus"
+    },
+    {
+      "scientificName": "Cuniculus paca"
+    },
+    {
+      "scientificName": "Chamaepetes goudotii"
+    },
+    {
+      "scientificName": "Mimus gilvus"
+    },
+    {
+      "scientificName": "Volatinia jacarina"
+    },
+    {
+      "scientificName": "Dasypus"
+    },
+    {
+      "scientificName": "Crotophaga ani"
+    },
+    {
+      "scientificName": "Turdus fumigatus"
+    },
+    {
+      "scientificName": "Arremon brunneinucha"
+    },
+    {
+      "scientificName": "Columbidae"
+    },
+    {
+      "scientificName": "Bubulcus ibis"
+    },
+    {
+      "scientificName": "Aves"
+    },
+    {
+      "scientificName": "Myiothlypis fulvicauda"
+    },
+    {
+      "scientificName": "Carnivora"
+    },
+    {
+      "scientificName": "Milvago chimachima"
+    },
+    {
+      "scientificName": "Mazama americana"
+    },
+    {
+      "scientificName": "Sylvilagus"
+    },
+    {
+      "scientificName": "Sciurus"
+    },
+    {
+      "scientificName": "Hafferia immaculata"
+    },
+    {
+      "scientificName": "Butorides striata"
+    },
+    {
+      "scientificName": "Grallariidae"
+    },
+    {
+      "scientificName": "Dasypus novemcinctus"
+    },
+    {
+      "scientificName": "Penelope perspicax"
+    },
+    {
+      "scientificName": "Sylvilagus floridanus"
+    },
+    {
+      "scientificName": "Odontophorus hyperythrus"
+    },
+    {
+      "scientificName": "Cracidae"
+    },
+    {
+      "scientificName": "Didelphis marsupialis"
+    },
+    {
+      "scientificName": "Crypturellus"
+    },
+    {
+      "scientificName": "Mammalia"
+    },
+    {
+      "scientificName": "Poliocrania exsul"
+    },
+    {
+      "scientificName": "Ortalis columbiana"
+    },
+    {
+      "scientificName": "Didelphis pernigra"
+    },
+    {
+      "scientificName": "Muridae"
+    },
+    {
+      "scientificName": "Empidonax"
+    },
+    {
+      "scientificName": "Zentrygon linearis"
+    },
+    {
+      "scientificName": "Leptotila"
+    },
+    {
+      "scientificName": "Dicotyles tajacu"
+    }
+  ],
+  "gbifIngestion": {
+    "observationLevel": "media"
+  }
+}

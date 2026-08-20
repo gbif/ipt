@@ -203,6 +203,7 @@ public class CamtrapMetadata extends FrictionlessMetadata<CamtrapContributor, Ca
   @Override
   @JsonProperty("created")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonDeserialize(using = Rfc3339DateDeserializer.class)
   public Date getCreated() {
     return super.getCreated();
   }
@@ -215,6 +216,7 @@ public class CamtrapMetadata extends FrictionlessMetadata<CamtrapContributor, Ca
   @Override
   @JsonProperty("created")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+  @JsonDeserialize(using = Rfc3339DateDeserializer.class)
   public void setCreated(Date created) {
     super.setCreated(created);
   }
@@ -246,7 +248,8 @@ public class CamtrapMetadata extends FrictionlessMetadata<CamtrapContributor, Ca
    */
   @Override
   @JsonProperty("contributors")
-  @JsonDeserialize(contentUsing = CamtrapContributor.CamtrapContributorDeserializer.class)
+  @JsonDeserialize(contentAs = CamtrapContributor.class,
+      contentUsing = CamtrapContributor.CamtrapContributorDeserializer.class)
   @JsonSetter(contentNulls = Nulls.SKIP)
   @Element(CamtrapContributor.class)
   @NotNull(message = "validation.input.required", groups = BasicMetadata.class)
@@ -263,6 +266,8 @@ public class CamtrapMetadata extends FrictionlessMetadata<CamtrapContributor, Ca
    */
   @Override
   @JsonProperty("contributors")
+  @JsonDeserialize(contentAs = CamtrapContributor.class,
+      contentUsing = CamtrapContributor.CamtrapContributorDeserializer.class)
   public void setContributors(List<CamtrapContributor> contributors) {
     super.setContributors(contributors);
   }
