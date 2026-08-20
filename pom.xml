@@ -373,6 +373,12 @@
       <groupId>org.gbif</groupId>
       <artifactId>dwc-dp-analyser-lib</artifactId>
       <version>${gbif-dwc-dp-analyser.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.gbif</groupId>
