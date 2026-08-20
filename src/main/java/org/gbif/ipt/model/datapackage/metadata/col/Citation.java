@@ -46,6 +46,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "id",
     "type",
     "title",
+    "alias",
     "version",
     "author",
     "editor",
@@ -88,6 +89,9 @@ public class Citation {
   @JsonProperty("title")
   @NotNull
   private String title;
+
+  @JsonProperty("alias")
+  private String alias;
 
   /**
    * version of the dataset/source
@@ -245,6 +249,16 @@ public class Citation {
   @JsonProperty("title")
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  @JsonProperty("alias")
+  public String getAlias() {
+    return alias;
+  }
+
+  @JsonProperty("alias")
+  public void setAlias(String alias) {
+    this.alias = alias;
   }
 
   @JsonProperty("version")
@@ -511,6 +525,7 @@ public class Citation {
     return Objects.equals(id, citation.id)
         && type == citation.type
         && Objects.equals(title, citation.title)
+        && Objects.equals(alias, citation.alias)
         && Objects.equals(version, citation.version)
         && Objects.equals(author, citation.author)
         && Objects.equals(editor, citation.editor)
@@ -536,9 +551,9 @@ public class Citation {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, type, title, version, author, editor, publisher, publisherPlace, issued, containerTitle,
-        containerAuthor, volume, issue, edition, page, collectionTitle, collectionEditor, doi, isbn, issn, url, accessed,
-        note, additionalProperties);
+    return Objects.hash(id, type, title, alias, version, author, editor, publisher, publisherPlace, issued,
+        containerTitle, containerAuthor, volume, issue, edition, page, collectionTitle, collectionEditor, doi, isbn,
+        issn, url, accessed, note, additionalProperties);
   }
 
   @Override
@@ -547,6 +562,7 @@ public class Citation {
         .add("id='" + id + "'")
         .add("type=" + type)
         .add("title='" + title + "'")
+        .add("alias='" + alias + "'")
         .add("version='" + version + "'")
         .add("author=" + author)
         .add("editor=" + editor)

@@ -13,6 +13,9 @@
  */
 package org.gbif.ipt.model.datapackage.metadata.col;
 
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -32,7 +35,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Main class for COL Data Package (ColDP) metadata.
@@ -61,6 +68,9 @@ import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
     "completeness",
     "confidence",
     "url",
+    "feedbackUrl",
+    "urlFormatter",
+    "conversion",
     "issn",
     "license",
     "logo",
@@ -80,8 +90,7 @@ public class ColMetadata implements DataPackageMetadata {
    * Supported ID types: DOI, GBIF, COL, PLAZI
    */
   @JsonProperty("identifier")
-  @Valid
-  private Identifier identifier;
+  private List<String> identifier;
 
   /**
    * Full dataset title
@@ -203,6 +212,15 @@ public class ColMetadata implements DataPackageMetadata {
   @JsonProperty("url")
   private URI url;
 
+  @JsonProperty("feedbackUrl")
+  private URI feedbackUrl;
+
+  @JsonProperty("urlFormatter")
+  private UrlFormatter urlFormatter;
+
+  @JsonProperty("conversion")
+  private Conversion conversion;
+
   /**
    * ISSN for a serial publication
    */
@@ -262,12 +280,14 @@ public class ColMetadata implements DataPackageMetadata {
   }
 
   @JsonProperty("identifier")
-  public Identifier getIdentifier() {
+  @JsonDeserialize(using = IdentifierDeserializer.class)
+  public List<String> getIdentifier() {
     return identifier;
   }
 
   @JsonProperty("identifier")
-  public void setIdentifier(Identifier identifier) {
+  @JsonDeserialize(using = IdentifierDeserializer.class)
+  public void setIdentifier(List<String> identifier) {
     this.identifier = identifier;
   }
 
@@ -457,6 +477,36 @@ public class ColMetadata implements DataPackageMetadata {
     this.url = url;
   }
 
+  @JsonProperty("feedbackUrl")
+  public URI getFeedbackUrl() {
+    return feedbackUrl;
+  }
+
+  @JsonProperty("feedbackUrl")
+  public void setFeedbackUrl(URI feedbackUrl) {
+    this.feedbackUrl = feedbackUrl;
+  }
+
+  @JsonProperty("urlFormatter")
+  public UrlFormatter getUrlFormatter() {
+    return urlFormatter;
+  }
+
+  @JsonProperty("urlFormatter")
+  public void setUrlFormatter(UrlFormatter urlFormatter) {
+    this.urlFormatter = urlFormatter;
+  }
+
+  @JsonProperty
+  public Conversion getConversion() {
+    return conversion;
+  }
+
+  @JsonProperty("conversion")
+  public void setConversion(Conversion conversion) {
+    this.conversion = conversion;
+  }
+
   @JsonProperty("issn")
   public String getIssn() {
     return issn;
@@ -547,6 +597,9 @@ public class ColMetadata implements DataPackageMetadata {
         && Objects.equals(completeness, that.completeness)
         && Objects.equals(confidence, that.confidence)
         && Objects.equals(url, that.url)
+        && Objects.equals(feedbackUrl, that.feedbackUrl)
+        && Objects.equals(urlFormatter, that.urlFormatter)
+        && Objects.equals(conversion, that.conversion)
         && Objects.equals(issn, that.issn)
         && Objects.equals(license, that.license)
         && Objects.equals(logo, that.logo)
@@ -559,7 +612,8 @@ public class ColMetadata implements DataPackageMetadata {
   public int hashCode() {
     return Objects.hash(doi, identifier, title, alias, version, issued, creator, editor, publisher, contact,
         contributor, description, keyword, taxonomicScope, taxonomicScopeInEnglish, temporalScope, geographicScope,
-        completeness, confidence, url, issn, license, logo, source, notes, additionalProperties);
+        completeness, confidence, url, feedbackUrl, urlFormatter, conversion, issn, license, logo, source, notes,
+        additionalProperties);
   }
 
   @Override
@@ -585,6 +639,9 @@ public class ColMetadata implements DataPackageMetadata {
         .add("completeness=" + completeness)
         .add("confidence=" + confidence)
         .add("url=" + url)
+        .add("feedbackUrl=" + feedbackUrl)
+        .add("urlFormatter=" + urlFormatter)
+        .add("conversion=" + conversion)
         .add("issn='" + issn + "'")
         .add("license='" + license + "'")
         .add("logo=" + logo)
@@ -592,5 +649,36 @@ public class ColMetadata implements DataPackageMetadata {
         .add("notes='" + notes + "'")
         .add("additionalProperties=" + additionalProperties)
         .toString();
+  }
+
+  public static class IdentifierDeserializer extends JsonDeserializer<List<String>> {
+
+    @Override
+    public List<String> deserialize(JsonParser p, DeserializationContext ctxt)
+        throws IOException {
+
+      List<String> identifiers = new ArrayList<>();
+
+      if (p.currentToken() == JsonToken.START_ARRAY) {
+        while (p.nextToken() != JsonToken.END_ARRAY) {
+          identifiers.add(p.getValueAsString());
+        }
+      } else if (p.currentToken() == JsonToken.START_OBJECT) {
+        while (p.nextToken() != JsonToken.END_OBJECT) {
+          String type = p.currentName();
+          p.nextToken();
+
+          String value = p.getValueAsString();
+          identifiers.add(type + ":" + value);
+        }
+      } else {
+        ctxt.reportInputMismatch(
+            List.class,
+            "Expected identifier to be an array or object"
+        );
+      }
+
+      return identifiers;
+    }
   }
 }
