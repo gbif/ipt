@@ -41,12 +41,11 @@ public class StaticResourcesTest {
    * <p>
    * This test checks that all static resources take one of these options.
    * <p>
-   * One way to add a BOM to a file is <code>sed -i '1s/^/\xef\xbb\xbf/' file</code>.
-   * Another is:
-   * <code>
-   *   printf '\xEF\xBB\xBF' > result_file
-   *   cat temp_file >> result_file
-   * </code>
+   * To add a BOM to a file:
+   * <ul>
+   *   <li>GNU sed (Linux): {@code sed -i '1s/^/\xef\xbb\xbf/' file}</li>
+   *   <li>BSD/macOS: {@code sed -i'' '1s/^/\xef\xbb\xbf/' file}</li>
+   * </ul>
    */
   @Test
   public void checkStaticResourcesEncodingTest() throws Exception {
