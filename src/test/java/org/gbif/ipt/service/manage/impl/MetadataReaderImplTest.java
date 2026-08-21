@@ -34,6 +34,8 @@ import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.YamlService;
 import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.utils.file.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -41,6 +43,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,6 +52,19 @@ class MetadataReaderImplTest {
   private final JsonService jsonService = new JsonServiceImpl();
   private final YamlService yamlService = new YamlServiceImpl();
   private final MetadataReader reader = new MetadataReaderImpl(jsonService, yamlService);
+
+  private TimeZone originalTimeZone;
+
+  @BeforeEach
+  void setUp() {
+    originalTimeZone = TimeZone.getDefault();
+    TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+  }
+
+  @AfterEach
+  void tearDown() {
+    TimeZone.setDefault(originalTimeZone);
+  }
 
   @Test
   void testCamtrapSerDeRoundtrip(@TempDir Path tempDir) throws Exception {
@@ -83,8 +99,8 @@ class MetadataReaderImplTest {
         "Proyecto para fortalecer la gestión integral de la Biodiversidad en Colombia"
     ));
     // in the datapackage.json formatted as '2026-06-03T09:19:36Z'
-    // when Date converted to String formatted as 'Wed Jun 03 11:19:36 CEST 2026'
-    assertEquals("Wed Jun 03 11:19:36 CEST 2026", cm.getCreated().toString());
+    // when Date converted to String formatted as 'Wed Jun 03 09:19:36 GMT 2026'
+    assertEquals("Wed Jun 03 09:19:36 GMT 2026", cm.getCreated().toString());
     assertEquals("2", cm.getVersion());
     assertEquals("https://gitlab.com/sib-colombia/logos/-/raw/main/socio-SiB-dagma.png",
         cm.getImage());
@@ -285,8 +301,8 @@ class MetadataReaderImplTest {
 
     // Created
     // in the datapackage.json formatted as '2026-08-20T09:19:36Z'
-    // when Date converted to String formatted as 'Thu Aug 20 11:19:36 CEST 2026'
-    assertEquals("Thu Aug 20 11:19:36 CEST 2026", fm.getCreated().toString());
+    // when Date converted to String formatted as 'Thu Aug 20 09:19:36 GMT 2026'
+    assertEquals("Thu Aug 20 09:19:36 GMT 2026", fm.getCreated().toString());
 
     // Contributors
     assertEquals(3, fm.getContributors().size());
