@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Renders the pre-check panel markup from a DataPackagePrecheck result.
  * Pairs with datapackage-precheck.js — that module produces the data,
  * this one turns it into DOM.

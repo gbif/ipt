@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Verifies the content of the archive, checking datapackage.json and
  * available table schemas in the IPT. Does NOT inspect table contents,
  * columns, or relationships between resources — structural existence only.
