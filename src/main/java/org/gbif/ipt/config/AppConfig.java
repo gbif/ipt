@@ -703,7 +703,7 @@ public class AppConfig {
   }
 
   public String getLogoRedirectUrl() {
-    return properties.getProperty(LOGO_REDIRECT_URL);
+    return StringUtils.trimToNull(properties.getProperty(LOGO_REDIRECT_URL));
   }
 
   // public to be accessible by ConfigManager
