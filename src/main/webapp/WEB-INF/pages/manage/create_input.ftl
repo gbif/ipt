@@ -8,9 +8,71 @@
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 <script src="${baseURL}/js/jszip/jszip-3.10.1.min.js"></script>
+<script src="${baseURL}/js/datapackage-precheck.js"></script>
+<script src="${baseURL}/js/datapackage-precheck-render.js"></script>
+
+<style>
+    :root {
+        --radius: 8px;
+        --border-color: #ced4da;
+    }
+
+    /* path selector */
+    .path-select {
+        margin: 18px 0 6px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .path-option {
+        display: flex;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border-color);
+        cursor: pointer;
+        align-items: flex-start;
+        transition: background .1s ease;
+    }
+
+    .path-option:last-child {
+        border-bottom: none;
+    }
+
+    .path-option:hover {
+        background: #fafaf7;
+    }
+
+    .path-option.selected {
+        background: rgba(var(--color-gbif-primary), 0.1);
+    }
+
+    .path-option .path-label {
+        font-weight: 600;
+        color: #575757;
+        margin-bottom: 2px;
+    }
+
+    .path-option .path-desc {
+        font-size: 13px;
+    }
+
+    .import-block {
+        margin-top: 22px;
+        padding: 16px;
+        background: #fafafa;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        display: none;
+    }
+
+    .import-block.show {
+        display: block;
+    }
+</style>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $("#resourceType").select2({
             placeholder: '${action.getText("manage.resource.create.coreType.selection")?js_string}',
             language: {
@@ -22,6 +84,10 @@
             minimumResultsForSearch: 15,
             theme: 'bootstrap4'
         });
+
+        $("#create").on('click', displayProcessing);
+
+        var dataPackages = ${schemasJson?no_esc};
 
         const datasetTypeMap = {
             "Occurrence": "occurrence",
@@ -35,51 +101,84 @@
             "dwc-dp": "dwc-dp"
         };
 
-        $('#file').on('change', function (event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        const $file = $('#file');
+        const $shortname = $('#shortname');
+        const $typeSelect = $('#resourceType');
+        const $importNote = $('#importNote');
+        const $precheckPanel = $('#precheckPanel');
+        const $pathOptions = $('.path-option');
+        const $importBlock = $('#importBlock');
+        const $shortnameField = $('#shortnameField');
+        const $typeField = $('#typeField');
+        const $createBtn = $('#create');
 
-            var filename = file.name.toLowerCase();
-            var shortnameMatch = filename.match(/^(dwca|datapackage|eml)-([a-z0-9_-]+)-[^\/\\]+$/i);
+        let currentPath = 'blank';
+        let fileChosen = false;
 
-            if (shortnameMatch && shortnameMatch[2]) {
-                $('#shortname').val(shortnameMatch[2]);
-            } else {
-                var filenameWithoutExt = filename.replace(/\.[^/.]+$/, "");
-                $('#shortname').val(filenameWithoutExt);
+        $file.on('change', async function (e) {
+            const file = e.target.files[0];
+            fileChosen = !!file;
+
+            if (!file) {
+                validate();
+                return;
             }
 
+            $importNote.hide();
+
+            deriveShortname(file.name);
+            await detectDatasetType(file);
+
+            validate();
+        });
+
+        function deriveShortname(filename) {
+            const lower = filename.toLowerCase();
+            const shortnameMatch = lower.match(/^(dwca|datapackage|eml)-([a-z0-9_-]+)-[^\/\\]+$/i);
+
+            if (shortnameMatch && shortnameMatch[2]) {
+                $shortname.val(shortnameMatch[2]);
+            } else {
+                $shortname.val(lower.replace(/\.[^/.]+$/, ""));
+            }
+        }
+
+        async function detectDatasetType(file) {
+            // Let DataPackagePrecheck have a look first (drives the precheck panel)
+            const result = await DataPackagePrecheck.run(file, dataPackages);
+
+            if (result && result.type === 'data-package') {
+                renderPrecheckPanel(result, file.name, $precheckPanel.get(0));
+            } else {
+                $precheckPanel.empty();
+            }
+
+            // TODO: precheck should do this eventually
+            // Then inspect the file contents to guess the resource type
             if (file.name.endsWith('.zip')) {
-                JSZip.loadAsync(file).then(function (zip) {
+                try {
+                    const zip = await JSZip.loadAsync(file);
                     const jsonPath = Object.keys(zip.files).find(path => path.endsWith('/datapackage.json') || path === 'datapackage.json');
                     const emlPath = Object.keys(zip.files).find(path => path.endsWith('/eml.xml') || path === 'eml.xml');
 
                     if (jsonPath) {
-                        zip.file(jsonPath).async('string').then(processDatapackageJson);
+                        processDatapackageJson(await zip.file(jsonPath).async('string'));
                     } else if (emlPath) {
-                        zip.file(emlPath).async('string').then(processEmlXml);
+                        processEmlXml(await zip.file(emlPath).async('string'));
                     } else {
                         console.log('Neither datapackage.json nor eml.xml found in archive.');
                     }
-                }).catch(function (err) {
+                } catch (err) {
                     console.log('Error reading ZIP: ' + err);
-                });
+                }
             } else if (file.name === 'datapackage.json') {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    processDatapackageJson(e.target.result);
-                };
-                reader.readAsText(file);
+                processDatapackageJson(await file.text());
             } else if (file.name.endsWith('.xml')) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    processEmlXml(e.target.result);
-                };
-                reader.readAsText(file);
+                processEmlXml(await file.text());
             } else {
                 console.log('Unsupported file type. Please upload datapackage.json, eml.xml, or a ZIP archive.');
             }
-        });
+        }
 
         function processDatapackageJson(jsonText) {
             try {
@@ -128,13 +227,55 @@
         }
 
         function applyDatasetType(datasetType) {
-            if (datasetType && $('#resourceType').find('option[value="' + datasetType + '"]').length) {
-                $('#resourceType').val(datasetType).trigger('change');
-            } else {
-                console.log('No matching dataset type found.');
-                $('#resourceType').val('other').trigger('change');
-            }
+            const hasOption = datasetType && $typeSelect.find('option[value="' + datasetType + '"]').length;
+
+            $typeSelect.val(hasOption ? datasetType : 'other').trigger('change');
+            if (!hasOption) console.log('No matching dataset type found.');
+
+            validate();
         }
+
+        function updatePathUI() {
+            $pathOptions.each(function () {
+                $(this).toggleClass('selected', $(this).data('path') === currentPath);
+            });
+
+            if (currentPath === 'blank') {
+                $importBlock.removeClass('show');
+                $importNote.hide();
+                $file.prop('disabled', true);
+            } else {
+                $importBlock.addClass('show');
+                fileChosen ? $importNote.hide() : $importNote.show();
+                $file.prop('disabled', false);
+            }
+
+            $shortnameField.show();
+            $typeField.show();
+
+            validate();
+        }
+
+        $pathOptions.on('click', function () {
+            currentPath = $(this).data('path');
+            $(this).find('input[type=radio]').prop('checked', true);
+            updatePathUI();
+        });
+
+        $typeSelect.on('change', validate);
+        $shortname.on('input', validate);
+
+        function validate() {
+            let valid = true;
+
+            if (!$shortname.val().trim()) valid = false;
+            if (!$typeSelect.val()) valid = false;
+            if (currentPath !== 'blank' && !fileChosen) valid = false;
+
+            $createBtn.prop('disabled', !valid);
+        }
+
+        updatePathUI();
     });
 </script>
 
@@ -178,28 +319,60 @@
         <div class="my-3 p-3">
             <p class="pt-2"><@s.text name="manage.resource.create.intro"/></p>
 
-            <script>
-                $(document).ready(function() {
-                    /** This function updates the map each time the global coverage checkbox is checked or unchecked  */
-                    $(":checkbox").click(function() {
-                        if($("#importDwca").is(":checked")) {
-                            $("#import-dwca-section").slideDown('slow');
-                        } else {
-                            $("#file").attr("value", '');
-                            $("#import-dwca-section").slideUp('slow');
-                        }
-                    });
-                    $("#import-dwca-section").slideUp('fast');
-                    $("#create").on("click", displayProcessing);
-                });
-            </script>
+            <div class="body-pad">
+                <div class="path-select" role="radiogroup" aria-label="Resource start method">
+                    <label class="path-option selected" data-path="blank">
+                        <input type="radio" class="form-check-input flex-shrink-0" name="startMethod" value="blank" checked>
+                        <div>
+                            <div class="path-label"><@s.text name="manage.resource.create.option.blank"/></div>
+                            <div class="path-desc text-muted"><@s.text name="manage.resource.create.option.blank.help"/></div>
+                        </div>
+                    </label>
+
+                    <label class="path-option" data-path="archive">
+                        <input type="radio" class="form-check-input flex-shrink-0" name="startMethod" value="archive">
+                        <div>
+                            <div class="path-label"><@s.text name="manage.resource.create.option.archive"/></div>
+                            <div class="path-desc text-muted"><@s.text name="manage.resource.create.option.archive.help"/></div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="import-block" id="importBlock">
+                    <div class="file-row">
+                        <@s.fielderror cssClass="fielderror" fieldName="file"/>
+                        <label for="file" class="form-label"><@s.text name="manage.resource.create.file"/> <span class="text-gbif-danger">*</span> </label>
+                        <@s.file name="file" cssClass="form-control" key="manage.resource.create.file" />
+                    </div>
+
+                    <div id="precheckPanel"></div>
+                </div>
+
+                <div id="importNote" class="border rounded px-3 py-1 mt-3" style="display: none;">
+                    <div class="simpleCallout">
+                        <div class="simpleCallout-inner">
+                            <div class="simpleCalloutInfo simpleCalloutInfo-neutral">
+                                <div class="simpleCalloutIcon">
+                                    <i class="bi bi-info-circle text-gbif-primary"></i>
+                                </div>
+                                <div class="simpleCalloutMeta">
+                                    <div class="simpleCalloutMessage">
+                                        <@s.text name="manage.resource.create.import.note"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
             <div class="row g-3 mt-0 mb-2">
-                <div class="col-md-6">
+                <div class="col-md-6" id="shortnameField">
                     <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" requiredField=true size=40/>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6" id="typeField">
                     <div>
                         <div class="d-flex text-smaller">
                             <@popoverPropertyInfo "manage.resource.create.coreType.help" />
@@ -224,16 +397,6 @@
                         </select>
                         <@s.fielderror id="field-error-resourceType" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="resourceType"/>
                     </div>
-                </div>
-
-                <div class="col-12">
-                    <@checkbox name="importDwca" help="i18n" i18nkey="manage.resource.create.archive"/>
-                </div>
-
-                <div id="import-dwca-section" class="col-md-6">
-                    <@s.fielderror cssClass="fielderror" fieldName="file"/>
-                    <label for="file" class="form-label"><@s.text name="manage.resource.create.file"/>: </label>
-                    <@s.file name="file" cssClass="form-control" key="manage.resource.create.file" />
                 </div>
             </div>
         </div>

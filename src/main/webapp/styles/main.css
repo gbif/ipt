@@ -2740,6 +2740,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     display: flex;
 }
 
+.simpleCalloutMeta {
+    padding-left: 8px;
+}
+
 .simpleCalloutInfo {
     flex-grow: 1;
     margin-right: 10px;
@@ -2749,8 +2753,16 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     font-size: 0.875rem;
 }
 
-.simpleCalloutInfo-message {
+.simpleCalloutInfo-message .simpleCalloutIcon, .simpleCalloutInfo-message .simpleCalloutMeta {
     color: rgb(var(--color-gbif-primary));
+}
+
+.simpleCalloutInfo-neutral .simpleCalloutIcon {
+    color: rgb(var(--color-gbif-primary));
+}
+
+.simpleCalloutInfo-neutral .simpleCalloutMeta {
+    color: #575757;
 }
 
 .simpleCalloutInfo-warning {
@@ -2760,7 +2772,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .fileDoneIcon {
     display: block;
     visibility: hidden;
-    margin-right: 0.25em;
     line-height: 1;
     font-size: 1.5em;
     vertical-align: -0.5em;
@@ -2776,12 +2787,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .simpleCalloutIcon {
-    display: none;
-    visibility: hidden;
+    display: flex;
     margin-right: 0.25em;
     line-height: 1;
     font-size: 1.5em;
-    vertical-align: -0.5em;
+    align-items: center;
 }
 
 .fileWarningIcon i {

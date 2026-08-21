@@ -2366,7 +2366,7 @@
                         <div class="simpleCallout">
                             <div class="simpleCallout-inner">
                                 <div class="simpleCalloutInfo simpleCalloutInfo-message">
-                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                    <div class="simpleCalloutIcon">
                                         <i class="bi bi-info-circle text-gbif-primary"></i>
                                     </div>
                                     <div class="simpleCalloutMeta">
@@ -2430,7 +2430,7 @@
                         <div class="simpleCallout">
                             <div class="simpleCallout-inner">
                                 <div class="simpleCalloutInfo simpleCalloutInfo-warning">
-                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                    <div class="simpleCalloutIcon">
                                         <i class="bi bi-info-circle text-gbif-danger"></i>
                                     </div>
                                     <div class="simpleCalloutMeta">
@@ -2553,7 +2553,7 @@
                                         <div class="simpleCallout">
                                             <div class="simpleCallout-inner">
                                                 <div class="simpleCalloutInfo simpleCalloutInfo-message">
-                                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                                    <div class="simpleCalloutIcon">
                                                         <i class="bi bi-info-circle text-gbif-primary"></i>
                                                     </div>
                                                     <div class="simpleCalloutMeta">
@@ -2572,7 +2572,7 @@
                                         <div class="simpleCallout" >
                                             <div class="simpleCallout-inner">
                                                 <div class="simpleCalloutInfo simpleCalloutInfo-warning">
-                                                    <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                                    <div class="simpleCalloutIcon">
                                                         <i class="bi bi-exclamation-circle text-gbif-danger"></i>
                                                     </div>
                                                     <div class="simpleCalloutMeta">
@@ -2738,7 +2738,7 @@
                                                 <div class="simpleCallout">
                                                     <div class="simpleCallout-inner">
                                                         <div class="simpleCalloutInfo simpleCalloutInfo-warning">
-                                                            <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                                            <div class="simpleCalloutIcon">
                                                                 <i class="bi bi-exclamation-circle text-gbif-danger"></i>
                                                             </div>
                                                             <div class="simpleCalloutMeta">
@@ -2907,7 +2907,7 @@
                                     <div class="simpleCallout">
                                         <div class="simpleCallout-inner">
                                             <div class="simpleCalloutInfo simpleCalloutInfo-message">
-                                                <div class="simpleCalloutIcon" style="visibility: visible; display: block;">
+                                                <div class="simpleCalloutIcon">
                                                     <i class="bi bi-info-circle text-gbif-primary"></i>
                                                 </div>
                                                 <div class="simpleCalloutMeta">

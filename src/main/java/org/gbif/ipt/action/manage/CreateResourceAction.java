@@ -54,6 +54,9 @@ import org.apache.struts2.action.UploadedFilesAware;
 import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.Getter;
 
 public class CreateResourceAction extends POSTAction implements UploadedFilesAware {
@@ -74,9 +77,12 @@ public class CreateResourceAction extends POSTAction implements UploadedFilesAwa
   private Map<String, String> dataPackageTypes;
   @Getter
   private List<Organisation> organisations;
+  @Getter
+  private String schemasJson;
   private final VocabulariesManager vocabManager;
   private final DataPackageSchemaManager schemaManager;
   private final ResourceValidator validator = new ResourceValidator();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   @Inject
   public CreateResourceAction(
@@ -99,6 +105,11 @@ public class CreateResourceAction extends POSTAction implements UploadedFilesAwa
     super.prepare();
     // load organisations able to host
     organisations = registrationManager.list();
+    try {
+      schemasJson = objectMapper.writeValueAsString(schemaManager.list());
+    } catch (JsonProcessingException e) {
+      LOG.error("Failed to serialize schemas to JSON", e);
+    }
   }
 
   @Override

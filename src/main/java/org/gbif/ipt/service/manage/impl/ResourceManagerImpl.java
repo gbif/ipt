@@ -139,13 +139,13 @@ import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
 import org.gbif.metadata.eml.parse.DatasetEmlParser;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
+import org.gbif.utils.file.csv.CSVReader;
+import org.gbif.utils.file.csv.CSVReaderFactory;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -227,6 +227,8 @@ import static org.gbif.ipt.utils.FileUtils.getFileExtension;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
+
+  private static final Set<String> FALLBACK_TABULAR_EXTENSIONS = Set.of("csv", "tsv", "tab", "txt");
 
   // key=shortname in lower case, value=resource
   private Map<String, Resource> resources = new HashMap<>();
@@ -851,56 +853,67 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return res;
   }
 
-  private Resource createFromFrictionlessDataPackage(String shortname, String packageType, List<File> packageFiles, User creator,
-                                                     ActionLogger alog)
+  private Resource createFromFrictionlessDataPackage(
+      String shortname,
+      String packageType,
+      List<File> packageFiles,
+      User creator,
+      ActionLogger alog)
       throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
+
     // check if existing already
     if (get(shortname) != null) {
       throw new AlreadyExistingException();
     }
+
     Resource resource;
     try {
-      // keep track of source files as a package might refer to the same source file multiple times
       Map<String, TextFileSource> sources = new HashMap<>();
-
-      // create new resource
       resource = create(shortname, packageType, creator);
       Date lastModifiedDate = new Date();
 
-      File metadataFile = null;
+      // Step 1: locate the metadata file (COL DP takes precedence over Frictionless)
+      File metadataFile = findMetadataFile(packageFiles);
 
+      // Parse metadata up front so we know which files are declared as data sources,
+      // rather than guessing from filenames
+      DataPackageMetadata metadata = null;
+      Map<String, String> declaredResources = Collections.emptyMap();
+      if (metadataFile != null) {
+        metadata = readDataPackageMetadata(resource.getShortname(), packageType, metadataFile, alog);
+        if (metadata == null) {
+          throw new ImportException("Failed to read/parse data package metadata from " + metadataFile.getName());
+        }
+        declaredResources = extractDeclaredResources(metadata);
+      } else {
+        LOG.error("No metadata file found in Frictionless package");
+        alog.error("manage.resource.dp.create.no.metadata");
+        throw new ImportException("No metadata file found in Frictionless package");
+      }
+
+      // Step 2: import data sources, driven by the metadata where available
       for (File packageFile : packageFiles) {
-        if ("csv".equals(getFileExtension(packageFile))) {
+        if (packageFile.equals(metadataFile) || EML_XML_FILENAME.equals(packageFile.getName())) {
+          continue;
+        }
+        if (isTabularSource(packageFile, declaredResources.keySet())) {
           TextFileSource s = importSource(resource, packageFile);
-          // set default property
           s.setFieldsEnclosedBy("\"");
           String filenameWithoutExtension = FilenameUtils.removeExtension(packageFile.getName());
           sources.put(filenameWithoutExtension, s);
 
-          DataPackageMapping map = importDataPackageMappings(alog, packageType, packageFile, s);
+          DataPackageMapping map = importDataPackageMappings(alog, packageType, packageFile, declaredResources.get(packageFile.getName()), s);
           map.setLastModified(lastModifiedDate);
           resource.addDataPackageMapping(map);
-        } else if (packageFile.getName().equals(FRICTIONLESS_METADATA_FILENAME) && metadataFile == null) {
-          metadataFile = packageFile;
-        } else if (packageFile.getName().equals(COL_DP_METADATA_FILENAME)) {
-          metadataFile = packageFile;
         }
       }
 
       resource.setSourcesModified(lastModifiedDate);
       resource.setMappingsModified(lastModifiedDate);
 
-      // try to read metadata
-      if (metadataFile != null) {
-        DataPackageMetadata metadata = readDataPackageMetadata(resource.getShortname(), packageType, metadataFile, alog);
-
-        if (metadata == null) {
-          throw new ImportException("Failed to read/parse data package metadata from " + metadataFile.getName());
-        }
-
+      if (metadata != null) {
         if (metadata instanceof FrictionlessMetadata frictionlessMetadata) {
-          // set name, erase some internal fields
           frictionlessMetadata.setName(resource.getShortname());
           frictionlessMetadata.setId(null);
           frictionlessMetadata.setCreated(null);
@@ -935,6 +948,115 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     return resource;
+  }
+
+  /**
+   * Extracts the resources declared in a Frictionless data package's metadata, mapping each
+   * declared file's filename to its Frictionless resource {@code name}.
+   * <p>
+   * The {@code resources} array is not (currently) a modeled field on {@link FrictionlessMetadata}
+   * — Jackson deserializes it into {@link FrictionlessMetadata#getAdditionalProperties()} as raw
+   * {@code List<Map<String, Object>>} JSON, so this method reads it out defensively rather than
+   * via typed accessors. If the model is ever updated to include a proper {@code resources} field,
+   * this method should be updated to use it instead.
+   * <p>
+   * Only entries where both {@code path} and {@code name} are present and are strings are included;
+   * malformed or partial entries are silently skipped. The {@code path} value may be a relative path
+   * (e.g. {@code "data/observations.csv"}); only the filename component is used as the map key, since
+   * package files are matched by filename elsewhere in the import process.
+   * <p>
+   * <b>Note:</b> this must be called before any code clears
+   * {@link FrictionlessMetadata#getAdditionalProperties()} (which the caller does later, after
+   * metadata is attached to the resource), or the declared resources will no longer be readable.
+   *
+   * @param metadata the parsed data package metadata; only {@link FrictionlessMetadata} instances
+   *                  are currently supported
+   * @return a map of declared filename to Frictionless resource name, or an empty map if
+   *         {@code metadata} is not a {@link FrictionlessMetadata}, has no {@code resources} entry,
+   *         or the entry is not in the expected shape
+   */
+  private Map<String, String> extractDeclaredResources(DataPackageMetadata metadata) {
+    if (metadata instanceof FrictionlessMetadata fm) {
+      Map<String, Object> additionalProperties = fm.getAdditionalProperties();
+      if (additionalProperties == null) {
+        return Collections.emptyMap();
+      }
+
+      Object resourcesRaw = additionalProperties.get("resources");
+      if (!(resourcesRaw instanceof List<?> resourcesList)) {
+        return Collections.emptyMap();
+      }
+
+      Map<String, String> declaredResources = new HashMap<>();
+      for (Object entry : resourcesList) {
+        if (!(entry instanceof Map<?, ?> resourceMap)) {
+          continue;
+        }
+        // resource path is under "path"
+        Object path = resourceMap.get("path");
+        Object name = resourceMap.get("name");
+
+        if (path instanceof String pathStr && name instanceof String nameStr) {
+          // path may be a relative path (e.g. "data/observations.csv") — we only care about the filename
+          declaredResources.put(FilenameUtils.getName(pathStr), nameStr);
+        }
+      }
+      return declaredResources;
+    }
+    return Collections.emptyMap();
+  }
+
+  /**
+   * Locates the data package metadata file among a resource's package files, if any.
+   * <p>
+   * A package may contain a COL DP metadata file, a Frictionless metadata file, or (in principle)
+   * both. COL DP takes precedence: if both are present, the COL DP file is returned and the
+   * Frictionless file is ignored. This mirrors the priority used elsewhere when interpreting a
+   * package's format.
+   * <p>
+   * If multiple files match the Frictionless metadata filename, only the first one encountered is
+   * kept (later matches are ignored); this cannot happen for COL DP, where the last match wins,
+   * since duplicates would be unexpected in practice and are not otherwise validated here.
+   *
+   * @param packageFiles all files found in the package
+   * @return the metadata {@link File} to parse, or {@code null} if the package contains neither a
+   *         COL DP nor a Frictionless metadata file
+   */
+  private File findMetadataFile(List<File> packageFiles) {
+    File frictionless = null;
+    File colDp = null;
+    for (File f : packageFiles) {
+      if (FRICTIONLESS_METADATA_FILENAME.equals(f.getName()) && frictionless == null) {
+        frictionless = f;
+      } else if (COL_DP_METADATA_FILENAME.equals(f.getName())) {
+        colDp = f;
+      }
+    }
+    return colDp != null ? colDp : frictionless;
+  }
+
+  /**
+   * Determines whether a package file is declared as a data resource in the package's metadata.
+   * <p>
+   * Metadata is required for import: a data package with no metadata file, or metadata that
+   * declares no resources, is rejected earlier in the import process. By the time this method is
+   * called, {@code declaredResources} is therefore guaranteed non-empty, and this is a
+   * straightforward membership check — files present in the package but not listed in
+   * {@code datapackage.json} are treated as extraneous and skipped, with a warning logged, since
+   * their presence likely indicates an incomplete or broken package.
+   *
+   * @param file the candidate package file
+   * @param declaredResources filenames declared as resources in the package metadata; expected to
+   *                           be non-empty, since packages with no declared resources are rejected
+   *                           before this method is called
+   * @return {@code true} if {@code file} is declared as a resource in the package metadata
+   */
+  private boolean isTabularSource(File file, Set<String> declaredResources) {
+    boolean declared = declaredResources.contains(file.getName());
+    if (!declared) {
+      LOG.warn("File {} is not declared in datapackage.json", file.getName());
+    }
+    return declared;
   }
 
   private Resource createFromDwcArchive(String shortname, File dwca, User creator, ActionLogger alog)
@@ -1455,13 +1577,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     return map;
   }
 
-  private DataPackageMapping importDataPackageMappings(ActionLogger alog, String packageType, File file, Source source) {
+  private DataPackageMapping importDataPackageMappings(
+      ActionLogger alog, String packageType, File file, String resourceName, TextFileSource source) {
     DataPackageMapping map = new DataPackageMapping();
     DataPackageSchema dataPackageSchema = schemaManager.get(packageType);
-    String filenameWithoutExtension = FilenameUtils.removeExtension(file.getName());
 
     if (dataPackageSchema == null) {
-      // cleanup source file immediately
+      // clean up source file immediately
       if (source.isFileSource()) {
         boolean deleted = FileUtils.deleteQuietly(file);
         // to bypass "Unable to delete file" error on Windows, run garbage collector to clean up file i/o mapping
@@ -1471,17 +1593,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         }
       }
       alog.warn("manage.resource.create.schema.null", new String[]{packageType});
-      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data schema");
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data package");
     }
 
     DataPackageTableSchema tableSchema = dataPackageSchema.getTableSchemas().stream()
-        .filter(s -> s.getName().equals(filenameWithoutExtension))
+        .filter(s -> s.getName().equals(resourceName))
         .findAny()
         .orElse(null);
 
     if (tableSchema == null) {
-      alog.warn("manage.resource.create.tableschema.null", new String[]{filenameWithoutExtension});
-      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
+      alog.error("manage.resource.create.tableschema.null", new String[]{dataPackageSchema.getTitle(), resourceName});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown table");
     }
 
     map.setDataPackageSchema(dataPackageSchema);
@@ -1490,12 +1612,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
     // extract column names from file's first row
     String[] columnNames;
-    try (BufferedReader brTest = new BufferedReader(new FileReader(file))) {
-      String fileHeaderRow = brTest.readLine();
-      columnNames = StringUtils.split(fileHeaderRow, ",");
+    try (CSVReader csvReader = CSVReaderFactory.build(
+        file,
+        source.getEncoding(),
+        source.getFieldsTerminatedBy(),
+        source.getFieldQuoteChar(),
+        source.getIgnoreHeaderLines())) {
+      columnNames = csvReader.getHeader();
+      if (columnNames == null) {
+        alog.error("manage.resource.create.table.header.empty", new String[]{resourceName});
+        throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource is empty: " + resourceName);
+      }
     } catch (IOException e) {
-      alog.warn("manage.resource.create.tableschema.null", new String[]{filenameWithoutExtension});
-      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references unknown schema");
+      alog.error("manage.resource.create.table.read.error", new String[]{resourceName, e.getMessage()});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Failed to read resource: " + resourceName);
     }
 
     List<DataPackageFieldMapping> fields = new ArrayList<>();
@@ -1540,12 +1670,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   private TextFileSource importSource(Resource config, File file)
       throws ImportException, InvalidFilenameException {
     TextFileSource s = (TextFileSource) sourceManager.add(config, file, FilenameUtils.removeExtension(file.getName()));
-    SourceManagerImpl.copyArchiveFileProperties(file, s);
 
     // the number of rows was calculated using the standard file importer
-    // make an adjustment now that the exact number of header rows are known
+    // make an adjustment now that the exact number of header rows is known
     if (s.getIgnoreHeaderLines() != 1) {
-      LOG.info("Adjusting row count to {} from {} since header count is declared as {}", s.getRows() + 1 - s.getIgnoreHeaderLines(), s.getRows(), s.getIgnoreHeaderLines());
+      LOG.info("Adjusting row count to {} from {} since header count is declared as {}",
+          s.getRows() + 1 - s.getIgnoreHeaderLines(), s.getRows(), s.getIgnoreHeaderLines());
     }
     s.setRows(s.getRows() + 1 - s.getIgnoreHeaderLines());
 
@@ -3480,7 +3610,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // validate EML (only for metadata-only resources, otherwise it will be validated afterward)
     if (METADATA.toString().equalsIgnoreCase(resource.getCoreType())) {
       try {
-        EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
+        EmlValidator emlValidator = EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
         String emlString = FileUtils.readFileToString(trunkFile, StandardCharsets.UTF_8);
 
         getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Validating EML file"));
