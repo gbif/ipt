@@ -879,7 +879,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public String getTitle() {
-    if (dataPackageIdentifier != null && dataPackageMetadata != null) {
+    if (isDataPackage() && !isDwcDp() && dataPackageMetadata != null) {
       return dataPackageMetadata.getTitle();
     } else if (eml != null) {
       return eml.getTitle();
