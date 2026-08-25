@@ -70,6 +70,15 @@ public class DataPackage {
   @Setter
   @Getter
   private String profile;
+  @Setter
+  @Getter
+  private String title;
+  @Setter
+  @Getter
+  private String description;
+  @Setter
+  @Getter
+  private List<Object> licenses = new ArrayList<>();
 
   @Getter
   private final List<DataPackageResource> resources = new ArrayList<>();
@@ -117,6 +126,15 @@ public class DataPackage {
         break;
       case "profile":
         setProfile((String) value);
+        break;
+      case "title":
+        setTitle((String) value);
+        break;
+      case "description":
+        setDescription((String) value);
+        break;
+      case "licenses":
+        setLicenses((List<Object>) value);
         break;
       default:
         additionalProperties.put(key, value);

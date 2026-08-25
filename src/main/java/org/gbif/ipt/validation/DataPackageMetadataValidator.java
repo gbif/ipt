@@ -43,6 +43,7 @@ import org.apache.commons.lang3.Strings;
 import org.hibernate.validator.HibernateValidator;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.DWC_DP;
 
 public class DataPackageMetadataValidator {
 
@@ -121,6 +122,8 @@ public class DataPackageMetadataValidator {
 
       if (CAMTRAP_DP.equals(resource.getCoreType())) {
         validateCamtrap(action, (CamtrapMetadata) metadata, ((CamtrapMetadataSection) section));
+      } else if (DWC_DP.equals(resource.getCoreType())) {
+        validateDwcDp(action, metadata, ((FrictionlessMetadataSection) section));
       } else {
         validateFrictionless(action, metadata, ((FrictionlessMetadataSection) section));
       }
@@ -227,6 +230,30 @@ public class DataPackageMetadataValidator {
         }
 
         break;
+    }
+  }
+
+  // TODO: consider making title, description and license optional in FrictionlessMetadata
+  public void validateDwcDp(BaseAction action, DataPackageMetadata metadata, FrictionlessMetadataSection section) {
+    // set default
+    if (section == null) {
+      section = FrictionlessMetadataSection.BASIC_SECTION;
+    }
+
+    if (section == FrictionlessMetadataSection.BASIC_SECTION) {
+      Set<ConstraintViolation<DataPackageMetadata>> basicSectionViolations
+          = validator.validate(metadata, BasicMetadata.class);
+
+      for (ConstraintViolation<DataPackageMetadata> violation : basicSectionViolations) {
+        String path = violation.getPropertyPath().toString();
+
+        // Skip title, description, and licenses - they are sourced from EML for DwC-DP
+        if (path.equals("title") || path.equals("description") || path.startsWith("licenses")) {
+          continue;
+        }
+
+        addDefaultFieldError(action, violation);
+      }
     }
   }
 

@@ -30,9 +30,11 @@ import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.utils.EmlUtils;
+import org.gbif.ipt.utils.LicenseConverterUtils;
+import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
@@ -49,12 +51,12 @@ import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -74,11 +76,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
-import static org.gbif.ipt.config.Constants.DWC_DP;
 
 public class GenerateDarwinCoreDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -135,18 +134,10 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       // create a temp dir to copy all files to
       dataPackageFolder = dataDir.tmpDir();
 
-      // different order - for Camtrap/Material/etc. first create metadata and then add resources
-      if (COL_DP.equals(resource.getCoreType())) {
-        // create data resources
-        createDataResources();
-        // create datapackage descriptor file (metadata.yml)
-        addMetadata();
-      } else {
-        // copy datapackage descriptor file (datapackage.json)
-        addMetadata();
-        // create data resources
-        createDataResources();
-      }
+      // copy datapackage descriptor file (datapackage.json)
+      addMetadata();
+      // create data resources
+      createDataResources();
 
       // validate archive
       validateArchive();
@@ -267,13 +258,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     Thread.sleep(2000);
     File zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
     try {
-      if (resource.isDwcDp()) {
-        dataPackage.write(zip, dataPackageFolder, this::writeEMLMetadata);
-      } else if (COL_DP.equals(resource.getCoreType())) {
-        dataPackage.write(zip, dataPackageFolder, this::writeCustomColDPMetadata);
-      } else {
-        dataPackage.write(zip, dataPackageFolder);
-      }
+      dataPackage.write(zip, dataPackageFolder, this::writeEMLMetadata);
 
       if (!zip.exists()) {
         throw new GeneratorException("Archive bundling failed: temp archive not created: " + zip.getAbsolutePath());
@@ -339,7 +324,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     }
   }
 
-  // TODO: eml.xml must be validated!
   /**
    * Apart from a standard frictionless metadata, DwCA v2 occurrence must contain a EML file.
    */
@@ -428,21 +412,18 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     DataPackageSchema dataPackageSchema = resource.getDataPackageMappings().get(0).getDataPackageSchema();
     currSchema = dataPackageSchema.getName();
 
-    // For DwC DP use only mapped fields in the resources, for the rest (Camtrap etc.) all the fields.
-    boolean filterMapped = DWC_DP.equals(currSchema);
-
     // before starting to add a table schema, check all required schemas mapped
     checkRequiredTableSchemasMapped(mappedTableSchemas, dataPackageSchema);
 
     for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
-      // skip un-mapped (optional) schemas
+      // skip unmapped (optional) schemas
       if (!mappedTableSchemas.contains(tableSchema.getName())) {
         continue;
       }
 
       report();
       try {
-        addDataResource(currSchema, tableSchema, allMappings, filterMapped);
+        addDataResource(currSchema, tableSchema, allMappings, true);
       } catch (IOException | IllegalArgumentException e) {
         throw new GeneratorException("Problem occurred while writing Data Resource", e);
       }
@@ -586,13 +567,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       }
 
       packageResource.setTableSchema(schema);
-      // TODO: validate schema?
-//    } catch (ValidationException e) {
-//      log.error("Failed to validate schema {}. Errors: {}", tableSchema.getName(), e.getMessages(), e);
-//      addMessage(Level.ERROR, "Failed to validate schema " + tableSchema.getName());
-//      // set the last error report!
-//      setState(e);
-//      throw new GeneratorException("Validation error while adding schema file", e);
     } catch (Exception e) {
       log.error("Fatal Package Generator Error encountered while adding schema data {}", tableSchema.getIdentifier(), e);
       addMessage(Level.ERROR, "Error while adding schema data " + tableSchema.getIdentifier());
@@ -942,19 +916,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     setState(STATE.METADATA);
     Thread.sleep(2000);
     try {
-      String type = resource.getCoreType();
-
-      if (CAMTRAP_DP.equals(type)) {
-        addDataPackageMetadata();
-      } else if (COL_DP.equals(type)) {
-        addColMetadata();
-      } else if (DWC_DP.equals(type)) {
-        addDataPackageMetadata();
-        addEml();
-      } else {
-        addMessage(Level.WARN, "Metadata was not added: unknown type " + type);
-      }
-
+      addDataPackageMetadata();
+      addEml();
     } catch (Exception e) {
       addMessage(Level.ERROR, e.getMessage());
       throw new GeneratorException("Problem occurred while adding metadata file to data package folder", e);
@@ -963,29 +926,18 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     addMessage(Level.INFO, "Metadata added");
   }
 
-  private void addColMetadata() throws IOException {
-    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-    ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
-
-    // Basic metadata
-    setDataPackageProperty("created",
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
-    setDataPackageProperty("version", colMetadata.getVersion());
-    setDataPackageStringProperty("title", colMetadata.getTitle());
-    setDataPackageCollectionProperty("contributors", colMetadata.getContributor());
-    setDataPackageStringProperty("description", colMetadata.getDescription());
-    setDataPackageCollectionProperty("keywords", colMetadata.getKeyword());
-    setDataPackageProperty("homepage", colMetadata.getUrl());
-    setDataPackageCollectionProperty("licenses", Collections.singleton(colMetadata.getLicense()));
-
-    // additional properties
-    colMetadata.getAdditionalProperties().forEach((key, value) -> dataPackage.setProperty(key, value));
-  }
-
   private void addDataPackageMetadata() throws Exception {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
     dataPackage = DataPackage.load(metadataFile);
     setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
+
+    File emlFile = dataDir.resourceEmlFile(resource.getShortname());
+    Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
+
+    setDataPackageStringProperty("title", eml.getTitle());
+    setDataPackageStringProperty("description", eml.getDescription());
+    setDataPackageProperty("licenses",
+        List.of(Map.of("name", LicenseConverterUtils.fullLicenseToShort(eml.getIntellectualRights()))));
   }
 
   private void addEml() throws Exception {

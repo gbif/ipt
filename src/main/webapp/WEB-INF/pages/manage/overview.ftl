@@ -3224,7 +3224,7 @@
         </div>
     </div>
 
-    <#if !isDataPackage>
+    <#if !isDataPackage || isDwcDp>
     <div id="metadata-validation-result-modal" class="modal fade" tabindex="-1" aria-labelledby="metadata-validation-result-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">

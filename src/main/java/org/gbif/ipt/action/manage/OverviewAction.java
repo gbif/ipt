@@ -1260,7 +1260,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       }
 
       // check metadata
-      if (!isDataPackageResource()) {
+      // DwC-DP relies on EML too
+      if (!isDataPackageResource() || resource.isDwcDp()) {
         errorCollector = new SectionErrorCollector();
         I18n i18n = new StrutsI18n(this);
         validMetadata = emlValidator.areAllSectionsValid(resource, errorCollector, i18n);
