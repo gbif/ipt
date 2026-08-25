@@ -2728,7 +2728,7 @@
                 <div class="modal-body">
                     <h5 class="modal-title w-100" id="metadata-modal-title"><@s.text name="manage.overview.metadata"/></h5>
                     <div>
-                        <#if isDataPackage>
+                        <#if isDataPackage && !isDwcDp>
                             <form id="upload-metadata-form" action='replace-datapackage-metadata.do' method='post' enctype="multipart/form-data">
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
                                 <div class="row">
@@ -2778,7 +2778,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <#if isDataPackage>
+                    <#if isDataPackage && !isDwcDp>
                         <input type="submit" form="upload-metadata-form" value="Replace" id="datapackageMetadataReplace" name="datapackageMetadataReplace" class="btn btn-sm btn-outline-gbif-primary confirmDatapackageMetadataReplace" style="">
                         <button id="datapackageMetadataCancel" type="button" class="btn btn-sm btn-outline-secondary " data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                     <#else>

@@ -86,7 +86,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" id="upload-metadata-button" href="#">
+                        <a class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" id="upload-metadata-button" href="#anchor-metadata">
                             <@s.text name="button.upload"/>
                         </a>
                     </li>
