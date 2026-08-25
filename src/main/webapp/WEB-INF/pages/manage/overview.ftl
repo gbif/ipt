@@ -1693,15 +1693,29 @@
                                     </svg>
                                     <@s.text name="button.edit"/>
                                 </a>
-                                <#if displayDoiFunctionality>
-                                    <a title="${doiActionName!}" id="reserve-doi" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
-                                        <svg class="overview-action-button-icon" viewBox="0 0 24 24">
-                                            <path d="M4 10h3v7H4zm6.5 0h3v7h-3zM2 19h20v3H2zm15-9h3v7h-3zm-5-9L2 6v2h20V6z"></path>
-                                        </svg>
-                                        ${doiActionName!}
-                                    </a>
-                                </#if>
+
                                 <@publish resource/>
+                                <div class="dropdown me-2">
+                                    <button class="icon-button icon-material-actions overview-action-button dropdown-toggle d-flex align-items-center" type="button" id="publicationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2"></path>
+                                        </svg>
+                                        <@s.text name="button.options"/>
+                                    </button>
+
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="publicationDropdown">
+                                        <#if displayDoiFunctionality>
+                                            <a title="${doiActionName!}" id="reserve-doi" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" type="button" href="#">
+                                                ${doiActionName!}
+                                            </a>
+                                        </#if>
+                                        <li>
+                                            <a class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" href="${baseURL}/manage/validationReport.do?r=${resource.shortname}">
+                                                Last validation report
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
@@ -1713,13 +1727,6 @@
                                     </span>
                                     <@s.text name="manage.overview.autopublish.intro.activated"/>
                                 </#if>
-                            </p>
-
-                            <p class="mb-2">
-                                Last validation report:
-                                <a href="${baseURL}/manage/validationReport.do?r=${resource.shortname}">
-                                    link
-                                </a>
                             </p>
 
                             <#if (resource.organisation.name)?has_content>
