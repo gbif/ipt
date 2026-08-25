@@ -69,12 +69,17 @@ public class ResourceFileAction extends ManagerBaseAction {
       return NOT_FOUND;
     }
 
-    boolean isDataPackageResource = resource.getDataPackageIdentifier() != null;
+    boolean isEmlMetadataResource = resource.isDwcDp() || !resource.isDataPackage();
     // construct download filename
     StringBuilder sb = new StringBuilder();
 
     // serve file
-    if (isDataPackageResource) {
+    if (isEmlMetadataResource) {
+      data = dataDir.resourceEmlFile(resource.getShortname());
+      mimeType = "text/xml";
+      sb.append("eml-").append(resource.getShortname());
+      sb.append(".xml");
+    } else {
       if (Constants.COL_DP.equals(resource.getCoreType())) {
         data = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
         mimeType = "text/yaml";
@@ -86,11 +91,6 @@ public class ResourceFileAction extends ManagerBaseAction {
         sb.append("datapackage-").append(resource.getShortname());
         sb.append(".json");
       }
-    } else {
-      data = dataDir.resourceEmlFile(resource.getShortname());
-      mimeType = "text/xml";
-      sb.append("eml-").append(resource.getShortname());
-      sb.append(".xml");
     }
 
     filename = sb.toString();
