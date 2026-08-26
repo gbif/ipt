@@ -173,8 +173,14 @@
                 <@s.text name="admin.config.section.analytics"/>
             </h4>
             <div class="row g-3 mb-5">
+                <div class="col-lg-12">
+                    <@input name="googleAnalyticsKey" value=googleAnalyticsKey! i18nkey="admin.config.googleAnalyticsKey" help="i18n" placeholder="UA-XXXXXXX-1" size=80/>
+                </div>
                 <div class="col-lg-6">
-                    <@input name="analyticsKey" value=analyticsKey! i18nkey="admin.config.analyticsKey" help="i18n" size=80/>
+                    <@input name="plausibleAnalyticsScriptURL" value=plausibleAnalyticsScriptURL! i18nkey="admin.config.plausibleAnalyticsScriptURL" help="i18n" placeholder="https://plausible.io/js/pa-XXXXX.js" size=80/>
+                </div>
+                <div class="col-lg-6">
+                    <@input name="plausibleAnalyticsEndpointURL" value=plausibleAnalyticsEndpointURL! i18nkey="admin.config.plausibleAnalyticsEndpointURL" help="i18n" placeholder="https://plausible.io/api/event" size=80/>
                 </div>
             </div>
 
