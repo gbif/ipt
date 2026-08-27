@@ -55,6 +55,7 @@ import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
 import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.MetadataFiles;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.PublicationOptions;
@@ -341,13 +342,16 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     BigDecimal v = resource.getLastPublishedVersionsVersion();
     String shortname = resource.getShortname();
 
-    File versionMetadataFile = resource.isDataPackage()
-        ? cfg.getDataDir().resourceDatapackageMetadataFile(shortname, resource.getCoreType(), v)
-        : cfg.getDataDir().resourceEmlFile(shortname, v);
+    File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+    File versionDatapacakgeFile = cfg.getDataDir().resourceDatapackageMetadataFile(shortname, resource.getCoreType(), v);
+    MetadataFiles metadataFiles = MetadataFiles.builder()
+        .eml(versionEmlFile)
+        .datapackage(versionDatapacakgeFile)
+        .build();
 
     Resource publishedPublicVersion = ResourceUtils
         .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
-            resource.findVersionHistory(v), versionMetadataFile, resource.getKey());
+            resource.findVersionHistory(v), metadataFiles, resource.getKey());
 
     SimplifiedResource result = new SimplifiedResource();
     result.setShortname(publishedPublicVersion.getShortname());
@@ -2053,7 +2057,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         .collect(Collectors.toList());
 
     DatatableResult result = new DatatableResult();
-    result.setTotalRecords(publishedPublicVersionsSimplified.values().size());
+    result.setTotalRecords(publishedPublicVersionsSimplified.size());
     result.setTotalDisplayRecords(filteredResources.size());
     result.setData(data);
 

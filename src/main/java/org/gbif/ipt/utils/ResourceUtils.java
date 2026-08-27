@@ -14,6 +14,7 @@
 package org.gbif.ipt.utils;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.ipt.model.MetadataFiles;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
@@ -22,7 +23,6 @@ import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
-import org.gbif.metadata.eml.ipt.model.Eml;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class ResourceUtils {
   }
 
   /**
-   * Reconstruct published version, using version's Eml file, version history, etc.
+   * Reconstruct published version, using version's metadata file, version history, etc.
    *
    * @param version               version to assign to reconstructed resource
    * @param shortname             shortname to assign to reconstructed resource
@@ -70,17 +70,40 @@ public class ResourceUtils {
    * @param doi                   DOI to assign to reconstructed resource
    * @param organisation          organisation to assign to reconstructed resource
    * @param versionHistory        VersionHistory corresponding to resource version being reconstructed
-   * @param versionMetadataFile   eml file ord metadata file corresponding to version of resource being reconstructed
+   * @param versionMetadataFile   eml file or metadata file corresponding to version of resource being reconstructed
    * @param key                   GBIF UUID to assign to reconstructed resource
    * @return published version reconstructed
    */
   public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreTypeOrPackageType,
                                             @Nullable String dataPackageIdentifier, @Nullable DOI doi, @Nullable Organisation organisation,
                                             @Nullable VersionHistory versionHistory, @Nullable File versionMetadataFile, @Nullable UUID key) {
+    return reconstructVersion(version, shortname, coreTypeOrPackageType, dataPackageIdentifier, doi, organisation,
+        versionHistory, MetadataFiles.fromSingleFile(versionMetadataFile), key);
+  }
+
+  /**
+   * Reconstruct published version, using version's metadata files, version history, etc.
+   *
+   * @param version               version to assign to reconstructed resource
+   * @param shortname             shortname to assign to reconstructed resource
+   * @param coreTypeOrPackageType coreType or packageType
+   * @param dataPackageIdentifier data package identifier (optional)
+   * @param doi                   DOI to assign to reconstructed resource
+   * @param organisation          organisation to assign to reconstructed resource
+   * @param versionHistory        VersionHistory corresponding to resource version being reconstructed
+   * @param versionMetadataFiles  any metadata files (EML, datapackage.json etc.) corresponding to version of resource being reconstructed
+   * @param key                   GBIF UUID to assign to reconstructed resource
+   * @return published version reconstructed
+   */
+  public static Resource reconstructVersion(@NotNull BigDecimal version, @NotNull String shortname, @NotNull String coreTypeOrPackageType,
+                                            @Nullable String dataPackageIdentifier, @Nullable DOI doi, @Nullable Organisation organisation,
+                                            @Nullable VersionHistory versionHistory, MetadataFiles versionMetadataFiles, @Nullable UUID key) {
     Objects.requireNonNull(version);
     Objects.requireNonNull(shortname);
 
     boolean isDataPackageResource = dataPackageIdentifier != null;
+    boolean isDwcDp = DWC_DP.equals(coreTypeOrPackageType);
+    boolean isColDP = COL_DP.equals(coreTypeOrPackageType);
 
     if (organisation == null && !isDataPackageResource) {
       throw new IllegalArgumentException(
@@ -92,12 +115,89 @@ public class ResourceUtils {
           "Failed to reconstruct resource version: version history is null");
     }
 
-    if (versionMetadataFile == null) {
+    if (versionMetadataFiles.isEmpty()) {
       throw new IllegalArgumentException(
-          "Failed to reconstruct resource version: version eml file is null");
+          "Failed to reconstruct resource version: versioned metadata files are not provided");
     }
 
-    // initiate new version, and set properties
+    Resource resource = newResourceShell(version, shortname, coreTypeOrPackageType,
+        dataPackageIdentifier, doi, organisation, versionHistory, key);
+
+    if (!isDataPackageResource) {
+      reconstructDwca(resource, versionMetadataFiles, shortname);
+    } else if (isDwcDp) {
+      reconstructDwcDp(resource, versionMetadataFiles, shortname);
+    } else if (isColDP) {
+      reconstructColDp(resource, versionMetadataFiles, shortname);
+    } else {
+      reconstructDatapackage(resource, versionMetadataFiles, dataPackageIdentifier, shortname);
+    }
+
+    return resource;
+  }
+
+  // Plain DwC-A resource: EML only, no fallback.
+  private static void reconstructDwca(Resource resource, MetadataFiles versionMetadataFiles, String shortname) {
+    File emlFile = versionMetadataFiles.getEml();
+    requireFile(emlFile, shortname);
+    resource.setEml(EmlUtils.loadWithLocale(emlFile, Locale.US));
+  }
+
+  // DwC-DP: prefer EML, fall back to datapackage.json if EML is missing.
+  private static void reconstructDwcDp(Resource resource, MetadataFiles versionMetadataFiles, String shortname) {
+    File emlFile = versionMetadataFiles.getEml();
+    if (emlFile != null && emlFile.exists()) {
+      resource.setEml(EmlUtils.loadWithLocale(emlFile, Locale.US));
+      return;
+    }
+
+    File datapackageFile = versionMetadataFiles.getDatapackage();
+    if (datapackageFile == null || !datapackageFile.exists()) {
+      LOG.error("Failed to reconstruct DwC-DP resource {}: neither EML {} nor datapackage.json {} found!",
+          shortname, emlFile, datapackageFile);
+      throw new IllegalArgumentException(
+          "Failed to reconstruct resource: no valid metadata file found for " + shortname);
+    }
+
+    LOG.warn("DwC-DP resource {} does not have EML file {}, falling back to datapackage.json: {}",
+        shortname, emlFile, datapackageFile);
+    resource.setDataPackageMetadata(
+        readMetadata(datapackageFile, jsonMapper, getDataPackageClass(DWC_DP), shortname));
+  }
+
+  // COL-DP: datapackage.yaml/json parsed with the YAML mapper into ColMetadata.
+  private static void reconstructColDp(Resource resource, MetadataFiles versionMetadataFiles, String shortname) {
+    File datapackageFile = versionMetadataFiles.getDatapackage();
+    requireFile(datapackageFile, shortname);
+    resource.setDataPackageMetadata(
+        readMetadata(datapackageFile, yamlMapper, ColMetadata.class, shortname));
+  }
+
+  // Generic data package resource: datapackage.json parsed with the JSON mapper.
+  private static void reconstructDatapackage(Resource resource, MetadataFiles versionMetadataFiles,
+                                             String dataPackageIdentifier, String shortname) {
+    File datapackageFile = versionMetadataFiles.getDatapackage();
+    requireFile(datapackageFile, shortname);
+    resource.setDataPackageMetadata(
+        readMetadata(datapackageFile, jsonMapper, getDataPackageClass(dataPackageIdentifier), shortname));
+  }
+
+  private static void requireFile(@Nullable File file, String shortname) {
+    if (file == null) {
+      LOG.error("Failed to reconstruct resource {}: metadata was not provided!", shortname);
+      throw new IllegalArgumentException("Failed to reconstruct resource: metadata not provided!");
+    }
+
+    if (!file.exists()) {
+      String path = file.getAbsolutePath();
+      LOG.error("Failed to reconstruct resource {}: {} not found!", shortname, path);
+      throw new IllegalArgumentException("Failed to reconstruct resource: " + path + " not found!");
+    }
+  }
+
+  private static Resource newResourceShell(BigDecimal version, String shortname, String coreTypeOrPackageType,
+                                           String dataPackageIdentifier, DOI doi, Organisation organisation,
+                                           VersionHistory versionHistory, UUID key) {
     Resource resource = new Resource();
     resource.setCoreType(coreTypeOrPackageType);
     resource.setDataPackageIdentifier(dataPackageIdentifier);
@@ -111,40 +211,17 @@ public class ResourceUtils {
     resource.setRecordsPublished(versionHistory.getRecordsPublished());
     resource.setLastPublished(versionHistory.getReleased());
     resource.setRecordsByExtension(versionHistory.getRecordsByExtension());
-
-    if (versionMetadataFile.exists()) {
-      if (isDataPackageResource) {
-        if (COL_DP.equals(coreTypeOrPackageType)) {
-          ColMetadata metadata;
-          try {
-            metadata = yamlMapper.readValue(versionMetadataFile, ColMetadata.class);
-            resource.setDataPackageMetadata(metadata);
-          } catch (IOException e) {
-            LOG.error("Failed to produce ColDP metadata for the resource {}", shortname);
-            LOG.error(e);
-            throw new RuntimeException(e);
-          }
-        } else {
-          DataPackageMetadata metadata;
-          try {
-            metadata = jsonMapper.readValue(versionMetadataFile, getDataPackageClass(dataPackageIdentifier));
-            resource.setDataPackageMetadata(metadata);
-          } catch (IOException e) {
-            LOG.error("Failed to produce metadata for the data package resource {}", shortname);
-            LOG.error(e);
-            throw new RuntimeException(e);
-          }
-        }
-      } else {
-        Eml eml = EmlUtils.loadWithLocale(versionMetadataFile, Locale.US);
-        resource.setEml(eml);
-      }
-    } else {
-      LOG.error("Failed to reconstruct resource: {} not found!", versionMetadataFile.getAbsolutePath());
-      throw new IllegalArgumentException(
-          "Failed to reconstruct resource: " + versionMetadataFile.getAbsolutePath() + " not found!");
-    }
     return resource;
+  }
+
+  private static <T> T readMetadata(File file, ObjectMapper mapper, Class<T> clazz, String shortname) {
+    try {
+      return mapper.readValue(file, clazz);
+    } catch (IOException e) {
+      LOG.error("Failed to produce metadata for the resource {}", shortname);
+      LOG.error(e);
+      throw new RuntimeException(e);
+    }
   }
 
   private static Class<? extends DataPackageMetadata> getDataPackageClass(String dataPackageIdentifier) {

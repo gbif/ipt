@@ -988,6 +988,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     for (KeywordSet item : actual) {
       if (expectedKeywordThesaurus.equals(item.getKeywordThesaurus()) && List.of(expectedKeyword).equals(item.getKeywords())) {
         contain = true;
+        break;
       }
     }
 
@@ -1654,13 +1655,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * Needed by PublishAllResourcesActionTest.
-   */
-  public DataDir getMockedDataDir() {
-    return mockedDataDir;
-  }
-
-  /**
    * Ensure previous published version can be reconstructed properly.
    */
   @Test
@@ -2030,21 +2024,21 @@ public class ResourceManagerImplTest extends IptBaseTest {
     VersionHistory version1 = new VersionHistory(new BigDecimal("1.0"), PublicationStatus.PUBLIC);
     version1.setReleased(null);
     resource.addVersionHistory(version1);
-    assertEquals(manager.latest(1, 25).size(), 0);
+    assertEquals(0, manager.latest(1, 25).size());
 
     // public and published
     version1.setReleased(new Date());
-    assertEquals(manager.latest(1, 25).size(), 1);
+    assertEquals(1, manager.latest(1, 25).size());
 
     // private but not yet published
     VersionHistory version2 = new VersionHistory(new BigDecimal("2.0"), PublicationStatus.PRIVATE);
     version2.setReleased(null);
     resource.addVersionHistory(version2);
-    assertEquals(manager.latest(1, 25).size(), 1);
+    assertEquals(1, manager.latest(1, 25).size());
 
     // private and published
     version2.setReleased(new Date());
-    assertEquals(manager.latest(1, 25).size(), 0);
+    assertEquals(0, manager.latest(1, 25).size());
   }
 
   @SuppressWarnings("ResultOfMethodCallIgnored")
