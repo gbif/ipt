@@ -2088,16 +2088,6 @@ button.close {
     min-height: 85vh;
 }
 
-.anchor-schema-page, .anchor-extension-page {
-    height: 45px;
-    margin-top: -59px;
-}
-
-.anchor-overview-page {
-    height: 104px;
-    margin-top: -104px;
-}
-
 .logoImg>img {
     max-height: 100px;
     max-width: 100px;

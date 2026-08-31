@@ -68,10 +68,21 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="manage.overview.title"/>: ${resource.title!resource.shortname}</title>
 
+<style>
+    :root {
+        --navbar-height: 120px;
+    }
+
+    .section {
+        scroll-margin-top: var(--navbar-height);
+    }
+</style>
+
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
+<script src="${baseURL}/js/scrollspy.js"></script>
 
 <#assign currentLocale = .vars["locale"]!"en"/>
 
@@ -204,31 +215,8 @@
         $('.delete-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
         $('.delete-core-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/><br><br><@s.text name ="manage.mapping.confirmation.message.core"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
 
-        // spy scroll and manage sidebar menu
-        $(window).scroll(function () {
-            var scrollPosition = $(document).scrollTop();
-
-            $('.bd-toc nav a').each(function () {
-                var currentLink = $(this);
-                var anchor = $(currentLink.attr("href"));
-                var sectionId = anchor[0].id.replace("anchor-", "");
-                var section = $("#" + sectionId);
-
-                var sectionsContainer = $("#sections");
-
-                if (sectionsContainer.position().top - 120 > scrollPosition) {
-                    var removeActiveFromThisLink = $('.bd-toc nav a.active');
-                    removeActiveFromThisLink.removeClass('active');
-                } else if (section.position().top - 120 <= scrollPosition
-                    && section.position().top + section.height() > scrollPosition) {
-                    if (!currentLink.hasClass("active")) {
-                        var removeFromThisLink = $('.bd-toc nav a.active');
-                        removeFromThisLink.removeClass('active');
-                        $(this).addClass('active');
-                    }
-                }
-            });
-        })
+        // Initialize scrollspy
+        IptScrollSpy.init({tocSelector: '.bd-toc nav a'});
 
         var showReport = false;
         $("#toggleReport").click(function () {
@@ -2266,7 +2254,7 @@
                     </div>
 
                     <span class="anchor anchor-overview-page" id="anchor-managers"></span>
-                    <div class="py-5" id="managers">
+                    <div class="py-5 section" id="managers">
                         <div class="d-flex justify-content-between">
                             <div class="d-flex">
                                 <h5 class="my-auto text-gbif-header-2 fw-400">
@@ -2354,8 +2342,6 @@
                     </div>
                 </div>
 
-            </main>
-        </div>
             </main>
         </div>
     </div>

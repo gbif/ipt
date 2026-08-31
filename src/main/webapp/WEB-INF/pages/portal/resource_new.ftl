@@ -161,38 +161,21 @@
     h1, h2, h3, h4, h5 {
         font-size: 1.25rem !important;
     }
+
+    :root {
+        --navbar-height: 90px;
+    }
+
+    .section {
+        scroll-margin-top: var(--navbar-height);
+    }
 </style>
 
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
 <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
+<script src="${baseURL}/js/scrollspy.js"></script>
 <script>
     $(document).ready(function() {
-        // spy scroll and manage sidebar menu
-        $(window).scroll(function () {
-            var scrollPosition = $(document).scrollTop();
-
-            $('.bd-toc nav a').each(function () {
-                var currentLink = $(this);
-                var anchor = $(currentLink.attr("href"));
-                var sectionId = anchor[0].id.replace("anchor-", "");
-                var section = $("#" + sectionId);
-
-                var sectionsContainer = $("#sections");
-
-                if (sectionsContainer.position().top - 120 > scrollPosition) {
-                    var removeActiveFromThisLink = $('.bd-toc nav a.active');
-                    removeActiveFromThisLink.removeClass('active');
-                } else if (section.position().top - 120 <= scrollPosition
-                    && section.position().top + section.height() > scrollPosition) {
-                    if (!currentLink.hasClass("active")) {
-                        var removeFromThisLink = $('.bd-toc nav a.active');
-                        removeFromThisLink.removeClass('active');
-                        $(this).addClass('active');
-                    }
-                }
-            });
-        })
-
         function renderDocBook(fieldValue, elementId) {
             if (!fieldValue || fieldValue.trim().length === 0) return;
 
@@ -209,6 +192,9 @@
         ];
 
         fields.forEach(f => renderDocBook(f.value, f.id));
+
+        // Then initialize scrollspy, now that real content/heights exist.
+        IptScrollSpy.init({ tocSelector: '.bd-toc nav a' });
     })
 </script>
 
@@ -509,9 +495,9 @@
                 </nav>
             </div>
 
-            <div class="bd-content ps-lg-4">
+            <div class="bd-content ps-lg-4 pt-5">
                 <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
-                <div id="description" class="py-5 section">
+                <div id="description" class="pb-5 section">
                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name='portal.resource.description'/>
                     </h4>
