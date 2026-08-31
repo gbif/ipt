@@ -43,7 +43,7 @@
     <gbif-api.version>2.4.13</gbif-api.version>
     <gbif-common.version>1.0</gbif-common.version>
     <gbif-doi.version>3.0.3</gbif-doi.version>
-    <gbif-dwc-dp-analyser.version>0.0.11-SNAPSHOT</gbif-dwc-dp-analyser.version>
+    <gbif-dwc-dp-analyser.version>0.0.11</gbif-dwc-dp-analyser.version>
     <gbif-metadata-profile.version>3.0</gbif-metadata-profile.version>
     <gbif-parsers.version>0.68</gbif-parsers.version>
     <gbif-httputils.version>1.4</gbif-httputils.version>
