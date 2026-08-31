@@ -171,7 +171,7 @@ public class ResourceAction extends PortalBaseAction {
 
   // formatted size of DwC-A for the published version
   @Getter
-  private String dwcaSizeForVersion;
+  private String archiveSizeForVersion;
 
   @Getter
   private String dataPackageSizeForVersion;
@@ -387,11 +387,11 @@ public class ResourceAction extends PortalBaseAction {
   public void finishLoadingDetail(@NotNull Resource resource, @NotNull Eml eml, @NotNull BigDecimal version) {
     // determine whether the version of resource requested is metadata-only or not (has published DwC-A or not)
     String name = resource.getShortname();
-    File dwcaFile = dataDir.resourceDwcaFile(name, version);
-    if (dwcaFile.exists()) {
-      dwcaSizeForVersion = FileUtils.formatSize(dwcaFile.length(), 0);
+    File archiveFile = getArchiveFile(resource, version);
+    if (archiveFile.exists()) {
+      archiveSizeForVersion = FileUtils.formatSize(archiveFile.length(), 0);
     } else {
-      metadataOnly = true;
+      metadataOnly = !resource.isDwcDp();
     }
 
     // determine EML file size
@@ -418,7 +418,7 @@ public class ResourceAction extends PortalBaseAction {
 
     // if the record count for this published version is greater than 0, but no dwca was found, it must have been
     // deleted which means that archival mode was not turned on when the proceeding version was published
-    if (metadataOnly && recordsPublishedForVersion > 0) {
+    if (metadataOnly && recordsPublishedForVersion > 0 && !resource.isDwcDp()) {
       addActionWarning(getText("portal.resource.version.notArchived.count",
         new String[] {String.valueOf(recordsPublishedForVersion)}));
     }
@@ -458,6 +458,13 @@ public class ResourceAction extends PortalBaseAction {
     coreType = (resource.getCoreType() != null && types.containsKey(resource.getCoreType().toLowerCase()))
         ? types.get(resource.getCoreType().toLowerCase())
         : types.get(Resource.CoreRowType.OTHER.toString().toLowerCase());
+  }
+
+  private File getArchiveFile(Resource resource, BigDecimal version) {
+    String name = resource.getShortname();
+    return resource.isDwcDp()
+        ? dataDir.resourceDataPackageFile(name, version)
+        : dataDir.resourceDwcaFile(name, version);
   }
 
   /**
@@ -760,7 +767,7 @@ public class ResourceAction extends PortalBaseAction {
       return ERROR;
     }
 
-    if (resource.isDataPackage()) {
+    if (resource.isDataPackage() && !resource.isDwcDp()) {
       finishLoadingDetail(resource, dpMetadata, version);
     } else {
       finishLoadingDetail(resource, eml, version);

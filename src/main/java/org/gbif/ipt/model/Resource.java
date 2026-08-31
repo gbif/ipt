@@ -1085,7 +1085,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public void setMetadataVersion(BigDecimal v) {
-    if (isDataPackage()) {
+    if (isDwcDp()) {
+      setDataPackageMetadataVersion(v);
+      setEmlVersion(v);
+    } else if (isDataPackage()) {
       setDataPackageMetadataVersion(v);
     } else {
       setEmlVersion(v);
@@ -1277,6 +1280,10 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   @NotNull
   public BigDecimal getReplacedEmlVersion() {
+    if (isDwcDp() && replacedEmlVersion == null && replacedDataPackageMetadataVersion != null) {
+      return replacedDataPackageMetadataVersion;
+    }
+
     return (replacedEmlVersion == null) ? Constants.INITIAL_RESOURCE_VERSION : replacedEmlVersion;
   }
 
@@ -1287,7 +1294,11 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public BigDecimal getReplacedMetadataVersion() {
-    return dataPackageIdentifier != null ? getReplacedDataPackageMetadataVersion() : getReplacedEmlVersion();
+    if (isDataPackage() && !isDwcDp()) {
+      return getReplacedDataPackageMetadataVersion();
+    } else {
+      return getReplacedEmlVersion();
+    }
   }
 
   /**

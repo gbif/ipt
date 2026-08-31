@@ -1,6 +1,8 @@
 <#if resource.isDataPackage()>
     <#if resource.coreType?has_content && resource.coreType == "coldp">
         <#include "/WEB-INF/pages/portal/resource_col_dp.ftl">
+    <#elseif resource.coreType?has_content && resource.isDwcDp()>
+        <#include "/WEB-INF/pages/portal/resource_dwc_dp.ftl">
     <#else>
         <#include "/WEB-INF/pages/portal/resource_dp.ftl">
     </#if>
