@@ -750,6 +750,7 @@ public class ResourceAction extends PortalBaseAction {
           // Catch any exception that may occur while loading EML for DWC DP separately
           LOG.error("Error loading EML version #{} for DwC DP resource {}: {}",
               getStringVersion(), name, e.getMessage());
+          throw new FileNotFoundException(e.getMessage());
         }
       }
     } catch (FileNotFoundException e) {
