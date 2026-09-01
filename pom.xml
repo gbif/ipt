@@ -159,6 +159,22 @@
     <repository>
       <id>gbif-thirdparty</id>
       <url>https://repository.gbif.org/content/repositories/thirdparty</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>gbif-thirdparty-snapshots</id>
+      <url>https://repository.gbif.org/content/repositories/thirdparty-snapshot</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
     <repository>
       <id>jitpack.io</id>
