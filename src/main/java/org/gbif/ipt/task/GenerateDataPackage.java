@@ -13,10 +13,6 @@
  */
 package org.gbif.ipt.task;
 
-import org.gbif.datapackage.DataPackage;
-import org.gbif.datapackage.DataPackageConstants;
-import org.gbif.datapackage.DataPackageForeignKey;
-import org.gbif.datapackage.DataPackageResource;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
@@ -31,14 +27,10 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
-import org.gbif.metadata.eml.EMLProfileVersion;
-import org.gbif.metadata.eml.EmlValidator;
-import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -46,7 +38,6 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -55,7 +46,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -71,13 +61,20 @@ import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
-import org.xml.sax.SAXException;
+import io.frictionlessdata.datapackage.exceptions.DataPackageValidationException;
+import io.frictionlessdata.datapackage.JSONBase;
+import io.frictionlessdata.datapackage.Package;
+import io.frictionlessdata.datapackage.Profile;
+import io.frictionlessdata.datapackage.resource.FilebasedResource;
+import io.frictionlessdata.tableschema.exception.ForeignKeyException;
+import io.frictionlessdata.tableschema.exception.PrimaryKeyException;
+import io.frictionlessdata.tableschema.exception.ValidationException;
+import io.frictionlessdata.tableschema.schema.Schema;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
-import static org.gbif.ipt.config.Constants.DWC_DP;
 
 public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
 
@@ -94,7 +91,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private STATE state = STATE.WAITING;
   private Exception exception;
   private File dataPackageFolder;
-  private DataPackage dataPackage;
+  private Package dataPackage;
   private int currRecords = 0;
   private int currRecordsSkipped = 0;
   private String currSchema;
@@ -216,7 +213,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * Zips the data package folder. A temp version is created first, and when successful, it's moved into the resource's
    * data directory.
    *
-   * @throws GeneratorException if data package could not be zipped or moved
+   * @throws GeneratorException   if data package could not be zipped or moved
    * @throws InterruptedException if executing thread was interrupted
    */
   private void bundleArchive() throws Exception {
@@ -225,18 +222,15 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     File zip = null;
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
-      // TODO: primary keys check was here
       // check keys first
-//      checkRelationsAndPrimaryKeys();
+      checkRelationsAndPrimaryKeys();
 
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
-      if (resource.isDwcDp()) {
-        dataPackage.write(zip, dataPackageFolder, this::writeEMLMetadata);
-      } else if (COL_DP.equals(resource.getCoreType())) {
-        dataPackage.write(zip, dataPackageFolder, this::writeCustomColDPMetadata);
+      if (COL_DP.equals(resource.getCoreType())) {
+        dataPackage.write(zip, this::writeCustomColDPMetadata, true);
       } else {
-        dataPackage.write(zip, dataPackageFolder);
+        dataPackage.write(zip, true);
       }
 
       if (zip.exists()) {
@@ -251,11 +245,10 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       }
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while bundling data package", e);
-      // TODO: does not throw those exceptions anymore
-//    } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
-//      throw new GeneratorException(e.getMessage());
+    } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
+      throw new GeneratorException(e.getMessage());
     } finally {
-      // cleanup zip directory, if compression was incomplete, for example, due to Exception
+      // cleanup zip directory, if compression was incomplete for example due to Exception
       // if moving zip to data dir was successful, it won't exist any more and cleanup will be skipped
       if (zip != null && zip.exists()) {
         FileUtils.deleteQuietly(zip);
@@ -266,7 +259,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Apart from a standard frictionless metadata, ColDP archive must contain specific metadata.yaml file.
+   * Apart from standard frictionless metadata ColDP archive must contain specific metadata.yaml file.
    */
   private void writeCustomColDPMetadata(Path outputDir) {
     Path target = outputDir.getFileSystem().getPath("metadata.yaml");
@@ -277,23 +270,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       addMessage(Level.ERROR, "Failed to write metadata.yaml");
     }
   }
-
-  // TODO: eml.xml must be validated!
-  /**
-   * Apart from a standard frictionless metadata, DwCA v2 occurrence must contain a EML file.
-   */
-  private void writeEMLMetadata(Path outputDir) {
-    Path target = outputDir.getFileSystem().getPath("eml.xml");
-    try {
-      File sourceFile = dataDir.resourceEmlFile(resource.getShortname());
-      Path sourcePath = sourceFile.toPath();
-      Files.copy(sourcePath, target, StandardCopyOption.REPLACE_EXISTING);
-    } catch (IOException e) {
-      log.error("Failed to write eml.xml", e);
-      addMessage(Level.ERROR, "Failed to write eml.xml");
-    }
-  }
-
 
   /**
    * Checks if the executing thread has been interrupted, i.e. generation was cancelled.
@@ -348,7 +324,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   /**
    * Create data files.
    *
-   * @throws GeneratorException if the resource had no core file that was mapped
+   * @throws GeneratorException   if the resource had no core file that was mapped
    * @throws InterruptedException if the thread was interrupted
    */
   private void createDataResources() throws GeneratorException, InterruptedException {
@@ -366,9 +342,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     DataPackageSchema dataPackageSchema = resource.getDataPackageMappings().get(0).getDataPackageSchema();
     currSchema = dataPackageSchema.getName();
 
-    // For DwC DP use only mapped fields in the resources, for the rest (Camtrap etc.) all the fields.
-    boolean filterMapped = DWC_DP.equals(currSchema);
-
     // before starting to add a table schema, check all required schemas mapped
     checkRequiredTableSchemasMapped(mappedTableSchemas, dataPackageSchema);
 
@@ -380,7 +353,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       report();
       try {
-        addDataResource(currSchema, tableSchema, allMappings, filterMapped);
+        addDataResource(currSchema, tableSchema, allMappings);
       } catch (IOException | IllegalArgumentException e) {
         throw new GeneratorException("Problem occurred while writing Data Resource", e);
       }
@@ -395,7 +368,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * Checks if all required schemas mapped, otherwise throws an exception.
    *
    * @param mappedTableSchemas mapped table schemas
-   * @param dataPackageSchema data schema
+   * @param dataPackageSchema  data schema
    */
   private void checkRequiredTableSchemasMapped(Set<String> mappedTableSchemas, DataPackageSchema dataPackageSchema)
       throws GeneratorException {
@@ -414,12 +387,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * Adds a single data resource for a tableSchema mapping.
    *
    * @throws IllegalArgumentException if not all mappings are mapped to the same extension
-   * @throws InterruptedException if the thread was interrupted
-   * @throws IOException if problems occurred while persisting new data resources
-   * @throws GeneratorException if any problem was encountered writing data resources
+   * @throws InterruptedException     if the thread was interrupted
+   * @throws IOException              if problems occurred while persisting new data resources
+   * @throws GeneratorException       if any problem was encountered writing data resources
    */
-  public void addDataResource(String schemaName, DataPackageTableSchema tableSchema,
-                              List<DataPackageMapping> allMappings, boolean filterMapped) throws IOException,
+  public void addDataResource(String schemaName, DataPackageTableSchema tableSchema, List<DataPackageMapping> allMappings) throws IOException,
       IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (tableSchema == null || CollectionUtils.isEmpty(allMappings)) {
@@ -432,41 +404,14 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     currTableSchema = tableSchema.getName();
 
     List<DataPackageField> fields = tableSchema.getFields();
-    Set<String> mappedFieldNames = new HashSet<>();
+
     // file header
-    String header;
+    String header = fields.stream()
+        .map(DataPackageField::getName)
+        .collect(Collectors.joining(",", "", "\n"));
+
     // total column count (number of fields in the tableSchema)
-    int totalColumns;
-
-    if (filterMapped) {
-      for (DataPackageMapping dataPackageMapping : allMappings) {
-        if (dataPackageMapping.getDataPackageTableSchemaName().getName().equals(tableSchema.getName())) {
-          // filter those that are mapped or have a default value
-          dataPackageMapping.getFields().stream()
-              .filter(dpfm -> dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))
-              .forEach(dpfm -> {
-                if (dpfm.getField() != null && dpfm.getField().getName() != null) {
-                  mappedFieldNames.add(dpfm.getField().getName());
-                } else {
-                  log.error("Null field mapping for tables schema {}: {}", tableSchema.getName(), dpfm.getField());
-                }
-              });
-        }
-      }
-
-      header = fields.stream()
-          .map(DataPackageField::getName)
-          .filter(mappedFieldNames::contains)
-          .collect(Collectors.joining(",", "", "\n"));
-
-       totalColumns = mappedFieldNames.size();
-    } else {
-      header = fields.stream()
-          .map(DataPackageField::getName)
-          .collect(Collectors.joining(",", "", "\n"));
-
-      totalColumns = fields.size();
-    }
+    int totalColumns = fields.size();
 
     String fn = tableSchema.getName() + ".csv";
     File dataFile = new File(dataPackageFolder, fn);
@@ -484,13 +429,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             headerWritten = true;
           }
 
-          // Build a lookup map of field name -> index for quick ordering
-          Map<String, Integer> allTableFieldsInOrder = new HashMap<>();
-          for (int i = 0; i < fields.size(); i++) {
-            allTableFieldsInOrder.put(fields.get(i).getName(), i);
-          }
-
-          dumpData(writer, allTableFieldsInOrder, dataPackageMapping, dataPackageMapping.getFields(), totalColumns, filterMapped);
+          dumpData(writer, dataPackageMapping, dataPackageMapping.getFields(), totalColumns);
 
           // store record number by extension rowType
           recordsByTableSchema.put(tableSchema.getName(), currRecords);
@@ -505,32 +444,27 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     // create resource from file
-    DataPackageResource packageResource = DataPackageResource.fromFile(tableSchema.getName(), fn);
-    packageResource.setProfile(DataPackageConstants.PROFILE_TABULAR_DATA_RESOURCE);
-    packageResource.setFormat(DataPackageConstants.FORMAT_CSV);
+    @SuppressWarnings({"rawtypes"})
+    io.frictionlessdata.datapackage.resource.Resource packageResource =
+        new FilebasedResource(
+            tableSchema.getName(),
+            Collections.singleton(new File(fn)),
+            dataPackageFolder);
+    packageResource.setProfile(Profile.PROFILE_TABULAR_DATA_RESOURCE);
+    packageResource.setFormat(io.frictionlessdata.datapackage.resource.Resource.FORMAT_CSV);
     if (tableSchema.getUrl() != null) {
-      packageResource.setSchemaUrl(tableSchema.getUrl().toString());
+      ((JSONBase) packageResource).getOriginalReferences().put(JSONBase.JSON_KEY_SCHEMA, tableSchema.getUrl().toString());
     }
 
     try {
-      org.gbif.datapackage.DataPackageTableSchema schema
-          = org.gbif.datapackage.DataPackageTableSchema.fromUrl(tableSchema.getUrl());
-
-      // for example, for DwC DP add only mapped fields, not all the schema
-      if (filterMapped) {
-        schema.getFields().removeIf(f -> isUnusedField(f, mappedFieldNames));
-        schema.getForeignKeys().removeIf(f -> isUnusedForeignKey(f, mappedFieldNames));
-        packageResource.setInlineSchema(true);
-      }
-
-      packageResource.setTableSchema(schema);
-      // TODO: validate schema?
-//    } catch (ValidationException e) {
-//      log.error("Failed to validate schema {}. Errors: {}", tableSchema.getName(), e.getMessages(), e);
-//      addMessage(Level.ERROR, "Failed to validate schema " + tableSchema.getName());
-//      // set the last error report!
-//      setState(e);
-//      throw new GeneratorException("Validation error while adding schema file", e);
+      Schema schema = Schema.fromJson(tableSchema.getUrl(), true);
+      packageResource.setSchema(schema);
+    } catch (ValidationException e) {
+      log.error("Failed to validate schema {}. Errors: {}", tableSchema.getName(), e.getMessages(), e);
+      addMessage(Level.ERROR, "Failed to validate schema " + tableSchema.getName());
+      // set the last error report!
+      setState(e);
+      throw new GeneratorException("Validation error while adding schema file", e);
     } catch (Exception e) {
       log.error("Fatal Package Generator Error encountered while adding schema data {}", tableSchema.getIdentifier(), e);
       addMessage(Level.ERROR, "Error while adding schema data " + tableSchema.getIdentifier());
@@ -541,9 +475,10 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
     // add resource to package
     if (dataPackage == null) {
-      dataPackage = new DataPackage();
+      dataPackage = new Package(Collections.singleton(packageResource));
+    } else {
+      dataPackage.addResource(packageResource);
     }
-    dataPackage.addResource(packageResource);
 
     // final reporting
     addMessage(Level.INFO, "Data Resource " + currTableSchema + " created with " + currRecords + " records and "
@@ -558,44 +493,24 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   /**
    * Write data resource for mappings.
    *
-   * @param writer file writer for single data resource
-   * @param allTableFieldsInOrder all fields of the table schema in order
-   * @param schemaMapping schema mapping
+   * @param writer                   file writer for single data resource
+   * @param schemaMapping            schema mapping
    * @param tableSchemaFieldMappings field mappings
-   * @param dataFileRowSize number of columns in data resource
-   * @param filterMapped leave only those fields that are mapped
-   * @throws GeneratorException if there was an error writing data resource for mapping.
+   * @param dataFileRowSize          number of columns in data resource
+   * @throws GeneratorException   if there was an error writing data resource for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
-  private void dumpData(Writer writer, Map<String, Integer> allTableFieldsInOrder, DataPackageMapping schemaMapping,
-                        List<DataPackageFieldMapping> tableSchemaFieldMappings, int dataFileRowSize, boolean filterMapped)
+  private void dumpData(Writer writer, DataPackageMapping schemaMapping,
+                        List<DataPackageFieldMapping> tableSchemaFieldMappings, int dataFileRowSize)
       throws GeneratorException, InterruptedException {
     RecordFilter filter = schemaMapping.getFilter();
-    int fieldsMapped = schemaMapping.getFieldsMapped();
-    DataPackageTableSchemaName resourceName = schemaMapping.getDataPackageTableSchemaName();
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
     int emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
     int line = 0;
-    List<DataPackageFieldMapping> mappedTableSchemaFieldMappings = tableSchemaFieldMappings
-        .stream()
-        .filter(dpfm -> dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))
-        .sorted(Comparator.comparingInt(m -> {
-          String fieldName = m.getField().getName();
-          return allTableFieldsInOrder.getOrDefault(fieldName, Integer.MAX_VALUE);
-        })).collect(Collectors.toList());
-    List<DataPackageFieldMapping> usedMappings;
-    Optional<Integer> maxColumnIndexOpt;
-
-    if (filterMapped) {
-      usedMappings = mappedTableSchemaFieldMappings;
-    } else {
-      usedMappings = tableSchemaFieldMappings;
-    }
-
-    maxColumnIndexOpt = usedMappings.stream()
+    Optional<Integer> maxMappedColumnIndexOpt = tableSchemaFieldMappings.stream()
         .map(DataPackageFieldMapping::getIndex)
         .filter(Objects::nonNull)
         .max(Comparator.naturalOrder());
@@ -629,19 +544,19 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
           currRecordsSkipped++;
         } else {
 
-          if (maxColumnIndexOpt.isPresent() && in.length <= maxColumnIndexOpt.get()) {
+          if (maxMappedColumnIndexOpt.isPresent() && in.length <= maxMappedColumnIndexOpt.get()) {
             writePublicationLogMessage("Line with fewer columns than mapped. SourceBase:"
                 + schemaMapping.getSource().getName()
                 + " Line #" + line + " has " + in.length + " Columns: " + printLine(in));
             // input row is smaller than the highest mapped column. Resize array by adding nulls
-            String[] in2 = new String[maxColumnIndexOpt.get() + 1];
+            String[] in2 = new String[maxMappedColumnIndexOpt.get() + 1];
             System.arraycopy(in, 0, in2, 0, in.length);
             in = in2;
             linesWithWrongColumnNumber++;
           }
 
           // initialize translated values and add id column
-          String[] translated = new String[usedMappings.size()];
+          String[] translated = new String[dataFileRowSize];
 
           // filter this record?
           boolean alreadyTranslated = false;
@@ -650,7 +565,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             boolean matchesFilter;
             if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
               // need to apply translations first
-              applyTranslations(usedMappings, in, translated);
+              applyTranslations(tableSchemaFieldMappings, in, translated);
               matchesFilter = filter.matches(in);
               alreadyTranslated = true;
             } else {
@@ -666,7 +581,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
           // apply translations and default values
           if (!alreadyTranslated) {
-            applyTranslations(usedMappings, in, translated);
+            applyTranslations(tableSchemaFieldMappings, in, translated);
           }
 
           // concatenate values
@@ -748,8 +663,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param in values array, of all columns in row
    * @param translated translated values
    */
-  private void applyTranslations(List<DataPackageFieldMapping> inCols,
-                                 String[] in, String[] translated) {
+  private void applyTranslations(List<DataPackageFieldMapping> inCols, String[] in, String[] translated) {
     for (int i = 0; i < inCols.size(); i++) {
       DataPackageFieldMapping mapping = inCols.get(i);
       String val = null;
@@ -774,15 +688,14 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Generates a single comma-delimited row from the list of values of the provided array.
+   * Generates a single comma delimited row from the list of values of the provided array.
    * </br>
    * Note all line breaking characters in the value get replaced with an empty string before its added to the row.
    * </br>
    * The row ends in a newline character.
    *
    * @param columns the array of values from the source
-   *
-   * @return the comma-delimited String, {@code null} if provided array only contained null values
+   * @return the comma delimited String, {@code null} if provided array only contained null values
    */
   protected String commaRow(String[] columns) {
     Objects.requireNonNull(columns);
@@ -822,7 +735,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * blank string represents an empty line in a source data resource.
    *
    * @param line string array
-   *
    * @return true if each string in array is empty, false otherwise
    */
   private boolean isEmptyLine(String[] line) {
@@ -882,12 +794,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       String type = resource.getCoreType();
 
       if (CAMTRAP_DP.equals(type)) {
-        addDataPackageMetadata();
+        addCamtrapMetadata();
       } else if (COL_DP.equals(type)) {
         addColMetadata();
-      } else if (DWC_DP.equals(type)) {
-        addDataPackageMetadata();
-        addEml();
       } else {
         addMessage(Level.WARN, "Metadata was not added: unknown type " + type);
       }
@@ -919,36 +828,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     colMetadata.getAdditionalProperties().forEach((key, value) -> dataPackage.setProperty(key, value));
   }
 
-  private void addDataPackageMetadata() throws Exception {
+  private void addCamtrapMetadata() throws Exception {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-    dataPackage = DataPackage.load(metadataFile);
+
+    dataPackage = new Package(metadataFile.toPath(), false);
     setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
-  }
-
-  private void addEml() throws Exception {
-    // validate EML
-    try {
-      addMessage(Level.INFO, "? Validating EML file");
-      EmlValidator emlValidator = org.gbif.metadata.eml.EmlValidator.newValidator(EMLProfileVersion.GBIF_1_3);
-
-      try (InputStream is = FileUtils.openInputStream(dataDir.resourceEmlFile(resource.getShortname()))) {
-        emlValidator.validate(is);
-        addMessage(Level.INFO, "✓ Validated EML file");
-      }
-    } catch (IOException | SAXException e) {
-      // some error validating this file, report
-      log.error("Exception caught while validating EML file", e);
-      addMessage(Level.ERROR, "Failed to validate EML file");
-      setState(e);
-      throw new GeneratorException("Problem occurred while validating DwC-A (EML)", e);
-    } catch (InvalidEmlException e) {
-      // InvalidEmlException - log ERROR, but still proceed
-      log.error("Invalid EML", e);
-      addMessage(Level.ERROR, "Invalid EML file: " + e.getMessage());
-    }
-
-    // final reporting
-    addMessage(Level.INFO, "EML file added");
   }
 
   private void setDataPackageProperty(String name, Object property) {
@@ -970,19 +854,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
   }
 
-  private boolean isUnusedField(org.gbif.datapackage.DataPackageField field, Set<String> mappedFieldNames) {
-    return !mappedFieldNames.contains(field.getName());
-  }
-
-  private boolean isUnusedForeignKey(DataPackageForeignKey fk, Set<String> mappedFieldNames) {
-    boolean result;
-
-    if (!fk.getFields().isEmpty()) {
-      result = !mappedFieldNames.contains(fk.getFields().get(0));
-    } else {
-      result = true;
+  private void checkRelationsAndPrimaryKeys() throws Exception {
+    boolean isFkValidationEnabled = cfg.isDatapackageForeignKeysValidationEnabled();
+    for (io.frictionlessdata.datapackage.resource.Resource<?> dataPackageResource : dataPackage.getResources()) {
+      if (isFkValidationEnabled) {
+        dataPackageResource.checkRelations(dataPackage);
+      }
+      dataPackageResource.checkPrimaryKeys();
     }
-
-    return result;
   }
 }
