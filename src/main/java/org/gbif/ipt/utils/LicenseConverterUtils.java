@@ -18,11 +18,11 @@ import org.apache.commons.lang3.StringUtils;
 public final class LicenseConverterUtils {
 
   private static final String CC_ZERO_SHORT = "CC0-1.0";
-  private static final String CC_ZERO_DEFAULT = "Public Domain (CC0 1.0)";
+  private static final String CC_ZERO_KEY = "CC0";
   private static final String CC_BY_SHORT = "CC-BY-4.0";
-  private static final String CC_BY_DEFAULT = "Creative Commons Attribution (CC-BY) 4.0 License";
+  private static final String CC_BY_KEY = "CC-BY";
   private static final String CC_BY_NC_SHORT = "CC-BY-NC-4.0";
-  private static final String CC_BY_NC_DEFAULT = "Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License";
+  private static final String CC_BY_NC_KEY = "CC-BY-NC";
 
   private LicenseConverterUtils() {
   }
@@ -36,14 +36,14 @@ public final class LicenseConverterUtils {
       return "";
     }
 
-    if (fullLicense.contains(CC_ZERO_DEFAULT)) {
+    if (fullLicense.contains(CC_ZERO_KEY)) {
       return CC_ZERO_SHORT;
     }
-    if (fullLicense.contains(CC_BY_DEFAULT)) {
-      return CC_BY_SHORT;
-    }
-    if (fullLicense.contains(CC_BY_NC_DEFAULT)) {
+    if (fullLicense.contains(CC_BY_NC_KEY)) {
       return CC_BY_NC_SHORT;
+    }
+    if (fullLicense.contains(CC_BY_KEY)) {
+      return CC_BY_SHORT;
     }
 
     return "";

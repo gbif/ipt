@@ -34,6 +34,7 @@ import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.LicenseConverterUtils;
+import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.ClosableReportingIterator;
 
@@ -49,12 +50,14 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -102,7 +105,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private DataPackage dataPackage;
   private int currRecords = 0;
   private int currRecordsSkipped = 0;
-  private String currSchema;
   private String currTableSchema;
   // record counts by extension <rowType, count>
   private Map<String, Integer> recordsByTableSchema = new HashMap<>();
@@ -410,7 +412,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
         .map(DataPackageTableSchemaName::getName)
         .collect(Collectors.toSet());
     DataPackageSchema dataPackageSchema = resource.getDataPackageMappings().get(0).getDataPackageSchema();
-    currSchema = dataPackageSchema.getName();
+    String currentSchemaName = dataPackageSchema.getName();
 
     // before starting to add a table schema, check all required schemas mapped
     checkRequiredTableSchemasMapped(mappedTableSchemas, dataPackageSchema);
@@ -423,7 +425,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
       report();
       try {
-        addDataResource(currSchema, tableSchema, allMappings, true);
+        addDataResource(currentSchemaName, tableSchema, allMappings, true);
       } catch (IOException | IllegalArgumentException e) {
         throw new GeneratorException("Problem occurred while writing Data Resource", e);
       }
@@ -934,10 +936,60 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     File emlFile = dataDir.resourceEmlFile(resource.getShortname());
     Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
 
+    // TODO: use a stub here to test the analyser
+//    setDataPackageProperty("profile", resource.getDataPackageIdentifier() + "/" + resource.getDataPackageVersion() + "/dwc-dp-profile.json");
+    setDataPackageProperty("profile", "https://dwc-prerelease.rs.tdwg.org/dwc-dp/1.0_DEV/dwc-dp-profile.json");
+    setDataPackageProperty("name", resource.getShortname());
+    setContributorsDataPackageProperty(eml);
     setDataPackageStringProperty("title", eml.getTitle());
     setDataPackageStringProperty("description", eml.getDescription());
+    setLicenseDataPackageProperty(eml);
+  }
+
+  private void setLicenseDataPackageProperty(Eml eml) {
     setDataPackageProperty("licenses",
         List.of(Map.of("name", LicenseConverterUtils.fullLicenseToShort(eml.getIntellectualRights()))));
+  }
+
+  private void setContributorsDataPackageProperty(Eml eml) {
+    List<Map<String, Object>> contributors = new ArrayList<>();
+
+    eml.getCreators().forEach(a -> addContributor(contributors, a, "author"));
+    eml.getMetadataProviders().forEach(a -> addContributor(contributors, a, "wrangler"));
+    eml.getAssociatedParties().forEach(a -> addContributor(contributors, a, "contributor"));
+
+    setDataPackageProperty("contributors", List.copyOf(contributors));
+  }
+
+  private void addContributor(List<Map<String, Object>> contributors, Agent agent, String defaultRole) {
+    if (agent == null || agent.isEmpty()) {
+      return;
+    }
+
+    Map<String, Object> contributor = new LinkedHashMap<>();
+
+    String title = agent.getFullName();
+    if (title == null) {
+      title = agent.getOrganisation();
+    }
+    if (title != null) {
+      contributor.put("title", title);
+    }
+
+    if (agent.getOrganisation() != null) {
+      contributor.put("organization", agent.getOrganisation());
+    }
+
+    firstNonBlank(agent.getEmail()).ifPresent(email -> contributor.put("email", email));
+    firstNonBlank(agent.getHomepage()).ifPresent(path -> contributor.put("path", path));
+
+    contributor.put("role", "contributor");
+
+    contributors.add(Map.copyOf(contributor));
+  }
+
+  private Optional<String> firstNonBlank(List<String> values) {
+    return values.stream().filter(StringUtils::isNotBlank).findFirst();
   }
 
   private void addEml() throws Exception {
