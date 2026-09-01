@@ -3372,6 +3372,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
               + " of resource " + shortname);
 
       try {
+        // delete versioned EML file if it exists (eml.xml must remain)
+        File versionedEMLFile = dataDir.resourceEmlFile(shortname, rollingBack);
+        if (versionedEMLFile.exists()) {
+          FileUtils.forceDelete(versionedEMLFile);
+        }
+
         // delete versioned metadata file if exists (datapackage.json must remain)
         File versionedCamtrapMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, CAMTRAP_DP, rollingBack);
         if (versionedCamtrapMetadataFile.exists()) {
@@ -3399,12 +3405,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         if (resource.getVersionHistory().size() > 1) {
           BigDecimal replacedVersion = new BigDecimal(resource.getVersionHistory().get(1).getVersion());
           resource.setReplacedDataPackageMetadataVersion(replacedVersion);
+          resource.setReplacedEmlVersion(replacedVersion);
         }
 
         // persist resource.xml changes
         save(resource);
 
-        // persist EML changes
+        // persist metadata changes
         saveDatapackageMetadata(resource);
 
       } catch (IOException e) {
