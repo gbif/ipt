@@ -83,7 +83,7 @@
                             </div>
                         </#if>
                         <span class="publication-stepLabel-root publication-StepLabel-horizontal publication-StepLabel-label">
-                            <#if css=="completed">
+                            <#if css=="completed" || (css=="completed" && step_index==7)>
                                 <span class="publication-StepLabel-iconContainer completed publication-StepLabel-label">
                                     <svg class="publication-SvgIcon-root publication-SvgIcon-fontSizeMedium publication-StepIcon-root completed"
                                          focusable="false" aria-hidden="true" viewBox="0 0 24 24">
@@ -97,15 +97,20 @@
                                         <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
                                     </svg>
                                 </span>
+                            <#elseif css=="disabled">
+                                <span class="publication-StepLabel-iconContainer disabled publication-StepLabel-label">
+                                    <svg class="publication-SvgIcon-root publication-SvgIcon-fontSizeMedium publication-StepIcon-root disabled"
+                                         focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
+                                    </svg>
+                                </span>
                             <#else>
-                                <span class="publication-StepLabel-iconContainer ${css} publication-StepLabel-label">
-                                <svg class="publication-SvgIcon-root publication-SvgIcon-fontSizeMedium publication-StepIcon-root ${css}"
-                                     focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="12"></circle>
-                                    <text class="publication-StepIcon-text" x="12" y="12"
-                                          text-anchor="middle" dominant-baseline="central">${step_index}</text>
-                                </svg>
-                        </span>
+                                <span class="publication-StepLabel-iconContainer active publication-StepLabel-label">
+                                    <svg class="publication-SvgIcon-root publication-SvgIcon-fontSizeMedium publication-StepIcon-root active"
+                                         focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5m0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8"></path>
+                                    </svg>
+                                </span>
                             </#if>
                             <span class="publication-StepLabel-labelContainer publication-StepLabel-label">
                                 <span class="publication-StepLabel-label ${css}">${step.label}</span>
@@ -133,16 +138,18 @@
 
     <div class="mb-2">
         <#if publicationStartTimestamp??>
-        <#assign elapsedSec = (now?long - publicationStartTimestamp?long) / 1000>
-        <#assign hours   = (elapsedSec / 3600)?floor>
-        <#assign minutes = ((elapsedSec % 3600) / 60)?floor>
-        <#assign seconds = (elapsedSec % 60)>
-        <div class="small">
-            <@s.text name="manage.report.publication.started"/>: ${publicationStartTimestamp?number_to_datetime?string.full}
-        </div>
-        <div class="small">
-            <@s.text name="manage.report.publication.time"/>: ${hours?string["00"]}:${minutes?string["00"]}:${seconds?string["00"]}
-        </div>
+            <#assign elapsedSec = (now?long - publicationStartTimestamp?long) / 1000>
+            <#assign hours   = (elapsedSec / 3600)?floor>
+            <#assign minutes = ((elapsedSec % 3600) / 60)?floor>
+            <#assign seconds = (elapsedSec % 60)>
+            <div class="small">
+                <@s.text name="manage.report.publication.started"/>
+                : ${publicationStartTimestamp?number_to_datetime?string.full}
+            </div>
+            <div class="small">
+                <@s.text name="manage.report.publication.time"/>: ${hours?string["00"]}:${minutes?string["00"]}
+                :${seconds?string["00"]}
+            </div>
         </#if>
         <div class="small">
             <@s.text name="manage.report.publication.status"/>:
@@ -163,10 +170,10 @@
             </#if>
         </div>
     </div>
-<#recover>
-    <p>
-        <span class="small">${now?datetime?string.full}</span><br>
-    </p>
+    <#recover>
+        <p>
+            <span class="small">${now?datetime?string.full}</span><br>
+        </p>
 </#attempt>
 
 <#if report??>
@@ -187,15 +194,19 @@
             <p>
                 <@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text>
                 <#if resource.status=="REGISTERED" && resource.key??>
-                    <@s.text name="manage.report.gbif"><@s.param><a type="button" href="${cfg.portalUrl}/dataset/${resource.key!}">GBIF.org</a></@s.param></@s.text>
+                    <@s.text name="manage.report.gbif"><@s.param><a type="button"
+                                                                    href="${cfg.portalUrl}/dataset/${resource.key!}">
+                            GBIF.org</a></@s.param></@s.text>
                 </#if>
             </p>
             <p>
-                <@s.text name='portal.publication.download.log'/> <a target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
+                <@s.text name='portal.publication.download.log'/> <a target="_blank"
+                                                                     href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
             </p>
             <#if isDwcDp>
                 <p>
-                    <@s.text name='portal.publication.validation.report.info'><@s.param><a target="_blank" href="${baseURL}/manage/validationReport.do?r=${resource.shortname}"><@s.text name='portal.publication.validation.report'/></a></@s.param></@s.text>
+                    <@s.text name='portal.publication.validation.report.info'><@s.param><a target="_blank"
+                                                                                           href="${baseURL}/manage/validationReport.do?r=${resource.shortname}"><@s.text name='portal.publication.validation.report'/></a></@s.param></@s.text>
                 </p>
             </#if>
         <#else>
@@ -206,7 +217,8 @@
                 ${report.state?no_esc}
             </div>
             <p>
-                <a href="cancel.do?r=${resource.shortname}"><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>.
+                <a href="cancel.do?r=${resource.shortname}"><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>
+                .
             </p>
         </#if>
 
@@ -238,8 +250,8 @@
         <@s.text name='manage.report.finished'/>
     </h5>
     <#if (resource.shortname)?has_content>
-    <p>
-        <@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text>
-    </p>
+        <p>
+            <@s.text name='manage.report.continueTo'><@s.param>${resource.shortname}</@s.param></@s.text>
+        </p>
     </#if>
 </#if>
