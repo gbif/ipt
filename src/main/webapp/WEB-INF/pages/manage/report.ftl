@@ -67,7 +67,7 @@
                             <#assign css = "disabled">
                         </#if>
                     <#else>
-                        <#if stepIndex < currentIndex>
+                        <#if stepIndex < currentIndex || currentIndex == 7>
                             <#assign css = "completed">
                         <#elseif step.id == currentStep>
                             <#assign css = "active">
@@ -83,7 +83,7 @@
                             </div>
                         </#if>
                         <span class="publication-stepLabel-root publication-StepLabel-horizontal publication-StepLabel-label">
-                            <#if css=="completed" || (css=="active" && step_index==7)>
+                            <#if css=="completed">
                                 <span class="publication-StepLabel-iconContainer completed publication-StepLabel-label">
                                     <svg class="publication-SvgIcon-root publication-SvgIcon-fontSizeMedium publication-StepIcon-root completed"
                                          focusable="false" aria-hidden="true" viewBox="0 0 24 24">
