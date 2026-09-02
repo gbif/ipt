@@ -179,6 +179,7 @@ public class FrictionlessMetadata<C extends FrictionlessContributor, L extends F
    */
   @JsonProperty("sources")
   @NotNull(message = "validation.input.notNull", groups = BasicMetadata.class)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Valid
   private List<S> sources = new ArrayList<>();
 
@@ -451,6 +452,7 @@ public class FrictionlessMetadata<C extends FrictionlessContributor, L extends F
    */
   @JsonProperty("sources")
   @JsonDeserialize(contentUsing = FrictionlessSource.DataPackageSourceDeserializer.class)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @Element(FrictionlessSource.class)
   public List<S> getSources() {
     return sources;
