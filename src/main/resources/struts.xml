@@ -73,12 +73,16 @@
       <!-- for example, when cancelling publication and redirecting back to the resource page -->
       <interceptor name="messageStore" class="org.apache.struts2.interceptor.MessageStoreInterceptor"/>
 
+      <!-- Adds validation errors to fields if there is potential XSS input -->
+      <interceptor name="xssFieldError" class="org.gbif.ipt.struts2.XssFieldErrorInterceptor"/>
+
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="defaultLocale"/>
         <interceptor-ref name="i18n"/>
         <interceptor-ref name="defaultStack"/>
+        <interceptor-ref name="xssFieldError"/>
         <interceptor-ref name="validation">
           <param name="excludeMethods">input,back,cancel,list</param>
         </interceptor-ref>
