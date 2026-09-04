@@ -20,7 +20,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.utils.XSSUtil;
+import org.gbif.ipt.utils.XSSUtils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -268,7 +268,7 @@ public class BaseAction extends ActionSupport
   public String getLocaleLanguage() {
     if (getLocale() != null) {
       String requestedLocale = StringUtils.trimToNull(getLocale().getLanguage());
-      if (requestedLocale != null && !XSSUtil.containsXSS(requestedLocale)) {
+      if (requestedLocale != null && !XSSUtils.containsXSS(requestedLocale)) {
         ResourceBundle resourceBundle = textProvider.getTexts(new Locale(requestedLocale));
         return resourceBundle.getLocale().getLanguage();
       }
