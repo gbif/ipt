@@ -2121,6 +2121,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toUiRecordsPublished(SimplifiedResource resource, Locale locale) {
     NumberFormat format = NumberFormat.getInstance(locale);
+
+    if (resource.getLastPublished() == null && resource.getRecordsPublished() == 0) {
+      return "Not published";
+    }
+
     return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + format.format(resource.getRecordsPublished()) + "</a>";
   }
 
