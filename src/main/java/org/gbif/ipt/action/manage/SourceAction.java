@@ -427,6 +427,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     return SUCCESS;
   }
 
+  @StrutsParameter(depth = 2)
   public TextFileSource getFileSource() {
     if (source instanceof TextFileSource) {
       return (TextFileSource) source;
