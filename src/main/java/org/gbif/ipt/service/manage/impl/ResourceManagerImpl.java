@@ -1926,7 +1926,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
           Comparator.comparing(SimplifiedResource::getSubtype, nullSafeStringComparator);
     } else if (index == 5) {
       Comparator<SimplifiedResource> byRecords = Comparator.comparingInt(SimplifiedResource::getRecordsPublished);
-      Comparator<SimplifiedResource> tieBreak = Comparator.comparing(SimplifiedResource::getTitleOrShortname, nullSafeStringComparator);
+      Comparator<SimplifiedResource> tieBreak = Comparator.comparing(SimplifiedResource::getLastPublished, nullSafeDateComparator);
       return isDescendingOrder
           ? byRecords.reversed().thenComparing(tieBreak)
           : byRecords.thenComparing(tieBreak);
