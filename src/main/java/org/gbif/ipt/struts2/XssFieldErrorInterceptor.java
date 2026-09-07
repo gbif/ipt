@@ -14,17 +14,14 @@
 package org.gbif.ipt.struts2;
 
 import java.io.Serial;
-import java.util.Locale;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.struts2.ActionContext;
 import org.apache.struts2.action.Action;
 import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.interceptor.ValidationAware;
 import org.apache.struts2.interceptor.AbstractInterceptor;
-
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -44,8 +41,6 @@ public class XssFieldErrorInterceptor extends AbstractInterceptor {
 
   @Serial
   private static final long serialVersionUID = -975622498498574759L;
-
-  protected SimpleTextProvider textProvider;
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {

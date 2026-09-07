@@ -18,19 +18,19 @@ import org.jsoup.safety.Safelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 /**
  * Class with utility methods for XSS filtering, backed by JSoup's HTML parser/sanitizer
  * instead of regex pattern matching.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class XSSUtils {
 
   private static final Logger LOG = LoggerFactory.getLogger(XSSUtils.class);
 
-  // No HTML at all allowed. Use Safelist.basic() or .relaxed() instead
-  // for fields that legitimately need some rich text (e.g. bold, links).
-  private static final Safelist SAFELIST = Safelist.none();
-
-  private static final Safelist CUSTOM_SAFELIST = Safelist.none()
+  private static final Safelist IPT_SAFELIST = Safelist.none()
       // Allowed tags, no attributes
       .addTags("b", "strong", "i", "em", "u", "p", "br", "ul", "ol", "li")
       // Allow <a> tags with href only
@@ -41,10 +41,6 @@ public final class XSSUtils {
       // Force safe rel/target on links to prevent tabnabbing
       .addEnforcedAttribute("a", "rel", "nofollow noopener noreferrer")
       .addEnforcedAttribute("a", "target", "_blank");
-
-  private XSSUtils() {
-    // empty private constructor
-  }
 
   /**
    * Tests whether a string contains anything that wouldn't survive sanitization
@@ -57,7 +53,7 @@ public final class XSSUtils {
     if (value == null) {
       return false;
     }
-    boolean isSafe = Jsoup.isValid(value, CUSTOM_SAFELIST);
+    boolean isSafe = Jsoup.isValid(value, IPT_SAFELIST);
     if (!isSafe) {
       LOG.warn("Potentially malicious content found: {}", value);
     }
@@ -71,6 +67,6 @@ public final class XSSUtils {
     if (value == null) {
       return null;
     }
-    return Jsoup.clean(value, CUSTOM_SAFELIST);
+    return Jsoup.clean(value, IPT_SAFELIST);
   }
 }
