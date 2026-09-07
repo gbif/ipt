@@ -21,7 +21,7 @@
     // Check if the public URL is correct, otherwise display the fallback page
     document.addEventListener("DOMContentLoaded", function() {
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "${baseURL}/styles/main.css");
+        xhr.open("HEAD", "${baseURL}/styles/main.css");
         xhr.onload = function() {
             if (xhr.status !== 200) {
                 window.location.href = "/fallback.do";

@@ -32,6 +32,7 @@ import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Action handling account updates, such as changing username and password.
@@ -49,7 +50,7 @@ public class AccountAction extends POSTAction {
   // main form
   @Getter
   private String email;
-  @Getter
+  @Setter
   private User user;
 
   // password change form
@@ -165,9 +166,9 @@ public class AccountAction extends POSTAction {
     this.email = email;
   }
 
-  @StrutsParameter
-  public void setUser(User user) {
-    this.user = user;
+  @StrutsParameter(depth = 2)
+  public User getUser() {
+    return user;
   }
 
   @StrutsParameter

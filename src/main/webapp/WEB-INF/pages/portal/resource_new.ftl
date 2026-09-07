@@ -662,7 +662,7 @@
 
                             <p property="dc:subject">
                                 <#if (eml.subject)??>
-                                    ${eml.subject?no_esc}
+                                    ${eml.subject}
                                 <#else>
                                     ${no_description}
                                 </#if>
@@ -755,7 +755,7 @@
                             <#list organizedCoverages as item>
                                 <p>
                                     <#if (item.description)??>
-                                        ${item.description?no_esc}
+                                        ${item.description}
                                     <#else>
                                         ${no_description}
                                     </#if>
@@ -848,19 +848,19 @@
                                     <#if eml.project.title?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.title'/></th>
-                                            <td>${eml.project.title?no_esc}</td>
+                                            <td>${eml.project.title}</td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.identifier?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.identifier'/></th>
-                                            <td>${eml.project.identifier?no_esc}</td>
+                                            <td>${eml.project.identifier}</td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.funding?has_content>
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.project.funding'/></th>
-                                            <td>${eml.project.funding?no_esc}</td>
+                                            <td>${eml.project.funding}</td>
                                         </tr>
                                     </#if>
                                     <#if eml.project.studyAreaDescription.descriptorValue?has_content>
@@ -1058,7 +1058,7 @@
                                 <#list eml.bibliographicCitationSet.bibliographicCitations as item>
                                     <#if item.citation?has_content>
                                         <li property="dc:references">
-                                            ${item.citation?no_esc} <@textWithFormattedLink item.identifier!/>
+                                            ${item.citation} <@textWithFormattedLink item.identifier!/>
                                         </li>
                                     </#if>
                                 </#list>

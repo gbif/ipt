@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2024-09-23 14:03+0000\n"
-"PO-Revision-Date: 2025-01-22 12:44\n"
+"POT-Creation-Date: 2026-06-22 13:22+0000\n"
+"PO-Revision-Date: 2026-06-22 14:43\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "Language: zh_TW\n"
@@ -43,52 +43,26 @@ msgstr "模板"
 #: en/modules/ROOT/pages/occurrence-data.adoc:27
 #: en/modules/ROOT/pages/sampling-event-data.adoc:30
 #, no-wrap
-msgid "Required DwC fields"
-msgstr "必填的達爾文核心集欄位"
+msgid "Required and recommended DwC fields"
+msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/checklist-data.adoc:30
-#: en/modules/ROOT/pages/occurrence-data.adoc:34
-#: en/modules/ROOT/pages/sampling-event-data.adoc:36
-#, no-wrap
-msgid "Recommended DwC fields"
-msgstr "建議填寫的達爾文核心集欄位"
-
-#. type: Title ===
-#: en/modules/ROOT/pages/checklist-data.adoc:36
-#: en/modules/ROOT/pages/occurrence-data.adoc:42
+#: en/modules/ROOT/pages/checklist-data.adoc:28
+#: en/modules/ROOT/pages/occurrence-data.adoc:32
 #: en/modules/ROOT/pages/resource-metadata.adoc:37
-#: en/modules/ROOT/pages/sampling-event-data.adoc:47
+#: en/modules/ROOT/pages/sampling-event-data.adoc:34
 #, no-wrap
 msgid "Exemplar datasets"
 msgstr "示範資料集"
 
 #. type: Title ===
-#: en/modules/ROOT/pages/checklist-data.adoc:40
+#: en/modules/ROOT/pages/checklist-data.adoc:32
 #: en/modules/ROOT/pages/faq.adoc:1
-#: en/modules/ROOT/pages/occurrence-data.adoc:46
-#: en/modules/ROOT/pages/sampling-event-data.adoc:54
+#: en/modules/ROOT/pages/occurrence-data.adoc:36
+#: en/modules/ROOT/pages/sampling-event-data.adoc:41
 #, no-wrap
 msgid "FAQ"
 msgstr "問答集"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/occurrence-data.adoc:33
-#: en/modules/ROOT/pages/sampling-event-data.adoc:34
-msgid "https://dwc.tdwg.org/terms/#dwc:eventDate[eventDate]"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/occurrence-data.adoc:39
-#: en/modules/ROOT/pages/sampling-event-data.adoc:43
-msgid "https://dwc.tdwg.org/terms/#dwc:decimalLatitude[decimalLatitude] & https://dwc.tdwg.org/terms/#dwc:decimalLongitude[decimalLongitude] & https://dwc.tdwg.org/terms/#dwc:geodeticDatum[geodeticDatum] - to provide a specific point location"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/occurrence-data.adoc:40
-#: en/modules/ROOT/pages/sampling-event-data.adoc:45
-msgid "https://dwc.tdwg.org/terms/#dwc:countryCode[countryCode]"
-msgstr ""
 
 #. type: Title =
 #: en/modules/ROOT/pages/sampling-event-data.adoc:1
@@ -145,153 +119,118 @@ msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:27
-msgid "link:{attachmentsdir}/downloads/event_ipt_template_v2.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/event_ipt_template_v2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
+msgid "link:{attachmentsdir}/downloads/event_ipt_template_v3.2.xlsx[image:ipt2/excel-template2.png[Excel Template]] link:{attachmentsdir}/downloads/event_ipt_template_v3.2_example_data.xlsx[image:ipt2/excel-template-data2.png[Excel Template (with example data)]]"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:29
-msgid "Populate it and upload it to the IPT."
+msgid "Populate it and upload it to the IPT. Try to augment it with as many https://rs.gbif.org/extensions.html[GBIF-supported Event Core terms and extensions] as you can. You can augment your core table with extra DwC columns, but only DwC terms from this {latest-dwc-event}[list]."
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/sampling-event-data.adoc:33
-msgid "https://dwc.tdwg.org/terms/#dwc:eventID[eventID] - also required for associated occurrence data (to link them together)"
+msgid "You can review the required and recommended fields in the https://techdocs.gbif.org/en/data-publishing/data-quality-recommendations#data-quality-requirements-for-sampling-events[Data quality requirements for sampling events]."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:35
-msgid "https://dwc.tdwg.org/terms/#dwc:samplingProtocol[samplingProtocol]"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:39
-msgid "https://dwc.tdwg.org/terms/#dwc:sampleSizeValue[sampleSizeValue] & https://dwc.tdwg.org/terms/#dwc:sampleSizeUnit[sampleSizeUnit]"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:40
-msgid "https://dwc.tdwg.org/terms/#dwc:parentEventID[parentEventID] - in situations where the event is part of an event series"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:41
-msgid "https://dwc.tdwg.org/terms/#dwc:samplingEffort[samplingEffort] - to provide evidence of rigour of sampling event"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:42
-msgid "https://dwc.tdwg.org/terms/#dwc:locationID[locationID] - in situations where the plot/transect being sampled has a unique identifier"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:44
-msgid "https://dwc.tdwg.org/terms/#dwc:footprintWKT[footprintWKT] & https://dwc.tdwg.org/terms/#dwc:footprintSRS[footprintSRS] - to provide a specific shape location"
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:46
-msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus] - only for associated occurrence data to record presence/absence data."
-msgstr ""
-
-#. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:50
+#: en/modules/ROOT/pages/sampling-event-data.adoc:37
 msgid "http://cloud.gbif.org/eubon/resource?r=butterflies-monitoring-scheme-il[Israeli Butterfly Monitoring Scheme (BMS-IL)]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:51
+#: en/modules/ROOT/pages/sampling-event-data.adoc:38
 msgid "http://cloud.gbif.org/eubon/resource?r=lvd[Dutch Vegetation Database (LVD)]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:52
+#: en/modules/ROOT/pages/sampling-event-data.adoc:39
 msgid "http://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[Lepidurus arcticus survey Northeast Greenland 2013]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:53
+#: en/modules/ROOT/pages/sampling-event-data.adoc:40
 msgid "http://danbif.au.dk/ipt/resource?r=rooftop[Insects from light trap (1992–2009), rooftop Zoological Museum, Copenhagen]"
 msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:56
+#: en/modules/ROOT/pages/sampling-event-data.adoc:43
 #, no-wrap
 msgid "Q. How do I indicate that a sampling event was part of a time series?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:59
+#: en/modules/ROOT/pages/sampling-event-data.adoc:46
 #, no-wrap
 msgid "*A.* All sampling events at the same location must share the same https://dwc.tdwg.org/terms/#dwc:locationID[locationID].\n"
 msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:60
+#: en/modules/ROOT/pages/sampling-event-data.adoc:47
 #, no-wrap
 msgid "Q. How do I publish a hierarchy of events (recursive data type) using parentEventID?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:63
+#: en/modules/ROOT/pages/sampling-event-data.adoc:50
 #, no-wrap
 msgid "*A.* The classic example is sub-sampling of a larger plot. To group all (child) sub-sampling events under the (parent) sampling event, the parentEventID of all sub-sampling events must be set to the eventID of the (parent) sampling event. To be valid, all parentEventIDs must reference eventIDs of records defined in the same dataset. Otherwise, the parentEventID must be a globally unique identifier (e.g. DOI, HTTP URI, etc) that resolves to an event record described elsewhere. Ideally, all (child) sub-sampling events share the same date and location as the (parent) event it references.\n"
 msgstr ""
 
 #. type: Title ====
-#: en/modules/ROOT/pages/sampling-event-data.adoc:64
+#: en/modules/ROOT/pages/sampling-event-data.adoc:51
 #, no-wrap
 msgid "Q. How do I publish absence data?"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:67
+#: en/modules/ROOT/pages/sampling-event-data.adoc:54
 #, no-wrap
 msgid "*A.* *Step 1*: Make species absences explicit by adding a species occurrence record for each species that could have been observed at the time and place of sampling, but was not observed, by setting the following fields:\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:69
+#: en/modules/ROOT/pages/sampling-event-data.adoc:56
 msgid "Mandatory:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:71
+#: en/modules/ROOT/pages/sampling-event-data.adoc:58
 msgid "https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[absent]"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:73
+#: en/modules/ROOT/pages/sampling-event-data.adoc:60
 msgid "Optional (provide one or both):"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:75
+#: en/modules/ROOT/pages/sampling-event-data.adoc:62
 msgid "https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]=\"0\""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:76
+#: en/modules/ROOT/pages/sampling-event-data.adoc:63
 msgid "https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] and https://dwc.tdwg.org/terms/#dwc:organismQuantityType[organismQuantityType] pair: \"0\", \"individuals\""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:78
+#: en/modules/ROOT/pages/sampling-event-data.adoc:65
 msgid "Alternatively, include sampling event records even if the sampling yielded no derived species occurrences. This allows species absences to be inferred. This https://gbif.vm.ntnu.no/ipt/resource?r=lepidurus-arcticus-survey_northeast-greenland_2013[example sampling event dataset from Norway] (https://www.gbif.org/occurrence/search?dataset_key=78360224-5493-45fd-a9a0-c336557f09c3[also on GBIF.org]) demonstrates how this looks."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:80
+#: en/modules/ROOT/pages/sampling-event-data.adoc:67
 #, no-wrap
 msgid "*Step 2*: Define the taxonomic scope of all sampling events included in the dataset, it is recommended to publish a timestamped checklist together with the sampling event dataset, which represents the species composition that could be observed at the time and place of sampling given the sampling protocol (and/or the taxonomic coverage of the study and the expertise of the personnel carrying out identification). This would allow for accurate presence/absence data to be recorded. In addition to the normal (expected) species composition, the checklist could include invasive (unexpected) species. For taxonomic and biogeographical/ecological reasons, however, this checklist would exist solely within the context of the sampling event dataset.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:82
+#: en/modules/ROOT/pages/sampling-event-data.adoc:69
 msgid "Instructions on how to create a checklist can be found xref:checklist-data.adoc[here]. Detailed metadata should be included with the checklist describing a) the people who performed the identifications and their taxonomic expertise and b) how it was decided that these species were detectable & identifiable at the time and place of sampling."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/sampling-event-data.adoc:83
+#: en/modules/ROOT/pages/sampling-event-data.adoc:70
 msgid "To link the checklist to the sampling event dataset, add the checklist to the dataset metadata in the xref:manage-resources.adoc#external-links[External links] section."
 msgstr ""
 
