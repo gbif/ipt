@@ -201,6 +201,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
+import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.SAXException;
 
 import com.lowagie.text.Document;
@@ -2008,9 +2009,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.add(toUiDateTime(resource.getLastPublished()));
     result.add(toUiNextPublished(resource.getNextPublished()));
     result.add(toUiStatus(resource.getStatus(), resource.getPendingStatus(), locale));
-    result.add(resource.getCreatorName());
+    result.add(escapeHtml(resource.getCreatorName()));
     result.add(resource.getShortname());
-    result.add(resource.getSubject() != null ? resource.getSubject() : "");
+    result.add(resource.getSubject() != null ? escapeHtml(resource.getSubject()) : "");
 
     return result;
   }
@@ -2037,11 +2038,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     result.add(toUiDateTime(resource.getLastPublished()));
     result.add(toUiNextPublished(resource.getNextPublished()));
     result.add(toUiStatus(resource.getStatus(), resource.getPendingStatus(), locale));
-    result.add(resource.getCreatorName());
+    result.add(escapeHtml(resource.getCreatorName()));
     result.add(resource.getShortname());
-    result.add(resource.getSubject() != null ? resource.getSubject() : "");
+    result.add(resource.getSubject() != null ? escapeHtml(resource.getSubject()) : "");
 
     return result;
+  }
+
+  private String escapeHtml(String name) {
+    return StringEscapeUtils.escapeHtml4(name);
   }
 
   /**
@@ -2103,7 +2108,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toUiOrganization(SimplifiedResource resource) {
     String result = resource.getOrganizationAliasOrName();
-    return result != null && !"No organization".equals(result) ? result : "--";
+    return result != null && !"No organization".equals(result) ? escapeHtml(result) : "--";
   }
 
   /**
@@ -2143,7 +2148,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toResourceHomeLink(SimplifiedResource resource) {
     String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
-    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
+    String resourceNameEscaped = escapeHtml(resourceName);
+    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "'>" + resourceNameEscaped + "</a>";
   }
 
   /**
@@ -2155,14 +2161,15 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    */
   private String toResourceManageLink(SimplifiedResource resource) {
     String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
-    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/manage/resource?r=" + resource.getShortname() + "'>" + resourceName + "</a>";
+    String resourceNameEscaped = escapeHtml(resourceName);
+    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/manage/resource?r=" + resource.getShortname() + "'>" + resourceNameEscaped + "</a>";
   }
 
   /**
    * Converts raw data to UI format.
    * Wraps lower case status into span to make it badge on UI.
    *
-   * @param status publication status
+   * @param status        publication status
    * @param pendingStatus pending publication status
    * @return wrapped publication status (badge)
    */
@@ -2316,7 +2323,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } else if (COL_DP.equals(resource.getCoreType())) {
       metadata = new ColMetadata();
     } else {
-      metadata = new FrictionlessMetadata();
+      metadata = new FrictionlessMetadata<>();
     }
 
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
@@ -2330,7 +2337,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       }
     } else {
       if (metadata instanceof FrictionlessMetadata) {
-        ((FrictionlessMetadata) metadata).setName(resource.getShortname());
+        ((FrictionlessMetadata<?, ?, ?>) metadata).setName(resource.getShortname());
       }
     }
 
