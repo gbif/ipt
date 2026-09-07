@@ -1729,6 +1729,8 @@
                                 <#assign versionTitle><@s.text name="manage.overview.published.version"/></#assign>
                                 <#assign releasedTitle><@s.text name="manage.overview.published.released"/></#assign>
                                 <#assign releasedTitle = releasedTitle?markup_string>
+                                <#assign nextPublicationDate><@s.text name="manage.overview.published.next.date"/></#assign>
+                                <#assign nextPublicationDate = nextPublicationDate?markup_string>
                                 <#assign pubLogTitle><@s.text name="portal.publication.log"/></#assign>
                                 <#assign pubLogTitle = pubLogTitle?markup_string>
                                 <#assign pubRepTitle><@s.text name="manage.overview.published.report.show"/></#assign>
@@ -1894,7 +1896,7 @@
                                                 <span class="fs-smaller-2">
                                                     <small>
                                                         <#if resource.nextPublished??>
-                                                            ${releasedTitle?cap_first} ${resource.nextPublished?datetime?string.medium}
+                                                            ${nextPublicationDate?cap_first} ${resource.nextPublished?datetime?string.medium}
                                                         <#else>
                                                             <@s.text name="manage.overview.published.date.not.set"/>
                                                         </#if>
