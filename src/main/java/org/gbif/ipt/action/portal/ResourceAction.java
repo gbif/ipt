@@ -33,6 +33,7 @@ import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.XSSUtils;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Citation;
@@ -237,7 +238,7 @@ public class ResourceAction extends PortalBaseAction {
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
     InputStream in = Files.newInputStream(emlFile.toPath());
-    return EmlFactory.build(in);
+    return stripXSS(EmlFactory.build(in));
   }
 
   /**
@@ -258,7 +259,7 @@ public class ResourceAction extends PortalBaseAction {
       throws IOException {
     Objects.requireNonNull(version);
     File metadataFile = dataDir.resourceDatapackageMetadataFile(shortname, type, version);
-    DataPackageMetadata result = metadataReader.readValue(metadataFile, metadataClassForType(type));
+    DataPackageMetadata result = stripXSS(metadataReader.readValue(metadataFile, metadataClassForType(type)));
 
     LOG.debug("Loading metadata from file: {}", metadataFile.getAbsolutePath());
     return result;
@@ -501,7 +502,7 @@ public class ResourceAction extends PortalBaseAction {
       File emlFile = dataDir.resourceEmlFile(shortname);
       LOG.debug("Loading metadata from file: {}", emlFile.getAbsolutePath());
       InputStream in = new FileInputStream(emlFile);
-      eml = EmlFactory.build(in);
+      eml = stripXSS(EmlFactory.build(in));
     } catch (FileNotFoundException e) {
       LOG.error("Metadata file version #{} for resource {} not found", getStringVersion(), shortname);
       return NOT_FOUND;
@@ -1018,5 +1019,48 @@ public class ResourceAction extends PortalBaseAction {
         .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
 
     return result;
+  }
+
+  public Eml stripXSS(Eml eml) {
+    if (eml == null) {
+      return null;
+    }
+
+    eml.setDescription(XSSUtils.stripXSS(eml.getDescription()));
+    if (eml.getGeospatialCoverages() != null) {
+      eml.getGeospatialCoverages()
+          .forEach(coverage -> coverage.setDescription(XSSUtils.stripXSS(coverage.getDescription())));
+    }
+
+    if (eml.getProject() != null) {
+      eml.getProject().setDescription(XSSUtils.stripXSS(eml.getProject().getDescription()));
+      if (eml.getProject().getStudyAreaDescription() != null) {
+        eml.getProject().getStudyAreaDescription()
+            .setDescriptorValue(XSSUtils.stripXSS(eml.getProject().getStudyAreaDescription().getDescriptorValue()));
+      }
+      eml.getProject().setDesignDescription(XSSUtils.stripXSS(eml.getProject().getDesignDescription()));
+    }
+
+    eml.setSampleDescription(XSSUtils.stripXSS(eml.getSampleDescription()));
+    eml.setStudyExtent(XSSUtils.stripXSS(eml.getStudyExtent()));
+    eml.setQualityControl(XSSUtils.stripXSS(eml.getQualityControl()));
+    if (eml.getMethodSteps() != null) {
+      eml.getMethodSteps().replaceAll(XSSUtils::stripXSS);
+    }
+
+    eml.setAdditionalInfo(XSSUtils.stripXSS(eml.getAdditionalInfo()));
+    eml.setUpdateFrequencyDescription(XSSUtils.stripXSS(eml.getUpdateFrequencyDescription()));
+
+    return eml;
+  }
+
+  private DataPackageMetadata stripXSS(DataPackageMetadata metadata) {
+    if (metadata == null) {
+      return null;
+    }
+
+    metadata.setDescription(XSSUtils.stripXSS(metadata.getDescription()));
+
+    return metadata;
   }
 }
