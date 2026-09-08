@@ -821,8 +821,12 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: rgb(var(--color-gbif-danger));
 }
 
-.text-gbif-warning{
+.text-gbif-warning {
     color: rgb(var(--color-gbif-warning));
+}
+
+.text-gbif-warning-dark {
+    color: rgb(var(--alert-warning-text-color));
 }
 
 .color-dwc-dp-Event {

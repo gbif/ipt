@@ -44,7 +44,7 @@
         let right;
         if (!hasResources) {
             right = `
-        <div class="text-gbif-danger" style="display:flex; align-items:center; gap:6px; font-size:13px;">
+        <div class="text-gbif-warning-dark" style="display:flex; align-items:center; gap:6px; font-size:13px;">
           <span>not mapped to any resource</span>
         </div>`;
         } else {
@@ -93,18 +93,56 @@
     }
 
     function verdictSection(result) {
-        const colorClass = result.ready ? 'text-gbif-primary' : 'text-gbif-danger';
-        const icon = result.ready
-            ? '<i class="bi bi-check2 text-gbif-primary" style="font-size:16px;"></i>'
-            : '<i class="bi bi-x text-gbif-danger" style="font-size:16px;"></i>';
-        const message = result.ready
-            ? 'IPT should be able to create a resource from this archive'
-            : `Cannot create a resource${result.reason ? ' — ' + escapeHtml(result.reason) : ''}`;
+        const skipped = result.skippedResources ?? [];
+        const unmapped = (result.unmappedFiles ?? []).filter((f) => f.path !== 'datapackage.json');
+
+        let state; // 'success' | 'warning' | 'danger'
+        if (!result.ready) {
+            state = 'danger';
+        } else if (skipped.length > 0 || unmapped.length > 0) {
+            state = 'warning';
+        } else {
+            state = 'success';
+        }
+
+        if (state === 'success') {
+            return `
+  <div style="border-top:0.5px solid var(--border-color); margin-top:12px; padding-top:12px; display:flex; align-items:center; gap:8px;">
+    <i class="bi bi-check2 text-gbif-primary" style="font-size:16px;"></i>
+    <span class="text-gbif-primary" style="font-size:13px;">IPT should be able to create a resource from this archive</span>
+  </div>`;
+        }
+
+        if (state === 'danger') {
+            const message = `Cannot create a resource${result.reason ? ' — ' + escapeHtml(result.reason) : ''}`;
+            return `
+  <div style="border-top:0.5px solid var(--border-color); margin-top:12px; padding-top:12px; display:flex; align-items:center; gap:8px;">
+    <i class="bi bi-x text-gbif-danger" style="font-size:16px;"></i>
+    <span class="text-gbif-danger" style="font-size:13px;">${message}</span>
+  </div>`;
+        }
+
+        // warning state
+        const bullets = [];
+        if (skipped.length > 0) {
+            bullets.push(`
+      <li>${skipped.length} resource(s) declared in datapackage.json have no matching file and will be skipped: ${skipped.map(escapeHtml).join(', ')}</li>`);
+        }
+        if (unmapped.length > 0) {
+            bullets.push(`
+      <li>${unmapped.length} file(s) are not referenced by any resource and will not be imported: ${unmapped.map((f) => escapeHtml(f.path)).join(', ')}</li>`);
+        }
+
         return `
-      <div style="border-top:0.5px solid var(--border-color); margin-top:12px; padding-top:12px; display:flex; align-items:center; gap:8px;">
-        ${icon}
-        <span class="${colorClass}" style="font-size:13px;">${message}</span>
-      </div>`;
+  <div style="border-top:0.5px solid var(--border-color); margin-top:12px; padding-top:12px;">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <i class="bi bi-exclamation-triangle text-gbif-warning-dark" style="font-size:16px;"></i>
+      <span class="text-gbif-warning-dark" style="font-size:13px;">IPT should be able to create a resource, but:</span>
+    </div>
+    <ul style="margin:6px 0 0 24px; padding:0; font-size:13px;" class="text-gbif-warning-dark">
+      ${bullets.join('')}
+    </ul>
+  </div>`;
     }
 
     function renderPrecheckPanel(result, fileName, container) {

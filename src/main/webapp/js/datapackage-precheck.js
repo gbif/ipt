@@ -235,18 +235,38 @@
         }
 
         const fileEntries = entries.filter((e) => !e.isDirectory && !isMacZipArtifact(e.name));
-        const byNormalizedPath = new Map(fileEntries.map((e) => [normalizePath(e.name), e]));
 
-        const manifestEntry = fileEntries.find((e) => normalizePath(e.name) === 'datapackage.json');
-        if (!manifestEntry) {
+        // Find datapackage.json — prefer the shallowest one if there are multiple.
+        const manifestCandidates = fileEntries
+            .map((e) => ({ entry: e, normalized: normalizePath(e.name) }))
+            .filter(({ normalized }) => normalized.split('/').pop() === 'datapackage.json')
+            .sort((a, b) => a.normalized.split('/').length - b.normalized.split('/').length);
+
+        const manifestCandidate = manifestCandidates[0];
+
+        if (!manifestCandidate) {
             const looksLikeDwcA = fileEntries.some((e) => /(^|\/)meta\.xml$/i.test(e.name));
             return {
                 type: looksLikeDwcA ? 'dwc-a' : 'unknown',
                 ready: false,
-                reason: 'No datapackage.json found at the archive root.',
+                reason: 'No datapackage.json found in archive.',
                 files: fileEntries.map((e) => e.name),
             };
         }
+
+        const manifestEntry = manifestCandidate.entry;
+        const manifestNormalized = manifestCandidate.normalized;
+
+        // Root = the folder containing datapackage.json (could be '' if at zip root)
+        const rootPrefix = manifestNormalized.slice(0, manifestNormalized.length - 'datapackage.json'.length);
+
+        // Only consider files inside that root, keyed by path *relative to the root*
+        const byNormalizedPath = new Map(
+            fileEntries
+                .map((e) => ({ entry: e, normalized: normalizePath(e.name) }))
+                .filter(({ normalized }) => normalized.startsWith(rootPrefix))
+                .map(({ entry, normalized }) => [normalized.slice(rootPrefix.length), entry])
+        );
 
         let manifest;
         try {
@@ -265,13 +285,15 @@
 
         const resources = Array.isArray(manifest.resources) ? manifest.resources : [];
 
-        // normalizedPath -> Set<resourceName>, plus any declared path that never resolved
+        // normalizedPath (relative to root) -> Set<resourceName>
         const pathToResources = new Map();
-        const unresolvedPaths = []; // { resourceName, path }
+        const unresolvedPaths = []; // informational only: { resourceName, path }
+        const skippedResources = new Set(); // resource names with zero resolved paths
 
         for (const resource of resources) {
             const name = resource.name || '(unnamed resource)';
             const declaredPaths = Array.isArray(resource.path) ? resource.path : [resource.path];
+            let resolvedAny = false;
 
             for (const p of declaredPaths) {
                 if (typeof p !== 'string') {
@@ -282,9 +304,14 @@
                 if (byNormalizedPath.has(normalized)) {
                     if (!pathToResources.has(normalized)) pathToResources.set(normalized, new Set());
                     pathToResources.get(normalized).add(name);
+                    resolvedAny = true;
                 } else {
                     unresolvedPaths.push({ resourceName: name, path: p });
                 }
+            }
+
+            if (!resolvedAny) {
+                skippedResources.add(name);
             }
         }
 
@@ -299,7 +326,15 @@
             };
         });
 
-        const unmappedFiles = fileResults.filter((f) => f.resources.length === 0);
+        const IGNORED_UNMAPPED_FILES = new Set(['datapackage.json', 'eml.xml']);
+        const unmappedFiles = fileResults.filter(
+            (f) => f.resources.length === 0 && !IGNORED_UNMAPPED_FILES.has(f.path)
+        );
+
+        const resolvedResourceNames = new Set(
+            fileResults.flatMap((f) => f.resources.map((r) => r.name))
+        );
+
         const unknownSchemaResources = [
             ...new Set(
                 fileResults
@@ -309,20 +344,28 @@
             ),
         ];
 
+        // Ready if at least one resource actually resolved to a file, and none of
+        // the resolved resources are unrecognized by the schema.
         const ready =
-            resources.length > 0 &&
-            unresolvedPaths.length === 0 &&
+            resolvedResourceNames.size > 0 &&
             unknownSchemaResources.length === 0;
 
         const reasons = [];
         if (resources.length === 0) {
             reasons.push('datapackage.json declares no resources.');
+        } else if (resolvedResourceNames.size === 0) {
+            reasons.push('None of the declared resource paths could be found in the archive.');
         }
-        if (unresolvedPaths.length > 0) {
-            reasons.push(`Unresolved path(s): ${unresolvedPaths.map((u) => `${u.resourceName} → ${u.path}`).join(', ')}`);
-        }
+
         if (unknownSchemaResources.length > 0) {
             reasons.push(`Resource(s) not recognized by schema: ${unknownSchemaResources.join(', ')}`);
+        }
+
+        // Warning - add it only if the rest is fine
+        if (ready) {
+            if (skippedResources.size > 0) {
+                reasons.push(`Skipped resource(s) with missing file(s): ${[...skippedResources].join(', ')}`);
+            }
         }
 
         return {
@@ -333,6 +376,8 @@
             reason: reasons.length ? reasons.join(' ') : null,
             files: fileResults,
             unmappedFiles,
+            skippedResources: [...skippedResources],
+            unresolvedPaths, // not blocking
         };
     }
 
