@@ -47,6 +47,7 @@ import java.util.Objects;
 import jakarta.inject.Inject;
 import javax.annotation.Nullable;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -120,11 +121,13 @@ public class CreateResourceAction extends POSTAction implements UploadedFilesAwa
       return INPUT;
     }
 
+    File tmpFile = null;
+
     Date start = new Date();
     // 10 seconds subtracted to accommodate differences in file system date resolution (e.g. Mac HFS has 1s resolution)
     long startTimeInMs = start.getTime() - 10000;
     try {
-      File tmpFile = uploadToTmp();
+      tmpFile = uploadToTmp();
       if (tmpFile == null) {
         resourceManager.create(shortname, resourceType, getCurrentUser());
       } else {
@@ -142,7 +145,12 @@ public class CreateResourceAction extends POSTAction implements UploadedFilesAwa
     } catch (InvalidFilenameException e) {
       addActionError(getText("manage.source.invalidFileName"));
       return INPUT;
+    } finally {
+      if (tmpFile != null) {
+        FileUtils.deleteQuietly(tmpFile);
+      }
     }
+
     return SUCCESS;
   }
 

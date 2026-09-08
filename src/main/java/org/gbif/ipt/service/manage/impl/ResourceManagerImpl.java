@@ -951,6 +951,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (UnsupportedArchiveException | InvalidConfigException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
+    } finally {
+      FileUtils.deleteQuietly(archiveDir);
     }
 
     return resource;
@@ -1186,6 +1188,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     } catch (UnsupportedArchiveException | InvalidConfigException | IOException e) {
       alog.warn(e.getMessage(), e);
       throw new ImportException(e);
+    } finally {
+      FileUtils.deleteQuietly(dwca);
     }
 
     return resource;
