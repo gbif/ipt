@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>3.3.5-dwc-dp-SNAPSHOT</version>
+  <version>3.3.6-dwc-dp-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
