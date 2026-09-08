@@ -164,6 +164,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -651,19 +652,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     if (CollectionUtils.isEmpty(decompressed)) {
       String fileExtension = getFileExtension(archiveOrSingleFile);
 
-      switch (fileExtension) {
-        case "xml":
-          resource = createFromEml(shortname, archiveOrSingleFile, creator, alog);
-          break;
-        case "json":
-          resource = createFromPackageDescriptor(shortname, type, archiveOrSingleFile, creator, alog);
-          break;
-        case "yml":
-          resource = createFromColDpMetadata(shortname, archiveOrSingleFile, creator, alog);
-          break;
-        default:
-          throw new ImportException("Invalid file extension: " + fileExtension);
-      }
+      resource = switch (fileExtension) {
+        case "xml" -> createFromEml(shortname, archiveOrSingleFile, creator, alog);
+        case "json" -> createFromPackageDescriptor(shortname, type, archiveOrSingleFile, creator, alog);
+        case "yml" -> createFromColDpMetadata(shortname, archiveOrSingleFile, creator, alog);
+        default -> throw new ImportException("Invalid file extension: " + fileExtension);
+      };
     }
     // if decompression succeeded and archive is 'IPT Resource Folder'
     else if (isIPTResourceFolder(archiveDir)) {
@@ -673,7 +667,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     // a frictionless package (Camtrap DP) or a ColDP
     else {
       if (MetadataUtils.isDataPackageType(type)) {
-        resource = createFromFrictionlessDataPackage(shortname, type, decompressed, creator, alog);
+        resource = createFromFrictionlessDataPackage(shortname, archiveDir, type, decompressed, creator, alog);
       } else {
         resource = createFromDwcArchive(shortname, archiveDir, creator, alog);
       }
@@ -860,6 +854,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   private Resource createFromFrictionlessDataPackage(
       String shortname,
+      File archiveDir,
       String packageType,
       List<File> packageFiles,
       User creator,
@@ -883,8 +878,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Parse metadata up front so we know which files are declared as data sources,
       // rather than guessing from filenames
-      DataPackageMetadata metadata = null;
-      Map<String, String> declaredResources = Collections.emptyMap();
+      DataPackageMetadata metadata;
+      Map<String, String> declaredResources;
       if (metadataFile != null) {
         metadata = readDataPackageMetadata(resource.getShortname(), packageType, metadataFile, alog);
         if (metadata == null) {
@@ -899,18 +894,24 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
       // Step 2: import data sources, driven by the metadata where available
       for (File packageFile : packageFiles) {
-        if (packageFile.equals(metadataFile) || EML_XML_FILENAME.equals(packageFile.getName())) {
-          continue;
-        }
-        if (isTabularSource(packageFile, declaredResources.keySet())) {
-          TextFileSource s = importSource(resource, packageFile);
-          s.setFieldsEnclosedBy("\"");
-          String filenameWithoutExtension = FilenameUtils.removeExtension(packageFile.getName());
-          sources.put(filenameWithoutExtension, s);
+        Collection<File> filesToProcess = packageFile.isDirectory()
+            ? FileUtils.listFiles(packageFile, null, false)
+            : Collections.singletonList(packageFile);
 
-          DataPackageMapping map = importDataPackageMappings(alog, packageType, packageFile, declaredResources.get(packageFile.getName()), s);
-          map.setLastModified(lastModifiedDate);
-          resource.addDataPackageMapping(map);
+        for (File file : filesToProcess) {
+          if (file.equals(metadataFile) || EML_XML_FILENAME.equals(file.getName())) {
+            continue;
+          }
+          if (isTabularSource(file, archiveDir, declaredResources.keySet())) {
+            TextFileSource s = importSource(resource, file);
+            s.setFieldsEnclosedBy("\"");
+            String filenameWithoutExtension = FilenameUtils.removeExtension(file.getName());
+            sources.put(filenameWithoutExtension, s);
+
+            DataPackageMapping map = importDataPackageMappings(alog, packageType, file, getDeclaredResourceForFile(declaredResources, archiveDir, file), s);
+            map.setLastModified(lastModifiedDate);
+            resource.addDataPackageMapping(map);
+          }
         }
       }
 
@@ -953,6 +954,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     }
 
     return resource;
+  }
+
+  private String getDeclaredResourceForFile(Map<String, String> declaredResources, File packageRoot, File file) {
+    String relativePath = packageRoot.toPath().relativize(file.toPath()).toString().replace(File.separatorChar, '/');
+    return declaredResources.get(relativePath);
   }
 
   /**
@@ -1002,8 +1008,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         Object name = resourceMap.get("name");
 
         if (path instanceof String pathStr && name instanceof String nameStr) {
-          // path may be a relative path (e.g. "data/observations.csv") — we only care about the filename
-          declaredResources.put(FilenameUtils.getName(pathStr), nameStr);
+//          // path may be a relative path (e.g. "data/observations.csv") — we only care about the filename
+//          declaredResources.put(FilenameUtils.getName(pathStr), nameStr);
+          declaredResources.put(pathStr, nameStr);
         }
       }
       return declaredResources;
@@ -1056,10 +1063,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
    *                           before this method is called
    * @return {@code true} if {@code file} is declared as a resource in the package metadata
    */
-  private boolean isTabularSource(File file, Set<String> declaredResources) {
-    boolean declared = declaredResources.contains(file.getName());
+  private boolean isTabularSource(File file, File packageRoot, Set<String> declaredResources) {
+    String relativePath = packageRoot.toPath().relativize(file.toPath()).toString().replace(File.separatorChar, '/');
+    boolean declared = declaredResources.contains(relativePath);
     if (!declared) {
-      LOG.warn("File {} is not declared in datapackage.json", file.getName());
+      LOG.warn("File {} is not declared in datapackage.json", relativePath);
     }
     return declared;
   }
