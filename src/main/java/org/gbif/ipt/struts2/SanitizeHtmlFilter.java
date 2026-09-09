@@ -92,7 +92,8 @@ public class SanitizeHtmlFilter implements Filter {
           "eml.introduction",
           "eml.gettingStarted",
           "eml.updateFrequencyDescription",
-          "eml.additionalInfo"
+          "eml.additionalInfo",
+          "eml.intellectualRights"
       )));
 
   /**
