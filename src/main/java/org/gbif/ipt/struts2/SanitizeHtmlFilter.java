@@ -99,23 +99,15 @@ public class SanitizeHtmlFilter implements Filter {
   /**
    * Tags allowed in rich-text parameters, matching the "Allowed HTML tags" list shown to users
    * in the form help text: div, p, ul, ol, li, h1, pre, a, b, em, sup, sub.
+   * <p>
+   * Removed {@code requireRelNofollowOnLinks()} because it causes issues with {@code eml.intellectualRights} and
+   * {@code eml.description},
+   * which are later converted into EML/DocBook {@code <ulink>} elements - an element whose
+   * schema only permits a {@code url} attribute. Injecting {@code rel="nofollow"} here would
+   * end up on the {@code <ulink>} and fail EML schema validation at publish time
+   * (cvc-complex-type.3.2.2).
    */
   private static final PolicyFactory RICH_TEXT_POLICY = new HtmlPolicyBuilder()
-      .allowElements("div", "p", "ul", "ol", "li", "h1", "pre", "a", "b", "em", "sup", "sub")
-      .allowAttributes("href").onElements("a")
-      .allowStandardUrlProtocols()
-      .requireRelNofollowOnLinks()
-      .toFactory();
-
-  /**
-   * Same allow-list as {@link #RICH_TEXT_POLICY}, but WITHOUT the automatic rel="nofollow"
-   * hardening on links. Used only to detect whether content was genuinely removed for being
-   * disallowed (script tags, disallowed attributes, unsafe URL protocols, etc.). Comparing
-   * against the hardened policy's own output would falsely flag every legitimate link, since
-   * requireRelNofollowOnLinks() always adds an attribute that was never in the original input -
-   * that's safety hardening, not evidence of a stripped attack attempt.
-   */
-  private static final PolicyFactory RICH_TEXT_DETECTION_POLICY = new HtmlPolicyBuilder()
       .allowElements("div", "p", "ul", "ol", "li", "h1", "pre", "a", "b", "em", "sup", "sub")
       .allowAttributes("href").onElements("a")
       .allowStandardUrlProtocols()
@@ -271,12 +263,11 @@ public class SanitizeHtmlFilter implements Filter {
      */
     private String sanitizeRichText(String parameter, String value) {
       String cleanedForOutput = RICH_TEXT_POLICY.sanitize(value);
-      String cleanedForDetection = RICH_TEXT_DETECTION_POLICY.sanitize(value);
 
       String normalizedValue = StringEscapeUtils.unescapeHtml4(value);
-      String normalizedDetection = StringEscapeUtils.unescapeHtml4(cleanedForDetection);
+      String normalizedOutput = StringEscapeUtils.unescapeHtml4(cleanedForOutput);
 
-      if (!normalizedDetection.equals(normalizedValue)) {
+      if (!normalizedOutput.equals(normalizedValue)) {
         LOG.warn("Parameter sanitization (rich text). {} modified: {}  ==>  {}",
             parameter, value, cleanedForOutput);
         flaggedFields.put(parameter, RICH_TEXT_FLAG_MESSAGE);
