@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ipt</artifactId>
-  <version>3.3.6-dwc-dp-SNAPSHOT</version>
+  <version>3.3.7-dwc-dp-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <name>IPT</name>
@@ -78,7 +78,7 @@
     <jaxb-core.version>4.0.9</jaxb-core.version>
     <jaxb-impl.version>4.0.9</jaxb-impl.version>
     <jaxb-runtime.version>4.0.9</jaxb-runtime.version>
-    <jetty-maven-plugin.version>12.1.12</jetty-maven-plugin.version>
+    <jetty-maven-plugin.version>12.1.13</jetty-maven-plugin.version>
     <json-schema-validator.version>2.0.4</json-schema-validator.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
