@@ -27,7 +27,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.SimplifiedResource;
+import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
@@ -417,7 +417,7 @@ public class ResourcePublicationManagerImplTest {
     // prepare resource
     Resource resource = getNonRegisteredMetadataOnlyResource();
 
-    doReturn(new SimplifiedResource()).when(resourceManager).toSimplifiedResourceReconstructedVersion(any());
+    doReturn(new ResourceSummaryView()).when(resourceManager).toResourceSummaryViewReconstructed(any());
 
     // add versionHistory for version 2.0
     Date released20 = new Date();

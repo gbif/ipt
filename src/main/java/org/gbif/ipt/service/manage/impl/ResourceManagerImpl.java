@@ -55,7 +55,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
-import org.gbif.ipt.model.SimplifiedResource;
+import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
@@ -71,8 +71,6 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
-import org.gbif.ipt.model.datatable.DatatableRequest;
-import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -97,7 +95,6 @@ import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.EmlUtils;
-import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
@@ -125,20 +122,17 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -152,9 +146,7 @@ import jakarta.validation.constraints.NotNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -174,9 +166,10 @@ import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 public class ResourceManagerImpl extends BaseManager implements ResourceManager {
 
   // key=shortname in lower case, value=resource
-  private Map<String, Resource> resources = new HashMap<>();
+  private final Map<String, Resource> resources = new HashMap<>();
   // simplified resources for home page (metadata from last published version!)
-  private Map<String, SimplifiedResource> publishedPublicVersionsSimplified = new HashMap<>();
+  private final Map<String, ResourceSummaryView> publishedPublicResourceSummaries = new HashMap<>();
+
   private final XStream xstream = new XStream();
 
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
@@ -189,9 +182,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private final RegistrationManager registrationManager;
   private final MetadataReader metadataReader;
 
-  private static final Comparator<String> nullSafeStringComparator = Comparator.nullsFirst(String::compareToIgnoreCase);
-  private static final Comparator<Date> nullSafeDateComparator = Comparator.nullsFirst(Date::compareTo);
-  private static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, ResourceConvertersManager resourceConvertersManager,
@@ -221,7 +211,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
             !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
             latestVersion.getReleased() != null) {
-          publishedPublicVersionsSimplified.put(res.getShortname(), toSimplifiedResourceReconstructedVersion(res));
+          publishedPublicResourceSummaries.put(res.getShortname(), toResourceSummaryViewReconstructed(res));
         }
       }
     } catch (Exception e) {
@@ -244,7 +234,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
           r.getOrganisation().setAlias(organisationAlias);
           r.getOrganisation().setName(organisationName);
         });
-    publishedPublicVersionsSimplified.values().stream()
+    publishedPublicResourceSummaries.values().stream()
         .filter(r -> r.getOrganisationKey() != null)
         .filter(r -> r.getOrganisationKey().equals(organisationKey))
         .forEach(r -> {
@@ -255,12 +245,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   /**
    * Converts regular Resource to lightweight SimplifiedResource.
-   * Reconstructs resource from last published EML to take data before it was changed.
+   * Reconstructs resource from the last published EML to take data before it was changed.
    *
    * @param resource regular Resource
    * @return simplified resource
    */
-  public SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource) {
+  @Override
+  public ResourceSummaryView toResourceSummaryViewReconstructed(Resource resource) {
     BigDecimal v = resource.getLastPublishedVersionsVersion();
     String shortname = resource.getShortname();
 
@@ -275,7 +266,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         .reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), resource.getAssignedDoi(), resource.getOrganisation(),
             resource.findVersionHistory(v), metadataFiles, resource.getKey());
 
-    SimplifiedResource result = new SimplifiedResource();
+    ResourceSummaryView result = new ResourceSummaryView();
     result.setShortname(publishedPublicVersion.getShortname());
     result.setTitle(publishedPublicVersion.getTitle());
     result.setStatus(publishedPublicVersion.getStatus());
@@ -306,37 +297,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     return result;
   }
 
-  /**
-   * Converts regular Resource to lightweight SimplifiedResource.
-   *
-   * @param resource regular Resource
-   * @return simplified resource
-   */
-  private SimplifiedResource toSimplifiedResource(Resource resource) {
-    SimplifiedResource result = new SimplifiedResource();
-    result.setShortname(resource.getShortname());
-    result.setTitle(resource.getTitle());
-    result.setPendingStatus(resource.getPendingStatus());
-    result.setStatus(resource.getStatus());
-    result.setRecordsPublished(resource.getRecordsPublished());
-    result.setLogoUrl(resource.getLogoUrl());
-    result.setSubject(resource.getSubject());
-    if (resource.getOrganisation() != null) {
-      result.setOrganisationKey(resource.getOrganisation().getKey());
-      result.setOrganisationName(resource.getOrganisationName());
-      result.setOrganisationAlias(resource.getOrganisationAlias());
-    }
-    result.setCoreType(resource.getCoreType());
-    result.setSubtype(resource.getSubtype());
-    result.setModified(resource.getModified());
-    result.setPublished(resource.getLastPublished() != null);
-    result.setLastPublished(resource.getLastPublished());
-    result.setNextPublished(resource.getNextPublished());
-    result.setCreatorName(resource.getCreatorName());
-    result.setDataPackage(resource.isDataPackage());
 
-    return result;
-  }
 
   /**
    * Close file writer if the writer is not null.
@@ -1359,7 +1320,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
     // remove object
     resources.remove(resource.getShortname().toLowerCase());
-    publishedPublicVersionsSimplified.remove(resource.getShortname().toLowerCase());
+    publishedPublicResourceSummaries.remove(resource.getShortname().toLowerCase());
   }
 
   @Override
@@ -1379,7 +1340,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
       // remove object
       resources.remove(resource.getShortname().toLowerCase());
-      publishedPublicVersionsSimplified.remove(resource.getShortname().toLowerCase());
+      publishedPublicResourceSummaries.remove(resource.getShortname().toLowerCase());
     }
   }
 
@@ -1591,6 +1552,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   @Override
+  public List<ResourceSummaryView> listPublishedPublicResourceSummaries() {
+    return new ArrayList<>(publishedPublicResourceSummaries.values());
+  }
+
+  @Override
   public List<Resource> list(String type) {
     return resources.values().stream()
         .filter(res -> type.equals(res.getCoreType()))
@@ -1624,398 +1590,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         result.add(r);
       }
     }
-    return result;
-  }
-
-  @Override
-  public DatatableResult listPublishedPublicVersionsSimplified(DatatableRequest request) {
-    List<SimplifiedResource> filteredResources = publishedPublicVersionsSimplified.values().stream()
-        .filter(p -> matchesSearchString(p, request.getSearch()))
-        .toList();
-
-    Locale currentLocale = Locale.forLanguageTag(request.getLocale());
-
-    Map<String, String> datasetTypes =
-        MapUtils.getMapWithLowercaseKeys(
-            vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
-    // add data packages
-    List<DataPackageSchema> installedSchemas = schemaManager.list();
-    for (DataPackageSchema installedSchema : installedSchemas) {
-      datasetTypes.put(
-          installedSchema.getName(),
-          Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
-    }
-
-    Map<String, String> datasetSubtypes =
-        MapUtils.getMapWithLowercaseKeys(
-            vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
-
-    List<List<String>> data = filteredResources.stream()
-        .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
-        .skip(request.getOffset())
-        .limit(request.getLimit())
-        .map(res -> toDatatableResourcePortalView(res, currentLocale, datasetTypes, datasetSubtypes))
-        .collect(Collectors.toList());
-
-    DatatableResult result = new DatatableResult();
-    result.setTotalRecords(publishedPublicVersionsSimplified.size());
-    result.setTotalDisplayRecords(filteredResources.size());
-    result.setData(data);
-
-    return result;
-  }
-
-  /**
-   * Produces comparator from the raw parameters.
-   *
-   * @param index field index (1 - title, 2 - organization, 3 - core type etc.)
-   * @param order asc/desc
-   * @return comparator
-   */
-  private Comparator<SimplifiedResource> resourceComparator(int index, String order) {
-    boolean isDescendingOrder = isDescendingOrder(order);
-    if (index == 1) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getTitleOrShortname, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getTitleOrShortname, nullSafeStringComparator);
-    } else if (index == 2) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getOrganizationAliasOrName, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getOrganizationAliasOrName, nullSafeStringComparator);
-    } else if (index == 3) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getCoreType, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getCoreType, nullSafeStringComparator);
-    } else if (index == 4) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getSubtype, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getSubtype, nullSafeStringComparator);
-    } else if (index == 5) {
-      Comparator<SimplifiedResource> byRecords = Comparator.comparingInt(SimplifiedResource::getRecordsPublished);
-      Comparator<SimplifiedResource> tieBreak = Comparator.comparing(SimplifiedResource::getLastPublished, nullSafeDateComparator);
-      return isDescendingOrder
-          ? byRecords.reversed().thenComparing(tieBreak)
-          : byRecords.thenComparing(tieBreak);
-    } else if (index == 6) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getModified, nullSafeDateComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getModified, nullSafeDateComparator);
-    } else if (index == 7) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getLastPublished, nullSafeDateComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getLastPublished, nullSafeDateComparator);
-    } else if (index == 8) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getNextPublished, nullSafeDateComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getNextPublished, nullSafeDateComparator);
-    } else if (index == 9) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getStatus, Comparator.nullsFirst(PublicationStatus::compareTo)).reversed() :
-          Comparator.comparing(SimplifiedResource::getStatus, Comparator.nullsFirst(PublicationStatus::compareTo));
-    } else if (index == 10) {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getCreatorName, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getCreatorName, nullSafeStringComparator);
-    } else {
-      return isDescendingOrder ?
-          Comparator.comparing(SimplifiedResource::getShortname, nullSafeStringComparator).reversed() :
-          Comparator.comparing(SimplifiedResource::getShortname, nullSafeStringComparator);
-    }
-  }
-
-  /**
-   * Check whether sort order is descending.
-   *
-   * @param order raw sort order string
-   * @return true if descending, false otherwise
-   */
-  private boolean isDescendingOrder(String order) {
-    return Strings.CI.equals(StringUtils.trimToEmpty(order), "desc");
-  }
-
-  /**
-   * Check if the provided string is present in one of the searchable fields.
-   *
-   * @param resource lightweight resource
-   * @param search   search string
-   * @return true/false
-   */
-  private boolean matchesSearchString(SimplifiedResource resource, String search) {
-    if (StringUtils.isEmpty(search)) {
-      return true;
-    }
-
-    return Strings.CI.contains(resource.getShortname(), search)
-        || Strings.CI.contains(resource.getTitle(), search)
-        || Strings.CI.contains(resource.getOrganisationAlias(), search)
-        || Strings.CI.contains(resource.getOrganisationName(), search)
-        || Strings.CI.contains(resource.getCoreType(), search)
-        || Strings.CI.contains(resource.getSubtype(), search)
-        || Strings.CI.contains(resource.getCreatorName(), search)
-        || Strings.CI.contains(resource.getSubject(), search);
-  }
-
-  /**
-   * Converts raw data (one simplified resource) to UI data for portal home page.
-   * BEWARE! Order is crucial!
-   *
-   * @param resource        simplified resource
-   * @param datasetTypes    dataset types vocabulary
-   * @param datasetSubtypes dataset subtypes vocabulary
-   * @return UI data (array)
-   */
-  private List<String> toDatatableResourcePortalView(
-      SimplifiedResource resource, Locale locale, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
-    List<String> result = new ArrayList<>();
-    result.add(toUiLogoUrl(resource.getLogoUrl()));
-    result.add(toResourceHomeLink(resource));
-    result.add(toUiOrganization(resource));
-    result.add(toTypeBadge(resource.getCoreType(), datasetTypes));
-    result.add(toTypeBadge(resource.getSubtype(), datasetSubtypes));
-    result.add(toUiRecordsPublished(resource, locale));
-    result.add(toUiDateTime(resource.getModified()));
-    result.add(toUiDateTime(resource.getLastPublished()));
-    result.add(toUiNextPublished(resource.getNextPublished()));
-    result.add(toUiStatus(resource.getStatus(), resource.getPendingStatus(), locale));
-    result.add(escapeHtml(resource.getCreatorName()));
-    result.add(resource.getShortname());
-    result.add(resource.getSubject() != null ? escapeHtml(resource.getSubject()) : "");
-
-    return result;
-  }
-
-  /**
-   * Converts raw data (one simplified resource) to UI data for manage home page.
-   * BEWARE! Order is crucial!
-   *
-   * @param resource        simplified resource
-   * @param datasetTypes    dataset types vocabulary
-   * @param datasetSubtypes dataset subtypes vocabulary
-   * @return UI data (array)
-   */
-  private List<String> toDatatableResourceManageView(
-      SimplifiedResource resource, Locale locale, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes) {
-    List<String> result = new ArrayList<>();
-    result.add(toUiLogoUrl(resource.getLogoUrl()));
-    result.add(toResourceManageLink(resource));
-    result.add(toUiOrganization(resource));
-    result.add(toTypeBadge(resource.getCoreType(), datasetTypes));
-    result.add(toTypeBadge(resource.getSubtype(), datasetSubtypes));
-    result.add(toUiRecordsPublished(resource, locale));
-    result.add(toUiDateTime(resource.getModified()));
-    result.add(toUiDateTime(resource.getLastPublished()));
-    result.add(toUiNextPublished(resource.getNextPublished()));
-    result.add(toUiStatus(resource.getStatus(), resource.getPendingStatus(), locale));
-    result.add(escapeHtml(resource.getCreatorName()));
-    result.add(resource.getShortname());
-    result.add(resource.getSubject() != null ? escapeHtml(resource.getSubject()) : "");
-
-    return result;
-  }
-
-  private String escapeHtml(String name) {
-    return StringEscapeUtils.escapeHtml4(name);
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Date formatted as yyyy-MM-dd HH:mm:ss or "--" if empty.
-   *
-   * @param date date
-   * @return formatted date
-   */
-  private String toUiDateTime(Date date) {
-    if (date == null) {
-      return "<span>--</span>";
-    }
-    return DATETIME_FORMAT.format(date);
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Next publication date formatted as yyyy-MM-dd HH:mm:ss or "--" if empty.
-   * Next published date should never be before today's date, otherwise auto-publication must have failed.
-   * In this case, highlight the row to bring the problem to the resource manager's attention.
-   *
-   * @param date next publication date
-   * @return formatted date
-   */
-  private String toUiNextPublished(Date date) {
-    if (date == null) {
-      return "<span>--</span>";
-    }
-
-    Date now = new Date();
-
-    // highlight if next published is before now (something wrong)
-    return date.before(now)
-        ? "<span class=\"text-gbif-danger\">" + DATETIME_FORMAT.format(date) + "</span>"
-        : DATETIME_FORMAT.format(date);
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Logo URL or "--" if empty
-   *
-   * @param logoUrl logo URL
-   * @return Logo URL or "--" if empty
-   */
-  private String toUiLogoUrl(String logoUrl) {
-    if (logoUrl == null) {
-      return "<span>--</span>";
-    }
-    return "<img class=\"resourceminilogo\" src=\"" + logoUrl + "\"/>";
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Organization alias or name or "--" if empty
-   *
-   * @param resource lightweight resource
-   * @return alias or name or "--"
-   */
-  private String toUiOrganization(SimplifiedResource resource) {
-    String result = resource.getOrganizationAliasOrName();
-    return result != null && !"No organization".equals(result) ? escapeHtml(result) : "--";
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Wraps number of published records into a link and format number according to the locale.
-   *
-   * @param resource lightweight resource
-   * @param locale   locale
-   * @return link to records section
-   */
-  private String toUiRecordsPublished(SimplifiedResource resource, Locale locale) {
-    NumberFormat format = NumberFormat.getInstance(locale);
-
-    if (resource.getLastPublished() == null && resource.getRecordsPublished() == 0) {
-      return "<span>--</span>";
-    }
-
-    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + format.format(resource.getRecordsPublished()) + "</a>";
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Wraps core type or subtype into span to make it badge on UI.
-   *
-   * @param type  core type or subtype
-   * @param vocab vocabulary map
-   * @return wrapped type (badge)
-   */
-  private String toTypeBadge(String type, Map<String, String> vocab) {
-    if (type == null) {
-      return "<span>--</span>";
-    }
-    return "<span class=\"fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-" + type.toLowerCase() + "\">" + vocab.getOrDefault(type.toLowerCase(), "--") + "</span>";
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Wraps resource title or shortname into a link (home page)
-   *
-   * @param resource lightweight resource
-   * @return link to resource (home page)
-   */
-  private String toResourceHomeLink(SimplifiedResource resource) {
-    String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
-    String resourceNameEscaped = escapeHtml(resourceName);
-    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "'>" + resourceNameEscaped + "</a>";
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Wraps resource title or shortname into a link (manage page)
-   *
-   * @param resource lightweight resource
-   * @return link to resource (manage page)
-   */
-  private String toResourceManageLink(SimplifiedResource resource) {
-    String resourceName = StringUtils.defaultIfEmpty(resource.getTitle(), resource.getShortname());
-    String resourceNameEscaped = escapeHtml(resourceName);
-    return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/manage/resource?r=" + resource.getShortname() + "'>" + resourceNameEscaped + "</a>";
-  }
-
-  /**
-   * Converts raw data to UI format.
-   * Wraps lower case status into span to make it badge on UI.
-   *
-   * @param status        publication status
-   * @param pendingStatus pending publication status
-   * @return wrapped publication status (badge)
-   */
-  private String toUiStatus(PublicationStatus status, PublicationStatus pendingStatus, Locale locale) {
-    PublicationStatus effectiveStatus;
-    String localizedStatus;
-    String translationPrefix;
-    String icon;
-
-    if (pendingStatus != null) {
-      effectiveStatus = pendingStatus;
-      translationPrefix = "manage.home.visible.pending.";
-    } else {
-      effectiveStatus = status;
-      translationPrefix = "manage.home.visible.";
-    }
-
-    localizedStatus = textProvider.getText(
-        locale,
-        translationPrefix + effectiveStatus.name().toLowerCase(),
-        effectiveStatus.name().toLowerCase(),
-        Collections.emptyList());
-
-    if (effectiveStatus == PublicationStatus.PUBLIC || effectiveStatus == PublicationStatus.PRIVATE) {
-      icon = "<i class=\"bi bi-circle fs-smaller-2 me-1\"></i>";
-    } else {
-      icon = "<i class=\"bi bi-circle-fill fs-smaller-2 me-1\"></i>";
-    }
-
-    return "<span class=\"text-nowrap status-pill fs-smaller-2 status-" + effectiveStatus.name().toLowerCase() + "\">" +
-        icon +
-        "<span>" +
-        localizedStatus +
-        "</span>" +
-        "</span>";
-  }
-
-  @Override
-  public DatatableResult list(User user, DatatableRequest request) {
-    List<SimplifiedResource> filteredResources = resources.values().stream()
-        .filter(res -> RequireManagerInterceptor.isAuthorized(user, res))
-        .map(this::toSimplifiedResource)
-        .filter(res -> matchesSearchString(res, request.getSearch()))
-        .toList();
-
-    Locale currentLocale = Locale.forLanguageTag(request.getLocale());
-
-    Map<String, String> datasetTypes =
-        MapUtils.getMapWithLowercaseKeys(
-            vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
-    // add data packages
-    List<DataPackageSchema> installedSchemas = schemaManager.list();
-    for (DataPackageSchema installedSchema : installedSchemas) {
-      datasetTypes.put(
-          installedSchema.getName(),
-          Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
-    }
-    Map<String, String> datasetSubtypes =
-        MapUtils.getMapWithLowercaseKeys(
-            vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
-
-    List<List<String>> data = filteredResources.stream()
-        .sorted(resourceComparator(request.getSortFieldIndex(), request.getSortOrder()))
-        .skip(request.getOffset())
-        .limit(request.getLimit())
-        .map(res -> toDatatableResourceManageView(res, currentLocale, datasetTypes, datasetSubtypes))
-        .collect(Collectors.toList());
-
-    DatatableResult result = new DatatableResult();
-    result.setTotalRecords(resources.size());
-    result.setTotalDisplayRecords(filteredResources.size());
-    result.setData(data);
-
     return result;
   }
 
@@ -2180,17 +1754,17 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    */
   @Override
   public void updateStoredResources(Resource resource) {
-    SimplifiedResource simplifiedResource = publishedPublicVersionsSimplified.get(resource.getShortname());
-    if (simplifiedResource != null) {
-      simplifiedResource.setStatus(PublicationStatus.REGISTERED);
-      simplifiedResource.setOrganisationAlias(resource.getOrganisationAlias());
-      simplifiedResource.setOrganisationName(resource.getOrganisationName());
+    ResourceSummaryView resourceSummaryView = publishedPublicResourceSummaries.get(resource.getShortname());
+    if (resourceSummaryView != null) {
+      resourceSummaryView.setStatus(PublicationStatus.REGISTERED);
+      resourceSummaryView.setOrganisationAlias(resource.getOrganisationAlias());
+      resourceSummaryView.setOrganisationName(resource.getOrganisationName());
     }
   }
 
   @Override
   public void removePublishedPublicVersion(String shortname) {
-    publishedPublicVersionsSimplified.remove(shortname);
+    publishedPublicResourceSummaries.remove(shortname);
   }
 
   /**

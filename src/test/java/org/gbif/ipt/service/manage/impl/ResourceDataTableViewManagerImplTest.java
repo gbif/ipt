@@ -16,27 +16,18 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageSchema;
-import org.gbif.ipt.model.SimplifiedResource;
-import org.gbif.ipt.model.converter.PasswordEncrypter;
+import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
-import org.gbif.ipt.service.admin.ExtensionManager;
-import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.MetadataReader;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
-import org.gbif.ipt.service.manage.SourceManager;
-import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.task.Eml2Rtf;
-import org.gbif.ipt.task.GenerateDarwinCoreDataPackageFactory;
-import org.gbif.ipt.task.GenerateDataPackageFactory;
-import org.gbif.ipt.task.GenerateDwcaFactory;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -48,7 +39,6 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
@@ -65,15 +55,13 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for {@link ResourceManagerImpl#listPublishedPublicVersionsSimplified(DatatableRequest)}.
- *
- * <p>Row layout produced by {@code toDatatableResourcePortalView} (index -> content):
+ * Row layout produced by {@code toDatatableResourcePortalView} (index -> content):
  * 0 logo, 1 home link, 2 organization, 3 core type badge, 4 subtype badge, 5 records published link,
  * 6 modified, 7 last published, 8 next published, 9 status badge, 10 creator name, 11 shortname, 12 subject.
  */
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
+class ResourceDataTableViewManagerImplTest {
 
   private static final int COL_HOME_LINK = 1;
   private static final int COL_CORE_TYPE_BADGE = 3;
@@ -85,32 +73,16 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
   private AppConfig cfg;
   @Mock
   private DataDir dataDir;
-  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-  private ResourceConvertersManager resourceConvertersManager;
-  @Mock
-  private SourceManager sourceManager;
-  @Mock
-  private ExtensionManager extensionManager;
   @Mock
   private DataPackageSchemaManager schemaManager;
-  @Mock
-  private RegistryManager registryManager;
-  @Mock
-  private PasswordEncrypter passwordEncrypter;
-  @Mock
-  private Eml2Rtf eml2Rtf;
   @Mock
   private VocabulariesManager vocabManager;
   @Mock
   private SimpleTextProvider textProvider;
   @Mock
-  private RegistrationManager registrationManager;
-  @Mock
-  private MetadataReader metadataReader;
-  @Mock
-  private ResourceMetadataInferringService resourceMetadataInferringService;
+  private ResourceManager resourceManager;
 
-  private ResourceManagerImpl resourceManager;
+  private ResourceDataTableViewManager manager;
 
   @BeforeEach
   void setUp() {
@@ -128,23 +100,17 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     lenient().when(textProvider.getText(any(Locale.class), anyString(), anyString(), anyList()))
         .thenAnswer(invocation -> invocation.getArgument(2));
 
-    resourceManager = new ResourceManagerImpl(
+    manager = new ResourceDataTableViewManagerImpl(
         cfg,
         dataDir,
-        resourceConvertersManager,
-        sourceManager,
-        extensionManager,
-        schemaManager,
-        registryManager,
-        passwordEncrypter,
+        resourceManager,
         vocabManager,
-        textProvider,
-        registrationManager,
-        metadataReader);
+        schemaManager,
+        textProvider);
   }
 
-  private static SimplifiedResource resource(String shortname) {
-    SimplifiedResource r = new SimplifiedResource();
+  private static ResourceSummaryView resource(String shortname) {
+    ResourceSummaryView r = new ResourceSummaryView();
     r.setShortname(shortname);
     r.setTitle(shortname);
     r.setStatus(PublicationStatus.PUBLIC);
@@ -154,8 +120,8 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     return r;
   }
 
-  private static SimplifiedResource resource(String shortname, String title) {
-    SimplifiedResource r = new SimplifiedResource();
+  private static ResourceSummaryView resource(String shortname, String title) {
+    ResourceSummaryView r = new ResourceSummaryView();
     r.setShortname(shortname);
     r.setTitle(title);
     r.setStatus(PublicationStatus.PUBLIC);
@@ -175,14 +141,9 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     return cal.getTime();
   }
 
-  private void seed(SimplifiedResource... resources) throws Exception {
-    Map<String, SimplifiedResource> map = new HashMap<>();
-    for (SimplifiedResource r : resources) {
-      map.put(r.getShortname(), r);
-    }
-    Field field = ResourceManagerImpl.class.getDeclaredField("publishedPublicVersionsSimplified");
-    field.setAccessible(true);
-    field.set(resourceManager, map);
+  private void seed(ResourceSummaryView... resources) throws Exception {
+    List<ResourceSummaryView> list = new ArrayList<>(Arrays.asList(resources));
+    when(resourceManager.listPublishedPublicResourceSummaries()).thenReturn(list);
   }
 
   private List<String> shortnamesInOrder(DatatableResult result) {
@@ -200,7 +161,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     DatatableRequest req = request();
     req.setSearch("");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(3, result.getTotalRecords());
     assertEquals(3, result.getTotalDisplayRecords());
@@ -209,16 +170,16 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
   @Test
   void totalRecordsReflectsFullMapEvenWhenFilteredOrPaginated() throws Exception {
-    SimplifiedResource a = resource("alpha", "does-not-match-search");
-    SimplifiedResource b = resource("beta", "does-not-match-search-either");
-    SimplifiedResource c = resource("gamma");
+    ResourceSummaryView a = resource("alpha", "does-not-match-search");
+    ResourceSummaryView b = resource("beta", "does-not-match-search-either");
+    ResourceSummaryView c = resource("gamma");
     seed(a, b, c);
 
     DatatableRequest req = request();
     req.setSearch("alpha");
     req.setLimit(1);
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     // totalRecords = size of the underlying map, unaffected by search or pagination
     assertEquals(3, result.getTotalRecords());
@@ -229,14 +190,14 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
   @Test
   void searchMatchesByTitleCaseInsensitively() throws Exception {
-    SimplifiedResource match = resource("res-a", "Amazing Butterflies of Peru");
-    SimplifiedResource noMatch = resource("res-b", "Something else entirely");
+    ResourceSummaryView match = resource("res-a", "Amazing Butterflies of Peru");
+    ResourceSummaryView noMatch = resource("res-b", "Something else entirely");
     seed(match, noMatch);
 
     DatatableRequest req = request();
     req.setSearch("BUTTERFLIES");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(1, result.getTotalDisplayRecords());
     assertEquals(List.of("res-a"), shortnamesInOrder(result));
@@ -249,7 +210,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     DatatableRequest req = request();
     req.setSearch("birds");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(1, result.getTotalDisplayRecords());
     assertEquals(List.of("dwca-birds"), shortnamesInOrder(result));
@@ -257,48 +218,48 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
   @Test
   void searchMatchesByOrganisationName() throws Exception {
-    SimplifiedResource match = resource("res-a");
+    ResourceSummaryView match = resource("res-a");
     match.setOrganisationName("Museum of Natural History");
-    SimplifiedResource noMatch = resource("res-b");
+    ResourceSummaryView noMatch = resource("res-b");
     noMatch.setOrganisationName("Some University");
     seed(match, noMatch);
 
     DatatableRequest req = request();
     req.setSearch("museum");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(List.of("res-a"), shortnamesInOrder(result));
   }
 
   @Test
   void searchMatchesByCoreType() throws Exception {
-    SimplifiedResource match = resource("res-a");
+    ResourceSummaryView match = resource("res-a");
     match.setCoreType("checklist");
-    SimplifiedResource noMatch = resource("res-b");
+    ResourceSummaryView noMatch = resource("res-b");
     noMatch.setCoreType("occurrence");
     seed(match, noMatch);
 
     DatatableRequest req = request();
     req.setSearch("checklist");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(List.of("res-a"), shortnamesInOrder(result));
   }
 
   @Test
   void searchMatchesBySubject() throws Exception {
-    SimplifiedResource match = resource("res-a");
+    ResourceSummaryView match = resource("res-a");
     match.setSubject("marine biodiversity");
-    SimplifiedResource noMatch = resource("res-b");
+    ResourceSummaryView noMatch = resource("res-b");
     noMatch.setSubject("terrestrial biodiversity");
     seed(match, noMatch);
 
     DatatableRequest req = request();
     req.setSearch("marine");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(List.of("res-a"), shortnamesInOrder(result));
   }
@@ -310,7 +271,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     DatatableRequest req = request();
     req.setSearch("no-such-resource-exists");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(2, result.getTotalRecords());
     assertEquals(0, result.getTotalDisplayRecords());
@@ -326,7 +287,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     req.setOffset(1);
     req.setLimit(2);
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(5, result.getTotalRecords());
     assertEquals(5, result.getTotalDisplayRecords());
@@ -341,7 +302,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     req.setOffset(10);
     req.setLimit(10);
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(2, result.getTotalDisplayRecords());
     assertTrue(result.getData().isEmpty());
@@ -355,7 +316,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     req.setSortFieldIndex(99); // falls into the "else" branch -> sort by shortname
     req.setSortOrder("asc");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(List.of("alpha", "bravo", "charlie"), shortnamesInOrder(result));
   }
@@ -368,18 +329,18 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     req.setSortFieldIndex(99);
     req.setSortOrder("desc");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(List.of("charlie", "bravo", "alpha"), shortnamesInOrder(result));
   }
 
   @Test
   void sortsByRecordsPublishedNumerically() throws Exception {
-    SimplifiedResource small = resource("small");
+    ResourceSummaryView small = resource("small");
     small.setRecordsPublished(5);
-    SimplifiedResource medium = resource("medium");
+    ResourceSummaryView medium = resource("medium");
     medium.setRecordsPublished(500);
-    SimplifiedResource large = resource("large");
+    ResourceSummaryView large = resource("large");
     large.setRecordsPublished(50000);
     seed(small, medium, large);
 
@@ -387,18 +348,18 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     req.setSortFieldIndex(5); // records published
     req.setSortOrder("asc");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(List.of("small", "medium", "large"), shortnamesInOrder(result));
   }
 
   @Test
   void sortsByModifiedDateWithNullsFirstAscending() throws Exception {
-    SimplifiedResource noDate = resource("no-date");
+    ResourceSummaryView noDate = resource("no-date");
     noDate.setModified(null);
-    SimplifiedResource older = resource("older");
+    ResourceSummaryView older = resource("older");
     older.setModified(daysAgo(10));
-    SimplifiedResource newer = resource("newer");
+    ResourceSummaryView newer = resource("newer");
     newer.setModified(daysAgo(1));
     seed(noDate, older, newer);
 
@@ -406,18 +367,18 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     req.setSortFieldIndex(6); // modified date
     req.setSortOrder("asc");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(List.of("no-date", "older", "newer"), shortnamesInOrder(result));
   }
 
   @Test
   void sortsByModifiedDateWithNullsLastDescending() throws Exception {
-    SimplifiedResource noDate = resource("no-date");
+    ResourceSummaryView noDate = resource("no-date");
     noDate.setModified(null);
-    SimplifiedResource older = resource("older");
+    ResourceSummaryView older = resource("older");
     older.setModified(daysAgo(10));
-    SimplifiedResource newer = resource("newer");
+    ResourceSummaryView newer = resource("newer");
     newer.setModified(daysAgo(1));
     seed(noDate, older, newer);
 
@@ -425,14 +386,14 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     req.setSortFieldIndex(6); // modified date
     req.setSortOrder("desc");
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     assertEquals(List.of("newer", "older", "no-date"), shortnamesInOrder(result));
   }
 
   @Test
   void mergesInstalledDataPackageSchemasIntoDatasetTypeBadges() throws Exception {
-    SimplifiedResource camtrapResource = resource("camtrap-res");
+    ResourceSummaryView camtrapResource = resource("camtrap-res");
     camtrapResource.setCoreType("camtrap");
     seed(camtrapResource);
 
@@ -441,7 +402,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
     DatatableRequest req = request();
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     String badge = result.getData().get(0).get(COL_CORE_TYPE_BADGE);
     assertTrue(badge.contains("Camtrap DP"), "expected badge to contain schema short title, was: " + badge);
@@ -449,7 +410,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
   @Test
   void fallsBackToSchemaNameWhenShortTitleIsMissing() throws Exception {
-    SimplifiedResource dpResource = resource("dp-res");
+    ResourceSummaryView dpResource = resource("dp-res");
     dpResource.setCoreType("my-schema");
     seed(dpResource);
 
@@ -458,7 +419,7 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
     DatatableRequest req = request();
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     String badge = result.getData().get(0).get(COL_CORE_TYPE_BADGE);
     assertTrue(badge.contains("my-schema"), "expected badge to fall back to schema name, was: " + badge);
@@ -466,12 +427,12 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
   @Test
   void rowContainsCreatorNameShortnameAndSubjectVerbatim() throws Exception {
-    SimplifiedResource r = resource("res-a");
+    ResourceSummaryView r = resource("res-a");
     r.setCreatorName("Jane Doe");
     r.setSubject("Test Subject");
     seed(r);
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(request());
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(request());
 
     List<String> row = result.getData().get(0);
     assertEquals("Jane Doe", row.get(COL_CREATOR));
@@ -481,22 +442,22 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
   @Test
   void rowUsesEmptyStringWhenSubjectIsNull() throws Exception {
-    SimplifiedResource r = resource("res-a");
+    ResourceSummaryView r = resource("res-a");
     r.setSubject(null);
     seed(r);
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(request());
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(request());
 
     assertEquals("", result.getData().get(0).get(COL_SUBJECT));
   }
 
   @Test
   void homeLinkPrefersTitleOverShortnameWhenTitleIsPresent() throws Exception {
-    SimplifiedResource r = resource("official-shortname");
+    ResourceSummaryView r = resource("official-shortname");
     r.setTitle("A Completely Different Human-Readable Title");
     seed(r);
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(request());
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(request());
 
     String homeLink = result.getData().get(0).get(COL_HOME_LINK);
     assertTrue(homeLink.contains("A Completely Different Human-Readable Title"),
@@ -507,11 +468,11 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
 
   @Test
   void homeLinkFallsBackToShortnameOnlyWhenTitleIsBlank() throws Exception {
-    SimplifiedResource r = resource("only-shortname-here");
+    ResourceSummaryView r = resource("only-shortname-here");
     r.setTitle(null);
     seed(r);
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(request());
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(request());
 
     String homeLink = result.getData().get(0).get(COL_HOME_LINK);
     assertTrue(homeLink.contains(">only-shortname-here<"),
@@ -522,15 +483,15 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
   void distinctResourcesWithDistinctTitlesAreNotAllCollapsedToShortname() throws Exception {
     // guards specifically against a regression where every row ends up showing its shortname,
     // regardless of how distinct/populated the titles are
-    SimplifiedResource a = resource("short-a", "Title For A");
-    SimplifiedResource b = resource("short-b", "Title For B");
-    SimplifiedResource c = resource("short-c", "Title For C");
+    ResourceSummaryView a = resource("short-a", "Title For A");
+    ResourceSummaryView b = resource("short-b", "Title For B");
+    ResourceSummaryView c = resource("short-c", "Title For C");
     seed(a, b, c);
 
     DatatableRequest req = request();
     req.setLimit(10);
 
-    DatatableResult result = resourceManager.listPublishedPublicVersionsSimplified(req);
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(req);
 
     List<String> homeLinks = new ArrayList<>();
     for (List<String> row : result.getData()) {

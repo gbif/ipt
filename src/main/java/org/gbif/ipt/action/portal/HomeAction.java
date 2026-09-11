@@ -19,7 +19,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
@@ -36,7 +36,7 @@ public class HomeAction extends BaseAction {
   @Serial
   private static final long serialVersionUID = 8504283506326312600L;
 
-  private final ResourceManager resourceManager;
+  private final ResourceDataTableViewManager resourceManager;
   private DatatableResult resources = new DatatableResult();
 
   @Inject
@@ -44,7 +44,7 @@ public class HomeAction extends BaseAction {
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
-      ResourceManager resourceManager) {
+      ResourceDataTableViewManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
   }
@@ -52,7 +52,7 @@ public class HomeAction extends BaseAction {
   @Override
   public String execute() {
     DatatableRequest dr = getRequestParameters(ServletActionContext.getRequest());
-    resources = resourceManager.listPublishedPublicVersionsSimplified(dr);
+    resources = resourceManager.listPublishedPublicResourceSummaries(dr);
 
     return SUCCESS;
   }

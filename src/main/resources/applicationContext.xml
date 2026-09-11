@@ -227,6 +227,14 @@
     <constructor-arg ref="resourceMetadataInferringService"/>
   </bean>
 
+  <bean id="resourceDataTableViewManager" class="org.gbif.ipt.service.manage.impl.ResourceDataTableViewManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="vocabulariesManager"/>
+    <constructor-arg ref="dataPackageSchemaManager"/>
+  </bean>
+
   <bean id="vocabulariesManager" class="org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl">
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="dataDir"/>
@@ -340,7 +348,7 @@
     <constructor-arg ref="simpleTextProvider"/>
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="registrationManager"/>
-    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="resourceDataTableViewManager"/>
   </bean>
 
   <bean id="healthAction" class="org.gbif.ipt.action.HealthAction" scope="prototype">

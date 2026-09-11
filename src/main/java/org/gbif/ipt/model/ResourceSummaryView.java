@@ -22,10 +22,10 @@ import lombok.Data;
 
 /**
  * Simplified IPT resource view for main and manage pages.
- * A resource can be identified by its short name which has to be unique within an IPT instance.
+ * A resource can be identified by its shortname, which has to be unique within an IPT instance.
  */
 @Data
-public class SimplifiedResource {
+public class ResourceSummaryView {
 
   private String logoUrl;
   private String title;

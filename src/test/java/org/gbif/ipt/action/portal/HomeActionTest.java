@@ -21,6 +21,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.file.FileUtils;
@@ -84,6 +85,8 @@ public class HomeActionTest extends IptBaseTest {
     when(resourceManager.listPublishedPublicVersions()).thenReturn(publishedPublic);
     when(resourceManager.get(anyString())).thenReturn(p);
 
+    ResourceDataTableViewManager resourceDataTableViewManager = mock(ResourceDataTableViewManager.class);
+
     AppConfig appConfig = mock(AppConfig.class);
     DataDir dataDir = mock(DataDir.class);
     // retrieve eml.xml file corresponding to version 1.34
@@ -92,7 +95,7 @@ public class HomeActionTest extends IptBaseTest {
     when(appConfig.getDataDir()).thenReturn(dataDir);
     when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
-    action = new HomeAction(mock(SimpleTextProvider.class), appConfig, mock(RegistrationManager.class), resourceManager);
+    action = new HomeAction(mock(SimpleTextProvider.class), appConfig, mock(RegistrationManager.class), resourceDataTableViewManager);
 
     action.setContainer(container);
     action.withServletRequest(mock(HttpServletRequest.class));

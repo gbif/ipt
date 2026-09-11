@@ -16,10 +16,8 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.SimplifiedResource;
+import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.User;
-import org.gbif.ipt.model.datatable.DatatableRequest;
-import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -133,6 +131,8 @@ public interface ResourceManager {
    */
   List<Resource> list();
 
+  List<ResourceSummaryView> listPublishedPublicResourceSummaries();
+
   /**
    * list all resources in the IPT by the type.
    *
@@ -160,18 +160,6 @@ public interface ResourceManager {
   List<Resource> listPublishedPublicVersions();
 
   /**
-   * List all resources in the IPT whose last published version was public (at the time of publication). This
-   * is used to populate the list of resources publicly shown on the IPT home page.
-   * Simplified - contain only fields required for the resources table.
-   * </br>
-   * If a resource is registered with GBIF, it is assumed the resource is public and therefore is included in the list.
-   * Please note only resource published using IPT v2.2 or later store a VersionHistory.
-   *
-   * @return list of resources wrapped by DatatableResult class
-   */
-  DatatableResult listPublishedPublicVersionsSimplified(DatatableRequest request);
-
-  /**
    * list all resource that can be managed by a given user.
    *
    * @param user User
@@ -179,16 +167,6 @@ public interface ResourceManager {
    * @return list of resources, or an empty list if none were found
    */
   List<Resource> list(User user);
-
-  /**
-   * list all resource that can be managed by a given user.
-   *
-   * @param user User
-   * @param request request parameters
-   *
-   * @return list of resources wrapped by DatatableResult class
-   */
-  DatatableResult list(User user, DatatableRequest request);
 
   /**
    * Load all configured resources from the data directory into memory.
@@ -257,5 +235,5 @@ public interface ResourceManager {
 
   void removePublishedPublicVersion(String shortname);
 
-  SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource);
+  ResourceSummaryView toResourceSummaryViewReconstructed(Resource resource);
 }

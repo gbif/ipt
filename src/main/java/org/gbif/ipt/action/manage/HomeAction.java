@@ -20,10 +20,11 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
+
 import java.io.Serial;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class HomeAction extends BaseAction {
 
   private DatatableResult resources = new DatatableResult();
 
-  private final ResourceManager resourceManager;
+  private final ResourceDataTableViewManager resourceManager;
   /**
    * list of organisations that can host
    */
@@ -54,7 +55,7 @@ public class HomeAction extends BaseAction {
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
-      ResourceManager resourceManager) {
+      ResourceDataTableViewManager resourceManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
   }
