@@ -47,8 +47,9 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -163,23 +164,17 @@ public class ResourceManagerImplIT extends IptBaseTest {
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), mockJdbcConverter);
 
     // mock ResourceManagerImpl for DataCite
-    ResourceManagerImpl managerDataCite = new ResourceManagerImpl(
+    ResourcePublicationManager managerDataCite = new ResourcePublicationManagerImpl(
         mockAppConfig,
         MOCK_DATA_DIR,
-        mockResourceConvertersManager,
-        mockSourceManager,
-        mockExtensionManager,
-        mockSchemaManager,
+        mock(ResourceManager.class),
         mockRegistryManager,
+        mockRegistrationManagerDataCite,
+        mockEml2Rtf,
         mockDwcaFactory,
         mock(GenerateDataPackageFactory.class),
         mock(GenerateDarwinCoreDataPackageFactory.class),
-        mockPasswordEncrypter,
-        mockEml2Rtf,
-        mockVocabulariesManager,
         mockSimpleTextProvider,
-        mockRegistrationManagerDataCite,
-        mock(MetadataReader.class),
         mock(ResourceMetadataInferringService.class));
 
     return Stream.of(
@@ -236,7 +231,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
    */
   @ParameterizedTest
   @MethodSource("data")
-  public void testRegisterDoiWorkflow(ResourceManagerImpl manager,
+  public void testRegisterDoiWorkflow(ResourcePublicationManager manager,
                                       DOIRegistrationAgency type,
                                       DOI doi,
                                       RegistrationManager registrationManager) throws Exception {

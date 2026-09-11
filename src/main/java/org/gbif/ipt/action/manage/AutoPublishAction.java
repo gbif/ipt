@@ -23,6 +23,7 @@ import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.PublicationFailureEmailUtils;
@@ -61,6 +62,7 @@ public class AutoPublishAction extends ManagerBaseAction {
       Pattern.compile("^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$");
 
   private final VocabulariesManager vocabManager;
+  private final ResourcePublicationManager resourcePublicationManager;
 
   @Getter
   private Map<String, String> frequencies;
@@ -79,9 +81,11 @@ public class AutoPublishAction extends ManagerBaseAction {
       AppConfig cfg,
       RegistrationManager registrationManager,
       ResourceManager resourceManager,
-      VocabulariesManager vocabManager) {
+      VocabulariesManager vocabManager,
+      ResourcePublicationManager resourcePublicationManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 
   @Override
@@ -174,7 +178,7 @@ public class AutoPublishAction extends ManagerBaseAction {
     }
 
     // update next published date
-    resourceManager.updatePublicationMode(resource);
+    resourcePublicationManager.updatePublicationMode(resource);
     LOG.debug("Next published date updated for resource [{}]", resource.getShortname());
 
     // save entire resource config

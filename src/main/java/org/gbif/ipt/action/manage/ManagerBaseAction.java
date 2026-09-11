@@ -23,6 +23,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
+
 import java.io.Serial;
 
 import org.apache.commons.lang3.StringUtils;

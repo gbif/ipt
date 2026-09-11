@@ -19,6 +19,7 @@ import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.BufferedReader;
@@ -64,14 +65,15 @@ class PublishingMonitorTest {
     resource.setNotifyPublicationFailure(true);
 
     ResourceManager resourceManager = mock(ResourceManager.class);
-    when(resourceManager.getProcessFutures()).thenReturn(Collections.emptyMap());
-    when(resourceManager.getExecutor()).thenReturn(new ThreadPoolExecutor(
+    ResourcePublicationManager resourcePublicationManager = mock(ResourcePublicationManager.class);
+    when(resourcePublicationManager.getProcessFutures()).thenReturn(Collections.emptyMap());
+    when(resourcePublicationManager.getExecutor()).thenReturn(new ThreadPoolExecutor(
         1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>()));
     when(resourceManager.list()).thenReturn(Collections.singletonList(resource));
-    when(resourceManager.hasMaxProcessFailures(resource)).thenReturn(false);
-    when(resourceManager.getProcessFailures()).thenReturn(new ArrayListValuedHashMap<>());
+    when(resourcePublicationManager.hasMaxProcessFailures(resource)).thenReturn(false);
+    when(resourcePublicationManager.getProcessFailures()).thenReturn(new ArrayListValuedHashMap<>());
     doThrow(new PublicationException(PublicationException.TYPE.DWCA, "archive failed"))
-        .when(resourceManager).publish(eq(resource), any(BigDecimal.class), isNull(), any(PublicationOptions.class));
+        .when(resourcePublicationManager).publish(eq(resource), any(BigDecimal.class), isNull(), any(PublicationOptions.class));
 
     try (RecordingSmtpServer smtpServer = new RecordingSmtpServer()) {
       when(cfg.getMailSmtpHost()).thenReturn("127.0.0.1");
@@ -81,7 +83,8 @@ class PublishingMonitorTest {
           mock(SimpleTextProvider.class),
           cfg,
           mock(RegistrationManager.class),
-          resourceManager);
+          resourceManager,
+          mock(ResourcePublicationManager.class));
       monitor.monitorOnce();
 
       assertEquals(1, smtpServer.getMessagesReceived());

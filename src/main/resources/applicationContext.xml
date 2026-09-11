@@ -206,15 +206,24 @@
     <constructor-arg ref="extensionManager"/>
     <constructor-arg ref="dataPackageSchemaManager"/>
     <constructor-arg ref="registryManager"/>
-    <constructor-arg ref="dwcaFactory"/>
-    <constructor-arg ref="dataPackageFactory"/>
-    <constructor-arg ref="dwcDpFactory"/>
     <constructor-arg ref="passwordEncrypter"/>
-    <constructor-arg ref="eml2Rtf"/>
     <constructor-arg ref="vocabulariesManager"/>
     <constructor-arg ref="simpleTextProvider"/>
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="metadataReader"/>
+  </bean>
+
+  <bean id="resourcePublicationManager" class="org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="registryManager"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="eml2Rtf"/>
+    <constructor-arg ref="dwcaFactory"/>
+    <constructor-arg ref="dataPackageFactory"/>
+    <constructor-arg ref="dwcDpFactory"/>
+    <constructor-arg ref="simpleTextProvider"/>
     <constructor-arg ref="resourceMetadataInferringService"/>
   </bean>
 
@@ -262,6 +271,7 @@
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="resourcePublicationManager"/>
   </bean>
 
   <bean id="extensionMonitor" class="org.gbif.ipt.config.ExtensionMonitor">
@@ -312,6 +322,7 @@
 
   <bean id="requireManagerInterceptor" class="org.gbif.ipt.struts2.RequireManagerInterceptor">
     <property name="resourceManager" ref="resourceManager"/>
+    <property name="resourcePublicationManager" ref="resourcePublicationManager"/>
   </bean>
 
   <bean id="privateDeletedResourceInterceptor" class="org.gbif.ipt.struts2.PrivateDeletedResourceInterceptor">

@@ -57,6 +57,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
@@ -86,6 +87,7 @@ import org.gbif.utils.file.csv.CSVReaderFactory;
 
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -239,6 +241,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private final UserAccountManager userManager;
   private final ExtensionManager extensionManager;
   private final DataPackageSchemaManager schemaManager;
+  private final ResourcePublicationManager resourcePublicationManager;
 
   @Inject
   public OverviewAction(
@@ -252,7 +255,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       GenerateDataPackageFactory dataPackageFactory,
       VocabulariesManager vocabManager,
       RegistryManager registryManager,
-      DataPackageSchemaManager schemaManager) {
+      DataPackageSchemaManager schemaManager,
+      ResourcePublicationManager resourcePublicationManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
@@ -264,6 +268,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     this.vocabManager = vocabManager;
     this.registryManager = registryManager;
     this.schemaManager = schemaManager;
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 
   /**
@@ -321,7 +326,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     if (resource == null) {
       return NOT_FOUND;
     }
-    boolean cancelled = resourceManager.cancelPublishing(resource.getShortname(), this);
+    boolean cancelled = resourcePublicationManager.cancelPublishing(resource.getShortname());
     if (cancelled) {
       // final logging
       BigDecimal version = resource.getMetadataVersion();
@@ -330,10 +335,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       addActionMessage(msg);
 
       // restore the previous version of the resource
-      resourceManager.restoreVersion(resource, version, this);
+      resourcePublicationManager.restoreVersion(resource, version, this);
 
       // update next publication date if auto-publication is enabled
-      resourceManager.updatePublicationMode(resource);
+      resourcePublicationManager.updatePublicationMode(resource);
 
       // Struts finishes before callable has a finish to update status report, therefore,
       // temporarily override StatusReport so that Overview page report displaying up-to-date STATE and Exception
@@ -835,7 +840,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       if (PublicationStatus.PUBLIC == resource.getStatus() && !resource.isAlreadyAssignedDoi()) {
         // makePrivate
         try {
-          resourceManager.visibilityToPrivate(resource, this);
+          resourcePublicationManager.visibilityToPrivate(resource, this);
           if (resource.getPendingStatus() != null) {
             addActionMessage(
                 getText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
@@ -876,7 +881,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         }
       } else {
         try {
-          resourceManager.visibilityToPublic(resource, this);
+          resourcePublicationManager.visibilityToPublic(resource, this);
           if (resource.getPendingStatus() != null) {
             addActionMessage(
                 getText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
@@ -1305,7 +1310,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * Updates report to be displayed on overview page.
    */
   private void updateReport() {
-    report = resourceManager.status(resource.getShortname());
+    report = resourcePublicationManager.status(resource.getShortname());
   }
 
   /**
@@ -1380,10 +1385,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       }
 
       // clear the processFailures for the resource, allowing auto-publication to proceed
-      if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
+      if (resourcePublicationManager.getProcessFailures().containsKey(resource.getShortname())) {
         logProcessFailures(resource);
         LOG.info("Clearing publish event failures for resource: {}", resource.getTitleAndShortname());
-        resourceManager.getProcessFailures().remove(resource.getShortname());
+        resourcePublicationManager.getProcessFailures().remove(resource.getShortname());
       }
 
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
@@ -1393,7 +1398,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
       try {
         // publish a new version of the resource
-        if (resourceManager.publish(resource, nextVersion, this)) {
+        if (resourcePublicationManager.publish(resource, nextVersion, this)) {
           addActionMessage(getText("publishing.started", new String[]{String.valueOf(nextVersion), resource.getShortname()}));
           // refresh archive report
           updateReport();
@@ -1437,9 +1442,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           addActionError(getText("publishing.failed",
               new String[]{String.valueOf(nextVersion), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
-          resourceManager.restoreVersion(resource, nextVersion, this);
+          resourcePublicationManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
-          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+          resourcePublicationManager.getProcessFailures().put(resource.getShortname(), new Date());
         }
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed
@@ -1508,7 +1513,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
             }
 
             // perform registration
-            resourceManager.register(resource, org, registrationManager.getIpt(), this);
+            resourcePublicationManager.register(resource, org, registrationManager.getIpt(), this);
 
             // associate resource with the default IPT network
             org.gbif.ipt.model.Network defaultIptNetwork = registrationManager.getNetwork();
@@ -1776,8 +1781,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     sb.append("Resource [");
     sb.append(resource.getTitleAndShortname());
     sb.append("] has ");
-    if (resourceManager.getProcessFailures().containsKey(resource.getShortname())) {
-      List<Date> failures = resourceManager.getProcessFailures().get(resource.getShortname());
+    if (resourcePublicationManager.getProcessFailures().containsKey(resource.getShortname())) {
+      List<Date> failures = resourcePublicationManager.getProcessFailures().get(resource.getShortname());
       sb.append(failures.size());
       sb.append(" failed publications on: ");
       Iterator<Date> iter = failures.iterator();

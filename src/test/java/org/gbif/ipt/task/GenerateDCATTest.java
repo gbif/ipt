@@ -311,16 +311,11 @@ public class GenerateDCATTest extends IptBaseTest {
             extensionManager,
             mockSchemaManager,
             mockRegistryManager,
-            mockDwcaFactory,
-            mock(GenerateDataPackageFactory.class),
-            mock(GenerateDarwinCoreDataPackageFactory.class),
             passwordEncrypter,
-            mockEml2Rtf,
             mockVocabulariesManager,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class),
-            mock(ResourceMetadataInferringService.class));
+            mock(MetadataReader.class));
 
     // creator
     User creator = new User();

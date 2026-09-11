@@ -14,10 +14,9 @@
 package org.gbif.ipt.service.manage;
 
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
-import org.gbif.ipt.model.PublicationOptions;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.SimplifiedResource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
@@ -28,24 +27,15 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.InvalidMetadataException;
-import org.gbif.ipt.service.PublicationException;
-import org.gbif.ipt.task.StatusReport;
 import org.gbif.metadata.eml.InvalidEmlException;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
-
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.collections4.ListValuedMap;
 import org.xml.sax.SAXException;
 
 /**
@@ -55,15 +45,6 @@ import org.xml.sax.SAXException;
  */
 public interface ResourceManager {
 
-  /**
-   * Cancels publishing.
-   *
-   * @param shortname Resource shortname
-   * @param action    action
-   *
-   * @return result of trying to cancel publishing: was successful or not
-   */
-  boolean cancelPublishing(String shortname, BaseAction action);
 
   /**
    * Create a new Resource.
@@ -125,6 +106,7 @@ public interface ResourceManager {
    */
   Resource get(String shortname);
 
+  // TODO: why is marked as never used
   /**
    * Validate if the EML file exists for a specific resource in the data directory.
    *
@@ -133,25 +115,6 @@ public interface ResourceManager {
    * @return true if EML File exists, and false otherwise.
    */
   boolean isEmlExisting(String shortName);
-
-  /**
-   * Checks whether the resource is currently locked or not. It then checks if the task is done or not. If done
-   * successfully, the remaining steps in publishing are executed. If it failed for any reason,
-   * the previous published version is restored.
-   *
-   * @param shortname Resource shortname
-   * @param action    the action to use for logging messages
-   *
-   * @return true if resource is currently locked for any management.
-   */
-  boolean isLocked(String shortname, BaseAction action);
-
-  /**
-   * Defaults BaseAction to null.
-   *
-   * @see org.gbif.ipt.service.manage.ResourceManager#isLocked(String, org.gbif.ipt.action.BaseAction)
-   */
-  boolean isLocked(String shortname);
 
   /**
    * Returns the latest resources ,ordered by last modified date.
@@ -239,65 +202,6 @@ public interface ResourceManager {
   int load(File resourcesDir, @Nullable User creator);
 
   /**
-   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
-   * DwC resources or a data package archive and a metadata file for data package resources.
-   *
-   * @param resource Resource
-   * @param version version number of eml/rft/archive to be published
-   * @param action   the action to use for logging messages to
-   *
-   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
-   *
-   * @throws PublicationException if resource was already registered
-   * @throws InvalidConfigException if resource or metadata could not be saved
-   */
-  boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action) throws PublicationException;
-
-  /**
-   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
-   * DwC resources or a data package acrhive and a metadata file for data package resources.
-   *
-   * @param resource Resource
-   * @param version version number of eml/rft/archive to be published
-   * @param action   the action to use for logging messages to
-   * @param skipIfNotChanged do not publish a new version if it hasn't changed since last publication
-   *
-   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
-   *
-   * @throws PublicationException if resource was already registered
-   * @throws InvalidConfigException if resource or metadata could not be saved
-   */
-  boolean publish(Resource resource, BigDecimal version, @Nullable BaseAction action, boolean skipIfNotChanged) throws PublicationException;
-
-  /**
-   * Publishes a new version of a resource including generating a darwin core archive and issuing a new EML version for
-   * DwC resources or a data package acrhive and a metadata file for data package resources.
-   *
-   * @param resource Resource
-   * @param version version number of eml/rft/archive to be published
-   * @param action   the action to use for logging messages to
-   * @param options advanced publication options
-   *
-   * @return true if a new asynchronous archive generation job has been issued which requires some mapped data
-   *
-   * @throws PublicationException if resource was already registered
-   * @throws InvalidConfigException if resource or metadata could not be saved
-   */
-  boolean publish(Resource resource, BigDecimal version, BaseAction action, PublicationOptions options) throws PublicationException;
-
-  /**
-   * Registers the resource with the GBIF Registry. Instead of registering a new resource, the resource can instead
-   * update an existing registered resource if a UUID corresponding to an existing registered resource (owned by the
-   * specified organization) is found in the resource's alternate identifiers list.
-   *
-   * @param resource     the published resource
-   * @param organisation the organization that owns the resource
-   * @param ipt          the ipt that the resource will be published through
-   * @param action       Action used to show log messages on UI
-   */
-  void register(Resource resource, Organisation organisation, Ipt ipt, BaseAction action) throws InvalidConfigException;
-
-  /**
    * Persists the whole resource configuration *but* not the EML file.
    *
    * @param resource Resource
@@ -326,138 +230,6 @@ public interface ResourceManager {
   void saveInferredMetadata(Resource resource) throws InvalidConfigException;
 
   /**
-   * Return status report of current task either running or on queue for the requested resource or null if none exists.
-   *
-   * @param shortname for the resource
-   *
-   * @return status report of current task either running or on queue for the requested resource or null if none exists
-   */
-  @Nullable
-  StatusReport status(String shortname);
-
-  /**
-   * Update the registration of the resource with the GBIF Registry. This is always done as part of a resource
-   * publication.
-   *
-   * @param resource the published resource
-   * @param action   the action to use for logging messages
-   *
-   * @throws PublicationException (TYPE.REGISTRY) if update was unsuccessful
-   */
-  void updateRegistration(Resource resource, BaseAction action) throws PublicationException;
-
-  /**
-   * Makes a resource private.
-   *
-   * @param resource Resource
-   * @param action the action to use for logging messages
-   *
-   * @throws InvalidConfigException if resource was already registered
-   */
-  void visibilityToPrivate(Resource resource, BaseAction action) throws InvalidConfigException;
-
-  /**
-   * Makes a resource public.
-   *
-   * @param resource Resource
-   * @param action the action to use for logging messages
-   *
-   * @throws InvalidConfigException if resource was already registered
-   */
-  void visibilityToPublic(Resource resource, BaseAction action) throws InvalidConfigException;
-
-  /**
-   * This method rolls back a pending version (a version being published that can't finish successfully). This method
-   * must be called when publication fails, for whatever reason.
-   * </br>
-   * This method deletes the pending version's DwC-A, RTF, and EML files.
-   * </br>
-   * This method then restores the resource (version) back to the last successfully published version. This includes
-   * updating the resource's version history, last publication date, version, etc.
-   *
-   * @param resource resource
-   * @param rollingBack version to rollback
-   * @param action   action
-   */
-  void restoreVersion(Resource resource, BigDecimal rollingBack, @Nullable BaseAction action);
-
-  /**
-   * Update the resource publicationMode.
-   *
-   * @param resource resource
-   */
-  void updatePublicationMode(Resource resource);
-
-  /**
-   * Updates the resource's alternative identifier for the IPT URL to the resource, and saves the EML afterward.
-   * This identifier should only exist for the resource, if its visibility is public.
-   * If the resource visibility is set to private, this method should be called to ensure the identifier is removed.
-   * Any time the baseURL changes, this method must be called for all public resources so that this identifier
-   * will be updated. This method will remove an IPT URL identifier with the wrong baseURL by matching the
-   * RESOURCE_PUBLIC_LINK_PART, updating it with one having the latest baseURL.
-   *
-   * @param resource resource
-   *
-   * @return resource with the IPT URL alternate identifier for the resource updated
-   */
-  Resource updateAlternateIdentifierForIPTURLToResource(Resource resource);
-
-  /*
-   * Return the ThreadPoolExecutor.
-   *
-   * @return the ThreadPoolExecutor
-   */
-  ThreadPoolExecutor getExecutor();
-
-  /**
-   * Return the Futures map, representing all publishing jobs that have been fired.
-   *
-   * @return the Futures map
-   */
-  Map<String, Future<Map<String, Integer>>> getProcessFutures();
-
-  /**
-   * Return the failures map, representing all publishing jobs that have failed.
-   * </br>
-   * This map can be queried, to find out which resources have failed publishing jobs.
-   * </br>
-   * Auto-publication for a resource halts, if there have been 3 failed publish events. A successful publish event run
-   * manually, is needed to clear the failed publish events for the resource.
-   *
-   * @return map of resource name (key) to List of Date when publishing job failed
-   */
-  ListValuedMap<String, Date> getProcessFailures();
-
-  /**
-   * Return the report map.
-   *
-   * @return map of publication reports
-   */
-  Map<String, StatusReport> getProcessReports();
-
-  /**
-   * Clear the report map.
-   */
-  void clearProcessReports();
-
-  /**
-   * Check if the maximum number of publish event failures has occurred for a resource.
-   *
-   * @param resource resource
-   *
-   * @return true if publication has failed the maximum allowed times for a given resource
-   */
-  boolean hasMaxProcessFailures(Resource resource);
-
-  /**
-   * Remove a specific archived version of a resource
-   *
-   * @param resource
-   * @param version
-   */
-  void removeVersion(Resource resource, BigDecimal version);
-
-  /**
    * Replace the EML file in a resource by the provided file
    *
    * @param resource
@@ -480,4 +252,10 @@ public interface ResourceManager {
    * Update organisation name and alias for published resources.
    */
   void updateOrganisationNameForResources(Organisation organisation);
+
+  void updateStoredResources(Resource resource);
+
+  void removePublishedPublicVersion(String shortname);
+
+  SimplifiedResource toSimplifiedResourceReconstructedVersion(Resource resource);
 }

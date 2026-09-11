@@ -34,6 +34,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
@@ -110,12 +111,12 @@ public class OverviewActionIT extends IptBaseTest {
 
     Properties p = PropertiesUtil.loadProperties("datacite.properties");
     ClientConfiguration cfg = ClientConfiguration.builder()
-      .withBaseApiUrl(p.getProperty("baseApiUrl"))
-      .withTimeOut(Long.valueOf(p.getProperty("timeOut")))
-      .withFileCacheMaxSizeMb(Long.valueOf(p.getProperty("fileCacheMaxSizeMb")))
-      .withUser(p.getProperty("user"))
-      .withPassword(p.getProperty("password"))
-      .build();
+        .withBaseApiUrl(p.getProperty("baseApiUrl"))
+        .withTimeOut(Long.valueOf(p.getProperty("timeOut")))
+        .withFileCacheMaxSizeMb(Long.valueOf(p.getProperty("fileCacheMaxSizeMb")))
+        .withUser(p.getProperty("user"))
+        .withPassword(p.getProperty("password"))
+        .build();
 
     //LOG.info("DataCite password (read from Maven property datacite.password)= " + dcCfg.getPassword());
 
@@ -152,7 +153,8 @@ public class OverviewActionIT extends IptBaseTest {
             mock(GenerateDataPackageFactory.class),
             mock(VocabulariesManager.class),
             mock(RegistryManager.class),
-            mock(DataPackageSchemaManager.class));
+            mock(DataPackageSchemaManager.class),
+            mock(ResourcePublicationManager.class));
 
     return Stream.of(Arguments.of(actionDataCite, DOIRegistrationAgency.DATACITE));
   }

@@ -54,11 +54,14 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImplTest;
+import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
@@ -127,6 +130,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
   @BeforeEach
   public void setup() throws Exception {
     ResourceManagerImpl mockResourceManager = getResourceManagerImpl();
+    ResourcePublicationManagerImpl mockResourcePublicationManager = mock(ResourcePublicationManagerImpl.class);
     // prepare and add resource
     Resource resource = getNonRegisteredMetadataOnlyResource();
     // ensure resource has mandatory metadata filled in, meaning its EML validates and it has a valid publishing org
@@ -146,9 +150,9 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
 
     mockResourceManager.save(resource);
     // mock generateDwca() throwing PublicationException, not actually possible, but used to test failed publications
-    GenerateDwcaFactory mockDwcaFactory = mockResourceManager.getDwcaFactory();
+    GenerateDwcaFactory mockDwcaFactory = mockResourcePublicationManager.getDwcaFactory();
     when(mockDwcaFactory.create(any(Resource.class), any(ReportHandler.class)))
-      .thenThrow(new PublicationException(PublicationException.TYPE.DWCA, "Mock exception"));
+        .thenThrow(new PublicationException(PublicationException.TYPE.DWCA, "Mock exception"));
 
     // mock finding versioned EML file - not important which one
     File emlXML = File.createTempFile("eml-1.1", ".xml");
@@ -159,9 +163,14 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     when(mockedDataDir.resourceRtfFile(anyString(), any(BigDecimal.class))).thenReturn(rtf);
 
     // mock action
-    action = new PublishAllResourcesAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
-      mockRegistrationManager, mockResourceManager, mock(RegistryManager.class), mock(DataPackageMetadataValidator.class));
-
+    action = new PublishAllResourcesAction(
+        mock(SimpleTextProvider.class),
+        mock(AppConfig.class),
+        mockRegistrationManager,
+        mockResourceManager,
+        mock(ResourcePublicationManager.class),
+        mock(RegistryManager.class),
+        mock(DataPackageMetadataValidator.class));
   }
 
   @Test
@@ -198,29 +207,29 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     // PublicationException logged in ActionError
     assertEquals(2, action.getActionErrors().size());
     // # of publish event failures for resource captured
-    assertEquals(1, action.resourceManager.getProcessFailures().size());
-    assertFalse(action.resourceManager.hasMaxProcessFailures(resource));
+    assertEquals(1, action.resourcePublicationManager.getProcessFailures().size());
+    assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
     assertNull(resource.getNextPublished());
     assertNull(resource.getLastPublished());
 
     // trigger publish all again
     action.execute();
-    assertFalse(action.resourceManager.hasMaxProcessFailures(resource));
+    assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
     // # of publish event failures for resource captured, should have incremented by 1
-    assertEquals(2, action.resourceManager.getProcessFailures().size());
+    assertEquals(2, action.resourcePublicationManager.getProcessFailures().size());
 
     // trigger publish all again
     action.execute();
-    assertTrue(action.resourceManager.hasMaxProcessFailures(resource));
+    assertTrue(action.resourcePublicationManager.hasMaxProcessFailures(resource));
     // # of publish event failures for resource captured, should have incremented by 1
-    assertEquals(3, action.resourceManager.getProcessFailures().size());
+    assertEquals(3, action.resourcePublicationManager.getProcessFailures().size());
 
     // trigger publish all again
     action.execute();
-    assertTrue(action.resourceManager.hasMaxProcessFailures(resource));
+    assertTrue(action.resourcePublicationManager.hasMaxProcessFailures(resource));
     // since max failures was reached, publication not scheduled, and number of publication failures stays the same
-    assertEquals(3, action.resourceManager.getProcessFailures().size());
+    assertEquals(3, action.resourcePublicationManager.getProcessFailures().size());
   }
 
   public ResourceManagerImpl getResourceManagerImpl() throws Exception {
@@ -305,15 +314,84 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         extensionManager,
         mockSchemaManager,
         mockRegistryManager,
-        mockDwcaFactory,
-        mock(GenerateDataPackageFactory.class),
-        mock(GenerateDarwinCoreDataPackageFactory.class),
         passwordEncrypter,
-        mockEml2Rtf,
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(MetadataReader.class),
+        mock(MetadataReader.class));
+  }
+
+  public ResourcePublicationManager getResourcePublicationManagerImpl() throws Exception {
+    // mock the cfg
+    when(mockAppConfig.getBaseUrl()).thenReturn("http://localhost:7001/ipt");
+    // mock resource link used as EML GUID
+    when(mockAppConfig.getResourceGuid("bees")).thenReturn("http://localhost:7001/ipt/resource?id=bees");
+    when(mockAppConfig.getResourceGuid("res2")).thenReturn("http://localhost:7001/ipt/resource?id=res2");
+
+    // construct ExtensionFactory using injected parameters
+    HttpClient httpClient = TestBeanProvider.provideHttpClient();
+    ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
+    SAXParserFactory saxf = TestBeanProvider.provideNsAwareSaxParserFactory();
+    ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
+    JdbcSupport support = TestBeanProvider.provideJdbcSupport();
+    PasswordEncrypter passwordEncrypter = new PasswordEncrypter(TestBeanProvider.providePasswordEncryption());
+    JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
+
+    // construct occurrence core Extension
+    InputStream occurrenceCoreIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/dwc_occurrence.xml");
+    Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
+
+    // construct occurrence core Extension
+    InputStream eventCoreIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/dwc_event_2015-04-24.xml");
+    Extension eventCore = extensionFactory.build(eventCoreIs);
+
+    // construct simple images extension
+    InputStream simpleImageIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/simple_image.xml");
+    Extension simpleImage = extensionFactory.build(simpleImageIs);
+
+    ExtensionManager extensionManager = mock(ExtensionManager.class);
+    ExtensionsHolder extensionsHolder = mock(ExtensionsHolder.class);
+    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
+
+    // mock ExtensionManager returning different Extensions
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence"))
+        .thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event"))
+        .thenReturn(eventCore);
+    when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
+        .thenReturn(occurrenceCore);
+    when(extensionManager.get("http://rs.gbif.org/terms/1.0/Image"))
+        .thenReturn(simpleImage);
+
+    when(extensionsHolder.getExtensionsByRowtype()).thenReturn(
+        Map.ofEntries(
+            Map.entry("http://rs.tdwg.org/dwc/terms/Occurrence", occurrenceCore),
+            Map.entry("http://rs.tdwg.org/dwc/terms/Event", eventCore),
+            Map.entry("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord", occurrenceCore),
+            Map.entry("http://rs.gbif.org/terms/1.0/Image", simpleImage)));
+
+    ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionsHolder);
+    ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
+
+    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
+        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
+        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+
+    // mock finding dwca.zip file that does not exist
+    when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
+
+    return new ResourcePublicationManagerImpl(
+        mockAppConfig,
+        mockedDataDir,
+        mock(ResourceManager.class),
+        mockRegistryManager,
+        mockRegistrationManager,
+        mockEml2Rtf,
+        mockDwcaFactory,
+        mock(GenerateDataPackageFactory.class),
+        mock(GenerateDarwinCoreDataPackageFactory.class),
+        mockSimpleTextProvider,
         mock(ResourceMetadataInferringService.class));
   }
 

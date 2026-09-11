@@ -35,6 +35,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
@@ -77,11 +78,11 @@ public class OverviewActionTest extends IptBaseTest {
   public void setup()
     throws IOException, ParserConfigurationException, SAXException, AlreadyExistingException, ImportException {
 
-    ResourceManager mockResourceManager = mock(ResourceManager.class);
+    ResourcePublicationManager mockResourcePublicationManager = mock(ResourcePublicationManager.class);
     ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
     processFailures.put("res1", new Date());
     processFailures.put("res1", new Date());
-    when(mockResourceManager.getProcessFailures()).thenReturn(processFailures);
+    when(mockResourcePublicationManager.getProcessFailures()).thenReturn(processFailures);
 
     // mock returning eml-1.0.xml
     emlFile = File.createTempFile("eml-1.0", ".xml");
@@ -96,14 +97,15 @@ public class OverviewActionTest extends IptBaseTest {
           mock(SimpleTextProvider.class),
           mockCfg,
           mock(RegistrationManager.class),
-          mockResourceManager,
+          mock(ResourceManager.class),
           mock(UserAccountManager.class),
           mock(ExtensionManager.class),
           mock(GenerateDwcaFactory.class),
           mock(GenerateDataPackageFactory.class),
           mock(VocabulariesManager.class),
           mock(RegistryManager.class),
-          mock(DataPackageSchemaManager.class));
+          mock(DataPackageSchemaManager.class),
+          mockResourcePublicationManager);
   }
 
   @Test
@@ -344,7 +346,8 @@ public class OverviewActionTest extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
-        mock(DataPackageSchemaManager.class));
+        mock(DataPackageSchemaManager.class),
+        mock(ResourcePublicationManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());
@@ -393,7 +396,8 @@ public class OverviewActionTest extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
-        mock(DataPackageSchemaManager.class));
+        mock(DataPackageSchemaManager.class),
+        mock(ResourcePublicationManager.class));
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());

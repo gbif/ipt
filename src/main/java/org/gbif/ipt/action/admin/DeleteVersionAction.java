@@ -19,24 +19,23 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
+
 import java.io.Serial;
 import java.math.BigDecimal;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class DeleteVersionAction extends POSTAction {
 
   @Serial
   private static final long serialVersionUID = 5720945348362679742L;
 
-  private static final Logger LOG = LogManager.getLogger(DeleteVersionAction.class);
-
   protected final ResourceManager resourceManager;
+  protected final ResourcePublicationManager resourcePublicationManager;
   protected Resource resource;
   protected String version;
 
@@ -45,9 +44,11 @@ public class DeleteVersionAction extends POSTAction {
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
-      ResourceManager resourceManager) {
+      ResourceManager resourceManager,
+      ResourcePublicationManager resourcePublicationManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 
   @Override
@@ -67,7 +68,7 @@ public class DeleteVersionAction extends POSTAction {
 
   @Override
   public String execute() {
-    resourceManager.removeVersion(resource, new BigDecimal(version));
+    resourcePublicationManager.removeVersion(resource, new BigDecimal(version));
     return SUCCESS;
   }
 }

@@ -56,9 +56,11 @@ import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -102,7 +104,7 @@ public class GenerateDwcaIT extends IptBaseTest {
   private static final String VERSIONED_ARCHIVE_FILENAME = "dwca-3.0.zip";
 
   private GenerateDwca generateDwca;
-  private ReportHandler mockHandler = mock(ResourceManagerImpl.class);
+  private ReportHandler mockHandler = mock(ResourcePublicationManagerImpl.class);
   private DataDir mockDataDir = MockDataDir.buildMock();
   private AppConfig mockAppConfig = MockAppConfig.buildMock();
   private SourceManager mockSourceManager;
@@ -326,16 +328,11 @@ public class GenerateDwcaIT extends IptBaseTest {
             extensionManager,
             mockSchemaManager,
             mockRegistryManager,
-            mockDwcaFactory,
-            mock(GenerateDataPackageFactory.class),
-            mock(GenerateDarwinCoreDataPackageFactory.class),
             passwordEncrypter,
-            mockEml2Rtf,
             mockVocabulariesManager,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class),
-            mock(ResourceMetadataInferringService.class));
+            mock(MetadataReader.class));
 
     // create a new resource.
     // create user

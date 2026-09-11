@@ -19,15 +19,11 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.VersionHistory;
-import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.service.admin.DataPackageSchemaManager;
-import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
-import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
@@ -65,25 +61,19 @@ public class ArchivalModeTest extends IptBaseTest {
     when(mockDataDir.resourceDwcaFile(anyString(), any())).thenReturn(tmpDataDir);
   }
 
-  public ResourceManagerImpl getResourceManagerImpl(AppConfig mockAppConfig) {
-    return new ResourceManagerImpl(
-      mockAppConfig,
-      mockDataDir,
-      mock(ResourceConvertersManager.class),
-      mock(SourceManager.class),
-      mock(ExtensionManager.class),
-      mock(DataPackageSchemaManager.class),
-      mock(RegistryManager.class),
-      mock(GenerateDwcaFactory.class),
-      mock(GenerateDataPackageFactory.class),
-      mock(GenerateDarwinCoreDataPackageFactory.class),
-      mock(PasswordEncrypter.class),
-      mock(Eml2Rtf.class),
-      mock(VocabulariesManager.class),
-      mock(SimpleTextProvider.class),
-      mock(RegistrationManager.class),
-      mock(MetadataReader.class),
-      mock(ResourceMetadataInferringService.class));
+  public ResourcePublicationManager getResourcePublicationManager(AppConfig mockAppConfig) {
+    return new ResourcePublicationManagerImpl(
+        mockAppConfig,
+        mockDataDir,
+        mock(ResourceManager.class),
+        mock(RegistryManager.class),
+        mock(RegistrationManager.class),
+        mock(Eml2Rtf.class),
+        mock(GenerateDwcaFactory.class),
+        mock(GenerateDataPackageFactory.class),
+        mock(GenerateDarwinCoreDataPackageFactory.class),
+        mock(SimpleTextProvider.class),
+        mock(ResourceMetadataInferringService.class));
   }
 
   public Resource getResource(String shortName) {
@@ -104,12 +94,12 @@ public class ArchivalModeTest extends IptBaseTest {
   public void testArchiveModeOnWithoutLimit() {
     AppConfig mockAppConfig = MockAppConfig.rebuildMock();
     when(mockAppConfig.isArchivalMode()).thenReturn(true);
-    ResourceManagerImpl resourceManager = getResourceManagerImpl(mockAppConfig);
+    ResourcePublicationManager manager = getResourcePublicationManager(mockAppConfig);
 
     Resource resource = getResource("testArchiveModeOnWithoutLimit");
-    resourceManager.cleanArchiveVersions(resource);
+    manager.cleanArchiveVersions(resource);
 
-    assertEquals(resource.getVersionHistory().size(), 6);
+    assertEquals(6, resource.getVersionHistory().size());
     verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
   }
 
@@ -117,12 +107,12 @@ public class ArchivalModeTest extends IptBaseTest {
   public void testArchiveModeOffWithoutLimit() {
     AppConfig mockAppConfig = MockAppConfig.rebuildMock();
     when(mockAppConfig.isArchivalMode()).thenReturn(false);
-    ResourceManagerImpl resourceManager = getResourceManagerImpl(mockAppConfig);
+    ResourcePublicationManager manager = getResourcePublicationManager(mockAppConfig);
 
     Resource resource = getResource("testArchiveModeOffWithoutLimit");
-    resourceManager.cleanArchiveVersions(resource);
+    manager.cleanArchiveVersions(resource);
 
-    assertEquals(resource.getVersionHistory().size(), 6);
+    assertEquals(6, resource.getVersionHistory().size());
     verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
   }
 
@@ -131,12 +121,12 @@ public class ArchivalModeTest extends IptBaseTest {
     AppConfig mockAppConfig = MockAppConfig.rebuildMock();
     when(mockAppConfig.isArchivalMode()).thenReturn(true);
     when(mockAppConfig.getArchivalLimit()).thenReturn(null);
-    ResourceManagerImpl resourceManager = getResourceManagerImpl(mockAppConfig);
+    ResourcePublicationManager manager = getResourcePublicationManager(mockAppConfig);
 
     Resource resource = getResource("testArchiveModeOnWithNullLimit");
-    resourceManager.cleanArchiveVersions(resource);
+    manager.cleanArchiveVersions(resource);
 
-    assertEquals(resource.getVersionHistory().size(), 6);
+    assertEquals(6, resource.getVersionHistory().size());
     verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
   }
 
@@ -145,12 +135,12 @@ public class ArchivalModeTest extends IptBaseTest {
     AppConfig mockAppConfig = MockAppConfig.rebuildMock();
     when(mockAppConfig.isArchivalMode()).thenReturn(true);
     when(mockAppConfig.getArchivalLimit()).thenReturn(0);
-    ResourceManagerImpl resourceManager = getResourceManagerImpl(mockAppConfig);
+    ResourcePublicationManager manager = getResourcePublicationManager(mockAppConfig);
 
     Resource resource = getResource("testArchiveModeOnWithZeroLimit");
-    resourceManager.cleanArchiveVersions(resource);
+    manager.cleanArchiveVersions(resource);
 
-    assertEquals(resource.getVersionHistory().size(), 6);
+    assertEquals(6, resource.getVersionHistory().size());
     verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
   }
 
@@ -159,12 +149,12 @@ public class ArchivalModeTest extends IptBaseTest {
     AppConfig mockAppConfig = MockAppConfig.rebuildMock();
     when(mockAppConfig.isArchivalMode()).thenReturn(true);
     when(mockAppConfig.getArchivalLimit()).thenReturn(10);
-    ResourceManagerImpl resourceManager = getResourceManagerImpl(mockAppConfig);
+    ResourcePublicationManager manager = getResourcePublicationManager(mockAppConfig);
 
     Resource resource = getResource("testArchiveLimitHigher");
-    resourceManager.cleanArchiveVersions(resource);
+    manager.cleanArchiveVersions(resource);
 
-    assertEquals(resource.getVersionHistory().size(), 6);
+    assertEquals(6, resource.getVersionHistory().size());
     verify(mockDataDir, times(0)).resourceDwcaFile(any(), any());
   }
 
@@ -174,16 +164,16 @@ public class ArchivalModeTest extends IptBaseTest {
     AppConfig mockAppConfig = MockAppConfig.rebuildMock();
     when(mockAppConfig.isArchivalMode()).thenReturn(true);
     when(mockAppConfig.getArchivalLimit()).thenReturn(2);
-    ResourceManagerImpl resourceManager = getResourceManagerImpl(mockAppConfig);
+    ResourcePublicationManager manager = getResourcePublicationManager(mockAppConfig);
 
     Resource resource = getResource(resourceName);
-    resourceManager.cleanArchiveVersions(resource);
+    manager.cleanArchiveVersions(resource);
 
-    assertEquals(resource.getVersionHistory().size(), 6);
+    assertEquals(6, resource.getVersionHistory().size());
     verify(mockDataDir, times(4)).resourceDwcaFile(any(), any());
     verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.3));
     verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.2));
-     verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.1));
+    verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.1));
     verify(mockDataDir, times(1)).resourceDwcaFile(resourceName, BigDecimal.valueOf(2.0));
   }
 }

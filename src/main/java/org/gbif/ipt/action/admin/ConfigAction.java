@@ -22,6 +22,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 
@@ -50,6 +51,7 @@ public class ConfigAction extends POSTAction {
 
   protected ConfigManager configManager;
   private final ResourceManager resourceManager;
+  private final ResourcePublicationManager resourcePublicationManager;
 
   private static final Map<String, String> DEFAULT_LOCALES = new HashMap<>();
 
@@ -89,10 +91,12 @@ public class ConfigAction extends POSTAction {
       AppConfig cfg,
       RegistrationManager registrationManager,
       ConfigManager configManager,
-      ResourceManager resourceManager) {
+      ResourceManager resourceManager,
+      ResourcePublicationManager resourcePublicationManager) {
     super(textProvider, cfg, registrationManager);
     this.configManager = configManager;
     this.resourceManager = resourceManager;
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 
   public String getAnalyticsKey() {
@@ -424,7 +428,7 @@ public class ConfigAction extends POSTAction {
     }
     // update resource IPT URLs
     for (Resource resource : resources) {
-      resourceManager.updateAlternateIdentifierForIPTURLToResource(resource);
+      resourcePublicationManager.updateAlternateIdentifierForIPTURLToResource(resource);
     }
   }
 }

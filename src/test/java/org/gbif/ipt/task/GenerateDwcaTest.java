@@ -55,10 +55,10 @@ import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -143,7 +143,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     creator.setRole(User.Role.Manager);
     creator.setPassword("011235813");
 
-    mockHandler = mock(ResourceManagerImpl.class);
+    mockHandler = mock(ResourcePublicationManagerImpl.class);
 
     File publicationLogFile = new File(resourceDir, DataDir.PUBLICATION_LOG_FILENAME);
 
@@ -526,16 +526,11 @@ public class GenerateDwcaTest extends IptBaseTest {
             extensionManager,
             mockSchemaManager,
             mockRegistryManager,
-            mockDwcaFactory,
-            mock(GenerateDataPackageFactory.class),
-            mock(GenerateDarwinCoreDataPackageFactory.class),
             passwordEncrypter,
-            mockEml2Rtf,
             mockVocabulariesManager,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class),
-            mock(ResourceMetadataInferringService.class));
+            mock(MetadataReader.class));
 
     // create a new resource.
     resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);

@@ -23,12 +23,14 @@ import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
 
 import jakarta.inject.Inject;
+
 import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -49,6 +51,7 @@ public class PublishAllResourcesAction extends BaseAction {
   private static final Logger LOG = LogManager.getLogger(PublishAllResourcesAction.class);
 
   protected ResourceManager resourceManager;
+  protected ResourcePublicationManager resourcePublicationManager;
   protected RegistryManager registryManager;
   private final EmlValidator emlValidator;
   private final DataPackageMetadataValidator dpMetadataValidator;
@@ -64,10 +67,12 @@ public class PublishAllResourcesAction extends BaseAction {
       AppConfig cfg,
       RegistrationManager registrationManager,
       ResourceManager resourceManager,
+      ResourcePublicationManager resourcePublicationManager,
       RegistryManager registryManager,
       DataPackageMetadataValidator dpMetadataValidator) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
+    this.resourcePublicationManager = resourcePublicationManager;
     this.registryManager = registryManager;
     this.dpMetadataValidator = dpMetadataValidator;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
@@ -96,7 +101,7 @@ public class PublishAllResourcesAction extends BaseAction {
       LOG.error(msg);
     }
 
-    resourceManager.clearProcessReports();
+    resourcePublicationManager.clearProcessReports();
     List<Resource> allResources = resourceManager.list();
     List<Resource> resources;
     boolean skipIfNotChanged = false;
@@ -128,7 +133,7 @@ public class PublishAllResourcesAction extends BaseAction {
       // next version number - the version of newly published eml/rtf/archive
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
       try {
-        if (!resourceManager.hasMaxProcessFailures(resource)) {
+        if (!resourcePublicationManager.hasMaxProcessFailures(resource)) {
           boolean isValidMetadata;
 
           if (resource.isDataPackage()) {
@@ -139,7 +144,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
           if (isValidMetadata) {
             // publish a new version of the resource - dwca gets published asynchronously
-            resourceManager.publish(resource, nextVersion, this, skipIfNotChanged);
+            resourcePublicationManager.publish(resource, nextVersion, this, skipIfNotChanged);
           } else {
             // alert user publication failed
             addActionError(getText("publishing.failed",
@@ -159,9 +164,9 @@ public class PublishAllResourcesAction extends BaseAction {
           addActionError(
               getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
-          resourceManager.restoreVersion(resource, nextVersion, this);
+          resourcePublicationManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
-          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+          resourcePublicationManager.getProcessFailures().put(resource.getShortname(), new Date());
         }
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed
@@ -176,7 +181,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
     // wait around for all resources to finish publishing
     // PublishingMonitor thread is running in the background completing asynchronous publishing tasks
-    while (!resourceManager.getProcessFutures().isEmpty()) {
+    while (!resourcePublicationManager.getProcessFutures().isEmpty()) {
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {

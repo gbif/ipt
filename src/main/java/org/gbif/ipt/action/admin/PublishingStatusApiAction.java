@@ -18,6 +18,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.StatusReport;
 
@@ -40,6 +41,7 @@ public class PublishingStatusApiAction extends BaseAction {
   private static final long serialVersionUID = -6781737879827279405L;
 
   private final ResourceManager resourceManager;
+  private final ResourcePublicationManager resourcePublicationManager;
 
   @Getter
   private Date publicationStartedDate;
@@ -52,15 +54,16 @@ public class PublishingStatusApiAction extends BaseAction {
 
   @Inject
   public PublishingStatusApiAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
-                                   ResourceManager resourceManager) {
+                                   ResourceManager resourceManager, ResourcePublicationManager resourcePublicationManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 
   @Override
   public String execute() {
     publicationStartedDate = new Date();
-    Map<String, StatusReport> allReports = resourceManager.getProcessReports();
+    Map<String, StatusReport> allReports = resourcePublicationManager.getProcessReports();
 
     if (r != null) {
       report = allReports.get(r);

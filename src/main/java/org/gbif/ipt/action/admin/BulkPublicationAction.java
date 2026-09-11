@@ -18,9 +18,11 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
+
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class BulkPublicationAction extends BaseAction {
   private static final long serialVersionUID = -8016332755710954222L;
 
   private final ResourceManager resourceManager;
+  private final ResourcePublicationManager resourcePublicationManager;
 
   @Getter
   private List<Resource> resources = new ArrayList<>();
@@ -42,14 +45,16 @@ public class BulkPublicationAction extends BaseAction {
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
-      ResourceManager resourceManager) {
+      ResourceManager resourceManager,
+      ResourcePublicationManager resourcePublicationManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 
   @Override
   public String execute() throws Exception {
-    resourceManager.clearProcessReports();
+    resourcePublicationManager.clearProcessReports();
     resources = resourceManager.list();
 
     return SUCCESS;

@@ -20,6 +20,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.PublicationFailureEmailUtils;
 
@@ -56,6 +57,7 @@ public class PublishingMonitor {
   private static final Logger LOG = LogManager.getLogger(PublishingMonitor.class);
   private AtomicBoolean running;
   private final ResourceManager resourceManager;
+  private final ResourcePublicationManager resourcePublicationManager;
   private final AppConfig cfg;
   private final BaseAction baseAction;
   private final Map<String, LocalDate> lastLoggedSkips = new ConcurrentHashMap<>();
@@ -65,8 +67,10 @@ public class PublishingMonitor {
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
-      ResourceManager resourceManager) {
+      ResourceManager resourceManager,
+      ResourcePublicationManager resourcePublicationManager) {
     this.resourceManager = resourceManager;
+    this.resourcePublicationManager = resourcePublicationManager;
     this.cfg = cfg;
     baseAction = new BaseAction(textProvider, cfg, registrationManager);
   }
@@ -98,19 +102,19 @@ public class PublishingMonitor {
 
   void monitorOnce() {
     // monitor resources that are currently being published or have finished
-    Map<String, Future<Map<String, Integer>>> processFutures = resourceManager.getProcessFutures();
+    Map<String, Future<Map<String, Integer>>> processFutures = resourcePublicationManager.getProcessFutures();
     Set<String> shortNames = new HashSet<>();
     if (!processFutures.isEmpty()) {
       // copy futures into the new set, to avoid concurrent modification exception
       shortNames.addAll(processFutures.keySet());
       // in order for publishing to finish entirely, resourceManager.isLocked() must be called
       for (String shortName : shortNames) {
-        resourceManager.isLocked(shortName, baseAction);
+        resourcePublicationManager.isLocked(shortName, baseAction);
       }
     }
 
     // might as well check if we can handle more publishing jobs
-    ThreadPoolExecutor executor = resourceManager.getExecutor();
+    ThreadPoolExecutor executor = resourcePublicationManager.getExecutor();
     int availableSlots = executor.getMaximumPoolSize() - executor.getActiveCount();
     if (availableSlots > 0) {
       Date now = new Date();
@@ -126,7 +130,7 @@ public class PublishingMonitor {
               // ensure resource isn't already being published
               if (!shortNames.contains(resource.getShortname())) {
                 // ensure resource has not exceeded the maximum number of publication failures
-                if (resourceManager.hasMaxProcessFailures(resource)) {
+                if (resourcePublicationManager.hasMaxProcessFailures(resource)) {
                   // once the limit is reached, only log once per day to avoid flooding the logs every interval
                   if (shouldSkipExcessiveLogging(resource.getShortname(), today)) {
                     LOG.debug("Skipping auto-publication for [{}] since it has exceeded the maximum number of failed publish attempts. " +
@@ -155,7 +159,7 @@ public class PublishingMonitor {
 
                     LOG.debug("Monitor: {} v#{} due to be auto-published: {}",
                         resource.getTitleAndShortname(), nextVersion.toPlainString(), next);
-                    resourceManager.publish(resource, nextVersion, null, options);
+                    resourcePublicationManager.publish(resource, nextVersion, null, options);
                   } catch (PublicationException e) {
                     if (PublicationException.TYPE.LOCKED == e.getType()) {
                       LOG.error("Monitor: {} cannot be auto-published, because it is currently being published",
@@ -165,9 +169,9 @@ public class PublishingMonitor {
                       LOG.error("Publishing version #{} of resource {} failed: {}",
                           nextVersion.toPlainString(), resource.getTitleAndShortname(), e.getMessage());
                       // restore the previous version since publication was unsuccessful
-                      resourceManager.restoreVersion(resource, nextVersion, null);
+                      resourcePublicationManager.restoreVersion(resource, nextVersion, null);
                       // keep track of how many failures on auto publication have happened
-                      resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+                      resourcePublicationManager.getProcessFailures().put(resource.getShortname(), new Date());
                       sendPublicationFailureEmail(resource, nextVersion, e.getMessage());
                     }
                   } catch (InvalidConfigException e) {
@@ -188,7 +192,7 @@ public class PublishingMonitor {
         // ensure resource is due to become public
         if (resource.getMakePublicDate() != null && resource.getMakePublicDate().before(now)) {
           try {
-            resourceManager.visibilityToPublic(resource, null);
+            resourcePublicationManager.visibilityToPublic(resource, null);
           } catch (Exception e) {
             LOG.error("Resource {} failed to go public automatically",
                 resource.getShortname(), e);
@@ -208,7 +212,7 @@ public class PublishingMonitor {
    * @return true if the resource's most recent failure happened within the retry delay window
    */
   private boolean isWithinRetryCooldown(Resource resource, Date now) {
-    ListValuedMap<String, Date> processFailures = resourceManager.getProcessFailures();
+    ListValuedMap<String, Date> processFailures = resourcePublicationManager.getProcessFailures();
     if (processFailures.containsKey(resource.getShortname())) {
       List<Date> failures = processFailures.get(resource.getShortname());
       if (!failures.isEmpty()) {

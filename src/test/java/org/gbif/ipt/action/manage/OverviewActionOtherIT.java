@@ -34,6 +34,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
@@ -175,7 +176,8 @@ public class OverviewActionOtherIT extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
-        mock(DataPackageSchemaManager.class));
+        mock(DataPackageSchemaManager.class),
+        mock(ResourcePublicationManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -249,7 +251,8 @@ public class OverviewActionOtherIT extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
-        mock(DataPackageSchemaManager.class));
+        mock(DataPackageSchemaManager.class),
+        mock(ResourcePublicationManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -322,7 +325,8 @@ public class OverviewActionOtherIT extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
-        mock(DataPackageSchemaManager.class));
+        mock(DataPackageSchemaManager.class),
+        mock(ResourcePublicationManager.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -392,7 +396,8 @@ public class OverviewActionOtherIT extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
-        mock(DataPackageSchemaManager.class));
+        mock(DataPackageSchemaManager.class),
+        mock(ResourcePublicationManager.class));
 
     LOG.info("Testing DataCite with test Prefix...");
     action.setDeleteDoi("true");

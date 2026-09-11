@@ -16,11 +16,12 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.StatusReport;
 
 import jakarta.inject.Inject;
+
 import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class PublishingStatusAction extends BaseAction {
   @Serial
   private static final long serialVersionUID = -3984381818825518246L;
 
-  private final ResourceManager resourceManager;
+  private final ResourcePublicationManager resourcePublicationManager;
 
   @Getter
   private Map<String, StatusReport> runningPublications = new HashMap<>();
@@ -44,14 +45,14 @@ public class PublishingStatusAction extends BaseAction {
   public PublishingStatusAction(SimpleTextProvider textProvider,
                                 AppConfig cfg,
                                 RegistrationManager registrationManager,
-                                ResourceManager resourceManager) {
+                                ResourcePublicationManager resourcePublicationManager) {
     super(textProvider, cfg, registrationManager);
-    this.resourceManager = resourceManager;
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 
   @Override
   public String execute() {
-    Map<String, StatusReport> allReports = resourceManager.getProcessReports();
+    Map<String, StatusReport> allReports = resourcePublicationManager.getProcessReports();
 
     completedPublications = allReports.entrySet().stream()
         .filter(entry -> entry.getValue().isCompleted())

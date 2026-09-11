@@ -21,6 +21,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.Serial;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import org.apache.struts2.dispatcher.Parameter;
 import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.interceptor.AbstractInterceptor;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 
 import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
 
@@ -48,6 +50,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
   private static final Logger LOG = LogManager.getLogger(RequireManagerInterceptor.class);
 
   private ResourceManager resourceManager;
+  private ResourcePublicationManager resourcePublicationManager;
 
   protected static String getResourceParam(ActionInvocation invocation) {
     String requestedResource = null;
@@ -128,7 +131,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
           return BaseAction.NOT_ALLOWED;
         }
         // locked?
-        if (resourceManager.isLocked(requestedResource)) {
+        if (resourcePublicationManager.isLocked(requestedResource)) {
           return BaseAction.LOCKED;
         }
       }
@@ -141,5 +144,10 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
   @Inject
   public void setResourceManager(ResourceManager resourceManager) {
     this.resourceManager = resourceManager;
+  }
+
+  @Inject
+  public void setResourcePublicationManager(ResourcePublicationManager resourcePublicationManager) {
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 }

@@ -57,6 +57,7 @@ import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -354,7 +355,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
-    mockHandler = mock(ResourceManagerImpl.class);
+    mockHandler = mock(ResourcePublicationManagerImpl.class);
     BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
 
     // construct ExtensionFactory using injected parameters
@@ -435,16 +436,11 @@ public class GenerateDwcaEventTest extends IptBaseTest {
             extensionManager,
             mockSchemaManager,
             mockRegistryManager,
-            mockDwcaFactory,
-            mock(GenerateDataPackageFactory.class),
-            mock(GenerateDarwinCoreDataPackageFactory.class),
             passwordEncrypter,
-            mockEml2Rtf,
             mockVocabulariesManager,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class),
-            mock(ResourceMetadataInferringService.class));
+            mock(MetadataReader.class));
 
     // create user
     User creator = new User();

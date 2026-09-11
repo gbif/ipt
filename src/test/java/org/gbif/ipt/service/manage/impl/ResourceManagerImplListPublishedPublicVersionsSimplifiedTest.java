@@ -96,12 +96,6 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
   @Mock
   private RegistryManager registryManager;
   @Mock
-  private GenerateDwcaFactory dwcaFactory;
-  @Mock
-  private GenerateDataPackageFactory dataPackageFactory;
-  @Mock
-  private GenerateDarwinCoreDataPackageFactory dwcDpFactory;
-  @Mock
   private PasswordEncrypter passwordEncrypter;
   @Mock
   private Eml2Rtf eml2Rtf;
@@ -134,10 +128,19 @@ class ResourceManagerImplListPublishedPublicVersionsSimplifiedTest {
     lenient().when(textProvider.getText(any(Locale.class), anyString(), anyString(), anyList()))
         .thenAnswer(invocation -> invocation.getArgument(2));
 
-    resourceManager = new ResourceManagerImpl(cfg, dataDir, resourceConvertersManager, sourceManager,
-        extensionManager, schemaManager, registryManager, dwcaFactory, dataPackageFactory, dwcDpFactory,
-        passwordEncrypter, eml2Rtf, vocabManager, textProvider, registrationManager, metadataReader,
-        resourceMetadataInferringService);
+    resourceManager = new ResourceManagerImpl(
+        cfg,
+        dataDir,
+        resourceConvertersManager,
+        sourceManager,
+        extensionManager,
+        schemaManager,
+        registryManager,
+        passwordEncrypter,
+        vocabManager,
+        textProvider,
+        registrationManager,
+        metadataReader);
   }
 
   private static SimplifiedResource resource(String shortname) {
