@@ -658,18 +658,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     return false;
   }
 
-  // TODO: remove - unused
-  /**
-   * Filter those files with suffixes ending in .xml.
-   */
-  private static class XmlFilenameFilter implements FilenameFilter {
-
-    @Override
-    public boolean accept(File dir, String name) {
-      return name != null && name.toLowerCase().endsWith(".xml");
-    }
-  }
-
   @Override
   public Resource create(String shortname, String type, User creator) throws AlreadyExistingException {
     Objects.requireNonNull(shortname);
