@@ -68,7 +68,7 @@ import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
-import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.ActionValidationResult;
@@ -1830,7 +1830,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           try {
             GenerateDwca worker = dwcaFactory.create(resource, this);
             worker.report();
-            File tmpDir = FileUtils.createTempDir();
+            File tmpDir = IptFileUtils.createTempDir();
             worker.setDwcaFolder(tmpDir);
             Archive archive = new Archive();
             worker.setArchive(archive);

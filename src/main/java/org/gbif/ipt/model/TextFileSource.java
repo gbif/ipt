@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model;
 
-import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
@@ -79,7 +79,7 @@ public class TextFileSource extends SourceBase implements FileSource {
   }
 
   public String formattedFileSize(String locale) {
-    return FileUtils.formatSize(fileSize, 1, locale, false);
+    return IptFileUtils.formatSize(fileSize, 1, locale, false);
   }
 
   @Override

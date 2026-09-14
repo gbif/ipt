@@ -13,7 +13,7 @@
  */
 package org.gbif.ipt.model;
 
-import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
@@ -71,7 +71,7 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   protected Date lastModified;
 
   public String formattedFileSize(String locale) {
-    return FileUtils.formatSize(fileSize, 1, locale, false);
+    return IptFileUtils.formatSize(fileSize, 1, locale, false);
   }
 
   private Workbook openBook() {

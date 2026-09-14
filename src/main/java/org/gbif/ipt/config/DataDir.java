@@ -33,6 +33,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.gbif.ipt.utils.IptFileUtils;
 
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
@@ -157,7 +158,7 @@ public class DataDir {
       throw new InvalidConfigException(TYPE.CONFIG_WRITE,
           "Cannot read required classpath resources to create new data dir!");
     }
-    org.gbif.ipt.utils.FileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
+    IptFileUtils.copyStreamToFile(input, configFile(AppConfig.DATADIR_PROPFILE));
 
     LOG.info("Creating new default data dir");
   }

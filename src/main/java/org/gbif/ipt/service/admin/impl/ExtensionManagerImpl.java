@@ -36,6 +36,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.HttpClient;
 
 import jakarta.inject.Inject;
@@ -434,7 +435,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
    * @return extension file
    */
   private File getExtensionFile(String rowType) {
-    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(rowType, EXTENSION_FILE_SUFFIX);
+    String filename = IptFileUtils.getSuffixedFileName(rowType, EXTENSION_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
@@ -464,7 +465,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   /**
-   * Move and rename temporary file to final version. Update extensions loaded into local lookup.
+   * Move and rename a temporary file to the final version. Update extensions loaded into a local lookup.
    *
    * @param tmpFile   downloaded extension file (in temporary location with temporary filename)
    * @param extension extension being installed
@@ -489,14 +490,14 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
 
 
   /**
-   * Download an extension into temporary file and return it.
+   * Download an extension into a temporary file and return it.
    *
    * @param url URL of extension to download
-   * @return temporary file extension was downloaded to, or null if it failed to be downloaded
+   * @return the temporary file extension was downloaded to, or null if it failed to be downloaded
    */
   private File download(URL url) throws IOException {
     Objects.requireNonNull(url);
-    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(url.toString(), EXTENSION_FILE_SUFFIX);
+    String filename = IptFileUtils.getSuffixedFileName(url.toString(), EXTENSION_FILE_SUFFIX);
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {

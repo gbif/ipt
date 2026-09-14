@@ -29,6 +29,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
@@ -193,7 +194,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
    * @return vocabulary file
    */
   private File getVocabFile(URI uri) {
-    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(uri.toString(), VOCAB_FILE_SUFFIX);
+    String filename = IptFileUtils.getSuffixedFileName(uri.toString(), VOCAB_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + filename);
   }
 
@@ -403,7 +404,7 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       for (Vocabulary v : registryManager.getVocabularies()) {
         if (v.getUriString() != null && v.getUriResolvable() != null) {
           String filename =
-            org.gbif.ipt.utils.FileUtils.getSuffixedFileName(v.getUriResolvable().toString(), VOCAB_FILE_SUFFIX);
+            IptFileUtils.getSuffixedFileName(v.getUriResolvable().toString(), VOCAB_FILE_SUFFIX);
           map.put(filename, v);
         }
       }

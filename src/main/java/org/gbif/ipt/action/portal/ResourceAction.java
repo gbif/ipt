@@ -31,7 +31,7 @@ import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.XSSUtils;
 import org.gbif.metadata.eml.ipt.EmlFactory;
@@ -390,18 +390,18 @@ public class ResourceAction extends PortalBaseAction {
     String name = resource.getShortname();
     File archiveFile = getArchiveFile(resource, version);
     if (archiveFile.exists()) {
-      archiveSizeForVersion = FileUtils.formatSize(archiveFile.length(), 0);
+      archiveSizeForVersion = IptFileUtils.formatSize(archiveFile.length(), 0);
     } else {
       metadataOnly = !resource.isDwcDp();
     }
 
     // determine EML file size
     File emlFile = dataDir.resourceEmlFile(name, version);
-    emlSizeForVersion = FileUtils.formatSize(emlFile.length(), 0);
+    emlSizeForVersion = IptFileUtils.formatSize(emlFile.length(), 0);
 
     // determine RTF file size
     File rtfFile = dataDir.resourceRtfFile(name, version);
-    rtfSizeForVersion = FileUtils.formatSize(rtfFile.length(), 0);
+    rtfSizeForVersion = IptFileUtils.formatSize(rtfFile.length(), 0);
 
     // find record counts for published version
     for (VersionHistory history : resource.getVersionHistory()) {
@@ -478,11 +478,11 @@ public class ResourceAction extends PortalBaseAction {
   public void finishLoadingDetail(@NotNull Resource resource, @NotNull DataPackageMetadata metadata, @NotNull BigDecimal version) {
     String name = resource.getShortname();
     File dataPackageFile = dataDir.resourceDataPackageFile(name, version);
-    dataPackageSizeForVersion = FileUtils.formatSize(dataPackageFile.length(), 0);
+    dataPackageSizeForVersion = IptFileUtils.formatSize(dataPackageFile.length(), 0);
 
     // determine metadata file size
     File metadataFile = dataDir.resourceDatapackageMetadataFile(name, resource.getCoreType(), version);
-    metadataSizeForVersion = FileUtils.formatSize(metadataFile.length(), 0);
+    metadataSizeForVersion = IptFileUtils.formatSize(metadataFile.length(), 0);
 
     // find record counts for the published version
     for (VersionHistory history : resource.getVersionHistory()) {
@@ -497,7 +497,7 @@ public class ResourceAction extends PortalBaseAction {
 
       // determine EML file size
       File emlFile = dataDir.resourceEmlFile(name, version);
-      emlSizeForVersion = FileUtils.formatSize(emlFile.length(), 0);
+      emlSizeForVersion = IptFileUtils.formatSize(emlFile.length(), 0);
     }
   }
 

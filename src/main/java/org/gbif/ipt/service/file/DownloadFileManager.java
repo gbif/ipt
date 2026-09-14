@@ -14,7 +14,7 @@
 package org.gbif.ipt.service.file;
 
 import org.gbif.ipt.model.UrlMetadata;
-import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,7 +38,7 @@ public class DownloadFileManager {
 
   public static boolean isAvailable(String url) {
     try {
-      UrlMetadata urlMetadata = FileUtils.fetchUrlMetadata(url);
+      UrlMetadata urlMetadata = IptFileUtils.fetchUrlMetadata(url);
       return urlMetadata.getStatus() == HttpURLConnection.HTTP_OK;
     } catch (Exception e) {
       LOG.warn("Error getting file information", e);

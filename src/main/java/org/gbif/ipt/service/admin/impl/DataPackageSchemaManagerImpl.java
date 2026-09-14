@@ -29,6 +29,7 @@ import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
@@ -253,7 +254,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   public synchronized void install(DataPackageSchema dataPackageSchema) throws InvalidConfigException {
     Objects.requireNonNull(dataPackageSchema);
     try {
-      String filename = org.gbif.ipt.utils.FileUtils
+      String filename = IptFileUtils
           .getSuffixedFileName("_" + dataPackageSchema.getIdentifier().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
       File tmpFileSchema = dataDir.tmpFile(filename);
       String dataPackageFileRawContent = "Failed to read the data package schema file";
@@ -346,7 +347,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
               for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
                 // TODO: 02/03/2023 HTTP vs HTTPS concerns
-                String filename = org.gbif.ipt.utils.FileUtils
+                String filename = IptFileUtils
                     .getSuffixedFileName(tableSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
                 File tableSchemaFile = getTableSchemaConfigFileByName(files, filename);
                 tableSchemas.add(loadTableSchemaFromFile(tableSchemaFile));
@@ -493,7 +494,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    */
   private File download(URL url) throws IOException {
     Objects.requireNonNull(url);
-    String filename = org.gbif.ipt.utils.FileUtils
+    String filename = IptFileUtils
         .getSuffixedFileName(url.toString().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
     File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
@@ -649,7 +650,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    * @return data schema file
    */
   private File getTableSchemaFile(String schemaIdentifier, String schemaName, String tableSchemaName) {
-    String filename = org.gbif.ipt.utils.FileUtils.getSuffixedFileName(schemaIdentifier + "_" + tableSchemaName, DATA_SCHEMA_FILE_SUFFIX);
+    String filename = IptFileUtils.getSuffixedFileName(schemaIdentifier + "_" + tableSchemaName, DATA_SCHEMA_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + filename);
   }
 
@@ -662,7 +663,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    * @return data schema file
    */
   private File getDataSchema(String schemaIdentifier, String schemaName) {
-    String filename = "_" + org.gbif.ipt.utils.FileUtils.getSuffixedFileName(schemaIdentifier, DATA_SCHEMA_FILE_SUFFIX);
+    String filename = "_" + IptFileUtils.getSuffixedFileName(schemaIdentifier, DATA_SCHEMA_FILE_SUFFIX);
     return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + filename);
   }
 

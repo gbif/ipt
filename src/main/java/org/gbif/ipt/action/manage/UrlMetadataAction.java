@@ -14,7 +14,7 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.model.UrlMetadata;
-import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 
 import java.io.IOException;
 import java.io.Serial;
@@ -59,7 +59,7 @@ public class UrlMetadataAction extends ActionSupport {
     }
 
     try {
-      UrlMetadata urlMetadata = FileUtils.fetchUrlMetadata(url);
+      UrlMetadata urlMetadata = IptFileUtils.fetchUrlMetadata(url);
 
       String json = String.format(
           JSON_RESPONSE,

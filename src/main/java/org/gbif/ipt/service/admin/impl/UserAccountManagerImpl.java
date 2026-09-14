@@ -24,7 +24,7 @@ import org.gbif.ipt.service.DeletionNotAllowedException.Reason;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.PBEEncrypt;
 
 import jakarta.inject.Inject;
@@ -226,7 +226,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   @Override
   public void load() throws InvalidConfigException {
     try (ObjectInputStream in = xstream.createObjectInputStream(
-        FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE)))) {
+        IptFileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE)))) {
       users.clear();
       while (true) {
         try {
@@ -282,7 +282,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all {} user accounts...", users.size());
-    try (Writer userWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
+    try (Writer userWriter = IptFileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE));
          ObjectOutputStream out = xstream.createObjectOutputStream(userWriter, "users")) {
       for (Entry<String, User> entry : users.entrySet()) {
         out.writeObject(entry.getValue());

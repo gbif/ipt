@@ -35,7 +35,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 
 import java.io.EOFException;
 import java.io.File;
@@ -318,7 +318,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Override
   public void load() throws InvalidConfigException {
-    try (Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
+    try (Reader registrationReader = IptFileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
          ObjectInputStream in = xstreamV2.createObjectInputStream(registrationReader)) {
       registration.getAssociatedOrganisations().clear();
 
@@ -367,7 +367,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   @Override
   public Organisation getFromDisk(String key) {
     SortedMap<String, Organisation> associatedOrganisations = new TreeMap<>();
-    try (Reader registrationReader = FileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
+    try (Reader registrationReader = IptFileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
          ObjectInputStream in = xstreamV2.createObjectInputStream(registrationReader)) {
 
       in.readObject(); // skip over Registration block
@@ -395,8 +395,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   public void encryptRegistration() throws InvalidConfigException {
     File registrationV1 = dataDir.configFile(PERSISTENCE_FILE_V1);
     if (registrationV1.exists()) {
-      try (Reader registrationReader = FileUtils.getUtf8Reader(registrationV1);
-        ObjectInputStream in = xstreamV1.createObjectInputStream(registrationReader)) {
+      try (Reader registrationReader = IptFileUtils.getUtf8Reader(registrationV1);
+           ObjectInputStream in = xstreamV1.createObjectInputStream(registrationReader)) {
         registration.getAssociatedOrganisations().clear();
 
         try {
@@ -561,7 +561,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   @Override
   public synchronized void save() throws IOException {
     LOG.debug("Saving all user organisations associated to this IPT...");
-    Writer organisationWriter = FileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE_V2));
+    Writer organisationWriter = IptFileUtils.startNewUtf8File(dataDir.configFile(PERSISTENCE_FILE_V2));
     ObjectOutputStream out = xstreamV2.createObjectOutputStream(organisationWriter, "registration");
     out.writeObject(registration);
     for (Organisation organisation : registration.getAssociatedOrganisations().values()) {

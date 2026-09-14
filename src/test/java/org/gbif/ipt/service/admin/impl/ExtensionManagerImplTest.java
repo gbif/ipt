@@ -36,6 +36,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
@@ -116,7 +117,7 @@ public class ExtensionManagerImplTest extends IptBaseTest {
 
     ExtensionsHolder mockExtensionsHolder = new ExtensionsHolder();
 
-    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
+    File myTmpDir = IptFileUtils.createTempDir();
     assertTrue(myTmpDir.isDirectory());
 
     // copy occurrence core extension file to temporary directory
@@ -239,7 +240,7 @@ public class ExtensionManagerImplTest extends IptBaseTest {
    */
   @Test
   public void testInstallCoreTypesBadCoreConfiguration() throws Exception {
-    File tmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
+    File tmpDir = IptFileUtils.createTempDir();
     File dataDirLocation = new File(tmpDir, "datadir.location");
     File testDataDir = FileUtils.getClasspathFile("dataDir");
     org.apache.commons.io.FileUtils.copyDirectoryToDirectory(testDataDir, tmpDir); // copy testDataDir to tmp location
@@ -305,7 +306,7 @@ public class ExtensionManagerImplTest extends IptBaseTest {
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
           mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
           mock(RegistrationManager.class), mock(RegistryManager.class), mock(ExtensionsHolder.class));
-    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
+    File myTmpDir = IptFileUtils.createTempDir();
 
     // load current (installed) version of Occurrence extension
     File occCore = FileUtils.getClasspathFile("extensions/dwc_occurrence.xml");
@@ -409,7 +410,7 @@ public class ExtensionManagerImplTest extends IptBaseTest {
       new ExtensionManagerImpl(mock(AppConfig.class), mock(DataDir.class), extensionFactory,
         mock(HttpClient.class), mock(ConfigWarnings.class), mock(SimpleTextProvider.class),
         mock(RegistrationManager.class), mock(RegistryManager.class), mock(ExtensionsHolder.class));
-    File myTmpDir = org.gbif.ipt.utils.FileUtils.createTempDir();
+    File myTmpDir = IptFileUtils.createTempDir();
 
     // load Occurrence extension
     File occ = FileUtils.getClasspathFile("extensions/dwc_occurrence.xml");

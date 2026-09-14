@@ -37,6 +37,7 @@ import org.gbif.ipt.service.file.DataFile;
 import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.ResourceUpdateListener;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -454,7 +455,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     src.setResource(resource);
 
     try {
-      UrlMetadata urlMetadata = org.gbif.ipt.utils.FileUtils.fetchUrlMetadata(url.toString());
+      UrlMetadata urlMetadata = IptFileUtils.fetchUrlMetadata(url.toString());
       src.setFileSize(urlMetadata.getContentLength());
     } catch (IOException e) {
       LOG.error("Failed to read URL metadata from {}: {}", url.toString(), e.getMessage());

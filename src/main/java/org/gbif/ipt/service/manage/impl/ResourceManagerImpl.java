@@ -95,6 +95,7 @@ import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.EmlUtils;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
@@ -160,7 +161,7 @@ import static org.gbif.ipt.config.Constants.EML_2_2_0_SCHEMA;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
-import static org.gbif.ipt.utils.FileUtils.getFileExtension;
+import static org.gbif.ipt.utils.IptFileUtils.getFileExtension;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceManagerImpl extends BaseManager implements ResourceManager {
@@ -2172,7 +2173,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       // make sure resource dir exists
       FileUtils.forceMkdir(cfgFile.getParentFile());
       // persist data
-      try (Writer writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile)) {
+      try (Writer writer = IptFileUtils.startNewUtf8File(cfgFile)) {
         xstream.toXML(resource, writer);
         // add to internal map
         addResource(resource);
@@ -2194,7 +2195,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       // make sure resource dir exists
       FileUtils.forceMkdir(cfgFile.getParentFile());
       // persist data
-      writer = org.gbif.ipt.utils.FileUtils.startNewUtf8File(cfgFile);
+      writer = IptFileUtils.startNewUtf8File(cfgFile);
       xstream.toXML(resource.getInferredMetadata(), writer);
     } catch (IOException e) {
       LOG.error(e);

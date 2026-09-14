@@ -26,6 +26,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
@@ -66,7 +67,7 @@ public class VocabulariesManagerImplTest extends IptBaseTest {
 
   @BeforeAll
   public static void beforeClassSetup() {
-    TMP_DIR = org.gbif.ipt.utils.FileUtils.createTempDir();
+    TMP_DIR = IptFileUtils.createTempDir();
   }
 
   @BeforeEach

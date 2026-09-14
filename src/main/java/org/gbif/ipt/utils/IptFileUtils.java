@@ -40,18 +40,19 @@ import org.apache.commons.lang3.LocaleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FileUtils {
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PRIVATE;
+
+@NoArgsConstructor(access = PRIVATE)
+public class IptFileUtils {
 
   public static final String UTF8 = "UTF8";
 
-  private static final Logger LOG = LogManager.getLogger(FileUtils.class);
+  private static final Logger LOG = LogManager.getLogger(IptFileUtils.class);
 
   private static final int BUFFER_SIZE = 8192;
   private static final int TEMP_DIR_ATTEMPTS = 10000;
-
-  private FileUtils() {
-    // private constructor.
-  }
 
   public static void copyStreams(InputStream in, OutputStream out) throws IOException {
     // write the file to the file specified
