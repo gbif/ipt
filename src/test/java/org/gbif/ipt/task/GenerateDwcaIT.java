@@ -23,7 +23,6 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.IPTModule;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.mock.MockAppConfig;
@@ -53,15 +52,12 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
-import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
-import org.gbif.ipt.service.manage.ResourcePublicationManager;
+import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
-import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
@@ -107,7 +103,7 @@ public class GenerateDwcaIT extends IptBaseTest {
   private ReportHandler mockHandler = mock(ResourcePublicationManagerImpl.class);
   private DataDir mockDataDir = MockDataDir.buildMock();
   private AppConfig mockAppConfig = MockAppConfig.buildMock();
-  private SourceManager mockSourceManager;
+  private SourceManager mockSourceManager = mock(SourceManager.class);
   private static VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
   private File tmpDataDir;
   private File resourceDir;
@@ -307,9 +303,6 @@ public class GenerateDwcaIT extends IptBaseTest {
     // mock finding dwca.zip file that does not exist
     when(mockDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
-    // create SourceManagerImpl
-    mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir, mock(FileStoreManager.class));
-
     // archival mode on
     when(mockAppConfig.isArchivalMode()).thenReturn(true);
 
@@ -324,7 +317,6 @@ public class GenerateDwcaIT extends IptBaseTest {
             mockAppConfig,
             mockDataDir,
             mockResourceConvertersManager,
-            mockSourceManager,
             extensionManager,
             mockSchemaManager,
             mockRegistryManager,
@@ -332,7 +324,8 @@ public class GenerateDwcaIT extends IptBaseTest {
             mockVocabulariesManager,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class));
+            mock(MetadataReader.class),
+            mock(ResourceImportService.class));
 
     // create a new resource.
     // create user

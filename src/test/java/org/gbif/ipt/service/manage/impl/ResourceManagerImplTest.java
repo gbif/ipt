@@ -64,6 +64,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -85,9 +86,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-
 import javax.xml.parsers.SAXParserFactory;
+import jakarta.inject.Provider;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AssertionFailureBuilder;
@@ -119,10 +121,8 @@ public class ResourceManagerImplTest extends IptBaseTest {
   private final UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
   private final RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
   private final OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
-  private final JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
   private final SourceManager mockSourceManager = mock(SourceManager.class);
   private final RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
-  private final PasswordEncrypter mockPasswordEncrypter = mock(PasswordEncrypter.class);
   private final VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
   private final SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
 
@@ -130,9 +130,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
   private final BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
 
   private User creator;
-  private Resource resource;
-  private Ipt ipt;
-  private Organisation organisation;
   private JdbcSupport support;
 
   @TempDir
@@ -155,17 +152,17 @@ public class ResourceManagerImplTest extends IptBaseTest {
     creator.setRole(Role.Manager);
     creator.setPassword("011235813");
 
-    resource = new Resource();
+    Resource resource = new Resource();
     resource.setShortname(RESOURCE_SHORTNAME);
 
     // tmp directory
     when(mockedDataDir.tmpDir()).thenReturn(tmpDataDir);
 
-    organisation = new Organisation();
+    Organisation organisation = new Organisation();
     organisation.setKey("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
     organisation.setName("Academy of Natural Sciences");
 
-    ipt = new Ipt();
+    Ipt ipt = new Ipt();
     ipt.setKey("27c24cba-13c5-47d1-96a1-16abd8f11437");
     ipt.setName("Test IPT");
   }
@@ -190,9 +187,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // mock resource link used as EML GUID
     when(mockAppConfig.getResourceGuid("bees")).thenReturn("http://localhost:7001/ipt/resource?id=bees");
     when(mockAppConfig.getResourceGuid("res2")).thenReturn("http://localhost:7001/ipt/resource?id=res2");
-//    // mock
-//    when(mockAppConfig.getDataDir().resourceEmlFile("res2", any(BigDecimal.class)))
-//        .thenReturn(FileUtils.getClasspathFile("resources/res2/eml.xml"));
 
     // construct ExtensionFactory using injected parameters
     HttpClient httpClient = TestBeanProvider.provideHttpClient();
@@ -242,18 +236,37 @@ public class ResourceManagerImplTest extends IptBaseTest {
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
-        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+        mockEmailConverter,
+        mockOrganisationKeyConverter,
+        mock(ExtensionMappingConverter.class),
+        extensionRowTypeConverter,
+        conceptTermConverter,
+        mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class),
+        mock(DataPackageFieldConverter.class),
+        jdbcConverter);
+
+    // a reference to the resource manager, the manager is created in the end
+    AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
+
+    Provider<ResourceManager> resourceManagerProvider = mock(Provider.class);
+    when(resourceManagerProvider.get()).thenAnswer(invocation -> resourceManagerRef.get());
+
+    ResourceImportService mockResourceImportService = new ResourceImportServiceImpl(
+        mockedDataDir,
+        mockSourceManager,
+        extensionManager,
+        mockSchemaManager,
+        mock(MetadataReader.class),
+        resourceManagerProvider);
 
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
-    return new ResourceManagerImpl(
+    ResourceManagerImpl resourceManager = new ResourceManagerImpl(
         mockAppConfig,
         mockedDataDir,
         mockResourceConvertersManager,
-        mockSourceManager,
         extensionManager,
         mockSchemaManager,
         mockRegistryManager,
@@ -261,11 +274,16 @@ public class ResourceManagerImplTest extends IptBaseTest {
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(MetadataReader.class));
+        mock(MetadataReader.class),
+        mockResourceImportService);
+
+    resourceManagerRef.set(resourceManager);
+
+    return resourceManager;
   }
 
   /**
-   * test resource creation from zipped resource folder.
+   * test resource creation from a zipped resource folder.
    */
   @Test
   public void testCreateFromZippedFile() throws Exception {
@@ -457,7 +475,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * test resource creation from single DwC-A gzipped file.
+   * test resource creation from a single DwC-A gzipped file.
    */
   @Test
   public void testCreateFromSingleGzipFile() throws Exception {
@@ -1413,32 +1431,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // creator populated
     assertNotNull(loaded.getCreator());
     assertEquals(creator, loaded.getCreator());
-  }
-
-  @Test
-  public void testDeleteDirectoryContainingSingleFile() throws Exception {
-    // mock resource directory with single file
-    File resourceDir = FileUtils.createTempDir();
-    assertTrue(resourceDir.isDirectory());
-    File emlFile = new File(resourceDir, "eml.xml");
-    assertTrue(emlFile.createNewFile());
-    getResourceManagerImpl().deleteDirectoryContainingSingleFile(emlFile);
-    // ensure method deleted resource directory and its file
-    assertFalse(resourceDir.exists());
-    assertFalse(emlFile.exists());
-
-    // mock another resource directory with two files
-    resourceDir = FileUtils.createTempDir();
-    assertTrue(resourceDir.isDirectory());
-    emlFile = new File(resourceDir, "eml.xml");
-    assertTrue(emlFile.createNewFile());
-    File metaFile = new File(resourceDir, "meta.xml");
-    assertTrue(metaFile.createNewFile());
-    getResourceManagerImpl().deleteDirectoryContainingSingleFile(emlFile);
-    // ensure method didn't delete resource directory and its files
-    assertTrue(resourceDir.exists());
-    assertTrue(emlFile.exists());
-    assertTrue(metaFile.exists());
   }
 
   /**

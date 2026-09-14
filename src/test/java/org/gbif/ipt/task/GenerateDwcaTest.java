@@ -55,8 +55,11 @@ import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceImportService;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
+import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
@@ -67,6 +70,8 @@ import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.inject.Provider;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,9 +79,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import jakarta.validation.constraints.NotNull;
-
+import java.util.concurrent.atomic.AtomicReference;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -102,10 +105,10 @@ public class GenerateDwcaTest extends IptBaseTest {
   private Resource resource;
   private User creator;
   private ReportHandler mockHandler;
-  private DataDir mockDataDir = MockDataDir.buildMock();
-  private AppConfig mockAppConfig = MockAppConfig.buildMock();
+  private final DataDir mockDataDir = MockDataDir.buildMock();
+  private final AppConfig mockAppConfig = MockAppConfig.buildMock();
   private SourceManager mockSourceManager;
-  private VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
+  private final VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
   @TempDir
   private File tmpDataDir;
   @TempDir
@@ -447,8 +450,6 @@ public class GenerateDwcaTest extends IptBaseTest {
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
-    GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-    Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
@@ -516,13 +517,25 @@ public class GenerateDwcaTest extends IptBaseTest {
         conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
-    // create ResourceManagerImpl
+    // a reference to the resource manager, the manager is created in the end
+    AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
+
+    Provider<ResourceManager> resourceManagerProvider = mock(Provider.class);
+    when(resourceManagerProvider.get()).thenAnswer(invocation -> resourceManagerRef.get());
+
+    ResourceImportService mockResourceImportService = new ResourceImportServiceImpl(
+        mockDataDir,
+        mockSourceManager,
+        extensionManager,
+        mockSchemaManager,
+        mock(MetadataReader.class),
+        resourceManagerProvider);
+
     ResourceManagerImpl resourceManager =
         new ResourceManagerImpl(
             mockAppConfig,
             mockDataDir,
             mockResourceConvertersManager,
-            mockSourceManager,
             extensionManager,
             mockSchemaManager,
             mockRegistryManager,
@@ -530,7 +543,10 @@ public class GenerateDwcaTest extends IptBaseTest {
             mockVocabulariesManager,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class));
+            mock(MetadataReader.class),
+            mockResourceImportService);
+
+    resourceManagerRef.set(resourceManager);
 
     // create a new resource.
     resource = resourceManager.create(RESOURCE_SHORTNAME, null, zippedResourceFolder, creator, baseAction);
@@ -721,7 +737,7 @@ public class GenerateDwcaTest extends IptBaseTest {
     String tabRow = generateDwca.tabRow(elements);
     assertEquals("1\thumanObservation\tPanthera tigris\n", tabRow);
 
-    // with line breaking characters replaced with empty space
+    // with line-breaking characters replaced with empty space
     elements = new String[]{"OBS\t1", "human\rObservation", "Panthera ti\ngris"};
     tabRow = generateDwca.tabRow(elements);
     assertEquals("OBS 1\thuman Observation\tPanthera ti gris\n", tabRow);

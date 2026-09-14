@@ -55,6 +55,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
@@ -83,6 +84,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
+import jakarta.inject.Provider;
 
 import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
@@ -833,18 +836,37 @@ public class ResourcePublicationManagerImplTest {
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mock(UserEmailConverter.class), mock(OrganisationKeyConverter.class), mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
-        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+        mock(UserEmailConverter.class),
+        mock(OrganisationKeyConverter.class),
+        mock(ExtensionMappingConverter.class),
+        extensionRowTypeConverter,
+        conceptTermConverter,
+        mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class),
+        mock(DataPackageFieldConverter.class),
+        jdbcConverter);
+
+    // a reference to the resource manager, the manager is created in the end
+    AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
+
+    Provider<ResourceManager> resourceManagerProvider = mock(Provider.class);
+    when(resourceManagerProvider.get()).thenAnswer(invocation -> resourceManagerRef.get());
+
+    ResourceImportService mockResourceImportService = new ResourceImportServiceImpl(
+        mockedDataDir,
+        mock(SourceManager.class),
+        extensionManager,
+        mockSchemaManager,
+        mock(MetadataReader.class),
+        resourceManagerProvider);
 
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
-    return new ResourceManagerImpl(
+    ResourceManagerImpl resourceManager = new ResourceManagerImpl(
         mockAppConfig,
         mockedDataDir,
         mockResourceConvertersManager,
-        mock(SourceManager.class),
         extensionManager,
         mockSchemaManager,
         mockRegistryManager,
@@ -852,7 +874,12 @@ public class ResourcePublicationManagerImplTest {
         mock(VocabulariesManager.class),
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(MetadataReader.class));
+        mock(MetadataReader.class),
+        mockResourceImportService);
+
+    resourceManagerRef.set(resourceManager);
+
+    return resourceManager;
   }
 
   /**

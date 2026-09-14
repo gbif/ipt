@@ -26,7 +26,6 @@ import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
-import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
@@ -54,10 +53,10 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
-import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImplTest;
@@ -114,7 +113,6 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
   private final UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
   private final RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
   private final OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
-  private final SourceManager mockSourceManager = mock(SourceManager.class);
   private final RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
   private final GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
   private final Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
@@ -310,7 +308,6 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mockAppConfig,
         mockedDataDir,
         mockResourceConvertersManager,
-        mockSourceManager,
         extensionManager,
         mockSchemaManager,
         mockRegistryManager,
@@ -318,7 +315,8 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(MetadataReader.class));
+        mock(MetadataReader.class),
+        mock(ResourceImportService.class));
   }
 
   public ResourcePublicationManager getResourcePublicationManagerImpl() throws Exception {

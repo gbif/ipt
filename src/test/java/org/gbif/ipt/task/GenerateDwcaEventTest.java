@@ -53,7 +53,7 @@ import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
+import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
@@ -99,14 +99,14 @@ public class GenerateDwcaEventTest extends IptBaseTest {
   private static final String VERSIONED_ARCHIVE_FILENAME = "dwca-2.0.zip";
 
   private GenerateDwca generateDwca;
-  private AppConfig mockAppConfig = MockAppConfig.buildMock();
-  private DataDir mockDataDir = MockDataDir.buildMock();
+  private final AppConfig mockAppConfig = MockAppConfig.buildMock();
+  private final DataDir mockDataDir = MockDataDir.buildMock();
   private SourceManager mockSourceManager;
   private Resource resource;
   @TempDir
   private File resourceDir;
   private ReportHandler mockHandler;
-  private VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
+  private final VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
 
   @BeforeEach
   public void init() {
@@ -224,8 +224,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     boolean foundWarningAboutEmptyLine = false;
     // since occurrenceId isn't mapped in occurrence extension, there should be a warning message!
     boolean foundWarningAboutUnmappedOccurrenceId = false;
-    for (Iterator<TaskMessage> iter = generateDwca.report().getMessages().iterator(); iter.hasNext(); ) {
-      TaskMessage msg = iter.next();
+    for (TaskMessage msg : generateDwca.report().getMessages()) {
       if (msg.getMessage().startsWith("2 line(s) use ambiguous basisOfRecord")) {
         foundWarningAboutAmbiguousBOR = true;
       } else if (msg.getMessage().startsWith("1 empty line(s) skipped")) {
@@ -351,8 +350,6 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
-    GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-    Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     mockHandler = mock(ResourcePublicationManagerImpl.class);
@@ -432,7 +429,6 @@ public class GenerateDwcaEventTest extends IptBaseTest {
             mockAppConfig,
             mockDataDir,
             mockResourceConvertersManager,
-            mockSourceManager,
             extensionManager,
             mockSchemaManager,
             mockRegistryManager,
@@ -440,7 +436,8 @@ public class GenerateDwcaEventTest extends IptBaseTest {
             mockVocabulariesManager,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class));
+            mock(MetadataReader.class),
+            mock(ResourceImportService.class));
 
     // create user
     User creator = new User();

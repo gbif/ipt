@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 public class MockRegistryManager {
 
-  private static RegistryManager registryManager = mock(RegistryManager.class);
+  private static final RegistryManager registryManager = mock(RegistryManager.class);
 
   public static RegistryManager buildMock() {
     setupMock();
@@ -32,7 +32,7 @@ public class MockRegistryManager {
   }
 
   /**
-   * Method stub which simulate the original one: org.gbif.ipt.service.registry.impl.RegistryManager.getVocabularies().
+   * Method stub that simulates the original one: org.gbif.ipt.service.registry.impl.RegistryManager.getVocabularies().
    *
    * @return A simulated vocabulary list.
    */

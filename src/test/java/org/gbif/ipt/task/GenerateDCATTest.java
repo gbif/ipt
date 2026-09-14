@@ -46,14 +46,11 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
-import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
-import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
-import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.model.Agent;
@@ -289,9 +286,6 @@ public class GenerateDCATTest extends IptBaseTest {
     // mock finding dwca.zip file that does not exist
     when(mockDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
-    // create SourceManagerImpl
-    SourceManager mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir, mock(FileStoreManager.class));
-
     // create temp directory
     File tmpDataDir = FileUtils.createTempDir();
     when(mockDataDir.tmpDir()).thenReturn(tmpDataDir);
@@ -307,7 +301,6 @@ public class GenerateDCATTest extends IptBaseTest {
             mockAppConfig,
             mockDataDir,
             mockResourceConvertersManager,
-            mockSourceManager,
             extensionManager,
             mockSchemaManager,
             mockRegistryManager,
@@ -315,7 +308,8 @@ public class GenerateDCATTest extends IptBaseTest {
             mockVocabulariesManager,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class));
+            mock(MetadataReader.class),
+            mock(ResourceImportService.class));
 
     // creator
     User creator = new User();

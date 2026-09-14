@@ -29,28 +29,13 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
-import org.gbif.ipt.model.converter.ConceptTermConverter;
-import org.gbif.ipt.model.converter.DataPackageFieldConverter;
-import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionMappingConverter;
-import org.gbif.ipt.model.converter.TableSchemaNameConverter;
-import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
-import org.gbif.ipt.model.converter.JdbcInfoConverter;
-import org.gbif.ipt.model.converter.OrganisationKeyConverter;
-import org.gbif.ipt.model.converter.PasswordEncrypter;
-import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.service.admin.DataPackageSchemaManager;
-import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
-import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
@@ -66,7 +51,6 @@ import org.gbif.utils.file.properties.PropertiesUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -95,7 +79,7 @@ import static org.mockito.Mockito.when;
 public class ResourceManagerImplIT extends IptBaseTest {
 
   private static final Logger LOG = LogManager.getLogger(ResourceManagerImplIT.class);
-  private static DataDir MOCK_DATA_DIR = mock(DataDir.class);
+  private static final DataDir MOCK_DATA_DIR = mock(DataDir.class);
   private static File TMP_EML_FILE;
 
   private Resource resource;
@@ -104,27 +88,17 @@ public class ResourceManagerImplIT extends IptBaseTest {
     // Mock classes
     AppConfig mockAppConfig = mock(AppConfig.class);
 
-    // mock returning resource URI in gbif-uat belong
+    // mock returning resource URI in gbif-uat belonged
     when(mockAppConfig.getResourceUri(anyString()))
         .thenReturn(URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants"));
     when(mockAppConfig.getResourceVersionUri("ants", new BigDecimal("1.1")))
         .thenReturn(URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants&v=1.1"));
     when(mockAppConfig.getMaxThreads()).thenReturn(3);
 
-    UserAccountManager mockUserAccountManager = mock(UserAccountManager.class);
-    UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
-    ExtensionRowTypeConverter mockExtensionRowTypeConverter = mock(ExtensionRowTypeConverter.class);
-    ExtensionManager mockExtensionManager = mock(ExtensionManager.class);
-    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
-    JdbcInfoConverter mockJdbcConverter = mock(JdbcInfoConverter.class);
-    SourceManager mockSourceManager = mock(SourceManager.class);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
     GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-    PasswordEncrypter mockPasswordEncrypter = mock(PasswordEncrypter.class);
     Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
-    VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
-    ConceptTermConverter mockConceptTermConverter = mock(ConceptTermConverter.class);
 
     // persist eml file for version 1.0 (contents written later)
     TMP_EML_FILE = File.createTempFile("eml-1.0", ".xml");
@@ -158,11 +132,6 @@ public class ResourceManagerImplIT extends IptBaseTest {
     DoiService dataCiteService = new RestJsonApiDataCiteService(cfg.getBaseApiUrl(), cfg.getUser(), cfg.getPassword());
     when(mockRegistrationManagerDataCite.getDoiService()).thenReturn(dataCiteService);
 
-    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, new OrganisationKeyConverter(mockRegistrationManagerDataCite), mock(ExtensionMappingConverter.class), mockExtensionRowTypeConverter,
-        mockConceptTermConverter, mock(DataPackageIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), mockJdbcConverter);
-
     // mock ResourceManagerImpl for DataCite
     ResourcePublicationManager managerDataCite = new ResourcePublicationManagerImpl(
         mockAppConfig,
@@ -178,7 +147,11 @@ public class ResourceManagerImplIT extends IptBaseTest {
         mock(ResourceMetadataInferringService.class));
 
     return Stream.of(
-        Arguments.of(managerDataCite, DOIRegistrationAgency.DATACITE, DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX), mockRegistrationManagerDataCite)
+        Arguments.of(
+            managerDataCite,
+            DOIRegistrationAgency.DATACITE,
+            DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX),
+            mockRegistrationManagerDataCite)
     );
   }
 
@@ -225,7 +198,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
    * </br>
    * Then test updating the DOI with a new version number.
    * </br>
-   * Lastly test replacing this DOI with a new DOI, by reserving and registering a new DOI for the resource. The
+   * Lastly, test replacing this DOI with a new DOI, by reserving and registering a new DOI for the resource. The
    * replaced DOI should still be registered, but its metadata should reflect the fact it has been replaced by the new
    * version, and its target URI should point to that version of the resource.
    */
@@ -235,7 +208,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
                                       DOIRegistrationAgency type,
                                       DOI doi,
                                       RegistrationManager registrationManager) throws Exception {
-    LOG.info("Testing " + type + "...");
+    LOG.info("Testing {}...", type);
     String expectedDataciteUrl = URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants").toString();
     String expectedDataciteUrl1_1 = URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants&v=1.1").toString();
 
@@ -259,7 +232,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
     // register DOI
     manager.doRegisterDoi(resource, null);
     assertEquals(IdentifierStatus.PUBLIC, resource.getIdentifierStatus());
-    LOG.info("DOI was registered successfully, DOI=" + doi.getDoiName());
+    LOG.info("DOI was registered successfully, DOI={}", doi.getDoiName());
 
     // check DOI was registered, and its target is correct
     doiData = registrationManager.getDoiService().resolve(doi);
@@ -290,7 +263,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
     assertEquals("1.1", resource.getEmlVersion().toPlainString());
     assertEquals("1.0", resource.getReplacedMetadataVersion().toPlainString());
     manager.doUpdateDoi(resource);
-    LOG.info("DOI was updated successfully, DOI=" + doi.getDoiName());
+    LOG.info("DOI was updated successfully, DOI={}", doi.getDoiName());
 
     // check DOI remains registered, and its target is the same
     doiData = registrationManager.getDoiService().resolve(doi);
@@ -355,7 +328,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
     }
   }
 
-  private String decodeUrl(String url) throws UnsupportedEncodingException {
+  private String decodeUrl(String url) {
     return URLDecoder.decode(url, StandardCharsets.UTF_8);
   }
 }

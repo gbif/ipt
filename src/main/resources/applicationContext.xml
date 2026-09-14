@@ -202,7 +202,6 @@
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="dataDir"/>
     <constructor-arg ref="resourceConverterManager"/>
-    <constructor-arg ref="sourceManager"/>
     <constructor-arg ref="extensionManager"/>
     <constructor-arg ref="dataPackageSchemaManager"/>
     <constructor-arg ref="registryManager"/>
@@ -211,6 +210,7 @@
     <constructor-arg ref="simpleTextProvider"/>
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="metadataReader"/>
+    <constructor-arg ref="resourceImportService"/>
   </bean>
 
   <bean id="resourcePublicationManager" class="org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl">
@@ -233,6 +233,20 @@
     <constructor-arg ref="resourceManager"/>
     <constructor-arg ref="vocabulariesManager"/>
     <constructor-arg ref="dataPackageSchemaManager"/>
+  </bean>
+
+  <bean id="resourceManagerProvider"
+        class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
+    <property name="targetBeanName" value="resourceManager"/>
+  </bean>
+
+  <bean id="resourceImportService" class="org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="vocabulariesManager"/>
+    <constructor-arg ref="dataPackageSchemaManager"/>
+    <constructor-arg ref="resourceManagerProvider"/>
   </bean>
 
   <bean id="vocabulariesManager" class="org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl">

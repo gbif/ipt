@@ -40,17 +40,19 @@ import org.apache.commons.lang3.LocaleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import static lombok.AccessLevel.PRIVATE;
-
-@NoArgsConstructor(access = PRIVATE)
+/**
+ * Renamed to {@code IptFileUtils} to avoid confusiong with {@code org.gbif.utils.file.FileUtils} and
+ * {@code org.apache.commons.io.FileUtils}
+ */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class IptFileUtils {
-
-  public static final String UTF8 = "UTF8";
 
   private static final Logger LOG = LogManager.getLogger(IptFileUtils.class);
 
+  public static final String UTF8 = "UTF8";
   private static final int BUFFER_SIZE = 8192;
   private static final int TEMP_DIR_ATTEMPTS = 10000;
 
@@ -117,7 +119,7 @@ public class IptFileUtils {
     try {
       org.apache.commons.io.FileUtils.touch(file);
     } catch (IOException e) {
-      // io error can happen on windows if last modification cannot be set
+      // io error can happen on Windows if last modification cannot be set
       // see http://commons.apache.org/io/api-1.4/org/apache/commons/io/FileUtils.html#touch(java.io.File)
       // we catch this and check if the file was created
       if (file.exists() && file.canWrite()) {
@@ -131,7 +133,7 @@ public class IptFileUtils {
   }
 
   /**
-   * Construct filename for persisted file (e.g. vocabulary or extension) replacing certain characters with an
+   * Construct filename for a persisted file (e.g. vocabulary or extension) replacing certain characters with an
    * underscore, and appending a suffix.
    *
    * @param name   original name, excluding suffix
@@ -158,9 +160,9 @@ public class IptFileUtils {
    * <p>This method assumes that the temporary volume is writable, has free inodes and free blocks,
    * and that it will not be called thousands of times per second.
    *
-   * Copied from guava.
+   * <p>Copied from guava.
    *
-   * @return the newly-created directory
+   * @return the newly created directory
    * @throws IllegalStateException if the directory could not be created
    */
   public static File createTempDir() {
@@ -212,5 +214,24 @@ public class IptFileUtils {
     String acceptRanges = conn.getHeaderField("Accept-Ranges");
 
     return new UrlMetadata(status, contentType, contentLength, lastModified, acceptRanges);
+  }
+
+  /**
+   * Method deletes the entire directory if it exclusively contains a single file. This method can be used to clean up
+   * a resource directory containing an invalid eml.xml/datapackage.json.
+   *
+   * @param file file enclosed in a resource directory
+   */
+  public static void deleteDirectoryContainingSingleFile(File file) {
+    File parent = file.getParentFile();
+    File[] files = parent.listFiles();
+    if (files != null && files.length == 1 && files[0].equals(file)) {
+      try {
+        org.apache.commons.io.FileUtils.deleteDirectory(parent);
+        LOG.info("Deleted directory: {}", parent.getAbsolutePath());
+      } catch (IOException e) {
+        LOG.error("Failed to delete directory {}: {}", parent.getAbsolutePath(), e.getMessage(), e);
+      }
+    }
   }
 }
