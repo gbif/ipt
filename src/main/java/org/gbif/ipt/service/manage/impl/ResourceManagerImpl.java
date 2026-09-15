@@ -57,6 +57,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -77,7 +78,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -124,6 +124,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private final RegistrationManager registrationManager;
   private final MetadataReader metadataReader;
   private final ResourceImportService resourceImportService;
+  private final ResourceVersioningService resourceVersioningService;
 
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -132,7 +133,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
                              RegistryManager registryManager, PasswordEncrypter passwordEncrypter,
                              VocabulariesManager vocabManager, SimpleTextProvider textProvider,
                              RegistrationManager registrationManager, MetadataReader metadataReader,
-                             ResourceImportService resourceImportService) {
+                             ResourceImportService resourceImportService,
+                             ResourceVersioningService resourceVersioningService) {
     super(cfg, dataDir);
     this.extensionManager = extensionManager;
     this.schemaManager = schemaManager;
@@ -143,6 +145,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     this.registrationManager = registrationManager;
     this.metadataReader = metadataReader;
     this.resourceImportService = resourceImportService;
+    this.resourceVersioningService = resourceVersioningService;
   }
 
   private void addResource(Resource res) {
@@ -230,7 +233,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     result.setCreatorName(resource.getCreatorName());
     result.setDataPackage(resource.isDataPackage());
 
-    // was last published version later registered but never republished? Fix for issue #1319
+    // was the last published version later registered but never republished? Fix for issue #1319
     if (!publishedPublicVersion.isRegistered() && resource.isRegistered() && resource.getOrganisation() != null) {
       result.setStatus(PublicationStatus.REGISTERED);
       result.setOrganisationAlias(resource.getOrganisationAlias());
@@ -241,7 +244,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   /**
-   * Close file writer if the writer is not null.
+   * Close the file writer if the writer is not null.
    *
    * @param writer file writer
    */
@@ -322,7 +325,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   /**
    * Creates a resource from an IPT Resource folder. The purpose is to preserve the original source files and mappings.
    * The managers, created date, last publication date, version history, version number, DOI(s), publication status,
-   * and registration info is all cleared. The creator and modifier are set to the current creator.
+   * and registration info are all cleared. The creator and modifier are set to the current creator.
    * </p>
    * This method must ensure that the folder has a unique name relative to the other resource's shortnames, otherwise
    * it tries to rename the folder using the supplied shortname. If neither of these yield a unique shortname,
@@ -418,10 +421,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   /**
-   * Determine whether the directory represents an IPT Resource directory or not. To qualify, directory must contain
-   * resource.xml file and one of the metadata files: eml.xml/datapackage.json/metadata.yml
+   * Determine whether the directory represents an IPT Resource directory or not. To qualify, a directory must contain
+   * a resource.xml file and one of the metadata files: eml.xml/datapackage.json/metadata.yml
    *
-   * @param dir directory where compressed file was decompressed
+   * @param dir directory where a compressed file was decompressed
    * @return true if it is an IPT Resource folder or false otherwise
    */
   private boolean isIPTResourceFolder(File dir) {
@@ -814,7 +817,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         InputStream input = new FileInputStream(cfgFile);
         Resource resource = (Resource) xstream.fromXML(input);
 
-        // populate missing creator - it cannot be null! (this fixes issue #1309)
+        // populate a missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
           resource.setCreator(creator);
           LOG.warn("On load, populated missing creator for resource: {}", shortname);
@@ -824,9 +827,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         // shouldn't really happen - but people can even manually cause a mess
         resource.getManagers().remove(null);
 
-        // 1. Non-existent Extension end up being NULL
-        // E.g. a user is trying to import a resource from one IPT to another without all required exts installed.
-        // 2. Auto-generating IDs is only available for Taxon core extension since IPT v2.1,
+        // 1. Non-existent Extension ends up being NULL
+        // E.g., a user is trying to import a resource from one IPT to another without all required extensions installed.
+        // 2. Auto-generating IDs are only available for Taxon core extension since IPT v2.1,
         // therefore, if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
         for (ExtensionMapping ext : resource.getMappings()) {
           Extension x = ext.getExtension();
@@ -882,14 +885,14 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
         // also convert/rename eml, rtf, and dwca versioned files also
         if (!resource.isDataPackage()) {
-          BigDecimal converted = convertVersion(resource);
+          BigDecimal converted = resourceVersioningService.convertVersion(resource);
           if (converted != null) {
-            updateResourceVersion(resource, resource.getMetadataVersion(), converted);
+            resourceVersioningService.updateResourceVersion(resource, resource.getMetadataVersion(), converted);
           }
         }
 
         // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
-        VersionHistory history = constructVersionHistoryForLastPublishedVersion(resource);
+        VersionHistory history = resourceVersioningService.constructVersionHistoryForLastPublishedVersion(resource);
         if (history != null) {
           resource.addVersionHistory(history);
         }
@@ -897,7 +900,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         if (!resource.isDataPackage()) {
           // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
           if (resource.getLastPublishedVersionsVersion() != null) {
-            renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
+            resourceVersioningService.renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
           }
 
           // update EML with the latest resource basics (version and GUID)
@@ -925,7 +928,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   /**
    * Remove field mappings from mappings that do not reference any actual fields.
    * <ol>
-   *   <li>Only index is present, but references no field</li>
+   *   <li>Only an index is present, but references no field</li>
    *   <li>Both index and field are absent</li>
    * </ol>
    *
@@ -967,118 +970,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   /**
-   * Convert integer version number to major_version.minor_version version number. Please note IPTs before v2.2 used
-   * integer-based version numbers.
-   *
-   * @param resource resource
-   * @return converted version number, or null if no conversion happened
-   */
-  @SuppressWarnings("BigDecimalEquals")
-  protected BigDecimal convertVersion(Resource resource) {
-    if (resource.getMetadataVersion() != null) {
-      BigDecimal version = resource.getMetadataVersion();
-      // special conversion: 0 -> 1.0
-      if (version.equals(BigDecimal.ZERO)) {
-        return Constants.INITIAL_RESOURCE_VERSION;
-      } else if (version.scale() == 0) {
-        BigDecimal majorMinorVersion = version.setScale(1, RoundingMode.CEILING);
-        LOG.debug("Converted version [{}] to [{}]", version.toPlainString(), majorMinorVersion.toPlainString());
-        return majorMinorVersion;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Update a resource's version and rename its eml, rtf, and dwca versioned files to have the new version also.
-   *
-   * @param resource   resource to update
-   * @param oldVersion old version number
-   * @param newVersion new version number
-   * @return resource whose version number and files' version numbers have been updated
-   */
-  @SuppressWarnings("BigDecimalEquals")
-  protected Resource updateResourceVersion(Resource resource, BigDecimal oldVersion, BigDecimal newVersion) {
-    Objects.requireNonNull(resource);
-    Objects.requireNonNull(oldVersion);
-    Objects.requireNonNull(newVersion);
-    // proceed if old and new versions are not equal in both value and scale - comparison done using .equals
-    if (!oldVersion.equals(newVersion)) {
-      try {
-        // rename e.g. eml-18.xml to eml-18.0.xml (if eml-18.xml exists)
-        File oldEml = dataDir.resourceEmlFile(resource.getShortname(), oldVersion);
-        File newEml = dataDir.resourceEmlFile(resource.getShortname(), newVersion);
-        if (oldEml.exists() && !newEml.exists()) {
-          FileUtils.moveFile(oldEml, newEml);
-        }
-
-        // rename e.g. zvv-18.rtf to zvv-18.0.rtf
-        File oldRtf = dataDir.resourceRtfFile(resource.getShortname(), oldVersion);
-        File newRtf = dataDir.resourceRtfFile(resource.getShortname(), newVersion);
-        if (oldRtf.exists() && !newRtf.exists()) {
-          FileUtils.moveFile(oldRtf, newRtf);
-        }
-
-        // rename e.g. dwca-18.zip to dwca-18.0.zip
-        File oldDwca = dataDir.resourceDwcaFile(resource.getShortname(), oldVersion);
-        File newDwca = dataDir.resourceDwcaFile(resource.getShortname(), newVersion);
-        if (oldDwca.exists() && !newDwca.exists()) {
-          FileUtils.moveFile(oldDwca, newDwca);
-        }
-
-        // if all renames were successful (didn't throw an exception), set new version
-        resource.setMetadataVersion(newVersion);
-      } catch (IOException e) {
-        LOG.error("Failed to update version number for {}", resource.getShortname(), e);
-        throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-            "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
-      }
-    }
-    return resource;
-  }
-
-  /**
-   * Rename a resource's dwca.zip to have the last published version, e.g. dwca-18.0.zip
-   *
-   * @param resource resource to update
-   * @param version  last published version number
-   */
-  protected void renameDwcaToIncludeVersion(Resource resource, BigDecimal version) {
-    Objects.requireNonNull(resource);
-    Objects.requireNonNull(version);
-    File unversionedDwca = dataDir.resourceDwcaFile(resource.getShortname());
-    File versionedDwca = dataDir.resourceDwcaFile(resource.getShortname(), version);
-    // proceed if resource has previously been published, and versioned dwca does not exist
-    if (unversionedDwca.exists() && !versionedDwca.exists()) {
-      try {
-        FileUtils.moveFile(unversionedDwca, versionedDwca);
-        LOG.debug("Renamed dwca.zip to {}", versionedDwca.getName());
-      } catch (IOException e) {
-        LOG.error("Failed to rename dwca.zip file name with version number for {}", resource.getShortname(), e);
-        throw new InvalidConfigException(TYPE.CONFIG_WRITE,
-            "Failed to update version number for " + resource.getShortname() + ": " + e.getMessage());
-      }
-    }
-  }
-
-  /**
-   * Construct VersionHistory for last published version of resource, if resource has been published but had no
-   * VersionHistory. Please note IPTs before v2.2 had no list of VersionHistory.
-   *
-   * @param resource resource
-   * @return VersionHistory, or null if no VersionHistory needed to be created.
-   */
-  protected VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
-    if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
-      VersionHistory vh =
-          new VersionHistory(resource.getMetadataVersion(), resource.getLastPublished(), resource.getStatus());
-      vh.setRecordsPublished(resource.getRecordsPublished());
-      return vh;
-    }
-    return null;
-  }
-
-  /**
    * The resource's coreType could be null. This could happen because before 2.0.3 it was not saved to resource.xml.
    * During upgrades to 2.0.3, a bug in MetadataAction would (wrongly) automatically set the coreType:
    * Checklist resources became Occurrence, and vice versa. This method will try to infer the coreType by matching
@@ -1107,7 +998,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * null. That would mean the user would then have to reselect the subtype from the Basic Metadata page.
    *
    * @param resource Resource
-   * @return resource with subtype set using term from dataset_subtype vocabulary (assuming it has been set).
+   * @return resource with a subtype set using the term from dataset_subtype vocabulary (assuming it has been set).
    */
   Resource standardizeSubtype(Resource resource) {
     if (resource != null && resource.getSubtype() != null) {
@@ -1217,7 +1108,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * This method must be called before persisting the EML file to ensure that the EML file and resource are in sync.
    *
    * @param resource         Resource
-   * @param preserveKeywords perform keywords update or not
+   * @param preserveKeywords perform keywords' update or not
    */
   private void syncEmlWithResource(Resource resource, boolean preserveKeywords) {
     // set EML version

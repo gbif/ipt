@@ -66,6 +66,7 @@ import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -99,7 +100,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -246,6 +246,8 @@ public class ResourceManagerImplTest extends IptBaseTest {
         mock(DataPackageFieldConverter.class),
         jdbcConverter);
 
+    ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockedDataDir);
+
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
 
@@ -275,7 +277,8 @@ public class ResourceManagerImplTest extends IptBaseTest {
         mockSimpleTextProvider,
         mockRegistrationManager,
         mock(MetadataReader.class),
-        mockResourceImportService);
+        mockResourceImportService,
+        resourceVersioningService);
 
     resourceManagerRef.set(resourceManager);
 
@@ -1127,7 +1130,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * Return a Non Registered Metadata Only Resource used for testing.
+   * Return a Non-Registered Metadata Only Resource used for testing.
    *
    * @return a Non Registered Metadata Only Resource used for testing
    */
@@ -1318,60 +1321,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // creator populated
     assertNotNull(resource.getCreator());
     assertEquals(creator, resource.getCreator());
-  }
-
-  @Test
-  public void testConvertVersion() throws Exception {
-    Resource r = new Resource();
-    r.setMetadataVersion(BigDecimal.valueOf(4));
-    assertEquals(0, r.getEmlVersion().scale());
-    assertEquals(4, r.getEmlVersion().intValueExact());
-    // do conversion 4 -> 4.0
-    BigDecimal converted = getResourceManagerImpl().convertVersion(r);
-    assertEquals(new BigDecimal("4.0"), converted);
-    // ensure conversions aren't repeated
-    r.setMetadataVersion(converted);
-    assertNull(getResourceManagerImpl().convertVersion(r));
-  }
-
-  @Test
-  public void testConvertVersionZero() throws Exception {
-    Resource r = new Resource();
-    r.setMetadataVersion(BigDecimal.valueOf(0));
-    assertEquals(0, r.getEmlVersion().scale());
-    assertEquals(0, r.getEmlVersion().intValueExact());
-    // do conversion 0 -> 1.0
-    BigDecimal converted = getResourceManagerImpl().convertVersion(r);
-    assertEquals(new BigDecimal("1.0"), converted);
-    // ensure conversions aren't repeated
-    r.setMetadataVersion(converted);
-    assertNull(getResourceManagerImpl().convertVersion(r));
-  }
-
-  @Test
-  public void testConstructVersionHistoryForLastPublishedVersion() throws Exception {
-    Resource r = new Resource();
-    r.setMetadataVersion(new BigDecimal("4.0"));
-    r.setStatus(PublicationStatus.PUBLIC);
-    r.setRecordsPublished(100);
-    Date lastPublished = new Date();
-    r.setLastPublished(lastPublished);
-
-    VersionHistory history = getResourceManagerImpl().constructVersionHistoryForLastPublishedVersion(r);
-    assertNotNull(history);
-    assertEquals("4.0", history.getVersion());
-    assertEquals(lastPublished, history.getReleased());
-    assertEquals(PublicationStatus.PUBLIC, history.getPublicationStatus());
-    assertEquals(100, history.getRecordsPublished());
-
-    // properties not set
-    assertNull(history.getDoi());
-    assertNull(history.getStatus());
-    assertNull(history.getChangeSummary());
-    assertNull(history.getModifiedBy());
-
-    // next version?
-    assertEquals("4.1", r.getNextVersion().toPlainString());
   }
 
   /**

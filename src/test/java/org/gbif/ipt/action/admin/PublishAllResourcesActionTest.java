@@ -57,12 +57,14 @@ import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
+import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImplTest;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
@@ -314,6 +316,8 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
+    ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockedDataDir);
+
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
 
@@ -340,7 +344,8 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mockSimpleTextProvider,
         mockRegistrationManager,
         mock(MetadataReader.class),
-        mockResourceImportService);
+        mockResourceImportService,
+        resourceVersioningService);
 
     resourceManagerRef.set(resourceManager);
 

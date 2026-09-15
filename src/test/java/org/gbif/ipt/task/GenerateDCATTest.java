@@ -49,8 +49,10 @@ import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.model.Agent;
@@ -295,6 +297,8 @@ public class GenerateDCATTest extends IptBaseTest {
         conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
+    ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockDataDir);
+
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
         new ResourceManagerImpl(
@@ -309,7 +313,8 @@ public class GenerateDCATTest extends IptBaseTest {
             mockSimpleTextProvider,
             mockRegistrationManager,
             mock(MetadataReader.class),
-            mock(ResourceImportService.class));
+            mock(ResourceImportService.class),
+            resourceVersioningService);
 
     // creator
     User creator = new User();

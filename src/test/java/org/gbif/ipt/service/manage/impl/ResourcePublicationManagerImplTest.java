@@ -59,6 +59,7 @@ import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
+import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -846,6 +847,8 @@ public class ResourcePublicationManagerImplTest {
         mock(DataPackageFieldConverter.class),
         jdbcConverter);
 
+    ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockedDataDir);
+
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
 
@@ -875,7 +878,8 @@ public class ResourcePublicationManagerImplTest {
         mockSimpleTextProvider,
         mockRegistrationManager,
         mock(MetadataReader.class),
-        mockResourceImportService);
+        mockResourceImportService,
+        resourceVersioningService);
 
     resourceManagerRef.set(resourceManager);
 

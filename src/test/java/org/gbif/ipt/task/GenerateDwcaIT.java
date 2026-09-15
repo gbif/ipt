@@ -54,10 +54,12 @@ import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
+import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
@@ -311,6 +313,8 @@ public class GenerateDwcaIT extends IptBaseTest {
         new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
+    ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockDataDir);
+
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
         new ResourceManagerImpl(
@@ -325,7 +329,8 @@ public class GenerateDwcaIT extends IptBaseTest {
             mockSimpleTextProvider,
             mockRegistrationManager,
             mock(MetadataReader.class),
-            mock(ResourceImportService.class));
+            mock(ResourceImportService.class),
+            resourceVersioningService);
 
     // create a new resource.
     // create user

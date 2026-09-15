@@ -57,11 +57,13 @@ import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -517,6 +519,8 @@ public class GenerateDwcaTest extends IptBaseTest {
         conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
+    ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockDataDir);
+
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
 
@@ -544,7 +548,8 @@ public class GenerateDwcaTest extends IptBaseTest {
             mockSimpleTextProvider,
             mockRegistrationManager,
             mock(MetadataReader.class),
-            mockResourceImportService);
+            mockResourceImportService,
+            resourceVersioningService);
 
     resourceManagerRef.set(resourceManager);
 

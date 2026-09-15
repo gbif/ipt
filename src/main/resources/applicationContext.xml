@@ -211,6 +211,7 @@
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="metadataReader"/>
     <constructor-arg ref="resourceImportService"/>
+    <constructor-arg ref="resourceVersioningService"/>
   </bean>
 
   <bean id="resourcePublicationManager" class="org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl">
@@ -247,6 +248,10 @@
     <constructor-arg ref="vocabulariesManager"/>
     <constructor-arg ref="dataPackageSchemaManager"/>
     <constructor-arg ref="resourceManagerProvider"/>
+  </bean>
+
+  <bean id="resourceVersioningService" class="org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl">
+    <constructor-arg ref="dataDir"/>
   </bean>
 
   <bean id="vocabulariesManager" class="org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl">
