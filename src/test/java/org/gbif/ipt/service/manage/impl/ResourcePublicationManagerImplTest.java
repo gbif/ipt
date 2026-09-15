@@ -59,6 +59,7 @@ import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
+import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -848,6 +849,7 @@ public class ResourcePublicationManagerImplTest {
         jdbcConverter);
 
     ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockedDataDir);
+    ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl(mock(VocabulariesManager.class));
 
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
@@ -874,12 +876,12 @@ public class ResourcePublicationManagerImplTest {
         mockSchemaManager,
         mockRegistryManager,
         passwordEncrypter,
-        mock(VocabulariesManager.class),
         mockSimpleTextProvider,
         mockRegistrationManager,
         mock(MetadataReader.class),
         mockResourceImportService,
-        resourceVersioningService);
+        resourceVersioningService,
+        resourceTypeService);
 
     resourceManagerRef.set(resourceManager);
 
@@ -887,7 +889,7 @@ public class ResourcePublicationManagerImplTest {
   }
 
   /**
-   * Return a Non Registered Metadata Only Resource used for testing.
+   * Return a Non-Registered Metadata Only Resource used for testing.
    *
    * @return a Non Registered Metadata Only Resource used for testing
    */

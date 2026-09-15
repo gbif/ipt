@@ -27,7 +27,6 @@ import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.MetadataFiles;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
@@ -53,10 +52,10 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
@@ -119,33 +118,40 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private final ExtensionManager extensionManager;
   private final DataPackageSchemaManager schemaManager;
   private final RegistryManager registryManager;
-  private final VocabulariesManager vocabManager;
   private final SimpleTextProvider textProvider;
   private final RegistrationManager registrationManager;
   private final MetadataReader metadataReader;
   private final ResourceImportService resourceImportService;
   private final ResourceVersioningService resourceVersioningService;
+  private final ResourceTypeService resourceTypeService;
 
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-  public ResourceManagerImpl(AppConfig cfg, DataDir dataDir, ResourceConvertersManager resourceConvertersManager,
-                             ExtensionManager extensionManager, DataPackageSchemaManager schemaManager,
-                             RegistryManager registryManager, PasswordEncrypter passwordEncrypter,
-                             VocabulariesManager vocabManager, SimpleTextProvider textProvider,
-                             RegistrationManager registrationManager, MetadataReader metadataReader,
-                             ResourceImportService resourceImportService,
-                             ResourceVersioningService resourceVersioningService) {
+  public ResourceManagerImpl(
+      AppConfig cfg,
+      DataDir dataDir,
+      ResourceConvertersManager resourceConvertersManager,
+      ExtensionManager extensionManager,
+      DataPackageSchemaManager schemaManager,
+      RegistryManager registryManager,
+      PasswordEncrypter passwordEncrypter,
+      SimpleTextProvider textProvider,
+      RegistrationManager registrationManager,
+      MetadataReader metadataReader,
+      ResourceImportService resourceImportService,
+      ResourceVersioningService resourceVersioningService,
+      ResourceTypeService resourceTypeService) {
     super(cfg, dataDir);
     this.extensionManager = extensionManager;
     this.schemaManager = schemaManager;
     this.registryManager = registryManager;
-    this.vocabManager = vocabManager;
     this.xstream = ResourceXStreamFactory.create(resourceConvertersManager, passwordEncrypter);
     this.textProvider = textProvider;
     this.registrationManager = registrationManager;
     this.metadataReader = metadataReader;
     this.resourceImportService = resourceImportService;
     this.resourceVersioningService = resourceVersioningService;
+    this.resourceTypeService = resourceTypeService;
   }
 
   private void addResource(Resource res) {
@@ -854,12 +860,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
         // infer coreType if null
         if (resource.getCoreType() == null) {
-          inferCoreType(resource);
+          resourceTypeService.inferCoreType(resource);
         }
 
         // standardize subtype if not null
         if (resource.getSubtype() != null) {
-          standardizeSubtype(resource);
+          resourceTypeService.standardizeSubtype(resource);
         }
 
         // add proper source file pointer
@@ -967,59 +973,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   private boolean emptyMapping(DataPackageFieldMapping dpfm) {
     return dpfm.getIndex() == null && dpfm.getField() == null && StringUtils.isEmpty(dpfm.getDefaultValue());
-  }
-
-  /**
-   * The resource's coreType could be null. This could happen because before 2.0.3 it was not saved to resource.xml.
-   * During upgrades to 2.0.3, a bug in MetadataAction would (wrongly) automatically set the coreType:
-   * Checklist resources became Occurrence, and vice versa. This method will try to infer the coreType by matching
-   * the coreRowType against the taxon and occurrence rowTypes.
-   *
-   * @param resource Resource
-   * @return resource with coreType set if it could be inferred, or unchanged if it couldn't be inferred.
-   */
-  Resource inferCoreType(Resource resource) {
-    if (resource != null && resource.getCoreRowType() != null) {
-      if (Constants.DWC_ROWTYPE_OCCURRENCE.equalsIgnoreCase(resource.getCoreRowType())) {
-        resource.setCoreType(CoreRowType.OCCURRENCE.toString().toLowerCase());
-      } else if (Constants.DWC_ROWTYPE_TAXON.equalsIgnoreCase(resource.getCoreRowType())) {
-        resource.setCoreType(CoreRowType.CHECKLIST.toString().toLowerCase());
-      } else if (Constants.DWC_ROWTYPE_EVENT.equalsIgnoreCase(resource.getCoreRowType())) {
-        resource.setCoreType(CoreRowType.SAMPLINGEVENT.toString().toLowerCase());
-      }
-    }
-    return resource;
-  }
-
-  /**
-   * The resource's subType might not have been set using a standardized term from the dataset_subtype vocabulary.
-   * All versions before 2.0.4 didn't use the vocabulary, so this method is particularly important during upgrades
-   * to 2.0.4 and later. Basically, if the subType isn't recognized as belonging to the vocabulary, it is reset as
-   * null. That would mean the user would then have to reselect the subtype from the Basic Metadata page.
-   *
-   * @param resource Resource
-   * @return resource with a subtype set using the term from dataset_subtype vocabulary (assuming it has been set).
-   */
-  Resource standardizeSubtype(Resource resource) {
-    if (resource != null && resource.getSubtype() != null) {
-      // the vocabulary key names are identifiers and standard across Locales
-      // it's this key we want to persist as the subtype
-      Map<String, String> subtypes =
-          vocabManager.getI18nVocab(Constants.VOCAB_URI_DATASET_SUBTYPES, Locale.ENGLISH.getLanguage(), false);
-      boolean usesVocab = false;
-      for (Map.Entry<String, String> entry : subtypes.entrySet()) {
-        // remember to do comparison regardless of case, since the subtype is stored in lowercase
-        if (resource.getSubtype().equalsIgnoreCase(entry.getKey())) {
-          usesVocab = true;
-          break;
-        }
-      }
-      // if the subtype doesn't use a standardized term from the vocab, it's reset to null
-      if (!usesVocab) {
-        resource.setSubtype(null);
-      }
-    }
-    return resource;
   }
 
   @Override

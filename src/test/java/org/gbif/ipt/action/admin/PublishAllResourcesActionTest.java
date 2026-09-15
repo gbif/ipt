@@ -57,6 +57,7 @@ import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
+import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
@@ -64,6 +65,7 @@ import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImplTest;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -317,6 +319,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
     ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockedDataDir);
+    ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl(mockVocabulariesManager);
 
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
@@ -340,12 +343,12 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mockSchemaManager,
         mockRegistryManager,
         passwordEncrypter,
-        mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
         mock(MetadataReader.class),
         mockResourceImportService,
-        resourceVersioningService);
+        resourceVersioningService,
+        resourceTypeService);
 
     resourceManagerRef.set(resourceManager);
 

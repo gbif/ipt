@@ -50,6 +50,7 @@ public class ResourceVersioningServiceImpl implements ResourceVersioningService 
    * @return converted version number, or null if no conversion happened
    */
   @SuppressWarnings("BigDecimalEquals")
+  @Override
   public BigDecimal convertVersion(Resource resource) {
     if (resource.getMetadataVersion() != null) {
       BigDecimal version = resource.getMetadataVersion();
@@ -74,6 +75,7 @@ public class ResourceVersioningServiceImpl implements ResourceVersioningService 
    * @return resource whose version number and files' version numbers have been updated
    */
   @SuppressWarnings("BigDecimalEquals")
+  @Override
   public Resource updateResourceVersion(Resource resource, BigDecimal oldVersion, BigDecimal newVersion) {
     Objects.requireNonNull(resource);
     Objects.requireNonNull(oldVersion);
@@ -119,6 +121,7 @@ public class ResourceVersioningServiceImpl implements ResourceVersioningService 
    * @param resource resource to update
    * @param version  last published version number
    */
+  @Override
   public void renameDwcaToIncludeVersion(Resource resource, BigDecimal version) {
     Objects.requireNonNull(resource);
     Objects.requireNonNull(version);
@@ -144,6 +147,7 @@ public class ResourceVersioningServiceImpl implements ResourceVersioningService 
    * @param resource resource
    * @return VersionHistory, or null if no VersionHistory needed to be created.
    */
+  @Override
   public VersionHistory constructVersionHistoryForLastPublishedVersion(Resource resource) {
     if (resource.isPublished() && resource.getVersionHistory().isEmpty()) {
       VersionHistory vh =

@@ -206,12 +206,16 @@
     <constructor-arg ref="dataPackageSchemaManager"/>
     <constructor-arg ref="registryManager"/>
     <constructor-arg ref="passwordEncrypter"/>
-    <constructor-arg ref="vocabulariesManager"/>
     <constructor-arg ref="simpleTextProvider"/>
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="metadataReader"/>
     <constructor-arg ref="resourceImportService"/>
     <constructor-arg ref="resourceVersioningService"/>
+    <constructor-arg ref="resourceTypeService"/>
+  </bean>
+
+  <bean id="resourceTypeService" class="org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl">
+      <constructor-arg ref="vocabulariesManager"/>
   </bean>
 
   <bean id="resourcePublicationManager" class="org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl">

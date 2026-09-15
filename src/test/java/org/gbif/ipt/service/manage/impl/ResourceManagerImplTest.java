@@ -66,6 +66,7 @@ import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -247,6 +248,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
         jdbcConverter);
 
     ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockedDataDir);
+    ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl(mockVocabulariesManager);
 
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
@@ -273,12 +275,12 @@ public class ResourceManagerImplTest extends IptBaseTest {
         mockSchemaManager,
         mockRegistryManager,
         passwordEncrypter,
-        mockVocabulariesManager,
         mockSimpleTextProvider,
         mockRegistrationManager,
         mock(MetadataReader.class),
         mockResourceImportService,
-        resourceVersioningService);
+        resourceVersioningService,
+        resourceTypeService);
 
     resourceManagerRef.set(resourceManager);
 
@@ -384,7 +386,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * test resource creation from single DwC-A zipped file.
+   * test resource creation from a single DwC-A zipped file.
    */
   @Test
   public void testCreateFromSingleZippedFile() throws Exception {
@@ -430,7 +432,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertEquals(BigDecimal.valueOf(1.0), res.getEml().getEmlVersion());
     assertEquals(BigDecimal.valueOf(1.0), res.getEmlVersion());
 
-    // note: source gets added to resource in sourceManager.add, and since we're mocking this call we can't set source
+    // note: source gets added to resource in sourceManager.add, and since we're mocking this call, we can't set source
 
     // there is 1 mapping
     assertEquals(1, res.getMappings().size());
@@ -463,8 +465,8 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * test resource creation from single DwC-A zipped file, having no rowType. The rowType is determined by the
-   * identifier term (e.g. rowType dwc:Occurrence corresponds to existence of term occurrenceID).
+   * test resource creation from a single DwC-A zipped file, having no rowType. The rowType is determined by the
+   * identifier term (e.g. rowType dwc:Occurrence corresponds to the existence of term occurrenceID).
    */
   @Test
   public void testCreateFromSingleZippedFileWithNoRowType() throws Exception {
@@ -508,7 +510,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // create a new resource.
     resourceManager.create("res-single-gz", null, dwca, creator, baseAction);
 
-    // test if new resource was added to the resources list.
+    // test if new resource was added to the resource list.
     assertEquals(1, resourceManager.list().size());
 
     // get added resource.
@@ -522,7 +524,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // test if resource.xml was created.
     assertTrue(mockedDataDir.resourceFile("res-single-gz").exists());
 
-    // note: source gets added to resource in sourceManager.add, and since we're mocking this call we can't set source
+    // note: source gets added to resource in sourceManager.add, and since we're mocking this call, we can't set source
 
     // there is 1 mapping
     assertEquals(1, res.getMappings().size());
@@ -537,7 +539,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * test resource (with extension) creation from zipped resource folder.
+   * test resource (with extension) creation from a zipped resource folder.
    */
   @Test
   public void testCreateWithExtensionFromZippedFile() throws Exception {
@@ -565,7 +567,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // create a new resource.
     resourceManager.create("amphibians", null, zippedResourceFolder, creator, baseAction);
 
-    // test if new resource was added to the resources list.
+    // test if new resource was added to the resource list.
     assertEquals(1, resourceManager.list().size());
 
     // get added resource.
@@ -627,7 +629,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * test resource creation from zipped file, but resource.xml references non-existent extension.
+   * test resource creation from a zipped file, but resource.xml references non-existent extension.
    */
   @Test
   public void testCreateFromZippedFileNonexistentExtension() throws Exception {
@@ -810,7 +812,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * test resource creation from file, but filename presumed to contain an illegal non-alphanumeric character
+   * test resource creation from a file, but filename presumed to contain an illegal non-alphanumeric character
    */
   @Test
   public void testCreateFromZippedFileWithInvalidFilename() throws Exception {
@@ -827,7 +829,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * Create a resource from zipped file, but using a resource.xml whose occurrence core coreIdColumn mapping uses
+   * Create a resource from a zipped file, but using a resource.xml whose occurrence core coreIdColumn mapping uses
    * auto-generated IDs. Since the auto-generating IDs feature is only available for taxon core extension since IPT 2.1
    * test that the occurrence core coreIdColumn mapping is reset to NO ID instead.
    */
@@ -859,7 +861,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // create a new resource.
     resourceManager.create("math", Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
 
-    // test if new resource was added to the resources list.
+    // test if new resource was added to the resource list.
     assertEquals(1, resourceManager.list().size());
 
     // get added resource.
@@ -875,7 +877,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
+   * Test resource retrieval from the resource.xml file. The loadFromDir method is responsible for this retrieval.
    */
   @Test
   public void testLoadFromDir() throws Exception {
@@ -1005,42 +1007,8 @@ public class ResourceManagerImplTest extends IptBaseTest {
     }
   }
 
-  @Test
-  public void testInferCoreType() throws Exception {
-    ResourceManagerImpl manager = getResourceManagerImpl();
-    // create test resource
-    Resource resource = new Resource();
-    // add mapping to taxon core
-    ExtensionMapping mapping = new ExtensionMapping();
-    Extension ext = new Extension();
-    ext.setRowType(Constants.DWC_ROWTYPE_TAXON);
-    mapping.setExtension(ext);
-    resource.addMapping(mapping);
-
-    resource = manager.inferCoreType(resource);
-    // assert the coreType has now been correctly inferred
-    assertNotNull(resource.getCoreType());
-    assertEquals(Resource.CoreRowType.CHECKLIST.toString().toLowerCase(), resource.getCoreType().toLowerCase());
-  }
-
-  @Test
-  public void testInferSubtype() throws Exception {
-    ResourceManagerImpl manager = getResourceManagerImpl();
-    // create test resource
-    Resource resource = new Resource();
-    resource.setSubtype("unknown");
-    resource = manager.standardizeSubtype(resource);
-    // assert the subtype has been set to null, since it doesn't correspond to a known vocab term
-    assertNull(resource.getSubtype());
-
-    resource.setSubtype(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER);
-    resource = manager.standardizeSubtype(resource);
-    // assert the subtype has been set to "specimen", since it does correspond to the known vocab term "specimen"
-    assertEquals(DATASET_SUBTYPE_SPECIMEN_IDENTIFIER, resource.getSubtype());
-  }
-
   /**
-   * test open archive of zipped file, with DwC-A located inside parent folder.
+   * test open archive of a zipped file, with DwC-A located inside the parent folder.
    */
   @Test
   public void testOpenArchiveInsideParentFolder() throws Exception {
@@ -1057,7 +1025,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * test failure, opening archive of zipped file, with invalid DwC-A located inside parent folder.
+   * test failure, opening archive of a zipped file, with invalid DwC-A located inside the parent folder.
    */
   @Test
   public void testOpenArchiveInsideParentFolderFails() throws Exception {
@@ -1117,7 +1085,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
     resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction);
 
-    // ensure resource is registered and it has no VersionHistory - simulating pre IPT v2.2 resource
+    // ensure resource is registered, and it has no VersionHistory - simulating pre IPT v2.2 resource
     assertEquals(1, resourceManager.list().size());
     Resource created = resourceManager.list().get(0);
     created.setKey(UUID.randomUUID());
@@ -1198,7 +1166,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * Ensure previous published version can be reconstructed properly.
+   * Ensure the previous published version can be reconstructed properly.
    */
   @Test
   public void testReconstructVersion() throws Exception {
@@ -1260,7 +1228,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * Ensure previous registered version can be reconstructed properly.
+   * Ensure the previous registered version can be reconstructed properly.
    */
   @Test
   public void testReconstructRegisteredVersion() throws Exception {
@@ -1325,7 +1293,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
 
   /**
    * Simulates what happens to a resource when upgrading an IPT to IPT v2.2:
-   * Ensure resource created using IPT v2.1 loads successfully.
+   * Ensure the resource created using IPT v2.1 loads successfully.
    * Specifically, it's important the version number gets converted from integer to major_version.minor_version format,
    * the eml, rtf, and dwca versioned files get renamed using the major_version.minor_version format, and that the
    * VersionHistory gets populated with the last published version.
@@ -1349,7 +1317,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     File rtf = File.createTempFile("res1-19", ".rtf", mockedDataDir.tmpDir());
     when(mockedDataDir.resourceRtfFile(resourceDir.getName(), new BigDecimal("19"))).thenReturn(rtf);
 
-    // mock returning res1-19.0.rtf in temp directory, that doesn't exist!
+    // mock returning res1-19.0.rtf in temp directory that doesn't exist!
     File rtfNew = new File(eml.getParentFile(), "res1-19.0.rtf");
     assertFalse(rtfNew.exists());
     when(mockedDataDir.resourceRtfFile(resourceDir.getName(), new BigDecimal("19.0"))).thenReturn(rtfNew);
