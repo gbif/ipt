@@ -80,7 +80,7 @@ public class PublishAllResourcesAction extends BaseAction {
 
   @Override
   public String execute() throws Exception {
-    // if cancel was set to true - call cancel method
+    // if cancel was set to true then call cancel method
     if (cancel) {
       return cancel();
     }

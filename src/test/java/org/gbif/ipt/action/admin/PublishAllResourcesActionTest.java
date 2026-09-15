@@ -57,7 +57,9 @@ import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
+import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
+import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImplTest;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
@@ -74,6 +76,7 @@ import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
 
+import jakarta.inject.Provider;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -82,12 +85,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import javax.xml.parsers.SAXParserFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -113,6 +116,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
   private final UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
   private final RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
   private final OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
+  private final SourceManager mockSourceManager = mock(SourceManager.class);
   private final RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
   private final GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
   private final Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
@@ -166,7 +170,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mock(AppConfig.class),
         mockRegistrationManager,
         mockResourceManager,
-        mock(ResourcePublicationManager.class),
+        mockResourcePublicationManager,
         mock(RegistryManager.class),
         mock(DataPackageMetadataValidator.class));
   }
@@ -310,7 +314,21 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
-    return new ResourceManagerImpl(
+    // a reference to the resource manager, the manager is created in the end
+    AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
+
+    jakarta.inject.Provider<ResourceManager> resourceManagerProvider = mock(Provider.class);
+    when(resourceManagerProvider.get()).thenAnswer(invocation -> resourceManagerRef.get());
+
+    ResourceImportService mockResourceImportService = new ResourceImportServiceImpl(
+        mockedDataDir,
+        mockSourceManager,
+        extensionManager,
+        mockSchemaManager,
+        mock(MetadataReader.class),
+        resourceManagerProvider);
+
+    ResourceManagerImpl resourceManager = new ResourceManagerImpl(
         mockAppConfig,
         mockedDataDir,
         mockResourceConvertersManager,
@@ -322,7 +340,11 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mockSimpleTextProvider,
         mockRegistrationManager,
         mock(MetadataReader.class),
-        mock(ResourceImportService.class));
+        mockResourceImportService);
+
+    resourceManagerRef.set(resourceManager);
+
+    return resourceManager;
   }
 
   public ResourcePublicationManagerImpl getResourcePublicationManagerImpl(ResourceManager resourceManager) throws Exception {
