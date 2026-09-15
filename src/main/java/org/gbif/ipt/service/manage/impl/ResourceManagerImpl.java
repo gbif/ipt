@@ -13,48 +13,26 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
-import org.gbif.api.model.common.DOI;
-import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.action.BaseAction;
-import org.gbif.ipt.action.portal.OrganizedTaxonomicKeywords;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataPackageField;
-import org.gbif.ipt.model.DataPackageFieldConstraints;
 import org.gbif.ipt.model.DataPackageFieldMapping;
-import org.gbif.ipt.model.DataPackageFieldReference;
 import org.gbif.ipt.model.DataPackageMapping;
-import org.gbif.ipt.model.DataPackageTableSchema;
-import org.gbif.ipt.model.DataPackageTableSchemaForeignKey;
-import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
-import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.FileSource;
-import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
-import org.gbif.ipt.model.InferredCamtrapTaxonomicScope;
-import org.gbif.ipt.model.InferredCamtrapTemporalScope;
-import org.gbif.ipt.model.InferredEmlGeographicCoverage;
 import org.gbif.ipt.model.InferredEmlMetadata;
-import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
-import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.MetadataFiles;
 import org.gbif.ipt.model.Organisation;
-import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
 import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.SqlSource;
-import org.gbif.ipt.model.TextFileSource;
-import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
-import org.gbif.ipt.model.converter.SafeTreeMapConverter;
-import org.gbif.ipt.model.converter.SafeTreeSetConverter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
@@ -90,7 +68,6 @@ import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.KeywordSet;
-import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
@@ -121,7 +98,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
@@ -138,7 +114,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   // simplified resources for home page (metadata from last published version!)
   private final Map<String, ResourceSummaryView> publishedPublicResourceSummaries = new HashMap<>();
 
-  private final XStream xstream = new XStream();
+  private final XStream xstream;
 
   private final ExtensionManager extensionManager;
   private final DataPackageSchemaManager schemaManager;
@@ -162,7 +138,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     this.schemaManager = schemaManager;
     this.registryManager = registryManager;
     this.vocabManager = vocabManager;
-    defineXstreamMapping(resourceConvertersManager, passwordEncrypter);
+    this.xstream = ResourceXStreamFactory.create(resourceConvertersManager, passwordEncrypter);
     this.textProvider = textProvider;
     this.registrationManager = registrationManager;
     this.metadataReader = metadataReader;
@@ -519,73 +495,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     resource.setMetadataModified(new Date());
     save(resource);
     saveDatapackageMetadata(resource);
-  }
-
-  private void defineXstreamMapping(ResourceConvertersManager resourceConvertersManager, PasswordEncrypter passwordEncrypter) {
-    xstream.addPermission(AnyTypePermission.ANY);
-    xstream.ignoreUnknownElements();
-    xstream.alias("resource", Resource.class);
-    xstream.alias("user", User.class);
-
-    // aliases for inferred metadata
-    xstream.alias("inferredMetadata", InferredEmlMetadata.class);
-    xstream.alias("inferredMetadataCamtrap", InferredCamtrapMetadata.class);
-    xstream.alias("inferredGeographicCoverage", InferredEmlGeographicCoverage.class);
-    xstream.alias("inferredGeographicScope", InferredCamtrapGeographicScope.class);
-    xstream.alias("inferredTaxonomicCoverage", InferredEmlTaxonomicCoverage.class);
-    xstream.alias("inferredTaxonomicScope", InferredCamtrapTaxonomicScope.class);
-    xstream.alias("inferredTemporalCoverage", InferredEmlTemporalCoverage.class);
-    xstream.alias("inferredTemporalScope", InferredCamtrapTemporalScope.class);
-    xstream.alias("taxonKeyword", TaxonKeyword.class);
-    xstream.alias("organizedTaxonomicKeywords", OrganizedTaxonomicKeywords.class);
-
-    xstream.alias("filesource", TextFileSource.class);
-    xstream.alias("excelsource", ExcelFileSource.class);
-    xstream.alias("sqlsource", SqlSource.class);
-    xstream.alias("urlsource", UrlSource.class);
-    xstream.alias("mapping", ExtensionMapping.class);
-    xstream.alias("field", PropertyMapping.class);
-    xstream.alias("dataPackageMapping", DataPackageMapping.class);
-    xstream.alias("dataPackageFieldMapping", DataPackageFieldMapping.class);
-    xstream.alias("tableSchema", DataPackageTableSchema.class);
-    xstream.alias("dataPackageField", DataPackageField.class);
-    xstream.alias("dataPackageForeignKey", DataPackageTableSchemaForeignKey.class);
-    xstream.alias("dataPackageFieldReference", DataPackageFieldReference.class);
-    xstream.alias("constraints", DataPackageFieldConstraints.class);
-    xstream.alias("versionhistory", VersionHistory.class);
-    xstream.alias("doi", DOI.class);
-
-    // transient properties
-    xstream.omitField(Resource.class, "shortname");
-    xstream.omitField(Resource.class, "eml");
-    xstream.omitField(Resource.class, "dataPackageMetadata");
-    xstream.omitField(Resource.class, "type");
-    // inferred metadata in the separate file
-    xstream.omitField(Resource.class, "inferredMetadata");
-    // make files transient to allow moving the datadir
-    xstream.omitField(TextFileSource.class, "file");
-
-    // Read legacy TreeMap/TreeSet without triggering XStream's TreeMapConverter (Struts 7/Java 17 issues).
-    xstream.registerConverter(new SafeTreeMapConverter(), 10000);
-    xstream.registerConverter(new SafeTreeSetConverter(), 10000);
-    // persist only emails for users
-    xstream.registerConverter(resourceConvertersManager.getUserConverter());
-    // custom converter for ExtensionMapping
-    xstream.registerConverter(resourceConvertersManager.getExtensionMappingConverter());
-    // persist only rowtype
-    xstream.registerConverter(resourceConvertersManager.getExtensionConverter());
-    // persist only qualified concept name
-    xstream.registerConverter(resourceConvertersManager.getConceptTermConverter());
-    // persist only schema identifier, table schema name and field name
-    xstream.registerConverter(resourceConvertersManager.getDataSchemaConverter());
-    xstream.registerConverter(resourceConvertersManager.getTableSchemaNameConverter());
-    xstream.registerConverter(resourceConvertersManager.getDataPackageFieldConverter());
-    // encrypt passwords
-    xstream.registerConverter(passwordEncrypter);
-
-    xstream.addDefaultImplementation(ExtensionProperty.class, Term.class);
-    xstream.registerConverter(resourceConvertersManager.getOrgConverter());
-    xstream.registerConverter(resourceConvertersManager.getJdbcInfoConverter());
   }
 
   @Override
