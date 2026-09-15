@@ -19,7 +19,6 @@ import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 
 import java.io.File;
 
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -47,7 +46,7 @@ public class MockDataDir {
   private static void setupMock() {
     // user.xml is going to be located in temp directory.
     when(dataDir.configFile(UserAccountManagerImpl.PERSISTENCE_FILE))
-      .thenReturn(new File(tempDir + File.separatorChar + UserAccountManagerImpl.PERSISTENCE_FILE));
+        .thenReturn(new File(tempDir + File.separatorChar + UserAccountManagerImpl.PERSISTENCE_FILE));
 
     // resource.xml is going to be located in temp directory: tmpDir/shortName/resource.xml
     when(dataDir.resourceFile(any(Resource.class))).thenAnswer((Answer<File>) invocation -> {
@@ -82,11 +81,11 @@ public class MockDataDir {
       File dir = new File(tempDir, shortname);
       if (dir.exists()) {
         File f = new File(dir, DataDir.PERSISTENCE_FILENAME);
-          if (f.exists()) {
-            return f;
-          }
+        if (f.exists()) {
+          return f;
         }
+      }
       return null;
-      });
+    });
   }
 }

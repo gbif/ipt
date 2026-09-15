@@ -127,8 +127,8 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
 
   @BeforeEach
   public void setup() throws Exception {
-    ResourceManagerImpl mockResourceManager = getResourceManagerImpl();
-    ResourcePublicationManagerImpl mockResourcePublicationManager = mock(ResourcePublicationManagerImpl.class);
+    ResourceManager mockResourceManager = getResourceManagerImpl();
+    ResourcePublicationManagerImpl mockResourcePublicationManager = getResourcePublicationManagerImpl(mockResourceManager);
     // prepare and add resource
     Resource resource = getNonRegisteredMetadataOnlyResource();
     // ensure resource has mandatory metadata filled in, meaning its EML validates and it has a valid publishing org
@@ -180,7 +180,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     assertEquals(BigDecimal.valueOf(3.0), resource.getEmlVersion());
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
 
-    // populate a source mapping, and assign it to resource
+    // populate a source mapping and assign it to resource
     ExtensionMapping em = new ExtensionMapping();
     Source src = new TextFileSource();
     src.setProcessing(false);
@@ -211,22 +211,22 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     assertNull(resource.getNextPublished());
     assertNull(resource.getLastPublished());
 
-    // trigger publish all again
+    // trigger publishing all again
     action.execute();
     assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
     // # of publish event failures for resource captured, should have incremented by 1
     assertEquals(2, action.resourcePublicationManager.getProcessFailures().size());
 
-    // trigger publish all again
+    // trigger publishing all again
     action.execute();
     assertTrue(action.resourcePublicationManager.hasMaxProcessFailures(resource));
     // # of publish event failures for resource captured, should have incremented by 1
     assertEquals(3, action.resourcePublicationManager.getProcessFailures().size());
 
-    // trigger publish all again
+    // trigger publishing all again
     action.execute();
     assertTrue(action.resourcePublicationManager.hasMaxProcessFailures(resource));
-    // since max failures was reached, publication not scheduled, and number of publication failures stays the same
+    // since max failures were reached, publication isn't scheduled, and number of publication failures stays the same
     assertEquals(3, action.resourcePublicationManager.getProcessFailures().size());
   }
 
@@ -297,9 +297,15 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
-        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+        mockEmailConverter,
+        mockOrganisationKeyConverter,
+        mock(ExtensionMappingConverter.class),
+        extensionRowTypeConverter,
+        conceptTermConverter,
+        mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class),
+        mock(DataPackageFieldConverter.class),
+        jdbcConverter);
 
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
@@ -319,62 +325,12 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mock(ResourceImportService.class));
   }
 
-  public ResourcePublicationManager getResourcePublicationManagerImpl() throws Exception {
+  public ResourcePublicationManagerImpl getResourcePublicationManagerImpl(ResourceManager resourceManager) throws Exception {
     // mock the cfg
     when(mockAppConfig.getBaseUrl()).thenReturn("http://localhost:7001/ipt");
     // mock resource link used as EML GUID
     when(mockAppConfig.getResourceGuid("bees")).thenReturn("http://localhost:7001/ipt/resource?id=bees");
     when(mockAppConfig.getResourceGuid("res2")).thenReturn("http://localhost:7001/ipt/resource?id=res2");
-
-    // construct ExtensionFactory using injected parameters
-    HttpClient httpClient = TestBeanProvider.provideHttpClient();
-    ThesaurusHandlingRule thesaurusRule = new ThesaurusHandlingRule(mock(VocabulariesManagerImpl.class));
-    SAXParserFactory saxf = TestBeanProvider.provideNsAwareSaxParserFactory();
-    ExtensionFactory extensionFactory = new ExtensionFactory(thesaurusRule, saxf, httpClient);
-    JdbcSupport support = TestBeanProvider.provideJdbcSupport();
-    PasswordEncrypter passwordEncrypter = new PasswordEncrypter(TestBeanProvider.providePasswordEncryption());
-    JdbcInfoConverter jdbcConverter = new JdbcInfoConverter(support);
-
-    // construct occurrence core Extension
-    InputStream occurrenceCoreIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/dwc_occurrence.xml");
-    Extension occurrenceCore = extensionFactory.build(occurrenceCoreIs);
-
-    // construct occurrence core Extension
-    InputStream eventCoreIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/dwc_event_2015-04-24.xml");
-    Extension eventCore = extensionFactory.build(eventCoreIs);
-
-    // construct simple images extension
-    InputStream simpleImageIs = ResourceManagerImplTest.class.getResourceAsStream("/extensions/simple_image.xml");
-    Extension simpleImage = extensionFactory.build(simpleImageIs);
-
-    ExtensionManager extensionManager = mock(ExtensionManager.class);
-    ExtensionsHolder extensionsHolder = mock(ExtensionsHolder.class);
-    DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
-
-    // mock ExtensionManager returning different Extensions
-    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Occurrence"))
-        .thenReturn(occurrenceCore);
-    when(extensionManager.get("http://rs.tdwg.org/dwc/terms/Event"))
-        .thenReturn(eventCore);
-    when(extensionManager.get("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord"))
-        .thenReturn(occurrenceCore);
-    when(extensionManager.get("http://rs.gbif.org/terms/1.0/Image"))
-        .thenReturn(simpleImage);
-
-    when(extensionsHolder.getExtensionsByRowtype()).thenReturn(
-        Map.ofEntries(
-            Map.entry("http://rs.tdwg.org/dwc/terms/Occurrence", occurrenceCore),
-            Map.entry("http://rs.tdwg.org/dwc/terms/Event", eventCore),
-            Map.entry("http://rs.tdwg.org/dwc/xsd/simpledarwincore/SimpleDarwinRecord", occurrenceCore),
-            Map.entry("http://rs.gbif.org/terms/1.0/Image", simpleImage)));
-
-    ExtensionRowTypeConverter extensionRowTypeConverter = new ExtensionRowTypeConverter(extensionsHolder);
-    ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
-
-    ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
-        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
@@ -382,7 +338,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     return new ResourcePublicationManagerImpl(
         mockAppConfig,
         mockedDataDir,
-        mock(ResourceManager.class),
+        resourceManager,
         mockRegistryManager,
         mockRegistrationManager,
         mockEml2Rtf,

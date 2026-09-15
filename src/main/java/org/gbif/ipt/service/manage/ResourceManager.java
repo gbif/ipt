@@ -209,10 +209,6 @@ public interface ResourceManager {
 
   /**
    * Replace the EML file in a resource by the provided file
-   *
-   * @param resource
-   * @param emlFile
-   * @param validate
    */
   void replaceEml(Resource resource, File emlFile, boolean validate) throws SAXException, ParserConfigurationException, IOException, InvalidEmlException, ImportException;
 
