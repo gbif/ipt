@@ -84,7 +84,7 @@ class PublishingMonitorTest {
           cfg,
           mock(RegistrationManager.class),
           resourceManager,
-          mock(ResourcePublicationManager.class));
+          resourcePublicationManager);
       monitor.monitorOnce();
 
       assertEquals(1, smtpServer.getMessagesReceived());
