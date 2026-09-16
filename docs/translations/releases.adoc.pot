@@ -30,7 +30,7 @@ msgstr ""
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
-msgid "The current, stable release is version <<3-3-6-september-2026,3.3.5>>."
+msgid "The current, stable release is version <<3-3-6-september-2026,3.3.6>>."
 msgstr ""
 
 #. type: delimited block =
