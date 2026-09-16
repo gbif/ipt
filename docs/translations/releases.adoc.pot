@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2026-09-10 09:03+0000\n"
+"POT-Creation-Date: 2026-09-16 09:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
-msgid "The current, stable release is version <<3-3-6-september-2026,3.3.6>>."
+msgid "The current, stable release is version <<3-3-6-september-2026,3.3.5>>."
 msgstr ""
 
 #. type: delimited block =
