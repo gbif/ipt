@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-09-10 09:03+0000\n"
-"PO-Revision-Date: 2026-09-16 09:30\n"
+"PO-Revision-Date: 2026-09-16 13:01\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -31,7 +31,7 @@ msgstr "Última versión estable"
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:7
 msgid "The current, stable release is version <<3-3-6-september-2026,3.3.6>>."
-msgstr ""
+msgstr "La versión estable actual es la <<3-3-6-septiembre-2026,3.3.6>>."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/releases.adoc:11
