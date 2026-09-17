@@ -65,8 +65,10 @@ import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
+import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataLoader;
+import org.gbif.ipt.service.manage.ResourcePersister;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -270,21 +272,28 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
 
+    ResourcePersister resourcePersister = new XStreamResourcePersister(mockResourceConvertersManager, passwordEncrypter);
+
+    ResourceLoader resourceLoader = new ResourceLoaderImpl(
+        mockAppConfig,
+        mockedDataDir,
+        extensionManager,
+        mockSchemaManager,
+        resourceTypeService,
+        resourceVersioningService,
+        resourceMetadataLoader,
+        mockSimpleTextProvider,
+        mockRegistrationManager,
+        resourcePersister);
+
     ResourceManagerImpl resourceManager = new ResourceManagerImpl(
         mockAppConfig,
         mockedDataDir,
-        mockResourceConvertersManager,
-        extensionManager,
-        mockSchemaManager,
         mockRegistryManager,
-        passwordEncrypter,
-        mockSimpleTextProvider,
-        mockRegistrationManager,
         mockMetadataReader,
         mockResourceImportService,
-        resourceVersioningService,
-        resourceTypeService,
-        resourceMetadataLoader);
+        resourceLoader,
+        resourcePersister);
 
     resourceManagerRef.set(resourceManager);
 

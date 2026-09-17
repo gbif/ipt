@@ -48,15 +48,19 @@ import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
+import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataLoader;
+import org.gbif.ipt.service.manage.ResourcePersister;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
+import org.gbif.ipt.service.manage.impl.ResourceLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceMetadataLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
+import org.gbif.ipt.service.manage.impl.XStreamResourcePersister;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.model.Agent;
@@ -309,24 +313,30 @@ public class GenerateDCATTest extends IptBaseTest {
     ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl(mockVocabulariesManager);
     MetadataReader mockMetadataReader = mock(MetadataReader.class);
     ResourceMetadataLoader resourceMetadataLoader = new ResourceMetadataLoaderImpl(mockDataDir, mockMetadataReader);
+    ResourcePersister resourcePersister = new XStreamResourcePersister(mockResourceConvertersManager, passwordEncrypter);
+
+    ResourceLoader resourceLoader = new ResourceLoaderImpl(
+        mockAppConfig,
+        mockDataDir,
+        extensionManager,
+        mockSchemaManager,
+        resourceTypeService,
+        resourceVersioningService,
+        resourceMetadataLoader,
+        mockSimpleTextProvider,
+        mockRegistrationManager,
+        resourcePersister);
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
         new ResourceManagerImpl(
             mockAppConfig,
             mockDataDir,
-            mockResourceConvertersManager,
-            extensionManager,
-            mockSchemaManager,
             mockRegistryManager,
-            passwordEncrypter,
-            mockSimpleTextProvider,
-            mockRegistrationManager,
-            mock(MetadataReader.class),
+            mockMetadataReader,
             mock(ResourceImportService.class),
-            resourceVersioningService,
-            resourceTypeService,
-            resourceMetadataLoader);
+            resourceLoader,
+            resourcePersister);
 
     // creator
     User creator = new User();

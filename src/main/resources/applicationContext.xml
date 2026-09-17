@@ -201,18 +201,11 @@
   <bean id="resourceManager" class="org.gbif.ipt.service.manage.impl.ResourceManagerImpl">
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="dataDir"/>
-    <constructor-arg ref="resourceConverterManager"/>
-    <constructor-arg ref="extensionManager"/>
-    <constructor-arg ref="dataPackageSchemaManager"/>
     <constructor-arg ref="registryManager"/>
-    <constructor-arg ref="passwordEncrypter"/>
-    <constructor-arg ref="simpleTextProvider"/>
-    <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="metadataReader"/>
     <constructor-arg ref="resourceImportService"/>
-    <constructor-arg ref="resourceVersioningService"/>
-    <constructor-arg ref="resourceTypeService"/>
-    <constructor-arg ref="resourceMetadataLoader"/>
+    <constructor-arg ref="resourceLoader"/>
+    <constructor-arg ref="xstreamResourcePersister"/>
   </bean>
 
   <bean id="resourceTypeService" class="org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl">
@@ -262,6 +255,26 @@
   <bean id="resourceMetadataLoader" class="org.gbif.ipt.service.manage.impl.ResourceMetadataLoaderImpl">
     <constructor-arg ref="dataDir"/>
     <constructor-arg ref="metadataReader"/>
+  </bean>
+
+  <bean id="resourceLoader" class="org.gbif.ipt.service.manage.impl.ResourceLoaderImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="resourceConverterManager"/>
+    <constructor-arg ref="passwordEncrypter"/>
+    <constructor-arg ref="extensionManager"/>
+    <constructor-arg ref="dataPackageSchemaManager"/>
+    <constructor-arg ref="resourceTypeService"/>
+    <constructor-arg ref="resourceVersioningService"/>
+    <constructor-arg ref="resourceMetadataLoader"/>
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="xstreamResourcePersister"/>
+  </bean>
+
+  <bean id="xstreamResourcePersister" class="org.gbif.ipt.service.manage.impl.XStreamResourcePersister">
+    <constructor-arg ref="resourceConverterManager"/>
+    <constructor-arg ref="passwordEncrypter"/>
   </bean>
 
   <bean id="vocabulariesManager" class="org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl">

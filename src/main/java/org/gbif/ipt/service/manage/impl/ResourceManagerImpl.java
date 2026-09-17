@@ -17,21 +17,12 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.model.DataPackageFieldMapping;
-import org.gbif.ipt.model.DataPackageMapping;
-import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.ExtensionMapping;
-import org.gbif.ipt.model.FileSource;
-import org.gbif.ipt.model.InferredCamtrapMetadata;
-import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.MetadataFiles;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceSummaryView;
-import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
-import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
@@ -49,17 +40,12 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.RegistryException;
-import org.gbif.ipt.service.admin.DataPackageSchemaManager;
-import org.gbif.ipt.service.admin.ExtensionManager;
-import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
+import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataLoader;
-import org.gbif.ipt.service.manage.ResourceTypeService;
-import org.gbif.ipt.service.manage.ResourceVersioningService;
+import org.gbif.ipt.service.manage.ResourcePersister;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.IptFileUtils;
@@ -72,12 +58,9 @@ import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -92,9 +75,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
 
-import com.thoughtworks.xstream.XStream;
-
-import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
@@ -105,48 +85,28 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   private final ResourceIndex resourceIndex = new ResourceIndex();
 
-  private final XStream xstream;
-
-  private final ExtensionManager extensionManager;
-  private final DataPackageSchemaManager schemaManager;
   private final RegistryManager registryManager;
-  private final SimpleTextProvider textProvider;
-  private final RegistrationManager registrationManager;
   private final MetadataReader metadataReader;
   private final ResourceImportService resourceImportService;
-  private final ResourceVersioningService resourceVersioningService;
-  private final ResourceTypeService resourceTypeService;
-  private final ResourceMetadataLoader resourceMetadataLoader;
+  private final ResourceLoader resourceLoader;
+  private final ResourcePersister resourcePersister;
 
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   public ResourceManagerImpl(
       AppConfig cfg,
       DataDir dataDir,
-      ResourceConvertersManager resourceConvertersManager,
-      ExtensionManager extensionManager,
-      DataPackageSchemaManager schemaManager,
       RegistryManager registryManager,
-      PasswordEncrypter passwordEncrypter,
-      SimpleTextProvider textProvider,
-      RegistrationManager registrationManager,
       MetadataReader metadataReader,
       ResourceImportService resourceImportService,
-      ResourceVersioningService resourceVersioningService,
-      ResourceTypeService resourceTypeService,
-      ResourceMetadataLoader resourceMetadataLoader) {
+      ResourceLoader resourceLoader,
+      ResourcePersister resourcePersister) {
     super(cfg, dataDir);
-    this.extensionManager = extensionManager;
-    this.schemaManager = schemaManager;
     this.registryManager = registryManager;
-    this.xstream = ResourceXStreamFactory.create(resourceConvertersManager, passwordEncrypter);
-    this.textProvider = textProvider;
-    this.registrationManager = registrationManager;
     this.metadataReader = metadataReader;
     this.resourceImportService = resourceImportService;
-    this.resourceVersioningService = resourceVersioningService;
-    this.resourceTypeService = resourceTypeService;
-    this.resourceMetadataLoader = resourceMetadataLoader;
+    this.resourceLoader = resourceLoader;
+    this.resourcePersister = resourcePersister;
   }
 
   private void addResource(Resource res) {
@@ -472,7 +432,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
     if (metadata instanceof CamtrapMetadata camtrapMetadata) {
       camtrapMetadata.getContributors().stream()
-          .map(contributor -> (CamtrapContributor) contributor)
           .filter(contributor -> CamtrapContributor.Role.CITATION_ROLES.contains(contributor.getRole()))
           .forEach(resourceImportService::inferNameFieldsForCamtrapContributor);
     }
@@ -605,44 +564,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @param resource resource
    */
   public void loadInferredMetadata(Resource resource) {
-    File inferredMetadataFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
-
-    if (resource.isDataPackage()) {
-      // skip non-camtrap resources
-      if (CAMTRAP_DP.equals(resource.getCoreType())) {
-        return;
-      }
-
-      // no metadata file found - initialize with an empty object
-      if (!inferredMetadataFile.exists()) {
-        resource.setInferredMetadata(new InferredCamtrapMetadata());
-        return;
-      }
-
-      // otherwise read the metadata file
-      try {
-        InputStream input = Files.newInputStream(inferredMetadataFile.toPath());
-        InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) xstream.fromXML(input);
-        resource.setInferredMetadata(inferredMetadata);
-      } catch (Exception e) {
-        LOG.error("Cannot read inferred metadata file (Camtrap) for resource {}", resource.getShortname(), e);
-        resource.setInferredMetadata(new InferredCamtrapMetadata());
-      }
-    } else {
-      if (inferredMetadataFile == null || !inferredMetadataFile.exists()) {
-        resource.setInferredMetadata(new InferredEmlMetadata());
-        return;
-      }
-
-      try {
-        InputStream input = Files.newInputStream(inferredMetadataFile.toPath());
-        InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) xstream.fromXML(input);
-        resource.setInferredMetadata(inferredMetadata);
-      } catch (Exception e) {
-        LOG.error("Cannot read inferred metadata file (EML) for resource {}", resource.getShortname(), e);
-        resource.setInferredMetadata(new InferredEmlMetadata());
-      }
-    }
+    resourceLoader.loadInferredMetadata(resource);
   }
 
   /**
@@ -671,7 +593,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @return loaded Resource
    */
   protected Resource loadFromDir(File resourceDir, @Nullable User creator) {
-    return loadFromDir(resourceDir, creator, new ActionLogger(LOG, new BaseAction(textProvider, cfg, registrationManager)));
+    return resourceLoader.load(resourceDir, creator, this::syncEmlWithResource, this::save);
   }
 
   /**
@@ -679,164 +601,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * and returns the Resource instance for the internal in memory cache.
    */
   private Resource loadFromDir(File resourceDir, @Nullable User creator, ActionLogger alog) throws InvalidConfigException {
-    if (resourceDir.exists()) {
-      // load full configuration from resource.xml and eml.xml files
-      String shortname = resourceDir.getName();
-      try {
-        File cfgFile = dataDir.resourceFile(shortname);
-        InputStream input = new FileInputStream(cfgFile);
-        Resource resource = (Resource) xstream.fromXML(input);
-
-        // populate a missing creator - it cannot be null! (this fixes issue #1309)
-        if (creator != null && resource.getCreator() == null) {
-          resource.setCreator(creator);
-          LOG.warn("On load, populated missing creator for resource: {}", shortname);
-        }
-
-        // non-existing users end up being a NULL in the set, so remove them
-        // shouldn't really happen - but people can even manually cause a mess
-        resource.getManagers().remove(null);
-
-        // 1. Non-existent Extension ends up being NULL
-        // E.g., a user is trying to import a resource from one IPT to another without all required extensions installed.
-        // 2. Auto-generating IDs are only available for Taxon core extension since IPT v2.1,
-        // therefore, if a non-Taxon core extension is using auto-generated IDs, the coreID is set to No ID (-99)
-        for (ExtensionMapping ext : resource.getMappings()) {
-          Extension x = ext.getExtension();
-          if (x == null) {
-            alog.warn("manage.resource.create.extension.null", new String[]{ext.getExtensionVerbatim()});
-            throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-existent extension");
-          } else if (extensionManager.get(x.getRowType()) == null) {
-            alog.warn("manage.resource.create.rowType.null", new String[]{x.getRowType()});
-            throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
-          }
-          // is the ExtensionMapping of core type, not taxon core type, and uses a coreIdColumn mapping?
-          if (ext.isCore() && !ext.isTaxonCore() && ext.getIdColumn() != null) {
-            if (ext.getIdColumn().equals(ExtensionMapping.IDGEN_LINE_NUMBER) || ext.getIdColumn()
-                .equals(ExtensionMapping.IDGEN_UUID)) {
-              ext.setIdColumn(ExtensionMapping.NO_ID);
-            }
-          }
-        }
-
-        // shortname persists as folder name, so xstream doesn't handle this:
-        resource.setShortname(shortname);
-
-        // infer coreType if null
-        if (resource.getCoreType() == null) {
-          resourceTypeService.inferCoreType(resource);
-        }
-
-        // standardize subtype if not null
-        if (resource.getSubtype() != null) {
-          resourceTypeService.standardizeSubtype(resource);
-        }
-
-        // add proper source file pointer
-        for (Source src : resource.getSources()) {
-          src.setResource(resource);
-          src.setProcessing(false);
-          if (src instanceof FileSource frSrc) {
-            frSrc.setFile(dataDir.sourceFile(resource, frSrc));
-          }
-        }
-
-        // pre v2.2 resources: set IdentifierStatus if null
-        if (resource.getIdentifierStatus() == null) {
-          resource.setIdentifierStatus(IdentifierStatus.UNRESERVED);
-        }
-
-        // load metadata (this must be done before trying to convert version below)
-        resourceMetadataLoader.loadMetadata(resource);
-
-        // load inferred metadata
-        loadInferredMetadata(resource);
-
-        // pre v2.2 resources: convert resource version from integer to major_version.minor_version style
-        // also convert/rename eml, rtf, and dwca versioned files also
-        if (!resource.isDataPackage()) {
-          BigDecimal converted = resourceVersioningService.convertVersion(resource);
-          if (converted != null) {
-            resourceVersioningService.updateResourceVersion(resource, resource.getMetadataVersion(), converted);
-          }
-        }
-
-        // pre v2.2 resources: construct a VersionHistory for last published version (if appropriate)
-        VersionHistory history = resourceVersioningService.constructVersionHistoryForLastPublishedVersion(resource);
-        if (history != null) {
-          resource.addVersionHistory(history);
-        }
-
-        if (!resource.isDataPackage()) {
-          // pre v2.2.1 resources: rename dwca.zip to dwca-18.0.zip (where 18.0 is the last published version for example)
-          if (resource.getLastPublishedVersionsVersion() != null) {
-            resourceVersioningService.renameDwcaToIncludeVersion(resource, resource.getLastPublishedVersionsVersion());
-          }
-
-          // update EML with the latest resource basics (version and GUID)
-          syncEmlWithResource(resource);
-        }
-
-        // clean up data package mappings (remove dangling field mappings)
-        // backfill data package version if not set
-        if (resource.isDataPackage()) {
-          cleanUpDataPackageMappings(resource);
-          backfillDataPackageVersion(resource);
-        }
-
-        LOG.debug("Read resource configuration for {}", shortname);
-        return resource;
-      } catch (Exception e) {
-        LOG.error("Cannot read resource configuration for {}", shortname, e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-            "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Remove field mappings from mappings that do not reference any actual fields.
-   * <ol>
-   *   <li>Only an index is present, but references no field</li>
-   *   <li>Both index and field are absent</li>
-   * </ol>
-   *
-   * @param resource resource
-   */
-  private void cleanUpDataPackageMappings(Resource resource) {
-    for (DataPackageMapping dpm : resource.getDataPackageMappings()) {
-      dpm.getFields().removeIf(f -> onlyFieldIndexPresent(f) || emptyMapping(f));
-    }
-  }
-
-  /**
-   * Backfill the data package version if not set.
-   *
-   * @param resource resource
-   */
-  private void backfillDataPackageVersion(Resource resource) {
-    if (resource.getDataPackageVersion() == null) {
-      String identifier = resource.getDataPackageIdentifier();
-      String installedVersion = schemaManager.getVersion(identifier);
-      if (installedVersion != null) {
-        resource.setDataPackageVersion(installedVersion);
-        save(resource);
-        LOG.warn("Backfilled dataPackageVersion={} for resource {} (schema {})",
-            installedVersion, resource.getShortname(), identifier);
-      } else {
-        LOG.error("Could not backfill dataPackageVersion for resource {}: schema {} not installed",
-            resource.getShortname(), identifier);
-      }
-    }
-  }
-
-  private boolean onlyFieldIndexPresent(DataPackageFieldMapping dpfm) {
-    return dpfm.getIndex() != null && dpfm.getField() == null && StringUtils.isEmpty(dpfm.getDefaultValue());
-  }
-
-  private boolean emptyMapping(DataPackageFieldMapping dpfm) {
-    return dpfm.getIndex() == null && dpfm.getField() == null && StringUtils.isEmpty(dpfm.getDefaultValue());
+    return resourceLoader.load(resourceDir, creator, alog, this::syncEmlWithResource, this::save);
   }
 
   @Override
@@ -847,7 +612,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       FileUtils.forceMkdir(cfgFile.getParentFile());
       // persist data
       try (Writer writer = IptFileUtils.startNewUtf8File(cfgFile)) {
-        xstream.toXML(resource, writer);
+        resourcePersister.save(resource, writer);
         // add to internal map
         addResource(resource);
       }
@@ -869,7 +634,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       FileUtils.forceMkdir(cfgFile.getParentFile());
       // persist data
       writer = IptFileUtils.startNewUtf8File(cfgFile);
-      xstream.toXML(resource.getInferredMetadata(), writer);
+      resourcePersister.saveInferredMetadata(resource.getInferredMetadata(), writer);
     } catch (IOException e) {
       LOG.error(e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write inferred metadata file");

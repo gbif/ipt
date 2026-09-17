@@ -56,19 +56,23 @@ import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
+import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataLoader;
+import org.gbif.ipt.service.manage.ResourcePersister;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
+import org.gbif.ipt.service.manage.impl.ResourceLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceMetadataLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
 import org.gbif.ipt.service.manage.impl.SourceManagerImpl;
+import org.gbif.ipt.service.manage.impl.XStreamResourcePersister;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
@@ -539,8 +543,9 @@ public class GenerateDwcaTest extends IptBaseTest {
 
     Provider<ResourceManager> resourceManagerProvider = mock(Provider.class);
     when(resourceManagerProvider.get()).thenAnswer(invocation -> resourceManagerRef.get());
+    ResourcePersister resourcePersister = new XStreamResourcePersister(mockResourceConvertersManager, passwordEncrypter);
 
-    ResourceImportService mockResourceImportService = new ResourceImportServiceImpl(
+    ResourceImportService resourceImportService = new ResourceImportServiceImpl(
         mockDataDir,
         mockSourceManager,
         extensionManager,
@@ -548,22 +553,27 @@ public class GenerateDwcaTest extends IptBaseTest {
         mockMetadataReader,
         resourceManagerProvider);
 
+    ResourceLoader resourceLoader = new ResourceLoaderImpl(
+        mockAppConfig,
+        mockDataDir,
+        extensionManager,
+        mockSchemaManager,
+        resourceTypeService,
+        resourceVersioningService,
+        resourceMetadataLoader,
+        mockSimpleTextProvider,
+        mockRegistrationManager,
+        resourcePersister);
+
     ResourceManagerImpl resourceManager =
         new ResourceManagerImpl(
             mockAppConfig,
             mockDataDir,
-            mockResourceConvertersManager,
-            extensionManager,
-            mockSchemaManager,
             mockRegistryManager,
-            passwordEncrypter,
-            mockSimpleTextProvider,
-            mockRegistrationManager,
             mockMetadataReader,
-            mockResourceImportService,
-            resourceVersioningService,
-            resourceTypeService,
-            resourceMetadataLoader);
+            resourceImportService,
+            resourceLoader,
+            resourcePersister);
 
     resourceManagerRef.set(resourceManager);
 
