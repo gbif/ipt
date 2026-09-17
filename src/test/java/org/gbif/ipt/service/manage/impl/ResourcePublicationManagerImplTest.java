@@ -58,6 +58,7 @@ import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
+import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
@@ -850,6 +851,8 @@ public class ResourcePublicationManagerImplTest {
 
     ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockedDataDir);
     ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl(mock(VocabulariesManager.class));
+    MetadataReader mockMetadataReader = mock(MetadataReader.class);
+    ResourceMetadataLoader resourceMetadataLoader = new ResourceMetadataLoaderImpl(mockedDataDir, mockMetadataReader);
 
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
@@ -862,7 +865,7 @@ public class ResourcePublicationManagerImplTest {
         mock(SourceManager.class),
         extensionManager,
         mockSchemaManager,
-        mock(MetadataReader.class),
+        mockMetadataReader,
         resourceManagerProvider);
 
     // mock finding dwca.zip file that does not exist
@@ -878,10 +881,11 @@ public class ResourcePublicationManagerImplTest {
         passwordEncrypter,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(MetadataReader.class),
+        mockMetadataReader,
         mockResourceImportService,
         resourceVersioningService,
-        resourceTypeService);
+        resourceTypeService,
+        resourceMetadataLoader);
 
     resourceManagerRef.set(resourceManager);
 

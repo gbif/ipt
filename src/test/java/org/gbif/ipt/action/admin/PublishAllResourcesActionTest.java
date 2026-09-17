@@ -56,6 +56,7 @@ import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
+import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
@@ -64,6 +65,7 @@ import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImplTest;
+import org.gbif.ipt.service.manage.impl.ResourceMetadataLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
@@ -327,13 +329,16 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     jakarta.inject.Provider<ResourceManager> resourceManagerProvider = mock(Provider.class);
     when(resourceManagerProvider.get()).thenAnswer(invocation -> resourceManagerRef.get());
 
+    MetadataReader mockMetadataReader = mock(MetadataReader.class);
     ResourceImportService mockResourceImportService = new ResourceImportServiceImpl(
         mockedDataDir,
         mockSourceManager,
         extensionManager,
         mockSchemaManager,
-        mock(MetadataReader.class),
+        mockMetadataReader,
         resourceManagerProvider);
+
+    ResourceMetadataLoader resourceMetadataLoader = new ResourceMetadataLoaderImpl(mockedDataDir, mockMetadataReader);
 
     ResourceManagerImpl resourceManager = new ResourceManagerImpl(
         mockAppConfig,
@@ -345,10 +350,11 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         passwordEncrypter,
         mockSimpleTextProvider,
         mockRegistrationManager,
-        mock(MetadataReader.class),
+        mockMetadataReader,
         mockResourceImportService,
         resourceVersioningService,
-        resourceTypeService);
+        resourceTypeService,
+        resourceMetadataLoader);
 
     resourceManagerRef.set(resourceManager);
 

@@ -54,11 +54,13 @@ import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
+import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourceMetadataLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
@@ -256,12 +258,9 @@ public class GenerateDwcaIT extends IptBaseTest {
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
-    GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-    Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
-
 
     // construct ExtensionFactory using injected parameters
     HttpClient httpClient = TestBeanProvider.provideHttpClient();
@@ -311,12 +310,20 @@ public class GenerateDwcaIT extends IptBaseTest {
     when(mockAppConfig.isArchivalMode()).thenReturn(true);
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
-        new ConceptTermConverter(extensionRowTypeConverter), mock(DataPackageIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+        mockEmailConverter,
+        mockOrganisationKeyConverter,
+        mock(ExtensionMappingConverter.class),
+        extensionRowTypeConverter,
+        conceptTermConverter,
+        mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class),
+        mock(DataPackageFieldConverter.class),
+        jdbcConverter);
 
     ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockDataDir);
     ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl(mockVocabulariesManager);
+    MetadataReader mockMetadataReader = mock(MetadataReader.class);
+    ResourceMetadataLoader resourceMetadataLoader = new ResourceMetadataLoaderImpl(mockDataDir, mockMetadataReader);
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
@@ -330,10 +337,11 @@ public class GenerateDwcaIT extends IptBaseTest {
             passwordEncrypter,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class),
+            mockMetadataReader,
             mock(ResourceImportService.class),
             resourceVersioningService,
-            resourceTypeService);
+            resourceTypeService,
+            resourceMetadataLoader);
 
     // create a new resource.
     // create user

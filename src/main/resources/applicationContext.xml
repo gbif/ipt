@@ -212,6 +212,7 @@
     <constructor-arg ref="resourceImportService"/>
     <constructor-arg ref="resourceVersioningService"/>
     <constructor-arg ref="resourceTypeService"/>
+    <constructor-arg ref="resourceMetadataLoader"/>
   </bean>
 
   <bean id="resourceTypeService" class="org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl">
@@ -256,6 +257,11 @@
 
   <bean id="resourceVersioningService" class="org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl">
     <constructor-arg ref="dataDir"/>
+  </bean>
+
+  <bean id="resourceMetadataLoader" class="org.gbif.ipt.service.manage.impl.ResourceMetadataLoaderImpl">
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="metadataReader"/>
   </bean>
 
   <bean id="vocabulariesManager" class="org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl">

@@ -57,12 +57,14 @@ import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourceMetadataLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourcePublicationManagerImpl;
 import org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
@@ -517,12 +519,20 @@ public class GenerateDwcaTest extends IptBaseTest {
     mockSourceManager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir, mock(FileStoreManager.class));
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
-        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+        mockEmailConverter,
+        mockOrganisationKeyConverter,
+        mock(ExtensionMappingConverter.class),
+        extensionRowTypeConverter,
+        conceptTermConverter,
+        mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class),
+        mock(DataPackageFieldConverter.class),
+        jdbcConverter);
 
     ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockDataDir);
     ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl(mockVocabulariesManager);
+    MetadataReader mockMetadataReader = mock(MetadataReader.class);
+    ResourceMetadataLoader resourceMetadataLoader = new ResourceMetadataLoaderImpl(mockDataDir, mockMetadataReader);
 
     // a reference to the resource manager, the manager is created in the end
     AtomicReference<ResourceManager> resourceManagerRef = new AtomicReference<>();
@@ -535,7 +545,7 @@ public class GenerateDwcaTest extends IptBaseTest {
         mockSourceManager,
         extensionManager,
         mockSchemaManager,
-        mock(MetadataReader.class),
+        mockMetadataReader,
         resourceManagerProvider);
 
     ResourceManagerImpl resourceManager =
@@ -549,10 +559,11 @@ public class GenerateDwcaTest extends IptBaseTest {
             passwordEncrypter,
             mockSimpleTextProvider,
             mockRegistrationManager,
-            mock(MetadataReader.class),
+            mockMetadataReader,
             mockResourceImportService,
             resourceVersioningService,
-            resourceTypeService);
+            resourceTypeService,
+            resourceMetadataLoader);
 
     resourceManagerRef.set(resourceManager);
 

@@ -55,6 +55,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -99,7 +100,6 @@ import org.xml.sax.SAXException;
 import com.thoughtworks.xstream.XStream;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
@@ -124,6 +124,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private final ResourceImportService resourceImportService;
   private final ResourceVersioningService resourceVersioningService;
   private final ResourceTypeService resourceTypeService;
+  private final ResourceMetadataLoader resourceMetadataLoader;
 
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -140,7 +141,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       MetadataReader metadataReader,
       ResourceImportService resourceImportService,
       ResourceVersioningService resourceVersioningService,
-      ResourceTypeService resourceTypeService) {
+      ResourceTypeService resourceTypeService,
+      ResourceMetadataLoader resourceMetadataLoader) {
     super(cfg, dataDir);
     this.extensionManager = extensionManager;
     this.schemaManager = schemaManager;
@@ -152,6 +154,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     this.resourceImportService = resourceImportService;
     this.resourceVersioningService = resourceVersioningService;
     this.resourceTypeService = resourceTypeService;
+    this.resourceMetadataLoader = resourceMetadataLoader;
   }
 
   private void addResource(Resource res) {
@@ -675,72 +678,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   /**
-   * Loads a resource's metadata from its eml.xml file located inside its resource directory. If no eml.xml file was
-   * found, the resource is loaded with an empty EML instance.
-   *
-   * @param resource resource
-   */
-  private void loadEml(Resource resource) {
-    File emlFile = dataDir.resourceEmlFile(resource.getShortname());
-    // load resource metadata, use US Locale to interpret it because uses '.' for decimal separator
-    Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
-    resource.setEml(eml);
-  }
-
-  /**
-   * Loads a resource's metadata from its datapackage.json (for frictionless) or metadata.yaml (for ColDP) file located
-   * inside its resource directory.
-   * If no file was found, the resource is loaded with an empty metadata class instance.
-   *
-   * @param resource resource
-   */
-  private void loadDatapackageMetadata(Resource resource) {
-    DataPackageMetadata metadata;
-
-    if (CAMTRAP_DP.equals(resource.getCoreType())) {
-      metadata = new CamtrapMetadata();
-    } else if (COL_DP.equals(resource.getCoreType())) {
-      metadata = new ColMetadata();
-    } else {
-      metadata = new FrictionlessMetadata<>();
-    }
-
-    File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-    if (metadataFile.exists() && !metadataFile.isDirectory()) {
-      try {
-        metadata = metadataReader.readValue(metadataFile, metadataClassForType(resource.getCoreType()));
-      } catch (IOException e) {
-        LOG.error("Failed to read resource metadata {}", resource.getShortname());
-        LOG.error(e);
-        throw new RuntimeException(e);
-      }
-    } else {
-      if (metadata instanceof FrictionlessMetadata) {
-        ((FrictionlessMetadata<?, ?, ?>) metadata).setName(resource.getShortname());
-      }
-    }
-
-    resource.setDataPackageMetadata(metadata);
-  }
-
-  private void loadMetadata(Resource resource) {
-    if (resource.isDataPackage() && resource.isDwcDp()) {
-      loadDatapackageMetadata(resource);
-      loadEml(resource);
-    } else if (resource.isDataPackage()) {
-      loadDatapackageMetadata(resource);
-    } else {
-      loadEml(resource);
-    }
-  }
-
-  /**
-   * Loads a resource's inferred metadata from the xml file located inside its resource directory.
+   * Loads a resource's inferred metadata from the XML file located inside its resource directory.
    * If no inferredMetadata.xml file was found, the resource is loaded with an empty InferredMetadata instance.
    *
    * @param resource resource
    */
-  private void loadInferredMetadata(Resource resource) {
+  public void loadInferredMetadata(Resource resource) {
     File inferredMetadataFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
 
     if (resource.isDataPackage()) {
@@ -883,7 +826,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         }
 
         // load metadata (this must be done before trying to convert version below)
-        loadMetadata(resource);
+        resourceMetadataLoader.loadMetadata(resource);
 
         // load inferred metadata
         loadInferredMetadata(resource);
@@ -1086,7 +1029,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * Try to add/update/remove KeywordSet for dataset type and subtype.
    *
    * @param resource resource
-   * @return resource whose Eml list of KeywordSet has been updated depending on presence of dataset type or subtype
+   * @return resource whose Eml list of KeywordSet has been updated depending on the presence of a dataset type or subtype
    */
   private Resource updateKeywordsWithDatasetTypeAndSubtype(Resource resource) {
     Eml eml = resource.getEml();

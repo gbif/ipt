@@ -49,10 +49,12 @@ import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
+import org.gbif.ipt.service.manage.impl.ResourceMetadataLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -228,7 +230,7 @@ public class GenerateDCATTest extends IptBaseTest {
   }
 
   /**
-   * Generates a test Resource from zipped resource folder, and populates resource with license, contacts, etc.
+   * Generates a test Resource from the zipped resource folder and populates the resource with license, contacts, etc.
    *
    * @param resourceXML resource (XML) configuration file defining column mapping of sourceFile
    * @return test Resource
@@ -238,8 +240,6 @@ public class GenerateDCATTest extends IptBaseTest {
     UserEmailConverter mockEmailConverter = new UserEmailConverter(mockUserAccountManager);
     OrganisationKeyConverter mockOrganisationKeyConverter = new OrganisationKeyConverter(mockRegistrationManager);
     RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
-    GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-    Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
     VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
     SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
     BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
@@ -295,12 +295,20 @@ public class GenerateDCATTest extends IptBaseTest {
     when(mockDataDir.tmpDir()).thenReturn(tmpDataDir);
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
-        conceptTermConverter, mock(DataPackageIdentifierConverter.class),
-        mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
+        mockEmailConverter,
+        mockOrganisationKeyConverter,
+        mock(ExtensionMappingConverter.class),
+        extensionRowTypeConverter,
+        conceptTermConverter,
+        mock(DataPackageIdentifierConverter.class),
+        mock(TableSchemaNameConverter.class),
+        mock(DataPackageFieldConverter.class),
+        jdbcConverter);
 
     ResourceVersioningService resourceVersioningService = new ResourceVersioningServiceImpl(mockDataDir);
     ResourceTypeService resourceTypeService = new ResourceTypeServiceImpl(mockVocabulariesManager);
+    MetadataReader mockMetadataReader = mock(MetadataReader.class);
+    ResourceMetadataLoader resourceMetadataLoader = new ResourceMetadataLoaderImpl(mockDataDir, mockMetadataReader);
 
     // create ResourceManagerImpl
     ResourceManagerImpl resourceManager =
@@ -317,7 +325,8 @@ public class GenerateDCATTest extends IptBaseTest {
             mock(MetadataReader.class),
             mock(ResourceImportService.class),
             resourceVersioningService,
-            resourceTypeService);
+            resourceTypeService,
+            resourceMetadataLoader);
 
     // creator
     User creator = new User();
