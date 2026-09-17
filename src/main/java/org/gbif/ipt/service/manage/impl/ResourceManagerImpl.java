@@ -59,7 +59,6 @@ import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.EmlUtils;
@@ -80,15 +79,11 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -108,10 +103,7 @@ import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceManagerImpl extends BaseManager implements ResourceManager {
 
-  // key=shortname in lower case, value=resource
-  private final Map<String, Resource> resources = new HashMap<>();
-  // simplified resources for home page (metadata from last published version!)
-  private final Map<String, ResourceSummaryView> publishedPublicResourceSummaries = new HashMap<>();
+  private final ResourceIndex resourceIndex = new ResourceIndex();
 
   private final XStream xstream;
 
@@ -158,7 +150,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   private void addResource(Resource res) {
-    resources.put(res.getShortname().toLowerCase(), res);
+    resourceIndex.put(res);
     // add only public/registered resources with at least one published version
     try {
       if (!res.getVersionHistory().isEmpty()) {
@@ -166,7 +158,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
         if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
             !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
             latestVersion.getReleased() != null) {
-          publishedPublicResourceSummaries.put(res.getShortname(), toResourceSummaryViewReconstructed(res));
+          resourceIndex.putPublishedPublicSummary(res.getShortname(), toResourceSummaryViewReconstructed(res));
         }
       }
     } catch (Exception e) {
@@ -181,21 +173,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   @Override
   public void updateOrganisationNameForResources(UUID organisationKey, String organisationName, String organisationAlias) {
-    resources.values().stream()
-        .filter(r -> r.getOrganisation() != null)
-        .filter(r -> r.getOrganisation().getKey() != null)
-        .filter(r -> r.getOrganisation().getKey().equals(organisationKey))
-        .forEach(r -> {
-          r.getOrganisation().setAlias(organisationAlias);
-          r.getOrganisation().setName(organisationName);
-        });
-    publishedPublicResourceSummaries.values().stream()
-        .filter(r -> r.getOrganisationKey() != null)
-        .filter(r -> r.getOrganisationKey().equals(organisationKey))
-        .forEach(r -> {
-          r.setOrganisationName(organisationName);
-          r.setOrganisationAlias(organisationAlias);
-        });
+    resourceIndex.updateOrganisationName(organisationKey, organisationName, organisationAlias);
   }
 
   /**
@@ -354,7 +332,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     try {
 
       // shortname supplied is unique?
-      if (resources.containsKey(shortname)) {
+      if (resourceIndex.contains(shortname)) {
         throw new AlreadyExistingException();
       }
 
@@ -514,8 +492,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     // remove from data dir
     FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
     // remove object
-    resources.remove(resource.getShortname().toLowerCase());
-    publishedPublicResourceSummaries.remove(resource.getShortname().toLowerCase());
+    resourceIndex.remove(resource.getShortname());
   }
 
   @Override
@@ -534,17 +511,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     if (remove) {
       FileUtils.forceDelete(dataDir.resourceFile(resource, ""));
       // remove object
-      resources.remove(resource.getShortname().toLowerCase());
-      publishedPublicResourceSummaries.remove(resource.getShortname().toLowerCase());
+      resourceIndex.remove(resource.getShortname());
     }
   }
 
   @Override
   public Resource get(String shortname) {
-    if (shortname == null) {
-      return null;
-    }
-    return resources.get(shortname.toLowerCase());
+    return resourceIndex.get(shortname);
   }
 
   @Override
@@ -555,94 +528,42 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   @Override
   public List<Resource> latest(int startPage, int pageSize) {
-    List<Resource> resourceList = new ArrayList<>();
-    for (Resource r : resources.values()) {
-      VersionHistory latestVersion = r.getLastPublishedVersion();
-      if (latestVersion != null) {
-        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
-            !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE)) {
-          resourceList.add(r);
-        }
-      }
-    }
-    resourceList.sort((r1, r2) -> {
-      if (r1 == null || r1.getModified() == null) {
-        return 1;
-      }
-      if (r2 == null || r2.getModified() == null) {
-        return -1;
-      }
-      if (r1.getModified().before(r2.getModified())) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
-    return resourceList;
+    return resourceIndex.latest(startPage, pageSize);
   }
 
   @Override
   public List<Resource> list() {
-    return new ArrayList<>(resources.values());
+    return resourceIndex.list();
   }
 
   @Override
   public List<ResourceSummaryView> listPublishedPublicResourceSummaries() {
-    return new ArrayList<>(publishedPublicResourceSummaries.values());
+    return resourceIndex.listPublishedPublicResourceSummaries();
   }
 
   @Override
   public List<Resource> list(String type) {
-    return resources.values().stream()
-        .filter(res -> type.equals(res.getCoreType()))
-        .collect(Collectors.toList());
+    return resourceIndex.list(type);
   }
 
   @Override
   public List<Resource> list(PublicationStatus status) {
-    List<Resource> result = new ArrayList<>();
-    for (Resource r : resources.values()) {
-      if (r.getStatus() == status) {
-        result.add(r);
-      }
-    }
-    return result;
+    return resourceIndex.list(status);
   }
 
   @Override
   public List<Resource> listPublishedPublicVersions() {
-    List<Resource> result = new ArrayList<>();
-    for (Resource r : resources.values()) {
-      List<VersionHistory> history = r.getVersionHistory();
-      if (!history.isEmpty()) {
-        VersionHistory latestVersion = history.get(0);
-        if (!latestVersion.getPublicationStatus().equals(PublicationStatus.DELETED) &&
-            !latestVersion.getPublicationStatus().equals(PublicationStatus.PRIVATE) &&
-            latestVersion.getReleased() != null) {
-          result.add(r);
-        }
-      } else if (r.isRegistered()) { // for backwards compatibility with resources published prior to v2.2
-        result.add(r);
-      }
-    }
-    return result;
+    return resourceIndex.listPublishedPublicVersions();
   }
 
   @Override
   public List<Resource> list(User user) {
-    List<Resource> result = new ArrayList<>();
-    // select based on user rights - for testing return all resources for now
-    for (Resource res : resources.values()) {
-      if (RequireManagerInterceptor.isAuthorized(user, res)) {
-        result.add(res);
-      }
-    }
-    return result;
+    return resourceIndex.list(user);
   }
 
   @Override
   public int load(File resourcesDir, User creator) {
-    resources.clear();
+    resourceIndex.clear();
     int counter = 0;
     int counterDeleted = 0;
     File[] files = resourcesDir.listFiles();
@@ -725,11 +646,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   /**
-   * Change resource status to REGISTERED and update organization.
+   * Change resource status to REGISTERED and update the organization.
    */
   @Override
   public void updateStoredResources(Resource resource) {
-    ResourceSummaryView resourceSummaryView = publishedPublicResourceSummaries.get(resource.getShortname());
+    ResourceSummaryView resourceSummaryView = resourceIndex.getPublishedPublicSummary(resource.getShortname());
     if (resourceSummaryView != null) {
       resourceSummaryView.setStatus(PublicationStatus.REGISTERED);
       resourceSummaryView.setOrganisationAlias(resource.getOrganisationAlias());
@@ -739,7 +660,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   @Override
   public void removePublishedPublicVersion(String shortname) {
-    publishedPublicResourceSummaries.remove(shortname);
+    resourceIndex.removePublishedPublicSummary(shortname);
   }
 
   /**
