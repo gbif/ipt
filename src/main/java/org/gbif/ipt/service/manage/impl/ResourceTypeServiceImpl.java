@@ -18,6 +18,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceTypeService;
 
+import jakarta.inject.Inject;
 import java.util.Locale;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 
   private final VocabulariesManager vocabManager;
 
+  @Inject
   public ResourceTypeServiceImpl(VocabulariesManager vocabManager) {
     this.vocabManager = vocabManager;
   }

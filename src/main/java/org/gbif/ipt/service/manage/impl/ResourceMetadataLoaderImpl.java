@@ -24,6 +24,7 @@ import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.metadata.eml.ipt.model.Eml;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -42,7 +43,10 @@ public class ResourceMetadataLoaderImpl implements ResourceMetadataLoader {
   private final DataDir dataDir;
   private final MetadataReader metadataReader;
 
-  public ResourceMetadataLoaderImpl(DataDir dataDir, MetadataReader metadataReader) {
+  @Inject
+  public ResourceMetadataLoaderImpl(
+      DataDir dataDir,
+      MetadataReader metadataReader) {
     this.dataDir = dataDir;
     this.metadataReader = metadataReader;
   }

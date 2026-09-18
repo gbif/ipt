@@ -93,6 +93,8 @@ import javax.annotation.Nullable;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import jakarta.inject.Inject;
 import jakarta.inject.Provider;
 import jakarta.validation.constraints.NotNull;
 
@@ -133,9 +135,14 @@ public class ResourceImportServiceImpl implements ResourceImportService {
   private final MetadataReader metadataReader;
   private final Provider<ResourceManager> resourceManagerProvider;
 
-  public ResourceImportServiceImpl(DataDir dataDir, SourceManager sourceManager, ExtensionManager extensionManager,
-                                   DataPackageSchemaManager schemaManager, MetadataReader metadataReader,
-                                   Provider<ResourceManager> resourceManagerProvider) {
+  @Inject
+  public ResourceImportServiceImpl(
+      DataDir dataDir,
+      SourceManager sourceManager,
+      ExtensionManager extensionManager,
+      DataPackageSchemaManager schemaManager,
+      MetadataReader metadataReader,
+      Provider<ResourceManager> resourceManagerProvider) {
     this.dataDir = dataDir;
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
@@ -743,10 +750,10 @@ public class ResourceImportServiceImpl implements ResourceImportService {
    * metadata is attached to the resource), or the declared resources will no longer be readable.
    *
    * @param metadata the parsed data package metadata; only {@link FrictionlessMetadata} instances
-   *                  are currently supported
+   *                 are currently supported
    * @return a map of declared filename to Frictionless resource name, or an empty map if
-   *         {@code metadata} is not a {@link FrictionlessMetadata}, has no {@code resources} entry,
-   *         or the entry is not in the expected shape
+   * {@code metadata} is not a {@link FrictionlessMetadata}, has no {@code resources} entry,
+   * or the entry is not in the expected shape
    */
   private Map<String, String> extractDeclaredResources(DataPackageMetadata metadata) {
     if (metadata instanceof FrictionlessMetadata fm) {
@@ -792,7 +799,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
    *
    * @param packageFiles all files found in the package
    * @return the metadata {@link File} to parse, or {@code null} if the package contains neither a
-   *         COL DP nor a Frictionless metadata file
+   * COL DP nor a Frictionless metadata file
    */
   private File findMetadataFile(List<File> packageFiles) {
     File frictionless = null;
@@ -817,10 +824,10 @@ public class ResourceImportServiceImpl implements ResourceImportService {
    * {@code datapackage.json} are treated as extraneous and skipped, with a warning logged, since
    * their presence likely indicates an incomplete or broken package.
    *
-   * @param file the candidate package file
+   * @param file              the candidate package file
    * @param declaredResources filenames declared as resources in the package metadata; expected to
-   *                           be non-empty, since packages with no declared resources are rejected
-   *                           before this method is called
+   *                          be non-empty, since packages with no declared resources are rejected
+   *                          before this method is called
    * @return {@code true} if {@code file} is declared as a resource in the package metadata
    */
   private boolean isTabularSource(File file, File packageRoot, Set<String> declaredResources) {

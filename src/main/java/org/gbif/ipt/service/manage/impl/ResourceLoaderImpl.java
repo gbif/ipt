@@ -41,6 +41,7 @@ import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.ActionLogger;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -81,6 +82,7 @@ public class ResourceLoaderImpl implements ResourceLoader {
   private final RegistrationManager registrationManager;
   private final ResourcePersister resourcePersister;
 
+  @Inject
   public ResourceLoaderImpl(
       AppConfig cfg,
       DataDir dataDir,

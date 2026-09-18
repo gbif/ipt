@@ -112,6 +112,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.zip.ZipFile;
 
+import jakarta.inject.Inject;
 import jakarta.mail.MessagingException;
 import jakarta.validation.constraints.NotNull;
 
@@ -137,7 +138,6 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   private static final int MAX_PROCESS_FAILURES = 3;
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-
   private final ResourceManager resourceManager;
   private final RegistryManager registryManager;
   private final RegistrationManager registrationManager;
@@ -159,13 +159,18 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   private final List<String> resourcesToSkip = new CopyOnWriteArrayList<>();
   private final Set<String> resourcesToNotifyPublicationFailure = ConcurrentHashMap.newKeySet();
 
-  public ResourcePublicationManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-                                        RegistryManager registryManager, RegistrationManager registrationManager,
-                                        Eml2Rtf eml2Rtf, GenerateDwcaFactory dwcaFactory,
-                                        GenerateDataPackageFactory dataPackageFactory,
-                                        GenerateDarwinCoreDataPackageFactory dwcDpFactory,
-                                        SimpleTextProvider textProvider,
-                                        ResourceMetadataInferringService resourceMetadataInferringService) {
+  @Inject
+  public ResourcePublicationManagerImpl(
+      AppConfig cfg, DataDir dataDir,
+      ResourceManager resourceManager,
+      RegistryManager registryManager,
+      RegistrationManager registrationManager,
+      Eml2Rtf eml2Rtf,
+      GenerateDwcaFactory dwcaFactory,
+      GenerateDataPackageFactory dataPackageFactory,
+      GenerateDarwinCoreDataPackageFactory dwcDpFactory,
+      SimpleTextProvider textProvider,
+      ResourceMetadataInferringService resourceMetadataInferringService) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     this.registryManager = registryManager;

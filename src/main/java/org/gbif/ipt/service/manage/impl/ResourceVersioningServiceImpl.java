@@ -23,6 +23,7 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -35,6 +36,7 @@ public class ResourceVersioningServiceImpl implements ResourceVersioningService 
 
   private final DataDir dataDir;
 
+  @Inject
   public ResourceVersioningServiceImpl(DataDir dataDir) {
     this.dataDir = dataDir;
   }

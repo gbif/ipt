@@ -57,6 +57,7 @@ import org.gbif.metadata.eml.ipt.model.KeywordSet;
 import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.CompressionUtil.UnsupportedCompressionType;
 
+import jakarta.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
@@ -93,6 +94,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
+  @Inject
   public ResourceManagerImpl(
       AppConfig cfg,
       DataDir dataDir,

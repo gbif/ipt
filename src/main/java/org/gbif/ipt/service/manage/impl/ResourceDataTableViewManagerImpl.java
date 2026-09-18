@@ -34,6 +34,7 @@ import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
 
+import jakarta.inject.Inject;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,9 +59,14 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
   private final DataPackageSchemaManager schemaManager;
   private final SimpleTextProvider textProvider;
 
-  public ResourceDataTableViewManagerImpl(AppConfig cfg, DataDir dataDir, ResourceManager resourceManager,
-                                          VocabulariesManager vocabManager, DataPackageSchemaManager schemaManager,
-                                          SimpleTextProvider textProvider) {
+  @Inject
+  public ResourceDataTableViewManagerImpl(
+      AppConfig cfg,
+      DataDir dataDir,
+      ResourceManager resourceManager,
+      VocabulariesManager vocabManager,
+      DataPackageSchemaManager schemaManager,
+      SimpleTextProvider textProvider) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     this.vocabManager = vocabManager;

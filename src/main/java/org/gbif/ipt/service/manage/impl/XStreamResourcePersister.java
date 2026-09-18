@@ -20,6 +20,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.service.manage.ResourcePersister;
 
+import jakarta.inject.Inject;
 import java.io.InputStream;
 import java.io.Writer;
 
@@ -29,6 +30,7 @@ public class XStreamResourcePersister implements ResourcePersister {
 
   private final XStream xstream;
 
+  @Inject
   public XStreamResourcePersister(
       ResourceConvertersManager resourceConvertersManager,
       PasswordEncrypter passwordEncrypter) {

@@ -70,9 +70,19 @@ public class ConfigManagerImplTest extends IptBaseTest {
     client = HttpUtil.newMultithreadedClient(1000, 1, 1);
     appConfig = new AppConfig(mockedDataDir);
 
-    return new ConfigManagerImpl(mockedDataDir, appConfig, mockedUserManager, mockedResourceManager,
-        mockedExtensionManager, mockedVocabularies, mockedSchemaManager, mockedRegistrationManager, warnings, client,
-        mockPublishingMonitor, mockExtensionMonitor);
+    return new ConfigManagerImpl(
+        mockedDataDir,
+        appConfig,
+        mockedUserManager,
+        mockedResourceManager,
+        mockedExtensionManager,
+        mockedVocabularies,
+        mockedSchemaManager,
+        mockedRegistrationManager,
+        warnings,
+        client,
+        mockPublishingMonitor,
+        mockExtensionMonitor);
   }
 
   /**
