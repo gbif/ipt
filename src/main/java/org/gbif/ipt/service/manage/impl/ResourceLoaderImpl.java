@@ -33,6 +33,7 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceLoadCallbacks;
 import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourcePersister;
@@ -47,7 +48,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
-import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,8 +64,8 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
  * This class owns no in-memory index and does not decide when a resource is persisted; where the
  * original logic needed to sync EML fields or save the resource back to disk as a side effect of
  * loading (see {@link #backfillDataPackageVersion}), those are delegated back to the owning manager
- * via the {@code emlSyncer}/{@code resourceSaver} callbacks passed in at construction, to avoid this
- * class depending on {@code ResourceManagerImpl} directly.
+ * via the callbacks passed as arguments, to avoid this class depending on {@code ResourceManagerImpl}
+ * directly.
  */
 public class ResourceLoaderImpl implements ResourceLoader {
 
@@ -107,19 +107,17 @@ public class ResourceLoaderImpl implements ResourceLoader {
   }
 
   /**
-   * Calls {@link #load(File, User, ActionLogger, Consumer, Consumer)}, inserting a new instance of ActionLogger.
+   * Calls {@link #load(File, User, ActionLogger, ResourceLoadCallbacks)}, inserting a new instance of ActionLogger.
    *
-   * @param resourceDir   resource directory
-   * @param creator       User that created resource (only used to populate creator when missing)
-   * @param emlSyncer     called on a non-data-package resource after a load, to sync its EML version/GUID/keywords
-   *                      with the resource's current state (currently {@code ResourceManagerImpl::syncEmlWithResource})
-   * @param resourceSaver called to persist a resource whose data package version was backfilled during a load
-   *                      (currently {@code ResourceManagerImpl::save})
+   * @param resourceDir resource directory
+   * @param creator     User that created resource (only used to populate creator when missing)
+   * @param callbacks   additional callbacks
    * @return loaded Resource
    */
   @Override
-  public Resource load(File resourceDir, @Nullable User creator, Consumer<Resource> emlSyncer, Consumer<Resource> resourceSaver) {
-    return load(resourceDir, creator, new ActionLogger(LOG, new BaseAction(textProvider, cfg, registrationManager)), emlSyncer, resourceSaver);
+  public Resource load(File resourceDir, @Nullable User creator, ResourceLoadCallbacks callbacks) {
+    return load(resourceDir, creator,
+        new ActionLogger(LOG, new BaseAction(textProvider, cfg, registrationManager)), callbacks);
   }
 
   /**
@@ -131,8 +129,7 @@ public class ResourceLoaderImpl implements ResourceLoader {
       File resourceDir,
       @Nullable User creator,
       ActionLogger alog,
-      Consumer<Resource> emlSyncer,
-      Consumer<Resource> resourceSaver) throws InvalidConfigException {
+      ResourceLoadCallbacks callbacks) throws InvalidConfigException {
     if (resourceDir.exists()) {
       // load full configuration from resource.xml and eml.xml files
       String shortname = resourceDir.getName();
@@ -228,14 +225,14 @@ public class ResourceLoaderImpl implements ResourceLoader {
           }
 
           // update EML with the latest resource basics (version and GUID)
-          emlSyncer.accept(resource);
+          callbacks.syncEml(resource);
         }
 
         // clean up data package mappings (remove dangling field mappings)
         // backfill data package version if not set
         if (resource.isDataPackage()) {
           cleanUpDataPackageMappings(resource);
-          backfillDataPackageVersion(resource, resourceSaver);
+          backfillDataPackageVersion(resource, callbacks);
         }
 
         LOG.debug("Read resource configuration for {}", shortname);
@@ -314,17 +311,17 @@ public class ResourceLoaderImpl implements ResourceLoader {
   /**
    * Backfill the data package version if not set.
    *
-   * @param resource      resource
-   * @param resourceSaver called to persist a resource whose data package version was backfilled during a load
-   *                      (currently {@code ResourceManagerImpl::save})
+   * @param resource  resource
+   * @param callbacks called to persist a resource whose data package version was backfilled during a load
+   *                  (currently {@code ResourceManagerImpl::save})
    */
-  private void backfillDataPackageVersion(Resource resource, Consumer<Resource> resourceSaver) {
+  private void backfillDataPackageVersion(Resource resource, ResourceLoadCallbacks callbacks) {
     if (resource.getDataPackageVersion() == null) {
       String identifier = resource.getDataPackageIdentifier();
       String installedVersion = schemaManager.getVersion(identifier);
       if (installedVersion != null) {
         resource.setDataPackageVersion(installedVersion);
-        resourceSaver.accept(resource);
+        callbacks.save(resource);
         LOG.warn("Backfilled dataPackageVersion={} for resource {} (schema {})",
             installedVersion, resource.getShortname(), identifier);
       } else {

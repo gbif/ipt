@@ -42,6 +42,7 @@ import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
+import org.gbif.ipt.service.manage.ResourceLoadCallbacks;
 import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourcePersister;
@@ -595,7 +596,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @return loaded Resource
    */
   protected Resource loadFromDir(File resourceDir, @Nullable User creator) {
-    return resourceLoader.load(resourceDir, creator, this::syncEmlWithResource, this::save);
+    return resourceLoader.load(resourceDir, creator,
+        ResourceLoadCallbacks.of(this::syncEmlWithResource, this::save));
   }
 
   /**
@@ -603,7 +605,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * and returns the Resource instance for the internal in memory cache.
    */
   private Resource loadFromDir(File resourceDir, @Nullable User creator, ActionLogger alog) throws InvalidConfigException {
-    return resourceLoader.load(resourceDir, creator, alog, this::syncEmlWithResource, this::save);
+    return resourceLoader.load(resourceDir, creator, alog,
+        ResourceLoadCallbacks.of(this::syncEmlWithResource, this::save));
   }
 
   @Override
@@ -694,7 +697,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
    * @param resource         Resource
    * @param preserveKeywords perform keywords' update or not
    */
-  private void syncEmlWithResource(Resource resource, boolean preserveKeywords) {
+  @Override
+  public void syncEmlWithResource(Resource resource, boolean preserveKeywords) {
     // set EML version
     resource.getEml().setEmlVersion(resource.getEmlVersion());
     // we need some GUID: use the registry key if resource is registered, otherwise use the resource URL
@@ -709,7 +713,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     }
   }
 
-  private void syncEmlWithResource(Resource resource) {
+  @Override
+  public void syncEmlWithResource(Resource resource) {
     syncEmlWithResource(resource, false);
   }
 

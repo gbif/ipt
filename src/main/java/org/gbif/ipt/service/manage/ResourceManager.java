@@ -39,10 +39,9 @@ import org.xml.sax.SAXException;
 /**
  * This interface details ALL methods associated with the main resource entity.
  * The manager keeps a map of the basic metadata and authorisation information in memory, but further details like the
- * full EML or mapping configuration is stored in files and loaded into manager sessions when needed.
+ * full EML or mapping configuration are stored in files and loaded into manager sessions when needed.
  */
 public interface ResourceManager {
-
 
   /**
    * Create a new Resource.
@@ -115,7 +114,7 @@ public interface ResourceManager {
   boolean isEmlExisting(String shortName);
 
   /**
-   * Returns the latest resources ,ordered by last modified date.
+   * Returns the latest resources, ordered by the last modified date.
    *
    * @param startPage start page
    * @param pageSize  page size
@@ -153,7 +152,7 @@ public interface ResourceManager {
    * List all resources in the IPT whose last published version was public (at the time of publication).
    * </br>
    * If a resource is registered with GBIF, it is assumed the resource is public and therefore is included in the list.
-   * Please note only resource published using IPT v2.2 or later store a VersionHistory.
+   * Please note only resources published using IPT v2.2 or later store a VersionHistory.
    *
    * @return list of resources, or an empty list if none were found
    */
@@ -232,4 +231,8 @@ public interface ResourceManager {
   void removePublishedPublicVersion(String shortname);
 
   ResourceSummaryView toResourceSummaryViewReconstructed(Resource resource);
+
+  void syncEmlWithResource(Resource resource);
+
+  void syncEmlWithResource(Resource resource, boolean preserveKeywords);
 }

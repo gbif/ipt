@@ -20,29 +20,24 @@ import org.gbif.ipt.utils.ActionLogger;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.function.Consumer;
 
 public interface ResourceLoader {
 
   /**
-   * Calls {@link #load(File, User, ActionLogger, Consumer, Consumer)}, inserting a new instance of ActionLogger.
+   * Calls {@link #load(File, User, ActionLogger, ResourceLoadCallbacks)}, inserting a new instance of ActionLogger.
    *
    * @param resourceDir   resource directory
    * @param creator       User that created resource (only used to populate creator when missing)
-   * @param emlSyncer     called on a non-data-package resource after load, to sync its EML version/GUID/keywords
-   *                      with the resource's current state (currently {@code ResourceManagerImpl::syncEmlWithResource})
-   * @param resourceSaver called to persist a resource whose data package version was backfilled during load
-   *                      (currently {@code ResourceManagerImpl::save})
+   * @param callbacks     additional callbacks
    * @return loaded Resource
    */
-  Resource load(File resourceDir, @Nullable User creator, Consumer<Resource> emlSyncer, Consumer<Resource> resourceSaver);
+  Resource load(File resourceDir, @Nullable User creator, ResourceLoadCallbacks callbacks);
 
   /**
    * Reads a complete resource configuration (resource config & eml) from the resource config folder
    * and returns the Resource instance for the internal in memory cache.
    */
-  Resource load(File resourceDir, @Nullable User creator, ActionLogger alog, Consumer<Resource> emlSyncer,
-                Consumer<Resource> resourceSaver) throws InvalidConfigException;
+  Resource load(File resourceDir, @Nullable User creator, ActionLogger alog, ResourceLoadCallbacks callbacks) throws InvalidConfigException;
 
   /**
    * Loads a resource's inferred metadata from the XML file located inside its resource directory.
