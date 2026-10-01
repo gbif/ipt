@@ -31,12 +31,12 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -69,7 +69,7 @@ class PublishingMonitorTest {
         1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>()));
     when(resourceManager.list()).thenReturn(Collections.singletonList(resource));
     when(resourceManager.hasMaxProcessFailures(resource)).thenReturn(false);
-    when(resourceManager.getProcessFailures()).thenReturn(new ArrayListValuedHashMap<>());
+    when(resourceManager.getProcessFailures()).thenReturn(new ConcurrentHashMap<>());
     doThrow(new PublicationException(PublicationException.TYPE.DWCA, "archive failed"))
         .when(resourceManager).publish(eq(resource), any(BigDecimal.class), isNull(), any(PublicationOptions.class));
 

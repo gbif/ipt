@@ -112,13 +112,24 @@
             </div>
         </div>
 
+        <#assign hasMaxProcessFailures = action.hasMaxProcessFailures()>
+
         <div class="mt-4">
             <p class="mb-0">
                 <#if resource.usesAutoPublishing()>
-                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
-                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
-                    </span>
-                    <@s.text name="manage.overview.autopublish.intro.activated"/>
+                    <#if hasMaxProcessFailures>
+                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-suspended">
+                            <@s.text name="manage.overview.autopublish.suspended"/>
+                        </span>
+                        <span class="text-gbif-danger fst-italic">
+                            <@s.text name="manage.overview.autopublish.intro.suspended"/>
+                        </span>
+                    <#else>
+                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
+                            <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
+                        </span>
+                        <@s.text name="manage.overview.autopublish.intro.activated"/>
+                    </#if>
                 <#else>
                     <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-disabled">
                         <@s.text name="manage.overview.autopublish.disabled"/>

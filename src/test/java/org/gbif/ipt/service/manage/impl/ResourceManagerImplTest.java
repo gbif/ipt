@@ -95,13 +95,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.commons.collections4.ListValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AssertionFailureBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -1487,12 +1487,22 @@ public class ResourceManagerImplTest extends IptBaseTest {
   public void testHasMaxProcessFailures() throws Exception {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
-    ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
-    processFailures.put("res1", new Date());
-    processFailures.put("res1", new Date());
-    processFailures.put("res2", new Date());
-    processFailures.put("res2", new Date());
-    processFailures.put("res2", new Date());
+    Map<String, List<Date>> processFailures = new ConcurrentHashMap<>();
+    processFailures
+        .computeIfAbsent("res1", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    processFailures
+        .computeIfAbsent("res1", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    processFailures
+        .computeIfAbsent("res2", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    processFailures
+        .computeIfAbsent("res2", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    processFailures
+        .computeIfAbsent("res2", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
     resourceManager.getProcessFailures().putAll(processFailures);
 
     Resource resource = new Resource();

@@ -242,8 +242,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   @Getter
   private GenerateDwcaFactory dwcaFactory;
   private GenerateDataPackageFactory dataPackageFactory;
-  private Map<String, Future<Map<String, Integer>>> processFutures = new HashMap<>();
-  private ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
+  private Map<String, Future<Map<String, Integer>>> processFutures = new ConcurrentHashMap<>();
+  private Map<String, List<Date>> processFailures = new ConcurrentHashMap<>();
   private Map<String, LocalDate> lastLoggedFailures = new ConcurrentHashMap<>();
   private Map<String, StatusReport> processReports = new ConcurrentHashMap<>();
   private List<String> resourcesToSkip = new CopyOnWriteArrayList<>();
@@ -1724,7 +1724,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
             // do not count "data not changed" as an actual failure
             if (!failedDueToDataNotChanged) {
               // keep track of how many failures on auto publication have happened
-              processFailures.put(resource.getShortname(), new Date());
+              processFailures
+                  .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
+                  .add(new Date());
+
               sendPublicationFailureEmail(resource, version, reasonFailed);
             }
 
@@ -4354,7 +4357,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
-  public ListValuedMap<String, Date> getProcessFailures() {
+  public Map<String, List<Date>> getProcessFailures() {
     return processFailures;
   }
 
@@ -4369,28 +4372,35 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   @Override
-  public boolean hasMaxProcessFailures(Resource resource) {
+  public boolean hasMaxProcessFailures(Resource resource, boolean logInfo) {
     String resourceShortname = resource.getShortname();
 
     if (processFailures.containsKey(resourceShortname)) {
       List<Date> failures = processFailures.get(resourceShortname);
       int count = failures.size();
 
-      LocalDate today = LocalDate.now();
-      LocalDate last = lastLoggedFailures.get(resourceShortname);
+      if (logInfo) {
+        LocalDate today = LocalDate.now();
+        LocalDate last = lastLoggedFailures.get(resourceShortname);
 
-      if (count < MAX_PROCESS_FAILURES) { // always log if count is below max
-        LOG.debug("Publication has failed {} time(s) for resource: {}",
-            count, resource.getTitleAndShortname());
-      } else if (last == null || !last.equals(today)) { // once the limit is reached, only log once per day
-        LOG.debug("Publication has failed {} time(s) for resource: {} (max amount of failures)",
-            count, resource.getTitleAndShortname());
-        lastLoggedFailures.put(resourceShortname, today);
+        if (count < MAX_PROCESS_FAILURES) { // always log if count is below max
+          LOG.debug("Publication has failed {} time(s) for resource: {}",
+              count, resource.getTitleAndShortname());
+        } else if (last == null || !last.equals(today)) { // once the limit is reached, only log once per day
+          LOG.debug("Publication has failed {} time(s) for resource: {} (max amount of failures)",
+              count, resource.getTitleAndShortname());
+          lastLoggedFailures.put(resourceShortname, today);
+        }
       }
 
       return count >= MAX_PROCESS_FAILURES;
     }
     return false;
+  }
+
+  @Override
+  public boolean hasMaxProcessFailures(Resource resource) {
+    return hasMaxProcessFailures(resource, true);
   }
 
   /**

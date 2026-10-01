@@ -139,4 +139,8 @@ public class PublicationSettingsAction extends ManagerBaseAction {
       }
     }
   }
+
+  public boolean hasMaxProcessFailures() {
+    return resourceManager.hasMaxProcessFailures(resource, false);
+  }
 }

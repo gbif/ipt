@@ -161,7 +161,9 @@ public class PublishAllResourcesAction extends BaseAction {
           // restore the previous version since publication was unsuccessful
           resourceManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
-          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+          resourceManager.getProcessFailures()
+              .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
+              .add(new Date());
         }
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed
