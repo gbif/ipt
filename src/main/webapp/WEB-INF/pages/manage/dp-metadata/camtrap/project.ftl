@@ -114,6 +114,10 @@
 
                             <div class="row g-3">
                                 <div class="col-12">
+                                    <@input name="metadata.project.id" value=(metadata.project.id)! help="i18n" i18nkey="datapackagemetadata.project.id" />
+                                </div>
+
+                                <div class="col-12">
                                     <@input name="metadata.project.title" value=(metadata.project.title)! help="i18n" i18nkey="datapackagemetadata.project.title" requiredField=true />
                                 </div>
 
