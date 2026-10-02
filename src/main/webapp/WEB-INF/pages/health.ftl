@@ -77,6 +77,11 @@
                                         <@s.text name="portal.health.operational"/>
                                     <#else>
                                         <@s.text name="portal.health.failed"/>
+                                        <#if networkPublicAccessMessage?has_content>
+                                            <div class="text-smaller fw-normal text-muted">
+                                                <#if networkPublicAccessStatus?has_content>${networkPublicAccessStatus}: </#if>${networkPublicAccessMessage}
+                                            </div>
+                                        </#if>
                                     </#if>
                                 </td>
                             </tr>

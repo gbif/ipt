@@ -33,6 +33,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.Serial;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class HealthAction extends BaseAction {
 
@@ -55,6 +57,8 @@ public class HealthAction extends BaseAction {
   public String networkPublicAccessURL = "";
   public String networkCheckPublicAccessURL = "https://tools.gbif.org/ws-validurl/?url=";
   public boolean networkPublicAccess = false;
+  public String networkPublicAccessMessage = "";
+  public String networkPublicAccessStatus = "";
 
   public long diskTotal = 0;
   public long diskUsed = 0;
@@ -117,18 +121,49 @@ public class HealthAction extends BaseAction {
       // do nothing
     }
 
+    // Public access
     try {
       networkPublicAccessURL = cfg.getBaseUrl();
-      ExtendedResponse resp = http.get(networkCheckPublicAccessURL + networkPublicAccessURL);
-      if ((resp != null) && (resp.getStatusCode() == 200)) {
-        JsonObject jsonObject = new JsonParser().parse(resp.getContent()).getAsJsonObject();
-        JsonElement success = jsonObject.get("success");
-        if ((success != null) && success.getAsBoolean()) {
+      String checkUrl = networkCheckPublicAccessURL + networkPublicAccessURL;
+      ExtendedResponse resp = http.get(checkUrl);
+      LOG.debug("Public access check: url={}, status={}, body={}",
+          checkUrl, resp != null ? resp.getStatusCode() : null,
+          resp != null ? resp.getContent() : null);
+
+      if (resp == null) {
+        networkPublicAccessStatus = "NO_RESPONSE";
+        networkPublicAccessMessage = "No response from the URL validation service.";
+      } else if (resp.getStatusCode() != 200) {
+        networkPublicAccessStatus = String.valueOf(resp.getStatusCode());
+        networkPublicAccessMessage = "The URL validation service returned HTTP "
+            + resp.getStatusCode() + ".";
+      } else {
+        JsonObject json = JsonParser.parseString(resp.getContent()).getAsJsonObject();
+        JsonElement success = json.get("success");
+        if (success != null && success.getAsBoolean()) {
           networkPublicAccess = true;
+        } else {
+          // Failure: validator couldn't reach the IPT, or the IPT answered with an error status
+          networkPublicAccessStatus = jsonString(json, "status");
+          String error = jsonString(json, "error");
+          if (error.isEmpty()) {
+            error = jsonString(json, "message");
+          }
+          if (!networkPublicAccessStatus.isEmpty()) {
+            networkPublicAccessMessage = "IPT responded to the validator with HTTP "
+                + networkPublicAccessStatus + ".";
+          } else if (!error.isEmpty()) {
+            networkPublicAccessMessage = error;
+          } else {
+            networkPublicAccessMessage = "The validator could not reach " + networkPublicAccessURL
+                + ". Check that the base URL is correct and reachable from the public internet.";
+          }
         }
       }
     } catch (Exception e) {
-      // do nothing
+      LOG.error("Public access check failed for {}", networkPublicAccessURL, e);
+      networkPublicAccessStatus = "ERROR";
+      networkPublicAccessMessage = "Could not run the public access check. See logs for details.";
     }
 
     // Disk
@@ -175,6 +210,11 @@ public class HealthAction extends BaseAction {
     iptMode = ((cfg != null) && (cfg.getRegistryType() != null)) ? cfg.getRegistryType().name() : "";
   }
 
+  private static String jsonString(JsonObject json, String key) {
+    JsonElement el = json.get(key);
+    return (el != null && !el.isJsonNull()) ? el.getAsString() : "";
+  }
+
   @Override
   public String execute() {
     status = new Status();
@@ -184,6 +224,8 @@ public class HealthAction extends BaseAction {
     status.setNetworkRepository(this.networkRepository);
     status.setNetworkPublicAccessURL(this.networkPublicAccessURL);
     status.setNetworkPublicAccess(this.networkPublicAccess);
+    status.setNetworkPublicAccessMessage(this.networkPublicAccessMessage);
+    status.setNetworkPublicAccessStatus(this.networkPublicAccessStatus);
     status.setDiskTotal(this.diskTotal);
     status.setDiskUsed(this.diskUsed);
     status.setDiskFree(this.diskFree);
@@ -212,6 +254,8 @@ public class HealthAction extends BaseAction {
     private boolean networkRepository;
     private String networkPublicAccessURL;
     private boolean networkPublicAccess;
+    private String networkPublicAccessMessage;
+    private String networkPublicAccessStatus;
     private long diskTotal;
     private long diskUsed;
     private long diskFree;
@@ -272,6 +316,22 @@ public class HealthAction extends BaseAction {
 
     public void setNetworkPublicAccess(boolean networkPublicAccess) {
       this.networkPublicAccess = networkPublicAccess;
+    }
+
+    public String getNetworkPublicAccessMessage() {
+      return networkPublicAccessMessage;
+    }
+
+    public void setNetworkPublicAccessMessage(String networkPublicAccessMessage) {
+      this.networkPublicAccessMessage = networkPublicAccessMessage;
+    }
+
+    public String getNetworkPublicAccessStatus() {
+      return networkPublicAccessStatus;
+    }
+
+    public void setNetworkPublicAccessStatus(String networkPublicAccessStatus) {
+      this.networkPublicAccessStatus = networkPublicAccessStatus;
     }
 
     public long getDiskTotal() {
