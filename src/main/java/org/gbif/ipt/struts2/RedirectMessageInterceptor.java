@@ -13,14 +13,6 @@
  */
 package org.gbif.ipt.struts2;
 
-/*
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by
- * applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
-
 import org.gbif.ipt.action.BaseAction;
 
 import java.io.Serial;
@@ -30,16 +22,21 @@ import java.util.Map;
 
 import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.interceptor.MethodFilterInterceptor;
+import org.apache.struts2.interceptor.ValidationAware;
 import org.apache.struts2.result.Result;
+import org.apache.struts2.result.ServletActionRedirectResult;
 import org.apache.struts2.result.ServletRedirectResult;
 
 /**
- * An Interceptor to preserve an actions ValidationAware messages across a redirect result. It makes the assumption
- * that you always want to preserve messages across a redirect and restore them to the next action if they exist.
- * The way this works is it looks at the result type after a action has executed and if the result was a redirect
- * (ServletRedirectResult) or a redirectAction (ServletActionRedirectResult) and there were any errors, messages, or
- * fieldErrors they are stored in the session. Before the next action executes, it will check if there are any messages
- * stored in the session and add them to the next action.
+ * An Interceptor to preserve actions {@link ValidationAware} messages across a redirect result.
+ * <p>
+ * It makes the assumption that you always want to preserve messages across a redirect and restore them to
+ * the next action if they exist.
+ * <p>
+ * It looks at the result type after an action has executed, and if the result was a redirect
+ * ({@link ServletRedirectResult}) or a redirectAction ({@link ServletActionRedirectResult})
+ * and there were any errors, messages, or fieldErrors, they are stored in the session. Before the next action executes,
+ * it will check if there are any messages stored in the session and add them to the next action.
  */
 public class RedirectMessageInterceptor extends MethodFilterInterceptor {
 
@@ -52,7 +49,7 @@ public class RedirectMessageInterceptor extends MethodFilterInterceptor {
   public static final String ACTION_WARNINGS_KEY = "RedirectMessageInterceptor_ActionWarnings";
 
   /**
-   * If the result is a redirect then store error and messages in the session.
+   * If the result is a redirect, then store error and messages in the session.
    */
   protected void after(ActionInvocation invocation, BaseAction action) throws Exception {
     Result result = invocation.getResult();

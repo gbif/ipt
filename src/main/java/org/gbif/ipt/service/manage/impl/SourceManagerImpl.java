@@ -41,6 +41,11 @@ import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.file.ClosableIterator;
 import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.csv.UnknownDelimitersException;
+import org.gbif.utils.file.tabular.TabularFileNormalizer;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -383,6 +388,63 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return src;
   }
 
+  /**
+   * Copies an uploaded delimited text file into the resource's data directory, normalizing it on the
+   * way so that quoted fields containing an embedded line break don't silently corrupt row/column
+   * alignment further downstream (see https://github.com/gbif/ipt/issues/1135). IPT's own CSV reader
+   * (org.gbif.utils.file.csv.CSVReader) locates record boundaries with BufferedReader#readLine(), which
+   * knows nothing about quoting, so a literal newline inside a quoted value splits one record into two
+   * as far as it is concerned. That corruption is invisible until publish time, when it typically shows
+   * up as a confusing "missing occurrenceID" validation error on an otherwise unrelated row.
+   * <p>
+   * {@link TabularFileNormalizer} is backed by a proper RFC 4180 aware CSV parser (Jackson's
+   * jackson-dataformat-csv, already a transitive dependency via gbif-common), so it treats a quoted
+   * embedded line break as part of one logical record rather than a record boundary, strips it out
+   * (along with other control characters), and rewrites the file with exactly one record per line. The
+   * resulting file is what gets stored as the source and is what every later step (preview, mapping,
+   * DwC-A generation) reads from.
+   *
+   * @param uploadedFile file as uploaded by the publisher, untouched
+   * @param destination  final location of the source file inside the resource's data directory
+   * @param src          the source, already populated with the delimiter/quote/encoding settings
+   *                      detected by {@code addTextFile(File)}
+   */
+  private void normalizeAndCopyTextFile(File uploadedFile, File destination, TextFileSource src)
+    throws IOException {
+    Charset charset = StringUtils.isNotBlank(src.getEncoding())
+      ? Charset.forName(src.getEncoding()) : StandardCharsets.UTF_8;
+    String delimiterStr = src.getFieldsTerminatedBy();
+    char delimiter = StringUtils.isEmpty(delimiterStr) ? '\t' : delimiterStr.charAt(0);
+    Character quoteChar = src.getFieldQuoteChar();
+
+    if (quoteChar == null) {
+      // nothing quoted means embedded line breaks can't be hiding inside a field per RFC 4180 -
+      // skip the extra parsing pass and copy as-is
+      FileUtils.copyFile(uploadedFile, destination);
+      src.setLinesWithEmbeddedBreaksRemoved(0);
+      return;
+    }
+
+    long physicalLinesBefore = countPhysicalLines(uploadedFile, charset);
+    int recordsWritten = TabularFileNormalizer.normalizeFile(
+      uploadedFile.toPath(), destination.toPath(), charset, delimiter, "\n", quoteChar);
+
+    // approximate: every embedded line break collapses two physical lines into one logical record,
+    // so any shortfall between physical lines and records written is (at least) that many line breaks
+    int linesRemoved = (int) Math.max(0, physicalLinesBefore - recordsWritten);
+    src.setLinesWithEmbeddedBreaksRemoved(linesRemoved);
+    if (linesRemoved > 0) {
+      LOG.warn("Removed {} embedded line break(s) from quoted field(s) in source file {} while normalizing it "
+                + "for upload", linesRemoved, src.getName());
+    }
+  }
+
+  private long countPhysicalLines(File file, Charset charset) throws IOException {
+    try (Stream<String> lines = Files.lines(file.toPath(), charset)) {
+      return lines.count();
+    }
+  }
+
   @Override
   public FileSource add(Resource resource, File file, String fileName) throws ImportException,
     InvalidFilenameException {
@@ -404,7 +466,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         // copy file
         File ddFile = dataDir.sourceFile(resource, src);
         try {
-          FileUtils.copyFile(file, ddFile);
+          if (src instanceof TextFileSource) {
+            normalizeAndCopyTextFile(file, ddFile, (TextFileSource) src);
+          } else {
+            FileUtils.copyFile(file, ddFile);
+          }
         } catch (IOException e1) {
           throw new ImportException(e1);
         }

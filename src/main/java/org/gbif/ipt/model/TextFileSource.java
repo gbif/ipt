@@ -44,6 +44,8 @@ public class TextFileSource extends SourceBase implements FileSource {
   private long fileSize;
   private int rows;
   protected Date lastModified;
+  // not persisted: set once per upload so SourceAction can warn the publisher. See SourceManagerImpl#add
+  private transient int linesWithEmbeddedBreaksRemoved;
 
   public Character getFieldQuoteChar() {
     if (fieldsEnclosedBy == null || fieldsEnclosedBy.length() == 0) {
@@ -172,6 +174,18 @@ public class TextFileSource extends SourceBase implements FileSource {
 
   public void setRows(int rows) {
     this.rows = rows;
+  }
+
+  /**
+   * @return number of embedded line breaks (inside quoted fields) that were stripped out when this
+   *         file was last uploaded, or 0 if none were found. Not persisted between requests.
+   */
+  public int getLinesWithEmbeddedBreaksRemoved() {
+    return linesWithEmbeddedBreaksRemoved;
+  }
+
+  public void setLinesWithEmbeddedBreaksRemoved(int linesWithEmbeddedBreaksRemoved) {
+    this.linesWithEmbeddedBreaksRemoved = linesWithEmbeddedBreaksRemoved;
   }
 
   @Override

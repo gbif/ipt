@@ -327,6 +327,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
       } else {
         addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
       }
+      alertEmbeddedLineBreaksRemoved(source);
 
       return source.getName();
 
@@ -395,9 +396,34 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   /**
-   * Alert user if the number of columns changed, when the existing source has already been mapped.
+   * Alert the publisher if quoted embedded line breaks were found and stripped out of their file on
+   * upload, since those would otherwise silently misalign columns without any visible error.
+   * <p>
+   * Sets both an action warning (for any classic, non-AJAX form submission) and an
+   * {@code X-Warning-Message} response header, mirroring the existing {@code X-Error-Message} header
+   * set in {@link #addErrorHeader(String)}. The header exists because the upload widget
+   * in overview.ftl talks to this action over a raw XHR and reconstructs its own success banner from
+   * sessionStorage after a client-driven reload, so it never sees the action's actionWarnings/messages -
+   * reading a response header off the XHR itself is the only reliable way to get this message to it.
    *
-   * @param sourceIsMapped true if source is mapped, false otherwise
+   * @param source the just-added/replaced source
+   */
+  protected void alertEmbeddedLineBreaksRemoved(Source source) {
+    if (source instanceof TextFileSource) {
+      int removed = ((TextFileSource) source).getLinesWithEmbeddedBreaksRemoved();
+      if (removed > 0) {
+        String msg = getText("manage.source.lineBreaksRemoved",
+          new String[] {source.getName(), String.valueOf(removed)});
+        addActionWarning(msg);
+        response.setHeader("X-Warning-Message", msg);
+      }
+    }
+  }
+
+  /**
+   * Alert the user if the number of columns changed when the existing source has already been mapped.
+   *
+   * @param sourceIsMapped true if the source is mapped, false otherwise
    * @param number         current number of columns in source
    * @param originalNumber original number of columns in source
    *
