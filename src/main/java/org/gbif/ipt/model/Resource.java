@@ -1776,4 +1776,8 @@ public class Resource implements Serializable, Comparable<Resource> {
         ? new ArrayList<>()
         : new ArrayList<>(publicationFailureEmails);
   }
+
+  public boolean isManagedBy(User user) {
+    return user != null && managers != null && managers.contains(user);
+  }
 }
