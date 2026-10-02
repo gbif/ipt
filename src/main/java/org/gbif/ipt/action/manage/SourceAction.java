@@ -281,6 +281,18 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   private boolean isCompressed(File content, String contentType, String originalName) {
+    // Office Open XML formats (.xlsx, .xlsm, .docx, etc.) are zip containers,
+    // and Tika can misidentify minimally structured ones (e.g., produced by
+    // lightweight writer libraries lacking a theme part) as plain zip/gzip.
+    // Trust the extension for known spreadsheet formats before falling back
+    // to content sniffing.
+    if (originalName != null) {
+      String lower = originalName.toLowerCase();
+      if (lower.endsWith(".xlsx") || lower.endsWith(".xlsm") || lower.endsWith(".xls")) {
+        return false;
+      }
+    }
+
     boolean compressed;
     try {
       String realType = TIKA.detect(content);
