@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
-"POT-Creation-Date: 2026-06-22 13:22+0000\n"
-"PO-Revision-Date: 2026-06-22 14:43\n"
+"POT-Creation-Date: 2026-10-05 13:24+0000\n"
+"PO-Revision-Date: 2026-10-05 14:45\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -35,18 +35,6 @@ msgstr "導入"
 #: en/modules/ROOT/pages/occurrence-data.adoc:11
 msgid "Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names."
 msgstr "最終的には、ダーウィンコア（DwC）の用語名を列名として使用したテーブル構造にデータを変換する必要があります。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/checklist-data.adoc:12
-#: en/modules/ROOT/pages/occurrence-data.adoc:13
-msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>."
-msgstr "すべての<<必須DwCフィールド,必須DwCフィールド>>と<<推奨DwCフィールド,推奨DwCフィールド>>を含む<<テンプレート,Excelテンプレート>>にデータを入れてみてください。"
-
-#. type: Plain text
-#: en/modules/ROOT/pages/checklist-data.adoc:14
-#: en/modules/ROOT/pages/occurrence-data.adoc:15
-msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible."
-msgstr "または、データがxref:database-connection.adoc[対応データベース]に保存されている場合は、DwCの列名を使ってSQLテーブル（ビュー）を書くことができます。<<必須DwCフィールド,必須DwCフィールド>>をすべて含み、<<推奨DwCフィールド,推奨DwCフィールド>>をできるだけ多く追加するように注意してください。"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/checklist-data.adoc:17
@@ -106,6 +94,16 @@ msgid "ipt2/flow-od.png"
 msgstr "ipt2/flow-od.png"
 
 #. type: Plain text
+#: en/modules/ROOT/pages/occurrence-data.adoc:13
+msgid "Try putting your data into the <<Templates,Excel template>>, which includes all <<Required and recommended DwC fields, required and recommended DwC Fields>>."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/occurrence-data.adoc:15
+msgid "Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required and recommended DwC fields, required DwC fields and add as many recommended DwC fields>> as possible."
+msgstr ""
+
+#. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:17
 msgid "For extra guidance, you can look at the <<Exemplar datasets,exemplar datasets>>."
 msgstr "さらなるガイダンスとして、<<Exemplar datasets,サンプルデータセット>>を見ることもできます。"
@@ -144,8 +142,8 @@ msgstr "Q. 種が存在しないことを示すにはどうすればいいです
 #. type: Plain text
 #: en/modules/ROOT/pages/occurrence-data.adoc:41
 #, no-wrap
-msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
-msgstr "*A.* link:https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"absent\"]に設定してください。さらに、link:https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount]とlink:https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity]は0としてください。\n"
+msgid "*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}[\"notDetected\"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.\n"
+msgstr ""
 
 #. type: Title ====
 #: en/modules/ROOT/pages/occurrence-data.adoc:42
