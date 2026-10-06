@@ -413,7 +413,7 @@
                                                         </td>
                                                         <td class="small">
                                                             <#list fk.sampleRows as row>
-                                                                <div><code><#list row?keys as k>${k}=${row[k]}<#sep>, </#sep></#list></code></div>
+                                                                <div><code><#list row?keys as k>${k}=${row[k]!"NULL"}<#sep>, </#sep></#list></code></div>
                                                             </#list>
                                                         </td>
                                                     </tr>
