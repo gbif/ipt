@@ -1012,12 +1012,11 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if the resource has been assigned a GBIF-supported license, false otherwise
    */
   public boolean isAssignedGBIFSupportedLicense() {
-    if (isDataPackage()) {
+    if (isDataPackage() && !isDwcDp()) {
       if (CAMTRAP_DP.equals(coreType)) {
         CamtrapMetadata camtrapMetadata = (CamtrapMetadata) dataPackageMetadata;
         Optional<CamtrapLicense> dataLicenseWrapped = camtrapMetadata.getLicenses()
             .stream()
-            .map(license -> (CamtrapLicense) license)
             .filter(license -> license.getScope() == CamtrapLicense.Scope.DATA)
             .findFirst();
 
@@ -1026,7 +1025,8 @@ public class Resource implements Serializable, Comparable<Resource> {
         return false;
       }
     } else {
-      return eml.parseLicenseUrl() != null && Constants.GBIF_SUPPORTED_LICENSES.contains(eml.parseLicenseUrl());
+      String license = eml.parseLicenseUrl();
+      return license != null && Constants.GBIF_SUPPORTED_LICENSES.contains(license);
     }
   }
 
