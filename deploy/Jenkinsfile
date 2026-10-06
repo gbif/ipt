@@ -3,8 +3,8 @@ pipeline {
     parameters {
         string(
                 name: 'VERSION',
-                defaultValue: '3.3.2',
-                description: 'IPT version to deploy, e.g. 3.3.2 or 3.3.2-SNAPSHOT'
+                defaultValue: '3.3.6',
+                description: 'IPT version to deploy, e.g. 3.3.6 or 3.3.6-SNAPSHOT'
         )
         booleanParam(
                 name: 'DEPLOY_ALL',
@@ -25,7 +25,7 @@ pipeline {
                             'ipt', 'us', 'us-obis', 'us-vertnet',
                             'africa', 'asia', 'bid', 'clb', 'eca', 'ee', 'eia',
                             'eubon', 'ewt', 'gb-dissco', 'griis', 'icipe', 'lac',
-                            'nz', 'oceania', 'pa', 'to', 'training-ipt-a',
+                            'mn', 'nz', 'oceania', 'pa', 'pe', 'to', 'training-ipt-a',
                             'training-ipt-b', 'training-ipt-c', 'uz', 'uy',
                             'ipt (dev)', 'ipt (test)', 'ipt-dwcdp', 'ipt-eubon',
                             'ipt-spnhc', 'ipt-worldfair', 'ipt-xprize'
@@ -50,7 +50,7 @@ pipeline {
         SERVER_DEV = 'devtomcat11-vh.gbif-dev.org'
         SERVER_TEST = 'testtomcat10-vh.gbif-test.org'
         WARS_A = 'ipt,us,us-obis,us-vertnet'
-        WARS_B = 'africa,asia,bid,clb,eca,ee,eia,eubon,ewt,gb-dissco,griis,icipe,lac,nz,oceania,pa,to,training-ipt-a,training-ipt-b,training-ipt-c,uz,uy'
+        WARS_B = 'africa,asia,bid,clb,eca,ee,eia,eubon,ewt,gb-dissco,griis,icipe,lac,mn,nz,oceania,pa,pe,to,training-ipt-a,training-ipt-b,training-ipt-c,uz,uy'
         WARS_DEV = 'ipt (dev)'
         WARS_TEST = 'ipt (test),ipt-dwcdp,ipt-eubon,ipt-spnhc,ipt-worldfair,ipt-xprize'
         WEBAPPS = '/var/lib/tomcat11/webapps'
