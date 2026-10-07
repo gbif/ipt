@@ -52,6 +52,7 @@ class PublishingMonitorTest {
   @Test
   void monitorSendsPublicationFailureEmailWhenEnabledAndConfigured() throws Exception {
     AppConfig cfg = mock(AppConfig.class);
+    when(cfg.isAutoPublishingEnabled()).thenReturn(true);
     when(cfg.getAdminEmail()).thenReturn("admin@example.org");
     when(cfg.getBaseUrl()).thenReturn("https://ipt.example.org");
 
