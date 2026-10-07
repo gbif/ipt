@@ -1765,12 +1765,13 @@
                             </div>
                         </div>
 
-                        <#assign hasMaxProcessFailures = action.hasMaxProcessFailures()>
+                        <#assign autoPublicationSuspendedForThisResource = action.hasMaxProcessFailures()>
+                        <#assign autoPublicationEnabledForIPT = cfg.autoPublishingEnabled/>
 
                         <div class="mt-4">
                             <p class="mb-2">
-                                <#if resource.usesAutoPublishing()>
-                                    <#if hasMaxProcessFailures>
+                                <#if resource.usesAutoPublishing() && autoPublicationEnabledForIPT>
+                                    <#if autoPublicationSuspendedForThisResource>
                                         <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-suspended">
                                             <@s.text name="manage.overview.autopublish.suspended"/>
                                         </span>
@@ -1970,7 +1971,7 @@
                                                 </span><br>
                                                 <span class="fs-smaller-2">
                                                     <small>
-                                                        <#if resource.nextPublished?? && !hasMaxProcessFailures>
+                                                        <#if resource.nextPublished?? && !autoPublicationSuspendedForThisResource && autoPublicationEnabledForIPT>
                                                             ${nextPublicationDate?cap_first} ${resource.nextPublished?datetime?string.medium}
                                                         <#else>
                                                             <@s.text name="manage.overview.published.date.not.set"/>

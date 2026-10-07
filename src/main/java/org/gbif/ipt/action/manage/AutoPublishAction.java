@@ -101,6 +101,34 @@ public class AutoPublishAction extends ManagerBaseAction {
   @Override
   public String save() {
     String updateFrequency = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY);
+
+    // Permission checks come first: nothing else is read or changed for a request that is not allowed.
+    if (!cfg.isAutoPublishingEnabled()) {
+      addActionError(getText("manage.overview.autopublish.disabledByAdmin"));
+      LOG.warn("Rejected auto-publishing change for [{}]: auto-publishing is disabled instance-wide",
+          resource.getShortname());
+      return INPUT;
+    }
+    if (!isAutoPublishingConfigurable()) {
+      // Here auto-publishing is enabled but restricted to administrators, and the user is not one.
+      // The only change they may make is turning auto-publication off.
+      if (!OFF_FREQUENCY.equals(updateFrequency)) {
+        addActionError(getText("manage.overview.autopublish.notAllowed"));
+        LOG.warn("Rejected auto-publishing change for [{}]: restricted to administrators",
+            resource.getShortname());
+        return INPUT;
+      }
+
+      // Minimal path: the form only posts the frequency, so do not parse day/time or touch the options
+      // (skip-if-unchanged, failure notifications, ...), which must survive the schedule being switched off.
+      turnOffAutoPublishing();
+      LOG.info("Auto-publishing turned off for [{}] by non-administrator (administrator-only mode)",
+          resource.getShortname());
+      resourceManager.updatePublicationMode(resource);
+      saveResource();
+      return SUCCESS;
+    }
+
     String updateFrequencyMonth = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_MONTH);
     String updateFrequencyBiMonth = req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_BIMONTH);
     int updateFrequencyDay = Integer.parseInt(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FREQUENCY_DAY));
@@ -139,10 +167,7 @@ public class AutoPublishAction extends ManagerBaseAction {
     }
 
     if (OFF_FREQUENCY.equals(updateFrequency)) {
-      addActionMessage(getText("manage.autopublish.message.off"));
-      LOG.debug("Turning off auto-publishing for [{}]", resource.getShortname());
-      resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
-      resource.clearAutoPublishingFrequency();
+      turnOffAutoPublishing();
     } else if (MaintenanceUpdateFrequency.findByIdentifier(updateFrequency) != null) {
       addActionMessage(getText("manage.autopublish.message.on", new String[]{updateFrequency}));
       LOG.debug("Updating auto-publishing for [{}] to: {}", resource.getShortname(),
@@ -281,5 +306,33 @@ public class AutoPublishAction extends ManagerBaseAction {
 
   public int getRecordsDropThreshold() {
     return resource.getRecordsDropThreshold();
+  }
+
+  /**
+   * Switches auto-publishing off for the current resource and clears its frequency. Shared by the regular
+   * save path and the restricted (turn-off-only) path so both behave identically.
+   */
+  private void turnOffAutoPublishing() {
+    addActionMessage(getText("manage.autopublish.message.off"));
+    LOG.debug("Turning off auto-publishing for [{}]", resource.getShortname());
+    resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
+    resource.clearAutoPublishingFrequency();
+  }
+
+  /** Can the current user enable or change auto-publication? */
+  public boolean isAutoPublishingConfigurable() {
+    if (!cfg.isAutoPublishingEnabled()) {
+      return false;
+    }
+    return !cfg.isAutoPublishingAdminOnly()
+        || (getCurrentUser() != null && getCurrentUser().hasAdminRights());
+  }
+
+  /** Admin-only mode, non-admin user, schedule already exists: they may only turn it off. */
+  public boolean isAutoPublishingDisableOnly() {
+    return cfg.isAutoPublishingEnabled()
+        && cfg.isAutoPublishingAdminOnly()
+        && !isAutoPublishingConfigurable()
+        && resource.usesAutoPublishing();
   }
 }

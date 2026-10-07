@@ -122,6 +122,15 @@
 
     </script>
 
+    <#-- Page states:
+         off          = auto-publishing disabled instance-wide: message only
+         disableOnly  = admin-only mode, non-admin, schedule exists: may only turn it off
+         restricted   = admin-only mode, non-admin, no schedule: message only
+         form shown   = everyone else: full form -->
+    <#assign autoPublishingOff = !cfg.autoPublishingEnabled/>
+    <#assign autoPublishingDisableOnly = !autoPublishingOff && action.autoPublishingDisableOnly/>
+    <#assign autoPublishingFormShown = !autoPublishingOff && action.autoPublishingConfigurable/>
+
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
@@ -150,8 +159,18 @@
                     </div>
 
                     <div class="mt-2">
-                        <input type="submit" value="Save" id="save" name="save" class="btn btn-sm btn-outline-gbif-primary top-button" form="autopublishForm">
-                        <input type="submit" value="Cancel" id="cancel" name="cancel" class="btn btn-sm btn-outline-secondary top-button" form="autopublishForm">
+                        <#if autoPublishingFormShown>
+                            <input type="submit" value="Save" id="save" name="save" class="btn btn-sm btn-outline-gbif-primary top-button" form="autopublishForm">
+                            <input type="submit" value="Cancel" id="cancel" name="cancel" class="btn btn-sm btn-outline-secondary top-button" form="autopublishForm">
+                        <#else>
+                            <#-- No form to save or cancel in these states -->
+                            <#if autoPublishingDisableOnly>
+                                <input type="submit" value="<@s.text name="manage.autopublish.turnOff"/>" id="turnOff" name="save" class="btn btn-sm btn-outline-gbif-danger top-button" form="autopublishForm">
+                            </#if>
+                            <a href="publication-settings.do?r=${resource.shortname}" class="btn btn-sm btn-outline-secondary top-button">
+                                <@s.text name="button.cancel"/>
+                            </a>
+                        </#if>
                     </div>
                 </div>
             </div>
@@ -160,184 +179,211 @@
 
     <main class="container main-content-container">
         <div class="my-3 p-3">
-            <p class=""><@s.text name='manage.autopublish.intro'/></p>
-
-            <p id="timezone" class="">
-                <@s.text name="manage.autopublish.help.timezone">
-                    <@s.param>${serverTimeZone}</@s.param>
-                </@s.text>
-            </p>
-
-            <form id="autopublishForm" action="auto-publish.do" method="post">
-                <#if resource.isDeprecatedAutoPublishingConfiguration()>
-                    <div class="callout callout-warning text-smaller">
-                        <@s.text name='manage.overview.autopublish.deprecated.warning.description'/>
-                    </div>
-                </#if>
-                <input type="hidden" name="r" value="${resource.shortname}" />
-
-                <#-- Auto-publishing frequency-->
-                <#assign updateFrequency="">
+            <#if autoPublishingOff>
+                <p class="text-center">
+                    <@s.text name="manage.overview.autopublish.disabledByAdmin"/>
+                </p>
+            <#elseif autoPublishingDisableOnly>
+                <p class="text-center">
+                    <@s.text name="manage.overview.autopublish.adminOnly.disableOnly"/>
+                </p>
                 <#if resource.updateFrequency??>
-                    <#assign updateFrequency=resource.updateFrequency.identifier>
+                    <p class="text-center">
+                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
+                            <@s.text name="manage.overview.autopublish.enabled"/>: <@s.text name="${frequencies.get(resource.updateFrequency.identifier)}"/>
+                        </span>
+                    </p>
                 </#if>
-                <#-- Auto-publishing day-->
-                <#assign updateFrequencyDay="">
-                <#if resource.updateFrequencyDay??>
-                    <#assign updateFrequencyDay=resource.updateFrequencyDay>
-                </#if>
-                <#-- Auto-publishing month-->
-                <#assign updateFrequencyMonth="">
-                <#if resource.updateFrequencyMonth??>
-                    <#assign updateFrequencyMonth=resource.updateFrequencyMonth.identifier>
-                </#if>
-                <#-- Auto-publishing biMonth-->
-                <#assign updateFrequencyBiMonth="">
-                <#if resource.updateFrequencyBiMonth??>
-                    <#assign updateFrequencyBiMonth=resource.updateFrequencyBiMonth.identifier>
-                </#if>
-                <#-- Auto-publishing dayOfWeek-->
-                <#assign updateFrequencyDayOfWeek="">
-                <#if resource.updateFrequencyDayOfWeek??>
-                    <#assign updateFrequencyDayOfWeek=resource.updateFrequencyDayOfWeek.identifier>
-                </#if>
-                <#-- Auto-publishing hour-->
-                <#assign updateFrequencyHour="">
-                <#if resource.updateFrequencyHour??>
-                    <#assign updateFrequencyHour=resource.updateFrequencyHour>
-                </#if>
-                <#-- Auto-publishing minute-->
-                <#assign updateFrequencyMinute="">
-                <#if resource.updateFrequencyMinute??>
-                    <#assign updateFrequencyMinute=resource.updateFrequencyMinute>
-                </#if>
+                <#-- Only the "off" choice is offered: the schedule itself cannot be changed here -->
+                <form id="autopublishForm" action="auto-publish.do" method="post">
+                    <input type="hidden" name="r" value="${resource.shortname}" />
+                    <input type="hidden" name="updateFrequency" value="off" />
+                </form>
+            <#elseif !autoPublishingFormShown>
+                <p class="text-center">
+                    <@s.text name="manage.overview.autopublish.adminOnly"/>
+                </p>
+            <#else>
+                <p class=""><@s.text name='manage.autopublish.intro'/></p>
 
-                <div class="row">
-                    <div class="form-group col-md-6 col-lg-4">
-                        <label for="updateFrequency" class="form-label">
-                            <@s.text name="manage.autopublish.frequency"/>
-                        </label>
-                        <select id="updateFrequency" class="form-select" name="updateFrequency" size="1">
-                            <#list frequencies?keys as val>
-                                <option value="${val}" <#if (updateFrequency!"")==val> selected="selected"</#if>>
-                                    <@s.text name="${frequencies.get(val)}"/>
-                                </option>
-                            </#list>
-                        </select>
-                    </div>
-                </div>
-
-                <p id="introAnnually" class="">
-                    <br/>
-                    <@s.text name="manage.autopublish.intro.annually"/>
-                </p>
-                <p id="introDaily" class="">
-                    <br/>
-                    <@s.text name="manage.autopublish.intro.daily"/>
-                </p>
-                <p id="introBiAnnually" class="">
-                    <br/>
-                    <@s.text name="manage.autopublish.intro.biannually"/>
-                </p>
-                <p id="introMonthly" class="">
-                    <br/>
-                    <@s.text name="manage.autopublish.intro.monthly"/>
-                </p>
-                <p id="introWeekly" class="">
-                    <br/>
-                    <@s.text name="manage.autopublish.intro.weekly"/>
-                </p>
-                <p id="introOff" class="">
-                    <br/>
-                    <@s.text name="manage.autopublish.intro.off"/>
+                <p id="timezone" class="">
+                    <@s.text name="manage.autopublish.help.timezone">
+                        <@s.param>${serverTimeZone}</@s.param>
+                    </@s.text>
                 </p>
 
-                <div id="frequencyDetails" class="mt-2">
-                    <div class="row g-2 ">
-                        <div id="updateFrequencyDayOfWeekWrapper" class="col col-sm-3 col-lg-2">
-                            <select id="updateFrequencyDayOfWeek" class="form-select" name="updateFrequencyDayOfWeek" size="1">
-                                <#list daysOfWeek?keys as val>
-                                    <option value="${val}" <#if (updateFrequencyDayOfWeek!"")==val> selected="selected"</#if>>
-                                        <@s.text name="${daysOfWeek.get(val)}"/>
-                                    </option>
-                                </#list>
-                            </select>
-                        </div>
-
-                        <div id="updateFrequencyDayWrapper" class="col col-sm-3 col-md-2 col-lg-2 col-xl-1">
-                            <#-- Day: 1, 2, 3, ...-->
-                            <select id="updateFrequencyDay" class="form-select" name="updateFrequencyDay" size="1">
-                                <#list days?keys as val>
-                                    <option value="${val}" <#if (updateFrequencyDay!"")?string==val?string> selected="selected"</#if>>
-                                        <@s.text name="${days.get(val)}"/>
-                                    </option>
-                                </#list>
-                            </select>
-                        </div>
-
-                        <div id="updateFrequencyMonthWrapper" class="col-6 col-sm-6 col-md-4 col-lg-2">
-                            <#-- Day: January, February, ... -->
-                            <select id="updateFrequencyMonth" class="form-select" name="updateFrequencyMonth" size="1">
-                                <#list months?keys as val>
-                                    <option value="${val}" <#if (updateFrequencyMonth!"")==val> selected="selected"</#if>>
-                                        <@s.text name="${months.get(val)}"/>
-                                    </option>
-                                </#list>
-                            </select>
-                        </div>
-
-                        <div id="updateFrequencyBiMonthWrapper" class="col-6 col-sm-6 col-md-4 col-lg-2">
-                            <#-- BiMonth: January/July, February/August, ... -->
-                            <select id="updateFrequencyBiMonth" class="form-select" name="updateFrequencyBiMonth" size="1">
-                                <#list biMonths?keys as val>
-                                    <option value="${val}" <#if (updateFrequencyBiMonth!"")==val> selected="selected"</#if>>
-                                        <@s.text name="${biMonths.get(val)}"/>
-                                    </option>
-                                </#list>
-                            </select>
-                        </div>
-
-                        <div id="updateFrequencyTimeWrapper" class="col col-sm-3 col-md-2 col-lg-2 col-xl-1">
-                            <input type="time" id="updateFrequencyTime" name="updateFrequencyTime" class="form-control" value="${updateFrequencyTime!"12:00"}">
-                        </div>
-
-                    </div>
-                </div>
-
-                <div id="options" class="mt-5">
-                    <h5 class="text-gbif-header-2 fw-400 mb-3"><@s.text name="manage.autopublish.options"/></h5>
-
-                    <@checkbox name="skipUnchanged" value=skipUnchanged i18nkey="manage.autopublish.options.skipUnchanged"/>
-
-                    <@checkbox name="skipDrop" value=skipDrop i18nkey="manage.autopublish.options.skipDrop"/>
-
-                    <div id="dropThresholdContainer" class="mt-2" style="display: none;">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label for="recordsDropThreshold" class="form-label"><@s.text name="manage.autopublish.options.dropThreshold"/></label>
-                                <input type="number" class="form-control" name="recordsDropThreshold" id="recordsDropThreshold" min="0" max="100" step="1" value="${recordsDropThreshold!}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <@checkbox name="notifyPublicationFailure" value=notifyFailure i18nkey="manage.autopublish.options.notifyFailure"/>
-                    <#if !publicationFailureEmailConfigured>
-                        <div class="callout callout-warning text-smaller mt-2">
-                            <@s.text name="manage.autopublish.options.notifyFailure.notConfigured"/>
+                <form id="autopublishForm" action="auto-publish.do" method="post">
+                    <#if resource.isDeprecatedAutoPublishingConfiguration()>
+                        <div class="callout callout-warning text-smaller">
+                            <@s.text name='manage.overview.autopublish.deprecated.warning.description'/>
                         </div>
                     </#if>
+                    <input type="hidden" name="r" value="${resource.shortname}" />
 
-                    <div id="failureEmailsContainer" class="mt-2" style="display: none;">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label for="failureEmails" class="form-label"><@s.text name="manage.autopublish.options.notifyFailure.emails"/></label>
-                                <input type="text" class="form-control" name="failureEmails" id="failureEmails" placeholder="email1@example.org, email2@example.org" value="${failureEmails!}">
-                            </div>
+                    <#-- Auto-publishing frequency-->
+                    <#assign updateFrequency="">
+                    <#if resource.updateFrequency??>
+                        <#assign updateFrequency=resource.updateFrequency.identifier>
+                    </#if>
+                    <#-- Auto-publishing day-->
+                    <#assign updateFrequencyDay="">
+                    <#if resource.updateFrequencyDay??>
+                        <#assign updateFrequencyDay=resource.updateFrequencyDay>
+                    </#if>
+                    <#-- Auto-publishing month-->
+                    <#assign updateFrequencyMonth="">
+                    <#if resource.updateFrequencyMonth??>
+                        <#assign updateFrequencyMonth=resource.updateFrequencyMonth.identifier>
+                    </#if>
+                    <#-- Auto-publishing biMonth-->
+                    <#assign updateFrequencyBiMonth="">
+                    <#if resource.updateFrequencyBiMonth??>
+                        <#assign updateFrequencyBiMonth=resource.updateFrequencyBiMonth.identifier>
+                    </#if>
+                    <#-- Auto-publishing dayOfWeek-->
+                    <#assign updateFrequencyDayOfWeek="">
+                    <#if resource.updateFrequencyDayOfWeek??>
+                        <#assign updateFrequencyDayOfWeek=resource.updateFrequencyDayOfWeek.identifier>
+                    </#if>
+                    <#-- Auto-publishing hour-->
+                    <#assign updateFrequencyHour="">
+                    <#if resource.updateFrequencyHour??>
+                        <#assign updateFrequencyHour=resource.updateFrequencyHour>
+                    </#if>
+                    <#-- Auto-publishing minute-->
+                    <#assign updateFrequencyMinute="">
+                    <#if resource.updateFrequencyMinute??>
+                        <#assign updateFrequencyMinute=resource.updateFrequencyMinute>
+                    </#if>
+
+                    <div class="row">
+                        <div class="form-group col-md-6 col-lg-4">
+                            <label for="updateFrequency" class="form-label">
+                                <@s.text name="manage.autopublish.frequency"/>
+                            </label>
+
+                            <select id="updateFrequency" class="form-select" name="updateFrequency" size="1">
+                                <#list frequencies?keys as val>
+                                    <option value="${val}" <#if (updateFrequency!"")==val> selected="selected"</#if>>
+                                        <@s.text name="${frequencies.get(val)}"/>
+                                    </option>
+                                </#list>
+                            </select>
                         </div>
                     </div>
 
-                </div>
-            </form>
+                    <p id="introAnnually" class="">
+                        <br/>
+                        <@s.text name="manage.autopublish.intro.annually"/>
+                    </p>
+                    <p id="introDaily" class="">
+                        <br/>
+                        <@s.text name="manage.autopublish.intro.daily"/>
+                    </p>
+                    <p id="introBiAnnually" class="">
+                        <br/>
+                        <@s.text name="manage.autopublish.intro.biannually"/>
+                    </p>
+                    <p id="introMonthly" class="">
+                        <br/>
+                        <@s.text name="manage.autopublish.intro.monthly"/>
+                    </p>
+                    <p id="introWeekly" class="">
+                        <br/>
+                        <@s.text name="manage.autopublish.intro.weekly"/>
+                    </p>
+                    <p id="introOff" class="">
+                        <br/>
+                        <@s.text name="manage.autopublish.intro.off"/>
+                    </p>
+
+                    <div id="frequencyDetails" class="mt-2">
+                        <div class="row g-2 ">
+                            <div id="updateFrequencyDayOfWeekWrapper" class="col col-sm-3 col-lg-2">
+                                <select id="updateFrequencyDayOfWeek" class="form-select" name="updateFrequencyDayOfWeek" size="1">
+                                    <#list daysOfWeek?keys as val>
+                                        <option value="${val}" <#if (updateFrequencyDayOfWeek!"")==val> selected="selected"</#if>>
+                                            <@s.text name="${daysOfWeek.get(val)}"/>
+                                        </option>
+                                    </#list>
+                                </select>
+                            </div>
+
+                            <div id="updateFrequencyDayWrapper" class="col col-sm-3 col-md-2 col-lg-2 col-xl-1">
+                                <#-- Day: 1, 2, 3, ...-->
+                                <select id="updateFrequencyDay" class="form-select" name="updateFrequencyDay" size="1">
+                                    <#list days?keys as val>
+                                        <option value="${val}" <#if (updateFrequencyDay!"")?string==val?string> selected="selected"</#if>>
+                                            <@s.text name="${days.get(val)}"/>
+                                        </option>
+                                    </#list>
+                                </select>
+                            </div>
+
+                            <div id="updateFrequencyMonthWrapper" class="col-6 col-sm-6 col-md-4 col-lg-2">
+                                <#-- Day: January, February, ... -->
+                                <select id="updateFrequencyMonth" class="form-select" name="updateFrequencyMonth" size="1">
+                                    <#list months?keys as val>
+                                        <option value="${val}" <#if (updateFrequencyMonth!"")==val> selected="selected"</#if>>
+                                            <@s.text name="${months.get(val)}"/>
+                                        </option>
+                                    </#list>
+                                </select>
+                            </div>
+
+                            <div id="updateFrequencyBiMonthWrapper" class="col-6 col-sm-6 col-md-4 col-lg-2">
+                                <#-- BiMonth: January/July, February/August, ... -->
+                                <select id="updateFrequencyBiMonth" class="form-select" name="updateFrequencyBiMonth" size="1">
+                                    <#list biMonths?keys as val>
+                                        <option value="${val}" <#if (updateFrequencyBiMonth!"")==val> selected="selected"</#if>>
+                                            <@s.text name="${biMonths.get(val)}"/>
+                                        </option>
+                                    </#list>
+                                </select>
+                            </div>
+
+                            <div id="updateFrequencyTimeWrapper" class="col col-sm-3 col-md-2 col-lg-2 col-xl-1">
+                                <input type="time" id="updateFrequencyTime" name="updateFrequencyTime" class="form-control" value="${updateFrequencyTime!"12:00"}">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="options" class="mt-5">
+                        <h5 class="text-gbif-header-2 fw-400 mb-3"><@s.text name="manage.autopublish.options"/></h5>
+
+                        <@checkbox name="skipUnchanged" value=skipUnchanged i18nkey="manage.autopublish.options.skipUnchanged"/>
+
+                        <@checkbox name="skipDrop" value=skipDrop i18nkey="manage.autopublish.options.skipDrop"/>
+
+                        <div id="dropThresholdContainer" class="mt-2" style="display: none;">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label for="recordsDropThreshold" class="form-label"><@s.text name="manage.autopublish.options.dropThreshold"/></label>
+                                    <input type="number" class="form-control" name="recordsDropThreshold" id="recordsDropThreshold" min="0" max="100" step="1" value="${recordsDropThreshold!}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <@checkbox name="notifyPublicationFailure" value=notifyFailure i18nkey="manage.autopublish.options.notifyFailure"/>
+                        <#if !publicationFailureEmailConfigured>
+                            <div class="callout callout-warning text-smaller mt-2">
+                                <@s.text name="manage.autopublish.options.notifyFailure.notConfigured"/>
+                            </div>
+                        </#if>
+
+                        <div id="failureEmailsContainer" class="mt-2" style="display: none;">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label for="failureEmails" class="form-label"><@s.text name="manage.autopublish.options.notifyFailure.emails"/></label>
+                                    <input type="text" class="form-control" name="failureEmails" id="failureEmails" placeholder="email1@example.org, email2@example.org" value="${failureEmails!}">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </#if>
 
         </div>
     </main>

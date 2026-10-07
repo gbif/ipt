@@ -552,4 +552,17 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
     Optional.ofNullable(logoRedirectUrl)
         .ifPresent(cfg::setLogoRedirectUrl);
   }
+
+  @Override
+  public void setAutoPublishingSettings(boolean enabled, boolean adminOnly) throws InvalidConfigException {
+    boolean wasEnabled = cfg.isAutoPublishingEnabled();
+    cfg.setAutoPublishingEnabled(enabled);
+    cfg.setAutoPublishingAdminOnly(adminOnly);
+    saveConfig();
+
+    // TODO: anylyse this case
+    if (!wasEnabled && enabled) {
+      // re-enable: prevent multiple submission at the same time
+    }
+  }
 }

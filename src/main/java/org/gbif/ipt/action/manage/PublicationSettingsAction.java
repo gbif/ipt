@@ -114,6 +114,23 @@ public class PublicationSettingsAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  /** Can the current user enable or change auto-publication? */
+  public boolean isAutoPublishingConfigurable() {
+    if (!cfg.isAutoPublishingEnabled()) {
+      return false;
+    }
+    return !cfg.isAutoPublishingAdminOnly()
+        || (getCurrentUser() != null && getCurrentUser().hasAdminRights());
+  }
+
+  /** Admin-only mode, non-admin user, schedule already exists: they may only turn it off. */
+  public boolean isAutoPublishingDisableOnly() {
+    return cfg.isAutoPublishingEnabled()
+        && cfg.isAutoPublishingAdminOnly()
+        && !isAutoPublishingConfigurable()
+        && resource.usesAutoPublishing();
+  }
+
   /**
    * Populate organisations dropdown options/list, with placeholder option, followed by list of organisations able to
    * host resources. There must be more than the default organisation "No organisation" in order to include the

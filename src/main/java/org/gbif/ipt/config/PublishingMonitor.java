@@ -42,7 +42,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Class used to start a monitor thread which is responsible for auto-publishing resources when they are due,
+ * Class used to start a monitor thread which is responsible for auto-publishing resources when they are due
  * and which ensures publication always finishes entirely.
  */
 public class PublishingMonitor {
@@ -116,8 +116,12 @@ public class PublishingMonitor {
       Date now = new Date();
       LocalDate today = LocalDate.now();
       List<Resource> resources = resourceManager.list();
+
+      // before the resource loop, read once per cycle
+      boolean autoPublishingEnabled = cfg.isAutoPublishingEnabled();
+
       for (Resource resource : resources) {
-        if (resource.usesAutoPublishing()) {
+        if (autoPublishingEnabled && resource.usesAutoPublishing()) {
           Date next = resource.getNextPublished();
           BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
           if (next != null) {

@@ -93,6 +93,11 @@
         </div>
     </div>
 
+    <#assign autoPublicationEnabledForIPT = cfg.autoPublishingEnabled/>
+    <#assign autoPublicationAdminOnly = cfg.autoPublishingAdminOnly/>
+    <#-- can enable/change the schedule, or (admin-only mode, non-admin, schedule exists) can only turn it off -->
+    <#assign autoPublicationEditable = action.autoPublishingConfigurable || action.autoPublishingDisableOnly/>
+
     <div class="my-3 p-3">
         <div class="d-flex justify-content-between">
             <div class="d-flex">
@@ -103,21 +108,30 @@
             </div>
 
             <div class="d-flex justify-content-end">
+                <#if autoPublicationEditable>
                 <a id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="auto-publish.do?r=${resource.shortname}">
+                <#else>
+                <span id="edit-autopublish-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button disabled" aria-disabled="true" style="opacity: .5; pointer-events: none; cursor: not-allowed;">
+                </#if>
                     <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
                     </svg>
                     <@s.text name="button.edit"/>
-                </a>
+                <#if autoPublicationEditable></a><#else></span></#if>
             </div>
         </div>
 
-        <#assign hasMaxProcessFailures = action.hasMaxProcessFailures()>
+        <#assign autoPublicationSuspendedForThisResource = action.hasMaxProcessFailures()>
 
         <div class="mt-4">
             <p class="mb-0">
-                <#if resource.usesAutoPublishing()>
-                    <#if hasMaxProcessFailures>
+                <#if !autoPublicationEnabledForIPT>
+                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-suspended">
+                        <@s.text name="manage.overview.autopublish.disabled"/>
+                    </span>
+                    <@s.text name="manage.overview.autopublish.disabledByAdmin"/>
+                <#elseif resource.usesAutoPublishing()>
+                    <#if autoPublicationSuspendedForThisResource>
                         <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-suspended">
                             <@s.text name="manage.overview.autopublish.suspended"/>
                         </span>
@@ -137,6 +151,16 @@
                     <@s.text name="manage.overview.autopublish.intro.deactivated"/>
                 </#if>
             </p>
+
+            <#if autoPublicationEnabledForIPT && autoPublicationAdminOnly && !action.autoPublishingConfigurable>
+                <p class="mt-2 mb-0 text-smaller fst-italic">
+                    <#if action.autoPublishingDisableOnly>
+                        <@s.text name="manage.overview.autopublish.adminOnly.disableOnly"/>
+                    <#else>
+                        <@s.text name="manage.overview.autopublish.adminOnly"/>
+                    </#if>
+                </p>
+            </#if>
 
             <#if resource.isDeprecatedAutoPublishingConfiguration()>
                 <div class="callout callout-warning text-smaller">
