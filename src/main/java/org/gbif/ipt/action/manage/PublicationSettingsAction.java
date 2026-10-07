@@ -132,6 +132,15 @@ public class PublicationSettingsAction extends ManagerBaseAction {
   }
 
   /**
+   * Auto-publishing is off instance-wide, but this resource still has a schedule: it may only be turned off,
+   * so it does not resume unexpectedly once an administrator re-enables auto-publishing instance-wide.
+   */
+  public boolean isAutoPublishingTurnOffWhileDisabled() {
+    return !cfg.isAutoPublishingEnabled()
+        && resource.usesAutoPublishing();
+  }
+
+  /**
    * Populate organisations dropdown options/list, with placeholder option, followed by list of organisations able to
    * host resources. There must be more than the default organisation "No organisation" in order to include the
    * placeholder option.

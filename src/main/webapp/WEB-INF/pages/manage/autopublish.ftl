@@ -123,13 +123,17 @@
     </script>
 
     <#-- Page states:
-         off          = auto-publishing disabled instance-wide: message only
-         disableOnly  = admin-only mode, non-admin, schedule exists: may only turn it off
-         restricted   = admin-only mode, non-admin, no schedule: message only
-         form shown   = everyone else: full form -->
+         offDisableOnly = disabled instance-wide but a schedule exists: may only turn it off
+         off            = disabled instance-wide, no schedule: message only
+         disableOnly    = admin-only mode, non-admin, schedule exists: may only turn it off
+         restricted     = admin-only mode, non-admin, no schedule: message only
+         form shown     = everyone else: full form -->
     <#assign autoPublishingOff = !cfg.autoPublishingEnabled/>
+    <#assign autoPublishingTurnOffWhileDisabled = action.autoPublishingTurnOffWhileDisabled/>
     <#assign autoPublishingDisableOnly = !autoPublishingOff && action.autoPublishingDisableOnly/>
     <#assign autoPublishingFormShown = !autoPublishingOff && action.autoPublishingConfigurable/>
+    <#-- states offering only a turn-off button (schedule exists, full form not available) -->
+    <#assign autoPublishingTurnOffOnly = autoPublishingTurnOffWhileDisabled || autoPublishingDisableOnly/>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -163,8 +167,8 @@
                             <input type="submit" value="Save" id="save" name="save" class="btn btn-sm btn-outline-gbif-primary top-button" form="autopublishForm">
                             <input type="submit" value="Cancel" id="cancel" name="cancel" class="btn btn-sm btn-outline-secondary top-button" form="autopublishForm">
                         <#else>
-                            <#-- No form to save or cancel in these states -->
-                            <#if autoPublishingDisableOnly>
+                            <#-- No full form to save or cancel in these states; only a turn-off may be offered -->
+                            <#if autoPublishingTurnOffOnly>
                                 <input type="submit" value="<@s.text name="manage.autopublish.turnOff"/>" id="turnOff" name="save" class="btn btn-sm btn-outline-gbif-danger top-button" form="autopublishForm">
                             </#if>
                             <a href="publication-settings.do?r=${resource.shortname}" class="btn btn-sm btn-outline-secondary top-button">
@@ -179,7 +183,23 @@
 
     <main class="container main-content-container">
         <div class="my-3 p-3">
-            <#if autoPublishingOff>
+            <#if autoPublishingOff && autoPublishingTurnOffWhileDisabled>
+                <p class="text-center">
+                    <@s.text name="manage.overview.autopublish.disabledByAdmin.disableOnly"/>
+                </p>
+                <#if resource.updateFrequency??>
+                    <p class="text-center">
+                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
+                            <@s.text name="manage.overview.autopublish.enabled"/>: <@s.text name="${frequencies.get(resource.updateFrequency.identifier)}"/>
+                        </span>
+                    </p>
+                </#if>
+                <#-- Only the "off" choice is offered: the schedule itself cannot be changed here -->
+                <form id="autopublishForm" action="auto-publish.do" method="post">
+                    <input type="hidden" name="r" value="${resource.shortname}" />
+                    <input type="hidden" name="updateFrequency" value="off" />
+                </form>
+            <#elseif autoPublishingOff>
                 <p class="text-center">
                     <@s.text name="manage.overview.autopublish.disabledByAdmin"/>
                 </p>

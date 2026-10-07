@@ -95,8 +95,9 @@
 
     <#assign autoPublicationEnabledForIPT = cfg.autoPublishingEnabled/>
     <#assign autoPublicationAdminOnly = cfg.autoPublishingAdminOnly/>
-    <#-- can enable/change the schedule, or (admin-only mode, non-admin, schedule exists) can only turn it off -->
-    <#assign autoPublicationEditable = action.autoPublishingConfigurable || action.autoPublishingDisableOnly/>
+    <#-- can enable/change the schedule, or can only turn off an existing schedule (admin-only mode as a
+         non-admin, or auto-publishing disabled instance-wide) -->
+    <#assign autoPublicationEditable = action.autoPublishingConfigurable || action.autoPublishingDisableOnly || action.autoPublishingTurnOffWhileDisabled/>
 
     <div class="my-3 p-3">
         <div class="d-flex justify-content-between">
