@@ -67,7 +67,7 @@
                         <form action='extension.do' method='post'>
                             <input type='hidden' name='id' value='${ext.rowType}' />
 
-                            <button type="submit" value="Delete" id="delete" name="delete" class="action-link-button action-link-button-danger">
+                            <button type="submit" value="Delete" id="delete" name="deleteFlag" class="action-link-button action-link-button-danger">
                                 <@s.text name="button.remove"/>
                             </button>
                         </form>
