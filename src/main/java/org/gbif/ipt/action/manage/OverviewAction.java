@@ -1496,10 +1496,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
     // DwC-DP resources must be registered with a dataset type selected by the user
     if (resource.isDwcDp()) {
-      DatasetType datasetType = Resource.DWC_DP_REGISTRATION_DATASET_TYPES.stream()
-          .filter(type -> type.name().equalsIgnoreCase(dwcDpDatasetType))
-          .findFirst()
-          .orElse(null);
+      DatasetType datasetType = resolveDwcDpDatasetType();
 
       if (datasetType == null) {
         String msg = getText("manage.overview.failed.resource.registration.datasetType");
@@ -1684,6 +1681,57 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       }
     }
     return null;
+  }
+
+  /**
+   * Changes the GBIF dataset type of a registered DwC-DP resource and updates its registration.
+   */
+  public synchronized String updateDwcDpDatasetType() throws Exception {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+
+    if (!resource.isDwcDp() || !resource.isRegistered()) {
+      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+          resource.getStatus().toString()}));
+      return execute();
+    }
+
+    if (!getCurrentUser().hasRegistrationRights()) {
+      addActionError(getText("manage.resource.status.registration.forbidden") + " "
+          + getText("manage.resource.role.change"));
+      return execute();
+    }
+
+    DatasetType datasetType = resolveDwcDpDatasetType();
+    if (datasetType == null) {
+      addActionError(getText("manage.overview.failed.resource.registration.datasetType"));
+      return execute();
+    }
+
+    DatasetType previousDatasetType = resource.getDwcDpDatasetType();
+    resource.setDwcDpDatasetType(datasetType);
+    try {
+      resourcePublicationManager.updateRegistration(resource, this);
+    } catch (PublicationException e) {
+      // error messages were already added, keep the previous type since the registry was not updated
+      resource.setDwcDpDatasetType(previousDatasetType);
+      return execute();
+    }
+    saveResource();
+    addActionMessage(getText("manage.overview.registration.datasetType.updated"));
+    return execute();
+  }
+
+  /**
+   * @return the submitted DwC-DP dataset type if it is one of the supported ones, null otherwise
+   */
+  @Nullable
+  private DatasetType resolveDwcDpDatasetType() {
+    return Resource.DWC_DP_REGISTRATION_DATASET_TYPES.stream()
+        .filter(type -> type.name().equalsIgnoreCase(dwcDpDatasetType))
+        .findFirst()
+        .orElse(null);
   }
 
   /**
