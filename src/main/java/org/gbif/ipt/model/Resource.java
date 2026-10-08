@@ -14,6 +14,7 @@
 package org.gbif.ipt.model;
 
 import org.gbif.api.model.common.DOI;
+import org.gbif.api.vocabulary.DatasetType;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.Constants;
@@ -87,6 +88,12 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
 
+  /**
+   * GBIF dataset types a DwC-DP resource can be registered as.
+   */
+  public static final List<DatasetType> DWC_DP_REGISTRATION_DATASET_TYPES =
+      List.of(DatasetType.OCCURRENCE, DatasetType.SAMPLING_EVENT);
+
   @Getter
   private String shortname; // unique
   @Getter
@@ -96,6 +103,10 @@ public class Resource implements Serializable, Comparable<Resource> {
   private String coreType;
   @Getter
   private String subtype;
+  // GBIF dataset type selected by the user when registering a DwC-DP resource (e.g. occurrence or sampling event)
+  @Getter
+  @Setter
+  private DatasetType dwcDpDatasetType;
   private MaintenanceUpdateFrequency updateFrequency;
   // Return the temporal information (month, day, hour or minute) to build the next date,
   // when update frequency is used.

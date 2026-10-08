@@ -9,6 +9,8 @@
         // cancelAnswer : a text for Cancel/No answer.
         // checkboxText: a text for the checkbox needed to confirm for Yes answer (optional)
         // summary: a textarea to enter a summary for the submit
+        // select: a dropdown whose value is required for Yes answer and copied to an input (optional),
+        //         e.g. {label: "Type", placeholder: "Select", options: [{value: "A", label: "a"}], target: "#input"}
         // buttonType: a button type (color)
         // processing: run spinner
         var theOptions = jQuery.extend({
@@ -18,6 +20,7 @@
             cancelAnswer: "Cancel",
             checkboxText: undefined,
             summary: undefined,
+            select: undefined,
             buttonType: "danger",
             processing: false,
             baseUrl: "",
@@ -71,6 +74,19 @@
                         content += '<p class="mb-0">' + theOptions.question + '</p>';
                     }
 
+                    // select if present
+                    if (theOptions.select !== undefined) {
+                        content += '<div class="mt-3 text-start">';
+                        content += '<label for="dialogSelect" class="form-label">' + theOptions.select.label + '</label>';
+                        content += '<select id="dialogSelect" class="form-select form-select-sm">';
+                        content += '<option value="" selected>' + (theOptions.select.placeholder || '') + '</option>';
+                        $.each(theOptions.select.options, function (i, option) {
+                            content += '<option value="' + option.value + '">' + option.label + '</option>';
+                        });
+                        content += '</select>';
+                        content += '</div>';
+                    }
+
                     // summary if present
                     if (theOptions.summary !== undefined) {
                         content += '<div class="mt-3"><textarea id="dialogSummary" rows="5" class="dialog-summary form-control form-control-sm" placeholder="' + theOptions.summary + '"></textarea></div>';
@@ -92,10 +108,18 @@
                     var yesButton = $("#yes-button");
                     var cancelButton = $("#cancel-button");
 
-                    // hide yes button if checkbox present
-                    if (theOptions.checkboxText !== undefined) {
-                        yesButton.hide();
+                    // show yes button only if checkbox (if present) is selected and select (if present) has a value
+                    function toggleYesButton() {
+                        var checked = theOptions.checkboxText === undefined || $('#checkbox-confirm').prop('checked');
+                        var selected = theOptions.select === undefined || $('#dialogSelect').val() !== '';
+                        if (checked && selected) {
+                            yesButton.show();
+                        } else {
+                            yesButton.hide();
+                        }
                     }
+
+                    toggleYesButton();
 
                     yesButton.on("click", function () {
                         if (thisHref != null) {
@@ -104,6 +128,9 @@
                             submitBtn.attr("jconfirmed", true);
                             var selected = $("#dialogSummary").val();
                             $("#summary").empty().append(selected);
+                            if (theOptions.select !== undefined) {
+                                $(theOptions.select.target).val($("#dialogSelect").val());
+                            }
                             submitBtn.click();
 
                             // display processing spinner if enabled
@@ -127,14 +154,8 @@
                         submitBtn.removeAttr("jconfirmed");
                     });
 
-                    // show yes button if checkbox is selected
-                    $('#checkbox-confirm').on("click", function () {
-                        if ($('#checkbox-confirm').prop('checked')) {
-                            yesButton.show();
-                        } else {
-                            yesButton.hide();
-                        }
-                    });
+                    $('#checkbox-confirm').on("click", toggleYesButton);
+                    $('#dialogSelect').on("change", toggleYesButton);
 
                     dialogWindow.modal('show');
                 }

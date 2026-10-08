@@ -291,6 +291,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("serviceTypes", services.serviceTypes));
     data.add(new BasicNameValuePair("serviceURLs", services.serviceURLs));
 
+    // dataset type selected by the user during registration, cannot be inferred from the DwC-DP service type
+    if (resource.getDwcDpDatasetType() != null) {
+      data.add(new BasicNameValuePair("datasetType", resource.getDwcDpDatasetType().name()));
+    }
+
     return data;
   }
 

@@ -17,6 +17,7 @@ import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.common.DoiData;
 import org.gbif.api.model.common.DoiStatus;
 import org.gbif.api.model.registry.Network;
+import org.gbif.api.vocabulary.DatasetType;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
 import org.gbif.doi.service.DoiExistsException;
@@ -195,6 +196,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   @Getter
   private String datapackageMetadataRaw;
   private boolean unpublish = false;
+  // GBIF dataset type selected when registering a DwC-DP resource
+  private String dwcDpDatasetType;
   private boolean reserveDoi = false;
   private boolean deleteDoi = false;
   private boolean undelete = false;
@@ -1491,6 +1494,23 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       return INPUT;
     }
 
+    // DwC-DP resources must be registered with a dataset type selected by the user
+    if (resource.isDwcDp()) {
+      DatasetType datasetType = Resource.DWC_DP_REGISTRATION_DATASET_TYPES.stream()
+          .filter(type -> type.name().equalsIgnoreCase(dwcDpDatasetType))
+          .findFirst()
+          .orElse(null);
+
+      if (datasetType == null) {
+        String msg = getText("manage.overview.failed.resource.registration.datasetType");
+        addActionError(msg);
+        LOG.error(msg);
+        return INPUT;
+      }
+
+      resource.setDwcDpDatasetType(datasetType);
+    }
+
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
         addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
@@ -1664,6 +1684,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       }
     }
     return null;
+  }
+
+  /**
+   * GBIF dataset type a DwC-DP resource is registered as, e.g. OCCURRENCE or SAMPLING_EVENT.
+   */
+  @StrutsParameter
+  public void setDwcDpDatasetType(String dwcDpDatasetType) {
+    this.dwcDpDatasetType = StringUtils.trimToNull(dwcDpDatasetType);
+  }
+
+  /**
+   * @return GBIF dataset types a DwC-DP resource can be registered as
+   */
+  public List<DatasetType> getDwcDpRegistrationDatasetTypes() {
+    return Resource.DWC_DP_REGISTRATION_DATASET_TYPES;
   }
 
   /**
