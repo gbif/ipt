@@ -235,6 +235,11 @@ public class ResourceLoaderImpl implements ResourceLoader {
           backfillDataPackageVersion(resource, callbacks);
         }
 
+        // DwC-DP resources: rename versioned EML files wrongly converted by older IPT versions, e.g. eml-9.0.xml -> eml-9.xml
+        if (resource.isDwcDp()) {
+          resourceVersioningService.restoreDwcDpVersionedEmlFiles(resource);
+        }
+
         LOG.debug("Read resource configuration for {}", shortname);
         return resource;
       } catch (Exception e) {

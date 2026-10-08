@@ -143,6 +143,48 @@ public class ResourceVersioningServiceImpl implements ResourceVersioningService 
   }
 
   /**
+   * Restore DwC-DP versioned EML file names wrongly converted to major_version.minor_version style, e.g. eml-9.0.xml
+   * back to eml-9.xml. DwC-DP resources use integer-based versions, but IPT versions without the data package check
+   * in the version conversion renamed their versioned EML files.
+   *
+   * @param resource DwC-DP resource to repair
+   */
+  @Override
+  public void restoreDwcDpVersionedEmlFiles(Resource resource) {
+    Objects.requireNonNull(resource);
+    if (!resource.isDwcDp()) {
+      return;
+    }
+
+    for (VersionHistory vh : resource.getVersionHistory()) {
+      BigDecimal version;
+      try {
+        version = new BigDecimal(vh.getVersion());
+      } catch (NumberFormatException | NullPointerException e) {
+        LOG.warn("Skipping invalid version [{}] for {}", vh.getVersion(), resource.getShortname());
+        continue;
+      }
+
+      // only integer-based versions could have been converted, e.g. 9 -> 9.0
+      if (version.scale() != 0) {
+        continue;
+      }
+
+      File emlFile = dataDir.resourceEmlFile(resource.getShortname(), version);
+      File convertedEmlFile = dataDir.resourceEmlFile(resource.getShortname(), version.setScale(1, RoundingMode.CEILING));
+      if (!emlFile.exists() && convertedEmlFile.exists()) {
+        try {
+          FileUtils.moveFile(convertedEmlFile, emlFile);
+          LOG.info("Renamed {} to {} for {}", convertedEmlFile.getName(), emlFile.getName(), resource.getShortname());
+        } catch (IOException e) {
+          LOG.error("Failed to rename {} to {} for {}", convertedEmlFile.getName(), emlFile.getName(),
+              resource.getShortname(), e);
+        }
+      }
+    }
+  }
+
+  /**
    * Construct VersionHistory for the last published version of a resource if the resource has been published but had no
    * VersionHistory. Please note IPTs before v2.2 had no list of VersionHistory.
    *

@@ -51,6 +51,15 @@ public interface ResourceVersioningService {
   void renameDwcaToIncludeVersion(Resource resource, BigDecimal version);
 
   /**
+   * Restore DwC-DP versioned EML file names wrongly converted to major_version.minor_version style, e.g. eml-9.0.xml
+   * back to eml-9.xml. DwC-DP resources use integer-based versions, but IPT versions without the data package check
+   * in the version conversion renamed their versioned EML files.
+   *
+   * @param resource DwC-DP resource to repair
+   */
+  void restoreDwcDpVersionedEmlFiles(Resource resource);
+
+  /**
    * Construct VersionHistory for the last published version of a resource if the resource has been published but had no
    * VersionHistory. Please note IPTs before v2.2 had no list of VersionHistory.
    *
