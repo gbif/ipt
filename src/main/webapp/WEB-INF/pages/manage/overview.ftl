@@ -2111,6 +2111,14 @@
                                         <@s.text name='button.register'/>
                                     </button>
                                 </#if>
+                                <#if resource.isDwcDp() && resource.status=="REGISTERED" && resource.key?? && currentUser.hasRegistrationRights()>
+                                    <button class="change-dwc-dp-dataset-type-button text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
+                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
+                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                                        </svg>
+                                        <@s.text name='manage.overview.registration.datasetType.change'/>
+                                    </button>
+                                </#if>
                             </div>
                         </div>
 
@@ -2146,13 +2154,6 @@
                                                 </div>
 
                                                 <div class="d-flex justify-content-end my-auto registration-item-actions">
-                                                    <#if resource.isDwcDp() && currentUser.hasRegistrationRights()>
-                                                        <a title="<@s.text name="manage.overview.registration.datasetType.change"/>" class="change-dwc-dp-dataset-type-button icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="#">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                            </svg>
-                                                        </a>
-                                                    </#if>
                                                     <a title="<@s.text name="manage.overview.registration.view"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="${cfg.portalUrl}/dataset/${resource.key!}">
                                                         <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
@@ -2167,16 +2168,6 @@
                                                         </a>
 
                                                         <ul class="dropdown-menu" aria-labelledby="dropdown-registration-item-actions-current">
-                                                            <#if resource.isDwcDp() && currentUser.hasRegistrationRights()>
-                                                                <li>
-                                                                    <a class="change-dwc-dp-dataset-type-button dropdown-item action-link" type="button" href="#">
-                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                                        </svg>
-                                                                        <@s.text name="manage.overview.registration.datasetType.change"/>
-                                                                    </a>
-                                                                </li>
-                                                            </#if>
                                                             <li>
                                                                 <a class="dropdown-item action-link" type="button" href="${cfg.portalUrl}/dataset/${resource.key!}">
                                                                     <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
