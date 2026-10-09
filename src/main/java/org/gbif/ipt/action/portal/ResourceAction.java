@@ -507,7 +507,8 @@ public class ResourceAction extends PortalBaseAction {
    * @return Struts2 result string
    */
   public String preview() {
-    if (resource.isDataPackage()) {
+    // DwC-DP resources are described by EML, so they use the EML preview below
+    if (resource.isDataPackage() && !resource.isDwcDp()) {
       return previewDataPackage();
     }
 
@@ -592,6 +593,7 @@ public class ResourceAction extends PortalBaseAction {
     copy.setStatus(resource.getStatus());
     copy.setOrganisation(resource.getOrganisation());
     copy.setKey(resource.getKey());
+    copy.setDataPackageIdentifier(resource.getDataPackageIdentifier());
 
     // update all version number and pubDate
     copy.setMetadataVersion(nextVersion);
