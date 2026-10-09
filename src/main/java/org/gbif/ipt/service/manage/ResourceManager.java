@@ -45,7 +45,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.collections4.ListValuedMap;
 import org.xml.sax.SAXException;
 
 /**
@@ -426,7 +425,7 @@ public interface ResourceManager {
    *
    * @return map of resource name (key) to List of Date when publishing job failed
    */
-  ListValuedMap<String, Date> getProcessFailures();
+  Map<String, List<Date>> getProcessFailures();
 
   /**
    * Return the report map.
@@ -448,6 +447,16 @@ public interface ResourceManager {
    * @return true if publication has failed the maximum allowed times for a given resource
    */
   boolean hasMaxProcessFailures(Resource resource);
+
+  /**
+   * Check if the maximum number of publish event failures has occurred for a resource.
+   *
+   * @param resource resource
+   * @param logInfo  true if logInfo should be printed, false otherwise.
+   *
+   * @return true if publication has failed the maximum allowed times for a given resource
+   */
+  boolean hasMaxProcessFailures(Resource resource, boolean logInfo);
 
   /**
    * Remove a specific archived version of a resource

@@ -66,8 +66,8 @@
         || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
         || resource.status == "REGISTERED">
 
-        <!-- the user must have registration rights -->
-        <#if !currentUser.hasRegistrationRights()>
+        <!-- the user must have registration rights or manage this resource -->
+        <#if !currentUser.hasRegistrationRights() && !resource.isManagedBy(currentUser)>
             <@showPublicationWarningButton/>
 
         <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->

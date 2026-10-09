@@ -1141,6 +1141,11 @@ div.dataTables_processing>div:last-child>div {
     border-color: #F8DFA3 !important;
 }
 
+.autopublish-suspended {
+    background: #F1BDB8 !important;
+    border-color: #F1BDB8 !important;
+}
+
 .metadata-incomplete {
     background: #F1BDB8 !important;
     border-color: #F1BDB8 !important;

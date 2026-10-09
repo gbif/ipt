@@ -67,6 +67,8 @@ public class AppConfig {
   protected static final String DATADIR_PROPFILE = "ipt.properties";
   static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
+  public static final String AUTO_PUBLISHING_ENABLED = "ipt.autopublishing.enabled";
+  public static final String AUTO_PUBLISHING_ADMIN_ONLY = "ipt.autopublishing.adminonly";
   // Since 2.1
   public static final String CORE_ROW_TYPES = "ipt.core_rowTypes";
   public static final String CORE_ROW_ID_TERMS = "ipt.core_idTerms";
@@ -163,6 +165,25 @@ public class AppConfig {
     // also loaded via ConfigManager constructor if datadir was linked at startup already
     // If it wasn't, this is the only place to load at least the default classpath config settings
     loadConfig();
+  }
+
+  /** Missing property = enabled, so existing installations keep their current behavior after upgrade. */
+  public boolean isAutoPublishingEnabled() {
+    String value = getProperty(AUTO_PUBLISHING_ENABLED);
+    return value == null || Boolean.parseBoolean(value);
+  }
+
+  public void setAutoPublishingEnabled(boolean enabled) {
+    setProperty(AUTO_PUBLISHING_ENABLED, String.valueOf(enabled));
+  }
+
+  /** Missing property = false, so nothing changes for existing installations. */
+  public boolean isAutoPublishingAdminOnly() {
+    return Boolean.parseBoolean(getProperty(AUTO_PUBLISHING_ADMIN_ONLY));
+  }
+
+  public void setAutoPublishingAdminOnly(boolean adminOnly) {
+    setProperty(AUTO_PUBLISHING_ADMIN_ONLY, String.valueOf(adminOnly));
   }
 
   /**

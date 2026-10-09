@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import freemarker.ext.beans.SimpleMapModel;
 import lombok.Getter;
@@ -304,6 +305,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     return trans.getSourceValues();
   }
 
+  @StrutsParameter(depth = 2)
   public Map<String, String> getTmap() {
     return trans.getTranslatedValues();
   }
@@ -322,6 +324,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
    *
    * @param translatedValues map with translated values, whose key corresponds to translation.sourceValues map
    */
+  @StrutsParameter(depth = 2)
   public void setTmap(TreeMap<String, String> translatedValues) {
     this.trans.translatedValues = translatedValues;
   }

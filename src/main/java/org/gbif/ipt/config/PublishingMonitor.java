@@ -33,16 +33,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.collections4.ListValuedMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Class used to start a monitor thread which is responsible for auto-publishing resources when they are due,
+ * Class used to start a monitor thread which is responsible for auto-publishing resources when they are due
  * and which ensures publication always finishes entirely.
  */
 public class PublishingMonitor {
@@ -116,8 +116,12 @@ public class PublishingMonitor {
       Date now = new Date();
       LocalDate today = LocalDate.now();
       List<Resource> resources = resourceManager.list();
+
+      // before the resource loop, read once per cycle
+      boolean autoPublishingEnabled = cfg.isAutoPublishingEnabled();
+
       for (Resource resource : resources) {
-        if (resource.usesAutoPublishing()) {
+        if (autoPublishingEnabled && resource.usesAutoPublishing()) {
           Date next = resource.getNextPublished();
           BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
           if (next != null) {
@@ -167,7 +171,9 @@ public class PublishingMonitor {
                       // restore the previous version since publication was unsuccessful
                       resourceManager.restoreVersion(resource, nextVersion, null);
                       // keep track of how many failures on auto publication have happened
-                      resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+                      resourceManager.getProcessFailures()
+                          .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
+                          .add(new Date());
                       sendPublicationFailureEmail(resource, nextVersion, e.getMessage());
                     }
                   } catch (InvalidConfigException e) {
@@ -208,7 +214,7 @@ public class PublishingMonitor {
    * @return true if the resource's most recent failure happened within the retry delay window
    */
   private boolean isWithinRetryCooldown(Resource resource, Date now) {
-    ListValuedMap<String, Date> processFailures = resourceManager.getProcessFailures();
+    Map<String, List<Date>> processFailures = resourceManager.getProcessFailures();
     if (processFailures.containsKey(resource.getShortname())) {
       List<Date> failures = processFailures.get(resource.getShortname());
       if (!failures.isEmpty()) {

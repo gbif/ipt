@@ -176,7 +176,7 @@
         </#if>
 
         $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/> <@s.text name='manage.resource.delete.confirm.registered'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary", processing: true, baseUrl: "${baseURL}"});
+        $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>", buttonType: "primary", processing: true, baseUrl: "${baseURL}"});
         $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
         $('.confirmDatapackageMetadataReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}"});
         $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", baseUrl: "${baseURL}"});
@@ -793,10 +793,49 @@
 
         if (uploadStatus === "success") {
             showSourceCreatedSuccessfullyInfoWindow();
+            showCarriedOverUploadWarnings();
             sessionStorage.removeItem("uploadStatus");
         } else if (uploadStatus === "fail") {
             console.log("upload failed");
             sessionStorage.removeItem("uploadStatus");
+        }
+
+        // Warnings picked up from the final response document of an XHR-driven source upload (see
+        // uploadFile() below) don't otherwise survive the widget's own window.location.reload(), since
+        // by the time that reload's request reaches the server, RedirectMessageInterceptor has already
+        // handed them off (and cleared them from the session) to the page the XHR silently followed.
+        function showCarriedOverUploadWarnings() {
+            var raw = sessionStorage.getItem("uploadWarnings");
+            sessionStorage.removeItem("uploadWarnings");
+            if (!raw) {
+                return;
+            }
+
+            var warnings;
+            try {
+                warnings = JSON.parse(raw);
+            } catch (e) {
+                return;
+            }
+
+            var container = document.getElementById("action-alerts");
+            if (!container || !warnings || !warnings.length) {
+                return;
+            }
+
+            warnings.forEach(function (text) {
+                var alertDiv = document.createElement("div");
+                alertDiv.className = "alert alert-warning alert-dismissible fade show d-flex";
+                alertDiv.setAttribute("role", "alert");
+                alertDiv.innerHTML =
+                    '<div class="me-3"><i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i></div>' +
+                    '<div class="overflow-x-hidden pt-1"><span></span></div>' +
+                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                alertDiv.querySelector("span").textContent = text;
+                container.appendChild(alertDiv);
+            });
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
         function showSourceCreatedSuccessfullyInfoWindow() {
@@ -865,9 +904,14 @@
             }
 
             try {
-                await Promise.all(promises);
+                var results = await Promise.all(promises);
+                var allWarnings = results.flat().filter(Boolean);
+
                 sessionStorage.setItem("uploadStatus", "success");
                 sessionStorage.setItem("uploadedFiles", fileNamesConcatenated);
+                if (allWarnings.length > 0) {
+                    sessionStorage.setItem("uploadWarnings", JSON.stringify(allWarnings));
+                }
                 closeModal();
                 window.location.reload();
             } catch (error) {
@@ -1088,7 +1132,27 @@
                             return;
                         }
 
-                        resolve(); // Resolve on success
+                        // The XHR silently followed the addsource -> ... -> resource.do redirect chain,
+                        // so xhr.response is the final page's parsed document. Any action warnings that
+                        // survived that chain (e.g. "embedded line breaks removed") are rendered into it
+                        // by action_alerts.ftl - grab them now, because they'll be gone from the session
+                        // by the time our own window.location.reload() below asks for the page again.
+                        var fileWarnings = [];
+                        try {
+                            var finalDoc = xhr.response;
+                            if (finalDoc && typeof finalDoc.querySelectorAll === "function") {
+                                finalDoc.querySelectorAll("#action-alerts .alert-warning .overflow-x-hidden").forEach(function (el) {
+                                    var text = el.textContent.trim();
+                                    if (text) {
+                                        fileWarnings.push(text);
+                                    }
+                                });
+                            }
+                        } catch (e) {
+                            console.warn("Could not read warnings from upload response:", e);
+                        }
+
+                        resolve(fileWarnings); // Resolve on success, carrying any warnings found
                     }
                 };
 
@@ -1701,13 +1765,25 @@
                             </div>
                         </div>
 
+                        <#assign autoPublicationSuspendedForThisResource = action.hasMaxProcessFailures()>
+                        <#assign autoPublicationEnabledForIPT = cfg.autoPublishingEnabled/>
+
                         <div class="mt-4">
                             <p class="mb-2">
-                                <#if resource.usesAutoPublishing()>
-                                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
-                                        <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
-                                    </span>
-                                    <@s.text name="manage.overview.autopublish.intro.activated"/>
+                                <#if resource.usesAutoPublishing() && autoPublicationEnabledForIPT>
+                                    <#if autoPublicationSuspendedForThisResource>
+                                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-suspended">
+                                            <@s.text name="manage.overview.autopublish.suspended"/>
+                                        </span>
+                                        <span class="text-gbif-danger fst-italic">
+                                            <@s.text name="manage.overview.autopublish.intro.suspended"/>
+                                        </span>
+                                    <#else>
+                                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
+                                            <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
+                                        </span>
+                                        <@s.text name="manage.overview.autopublish.intro.activated"/>
+                                    </#if>
                                 </#if>
                             </p>
 
@@ -1895,7 +1971,7 @@
                                                 </span><br>
                                                 <span class="fs-smaller-2">
                                                     <small>
-                                                        <#if resource.nextPublished??>
+                                                        <#if resource.nextPublished?? && !autoPublicationSuspendedForThisResource && autoPublicationEnabledForIPT>
                                                             ${nextPublicationDate?cap_first} ${resource.nextPublished?datetime?string.medium}
                                                         <#else>
                                                             <@s.text name="manage.overview.published.date.not.set"/>

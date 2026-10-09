@@ -33,6 +33,7 @@ import java.io.Serial;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -128,28 +129,22 @@ public class PublishAllResourcesAction extends BaseAction {
       // next version number - the version of newly published eml/rtf/archive
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
       try {
-        if (!resourceManager.hasMaxProcessFailures(resource)) {
-          boolean isValidMetadata;
+        // manual bulk publish is an explicit admin action, so don't skip resources that hit the
+        // max failures limit for auto-publishing; give them a fresh start instead
+        resourceManager.getProcessFailures().remove(resource.getShortname());
 
-          if (resource.isDataPackage()) {
-            isValidMetadata = dpMetadataValidator.isValid(resource);
-          } else {
-            isValidMetadata = emlValidator.isValid(resource, null);
-          }
+        boolean isValidMetadata = resource.isDataPackage()
+            ? dpMetadataValidator.isValid(resource)
+            : emlValidator.isValid(resource, null);
 
-          if (isValidMetadata) {
-            // publish a new version of the resource - dwca gets published asynchronously
-            resourceManager.publish(resource, nextVersion, this, skipIfNotChanged);
-          } else {
-            // alert user publication failed
-            addActionError(getText("publishing.failed",
-                new String[]{nextVersion.toPlainString(), resource.getShortname(),
-                    getText("manage.overview.published.missing.metadata")}));
-          }
-        } else {
-          addActionError(getText("publishing.skipping",
-              new String[]{String.valueOf(resource.getNextVersion()), resource.getTitleAndShortname()}));
+        if (!isValidMetadata) {
+          addActionWarning(getText("publishing.failed",
+              new String[]{nextVersion.toPlainString(), resource.getShortname(),
+                  getText("manage.overview.published.missing.metadata")}));
         }
+
+        // publish a new version of the resource - dwca gets published asynchronously
+        resourceManager.publish(resource, nextVersion, this, skipIfNotChanged);
       } catch (PublicationException e) {
         if (PublicationException.TYPE.LOCKED == e.getType()) {
           addActionError(
@@ -161,7 +156,9 @@ public class PublishAllResourcesAction extends BaseAction {
           // restore the previous version since publication was unsuccessful
           resourceManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
-          resourceManager.getProcessFailures().put(resource.getShortname(), new Date());
+          resourceManager.getProcessFailures()
+              .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
+              .add(new Date());
         }
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed

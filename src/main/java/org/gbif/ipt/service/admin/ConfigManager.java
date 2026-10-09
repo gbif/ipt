@@ -139,4 +139,9 @@ public interface ConfigManager {
    * Sets logo redirect URL (by default public URL of the IPT).
    */
   void setLogoRedirectUrl(String logoRedirectUrl);
+
+  /**
+   * Sets the auto-publishing settings.
+   */
+  void setAutoPublishingSettings(boolean enabled, boolean adminOnly) throws InvalidConfigException;
 }

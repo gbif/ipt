@@ -608,6 +608,10 @@
                             <div class="table-responsive">
                                 <table class="text-smaller table table-sm table-borderless">
                                     <tr>
+                                        <th class="col-4"><@s.text name='portal.resource.project.id'/></th>
+                                        <td>${dpMetadata.project.id!}</td>
+                                    </tr>
+                                    <tr>
                                         <th class="col-4"><@s.text name='portal.resource.project.title'/></th>
                                         <td>${dpMetadata.project.title!}</td>
                                     </tr>
