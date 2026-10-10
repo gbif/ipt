@@ -1,4 +1,4 @@
-;(function (sax) {
+﻿;(function (sax) {
   // wrapper for non-node envs
   sax.parser = function (strict, opt) {
     return new SAXParser(strict, opt)

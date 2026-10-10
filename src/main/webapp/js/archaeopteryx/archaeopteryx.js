@@ -1,4 +1,4 @@
-/**
+﻿/**
  *  Copyright (C) 2026 Christian M. Zmasek
  *  Copyright (C) 2026 Yun Zhang
  *  Copyright (C) 2026 J. Craig Venter Institute

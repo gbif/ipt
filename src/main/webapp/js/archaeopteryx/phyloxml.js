@@ -1,4 +1,4 @@
-/**
+﻿/**
  *  Copyright (C) 2019 Christian M. Zmasek
  *  Copyright (C) 2019 J. Craig Venter Institute
  *  All rights reserved
