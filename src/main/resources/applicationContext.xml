@@ -208,6 +208,10 @@
     <constructor-arg ref="xstreamResourcePersister"/>
   </bean>
 
+  <bean id="phylogeneticTreeManager" class="org.gbif.ipt.service.manage.impl.PhylogeneticTreeManagerImpl">
+    <constructor-arg ref="dataDir"/>
+  </bean>
+
   <bean id="resourceTypeService" class="org.gbif.ipt.service.manage.impl.ResourceTypeServiceImpl">
       <constructor-arg ref="vocabulariesManager"/>
   </bean>

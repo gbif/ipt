@@ -460,6 +460,21 @@
                         </#list>
                     </select>
                 </div>
+            <#elseif p.qualname == action.getPhylogeneticTreeFileNameTerm() && action.getPhylogeneticTreeFileNames()?has_content>
+                <#-- the constant tree file name is one of the resource's uploaded tree files -->
+                <#assign treeFileNames = action.getPhylogeneticTreeFileNames()/>
+                <div class="input-group input-group-sm">
+                    <select id="fVal${fieldsIndex}" class="fval fval-select form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
+                        <option value="" <#if !field.defaultValue?has_content> selected="selected"</#if>></option>
+                        <#list treeFileNames as treeFileName>
+                            <option value="${treeFileName}" <#if (field.defaultValue!"")==treeFileName> selected="selected"</#if>>${treeFileName}</option>
+                        </#list>
+                        <#-- keep a value that doesn't match an uploaded file selectable, rather than silently dropping it -->
+                        <#if field.defaultValue?has_content && !treeFileNames?seq_contains(field.defaultValue)>
+                            <option value="${field.defaultValue}" selected="selected">${field.defaultValue} (<@s.text name="manage.mapping.phylogenies.notUploaded"/>)</option>
+                        </#if>
+                    </select>
+                </div>
             <#else>
                 <input id="fVal${fieldsIndex}" class="fval form-control form-control-sm" name="fields[${fieldsIndex}].defaultValue" value="${field.defaultValue!}"/>
             </#if>

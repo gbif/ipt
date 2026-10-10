@@ -20,14 +20,17 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.PhylogeneticTreeFile;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.RecordFilter.Comparator;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceWithHeader;
+import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -40,6 +43,7 @@ import java.io.Serial;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -121,6 +125,8 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @Setter
   @Getter
   private boolean doiUsedForDatasetId;
+  private PhylogeneticTreeManager phylogeneticTreeManager;
+  private List<String> phylogeneticTreeFileNames;
 
   @Inject
   public MappingAction(
@@ -162,6 +168,84 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
         addActionError(getText("validation.column.multipleTranslations", new String[]{columnName}));
       }
     }
+
+    validatePhylogeneticTreeFileNames();
+  }
+
+  /**
+   * For Phylogenetic Material Citation mappings, warn about tree file names that match no uploaded tree file:
+   * specimens citing them won't be linked to the tree.
+   */
+  private void validatePhylogeneticTreeFileNames() {
+    if (!isPhylogeneticMaterialCitationMapping()) {
+      return;
+    }
+    PropertyMapping pm = mapping.getField(PhylogeneticTreeManager.FILE_NAME_TERM);
+    if (pm == null) {
+      return;
+    }
+    List<String> uploaded = getPhylogeneticTreeFileNames();
+    if (uploaded.isEmpty()) {
+      addActionWarning(getText("manage.mapping.phylogenies.noTrees"));
+      return;
+    }
+
+    Set<String> values = new TreeSet<>();
+    if (pm.getIndex() != null && pm.getIndex() >= 0) {
+      try {
+        for (String value : sourceManager.inspectColumn(mapping.getSource(), pm.getIndex(), 1000, 10000)) {
+          // as in archive generation: translations first, then the default value for empty values
+          if (pm.getTranslation() != null && pm.getTranslation().containsKey(value)) {
+            value = pm.getTranslation().get(value);
+          }
+          values.add(StringUtils.isBlank(value) ? StringUtils.trimToEmpty(pm.getDefaultValue()) : value);
+        }
+      } catch (SourceException e) {
+        LOG.warn("Failed to inspect tree file name column of source {}", mapping.getSource().getName(), e);
+        return;
+      }
+    } else if (StringUtils.isNotBlank(pm.getDefaultValue())) {
+      values.add(pm.getDefaultValue());
+    }
+
+    values.remove("");
+    values.removeAll(uploaded);
+    if (!values.isEmpty()) {
+      List<String> unknown = new ArrayList<>(values);
+      String shown = String.join(", ", unknown.subList(0, Math.min(10, unknown.size())))
+          + (unknown.size() > 10 ? ", ..." : "");
+      addActionWarning(getText("manage.mapping.phylogenies.unknownFiles",
+          new String[]{shown, String.join(", ", uploaded)}));
+    }
+  }
+
+  public boolean isPhylogeneticMaterialCitationMapping() {
+    return mapping != null && mapping.getExtension() != null
+        && PhylogeneticTreeManager.MATERIAL_CITATION_ROW_TYPE.equals(mapping.getExtension().getRowType());
+  }
+
+  /**
+   * @return term whose constant value is chosen from the uploaded tree files
+   */
+  public String getPhylogeneticTreeFileNameTerm() {
+    return PhylogeneticTreeManager.FILE_NAME_TERM;
+  }
+
+  /**
+   * @return names of the resource's uploaded phylogenetic tree files
+   */
+  public List<String> getPhylogeneticTreeFileNames() {
+    if (phylogeneticTreeFileNames == null) {
+      phylogeneticTreeFileNames = (phylogeneticTreeManager == null || resource == null)
+          ? Collections.emptyList()
+          : phylogeneticTreeManager.list(resource).stream().map(PhylogeneticTreeFile::getName).toList();
+    }
+    return phylogeneticTreeFileNames;
+  }
+
+  @Inject
+  public void setPhylogeneticTreeManager(PhylogeneticTreeManager phylogeneticTreeManager) {
+    this.phylogeneticTreeManager = phylogeneticTreeManager;
   }
 
   /**

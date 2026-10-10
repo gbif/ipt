@@ -772,3 +772,80 @@
         </div>
     </#if>
 </div>
+
+<!-- Represents phylogenetic trees section on resource overview page, only for DwC-A resources -->
+<#if !isDataPackage>
+<span class="anchor anchor-overview-page" id="anchor-phylogenies"></span>
+<div class="py-5 border-bottom section" id="phylogenies">
+    <div class="titleOverview">
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+                <h5 class="my-auto text-gbif-header-2 fw-400">
+                    <#assign phylogeniesInfo>
+                        <@s.text name='manage.overview.phylogenies.description'/>
+                    </#assign>
+                    <@popoverTextInfo phylogeniesInfo/>
+
+                    <@s.text name='manage.overview.phylogenies'/>
+                </h5>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <a id="add-phylogeny-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
+                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                    </svg>
+                    <@s.text name="button.add"/>
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <p class="mb-0">
+                <@s.text name='manage.overview.phylogenies.intro'/>
+            </p>
+
+            <#if (phylogeneticTrees?size>0)>
+                <div class="details mt-3">
+                    <div class="row g-2">
+                        <#list phylogeneticTrees as tree>
+                            <div class="col-xl-6">
+                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 phylogeny-item" data-ipt-url="phylogeny.do?r=${resource.shortname}&id=${tree.name}">
+                                    <div class="d-flex source-item-icon ps-2 my-auto">
+                                        <i class="bi bi-diagram-3 me-1 text-gbif-primary"></i>
+                                    </div>
+
+                                    <div class="fs-smaller-2 text-truncate ps-2 me-auto">
+                                        <strong class="fs-smaller">${tree.name}</strong><br>
+                                        <small>
+                                            ${tree.formattedSize} <span class="fw-bold">|</span>
+                                            ${tree.lastModified?datetime?string.medium}
+                                        </small>
+                                    </div>
+                                    <div class="d-flex justify-content-end my-auto source-item-actions">
+                                        <a title="<@s.text name="button.view"/>" class="icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny.do?r=${resource.shortname}&id=${tree.name}">
+                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
+                                            </svg>
+                                        </a>
+                                        <a title="<@s.text name="button.download"/>" class="icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny-file.do?r=${resource.shortname}&id=${tree.name}" download="${tree.name}">
+                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
+                                            </svg>
+                                        </a>
+                                        <a title="<@s.text name="button.delete"/>" class="delete-phylogeny icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny-delete.do?r=${resource.shortname}&id=${tree.name}">
+                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </#list>
+                    </div>
+                </div>
+            </#if>
+        </div>
+    </div>
+</div>
+</#if>

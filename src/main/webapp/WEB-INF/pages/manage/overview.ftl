@@ -212,6 +212,7 @@
         </#if>
 
         $('.delete-source').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
+        $('.delete-phylogeny').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.overview.phylogenies.delete.confirm"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
         $('.delete-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
         $('.delete-core-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/><br><br><@s.text name ="manage.mapping.confirmation.message.core"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
 
@@ -704,6 +705,19 @@
 
         $("#add-mapping-button").on('click', function () {
             showAddMappingModal();
+        });
+
+        $("#add-phylogeny-button").on('click', function (e) {
+            e.preventDefault();
+            $("#phylogeny-modal").modal('show');
+        });
+
+        $(".phylogeny-item").click(function (e) {
+            // Ignore clicks on actions or anything inside them
+            if ($(e.target).closest(".source-item-actions, a").length) {
+                return;
+            }
+            location.href = $(this).data("ipt-url");
         });
 
         function showMetadataModal() {
@@ -1539,6 +1553,9 @@
                             <#else>
                                 <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='manage.overview.source.data'/></a></li>
                                 <li><a href="#anchor-mappings" class="sidebar-navigation-link"><#if isDataPackage><@s.text name='manage.overview.mappings'/><#else><@s.text name='manage.overview.DwC.Mappings'/></#if></a></li>
+                                <#if !isDataPackage>
+                                    <li><a href="#anchor-phylogenies" class="sidebar-navigation-link"><@s.text name='manage.overview.phylogenies'/></a></li>
+                                </#if>
                                 <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
                             </#if>
                             <li><a href="#anchor-visibility" class="sidebar-navigation-link"><@s.text name='manage.overview.visibility'/></a></li>
@@ -2743,6 +2760,28 @@
                     <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
                         <@s.text name="button.cancel"/>
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="phylogeny-modal" class="modal fade" tabindex="-1" aria-labelledby="phylogeny-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
+                </div>
+                <div class="modal-body">
+                    <h5 class="modal-title w-100" id="phylogeny-modal-title"><@s.text name="manage.overview.phylogenies"/></h5>
+                    <form id="upload-phylogeny-form" action="phylogeny-upload.do" method="post" enctype="multipart/form-data">
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <input type="file" name="phylogenyFile" class="form-control form-control-sm my-1" accept=".nwk,.newick,.nhx,.tre,.tree,.trees,.treefile,.nex,.nexus,.nxs,.xml,.phyloxml" required/>
+                        <div class="text-smaller text-start mt-2"><@s.text name="manage.overview.phylogenies.upload.help"/></div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <input type="submit" form="upload-phylogeny-form" value="<@s.text name="button.upload"/>" class="btn btn-sm btn-outline-gbif-primary">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                 </div>
             </div>
         </div>

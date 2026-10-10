@@ -114,6 +114,28 @@
         <param name="bufferSize">1024</param>
       </result>
     </action>
+    <!-- phylogenetic trees of a published version -->
+    <action name="phylogeny" class="org.gbif.ipt.action.portal.PhylogeneticTreeAction" method="view">
+      <result>/WEB-INF/pages/portal/phylogeny.ftl</result>
+    </action>
+    <action name="phylogeny-file" class="org.gbif.ipt.action.portal.PhylogeneticTreeAction" method="file">
+      <result name="success" type="stream">
+        <param name="contentType">text/plain</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+    <action name="phylogeny-tips" class="org.gbif.ipt.action.portal.PhylogeneticTreeAction" method="tips">
+      <result name="success" type="stream">
+        <param name="contentType">text/tab-separated-values</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
     <action name="dcat" class="org.gbif.ipt.action.portal.DCATAction">
       <result type="stream">
         <param name="noCache">true</param>

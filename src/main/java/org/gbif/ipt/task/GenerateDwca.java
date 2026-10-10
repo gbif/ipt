@@ -335,6 +335,32 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   }
 
   /**
+   * Adds the resource's phylogenetic tree files to the root of the DwC-A folder, where the Phylogenetic Material
+   * Citation extension's phylogeneticTreeFileName refers to them.
+   *
+   * @throws GeneratorException if a tree file could not be copied to DwC-A folder
+   * @throws InterruptedException if executing thread was interrupted
+   */
+  private void addPhylogeneticTreeFiles() throws GeneratorException, InterruptedException {
+    checkForInterruption();
+    File treesDir = dataDir.resourcePhylogeneticTreesDir(resource.getShortname());
+    File[] treeFiles = treesDir == null ? null : treesDir.listFiles(File::isFile);
+    if (treeFiles == null || treeFiles.length == 0) {
+      return;
+    }
+
+    for (File treeFile : treeFiles) {
+      try {
+        FileUtils.copyFile(treeFile, new File(dwcaFolder, treeFile.getName()));
+      } catch (IOException e) {
+        throw new GeneratorException("Problem occurred while adding phylogenetic tree file " + treeFile.getName()
+          + " to DwC-A folder", e);
+      }
+    }
+    addMessage(Level.INFO, treeFiles.length + " phylogenetic tree file(s) added");
+  }
+
+  /**
    * Build a new ArchiveField having a ConceptTerm, plus optional multi-value delimiter.
    * </br>
    * Since all default values ​​will be written in the data file, they won't be expressed in the archive file (meta.xml).
@@ -1037,6 +1063,9 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
 
       // copy eml file
       addEmlFile();
+
+      // copy phylogenetic tree files
+      addPhylogeneticTreeFiles();
 
       // create meta.xml
       createMetaFile();

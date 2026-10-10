@@ -59,6 +59,7 @@ public class DataDir {
   public static final String COL_DP_METADATA_FILENAME = "metadata.yaml";
   public static final String DWCA_FILENAME = "dwca.zip";
   public static final String PUBLICATION_LOG_FILENAME = "publication.log";
+  public static final String PHYLOGENETIC_TREES_DIR = "phylogenies";
   private static final Random RANDOM = new Random();
 
   private static final Logger LOG = LogManager.getLogger(DataDir.class);
@@ -502,6 +503,16 @@ public class DataDir {
       return null;
     }
     return resourceFile(resource.getShortname(), "sources/" + filename);
+  }
+
+  /**
+   * Directory holding the phylogenetic tree files uploaded for a resource.
+   *
+   * @param resourceName resource short name
+   * @return phylogenetic trees directory
+   */
+  public File resourcePhylogeneticTreesDir(String resourceName) {
+    return resourceFile(resourceName, PHYLOGENETIC_TREES_DIR);
   }
 
   public File sourceLogFile(String resourceName, String sourceName) {

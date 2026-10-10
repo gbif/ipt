@@ -86,6 +86,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -178,6 +179,33 @@ public class GenerateDwcaTest extends IptBaseTest {
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mock(SourceManager.class), mockAppConfig,
         mock(VocabulariesManager.class));
     assertThrows(GeneratorException.class, () -> generateDwca.call());
+  }
+
+  @Test
+  public void testGenerateWithPhylogeneticTreeFile() throws Exception {
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    File treesDir = FileUtils.createTempDir();
+    org.apache.commons.io.FileUtils.writeStringToFile(new File(treesDir, "global_tree.nwk"), "(A,B);",
+        StandardCharsets.UTF_8);
+    // the DataDir mock is shared, don't leave tree files in other tests' archives
+    when(mockDataDir.resourcePhylogeneticTreesDir(RESOURCE_SHORTNAME)).thenReturn(treesDir);
+    try {
+      generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+          mockVocabulariesManager);
+      generateDwca.call();
+    } finally {
+      when(mockDataDir.resourcePhylogeneticTreesDir(RESOURCE_SHORTNAME)).thenReturn(null);
+    }
+
+    // the tree file is at the root of the archive, next to the data files
+    File dir = FileUtils.createTempDir();
+    CompressionUtil.decompressFile(dir, new File(resourceDir, VERSIONED_ARCHIVE_FILENAME), true);
+    assertEquals("(A,B);", org.apache.commons.io.FileUtils.readFileToString(new File(dir, "global_tree.nwk"),
+        StandardCharsets.UTF_8));
+    assertEquals(DwcTerm.Occurrence, DwcFiles.fromLocation(dir.toPath()).getCore().getRowType());
   }
 
   @Test

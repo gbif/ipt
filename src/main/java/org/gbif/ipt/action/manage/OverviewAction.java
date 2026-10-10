@@ -34,6 +34,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.PhylogeneticTreeFile;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
@@ -57,6 +58,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -245,6 +247,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private final ExtensionManager extensionManager;
   private final DataPackageSchemaManager schemaManager;
   private final ResourcePublicationManager resourcePublicationManager;
+  private PhylogeneticTreeManager phylogeneticTreeManager;
 
   @Inject
   public OverviewAction(
@@ -2133,5 +2136,20 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   @Override
   public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
     this.uploadedFiles = uploadedFiles;
+  }
+
+  @Inject
+  public void setPhylogeneticTreeManager(PhylogeneticTreeManager phylogeneticTreeManager) {
+    this.phylogeneticTreeManager = phylogeneticTreeManager;
+  }
+
+  /**
+   * @return the resource's phylogenetic tree files, shown on the overview page
+   */
+  public List<PhylogeneticTreeFile> getPhylogeneticTrees() {
+    if (phylogeneticTreeManager == null || resource == null) {
+      return Collections.emptyList();
+    }
+    return phylogeneticTreeManager.list(resource);
   }
 }

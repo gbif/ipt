@@ -28,6 +28,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -88,6 +89,7 @@ public class ResourceAction extends PortalBaseAction {
 
   private final MetadataReader metadataReader;
   private final VocabulariesManager vocabManager;
+  private PhylogeneticTreeManager phylogeneticTreeManager;
 
   // ExtensionManager, to retrieve Extension by rowType in template
   @Getter
@@ -1090,5 +1092,20 @@ public class ResourceAction extends PortalBaseAction {
     metadata.setDescription(XSSUtils.stripXSS(metadata.getDescription()));
 
     return metadata;
+  }
+
+  @Inject
+  public void setPhylogeneticTreeManager(PhylogeneticTreeManager phylogeneticTreeManager) {
+    this.phylogeneticTreeManager = phylogeneticTreeManager;
+  }
+
+  /**
+   * @return names of the phylogenetic tree files in the published version shown
+   */
+  public List<String> getPhylogeneticTrees() {
+    if (phylogeneticTreeManager == null || resource == null || version == null) {
+      return Collections.emptyList();
+    }
+    return phylogeneticTreeManager.listPublished(resource, version);
   }
 }

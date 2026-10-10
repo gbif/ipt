@@ -443,6 +443,9 @@
                             <#if metadataOnly != true>
                                 <li><a href="#anchor-dataRecords" class="sidebar-navigation-link"><@s.text name='portal.resource.dataRecords'/></a></li>
                             </#if>
+                            <#if action.getPhylogeneticTrees()?has_content>
+                                <li><a href="#anchor-phylogenies" class="sidebar-navigation-link"><@s.text name='portal.resource.phylogenies'/></a></li>
+                            </#if>
                             <#if resource.versionHistory??>
                                 <li><a href="#anchor-versions" class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a></li>
                             </#if>
@@ -566,6 +569,27 @@
                             <p>
                                 <@s.text name='portal.resource.dataRecords.repository'/>
                             </p>
+                        </div>
+                    </#if>
+
+                    <!-- phylogenetic trees section, shown when the published version ships tree files -->
+                    <#assign phylogeneticTrees = action.getPhylogeneticTrees()/>
+                    <#if phylogeneticTrees?has_content>
+                        <span class="anchor anchor-home-resource-page" id="anchor-phylogenies"></span>
+                        <div id="phylogenies" class="pb-5 section">
+                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
+                                <@s.text name='portal.resource.phylogenies'/>
+                            </h4>
+
+                            <p><@s.text name='portal.resource.phylogenies.intro'/></p>
+
+                            <ul>
+                                <#list phylogeneticTrees as tree>
+                                    <li>
+                                        <a href="${baseURL}/phylogeny.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if>&id=${tree}">${tree}</a>
+                                    </li>
+                                </#list>
+                            </ul>
                         </div>
                     </#if>
 

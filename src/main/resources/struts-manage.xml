@@ -186,6 +186,32 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{parameters.r}</result>
     </action>
 
+    <!-- phylogenetic tree files -->
+    <action name="phylogeny-upload" class="org.gbif.ipt.action.manage.PhylogeneticTreeAction" method="upload">
+      <interceptor-ref name="managerStack"/>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}#anchor-phylogenies</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}#anchor-phylogenies</result>
+    </action>
+
+    <action name="phylogeny-delete" class="org.gbif.ipt.action.manage.PhylogeneticTreeAction" method="delete">
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}#anchor-phylogenies</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}#anchor-phylogenies</result>
+    </action>
+
+    <action name="phylogeny-file" class="org.gbif.ipt.action.manage.PhylogeneticTreeAction" method="download">
+      <result name="success" type="stream">
+        <param name="contentType">text/plain</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+
+    <action name="phylogeny" class="org.gbif.ipt.action.manage.PhylogeneticTreeAction" method="preview">
+      <result>/WEB-INF/pages/portal/phylogeny.ftl</result>
+    </action>
+
     <action name="eml" class="org.gbif.ipt.action.manage.ResourceFileAction" method="metadata">
       <result name="success" type="stream">
         <param name="contentType">${mimeType}</param>
