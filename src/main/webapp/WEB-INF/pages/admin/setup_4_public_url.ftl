@@ -51,7 +51,7 @@
 
                     <div class="row g-2">
                         <div class="col-md-6">
-                            [@input name="baseURL" i18nkey="admin.config.baseUrl" requiredField=true /]
+                            [@input name="baseURL" value=baseURL! i18nkey="admin.config.baseUrl" requiredField=true /]
                         </div>
                     </div>
 
