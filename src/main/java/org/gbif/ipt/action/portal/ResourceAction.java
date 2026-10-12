@@ -1026,7 +1026,13 @@ public class ResourceAction extends PortalBaseAction {
       return null;
     }
 
-    eml.setDescription(XSSUtils.stripXSS(eml.getDescription()));
+    // DocBook fields (converted to HTML in the browser)
+    eml.setDescription(XSSUtils.stripDocBookXSS(eml.getDescription()));
+    eml.setAcknowledgements(XSSUtils.stripDocBookXSS(eml.getAcknowledgements()));
+    eml.setPurpose(XSSUtils.stripDocBookXSS(eml.getPurpose()));
+    eml.setIntroduction(XSSUtils.stripDocBookXSS(eml.getIntroduction()));
+    eml.setGettingStarted(XSSUtils.stripDocBookXSS(eml.getGettingStarted()));
+
     if (eml.getGeospatialCoverages() != null) {
       eml.getGeospatialCoverages()
           .forEach(coverage -> coverage.setDescription(XSSUtils.stripXSS(coverage.getDescription())));

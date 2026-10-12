@@ -36,10 +36,6 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
-import org.jsoup.safety.Cleaner;
-import org.jsoup.safety.Safelist;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.HtmlSanitizer;
 import org.owasp.html.HtmlStreamEventReceiver;
@@ -60,7 +56,7 @@ import lombok.Getter;
  * <p>
  * Some of these fields (see {@link #DOCBOOK_PARAMETERS}) are edited as HTML but converted to
  * DocBook in the browser before submission (see {@code js/docbook/docbook-v2.js}), so they are
- * sanitized against a DocBook safelist instead of an HTML one.
+ * sanitized against a DocBook safelist instead of an HTML one (see {@link XSSUtils#stripDocBookXSS}).
  * <p>
  * Rather than hard-rejecting the whole request with a generic HTTP 400 when something
  * suspicious is found, this filter sanitizes the offending value and records which
@@ -132,23 +128,6 @@ public class SanitizeHtmlFilter implements Filter {
       .allowAttributes("href").onElements("a")
       .allowStandardUrlProtocols()
       .toFactory();
-
-  /**
-   * DocBook elements produced by {@code convertToDocBook} in {@code js/docbook/docbook-v2.js}.
-   * <p>
-   * JSoup (with the XML parser) is used rather than the OWASP sanitizer, because OWASP is HTML-specific: it
-   * lowercases element names (breaking {@code literalLayout}), treats {@code title} content as raw text, and
-   * doesn't check URL protocols on the non-HTML {@code url} attribute of {@code ulink}.
-   */
-  private static final Safelist DOCBOOK_SAFELIST = Safelist.none()
-      .addTags("section", "title", "para", "itemizedlist", "orderedlist", "listitem", "emphasis", "subscript",
-          "superscript", "literalLayout", "ulink", "citetitle")
-      .addAttributes("ulink", "url")
-      .addProtocols("ulink", "url", "http", "https", "mailto", "ftp");
-
-  private static final Document.OutputSettings DOCBOOK_OUTPUT_SETTINGS = new Document.OutputSettings()
-      .prettyPrint(false)
-      .syntax(Document.OutputSettings.Syntax.xml);
 
   /**
    * Policy used to strip all tags from plain-text parameters. Built once and reused -
@@ -300,7 +279,7 @@ public class SanitizeHtmlFilter implements Filter {
      */
     private String sanitizeRichText(String parameter, String value) {
       String cleanedForOutput = DOCBOOK_PARAMETERS.contains(parameter)
-          ? sanitizeDocBook(value)
+          ? XSSUtils.stripDocBookXSS(value)
           : RICH_TEXT_POLICY.sanitize(value);
 
       String normalizedValue = StringEscapeUtils.unescapeHtml4(value);
@@ -313,17 +292,6 @@ public class SanitizeHtmlFilter implements Filter {
       }
 
       return cleanedForOutput;
-    }
-
-    /**
-     * Sanitizes a DocBook fragment down to the elements in {@link #DOCBOOK_SAFELIST}, preserving the element name case.
-     */
-    private String sanitizeDocBook(String value) {
-      Document dirty = Document.createShell("");
-      dirty.body().insertChildren(0, Parser.xmlParser().parseFragmentInput(value, null, ""));
-      Document clean = new Cleaner(DOCBOOK_SAFELIST).clean(dirty);
-      clean.outputSettings(DOCBOOK_OUTPUT_SETTINGS);
-      return clean.body().html();
     }
   }
 }
