@@ -52,15 +52,15 @@
                     </p>
                     <div class="row g-3 pb-3 mb-2">
                         <div class="col-md-4">
-                            [@input name="user.firstname" requiredField=true /]
+                            [@input name="user.firstname" value=(user.firstname)! requiredField=true /]
                         </div>
 
                         <div class="col-md-4">
-                            [@input name="user.lastname" requiredField=true /]
+                            [@input name="user.lastname" value=(user.lastname)! requiredField=true /]
                         </div>
 
                         <div class="col-md-4">
-                            [@input name="user.email" requiredField=true /]
+                            [@input name="user.email" value=(user.email)! requiredField=true /]
                         </div>
 
                         <div class="col-md-6">
