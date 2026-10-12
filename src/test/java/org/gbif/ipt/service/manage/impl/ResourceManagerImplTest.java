@@ -31,6 +31,7 @@ import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
+import org.gbif.ipt.model.PhylogeneticTreeFile;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceSummaryView;
@@ -64,6 +65,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -81,8 +83,11 @@ import org.gbif.utils.file.CompressionUtil;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -93,6 +98,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import javax.xml.parsers.SAXParserFactory;
 import jakarta.inject.Provider;
 
@@ -131,6 +138,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
   private final SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
 
   private final DataDir mockedDataDir = MockDataDir.buildMock();
+  private final PhylogeneticTreeManager phylogeneticTreeManager = new PhylogeneticTreeManagerImpl(mockedDataDir);
   private final BaseAction baseAction = new BaseAction(mockSimpleTextProvider, mockAppConfig, mockRegistrationManager);
 
   private User creator;
@@ -267,7 +275,8 @@ public class ResourceManagerImplTest extends IptBaseTest {
         extensionManager,
         mockSchemaManager,
         mockMetadataReader,
-        resourceManagerProvider);
+        resourceManagerProvider,
+        phylogeneticTreeManager);
 
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));
@@ -475,6 +484,41 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertNotNull(res.getCreated());
     // the num rowIterator published is 0
     assertEquals(0, res.getRecordsPublished());
+  }
+
+  /**
+   * test resource creation from a DwC-A zipped file, with a phylogenetic tree file at the root of the archive.
+   */
+  @Test
+  public void testCreateFromZippedFileWithPhylogeneticTree() throws Exception {
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // DwC-A with a single occurrence data file, plus a tree file
+    File tmpDir = FileUtils.createTempDir();
+    File uncompressed = CompressionUtil.decompressFile(tmpDir, FileUtils.getClasspathFile("resources/occurrence2.txt.zip")).get(0);
+    File dwca = new File(FileUtils.createTempDir(), "dwca-with-tree.zip");
+    try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(dwca))) {
+      zos.putNextEntry(new ZipEntry(uncompressed.getName()));
+      Files.copy(uncompressed.toPath(), zos);
+      zos.closeEntry();
+      zos.putNextEntry(new ZipEntry("tree.nwk"));
+      zos.write("((A,B),C);".getBytes(StandardCharsets.UTF_8));
+      zos.closeEntry();
+    }
+
+    TextFileSource fileSource = new TextFileSource();
+    fileSource.setFile(uncompressed);
+    fileSource.setName("singleTxt");
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
+
+    resourceManager.create(RESOURCE_SHORTNAME, null, dwca, creator, baseAction);
+
+    Resource res = resourceManager.get(RESOURCE_SHORTNAME);
+    List<PhylogeneticTreeFile> trees = phylogeneticTreeManager.list(res);
+    assertEquals(1, trees.size());
+    assertEquals("tree.nwk", trees.get(0).getName());
+    assertEquals("((A,B),C);",
+        Files.readString(phylogeneticTreeManager.get(res, "tree.nwk").toPath(), StandardCharsets.UTF_8));
   }
 
   /**

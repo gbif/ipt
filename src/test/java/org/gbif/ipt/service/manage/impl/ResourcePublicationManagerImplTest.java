@@ -55,6 +55,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -868,7 +869,8 @@ public class ResourcePublicationManagerImplTest {
         extensionManager,
         mockSchemaManager,
         mockMetadataReader,
-        resourceManagerProvider);
+        resourceManagerProvider,
+        mock(PhylogeneticTreeManager.class));
 
     // mock finding dwca.zip file that does not exist
     when(mockedDataDir.resourceDwcaFile(anyString())).thenReturn(new File("dwca.zip"));

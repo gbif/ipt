@@ -55,6 +55,7 @@ import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -579,7 +580,8 @@ public class GenerateDwcaTest extends IptBaseTest {
         extensionManager,
         mockSchemaManager,
         mockMetadataReader,
-        resourceManagerProvider);
+        resourceManagerProvider,
+        mock(PhylogeneticTreeManager.class));
 
     ResourceLoader resourceLoader = new ResourceLoaderImpl(
         mockAppConfig,

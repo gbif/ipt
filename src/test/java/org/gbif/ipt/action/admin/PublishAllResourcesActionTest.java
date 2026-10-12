@@ -53,6 +53,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -340,7 +341,8 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         extensionManager,
         mockSchemaManager,
         mockMetadataReader,
-        resourceManagerProvider);
+        resourceManagerProvider,
+        mock(PhylogeneticTreeManager.class));
 
     ResourceMetadataLoader resourceMetadataLoader = new ResourceMetadataLoaderImpl(mockedDataDir, mockMetadataReader);
     ResourcePersister resourcePersister = new XStreamResourcePersister(mockResourceConvertersManager, passwordEncrypter);

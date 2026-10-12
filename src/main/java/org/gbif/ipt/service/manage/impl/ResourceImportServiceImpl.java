@@ -55,6 +55,7 @@ import org.gbif.ipt.service.InvalidMetadataException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.manage.MetadataReader;
+import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -134,6 +135,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
   private final DataPackageSchemaManager schemaManager;
   private final MetadataReader metadataReader;
   private final Provider<ResourceManager> resourceManagerProvider;
+  private final PhylogeneticTreeManager phylogeneticTreeManager;
 
   @Inject
   public ResourceImportServiceImpl(
@@ -142,13 +144,15 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       ExtensionManager extensionManager,
       DataPackageSchemaManager schemaManager,
       MetadataReader metadataReader,
-      Provider<ResourceManager> resourceManagerProvider) {
+      Provider<ResourceManager> resourceManagerProvider,
+      PhylogeneticTreeManager phylogeneticTreeManager) {
     this.dataDir = dataDir;
     this.sourceManager = sourceManager;
     this.extensionManager = extensionManager;
     this.schemaManager = schemaManager;
     this.metadataReader = metadataReader;
     this.resourceManagerProvider = resourceManagerProvider;
+    this.phylogeneticTreeManager = phylogeneticTreeManager;
   }
 
   @Override
@@ -389,6 +393,9 @@ public class ResourceImportServiceImpl implements ResourceImportService {
         resource.setMetadataModified(lastModifiedDate);
       }
 
+      // copy phylogenetic tree files shipped at the root of the archive
+      importPhylogeneticTreeFiles(resource, arch, sources.keySet());
+
       // finally, persist the whole thing
       resourceManagerProvider.get().save(resource);
 
@@ -403,6 +410,31 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     }
 
     return resource;
+  }
+
+  /**
+   * Copies the phylogenetic tree files found at the root of the archive into the resource's working tree files, so
+   * they are published again together with the Phylogenetic Material Citation extension referring to them.
+   *
+   * @param resource      resource being created
+   * @param arch          archive the resource is created from
+   * @param dataLocations locations of the core and extension data files, never imported as tree files
+   */
+  private void importPhylogeneticTreeFiles(Resource resource, Archive arch, Set<String> dataLocations)
+      throws IOException {
+    File[] files = arch.getLocation() == null ? null : arch.getLocation().listFiles(File::isFile);
+    if (files == null) {
+      return;
+    }
+    for (File file : files) {
+      if (!dataLocations.contains(file.getName()) && phylogeneticTreeManager.isAllowedFileName(file.getName())) {
+        try {
+          phylogeneticTreeManager.add(resource, file, file.getName());
+        } catch (InvalidFilenameException e) {
+          LOG.warn("Skipping phylogenetic tree file {}: {}", file.getName(), e.getMessage());
+        }
+      }
+    }
   }
 
   @Override

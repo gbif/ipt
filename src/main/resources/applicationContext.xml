@@ -251,6 +251,7 @@
     <constructor-arg ref="dataPackageSchemaManager"/>
     <constructor-arg ref="metadataReader"/>
     <constructor-arg ref="resourceManagerProvider"/>
+    <constructor-arg ref="phylogeneticTreeManager"/>
   </bean>
 
   <bean id="resourceVersioningService" class="org.gbif.ipt.service.manage.impl.ResourceVersioningServiceImpl">

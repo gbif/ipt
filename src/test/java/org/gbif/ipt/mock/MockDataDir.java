@@ -87,5 +87,9 @@ public class MockDataDir {
       }
       return null;
     });
+
+    // phylogenetic tree files are located inside tmpDir/shortName/phylogenies
+    when(dataDir.resourcePhylogeneticTreesDir(anyString())).thenAnswer((Answer<File>) invocation ->
+        new File(new File(tempDir, (String) invocation.getArguments()[0]), DataDir.PHYLOGENETIC_TREES_DIR));
   }
 }
