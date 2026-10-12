@@ -1778,6 +1778,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   public boolean isManagedBy(User user) {
-    return user != null && managers != null && managers.contains(user);
+    if (user == null) {
+      return false;
+    }
+    return user.equals(creator) || (managers != null && managers.contains(user));
   }
 }
