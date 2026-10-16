@@ -53,6 +53,29 @@ The following SMTP settings are available:
 == Publish all resources
 This option is an administrative action just like the Publish button, only it publishes ALL resources. Therefore for each resource, it creates a new DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. In addition, it also updates the IPT and registered resources' metadata in the Registry. Click on this button if multiple resources have been updated and you want to publish a new release for all of them instead of publishing them individually.
 
+== Auto-publication settings
+This page allows a user having the Admin role to control scheduled (automatic) publishing for the whole IPT instance. Resource managers set up the schedule for each resource themselves (see xref:manage-resources.adoc#auto-publishing[Auto-publishing]); the settings on this page decide whether those schedules run at all, and who is allowed to change them.
+
+* *Allow scheduled (automatic) publishing* - When switched on (the default), resources with an auto-publishing schedule are published automatically at their next scheduled time. When switched off, no scheduled publication runs on this IPT. Switching it off has the following effects:
+** Existing schedules are paused, not deleted. Each resource keeps its publishing interval and options, and its schedule resumes when auto-publishing is switched back on.
+** Manual publishing is not affected: resources can still be published with the Publish button or with <<Publish all resources>>.
+** A publication that is already in progress finishes normally.
+** Resource managers cannot turn on or change auto-publishing for a resource. The only change they can make is to turn off an existing schedule, so that a resource does not start publishing again unexpectedly when auto-publishing is switched back on.
+** The next publication date is no longer shown on the resource overview page.
+* *Auto-publication for administrators only* - This option is only shown while scheduled publishing is allowed. When checked, only users having the Admin role can turn on or change auto-publishing for a resource. Other resource managers can see the existing schedule of their resources and can turn it off, but cannot turn it on or change its interval. Existing schedules keep running as before. When unchecked (the default), any user who can manage a resource can configure its auto-publishing.
+
+Click "Save" to apply the changes. The change takes effect from the next check for due publications: there is no need to restart the IPT. Changes to these settings are recorded in the IPT log, together with the email address of the user who made them.
+
+[NOTE]
+====
+If scheduled publishing is switched off and later switched back on, any resource whose next publication date passed while it was switched off is due straight away, and will be published shortly after the setting is saved.
+====
+
+=== View scheduled publications
+Click on the "View scheduled publications" button to open a table listing every resource that has auto-publishing turned on. For each resource the table shows its managers, its publishing interval, when it was last published, when it is next due to be published and its number of records. By default the table is sorted by the next publication date, so the resources due to be published soonest are shown first.
+
+If scheduled publishing is switched off, a message at the top of the page warns that none of the listed publications will run until it is switched back on.
+
 == Configure User accounts
 This page allows users having the Admin role to create, modify, and delete user accounts. When the page is opened, it shows a table of existing users and basic information about them including their names, email addresses, roles, and the date and time of their last logins. Users can be deleted or passwords reset by clicking on icons on the right side.
 
