@@ -66,7 +66,7 @@
         || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
         || resource.status == "REGISTERED">
 
-        <!-- the user must have registration rights or manage this resource -->
+        <!-- the user must have registration rights or be a creator/manager of this resource -->
         <#if !currentUser.hasRegistrationRights() && !resource.isManagedBy(currentUser)>
             <@showPublicationWarningButton/>
 
