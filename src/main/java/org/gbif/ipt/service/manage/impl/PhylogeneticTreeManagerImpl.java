@@ -23,7 +23,9 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.PhylogeneticTreeFile;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.InvalidPhylogeneticTreeException;
 import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
+import org.gbif.ipt.validation.PhylogeneticTreeValidator;
 import org.gbif.utils.file.ClosableIterator;
 
 import java.io.File;
@@ -38,17 +40,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import javax.annotation.Nullable;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,14 +58,6 @@ public class PhylogeneticTreeManagerImpl implements PhylogeneticTreeManager {
 
   private static final Logger LOG = LogManager.getLogger(PhylogeneticTreeManagerImpl.class);
 
-  // Newick/NHX, Nexus and phyloXML, the formats Archaeopteryx.js reads
-  private static final Set<String> ALLOWED_EXTENSIONS = Set.of(
-    "nwk", "newick", "nhx", "tre", "tree", "trees", "treefile", "nex", "nexus", "nxs", "xml", "phyloxml");
-  // file names that are already used at the root of a DwC-A
-  private static final Set<String> RESERVED_NAMES = Set.of(DataDir.EML_XML_FILENAME, Archive.META_FN);
-  // the name ends up verbatim in phylogeneticTreeFileName values, so keep it simple
-  private static final Pattern FILE_NAME = Pattern.compile("[A-Za-z0-9][A-Za-z0-9._-]{0,199}");
-
   // core terms copied into the tip metadata table, when present in the core
   private static final List<Term> CORE_TERMS = List.of(
     DwcTerm.occurrenceID, DwcTerm.catalogNumber, DwcTerm.scientificName, DwcTerm.institutionCode,
@@ -75,6 +66,7 @@ public class PhylogeneticTreeManagerImpl implements PhylogeneticTreeManager {
   private static final String VALUE_SEPARATOR = " | ";
 
   private final DataDir dataDir;
+  private final PhylogeneticTreeValidator validator = new PhylogeneticTreeValidator();
 
   @Inject
   public PhylogeneticTreeManagerImpl(DataDir dataDir) {
@@ -83,10 +75,7 @@ public class PhylogeneticTreeManagerImpl implements PhylogeneticTreeManager {
 
   @Override
   public boolean isAllowedFileName(String fileName) {
-    return fileName != null
-      && FILE_NAME.matcher(fileName).matches()
-      && ALLOWED_EXTENSIONS.contains(FilenameUtils.getExtension(fileName).toLowerCase(Locale.ROOT))
-      && !RESERVED_NAMES.contains(fileName.toLowerCase(Locale.ROOT));
+    return PhylogeneticTreeValidator.isAllowedFileName(fileName);
   }
 
   @Override
@@ -114,10 +103,11 @@ public class PhylogeneticTreeManagerImpl implements PhylogeneticTreeManager {
 
   @Override
   public PhylogeneticTreeFile add(Resource resource, File uploadedFile, String fileName)
-    throws InvalidFilenameException, IOException {
+    throws InvalidFilenameException, InvalidPhylogeneticTreeException, IOException {
     if (!isAllowedFileName(fileName)) {
       throw new InvalidFilenameException("Not an allowed phylogenetic tree file name: " + fileName);
     }
+    validator.validate(uploadedFile);
     File target = new File(dataDir.resourcePhylogeneticTreesDir(resource.getShortname()), fileName);
     FileUtils.copyFile(uploadedFile, target);
     LOG.info("Added phylogenetic tree file {} to resource {}", fileName, resource.getShortname());

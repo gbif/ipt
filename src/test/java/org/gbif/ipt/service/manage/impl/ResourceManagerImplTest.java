@@ -504,6 +504,10 @@ public class ResourceManagerImplTest extends IptBaseTest {
       zos.putNextEntry(new ZipEntry("tree.nwk"));
       zos.write("((A,B),C);".getBytes(StandardCharsets.UTF_8));
       zos.closeEntry();
+      // invalid trees are skipped
+      zos.putNextEntry(new ZipEntry("broken.nwk"));
+      zos.write("(A:0.1,B:1.884795486e_05);".getBytes(StandardCharsets.UTF_8));
+      zos.closeEntry();
     }
 
     TextFileSource fileSource = new TextFileSource();

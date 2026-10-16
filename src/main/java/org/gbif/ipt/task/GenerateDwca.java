@@ -31,9 +31,11 @@ import org.gbif.ipt.model.ExtensionProperty;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.InvalidPhylogeneticTreeException;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.validation.PhylogeneticTreeValidator;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.EmlValidator;
 import org.gbif.metadata.eml.InvalidEmlException;
@@ -335,21 +337,47 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   }
 
   /**
-   * Adds the resource's phylogenetic tree files to the root of the DwC-A folder, where the Phylogenetic Material
-   * Citation extension's phylogeneticTreeFileName refers to them.
+   * Validates the resource's phylogenetic tree files and adds them to the root of the DwC-A folder, where the
+   * Phylogenetic Material Citation extension's phylogeneticTreeFileName refers to them. Files are validated on upload,
+   * but files that came with an imported archive or were uploaded before validation existed were not. Other files in
+   * the folder (e.g. .DS_Store) are not tree files: they are left out of the archive.
    *
-   * @throws GeneratorException if a tree file could not be copied to DwC-A folder
+   * @throws GeneratorException if a tree file is invalid or could not be copied to DwC-A folder
    * @throws InterruptedException if executing thread was interrupted
    */
   private void addPhylogeneticTreeFiles() throws GeneratorException, InterruptedException {
     checkForInterruption();
     File treesDir = dataDir.resourcePhylogeneticTreesDir(resource.getShortname());
-    File[] treeFiles = treesDir == null ? null : treesDir.listFiles(File::isFile);
-    if (treeFiles == null || treeFiles.length == 0) {
+    File[] files = treesDir == null ? null : treesDir.listFiles(File::isFile);
+    if (files == null || files.length == 0) {
       return;
     }
 
+    List<File> treeFiles = new ArrayList<>();
+    for (File file : files) {
+      if (PhylogeneticTreeValidator.isAllowedFileName(file.getName())) {
+        treeFiles.add(file);
+      } else {
+        log.warn("Ignoring {} in the phylogenetic trees folder of resource {}: not a tree file", file.getName(),
+          resource.getShortname());
+      }
+    }
+    if (treeFiles.isEmpty()) {
+      return;
+    }
+
+    PhylogeneticTreeValidator validator = new PhylogeneticTreeValidator();
     for (File treeFile : treeFiles) {
+      checkForInterruption();
+      try {
+        validator.validate(treeFile);
+      } catch (InvalidPhylogeneticTreeException e) {
+        addMessage(Level.ERROR, "Phylogenetic tree file " + treeFile.getName() + " is invalid: " + e.getMessage());
+        throw new GeneratorException("Phylogenetic tree file " + treeFile.getName() + " is invalid: "
+          + e.getMessage() + ". Replace or delete it on the resource overview page.", e);
+      } catch (IOException e) {
+        throw new GeneratorException("Problem occurred while reading phylogenetic tree file " + treeFile.getName(), e);
+      }
       try {
         FileUtils.copyFile(treeFile, new File(dwcaFolder, treeFile.getName()));
       } catch (IOException e) {
@@ -357,7 +385,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
           + " to DwC-A folder", e);
       }
     }
-    addMessage(Level.INFO, treeFiles.length + " phylogenetic tree file(s) added");
+    addMessage(Level.INFO, treeFiles.size() + " phylogenetic tree file(s) added");
   }
 
   /**

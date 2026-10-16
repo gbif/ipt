@@ -18,6 +18,7 @@ import org.gbif.dwc.ArchiveFile;
 import org.gbif.dwc.DwcFiles;
 import org.gbif.dwc.UnsupportedArchiveException;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.FileSource;
@@ -305,12 +306,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   // the maximum time in seconds that a driver will wait while attempting to connect to a database
   private static final int CONNECTION_TIMEOUT_SECS = 5;
 
-  private static final String ACCEPTED_FILE_NAMES = "[\\w.\\-\\s\\)\\(]+";
-
   private FileStoreManager fileStoreManager;
 
   // Allowed characters in file names: alphanumeric characters, plus ".", "-", "_", ")", "(", and " "
-  private Pattern acceptedPattern = Pattern.compile(ACCEPTED_FILE_NAMES);
+  private Pattern acceptedPattern = Pattern.compile(Constants.ACCEPTED_FILE_NAMES);
   private final List<ResourceUpdateListener> listeners = new ArrayList<>();
 
   public SourceManagerImpl(AppConfig cfg, DataDir dataDir, FileStoreManager fileStoreManager) {

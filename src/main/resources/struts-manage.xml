@@ -189,13 +189,15 @@
     <!-- phylogenetic tree files -->
     <action name="phylogeny-upload" class="org.gbif.ipt.action.manage.PhylogeneticTreeAction" method="upload">
       <interceptor-ref name="managerStack"/>
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}#anchor-phylogenies</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}#anchor-phylogenies</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <!-- the upload was rejected before reaching the action, e.g. an empty file -->
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="phylogeny-delete" class="org.gbif.ipt.action.manage.PhylogeneticTreeAction" method="delete">
-      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}#anchor-phylogenies</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}#anchor-phylogenies</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="phylogeny-file" class="org.gbif.ipt.action.manage.PhylogeneticTreeAction" method="download">

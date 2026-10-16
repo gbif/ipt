@@ -99,6 +99,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -191,6 +192,9 @@ public class GenerateDwcaTest extends IptBaseTest {
     File treesDir = FileUtils.createTempDir();
     org.apache.commons.io.FileUtils.writeStringToFile(new File(treesDir, "global_tree.nwk"), "(A,B);",
         StandardCharsets.UTF_8);
+    // not a tree file: neither validated nor added to the archive
+    org.apache.commons.io.FileUtils.writeStringToFile(new File(treesDir, ".DS_Store"), "Bud1",
+        StandardCharsets.UTF_8);
     // the DataDir mock is shared, don't leave tree files in other tests' archives
     when(mockDataDir.resourcePhylogeneticTreesDir(RESOURCE_SHORTNAME)).thenReturn(treesDir);
     try {
@@ -206,7 +210,30 @@ public class GenerateDwcaTest extends IptBaseTest {
     CompressionUtil.decompressFile(dir, new File(resourceDir, VERSIONED_ARCHIVE_FILENAME), true);
     assertEquals("(A,B);", org.apache.commons.io.FileUtils.readFileToString(new File(dir, "global_tree.nwk"),
         StandardCharsets.UTF_8));
+    assertFalse(new File(dir, ".DS_Store").exists());
     assertEquals(DwcTerm.Occurrence, DwcFiles.fromLocation(dir.toPath()).getCore().getRowType());
+  }
+
+  @Test
+  public void testGenerateWithInvalidPhylogeneticTreeFile() throws Exception {
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    File occurrence = FileUtils.getClasspathFile("resources/res1/occurrence.txt");
+    Resource resource = getResource(resourceXML, occurrence);
+
+    File treesDir = FileUtils.createTempDir();
+    org.apache.commons.io.FileUtils.writeStringToFile(new File(treesDir, "global_tree.nwk"),
+        "(A:0.1,B:1.884795486e_05);", StandardCharsets.UTF_8);
+    // the DataDir mock is shared, don't leave tree files in other tests' archives
+    when(mockDataDir.resourcePhylogeneticTreesDir(RESOURCE_SHORTNAME)).thenReturn(treesDir);
+    try {
+      generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
+          mockVocabulariesManager);
+      GeneratorException e = assertThrows(GeneratorException.class, () -> generateDwca.call());
+      assertTrue(e.getMessage().contains("global_tree.nwk"), e.getMessage());
+      assertTrue(e.getMessage().contains("1.884795486e_05"), e.getMessage());
+    } finally {
+      when(mockDataDir.resourcePhylogeneticTreesDir(RESOURCE_SHORTNAME)).thenReturn(null);
+    }
   }
 
   @Test

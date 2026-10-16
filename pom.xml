@@ -62,6 +62,7 @@
     <freemarker.version>2.3.35</freemarker.version>
     <frictionless.datapackage-java.version>0.9.8-gbif</frictionless.datapackage-java.version>
     <frictionless.tableschema-java.version>0.9.9-gbif-SNAPSHOT</frictionless.tableschema-java.version>
+    <forester.version>1.039</forester.version>
     <gson.version>2.14.0</gson.version>
     <httpclient.version>4.5.14</httpclient.version>
     <httpcore.version>4.4.16</httpcore.version>
@@ -557,6 +558,25 @@
       <groupId>io.frictionlessdata</groupId>
       <artifactId>tableschema-java</artifactId>
       <version>${frictionless.tableschema-java.version}</version>
+    </dependency>
+
+    <!-- phylogenetic tree parsing -->
+    <dependency>
+      <groupId>org.biojava.thirdparty</groupId>
+      <artifactId>forester</artifactId>
+      <version>${forester.version}</version>
+      <exclusions>
+        <!-- only needed by the Archaeopteryx desktop GUI, and not in Maven Central -->
+        <exclusion>
+          <groupId>openchart</groupId>
+          <artifactId>openchart</artifactId>
+        </exclusion>
+        <!-- an old version, IPT gets a current one through gbif-api -->
+        <exclusion>
+          <groupId>commons-codec</groupId>
+          <artifactId>commons-codec</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- excel parsing -->

@@ -23,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serial;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.logging.log4j.LogManager;
@@ -123,12 +124,12 @@ public class PhylogeneticTreeAction extends PortalBaseAction {
 
   public String getTreeUrl() {
     return cfg.getBaseUrl() + "/phylogeny-file.do?r=" + resource.getShortname() + "&v=" + version.toPlainString()
-      + "&id=" + id;
+      + "&id=" + URLEncoder.encode(id, StandardCharsets.UTF_8);
   }
 
   public String getTipsUrl() {
     return cfg.getBaseUrl() + "/phylogeny-tips.do?r=" + resource.getShortname() + "&v=" + version.toPlainString()
-      + "&id=" + id;
+      + "&id=" + URLEncoder.encode(id, StandardCharsets.UTF_8);
   }
 
   public boolean isPreview() {

@@ -15,10 +15,12 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.InvalidPhylogeneticTreeException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.PhylogeneticTreeManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.validation.PhylogeneticTreeValidator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,10 +29,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serial;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.action.UploadedFilesAware;
@@ -75,7 +80,8 @@ public class PhylogeneticTreeAction extends ManagerBaseAction implements Uploade
     }
 
     UploadedFile upload = uploadedFiles.get(0);
-    String name = upload.getOriginalName();
+    // stored and cited by name, so " tree.nwk" is stored as "tree.nwk"
+    String name = StringUtils.trim(upload.getOriginalName());
     try {
       boolean replaced = treeManager.get(resource, name) != null;
       treeManager.add(resource, (File) upload.getContent(), name);
@@ -85,7 +91,12 @@ public class PhylogeneticTreeAction extends ManagerBaseAction implements Uploade
         : "manage.overview.phylogenies.upload.success", new String[] {name}));
       return SUCCESS;
     } catch (InvalidFilenameException e) {
-      addActionError(getText("manage.overview.phylogenies.upload.invalidName", new String[] {name}));
+      addActionError(getText(PhylogeneticTreeValidator.isReservedFileName(name)
+        ? "manage.overview.phylogenies.upload.reservedName"
+        : "manage.overview.phylogenies.upload.invalidName", new String[] {name}));
+      return ERROR;
+    } catch (InvalidPhylogeneticTreeException e) {
+      addActionError(getText("manage.overview.phylogenies.upload.invalidTree", new String[] {name, e.getMessage()}));
       return ERROR;
     } catch (IOException e) {
       LOG.error("Failed to store phylogenetic tree file {}", name, e);
@@ -145,7 +156,8 @@ public class PhylogeneticTreeAction extends ManagerBaseAction implements Uploade
   }
 
   public String getTreeUrl() {
-    return cfg.getBaseUrl() + "/manage/phylogeny-file.do?r=" + resource.getShortname() + "&id=" + id;
+    return cfg.getBaseUrl() + "/manage/phylogeny-file.do?r=" + resource.getShortname() + "&id="
+      + URLEncoder.encode(id, StandardCharsets.UTF_8);
   }
 
   /**
@@ -157,7 +169,7 @@ public class PhylogeneticTreeAction extends ManagerBaseAction implements Uploade
       return null;
     }
     return cfg.getBaseUrl() + "/phylogeny-tips.do?r=" + resource.getShortname() + "&v=" + published.toPlainString()
-      + "&id=" + id;
+      + "&id=" + URLEncoder.encode(id, StandardCharsets.UTF_8);
   }
 
   public boolean isPreview() {
@@ -165,7 +177,7 @@ public class PhylogeneticTreeAction extends ManagerBaseAction implements Uploade
   }
 
   public String getBackUrl() {
-    return cfg.getBaseUrl() + "/manage/resource.do?r=" + resource.getShortname() + "#anchor-phylogenies";
+    return cfg.getBaseUrl() + "/manage/resource.do?r=" + resource.getShortname();
   }
 
   @Override

@@ -586,7 +586,7 @@
                             <ul>
                                 <#list phylogeneticTrees as tree>
                                     <li>
-                                        <a href="${baseURL}/phylogeny.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if>&id=${tree}">${tree}</a>
+                                        <a href="${baseURL}/phylogeny.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if>&id=${tree?url}">${tree}</a>
                                     </li>
                                 </#list>
                             </ul>

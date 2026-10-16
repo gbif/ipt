@@ -810,7 +810,7 @@
                     <div class="row g-2">
                         <#list phylogeneticTrees as tree>
                             <div class="col-xl-6">
-                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 phylogeny-item" data-ipt-url="phylogeny.do?r=${resource.shortname}&id=${tree.name}">
+                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 phylogeny-item" data-ipt-url="phylogeny.do?r=${resource.shortname}&id=${tree.name?url}">
                                     <div class="d-flex source-item-icon ps-2 my-auto">
                                         <i class="bi bi-diagram-3 me-1 text-gbif-primary"></i>
                                     </div>
@@ -823,17 +823,17 @@
                                         </small>
                                     </div>
                                     <div class="d-flex justify-content-end my-auto source-item-actions">
-                                        <a title="<@s.text name="button.view"/>" class="icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny.do?r=${resource.shortname}&id=${tree.name}">
+                                        <a title="<@s.text name="button.view"/>" class="icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny.do?r=${resource.shortname}&id=${tree.name?url}">
                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                 <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
                                             </svg>
                                         </a>
-                                        <a title="<@s.text name="button.download"/>" class="icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny-file.do?r=${resource.shortname}&id=${tree.name}" download="${tree.name}">
+                                        <a title="<@s.text name="button.download"/>" class="icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny-file.do?r=${resource.shortname}&id=${tree.name?url}" download="${tree.name}">
                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                 <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
                                             </svg>
                                         </a>
-                                        <a title="<@s.text name="button.delete"/>" class="delete-phylogeny icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny-delete.do?r=${resource.shortname}&id=${tree.name}">
+                                        <a title="<@s.text name="button.delete"/>" class="delete-phylogeny icon-button icon-material-actions source-item-action fs-smaller-2" type="button" href="phylogeny-delete.do?r=${resource.shortname}&id=${tree.name?url}">
                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                             </svg>

@@ -16,6 +16,7 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.model.PhylogeneticTreeFile;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.InvalidPhylogeneticTreeException;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,9 +51,10 @@ public interface PhylogeneticTreeManager {
    * Stores an uploaded tree file, replacing any existing file with the same name.
    *
    * @throws InvalidFilenameException if the file name or extension is not allowed
+   * @throws InvalidPhylogeneticTreeException if the file can't be parsed or holds an unusable tree
    */
   PhylogeneticTreeFile add(Resource resource, File uploadedFile, String fileName)
-    throws InvalidFilenameException, IOException;
+    throws InvalidFilenameException, InvalidPhylogeneticTreeException, IOException;
 
   /**
    * @return true if the tree file existed and was deleted

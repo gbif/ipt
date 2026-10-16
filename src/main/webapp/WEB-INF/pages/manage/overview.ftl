@@ -712,6 +712,32 @@
             $("#phylogeny-modal").modal('show');
         });
 
+        // same file name rule as for source files, checked again on the server
+        const PHYLOGENY_FILE_NAMES = /^[\w.\-\s()]+$/;
+        const PHYLOGENY_EXTENSIONS = ["nwk", "newick", "nhx", "tre", "tree", "trees", "treefile", "nex", "nexus", "nxs", "xml", "phyloxml"];
+        const PHYLOGENY_RESERVED_NAMES = ["eml.xml", "meta.xml"];
+
+        $("#phylogeny-file-input").on('change', function () {
+            var file = this.files.length > 0 ? this.files[0] : null;
+            var error = null;
+            if (file) {
+                // the server stores the name trimmed
+                var name = file.name.trim();
+                var extension = name.lastIndexOf('.') > -1 ? name.substring(name.lastIndexOf('.') + 1).toLowerCase() : "";
+                if (!PHYLOGENY_FILE_NAMES.test(name)) {
+                    error = `<@s.text name='manage.overview.source.file.name.invalid'/>`;
+                } else if (PHYLOGENY_RESERVED_NAMES.includes(name.toLowerCase())) {
+                    error = `<@s.text name='manage.overview.phylogenies.file.name.reserved'/>`;
+                } else if (!PHYLOGENY_EXTENSIONS.includes(extension)) {
+                    error = `<@s.text name='manage.overview.phylogenies.file.extension.invalid'/>`;
+                } else if (file.size === 0) {
+                    error = `<@s.text name='manage.overview.phylogenies.file.empty'/>`;
+                }
+            }
+            $("#phylogeny-file-error").text(error || "").toggle(error !== null);
+            $("#phylogeny-upload-button").prop("disabled", error !== null);
+        });
+
         $(".phylogeny-item").click(function (e) {
             // Ignore clicks on actions or anything inside them
             if ($(e.target).closest(".source-item-actions, a").length) {
@@ -2775,12 +2801,13 @@
                     <h5 class="modal-title w-100" id="phylogeny-modal-title"><@s.text name="manage.overview.phylogenies"/></h5>
                     <form id="upload-phylogeny-form" action="phylogeny-upload.do" method="post" enctype="multipart/form-data">
                         <input name="r" type="hidden" value="${resource.shortname}"/>
-                        <input type="file" name="phylogenyFile" class="form-control form-control-sm my-1" accept=".nwk,.newick,.nhx,.tre,.tree,.trees,.treefile,.nex,.nexus,.nxs,.xml,.phyloxml" required/>
+                        <input id="phylogeny-file-input" type="file" name="phylogenyFile" class="form-control form-control-sm my-1" accept=".nwk,.newick,.nhx,.tre,.tree,.trees,.treefile,.nex,.nexus,.nxs,.xml,.phyloxml" required/>
+                        <div id="phylogeny-file-error" class="text-smaller text-start text-gbif-danger mt-1" style="display: none;"></div>
                         <div class="text-smaller text-start mt-2"><@s.text name="manage.overview.phylogenies.upload.help"/></div>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <input type="submit" form="upload-phylogeny-form" value="<@s.text name="button.upload"/>" class="btn btn-sm btn-outline-gbif-primary">
+                    <input id="phylogeny-upload-button" type="submit" form="upload-phylogeny-form" value="<@s.text name="button.upload"/>" class="btn btn-sm btn-outline-gbif-primary">
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
                 </div>
             </div>

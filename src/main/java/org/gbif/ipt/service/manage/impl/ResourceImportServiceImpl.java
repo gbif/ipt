@@ -51,6 +51,7 @@ import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.InvalidPhylogeneticTreeException;
 import org.gbif.ipt.service.InvalidMetadataException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -394,7 +395,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       }
 
       // copy phylogenetic tree files shipped at the root of the archive
-      importPhylogeneticTreeFiles(resource, arch, sources.keySet());
+      importPhylogeneticTreeFiles(resource, arch, sources.keySet(), alog);
 
       // finally, persist the whole thing
       resourceManagerProvider.get().save(resource);
@@ -419,9 +420,10 @@ public class ResourceImportServiceImpl implements ResourceImportService {
    * @param resource      resource being created
    * @param arch          archive the resource is created from
    * @param dataLocations locations of the core and extension data files, never imported as tree files
+   * @param alog          action logging, invalid tree files are reported and skipped
    */
-  private void importPhylogeneticTreeFiles(Resource resource, Archive arch, Set<String> dataLocations)
-      throws IOException {
+  private void importPhylogeneticTreeFiles(Resource resource, Archive arch, Set<String> dataLocations,
+      ActionLogger alog) throws IOException {
     File[] files = arch.getLocation() == null ? null : arch.getLocation().listFiles(File::isFile);
     if (files == null) {
       return;
@@ -432,6 +434,8 @@ public class ResourceImportServiceImpl implements ResourceImportService {
           phylogeneticTreeManager.add(resource, file, file.getName());
         } catch (InvalidFilenameException e) {
           LOG.warn("Skipping phylogenetic tree file {}: {}", file.getName(), e.getMessage());
+        } catch (InvalidPhylogeneticTreeException e) {
+          alog.warn("manage.resource.create.phylogenies.invalidTree", new String[] {file.getName(), e.getMessage()});
         }
       }
     }

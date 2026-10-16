@@ -17,6 +17,7 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.PhylogeneticTreeFile;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.InvalidPhylogeneticTreeException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -101,7 +102,17 @@ public class PhylogeneticTreeManagerImplTest {
     assertTrue(manager.isAllowedFileName("tree-1.NWK"));
     assertTrue(manager.isAllowedFileName("tree.phyloxml"));
     assertFalse(manager.isAllowedFileName("../tree.nwk"));
-    assertFalse(manager.isAllowedFileName("my tree.nwk"));
+    // same rule as for source files
+    assertTrue(manager.isAllowedFileName("global tree (1).nex"));
+    assertFalse(manager.isAllowedFileName("tree/1.nwk"));
+    assertFalse(manager.isAllowedFileName("tree\\1.nwk"));
+    assertFalse(manager.isAllowedFileName("tree#1.nwk"));
+    assertFalse(manager.isAllowedFileName(".."));
+    // never matching a trimmed phylogeneticTreeFileName
+    assertFalse(manager.isAllowedFileName(" tree.nwk"));
+    assertFalse(manager.isAllowedFileName("tree.nwk "));
+    assertFalse(manager.isAllowedFileName("tree\t1.nwk"));
+    assertFalse(manager.isAllowedFileName("tree\n1.nwk"));
     assertFalse(manager.isAllowedFileName("tree.txt"));
     assertFalse(manager.isAllowedFileName("eml.xml"));
     assertFalse(manager.isAllowedFileName("META.xml"));
@@ -126,6 +137,28 @@ public class PhylogeneticTreeManagerImplTest {
     assertTrue(manager.delete(resource, "global_tree.nwk"));
     assertFalse(manager.delete(resource, "global_tree.nwk"));
     assertTrue(manager.list(resource).isEmpty());
+  }
+
+  @Test
+  public void testAddRejectsInvalidTree() throws Exception {
+    File upload = tmp.resolve("upload.tmp").toFile();
+    Files.writeString(upload.toPath(), "(A:0.1,B:1.884795486e_05);");
+
+    InvalidPhylogeneticTreeException e = assertThrows(InvalidPhylogeneticTreeException.class,
+      () -> manager.add(resource, upload, "global_tree.nwk"));
+    assertTrue(e.getMessage().contains("1.884795486e_05"));
+    assertTrue(manager.list(resource).isEmpty());
+  }
+
+  @Test
+  public void testAddInvalidTreeKeepsExistingFile() throws Exception {
+    File upload = tmp.resolve("upload.tmp").toFile();
+    Files.writeString(upload.toPath(), TREE);
+    manager.add(resource, upload, "global_tree.nwk");
+
+    Files.writeString(upload.toPath(), "((A,B);");
+    assertThrows(InvalidPhylogeneticTreeException.class, () -> manager.add(resource, upload, "global_tree.nwk"));
+    assertEquals(TREE, Files.readString(manager.get(resource, "global_tree.nwk").toPath()));
   }
 
   @Test

@@ -38,6 +38,9 @@ public final class Constants {
   public static final String SESSION_DWC_TRANSLATION = "dwcTranslation";
   public static final String SESSION_DP_TRANSLATION = "dwcTranslation";
   public static final String SESSION_FILE_NUMBER_COLUMNS = "numberColumns";
+  // names of uploaded files (source files, phylogenetic trees): letters, numbers, ".", "-", "_", "(", ")" and spaces,
+  // keep in sync with the source and phylogenetic tree upload checks in overview.ftl
+  public static final String ACCEPTED_FILE_NAMES = "[\\w.\\-\\s\\)\\(]+";
   public static final String REQ_PATH_RESOURCE = "resource";
   public static final String REQ_PATH_EML = "eml.do";
   public static final String REQ_PATH_METADATA = "metadata.do";
