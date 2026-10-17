@@ -19,6 +19,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
@@ -39,6 +40,7 @@ public class PublicationSettingsAction extends ManagerBaseAction {
   private static final long serialVersionUID = 7675406287200699071L;
 
   private final VocabulariesManager vocabManager;
+  private final ResourcePublicationManager resourcePublicationManager;
 
   private Organisation organisation;
   @Getter
@@ -52,9 +54,11 @@ public class PublicationSettingsAction extends ManagerBaseAction {
       AppConfig cfg,
       RegistrationManager registrationManager,
       ResourceManager resourceManager,
-      VocabulariesManager vocabManager) {
+      VocabulariesManager vocabManager,
+      ResourcePublicationManager resourcePublicationManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
+    this.resourcePublicationManager = resourcePublicationManager;
   }
 
   @Override
@@ -167,6 +171,6 @@ public class PublicationSettingsAction extends ManagerBaseAction {
   }
 
   public boolean hasMaxProcessFailures() {
-    return resourceManager.hasMaxProcessFailures(resource, false);
+    return resourcePublicationManager.hasMaxProcessFailures(resource, false);
   }
 }

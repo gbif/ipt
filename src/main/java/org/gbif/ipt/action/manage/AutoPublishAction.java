@@ -122,7 +122,7 @@ public class AutoPublishAction extends ManagerBaseAction {
       turnOffAutoPublishing();
       LOG.info("Auto-publishing turned off for [{}] while disabled instance-wide",
           resource.getShortname());
-      resourceManager.updatePublicationMode(resource);
+      resourcePublicationManager.updatePublicationMode(resource);
       saveResource();
       return SUCCESS;
     }
@@ -141,7 +141,7 @@ public class AutoPublishAction extends ManagerBaseAction {
       turnOffAutoPublishing();
       LOG.info("Auto-publishing turned off for [{}] by non-administrator (administrator-only mode)",
           resource.getShortname());
-      resourceManager.updatePublicationMode(resource);
+      resourcePublicationManager.updatePublicationMode(resource);
       saveResource();
       return SUCCESS;
     }

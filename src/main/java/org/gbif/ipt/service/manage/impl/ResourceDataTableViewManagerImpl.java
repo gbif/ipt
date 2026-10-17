@@ -449,11 +449,23 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
     result.setModified(resource.getModified());
     result.setPublished(resource.getLastPublished() != null);
     result.setLastPublished(resource.getLastPublished());
-    result.setNextPublished(resource.getNextPublished());
+    result.setNextPublished(effectiveNextPublished(resource));
     result.setCreatorName(resource.getCreatorName());
     result.setDataPackage(resource.isDataPackage());
 
     return result;
+  }
+
+  /**
+   * Returns the resource's next scheduled publication date, or null when auto-publishing is disabled
+   * instance-wide. Mirrors the overview page and {@code PublishingMonitor}, which both ignore existing
+   * schedules while the global switch is off, so the manage home table does not display misleading dates.
+   *
+   * @param resource resource
+   * @return next scheduled publication date, or null when auto-publishing is disabled instance-wide
+   */
+  private Date effectiveNextPublished(Resource resource) {
+    return cfg.isAutoPublishingEnabled() ? resource.getNextPublished() : null;
   }
 
   private enum SortField {

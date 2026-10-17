@@ -14,6 +14,7 @@
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.action.manage.MetadataAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageFieldMapping;
@@ -41,6 +42,8 @@ import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.ActionLogger;
+import org.gbif.ipt.utils.EmlUtils;
+import org.gbif.metadata.eml.ipt.model.Eml;
 
 import jakarta.inject.Inject;
 import java.io.File;
@@ -48,11 +51,14 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.util.Locale;
+import java.util.Properties;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 
@@ -226,6 +232,12 @@ public class ResourceLoaderImpl implements ResourceLoader {
 
           // update EML with the latest resource basics (version and GUID)
           callbacks.syncEml(resource);
+
+          // IPT 3.3.5 resources: restore license link stripped by the HTML sanitizer (#3175)
+          if (restoreStrippedLicenseLink(resource.getEml())) {
+            EmlUtils.writeWithLocale(dataDir.resourceEmlFile(shortname), resource, Locale.US);
+            LOG.info("Restored license link in intellectual rights of resource {}", shortname);
+          }
         }
 
         // clean up data package mappings (remove dangling field mappings)
@@ -311,6 +323,42 @@ public class ResourceLoaderImpl implements ResourceLoader {
     for (DataPackageMapping dpm : resource.getDataPackageMappings()) {
       dpm.getFields().removeIf(f -> onlyFieldIndexPresent(f) || emptyMapping(f));
     }
+  }
+
+  /**
+   * In IPT 3.3.5 the HTML sanitizer treated the intellectual rights as plain text, stripping the license anchor
+   * (e.g. "This work is licensed under a Creative Commons Attribution (CC-BY) 4.0 License:
+   * http://creativecommons.org/licenses/by/4.0") so the license could no longer be recognized. If the intellectual
+   * rights have no license anchor, but mention the URL or the name of one of the supported licenses, they are
+   * replaced with that license's full text (including the anchor).
+   *
+   * @param eml EML
+   * @return true if the intellectual rights were restored, false otherwise
+   */
+  static boolean restoreStrippedLicenseLink(Eml eml) {
+    if (eml == null || StringUtils.isBlank(eml.getIntellectualRights()) || eml.parseLicenseUrl() != null) {
+      return false;
+    }
+
+    // can be old-fashioned license, with version outside parenthesis
+    String rightsText = StringUtils.normalizeSpace(Jsoup.parse(eml.getIntellectualRights()).text())
+        .replace(") 4.0", " 4.0)");
+    Properties licenseProperties = MetadataAction.licenseProperties();
+
+    // URL first, as it is the most specific
+    for (String prefix : new String[] {"license.url.", "license.name."}) {
+      for (String key : licenseProperties.stringPropertyNames()) {
+        String value = licenseProperties.getProperty(key);
+        if (key.startsWith(prefix) && StringUtils.isNotBlank(value) && rightsText.contains(value)) {
+          String licenseText = licenseProperties.getProperty("license.text." + key.substring(prefix.length()));
+          if (StringUtils.isNotBlank(licenseText)) {
+            eml.setIntellectualRights(licenseText);
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   /**

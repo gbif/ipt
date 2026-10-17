@@ -194,6 +194,18 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   }
 
   /**
+   * Returns the resource's next scheduled publication date, or null when auto-publishing is disabled
+   * instance-wide. Mirrors the overview page and {@code PublishingMonitor}, which both ignore existing
+   * schedules while the global switch is off, so the manage home table does not display misleading dates.
+   *
+   * @param resource resource
+   * @return next scheduled publication date, or null when auto-publishing is disabled instance-wide
+   */
+  private Date effectiveNextPublished(Resource resource) {
+    return cfg.isAutoPublishingEnabled() ? resource.getNextPublished() : null;
+  }
+
+  /**
    * Close the file writer if the writer is not null.
    *
    * @param writer file writer
@@ -599,8 +611,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     return resourceLoader.load(resourceDir, creator,
         ResourceLoadCallbacks.of(this::syncEmlWithResource, this::save));
   }
-
-
 
   /**
    * Reads a complete resource configuration (resource config & eml) from the resource config folder

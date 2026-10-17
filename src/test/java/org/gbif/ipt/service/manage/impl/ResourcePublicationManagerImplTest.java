@@ -88,12 +88,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import jakarta.inject.Provider;
-
-import org.apache.commons.collections4.ListValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -664,12 +663,22 @@ public class ResourcePublicationManagerImplTest {
     ResourceManager mockResourceManager = mock(ResourceManager.class);
     ResourcePublicationManager resourceManager = getResourcePublicationManagerImpl(mockResourceManager);
 
-    ListValuedMap<String, Date> processFailures = new ArrayListValuedHashMap<>();
-    processFailures.put("res1", new Date());
-    processFailures.put("res1", new Date());
-    processFailures.put("res2", new Date());
-    processFailures.put("res2", new Date());
-    processFailures.put("res2", new Date());
+    Map<String, List<Date>> processFailures = new ConcurrentHashMap<>();
+    processFailures
+        .computeIfAbsent("res1", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    processFailures
+        .computeIfAbsent("res1", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    processFailures
+        .computeIfAbsent("res2", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    processFailures
+        .computeIfAbsent("res2", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    processFailures
+        .computeIfAbsent("res2", k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
     resourceManager.getProcessFailures().putAll(processFailures);
 
     Resource resource = new Resource();

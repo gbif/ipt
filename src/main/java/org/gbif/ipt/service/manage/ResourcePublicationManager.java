@@ -33,7 +33,6 @@ import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.apache.commons.collections4.ListValuedMap;
 
 import javax.annotation.Nullable;
 
@@ -236,6 +235,16 @@ public interface ResourcePublicationManager {
    */
   boolean hasMaxProcessFailures(Resource resource);
 
+  /**
+   * Check if the maximum number of publish event failures has occurred for a resource.
+   *
+   * @param resource resource
+   * @param logInfo  true if logInfo should be printed, false otherwise.
+   *
+   * @return true if publication has failed the maximum allowed times for a given resource
+   */
+  boolean hasMaxProcessFailures(Resource resource, boolean logInfo);
+
   String calculateChecksum(File file) throws Exception;
 
   String calculateArchiveChecksum(File archive) throws Exception;
@@ -264,7 +273,7 @@ public interface ResourcePublicationManager {
    *
    * @return map of resource name (key) to List of Date when publishing job failed
    */
-  ListValuedMap<String, Date> getProcessFailures();
+  Map<String, List<Date>> getProcessFailures();
 
   /**
    * Return the report map.

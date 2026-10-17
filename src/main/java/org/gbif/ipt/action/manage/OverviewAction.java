@@ -2139,6 +2139,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   }
 
   public boolean hasMaxProcessFailures() {
-    return resourceManager.hasMaxProcessFailures(resource, false);
+    return resourcePublicationManager.hasMaxProcessFailures(resource, false);
   }
 }
