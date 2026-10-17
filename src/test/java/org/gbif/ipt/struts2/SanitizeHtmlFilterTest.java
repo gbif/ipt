@@ -39,7 +39,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class SanitizeHtmlFilterTest {
 
-  private static final String RICH_TEXT_PARAM = "eml.description";
+  private static final String RICH_TEXT_PARAM = "eml.intellectualRights";
+  private static final String DOCBOOK_PARAM = "eml.description";
   private static final String PLAIN_PARAM = "eml.title";
 
   @Mock
@@ -242,5 +243,40 @@ class SanitizeHtmlFilterTest {
         sanitized.contains("href=\"https://creativecommons.org/licenses/by/4.0/legalcode\""),
         "standard https href should be preserved, but was: " + sanitized);
     assertTrue(sanitized.contains("CC-BY 4.0"));
+  }
+
+  @Test
+  void docBookFieldPreservesAllowedElements() throws Exception {
+    String docBook = "<para>Hello <emphasis>World</emphasis> <ulink url=\"https://www.gbif.org\">"
+        + "<citetitle>GBIF</citetitle></ulink></para>"
+        + "<section><title>Title <emphasis>1</emphasis></title><para>H<subscript>2</subscript>O</para></section>"
+        + "<para><itemizedlist><listitem><para>one</para></listitem></itemizedlist></para>"
+        + "<para><orderedlist><listitem><para>x<superscript>2</superscript></para></listitem></orderedlist></para>"
+        + "<para><literalLayout>a &lt; b\n  c</literalLayout></para>";
+    Map<String, String[]> params = new HashMap<>();
+    params.put(DOCBOOK_PARAM, new String[]{docBook});
+    givenParams(params);
+
+    SanitizeHtmlFilter.XssRequestWrapper wrapped = runFilterAndCaptureWrappedRequest();
+
+    assertTrue(wrapped.getFlaggedFields().isEmpty());
+    assertEquals(docBook, wrapped.getParameter(DOCBOOK_PARAM));
+  }
+
+  @Test
+  void docBookFieldStripsScriptAndDisallowedAttributes() throws Exception {
+    Map<String, String[]> params = new HashMap<>();
+    params.put(DOCBOOK_PARAM, new String[]{"<para onclick=\"evil()\">Hello</para><script>alert(1)</script>"
+        + "<ulink url=\"javascript:alert(1)\"><citetitle>click me</citetitle></ulink>"});
+    givenParams(params);
+
+    SanitizeHtmlFilter.XssRequestWrapper wrapped = runFilterAndCaptureWrappedRequest();
+
+    assertTrue(wrapped.getFlaggedFields().containsKey(DOCBOOK_PARAM));
+    String sanitized = wrapped.getParameter(DOCBOOK_PARAM);
+    assertFalse(sanitized.contains("<script"), "script must be stripped, but was: " + sanitized);
+    assertFalse(sanitized.contains("onclick"), "onclick must be stripped, but was: " + sanitized);
+    assertFalse(sanitized.contains("javascript:"), "javascript: URL must be stripped, but was: " + sanitized);
+    assertTrue(sanitized.contains("<para>Hello</para>"));
   }
 }

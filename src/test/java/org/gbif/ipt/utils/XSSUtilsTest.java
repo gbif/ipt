@@ -223,4 +223,30 @@ public class XSSUtilsTest extends IptBaseTest {
     assertTrue(cleaned.contains("Great dataset"));
     assertTrue(cleaned.contains("2024"));
   }
+
+  @Test
+  void docBookAllowedElementsArePreserved() {
+    String docBook = "<para>Hello <emphasis>World</emphasis> <ulink url=\"https://www.gbif.org\">"
+        + "<citetitle>GBIF</citetitle></ulink></para>"
+        + "<section><title>Title <emphasis>1</emphasis></title><para>H<subscript>2</subscript>O</para></section>"
+        + "<para><itemizedlist><listitem><para>one</para></listitem></itemizedlist></para>"
+        + "<para><literalLayout>a &lt; b\n  c</literalLayout></para>";
+    assertEquals(docBook, XSSUtils.stripDocBookXSS(docBook));
+  }
+
+  @Test
+  void docBookMaliciousContentIsRemoved() {
+    String cleaned = XSSUtils.stripDocBookXSS("<para onclick=\"evil()\">Hello</para><script>alert(1)</script>"
+        + "<ulink url=\"javascript:alert(1)\"><citetitle>click me</citetitle></ulink><img src=x onerror=alert(1)/>");
+    assertFalse(cleaned.contains("<script"), cleaned);
+    assertFalse(cleaned.contains("onclick"), cleaned);
+    assertFalse(cleaned.contains("javascript:"), cleaned);
+    assertFalse(cleaned.contains("<img"), cleaned);
+    assertTrue(cleaned.contains("<para>Hello</para>"), cleaned);
+  }
+
+  @Test
+  void docBookNullIsHandled() {
+    assertNull(XSSUtils.stripDocBookXSS(null));
+  }
 }

@@ -179,7 +179,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     result.setModified(resource.getModified());
     result.setPublished(true);
     result.setLastPublished(publishedPublicVersion.getLastPublished());
-    result.setNextPublished(resource.getNextPublished());
+    result.setNextPublished(effectiveNextPublished(resource));
     result.setCreatorName(resource.getCreatorName());
     result.setDataPackage(resource.isDataPackage());
 
@@ -599,6 +599,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     return resourceLoader.load(resourceDir, creator,
         ResourceLoadCallbacks.of(this::syncEmlWithResource, this::save));
   }
+
+
 
   /**
    * Reads a complete resource configuration (resource config & eml) from the resource config folder

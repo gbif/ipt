@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2026-08-04 09:42+0000\n"
+"POT-Creation-Date: 2026-10-16 16:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -145,8 +145,8 @@ msgstr ""
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:32
 msgid ""
-"update the metadata for the IPT as described in the next section of this "
-"user manual entitled \"Publish all resources\"."
+"update the metadata for the IPT as described in the <<Bulk publication>> "
+"section of this user manual."
 msgstr ""
 
 #. type: Plain text
@@ -235,29 +235,263 @@ msgstr ""
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:53
 #, no-wrap
-msgid "Publish all resources"
+msgid "Bulk publication"
 msgstr ""
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:55
 msgid ""
-"This option is an administrative action just like the Publish button, only "
-"it publishes ALL resources. Therefore for each resource, it creates a new "
-"DwC-A, EML, and RTF, and broadcasts the update to the Registry and via RSS. "
-"In addition, it also updates the IPT and registered resources' metadata in "
-"the Registry. Click on this button if multiple resources have been updated "
-"and you want to publish a new release for all of them instead of publishing "
-"them individually."
+"This page allows a user having the Admin role to publish many resources in "
+"one go, instead of publishing them individually from their overview pages. "
+"For each Darwin Core resource it creates a new Darwin Core Archive, EML "
+"metadata and RTF; for each data package resource it creates a new data "
+"package and metadata file. Each new version is broadcast to the GBIF "
+"Registry and via RSS, just as with the Publish button."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:57
+msgid "Use bulk publication when:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:59
+msgid ""
+"multiple resources have been updated and you want to publish a new version "
+"of all of them at once."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:60
+msgid ""
+"the <<public-url,Public URL>> has been changed and you want the IPT's "
+"registered resources to reflect the change."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/administration.adoc:61
+#, no-wrap
+msgid "Bulk publication options"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:63
+msgid "Choose which resources to publish:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:65
+#, no-wrap
+msgid "*Publish all resources* (the default) - publishes a new version of every resource on the IPT.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:66
+#, no-wrap
+msgid "*Publish all resources changed since last publication* - goes through every resource, but publishes a new version only of those that have changed since they were last published. A resource is skipped when:\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:67
+#, no-wrap
+msgid "its data and metadata are both unchanged. To check the data, the IPT generates the archive and compares it with the last published one, so this mode can take about as long as publishing everything.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:68
+#, no-wrap
+msgid "all of its sources are files (CSV, TSV, Excel, ...) and none of them has been modified since the last publication.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:69
+#, no-wrap
+msgid "it is a metadata-only resource whose metadata has not been modified since the last publication.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:71
+msgid "A resource whose visibility has changed is always published."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:72
+#, no-wrap
+msgid "*Publish only selected resources* - publishes only the resources chosen in the list that appears below this option. Type in the box to search for a resource by title or shortname.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:73
+#, no-wrap
+msgid "*Publish all excluding selected resources* - publishes every resource except those chosen in the list that appears below this option.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:75
+msgid ""
+"Click \"Publish\" and confirm to start. Before publishing, and whatever "
+"option is chosen, the IPT also updates its own registration and the "
+"registration of all its registered resources in the GBIF Registry, provided "
+"the IPT has been registered."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:77
+msgid "Note the following:"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:79
+msgid "A resource with missing mandatory metadata is reported with a warning."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:80
+msgid ""
+"A resource that is already being published is reported as such and is not "
+"published again."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:81
+msgid ""
+"Auto-publishing stops for a resource after it has failed several times in a "
+"row (see xref:manage-resources.adoc#auto-publishing[Auto-publishing]). Bulk "
+"publication ignores that limit and resets the failure count, so it can be "
+"used to give such resources a fresh start."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:82
+msgid "If publishing a resource fails, its previous version is restored."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/administration.adoc:83
+#, no-wrap
+msgid "Publication report"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:85
+msgid ""
+"While bulk publication is running, the page shows the progress of each "
+"resource being published, with its current status and log messages. Once a "
+"resource finishes, it moves to the \"Recently Published\" list, with its "
+"result (Completed or Failed). Click on \"Show logs\" to see the log messages "
+"for that resource. Click on a resource's shortname to open its overview "
+"page. A message is displayed once all the resources have been processed; see "
+"the <<View IPT logs,IPT logs>> for more detail."
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:56
+#: en/modules/ROOT/pages/administration.adoc:86
+#, no-wrap
+msgid "Auto-publication settings"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:88
+msgid ""
+"This page allows a user having the Admin role to control scheduled "
+"(automatic) publishing for the whole IPT instance. Resource managers set up "
+"the schedule for each resource themselves (see xref:manage-resources."
+"adoc#auto-publishing[Auto-publishing]); the settings on this page decide "
+"whether those schedules run at all, and who is allowed to change them."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:90
+#, no-wrap
+msgid "*Allow scheduled (automatic) publishing* - When switched on (the default), resources with an auto-publishing schedule are published automatically at their next scheduled time. When switched off, no scheduled publication runs on this IPT. Switching it off has the following effects:\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:91
+#, no-wrap
+msgid "Existing schedules are paused, not deleted. Each resource keeps its publishing interval and options, and its schedule resumes when auto-publishing is switched back on.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:92
+#, no-wrap
+msgid "Manual publishing is not affected: resources can still be published with the Publish button or with <<Bulk publication>>.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:93
+#, no-wrap
+msgid "A publication that is already in progress finishes normally.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:94
+#, no-wrap
+msgid "Resource managers cannot turn on or change auto-publishing for a resource. The only change they can make is to turn off an existing schedule, so that a resource does not start publishing again unexpectedly when auto-publishing is switched back on.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:95
+#, no-wrap
+msgid "The next publication date is no longer shown on the resource overview page.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:96
+#, no-wrap
+msgid "*Auto-publication for administrators only* - This option is only shown while scheduled publishing is allowed. When checked, only users having the Admin role can turn on or change auto-publishing for a resource. Other resource managers can see the existing schedule of their resources and can turn it off, but cannot turn it on or change its interval. Existing schedules keep running as before. When unchecked (the default), any user who can manage a resource can configure its auto-publishing.\n"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:98
+msgid ""
+"Click \"Save\" to apply the changes. The change takes effect from the next "
+"check for due publications: there is no need to restart the IPT. Changes to "
+"these settings are recorded in the IPT log, together with the email address "
+"of the user who made them."
+msgstr ""
+
+#. type: delimited block =
+#: en/modules/ROOT/pages/administration.adoc:102
+msgid ""
+"If scheduled publishing is switched off and later switched back on, any "
+"resource whose next publication date passed while it was switched off is due "
+"straight away, and will be published shortly after the setting is saved."
+msgstr ""
+
+#. type: Title ===
+#: en/modules/ROOT/pages/administration.adoc:104
+#, no-wrap
+msgid "View scheduled publications"
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:106
+msgid ""
+"Click on the \"View scheduled publications\" button to open a table listing "
+"every resource that has auto-publishing turned on. For each resource the "
+"table shows its managers, its publishing interval, when it was last "
+"published, when it is next due to be published and its number of records. By "
+"default the table is sorted by the next publication date, so the resources "
+"due to be published soonest are shown first."
+msgstr ""
+
+#. type: Plain text
+#: en/modules/ROOT/pages/administration.adoc:108
+msgid ""
+"If scheduled publishing is switched off, a message at the top of the page "
+"warns that none of the listed publications will run until it is switched "
+"back on."
+msgstr ""
+
+#. type: Title ==
+#: en/modules/ROOT/pages/administration.adoc:109
 #, no-wrap
 msgid "Configure User accounts"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:58
+#: en/modules/ROOT/pages/administration.adoc:111
 msgid ""
 "This page allows users having the Admin role to create, modify, and delete "
 "user accounts. When the page is opened, it shows a table of existing users "
@@ -267,19 +501,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:59
+#: en/modules/ROOT/pages/administration.adoc:112
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUserAccounts.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:61
+#: en/modules/ROOT/pages/administration.adoc:114
 #, no-wrap
 msgid "Create a new user"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:63
+#: en/modules/ROOT/pages/administration.adoc:116
 msgid ""
 "A new user can be created by clicking on the button labelled \"Create\" "
 "below the list of existing users. This will open a page on which the "
@@ -288,19 +522,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:64
+#: en/modules/ROOT/pages/administration.adoc:117
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUserCreateUser.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:67
+#: en/modules/ROOT/pages/administration.adoc:120
 #, no-wrap
 msgid "*Email* - The current email address of the user is used as an identifier to log in within the IPT and can not be changed.\n"
 msgstr ""
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/administration.adoc:72
+#: en/modules/ROOT/pages/administration.adoc:125
 msgid ""
 "If the user requires a change of email address, the recommended procedure is "
 "to create a new user account with the new email address, then delete the "
@@ -308,55 +542,55 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:76
+#: en/modules/ROOT/pages/administration.adoc:129
 #, no-wrap
 msgid "*First name* - The first name of the user.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:77
+#: en/modules/ROOT/pages/administration.adoc:130
 #, no-wrap
 msgid "*Last name* - The last name of the user.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:78
+#: en/modules/ROOT/pages/administration.adoc:131
 #, no-wrap
 msgid "*Role* - The role the user will have with respect to this installation of the IPT.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:79
+#: en/modules/ROOT/pages/administration.adoc:132
 #, no-wrap
 msgid "*Admin* - Can make changes to all aspects of the instance of the IPT.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:80
+#: en/modules/ROOT/pages/administration.adoc:133
 #, no-wrap
 msgid "*Manager without registration rights* - Able to create, edit, remove, and manage resources they have created or have been invited to manage within the IPT instance. Note, users with this role cannot register resources with GBIF. Moreover, if a resource already has a reserved or registered DOI, or is already registered with GBIF, they cannot publish it.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:81
+#: en/modules/ROOT/pages/administration.adoc:134
 #, no-wrap
 msgid "*Manager with registration rights* - Has the additional capability to register resources with the GBIF network.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:82
+#: en/modules/ROOT/pages/administration.adoc:135
 #, no-wrap
 msgid "*Other users* - Can log in to the IPT and view resources, but cannot make any changes.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:83
+#: en/modules/ROOT/pages/administration.adoc:136
 #, no-wrap
 msgid "*Password* - The password for the user must consist of at least four characters and should be made secure and safe from loss, as it is not recoverable from the IPT application.\n"
 msgstr ""
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/administration.adoc:88
+#: en/modules/ROOT/pages/administration.adoc:141
 msgid ""
 "If a user's password is lost, it can be reset to an automatically generated "
 "new value by a user having the Admin role. It is the responsibility of the "
@@ -367,30 +601,30 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:92
+#: en/modules/ROOT/pages/administration.adoc:145
 #, no-wrap
 msgid "*Verify password* - An exact copy of the password as entered in the Password text box to confirm that it was entered as intended.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:94
+#: en/modules/ROOT/pages/administration.adoc:147
 msgid "After creation, an email with credential can be sent to the user:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:95
+#: en/modules/ROOT/pages/administration.adoc:148
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUserCreateUserEmailCredentials.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:97
+#: en/modules/ROOT/pages/administration.adoc:150
 #, no-wrap
 msgid "Modify an existing user"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:99
+#: en/modules/ROOT/pages/administration.adoc:152
 msgid ""
 "Information about users can be changed in the user details page after "
 "selecting the name of the user you wish to modify from the list of existing "
@@ -402,30 +636,30 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:100
+#: en/modules/ROOT/pages/administration.adoc:153
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUserEditUser.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:103
+#: en/modules/ROOT/pages/administration.adoc:156
 msgid "The Options dropdown contains to buttons:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:105
+#: en/modules/ROOT/pages/administration.adoc:158
 #, no-wrap
 msgid "*Reset password* - If a user forgets a password, clicking on the button labelled \"Reset Password\" can generate a new one, after which a new password is given in an information message at the top of the page.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:106
+#: en/modules/ROOT/pages/administration.adoc:159
 #, no-wrap
 msgid "*Delete* - delete current user.\n"
 msgstr ""
 
 #. type: delimited block =
-#: en/modules/ROOT/pages/administration.adoc:111
+#: en/modules/ROOT/pages/administration.adoc:164
 msgid ""
 "The IPT does not inform the affected user of this change, so it is the "
 "responsibility of the Admin who resets the password to inform the user of "
@@ -433,25 +667,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:116
+#: en/modules/ROOT/pages/administration.adoc:169
 msgid ""
 "After password reset, an email with a new password can be sent to the user:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:117
+#: en/modules/ROOT/pages/administration.adoc:170
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUserEmailResetPassword.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:119
+#: en/modules/ROOT/pages/administration.adoc:172
 #, no-wrap
 msgid "Delete a user"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:121
+#: en/modules/ROOT/pages/administration.adoc:174
 msgid ""
 "Users accounts that are no longer necessary can be deleted using the user "
 "detail page accessed by selecting the name of the user you wish to delete "
@@ -461,14 +695,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:123
+#: en/modules/ROOT/pages/administration.adoc:176
 msgid ""
 "An admin cannot delete their own account while logged in therefore it must "
 "be deleted by another admin."
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:124
+#: en/modules/ROOT/pages/administration.adoc:177
 msgid ""
 "The IPT installation must always have at least one user having the Admin "
 "role, so the last remaining Admin can not be deleted. To remove that user, "
@@ -477,7 +711,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:125
+#: en/modules/ROOT/pages/administration.adoc:178
 msgid ""
 "Each resource must have at least one associated user having either the Admin "
 "or one of the Manager roles, so the last remaining Manager of a resource can "
@@ -489,7 +723,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:126
+#: en/modules/ROOT/pages/administration.adoc:179
 msgid ""
 "A user cannot be deleted if it is the creator or one or more resources. To "
 "restrict the user's access to their resources, downgrade their role to type "
@@ -498,13 +732,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:127
+#: en/modules/ROOT/pages/administration.adoc:180
 #, no-wrap
 msgid "Configure GBIF registration options"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:129
+#: en/modules/ROOT/pages/administration.adoc:182
 msgid ""
 "This page allows a user to register the IPT instance in the GBIF Registry if "
 "this has not already been done. The IPT must be registered before any of the "
@@ -520,7 +754,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:131
+#: en/modules/ROOT/pages/administration.adoc:184
 msgid ""
 "The first step to register with GBIF is to test that the IPT has a valid URL "
 "that can be reached by the GBIF services. To run this test, click on the "
@@ -528,7 +762,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:133
+#: en/modules/ROOT/pages/administration.adoc:186
 msgid ""
 "If the validation test is unsuccessful, an error message will suggest the "
 "nature of the problem with the communication between the GBIF Registry and "
@@ -536,37 +770,37 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:135
+#: en/modules/ROOT/pages/administration.adoc:188
 #, no-wrap
 msgid "*No Internet connectivity* - The IPT requires an active Internet connection to function properly. An error will occur if connectivity to the Internet is lost when the button labelled \"Validate\" button is clicked. Restore Internet connectivity before trying to proceed with registration.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:136
+#: en/modules/ROOT/pages/administration.adoc:189
 #, no-wrap
 msgid "*Incorrect Public or Institutional proxy URL* - The public URL is automatically detected and configured during the IPT setup process (see the xref:initial-setup.adoc[Initial Setup] section). Changes in the configuration of the server on which the IPT is installed could require a change in the public URL or the institutional proxy URL. The public and institutional proxy URLs can be changed on the Configure IPT Settings page (see the explanations for public URL and institutional proxy URL in the <<Configure IPT settings>> section).\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:137
+#: en/modules/ROOT/pages/administration.adoc:190
 #, no-wrap
 msgid "*Firewall* - If the Internet connection is live, a firewall may be preventing connections to the public URL or institutional proxy. Change the firewall or institutional proxy settings to all outside connections.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:138
+#: en/modules/ROOT/pages/administration.adoc:191
 #, no-wrap
 msgid "*GBIF Registry inaccessible* - If an error message suggests that none of the previous errors has occurred and yet there is a failure to communicate with the GBIF Registry, please report that there are problems connecting to the GBIF registry to the GBIF Help Desk (helpdesk@gbif.org).\n"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:139
+#: en/modules/ROOT/pages/administration.adoc:192
 #, no-wrap
 msgid "ipt2/administration/IPTAdminRegistrationStep1.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:142
+#: en/modules/ROOT/pages/administration.adoc:195
 msgid ""
 "If the IPT passes the validation step above, a form showing additional "
 "information required for registration is presented. In this step, the IPT "
@@ -577,92 +811,92 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:143
+#: en/modules/ROOT/pages/administration.adoc:196
 #, no-wrap
 msgid "ipt2/administration/IPTAdminRegistrationStep2.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:146
-#: en/modules/ROOT/pages/administration.adoc:189
+#: en/modules/ROOT/pages/administration.adoc:199
+#: en/modules/ROOT/pages/administration.adoc:242
 msgid ""
 "Following are explanations of the specific information to select or enter:"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:148
+#: en/modules/ROOT/pages/administration.adoc:201
 #, no-wrap
 msgid "*Organization* - the select box contains a list of organizations in the GBIF registry. Select the single organization with which this IPT instance will be associated. If you are unable to find the organization you seek on the list, use the GBIF Registry (https://www.gbif.org/publisher/search) to determine if the organization is registered under a name other than what you expected. If the organization is not yet registered with GBIF, please contact the GBIF Help Desk to register the organization before proceeding with the registration of the IPT. Click on the help icon and then click on the helpful GBIF Help Desk link to open up an email template in your default mail client that you just have to fill in the required information before sending.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:149
+#: en/modules/ROOT/pages/administration.adoc:202
 #, no-wrap
 msgid "*Organization's shared token* - the shared token registered in the GBIF registry for the selected organization must be entered in this text box to verify that the user has the authorization required to associate the IPT instance with that organization. If you do not have to the organization's shared token, you can request it from the registered contact. A link to the primary contact on record for the organization will appear below the Organization's Shared Token text box after selecting an organization in the Organization select box. The shared token will be used to authenticate the IPT registration when the button labelled \"Save\" is clicked.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:150
+#: en/modules/ROOT/pages/administration.adoc:203
 #, no-wrap
 msgid "*Alias* - enter a convenient name or code to represent the organization within this instance of the IPT. The alias will appear in place of the full organization name in organization select boxes in the IPT user interfaces.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:151
+#: en/modules/ROOT/pages/administration.adoc:204
 #, no-wrap
 msgid "*Can publish resources?* - check this box if the selected organization can also be associated with resources published on this instance of the IPT. If left unchecked, the organization will not appear in the list of organizations available to associate with a resource. Leave unchecked only if this organization is only the host for the IPT instance, not for any of the resources published through the IPT instance.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:152
+#: en/modules/ROOT/pages/administration.adoc:205
 #, no-wrap
 msgid "*Title for the IPT installation* - enter the title of the IPT installation to be used in the GBIF Registry. The title is the primary information used for listing and searching for the IPT installations in the Registry.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:153
+#: en/modules/ROOT/pages/administration.adoc:206
 #, no-wrap
 msgid "*Description for this IPT installation* - enter the description of the IPT installation to be used in the GBIF Registry. The description is meant to help users of the Registry to further understand the significance of the IPT instance by allowing further information beyond the specific metadata fields to be shared.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:154
+#: en/modules/ROOT/pages/administration.adoc:207
 #, no-wrap
 msgid "*Contact Name* - enter the name of the person who should be contacted for information about the IPT installation. This person should be someone who has an Admin role in the IPT instance and knows the technical details about the installation.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:155
+#: en/modules/ROOT/pages/administration.adoc:208
 #, no-wrap
 msgid "*Contact Email* - enter the current email address of the person whose name is given in the Contact Name.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:156
+#: en/modules/ROOT/pages/administration.adoc:209
 #, no-wrap
 msgid "*IPT password* - enter the password that should be used to edit the entry for this IPT installation in the GBIF Registry.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:157
+#: en/modules/ROOT/pages/administration.adoc:210
 #, no-wrap
 msgid "*Save* - when all of the information above is entered or selected, click on the button labelled \"Save\" to register the IPT installation with the GBIF Registry. After successfully registering the IPT installation, the Configure GBIF registration page will show that the IPT has already been registered and associated with the selected organization. Also, after a successful registration, the Configure Organizations page will become accessible from the Administration menu.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:158
+#: en/modules/ROOT/pages/administration.adoc:211
 #, no-wrap
-msgid "*Note*: Any changes to the IPT registration (rather than resource registration - for which see the \"Visibility\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section as well as the information under the \"Publish all resources\" heading in the \"Administration Menu\" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).\n"
+msgid "*Note*: Any changes to the IPT registration (rather than resource registration - for which see the \"Visibility\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section as well as the information under the \"Bulk publication\" heading in the \"Administration Menu\" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:159
+#: en/modules/ROOT/pages/administration.adoc:212
 #, no-wrap
 msgid "Edit GBIF registration"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:161
+#: en/modules/ROOT/pages/administration.adoc:214
 msgid ""
 "After the IPT has been registered, this page allows a user to update the IPT "
 "registration information. The update will ensure the IPT and all its "
@@ -675,41 +909,41 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:162
+#: en/modules/ROOT/pages/administration.adoc:215
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistration.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:165
+#: en/modules/ROOT/pages/administration.adoc:218
 msgid "Network view:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:166
+#: en/modules/ROOT/pages/administration.adoc:219
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistrationNetwork.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:169
+#: en/modules/ROOT/pages/administration.adoc:222
 msgid "Edit organization's shared tokens view:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:170
+#: en/modules/ROOT/pages/administration.adoc:223
 #, no-wrap
 msgid "ipt2/administration/IPTAdminEditRegistrationTokens.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:172
+#: en/modules/ROOT/pages/administration.adoc:225
 #, no-wrap
 msgid "Configure Organizations"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:174
+#: en/modules/ROOT/pages/administration.adoc:227
 msgid ""
 "This page is unavailable until the IPT instance has been successfully "
 "registered in the GBIF Registry (see the information under the \"Configure "
@@ -721,14 +955,14 @@ msgid ""
 msgstr ""
 
 #. type: delimited block *
-#: en/modules/ROOT/pages/administration.adoc:177
+#: en/modules/ROOT/pages/administration.adoc:230
 msgid ""
 "_Assigning DOIs within the IPT is unusual, very few publishers use this "
 "function.  See xref:doi-workflow.adoc[]._"
 msgstr ""
 
 #. type: delimited block *
-#: en/modules/ROOT/pages/administration.adoc:179
+#: en/modules/ROOT/pages/administration.adoc:232
 msgid ""
 "An IPT capable of assigning DOIs to resources must also have an organization "
 "configured with a DataCite account. To be configured with a DataCite "
@@ -742,19 +976,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:181
+#: en/modules/ROOT/pages/administration.adoc:234
 #, no-wrap
 msgid "ipt2/administration/IPTAdminOrgs.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:183
+#: en/modules/ROOT/pages/administration.adoc:236
 #, no-wrap
 msgid "Edit organization"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:185
+#: en/modules/ROOT/pages/administration.adoc:238
 msgid ""
 "On this page a user having the Admin role can edit the organization. Click "
 "on the button labelled \"Edit\" to open the page containing the details of "
@@ -763,73 +997,73 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:186
+#: en/modules/ROOT/pages/administration.adoc:239
 #, no-wrap
 msgid "ipt2/administration/IPTAdminOrgsEditOrg.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:191
+#: en/modules/ROOT/pages/administration.adoc:244
 #, no-wrap
 msgid "*Organization name* - the title of the organization as registered in the GBIF Registry. *Note*: this cannot be changed.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:192
+#: en/modules/ROOT/pages/administration.adoc:245
 #, no-wrap
 msgid "*Organization shared token* - the shared token that should be used to edit the entry for this organization in the GBIF Registry.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:193
+#: en/modules/ROOT/pages/administration.adoc:246
 #, no-wrap
 msgid "*Organization alias* - a name given to the organization for convenience within the IPT instance; aliases, rather then the full Organization Name appear in Organization selection lists in the IPT.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:194
+#: en/modules/ROOT/pages/administration.adoc:247
 #, no-wrap
 msgid "*Can publish resources* - this checkbox indicates whether the organization can be associated with resources in the IPT. Only those organizations having this box checked will appear in lists to be associated with resources.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:195
+#: en/modules/ROOT/pages/administration.adoc:248
 #, no-wrap
 msgid "*DOI registration agency* - the type of account used to xref:doi-workflow.adoc[register DOIs] for resources; only DataCite is supported. _Most publishers do not need this feature._ *Note*: an account is issued to the organization after it signs an agreement with a DataCite member, which gives it permission to register DOIs under one or more prefixes (e.g. 10.5072) in one or more domains (e.g. gbif.org). Confirm that the account can actually register DOIs under the IPT's domain/public URL otherwise registrations via the IPT won't work.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:196
+#: en/modules/ROOT/pages/administration.adoc:249
 #, no-wrap
 msgid "*Account username* - the username (symbol) of the DataCite account issued to the organization.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:197
+#: en/modules/ROOT/pages/administration.adoc:250
 #, no-wrap
 msgid "*Account password* - the password of the DataCite account issued to the organization.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:198
+#: en/modules/ROOT/pages/administration.adoc:251
 #, no-wrap
 msgid "*DOI prefix/shoulder* - the preferred DOI prefix/shoulder used to mint DOIs. This prefix is unique to the account issued to the organization. Note: always use a https://blog.datacite.org/test-prefix-10-5072-retiring-june-1/[test prefix] when running the IPT in test mode.\n"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:199
+#: en/modules/ROOT/pages/administration.adoc:252
 #, no-wrap
 msgid "*Account activated* - this checkbox indicates if this DataCite account is the only account used by the IPT to register DOIs for datasets. Only one DataCite account can be activated at a time.\n"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:200
+#: en/modules/ROOT/pages/administration.adoc:253
 #, no-wrap
 msgid "Add organization"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:202
+#: en/modules/ROOT/pages/administration.adoc:255
 msgid ""
 "Organizations are not available to be associated with resources until a user "
 "having the Admin role adds them. Click on the button labelled \"Add\" to "
@@ -843,19 +1077,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:203
+#: en/modules/ROOT/pages/administration.adoc:256
 #, no-wrap
 msgid "ipt2/administration/IPTAdminOrgsAddOrg.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:205
+#: en/modules/ROOT/pages/administration.adoc:258
 #, no-wrap
 msgid "Configure Core Types and Extensions"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:207
+#: en/modules/ROOT/pages/administration.adoc:260
 msgid ""
 "This page allows a user having the Admin role to enable the instance of the "
 "IPT to import and share various pre-defined types of data from the GBIF "
@@ -872,7 +1106,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:209
+#: en/modules/ROOT/pages/administration.adoc:262
 msgid ""
 "Vocabularies contain lists of valid values that a particular term in a Core "
 "Type or Extension can take. For example, the {latest-basis-of-record}[Darwin "
@@ -881,7 +1115,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:211
+#: en/modules/ROOT/pages/administration.adoc:264
 msgid ""
 "Following the lists of installed Core Types and Extensions, there is a "
 "section labelled \"Synchronize Extensions and Vocabularies\" having a single "
@@ -891,13 +1125,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:212
+#: en/modules/ROOT/pages/administration.adoc:265
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensions.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:216
+#: en/modules/ROOT/pages/administration.adoc:269
 msgid ""
 "The lists of extensions (installed and not installed) each have two columns. "
 "The left-hand column shows the name of the extension as a link and a button "
@@ -915,13 +1149,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:217
+#: en/modules/ROOT/pages/administration.adoc:270
 #, no-wrap
 msgid "Synchronize Extensions and Vocabularies"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:219
+#: en/modules/ROOT/pages/administration.adoc:272
 msgid ""
 "An extension can make use of lists of terms of predefined values, known as "
 "controlled vocabularies. Periodically these vocabularies may also change (e."
@@ -933,13 +1167,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:220
+#: en/modules/ROOT/pages/administration.adoc:273
 #, no-wrap
 msgid "View extension details"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:222
+#: en/modules/ROOT/pages/administration.adoc:275
 msgid ""
 "The title of each extension in the first column is a link to a detail page "
 "for that extension. The detail page shows all of the summary information "
@@ -949,13 +1183,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:223
+#: en/modules/ROOT/pages/administration.adoc:276
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsDetail.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:226
+#: en/modules/ROOT/pages/administration.adoc:279
 msgid ""
 "For properties that have controlled vocabularies, the property information "
 "in the right-hand column will contain the name of the vocabulary as a link "
@@ -966,19 +1200,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:227
+#: en/modules/ROOT/pages/administration.adoc:280
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsDetailVocabulary.png"
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:229
+#: en/modules/ROOT/pages/administration.adoc:282
 #, no-wrap
 msgid "Install extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:231
+#: en/modules/ROOT/pages/administration.adoc:284
 msgid ""
 "For any of the extensions that have not yet been installed in the IPT, there "
 "is a button labelled \"Install\" under the extension name in the left-hand "
@@ -987,13 +1221,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:232
+#: en/modules/ROOT/pages/administration.adoc:285
 #, no-wrap
 msgid "Remove extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:234
+#: en/modules/ROOT/pages/administration.adoc:287
 msgid ""
 "For any extension that has already been installed in the IPT, it can be "
 "removed by clicking the button labelled \"Remove\". Extensions that are in "
@@ -1003,13 +1237,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: en/modules/ROOT/pages/administration.adoc:235
+#: en/modules/ROOT/pages/administration.adoc:288
 #, no-wrap
 msgid "Update extension"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:237
+#: en/modules/ROOT/pages/administration.adoc:290
 msgid ""
 "For any extension that has already been installed in the IPT, and is out-of-"
 "date, it can be updated by clicking the button labelled \"Update\". Updating "
@@ -1021,19 +1255,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:238
+#: en/modules/ROOT/pages/administration.adoc:291
 #, no-wrap
 msgid "ipt2/administration/IPTAdminExtensionsUpdate.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:240
+#: en/modules/ROOT/pages/administration.adoc:293
 #, no-wrap
 msgid "Data Packages"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:243
+#: en/modules/ROOT/pages/administration.adoc:296
 msgid ""
 "This page allows a user having the Admin role to enable the instance of the "
 "IPT to import and share various pre-defined types of data from the GBIF "
@@ -1042,48 +1276,48 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:244
+#: en/modules/ROOT/pages/administration.adoc:297
 #, no-wrap
 msgid "ipt2/administration/IPTAdminDataPackages.png"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:247
+#: en/modules/ROOT/pages/administration.adoc:300
 msgid "Details page:"
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:248
+#: en/modules/ROOT/pages/administration.adoc:301
 #, no-wrap
 msgid "ipt2/administration/IPTAdminDataPackagesDetail.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:250
+#: en/modules/ROOT/pages/administration.adoc:303
 #, no-wrap
 msgid "UI Management"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:253
+#: en/modules/ROOT/pages/administration.adoc:306
 msgid ""
 "The IPT logo and colour scheme can be managed from the UI Management page."
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:254
+#: en/modules/ROOT/pages/administration.adoc:307
 #, no-wrap
 msgid "ipt2/administration/IPTAdminUIManagement.png"
 msgstr ""
 
 #. type: Title ==
-#: en/modules/ROOT/pages/administration.adoc:256
+#: en/modules/ROOT/pages/administration.adoc:309
 #, no-wrap
 msgid "View IPT logs"
 msgstr ""
 
 #. type: Plain text
-#: en/modules/ROOT/pages/administration.adoc:258
+#: en/modules/ROOT/pages/administration.adoc:311
 msgid ""
 "Messages generated from actions taken while running the IPT are logged to "
 "files for reference in the directory called \"logs\" within the IPT data "
@@ -1097,7 +1331,7 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: en/modules/ROOT/pages/administration.adoc:259
+#: en/modules/ROOT/pages/administration.adoc:312
 #, no-wrap
 msgid "ipt2/administration/IPTAdminLogs.png"
 msgstr ""

@@ -1804,4 +1804,11 @@ public class Resource implements Serializable, Comparable<Resource> {
         ? new ArrayList<>()
         : new ArrayList<>(publicationFailureEmails);
   }
+
+  public boolean isManagedBy(User user) {
+    if (user == null) {
+      return false;
+    }
+    return user.equals(creator) || (managers != null && managers.contains(user));
+  }
 }

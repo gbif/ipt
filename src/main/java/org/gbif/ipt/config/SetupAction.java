@@ -464,7 +464,7 @@ public class SetupAction extends BaseAction {
     }
 
     // install default organisation "No organisation" used to indicate resource has no publishing organisation
-    if (registrationManager.getIpt() == null || getDefaultOrganisation() == null) {
+    if (getDefaultOrganisation() == null) {
       try {
         registrationManager.addAssociatedOrganisation(createDefaultOrganisation());
         registrationManager.save();

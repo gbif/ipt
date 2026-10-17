@@ -113,6 +113,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -1447,7 +1448,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           // restore the previous version since publication was unsuccessful
           resourcePublicationManager.restoreVersion(resource, nextVersion, this);
           // keep track of how many failures on auto publication have happened
-          resourcePublicationManager.getProcessFailures().put(resource.getShortname(), new Date());
+          resourcePublicationManager.getProcessFailures()
+              .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
+              .add(new Date());
         }
       } catch (InvalidConfigException e) {
         // with this type of error, the version cannot be rolled back - just alert user publication failed
@@ -2133,5 +2136,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   @Override
   public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
     this.uploadedFiles = uploadedFiles;
+  }
+
+  public boolean hasMaxProcessFailures() {
+    return resourceManager.hasMaxProcessFailures(resource, false);
   }
 }

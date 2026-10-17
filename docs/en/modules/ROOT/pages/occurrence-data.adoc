@@ -9,9 +9,9 @@ image::ipt2/flow-od.png[]
 
 Ultimately your data needs to be transformed into a table structure using Darwin Core (DwC) term names as column names.
 
-Try putting your data into the <<Templates,Excel template>>, which includes all <<Required DwC Fields,required DwC fields>> and <<Recommended DwC Fields,recommended DwC fields>>.
+Try putting your data into the <<Templates,Excel template>>, which includes all <<Required and recommended DwC fields, required and recommended DwC Fields>>.
 
-Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required DwC Fields,required DwC fields>> and add as many <<Recommended DwC Fields,recommended DwC fields>> as possible.
+Alternatively if your data is stored in a xref:database-connection.adoc[supported database], you can write an SQL table (view) using DwC column names. Be careful to include all <<Required and recommended DwC fields, required DwC fields and add as many recommended DwC fields>> as possible.
 
 For extra guidance, you can look at the <<Exemplar datasets,exemplar datasets>>.
 
@@ -37,7 +37,7 @@ You can  review the required and recommended fields in the https://techdocs.gbif
 
 ==== Q. How do I indicate a species was absent?
 
-*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}["absent"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.
+*A.* Set https://dwc.tdwg.org/terms/#dwc:occurrenceStatus[occurrenceStatus]=link:{latest-occurrence-status}["notDetected"]. In addition, https://dwc.tdwg.org/terms/#dwc:individualCount[individualCount] and https://dwc.tdwg.org/terms/#dwc:organismQuantity[organismQuantity] should be equal to 0.
 
 ==== Q. How can I generalize sensitive species occurrence data?
 

@@ -227,7 +227,7 @@ function convertToHtml(docBook) {
     // Lowercase keys
     const TAG_MAP = {
         para: "p",
-        emphasis: "em",
+        emphasis: "b",
         subscript: "sub",
         superscript: "sup",
         literallayout: "pre",   // lowercase

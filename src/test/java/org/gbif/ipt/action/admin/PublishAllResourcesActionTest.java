@@ -105,7 +105,6 @@ import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -218,30 +217,29 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
 
     // PublicationException logged in ActionError
     assertEquals(2, action.getActionErrors().size());
-    // # of publish event failures for resource captured
+    // a single failure captured for the resource
     assertEquals(1, action.resourcePublicationManager.getProcessFailures().size());
+    assertEquals(1, action.resourcePublicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
     assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
     assertNull(resource.getNextPublished());
     assertNull(resource.getLastPublished());
 
-    // trigger publishing all again
+    // trigger publish all again - a manual bulk publish gives the resource a fresh start (#3191),
+    // so the previous failure is cleared and only the new one is recorded
     action.execute();
     assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
-    // # of publish event failures for resource captured, should have incremented by 1
-    assertEquals(2, action.resourcePublicationManager.getProcessFailures().size());
+    assertEquals(1, action.resourcePublicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
 
-    // trigger publishing all again
+    // repeated bulk publications never disable the resource, regardless of how often publishing fails
     action.execute();
-    assertTrue(action.resourcePublicationManager.hasMaxProcessFailures(resource));
-    // # of publish event failures for resource captured, should have incremented by 1
-    assertEquals(3, action.resourcePublicationManager.getProcessFailures().size());
+    assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
+    assertEquals(1, action.resourcePublicationManager.getProcessFailures().size());
 
-    // trigger publishing all again
+    // trigger publish all once more - still a fresh start, still not disabled
     action.execute();
-    assertTrue(action.resourcePublicationManager.hasMaxProcessFailures(resource));
-    // since max failures were reached, publication isn't scheduled, and number of publication failures stays the same
-    assertEquals(3, action.resourcePublicationManager.getProcessFailures().size());
+    assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
+    assertEquals(1, action.resourcePublicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
   }
 
   public ResourceManagerImpl getResourceManagerImpl() throws Exception {

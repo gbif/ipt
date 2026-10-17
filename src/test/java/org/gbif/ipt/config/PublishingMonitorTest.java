@@ -32,12 +32,12 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,6 +53,7 @@ class PublishingMonitorTest {
   @Test
   void monitorSendsPublicationFailureEmailWhenEnabledAndConfigured() throws Exception {
     AppConfig cfg = mock(AppConfig.class);
+    when(cfg.isAutoPublishingEnabled()).thenReturn(true);
     when(cfg.getAdminEmail()).thenReturn("admin@example.org");
     when(cfg.getBaseUrl()).thenReturn("https://ipt.example.org");
 
@@ -71,7 +72,7 @@ class PublishingMonitorTest {
         1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>()));
     when(resourceManager.list()).thenReturn(Collections.singletonList(resource));
     when(resourcePublicationManager.hasMaxProcessFailures(resource)).thenReturn(false);
-    when(resourcePublicationManager.getProcessFailures()).thenReturn(new ArrayListValuedHashMap<>());
+    when(resourcePublicationManager.getProcessFailures()).thenReturn(new ConcurrentHashMap<>());
     doThrow(new PublicationException(PublicationException.TYPE.DWCA, "archive failed"))
         .when(resourcePublicationManager).publish(eq(resource), any(BigDecimal.class), isNull(), any(PublicationOptions.class));
 

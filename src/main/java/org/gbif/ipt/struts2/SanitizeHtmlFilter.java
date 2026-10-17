@@ -54,6 +54,10 @@ import lombok.Getter;
  * description, which is later converted to DocBook in the EML). For those parameters,
  * the safe subset of tags is preserved instead of being stripped to plain text.
  * <p>
+ * Some of these fields (see {@link #DOCBOOK_PARAMETERS}) are edited as HTML but converted to
+ * DocBook in the browser before submission (see {@code js/docbook/docbook-v2.js}), so they are
+ * sanitized against a DocBook safelist instead of an HTML one (see {@link XSSUtils#stripDocBookXSS}).
+ * <p>
  * Rather than hard-rejecting the whole request with a generic HTTP 400 when something
  * suspicious is found, this filter sanitizes the offending value and records which
  * parameters were flagged in a request attribute ({@link #XSS_FLAGGED_FIELDS_ATTR}, a
@@ -94,6 +98,18 @@ public class SanitizeHtmlFilter implements Filter {
           "eml.updateFrequencyDescription",
           "eml.additionalInfo",
           "eml.intellectualRights"
+      )));
+
+  /**
+   * Subset of {@link #RICH_TEXT_PARAMETERS} whose values are submitted as DocBook rather than HTML.
+   */
+  private static final Set<String> DOCBOOK_PARAMETERS =
+      Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+          "eml.description",
+          "eml.acknowledgements",
+          "eml.purpose",
+          "eml.introduction",
+          "eml.gettingStarted"
       )));
 
   /**
@@ -262,7 +278,9 @@ public class SanitizeHtmlFilter implements Filter {
      * the plain-text case) if anything was actually removed.
      */
     private String sanitizeRichText(String parameter, String value) {
-      String cleanedForOutput = RICH_TEXT_POLICY.sanitize(value);
+      String cleanedForOutput = DOCBOOK_PARAMETERS.contains(parameter)
+          ? XSSUtils.stripDocBookXSS(value)
+          : RICH_TEXT_POLICY.sanitize(value);
 
       String normalizedValue = StringEscapeUtils.unescapeHtml4(value);
       String normalizedOutput = StringEscapeUtils.unescapeHtml4(cleanedForOutput);
