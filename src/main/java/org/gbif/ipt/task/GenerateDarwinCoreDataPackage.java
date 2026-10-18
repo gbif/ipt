@@ -190,6 +190,13 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     }
   }
 
+  /**
+   * Sets the folder data resources are written to. Normally created in {@link #call()}, exposed for tests only.
+   */
+  void setDataPackageFolder(File dataPackageFolder) {
+    this.dataPackageFolder = dataPackageFolder;
+  }
+
   @Override
   protected boolean completed() {
     return STATE.COMPLETED == this.state;
@@ -478,10 +485,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
     List<DataPackageField> fields = tableSchema.getFields();
     Set<String> mappedFieldNames = new HashSet<>();
-    // file header
-    String header;
-    // total column count (number of fields in the tableSchema)
-    int totalColumns;
+    // output columns (field names in table schema order), shared by all mappings of this table schema
+    List<String> columns;
 
     if (filterMapped) {
       for (DataPackageMapping dataPackageMapping : allMappings) {
@@ -499,19 +504,20 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
         }
       }
 
-      header = fields.stream()
+      columns = fields.stream()
           .map(DataPackageField::getName)
           .filter(mappedFieldNames::contains)
-          .collect(Collectors.joining(",", "", "\n"));
-
-      totalColumns = mappedFieldNames.size();
+          .collect(Collectors.toList());
     } else {
-      header = fields.stream()
+      columns = fields.stream()
           .map(DataPackageField::getName)
-          .collect(Collectors.joining(",", "", "\n"));
-
-      totalColumns = fields.size();
+          .collect(Collectors.toList());
     }
+
+    // file header
+    String header = String.join(",", columns) + "\n";
+    // total column count
+    int totalColumns = columns.size();
 
     String fn = tableSchema.getName() + ".csv";
     File dataFile = new File(dataPackageFolder, fn);
@@ -529,13 +535,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
             headerWritten = true;
           }
 
-          // Build a lookup map of field name -> index for quick ordering
-          Map<String, Integer> allTableFieldsInOrder = new HashMap<>();
-          for (int i = 0; i < fields.size(); i++) {
-            allTableFieldsInOrder.put(fields.get(i).getName(), i);
-          }
-
-          dumpData(writer, allTableFieldsInOrder, dataPackageMapping, dataPackageMapping.getFields(), totalColumns, filterMapped);
+          dumpData(writer, columns, dataPackageMapping);
 
           // store record number by extension rowType
           recordsByTableSchema.put(tableSchema.getName(), currRecords);
@@ -597,43 +597,37 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    * Write data resource for mappings.
    *
    * @param writer file writer for single data resource
-   * @param allTableFieldsInOrder all fields of the table schema in order
+   * @param columns output columns (field names) of the data resource, in order
    * @param schemaMapping schema mapping
-   * @param tableSchemaFieldMappings field mappings
-   * @param dataFileRowSize number of columns in data resource
-   * @param filterMapped leave only those fields that are mapped
    * @throws GeneratorException if there was an error writing data resource for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
-  private void dumpData(Writer writer, Map<String, Integer> allTableFieldsInOrder, DataPackageMapping schemaMapping,
-                        List<DataPackageFieldMapping> tableSchemaFieldMappings, int dataFileRowSize, boolean filterMapped)
+  private void dumpData(Writer writer, List<String> columns, DataPackageMapping schemaMapping)
       throws GeneratorException, InterruptedException {
     RecordFilter filter = schemaMapping.getFilter();
-    int fieldsMapped = schemaMapping.getFieldsMapped();
-    DataPackageTableSchemaName resourceName = schemaMapping.getDataPackageTableSchemaName();
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
     int recordsFiltered = 0;
     int emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
     int line = 0;
-    List<DataPackageFieldMapping> mappedTableSchemaFieldMappings = tableSchemaFieldMappings
-        .stream()
-        .filter(dpfm -> dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))
-        .sorted(Comparator.comparingInt(m -> {
-          String fieldName = m.getField().getName();
-          return allTableFieldsInOrder.getOrDefault(fieldName, Integer.MAX_VALUE);
-        })).collect(Collectors.toList());
-    List<DataPackageFieldMapping> usedMappings;
-    Optional<Integer> maxColumnIndexOpt;
 
-    if (filterMapped) {
-      usedMappings = mappedTableSchemaFieldMappings;
-    } else {
-      usedMappings = tableSchemaFieldMappings;
+    // field mappings of this mapping that are mapped or have a default value by field name
+    Map<String, DataPackageFieldMapping> mappingsByFieldName = new HashMap<>();
+    for (DataPackageFieldMapping dpfm : schemaMapping.getFields()) {
+      if (dpfm.getField() != null && (dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))) {
+        mappingsByFieldName.put(dpfm.getField().getName(), dpfm);
+      }
     }
 
-    maxColumnIndexOpt = usedMappings.stream()
+    // one entry per output column, null where this mapping doesn't provide the column,
+    // so rows of all mappings of the same table schema line up with the header
+    List<DataPackageFieldMapping> usedMappings = columns.stream()
+        .map(mappingsByFieldName::get)
+        .collect(Collectors.toList());
+
+    Optional<Integer> maxColumnIndexOpt = usedMappings.stream()
+        .filter(Objects::nonNull)
         .map(DataPackageFieldMapping::getIndex)
         .filter(Objects::nonNull)
         .max(Comparator.naturalOrder());
