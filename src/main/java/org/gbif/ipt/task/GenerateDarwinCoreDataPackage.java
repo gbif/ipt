@@ -15,7 +15,6 @@ package org.gbif.ipt.task;
 
 import org.gbif.datapackage.DataPackage;
 import org.gbif.datapackage.DataPackageConstants;
-import org.gbif.datapackage.DataPackageForeignKey;
 import org.gbif.datapackage.DataPackageResource;
 import org.gbif.dp.analysis.api.AnalysisExecution;
 import org.gbif.dp.analysis.api.DatapackageAnalysisResult;
@@ -90,6 +89,10 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   }
 
   private static final Pattern ESCAPE_CHARS = Pattern.compile("[\t\n\r]");
+
+  // DwC-DP table schema keys on identifiers that may point outside the dataset
+  private static final String WEAK_PRIMARY_KEY = "weakPrimaryKey";
+  private static final String WEAK_FOREIGN_KEYS = "weakForeignKeys";
 
   private static final ObjectMapper MAPPER = JsonMapper.builder()
       .addModule(new JavaTimeModule())
@@ -564,8 +567,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
       // for example, for DwC DP add only mapped fields, not all the schema
       if (filterMapped) {
-        schema.getFields().removeIf(f -> isUnusedField(f, mappedFieldNames));
-        schema.getForeignKeys().removeIf(f -> isUnusedForeignKey(f, mappedFieldNames));
+        removeUnmappedFields(schema, mappedFieldNames);
         packageResource.setInlineSchema(true);
       }
 
@@ -1062,19 +1064,58 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     }
   }
 
-  private boolean isUnusedField(org.gbif.datapackage.DataPackageField field, Set<String> mappedFieldNames) {
-    return !mappedFieldNames.contains(field.getName());
-  }
+  /**
+   * Removes unmapped fields from the table schema, together with the keys on them, so the descriptor doesn't declare
+   * keys on columns that aren't in the data resource: primary key, foreign keys and DwC-DP's weak primary key and
+   * weak foreign keys (kept untyped in the schema's additional properties).
+   *
+   * @param schema table schema, modified in place
+   * @param mappedFieldNames names of mapped fields (or with a default value)
+   */
+  static void removeUnmappedFields(org.gbif.datapackage.DataPackageTableSchema schema, Set<String> mappedFieldNames) {
+    schema.getFields().removeIf(f -> !mappedFieldNames.contains(f.getName()));
+    schema.getForeignKeys().removeIf(fk -> isUnusedKey(fk.getFields(), mappedFieldNames));
 
-  private boolean isUnusedForeignKey(DataPackageForeignKey fk, Set<String> mappedFieldNames) {
-    boolean result;
-
-    if (!fk.getFields().isEmpty()) {
-      result = !mappedFieldNames.contains(fk.getFields().get(0));
-    } else {
-      result = true;
+    // primary key fields are required in DwC-DP, so they should always be mapped
+    if (isUnusedKey(schema.getPrimaryKey(), mappedFieldNames)) {
+      schema.setPrimaryKey(new ArrayList<>());
     }
 
-    return result;
+    Map<String, Object> properties = schema.getAdditionalProperties();
+    if (properties.containsKey(WEAK_PRIMARY_KEY)
+        && isUnusedKey(keyFields(properties.get(WEAK_PRIMARY_KEY)), mappedFieldNames)) {
+      properties.remove(WEAK_PRIMARY_KEY);
+    }
+
+    if (properties.get(WEAK_FOREIGN_KEYS) instanceof List<?> weakForeignKeys) {
+      List<?> usedWeakForeignKeys = weakForeignKeys.stream()
+          .filter(fk -> fk instanceof Map<?, ?> fkMap && !isUnusedKey(keyFields(fkMap.get("fields")), mappedFieldNames))
+          .collect(Collectors.toList());
+
+      if (usedWeakForeignKeys.isEmpty()) {
+        properties.remove(WEAK_FOREIGN_KEYS);
+      } else {
+        properties.put(WEAK_FOREIGN_KEYS, usedWeakForeignKeys);
+      }
+    }
+  }
+
+  /**
+   * A key is unused if it has no fields or any of its fields isn't mapped.
+   */
+  private static boolean isUnusedKey(List<String> keyFields, Set<String> mappedFieldNames) {
+    return keyFields == null || keyFields.isEmpty() || !mappedFieldNames.containsAll(keyFields);
+  }
+
+  /**
+   * Key fields from an untyped "fields" (or weak primary key) value: a field name or a list of field names.
+   */
+  private static List<String> keyFields(Object value) {
+    if (value instanceof String field) {
+      return List.of(field);
+    } else if (value instanceof List<?> fields) {
+      return fields.stream().map(String::valueOf).collect(Collectors.toList());
+    }
+    return List.of();
   }
 }

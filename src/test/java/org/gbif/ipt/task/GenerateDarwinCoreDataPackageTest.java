@@ -44,7 +44,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -52,6 +56,7 @@ import static org.mockito.Mockito.when;
 public class GenerateDarwinCoreDataPackageTest {
 
   private static final String RESOURCE_SHORTNAME = "dwc-dp-res";
+  private static final ObjectMapper JSON = new ObjectMapper();
 
   // minimal event table schema: fields in schema order
   private static final String EVENT_SCHEMA = "{"
@@ -204,6 +209,75 @@ public class GenerateDarwinCoreDataPackageTest {
   @Test
   public void testNoContributorsForEmlWithoutAgents() {
     assertTrue(generator.buildContributors(new Eml()).isEmpty());
+  }
+
+  /**
+   * Keys on unmapped fields are removed together with the fields, keys on mapped fields are kept.
+   */
+  @Test
+  public void testRemoveUnmappedFieldsRemovesTheirKeys() throws Exception {
+    org.gbif.datapackage.DataPackageTableSchema schema = keysSchema();
+
+    GenerateDarwinCoreDataPackage.removeUnmappedFields(schema,
+        Set.of("event_pk", "eventDate", "eventProtocol_fk", "parentEventID"));
+
+    JsonNode json = JSON.readTree(JSON.writeValueAsString(schema));
+    assertEquals(List.of("event_pk", "eventDate", "eventProtocol_fk", "parentEventID"), fieldNames(json));
+    assertEquals("[\"event_pk\"]", json.get("primaryKey").toString());
+    assertEquals(1, json.get("foreignKeys").size());
+    assertEquals("[\"eventProtocol_fk\"]", json.get("foreignKeys").get(0).get("fields").toString());
+    // eventID not mapped
+    assertFalse(json.has("weakPrimaryKey"));
+    assertEquals(1, json.get("weakForeignKeys").size());
+    assertEquals("parentEventID", json.get("weakForeignKeys").get(0).get("fields").asText());
+  }
+
+  /**
+   * Without mapped key fields no key properties are written at all, including an empty primary key.
+   */
+  @Test
+  public void testRemoveUnmappedFieldsWithoutMappedKeyFields() throws Exception {
+    org.gbif.datapackage.DataPackageTableSchema schema = keysSchema();
+
+    GenerateDarwinCoreDataPackage.removeUnmappedFields(schema, Set.of("eventDate"));
+
+    JsonNode json = JSON.readTree(JSON.writeValueAsString(schema));
+    assertEquals(List.of("eventDate"), fieldNames(json));
+    assertFalse(json.has("primaryKey"));
+    assertFalse(json.has("foreignKeys"));
+    assertFalse(json.has("weakPrimaryKey"));
+    assertFalse(json.has("weakForeignKeys"));
+  }
+
+  /**
+   * Event table schema with all kinds of keys, as in DwC-DP 1.0_DEV.
+   */
+  private org.gbif.datapackage.DataPackageTableSchema keysSchema() throws Exception {
+    File schemaFile = new File(tmpDir, "event-keys.json");
+    Files.writeString(schemaFile.toPath(), "{"
+        + "\"fields\": ["
+        + "{\"name\": \"event_pk\"}, {\"name\": \"eventID\"}, {\"name\": \"eventDate\"},"
+        + "{\"name\": \"parentEvent_fk\"}, {\"name\": \"eventProtocol_fk\"},"
+        + "{\"name\": \"parentEventID\"}, {\"name\": \"eventConductedByID\"}"
+        + "],"
+        + "\"primaryKey\": \"event_pk\","
+        + "\"weakPrimaryKey\": \"eventID\","
+        + "\"foreignKeys\": ["
+        + "{\"fields\": \"parentEvent_fk\", \"reference\": {\"resource\": \"\", \"fields\": \"event_pk\"}},"
+        + "{\"fields\": \"eventProtocol_fk\", \"reference\": {\"resource\": \"protocol\", \"fields\": \"protocol_pk\"}}"
+        + "],"
+        + "\"weakForeignKeys\": ["
+        + "{\"fields\": \"parentEventID\", \"reference\": {\"resource\": \"\", \"fields\": \"eventID\"}},"
+        + "{\"fields\": \"eventConductedByID\", \"reference\": {\"resource\": \"agent\", \"fields\": \"agentID\"}}"
+        + "]"
+        + "}");
+    return org.gbif.datapackage.DataPackageTableSchema.fromFile(schemaFile);
+  }
+
+  private static List<String> fieldNames(JsonNode schemaJson) {
+    List<String> names = new ArrayList<>();
+    schemaJson.get("fields").forEach(f -> names.add(f.get("name").asText()));
+    return names;
   }
 
   private static Agent agent(String firstName, String lastName) {

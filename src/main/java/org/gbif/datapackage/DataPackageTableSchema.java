@@ -49,9 +49,13 @@ public class DataPackageTableSchema {
   @Setter
   @Getter
   @JsonDeserialize(using = StringOrStringListDeserializer.class)
+  // keys are omitted when empty, like in the table schemas themselves
+  // (a primary key is a field name or a non-empty list of them)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private List<String> primaryKey = new ArrayList<>();
   @Setter
   @Getter
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private List<DataPackageForeignKey> foreignKeys = new ArrayList<>();
   private final Map<String, Object> additionalProperties = new LinkedHashMap<>();
 
