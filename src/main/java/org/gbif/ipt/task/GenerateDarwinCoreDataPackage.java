@@ -947,21 +947,50 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   }
 
   private void setContributorsDataPackageProperty(Eml eml) {
-    setDataPackageProperty("contributors", buildContributors(eml));
+    List<Map<String, Object>> contributors = buildContributors(eml);
+    // the data package schema requires at least one contributor if the property is present
+    if (!contributors.isEmpty()) {
+      setDataPackageProperty("contributors", contributors);
+    }
   }
 
   /**
-   * Builds data package contributors from EML agents: creators become authors, metadata providers wranglers and
-   * associated parties contributors.
+   * Builds data package contributors from EML agents: creators become authors, contacts maintainers, metadata
+   * providers wranglers. Associated parties get a role derived from their EML role, see
+   * {@link #associatedPartyRole(String)}.
+   * </br>
+   * The roles round-trip with the registry's DwC-DP metadata parser (author → AUTHOR, maintainer → POINT_OF_CONTACT,
+   * wrangler → METADATA_AUTHOR, publisher → PUBLISHER).
    */
   List<Map<String, Object>> buildContributors(Eml eml) {
     List<Map<String, Object>> contributors = new ArrayList<>();
 
     eml.getCreators().forEach(a -> addContributor(contributors, a, "author"));
+    eml.getContacts().forEach(a -> addContributor(contributors, a, "maintainer"));
     eml.getMetadataProviders().forEach(a -> addContributor(contributors, a, "wrangler"));
-    eml.getAssociatedParties().forEach(a -> addContributor(contributors, a, "contributor"));
+    eml.getAssociatedParties().forEach(a -> addContributor(contributors, a, associatedPartyRole(a.getRole())));
 
     return List.copyOf(contributors);
+  }
+
+  /**
+   * Maps an EML (GBIF agentRole vocabulary) role to a data package contributor role. Roles with an exact data package
+   * equivalent are mapped, any other role is kept verbatim (data package roles are free text), a missing role
+   * becomes "contributor".
+   */
+  static String associatedPartyRole(String emlRole) {
+    String role = StringUtils.trimToNull(emlRole);
+    if (role == null) {
+      return "contributor";
+    }
+
+    return switch (role.toLowerCase(Locale.ROOT)) {
+      case "author" -> "author";
+      case "publisher" -> "publisher";
+      case "pointofcontact" -> "maintainer";
+      case "metadataprovider" -> "wrangler";
+      default -> role;
+    };
   }
 
   private void addContributor(List<Map<String, Object>> contributors, Agent agent, String role) {
@@ -969,18 +998,24 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       return;
     }
 
-    Map<String, Object> contributor = new LinkedHashMap<>();
+    String organisation = StringUtils.trimToNull(agent.getOrganisation());
+    Optional<String> position = firstNonBlank(agent.getPosition());
 
-    String title = agent.getFullName();
+    // title is required by the data package schema: name, otherwise organisation, otherwise position
+    String title = Optional.ofNullable(agent.getFullName())
+        .or(() -> Optional.ofNullable(organisation))
+        .or(() -> position)
+        .orElse(null);
     if (title == null) {
-      title = agent.getOrganisation();
-    }
-    if (title != null) {
-      contributor.put("title", title);
+      log.warn("Contributor skipped, no name, organisation or position: {}", agent);
+      return;
     }
 
-    if (agent.getOrganisation() != null) {
-      contributor.put("organization", agent.getOrganisation());
+    Map<String, Object> contributor = new LinkedHashMap<>();
+    contributor.put("title", title);
+
+    if (organisation != null) {
+      contributor.put("organization", organisation);
     }
 
     firstNonBlank(agent.getEmail()).ifPresent(email -> contributor.put("email", email));

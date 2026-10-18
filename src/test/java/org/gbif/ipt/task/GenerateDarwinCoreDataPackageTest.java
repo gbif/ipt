@@ -45,6 +45,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -132,31 +133,88 @@ public class GenerateDarwinCoreDataPackageTest {
   }
 
   /**
-   * Contributor roles depend on the EML agent type: creators are authors, metadata providers wranglers and
-   * associated parties contributors.
+   * Contributor roles depend on the EML agent type: creators are authors, contacts maintainers, metadata providers
+   * wranglers and associated parties get a role derived from their own EML role.
    */
   @Test
   public void testContributorRolesFromEml() {
     Eml eml = new Eml();
     eml.addCreator(agent("Ada", "Lovelace"));
+    eml.addContact(agent("Grace", "Hopper"));
     eml.addMetadataProvider(agent("Charles", "Babbage"));
-    eml.addAssociatedParty(agent("Mary", "Somerville"));
+    eml.addAssociatedParty(agent("Mary", "Somerville", "principalInvestigator"));
 
     List<Map<String, Object>> contributors = generator.buildContributors(eml);
 
-    assertEquals(3, contributors.size());
+    assertEquals(4, contributors.size());
     assertEquals("Ada Lovelace", contributors.get(0).get("title"));
     assertEquals("author", contributors.get(0).get("role"));
-    assertEquals("Charles Babbage", contributors.get(1).get("title"));
-    assertEquals("wrangler", contributors.get(1).get("role"));
-    assertEquals("Mary Somerville", contributors.get(2).get("title"));
-    assertEquals("contributor", contributors.get(2).get("role"));
+    assertEquals("Grace Hopper", contributors.get(1).get("title"));
+    assertEquals("maintainer", contributors.get(1).get("role"));
+    assertEquals("Charles Babbage", contributors.get(2).get("title"));
+    assertEquals("wrangler", contributors.get(2).get("role"));
+    assertEquals("Mary Somerville", contributors.get(3).get("title"));
+    assertEquals("principalInvestigator", contributors.get(3).get("role"));
+  }
+
+  /**
+   * EML roles with an exact data package equivalent are mapped, other roles are kept verbatim, a missing role
+   * becomes "contributor".
+   */
+  @Test
+  public void testAssociatedPartyRole() {
+    assertEquals("author", GenerateDarwinCoreDataPackage.associatedPartyRole("author"));
+    assertEquals("publisher", GenerateDarwinCoreDataPackage.associatedPartyRole("publisher"));
+    assertEquals("maintainer", GenerateDarwinCoreDataPackage.associatedPartyRole("pointOfContact"));
+    assertEquals("wrangler", GenerateDarwinCoreDataPackage.associatedPartyRole("metadataProvider"));
+    assertEquals("custodianSteward", GenerateDarwinCoreDataPackage.associatedPartyRole("custodianSteward"));
+    assertEquals("processor", GenerateDarwinCoreDataPackage.associatedPartyRole(" processor "));
+    assertEquals("contributor", GenerateDarwinCoreDataPackage.associatedPartyRole(null));
+    assertEquals("contributor", GenerateDarwinCoreDataPackage.associatedPartyRole(" "));
+  }
+
+  /**
+   * Title is required by the data package schema: falls back to organisation, then position. Agents without any of
+   * these are skipped.
+   */
+  @Test
+  public void testContributorTitleFallback() {
+    Agent organisationOnly = new Agent();
+    organisationOnly.setOrganisation("GBIF");
+
+    Agent positionOnly = new Agent();
+    positionOnly.addPosition("Data manager");
+
+    Agent emailOnly = new Agent();
+    emailOnly.addEmail("nobody@example.org");
+
+    Eml eml = new Eml();
+    eml.addCreator(organisationOnly);
+    eml.addCreator(positionOnly);
+    eml.addCreator(emailOnly);
+
+    List<Map<String, Object>> contributors = generator.buildContributors(eml);
+
+    assertEquals(2, contributors.size());
+    assertEquals("GBIF", contributors.get(0).get("title"));
+    assertEquals("GBIF", contributors.get(0).get("organization"));
+    assertEquals("Data manager", contributors.get(1).get("title"));
+  }
+
+  @Test
+  public void testNoContributorsForEmlWithoutAgents() {
+    assertTrue(generator.buildContributors(new Eml()).isEmpty());
   }
 
   private static Agent agent(String firstName, String lastName) {
+    return agent(firstName, lastName, null);
+  }
+
+  private static Agent agent(String firstName, String lastName, String role) {
     Agent agent = new Agent();
     agent.setFirstName(firstName);
     agent.setLastName(lastName);
+    agent.setRole(role);
     return agent;
   }
 
