@@ -26,6 +26,8 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -126,6 +129,35 @@ public class GenerateDarwinCoreDataPackageTest {
         "e1,2020-01-01,",
         "e2,2020-01-02,",
         "e3,,Copenhagen"), lines);
+  }
+
+  /**
+   * Contributor roles depend on the EML agent type: creators are authors, metadata providers wranglers and
+   * associated parties contributors.
+   */
+  @Test
+  public void testContributorRolesFromEml() {
+    Eml eml = new Eml();
+    eml.addCreator(agent("Ada", "Lovelace"));
+    eml.addMetadataProvider(agent("Charles", "Babbage"));
+    eml.addAssociatedParty(agent("Mary", "Somerville"));
+
+    List<Map<String, Object>> contributors = generator.buildContributors(eml);
+
+    assertEquals(3, contributors.size());
+    assertEquals("Ada Lovelace", contributors.get(0).get("title"));
+    assertEquals("author", contributors.get(0).get("role"));
+    assertEquals("Charles Babbage", contributors.get(1).get("title"));
+    assertEquals("wrangler", contributors.get(1).get("role"));
+    assertEquals("Mary Somerville", contributors.get(2).get("title"));
+    assertEquals("contributor", contributors.get(2).get("role"));
+  }
+
+  private static Agent agent(String firstName, String lastName) {
+    Agent agent = new Agent();
+    agent.setFirstName(firstName);
+    agent.setLastName(lastName);
+    return agent;
   }
 
   private static DataPackageField field(String name) {

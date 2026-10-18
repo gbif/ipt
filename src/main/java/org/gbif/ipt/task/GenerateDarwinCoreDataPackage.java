@@ -53,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -946,16 +947,24 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   }
 
   private void setContributorsDataPackageProperty(Eml eml) {
+    setDataPackageProperty("contributors", buildContributors(eml));
+  }
+
+  /**
+   * Builds data package contributors from EML agents: creators become authors, metadata providers wranglers and
+   * associated parties contributors.
+   */
+  List<Map<String, Object>> buildContributors(Eml eml) {
     List<Map<String, Object>> contributors = new ArrayList<>();
 
     eml.getCreators().forEach(a -> addContributor(contributors, a, "author"));
     eml.getMetadataProviders().forEach(a -> addContributor(contributors, a, "wrangler"));
     eml.getAssociatedParties().forEach(a -> addContributor(contributors, a, "contributor"));
 
-    setDataPackageProperty("contributors", List.copyOf(contributors));
+    return List.copyOf(contributors);
   }
 
-  private void addContributor(List<Map<String, Object>> contributors, Agent agent, String defaultRole) {
+  private void addContributor(List<Map<String, Object>> contributors, Agent agent, String role) {
     if (agent == null || agent.isEmpty()) {
       return;
     }
@@ -977,9 +986,10 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     firstNonBlank(agent.getEmail()).ifPresent(email -> contributor.put("email", email));
     firstNonBlank(agent.getHomepage()).ifPresent(path -> contributor.put("path", path));
 
-    contributor.put("role", "contributor");
+    contributor.put("role", role);
 
-    contributors.add(Map.copyOf(contributor));
+    // keep key order (title first) in the serialized descriptor
+    contributors.add(Collections.unmodifiableMap(contributor));
   }
 
   private Optional<String> firstNonBlank(List<String> values) {
