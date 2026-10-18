@@ -66,10 +66,10 @@
             {
                 "identifier": "${tableSchema.identifier?js_string}",
                 "name": "${tableSchema.name?js_string}",
-                "title": "${tableSchema.title?js_string}",
-                "description": "${tableSchema.description?js_string}",
-                "comments": "${tableSchema.comments?js_string}",
-                "examples": "${tableSchema.examples?js_string}",
+                "title": "${(tableSchema.title!"")?js_string}",
+                "description": "${(tableSchema.description!"")?js_string}",
+                "comments": "${(tableSchema.comments!"")?js_string}",
+                "examples": "${(tableSchema.examples!"")?js_string}",
                 "totalFields": ${tableSchema.fields?size}
             }<#if tableSchema_has_next>, </#if>
             </#list>
