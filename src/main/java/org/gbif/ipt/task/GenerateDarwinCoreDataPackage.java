@@ -34,6 +34,7 @@ import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.LicenseConverterUtils;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -49,13 +50,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -926,7 +926,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void addDataPackageMetadata() throws Exception {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
     dataPackage = DataPackage.load(metadataFile);
-    setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
+    setDataPackageProperty("created", MetadataUtils.formatDataPackageCreated(Instant.now()));
 
     File emlFile = dataDir.resourceEmlFile(resource.getShortname());
     Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);

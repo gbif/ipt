@@ -18,6 +18,10 @@ import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 import org.apache.commons.lang3.Strings;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -41,5 +45,13 @@ public final class MetadataUtils {
 
   public static boolean isDataPackageType(String type) {
     return Strings.CS.equalsAny(type, CAMTRAP_DP, COL_DP, DWC_DP);
+  }
+
+  /**
+   * Formats the data package "created" timestamp as UTC with second precision, e.g. 2026-01-15T10:00:00Z,
+   * regardless of the server time zone.
+   */
+  public static String formatDataPackageCreated(Instant instant) {
+    return DateTimeFormatter.ISO_INSTANT.format(instant.truncatedTo(ChronoUnit.SECONDS));
   }
 }

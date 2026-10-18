@@ -27,6 +27,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
@@ -39,12 +40,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -814,8 +814,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
 
     // Basic metadata
-    setDataPackageProperty("created",
-      new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
+    setDataPackageProperty("created", MetadataUtils.formatDataPackageCreated(Instant.now()));
     setDataPackageProperty("version", colMetadata.getVersion());
     setDataPackageStringProperty("title", colMetadata.getTitle());
     setDataPackageCollectionProperty("contributors", colMetadata.getContributor());
@@ -832,7 +831,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
 
     dataPackage = new Package(metadataFile.toPath(), false);
-    setDataPackageProperty("created", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date()));
+    setDataPackageProperty("created", MetadataUtils.formatDataPackageCreated(Instant.now()));
   }
 
   private void setDataPackageProperty(String name, Object property) {
