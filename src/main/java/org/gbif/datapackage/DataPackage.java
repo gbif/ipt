@@ -25,6 +25,10 @@ import org.gbif.dp.analysis.duckdb.DuckDbDialectRenderer;
 import org.gbif.dp.analysis.duckdb.DuckDbResourceLoader;
 import org.gbif.dp.common.descriptor.JacksonDataPackageParser;
 import org.gbif.dp.descriptor.DataPackageParser;
+import org.gbif.dp.validator.api.DescriptorViolationType;
+import org.gbif.dp.validator.api.ValidationIssue;
+import org.gbif.dp.validator.dwcdp.DwcDpDescriptorValidator;
+import org.gbif.dp.validator.eml.EmlValidator;
 
 import java.io.File;
 import java.io.IOException;
@@ -90,11 +94,17 @@ public class DataPackage {
   private static final ObjectMapper MAPPER = new ObjectMapper()
       .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
+  // stricter than the analyser defaults for packages the IPT publishes:
+  // a foreign key to a table that isn't in the package leaves its values pointing at nothing
+  private static final Map<DescriptorViolationType, ValidationIssue.Severity> SEVERITY_OVERRIDES = Map.of(
+      DescriptorViolationType.FK_UNKNOWN_REFERENCE_RESOURCE, ValidationIssue.Severity.ERROR);
+
   private final DataPackageParser parser = new JacksonDataPackageParser();
   private final DuckDbDialectRenderer dialectRenderer = new DuckDbDialectRenderer();
   private final DuckDbResourceLoader loader = new DuckDbResourceLoader(dialectRenderer);
   private final DataAnalyser analyser = new DuckDbDataPackageAnalyser(parser, loader);
-  private final DataPackageAnalysisOrchestrator dpAnalysisOrchestrator = new DefaultDataPackageAnalysisOrchestrator(analyser);
+  private final DataPackageAnalysisOrchestrator dpAnalysisOrchestrator = new DefaultDataPackageAnalysisOrchestrator(
+      analyser, new DwcDpDescriptorValidator(SEVERITY_OVERRIDES), new EmlValidator());
 
   public DataPackage() {
   }
