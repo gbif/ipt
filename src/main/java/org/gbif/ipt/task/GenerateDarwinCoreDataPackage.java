@@ -129,7 +129,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     try {
       checkForInterruption();
       setState(STATE.STARTED);
-      Thread.sleep(2000);
 
       // initial reporting
       addMessage(Level.INFO, "Data Package generation started for version #" + resource.getDataPackageMetadataVersion());
@@ -234,7 +233,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void validateArchive() throws Exception {
     checkForInterruption();
     setState(STATE.VALIDATING);
-    Thread.sleep(2000);
 
     AnalysisExecution<DatapackageAnalysisResult> validationResult;
     try {
@@ -272,7 +270,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private File bundleArchive() throws Exception {
     checkForInterruption();
     setState(STATE.BUNDLING);
-    Thread.sleep(2000);
     File zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
     try {
       dataPackage.write(zip, dataPackageFolder, this::writeEMLMetadata);
@@ -299,7 +296,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void archive(File zip) throws Exception {
     checkForInterruption();
     setState(STATE.ARCHIVING);
-    Thread.sleep(2000);
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
       File versionedFile = dataDir.resourceDataPackageFile(resource.getShortname(), version);
@@ -402,7 +398,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void createDataResources() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.DATARESOURCES);
-    Thread.sleep(2000);
     if (CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
       throw new GeneratorException("Data package mappings are not set");
     }
@@ -910,7 +905,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void addMetadata() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.METADATA);
-    Thread.sleep(2000);
     try {
       addDataPackageMetadata();
       addEml();
