@@ -24,7 +24,6 @@ import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
-import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
@@ -105,7 +104,7 @@ public class GenerateDarwinCoreDataPackageTest {
     mockSourceManager = mock(SourceManager.class);
 
     generator = new GenerateDarwinCoreDataPackage(resource, mock(ReportHandler.class), mockDataDir,
-        mockSourceManager, mock(AppConfig.class), mock(MetadataReader.class));
+        mockSourceManager, mock(AppConfig.class));
     generator.setDataPackageFolder(dataPackageFolder);
   }
 
@@ -127,7 +126,7 @@ public class GenerateDarwinCoreDataPackageTest {
         new DataPackageFieldMapping(0, field("locality")),
         new DataPackageFieldMapping(1, field("eventID")));
 
-    generator.addDataResource("dwc-dp", eventTableSchema, List.of(mappingA, mappingB), true);
+    generator.addDataResource(eventTableSchema, List.of(mappingA, mappingB), true);
 
     List<String> lines = Files.readAllLines(new File(dataPackageFolder, "event.csv").toPath(), StandardCharsets.UTF_8);
     assertEquals(List.of(

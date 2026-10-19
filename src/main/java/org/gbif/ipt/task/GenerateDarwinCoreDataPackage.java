@@ -29,7 +29,6 @@ import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.LicenseConverterUtils;
@@ -44,15 +43,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -97,11 +93,10 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private static final ObjectMapper MAPPER = JsonMapper.builder()
       .addModule(new JavaTimeModule())
       .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-      .build();;
+      .build();
 
   private final Resource resource;
   private final SourceManager sourceManager;
-  private MetadataReader metadataReader;
   private final AppConfig cfg;
   private STATE state = STATE.WAITING;
   private Exception exception;
@@ -118,13 +113,11 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       ReportHandler handler,
       DataDir dataDir,
       SourceManager sourceManager,
-      AppConfig cfg,
-      MetadataReader metadataReader) {
+      AppConfig cfg) {
     super(1000, resource.getShortname(), handler, dataDir);
     this.resource = resource;
     this.sourceManager = sourceManager;
     this.cfg = cfg;
-    this.metadataReader = metadataReader;
   }
 
   @Override
@@ -325,19 +318,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   }
 
   /**
-   * Apart from a standard frictionless metadata, ColDP archive must contain a specific metadata.yaml file.
-   */
-  private void writeCustomColDPMetadata(Path outputDir) {
-    Path target = outputDir.getFileSystem().getPath("metadata.yaml");
-    try (Writer writer = Files.newBufferedWriter(target, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
-      metadataReader.writeValue(writer, resource.getDataPackageMetadata());
-    } catch (IOException e) {
-      log.error("Failed to write metadata.yaml", e);
-      addMessage(Level.ERROR, "Failed to write metadata.yaml");
-    }
-  }
-
-  /**
    * Apart from a standard frictionless metadata, DwCA v2 occurrence must contain a EML file.
    */
   private void writeEMLMetadata(Path outputDir) {
@@ -351,7 +331,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       addMessage(Level.ERROR, "Failed to write eml.xml");
     }
   }
-
 
   /**
    * Checks if the executing thread has been interrupted, i.e. generation was cancelled.
@@ -413,8 +392,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     checkForInterruption();
     setState(STATE.DATARESOURCES);
     Thread.sleep(2000);
-    if (resource.getDataPackageIdentifier() == null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
-      throw new GeneratorException("Data package identifier or mappings are not set");
+    if (CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
+      throw new GeneratorException("Data package mappings are not set");
     }
 
     List<DataPackageMapping> allMappings = resource.getDataPackageMappings();
@@ -423,7 +402,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
         .map(DataPackageTableSchemaName::getName)
         .collect(Collectors.toSet());
     DataPackageSchema dataPackageSchema = resource.getDataPackageMappings().get(0).getDataPackageSchema();
-    String currentSchemaName = dataPackageSchema.getName();
 
     // before starting to add a table schema, check all required schemas mapped
     checkRequiredTableSchemasMapped(mappedTableSchemas, dataPackageSchema);
@@ -436,7 +414,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
       report();
       try {
-        addDataResource(currentSchemaName, tableSchema, allMappings, true);
+        addDataResource(tableSchema, allMappings, true);
       } catch (IOException | IllegalArgumentException e) {
         throw new GeneratorException("Problem occurred while writing Data Resource", e);
       }
@@ -474,8 +452,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    * @throws IOException if problems occurred while persisting new data resources
    * @throws GeneratorException if any problem was encountered writing data resources
    */
-  public void addDataResource(String schemaName, DataPackageTableSchema tableSchema,
-                              List<DataPackageMapping> allMappings, boolean filterMapped) throws IOException,
+  public void addDataResource(DataPackageTableSchema tableSchema, List<DataPackageMapping> allMappings,
+                              boolean filterMapped) throws IOException,
       IllegalArgumentException, InterruptedException, GeneratorException {
     checkForInterruption();
     if (tableSchema == null || CollectionUtils.isEmpty(allMappings)) {
@@ -1053,13 +1031,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
   private void setDataPackageStringProperty(String name, String property) {
     if (StringUtils.isNotEmpty(property)) {
-      dataPackage.setProperty(name, property);
-    }
-  }
-
-  @SuppressWarnings("rawtypes")
-  private void setDataPackageCollectionProperty(String name, Collection property) {
-    if (property != null && !property.isEmpty()) {
       dataPackage.setProperty(name, property);
     }
   }

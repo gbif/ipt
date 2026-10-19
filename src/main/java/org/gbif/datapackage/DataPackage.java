@@ -54,12 +54,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Equivalent to io.frictionlessdata.datapackage.Package.
- * <p>
- * This covers just the assembly/writing surface.
- * <p>
- * Deliberately NOT covered here (by design, since it lives elsewhere):
- * profile/JSON-Schema validation, field type validation, primary/foreign key checking.
+ * Frictionless data package: descriptor (datapackage.json) assembly, writing as a zip archive and validation with
+ * the DwC-DP analyser.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -110,8 +106,7 @@ public class DataPackage {
   }
 
   /**
-   * Equivalent to `new Package(metadataFile.toPath(), false)` -- loads a user-authored
-   * descriptor (e.g. Camtrap DP's datapackage.json) as the starting point, before resources
+   * Loads a descriptor (e.g. the resource's datapackage.json) as the starting point, before resources
    * and computed properties get layered on top.
    */
   public static DataPackage load(File descriptorFile) throws IOException {
@@ -122,7 +117,7 @@ public class DataPackage {
     resources.add(resource);
   }
 
-  /** Equivalent to dataPackage.setProperty(name, value) for any spec or custom field. */
+  /** Sets any spec or custom descriptor property, null values are ignored. */
   public void setProperty(String key, Object value) {
     if (value == null) {
       return;
@@ -164,10 +159,7 @@ public class DataPackage {
   /**
    * Writes the package as a zip archive: datapackage.json at the root, plus each resource's
    * data file(s) resolved against baseDir, plus whatever `extra` writes directly into the
-   * archive. This replaces `Package.write(zip, callback, boolean)` -- callers using a method
-   * reference like `this::writeEMLMetadata` need no changes, since that method already just
-   * does `Files.copy(source, outputDir.getFileSystem().getPath("eml.xml"))`, which works
-   * identically against the zip filesystem's root Path handed to it here.
+   * archive, e.g. eml.xml. {@code extra} receives the zip filesystem's root path.
    */
   public void write(File zipFile, File baseDir, ExtraFilesWriter extra) throws IOException {
     if (zipFile.exists() && !zipFile.delete()) {

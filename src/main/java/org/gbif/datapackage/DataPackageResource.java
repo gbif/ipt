@@ -25,7 +25,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Equivalent to io.frictionlessdata.datapackage.resource.FilebasedResource
+ * Frictionless data resource backed by file(s) in the package folder.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataPackageResource {
@@ -46,8 +46,7 @@ public class DataPackageResource {
   @Getter
   private String encoding = "utf-8";
 
-  // Paths are always relative to the package's base directory (dataPackageFolder),
-  // matching FilebasedResource(name, files, baseDir).
+  // Paths are always relative to the package's base directory (dataPackageFolder).
   @Setter
   @Getter
   @JsonIgnore
@@ -64,8 +63,8 @@ public class DataPackageResource {
   @JsonIgnore
   private String schemaRef;
 
-  // true  -> emit "schema": { ...full object... }   (replaces setShouldSerializeFullSchema(true))
-  // false -> emit "schema": "<schemaRef url>"        (replaces setShouldSerializeSchemaToFile(true), the default)
+  // true  -> emit "schema": { ...full object... }
+  // false -> emit "schema": "<schemaRef url>" (the default)
   @Setter
   @JsonIgnore
   private boolean inlineSchema = false;
@@ -77,14 +76,14 @@ public class DataPackageResource {
     this.name = name;
   }
 
-  /** Equivalent to `new FilebasedResource(name, Collections.singleton(new File(fn)), baseDir)`. */
+  /** Creates a resource for a single file, relative to the package's base directory. */
   public static DataPackageResource fromFile(String name, String relativePath) {
     DataPackageResource r = new DataPackageResource(name);
     r.paths = Collections.singletonList(relativePath);
     return r;
   }
 
-  /** Equivalent to the JSONBase.getOriginalReferences().put(JSON_KEY_SCHEMA, url) trick. */
+  /** Sets the schema URL, written as "schema" unless the schema is serialized inline. */
   public void setSchemaUrl(String url) {
     this.schemaRef = url;
   }

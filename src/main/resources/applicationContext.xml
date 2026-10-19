@@ -182,7 +182,6 @@
     <constructor-arg ref="dataDir" />
     <constructor-arg ref="sourceManager" />
     <constructor-arg ref="appConfig" />
-    <constructor-arg ref="metadataReader" />
   </bean>
 
   <bean id="userAccountManager" class="org.gbif.ipt.service.admin.impl.UserAccountManagerImpl">

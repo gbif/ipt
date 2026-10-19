@@ -31,7 +31,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Equivalent to io.frictionlessdata.tableschema.schema.Schema.
+ * Frictionless table schema of a data resource.
  * <p>
  * Field lists are plain mutable ArrayLists on purpose, needed for fields filtering (DwC-DP).
  * <p>
@@ -61,7 +61,7 @@ public class DataPackageTableSchema {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-  /** Equivalent to Schema.fromJson(url, strict). */
+  /** Reads a table schema from a URL. */
   public static DataPackageTableSchema fromUrl(URL url) throws IOException {
     return MAPPER.readValue(url, DataPackageTableSchema.class);
   }

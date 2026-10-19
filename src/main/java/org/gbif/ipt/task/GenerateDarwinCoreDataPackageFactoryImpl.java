@@ -16,7 +16,6 @@ package org.gbif.ipt.task;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 
 public class GenerateDarwinCoreDataPackageFactoryImpl implements GenerateDarwinCoreDataPackageFactory {
@@ -24,17 +23,15 @@ public class GenerateDarwinCoreDataPackageFactoryImpl implements GenerateDarwinC
   private final DataDir dataDir;
   private final SourceManager sourceManager;
   private final AppConfig cfg;
-  private final MetadataReader metadataReader;
 
-  public GenerateDarwinCoreDataPackageFactoryImpl(DataDir dataDir, SourceManager sourceManager, AppConfig cfg, MetadataReader metadataReader) {
+  public GenerateDarwinCoreDataPackageFactoryImpl(DataDir dataDir, SourceManager sourceManager, AppConfig cfg) {
     this.dataDir = dataDir;
     this.sourceManager = sourceManager;
     this.cfg = cfg;
-    this.metadataReader = metadataReader;
   }
 
   @Override
   public GenerateDarwinCoreDataPackage create(Resource resource, ReportHandler handler) {
-    return new GenerateDarwinCoreDataPackage(resource, handler, dataDir, sourceManager, cfg, metadataReader);
+    return new GenerateDarwinCoreDataPackage(resource, handler, dataDir, sourceManager, cfg);
   }
 }
