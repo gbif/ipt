@@ -15,7 +15,6 @@ package org.gbif.datapackage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -60,11 +59,6 @@ public class DataPackageTableSchema {
   private final Map<String, Object> additionalProperties = new LinkedHashMap<>();
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
-
-  /** Reads a table schema from a URL. */
-  public static DataPackageTableSchema fromUrl(URL url) throws IOException {
-    return MAPPER.readValue(url, DataPackageTableSchema.class);
-  }
 
   public static DataPackageTableSchema fromFile(File file) throws IOException {
     return MAPPER.readValue(file, DataPackageTableSchema.class);

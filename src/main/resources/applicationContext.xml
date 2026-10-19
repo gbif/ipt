@@ -181,6 +181,7 @@
   <bean id="dwcDpFactory" class="org.gbif.ipt.task.GenerateDarwinCoreDataPackageFactoryImpl">
     <constructor-arg ref="dataDir" />
     <constructor-arg ref="sourceManager" />
+    <constructor-arg ref="dataPackageSchemaManager" />
     <constructor-arg ref="appConfig" />
   </bean>
 

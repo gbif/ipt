@@ -29,6 +29,7 @@ import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.LicenseConverterUtils;
@@ -97,6 +98,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
   private final Resource resource;
   private final SourceManager sourceManager;
+  private final DataPackageSchemaManager schemaManager;
   private final AppConfig cfg;
   private STATE state = STATE.WAITING;
   private Exception exception;
@@ -113,10 +115,12 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       ReportHandler handler,
       DataDir dataDir,
       SourceManager sourceManager,
+      DataPackageSchemaManager schemaManager,
       AppConfig cfg) {
     super(1000, resource.getShortname(), handler, dataDir);
     this.resource = resource;
     this.sourceManager = sourceManager;
+    this.schemaManager = schemaManager;
     this.cfg = cfg;
   }
 
@@ -192,6 +196,13 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    */
   void setDataPackageFolder(File dataPackageFolder) {
     this.dataPackageFolder = dataPackageFolder;
+  }
+
+  /**
+   * Data package being generated, exposed for tests only.
+   */
+  DataPackage getDataPackage() {
+    return dataPackage;
   }
 
   @Override
@@ -539,9 +550,17 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       packageResource.setSchemaUrl(tableSchema.getUrl().toString());
     }
 
+    // the installed table schema, the one the mappings were made against
+    File schemaFile = schemaManager.getTableSchemaFile(allMappings.get(0).getDataPackageSchema(), tableSchema.getName());
+    if (!schemaFile.exists()) {
+      addMessage(Level.ERROR, "Table schema " + tableSchema.getName() + " is not installed");
+      throw new GeneratorException("Table schema " + tableSchema.getName()
+          + " is not installed, reinstall the data package schema: " + schemaFile);
+    }
+
     try {
       org.gbif.datapackage.DataPackageTableSchema schema
-          = org.gbif.datapackage.DataPackageTableSchema.fromUrl(tableSchema.getUrl());
+          = org.gbif.datapackage.DataPackageTableSchema.fromFile(schemaFile);
 
       // for example, for DwC DP add only mapped fields, not all the schema
       if (filterMapped) {

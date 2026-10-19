@@ -16,6 +16,7 @@ package org.gbif.ipt.service.admin;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.service.InvalidConfigException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -99,4 +100,14 @@ public interface DataPackageSchemaManager {
    * Returns schema identifier by schema name
    */
   String getSchemaIdentifier(String schemaName);
+
+  /**
+   * Get the locally installed file of a table schema.
+   *
+   * @param schema data schema the table schema belongs to
+   * @param tableSchemaName table schema name
+   *
+   * @return table schema file, which doesn't exist if the table schema isn't installed
+   */
+  File getTableSchemaFile(DataPackageSchema schema, String tableSchemaName);
 }

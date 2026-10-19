@@ -640,6 +640,11 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     }
   }
 
+  @Override
+  public File getTableSchemaFile(DataPackageSchema schema, String tableSchemaName) {
+    return getTableSchemaFile(schema.getIdentifier(), schema.getName(), tableSchemaName);
+  }
+
   /**
    * Retrieve data schema file by its unique identifier.
    *

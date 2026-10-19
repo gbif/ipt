@@ -16,22 +16,26 @@ package org.gbif.ipt.task;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.manage.SourceManager;
 
 public class GenerateDarwinCoreDataPackageFactoryImpl implements GenerateDarwinCoreDataPackageFactory {
 
   private final DataDir dataDir;
   private final SourceManager sourceManager;
+  private final DataPackageSchemaManager schemaManager;
   private final AppConfig cfg;
 
-  public GenerateDarwinCoreDataPackageFactoryImpl(DataDir dataDir, SourceManager sourceManager, AppConfig cfg) {
+  public GenerateDarwinCoreDataPackageFactoryImpl(DataDir dataDir, SourceManager sourceManager,
+                                                  DataPackageSchemaManager schemaManager, AppConfig cfg) {
     this.dataDir = dataDir;
     this.sourceManager = sourceManager;
+    this.schemaManager = schemaManager;
     this.cfg = cfg;
   }
 
   @Override
   public GenerateDarwinCoreDataPackage create(Resource resource, ReportHandler handler) {
-    return new GenerateDarwinCoreDataPackage(resource, handler, dataDir, sourceManager, cfg);
+    return new GenerateDarwinCoreDataPackage(resource, handler, dataDir, sourceManager, schemaManager, cfg);
   }
 }

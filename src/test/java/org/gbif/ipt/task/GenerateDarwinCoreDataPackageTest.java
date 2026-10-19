@@ -24,12 +24,14 @@ import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -74,16 +77,19 @@ public class GenerateDarwinCoreDataPackageTest {
   private DataPackageSchema dataPackageSchema;
   private DataPackageTableSchema eventTableSchema;
   private SourceManager mockSourceManager;
+  private DataPackageSchemaManager mockSchemaManager;
+  private File schemaFile;
   private GenerateDarwinCoreDataPackage generator;
 
   @BeforeEach
   public void init() throws Exception {
-    File schemaFile = new File(tmpDir, "event.json");
+    // installed table schema; its remote URL is unreachable
+    schemaFile = new File(tmpDir, "event.json");
     Files.writeString(schemaFile.toPath(), EVENT_SCHEMA);
 
     eventTableSchema = new DataPackageTableSchema();
     eventTableSchema.setName("event");
-    eventTableSchema.setUrl(schemaFile.toURI().toURL());
+    eventTableSchema.setUrl(new URL("http://localhost:1/event.json"));
     eventTableSchema.setFields(List.of(field("eventID"), field("eventDate"), field("locality")));
 
     dataPackageSchema = DataPackageSchema.builder()
@@ -102,9 +108,11 @@ public class GenerateDarwinCoreDataPackageTest {
     resource.setShortname(RESOURCE_SHORTNAME);
 
     mockSourceManager = mock(SourceManager.class);
+    mockSchemaManager = mock(DataPackageSchemaManager.class);
+    when(mockSchemaManager.getTableSchemaFile(dataPackageSchema, "event")).thenReturn(schemaFile);
 
     generator = new GenerateDarwinCoreDataPackage(resource, mock(ReportHandler.class), mockDataDir,
-        mockSourceManager, mock(AppConfig.class));
+        mockSourceManager, mockSchemaManager, mock(AppConfig.class));
     generator.setDataPackageFolder(dataPackageFolder);
   }
 
@@ -134,6 +142,28 @@ public class GenerateDarwinCoreDataPackageTest {
         "e1,2020-01-01,",
         "e2,2020-01-02,",
         "e3,,Copenhagen"), lines);
+  }
+
+  /**
+   * The table schema is read from the installed file, not downloaded from its URL.
+   */
+  @Test
+  public void testTableSchemaReadFromInstalledFile() throws Exception {
+    Source source = source("a", new String[] {"e1"});
+    generator.addDataResource(eventTableSchema, List.of(mapping(source, new DataPackageFieldMapping(0, field("eventID")))),
+        true);
+
+    org.gbif.datapackage.DataPackageTableSchema schema = generator.getDataPackage().getResources().get(0).getTableSchema();
+    assertEquals(List.of("eventID"), schema.getPrimaryKey());
+  }
+
+  @Test
+  public void testTableSchemaNotInstalled() throws Exception {
+    schemaFile.delete();
+    Source source = source("a", new String[] {"e1"});
+
+    assertThrows(GeneratorException.class, () -> generator.addDataResource(eventTableSchema,
+        List.of(mapping(source, new DataPackageFieldMapping(0, field("eventID")))), true));
   }
 
   /**
