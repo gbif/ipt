@@ -25,6 +25,7 @@ import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.MetadataUtils;
@@ -86,6 +87,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   private final Resource resource;
   private final SourceManager sourceManager;
+  private final DataPackageSchemaManager schemaManager;
   private MetadataReader metadataReader;
   private final AppConfig cfg;
   private STATE state = STATE.WAITING;
@@ -104,13 +106,29 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       ReportHandler handler,
       DataDir dataDir,
       SourceManager sourceManager,
+      DataPackageSchemaManager schemaManager,
       AppConfig cfg,
       MetadataReader metadataReader) {
     super(1000, resource.getShortname(), handler, dataDir);
     this.resource = resource;
     this.sourceManager = sourceManager;
+    this.schemaManager = schemaManager;
     this.cfg = cfg;
     this.metadataReader = metadataReader;
+  }
+
+  /**
+   * Sets the folder data resources are written to. Normally created in {@link #call()}, exposed for tests only.
+   */
+  void setDataPackageFolder(File dataPackageFolder) {
+    this.dataPackageFolder = dataPackageFolder;
+  }
+
+  /**
+   * Data package being generated, exposed for tests only.
+   */
+  Package getDataPackage() {
+    return dataPackage;
   }
 
   @Override
@@ -456,8 +474,16 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       ((JSONBase) packageResource).getOriginalReferences().put(JSONBase.JSON_KEY_SCHEMA, tableSchema.getUrl().toString());
     }
 
+    // the installed table schema, the one the mappings were made against
+    File schemaFile = schemaManager.getTableSchemaFile(allMappings.get(0).getDataPackageSchema(), tableSchema.getName());
+    if (!schemaFile.exists()) {
+      addMessage(Level.ERROR, "Table schema " + tableSchema.getName() + " is not installed");
+      throw new GeneratorException("Table schema " + tableSchema.getName()
+          + " is not installed, reinstall the data package schema: " + schemaFile);
+    }
+
     try {
-      Schema schema = Schema.fromJson(tableSchema.getUrl(), true);
+      Schema schema = Schema.fromJson(schemaFile, true);
       packageResource.setSchema(schema);
     } catch (ValidationException e) {
       log.error("Failed to validate schema {}. Errors: {}", tableSchema.getName(), e.getMessages(), e);

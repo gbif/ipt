@@ -16,6 +16,7 @@ package org.gbif.ipt.task;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
 
@@ -23,18 +24,22 @@ public class GenerateDataPackageFactoryImpl implements GenerateDataPackageFactor
 
   private final DataDir dataDir;
   private final SourceManager sourceManager;
+  private final DataPackageSchemaManager schemaManager;
   private final AppConfig cfg;
   private final MetadataReader metadataReader;
 
-  public GenerateDataPackageFactoryImpl(DataDir dataDir, SourceManager sourceManager, AppConfig cfg, MetadataReader metadataReader) {
+  public GenerateDataPackageFactoryImpl(DataDir dataDir, SourceManager sourceManager,
+                                        DataPackageSchemaManager schemaManager, AppConfig cfg,
+                                        MetadataReader metadataReader) {
     this.dataDir = dataDir;
     this.sourceManager = sourceManager;
+    this.schemaManager = schemaManager;
     this.cfg = cfg;
     this.metadataReader = metadataReader;
   }
 
   @Override
   public GenerateDataPackage create(Resource resource, ReportHandler handler) {
-    return new GenerateDataPackage(resource, handler, dataDir, sourceManager, cfg, metadataReader);
+    return new GenerateDataPackage(resource, handler, dataDir, sourceManager, schemaManager, cfg, metadataReader);
   }
 }
