@@ -69,6 +69,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -135,6 +136,9 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       // initial reporting
       addMessage(Level.INFO, "Data Package generation started for version #" + resource.getDataPackageMetadataVersion());
 
+      // the validation report of a previous publication must not pass for this one's
+      FileUtils.deleteQuietly(dataDir.resourceDataPackageValidationReportFile(resource.getShortname()));
+
       // create a temp dir to copy all files to
       dataPackageFolder = dataDir.tmpDir();
 
@@ -160,6 +164,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
       return recordsByTableSchema;
     } catch (GeneratorException e) {
+      addFailureMessage(e);
       // set the last error report!
       setState(e);
 
@@ -179,6 +184,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       writeFailureToPublicationLog(e);
       throw e;
     } catch (Exception e) {
+      addFailureMessage(e);
       setState(e);
       writeFailureToPublicationLog(e);
       throw new GeneratorException(e);
@@ -193,6 +199,22 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   }
 
   /**
+   * Adds the root cause of a failure to the messages, so it shows on the publication page and in the publication log,
+   * also outside debug mode.
+   */
+  private void addFailureMessage(Exception e) {
+    addMessage(Level.ERROR, "Data Package generation failed: " + rootCauseMessage(e));
+  }
+
+  static String rootCauseMessage(Throwable e) {
+    Throwable rootCause = ExceptionUtils.getRootCause(e);
+    if (rootCause == null) {
+      rootCause = e;
+    }
+    return StringUtils.defaultIfBlank(rootCause.getMessage(), rootCause.getClass().getSimpleName());
+  }
+
+  /**
    * Sets the folder data resources are written to. Normally created in {@link #call()}, exposed for tests only.
    */
   void setDataPackageFolder(File dataPackageFolder) {
@@ -204,6 +226,13 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    */
   DataPackage getDataPackage() {
     return dataPackage;
+  }
+
+  /**
+   * Sets the data package being generated, exposed for tests only.
+   */
+  void setDataPackage(DataPackage dataPackage) {
+    this.dataPackage = dataPackage;
   }
 
   @Override
@@ -237,15 +266,16 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     return failedStep != null ? failedStep.name() : state.name();
   }
 
-  private void validateArchive() throws Exception {
+  void validateArchive() throws Exception {
     checkForInterruption();
     setState(STATE.VALIDATING);
 
     AnalysisExecution<DatapackageAnalysisResult> validationResult;
     try {
       validationResult = dataPackage.validate(dataPackageFolder);
-    } catch (IOException e) {
-      throw new GeneratorException("Problem occurred while validating data package", e);
+    } catch (IOException | RuntimeException e) {
+      // the analyser crashed: no validation report
+      throw new GeneratorException("Data package validation could not be run: " + rootCauseMessage(e), e);
     }
 
     // persist the report to the permanent resource dir - dataPackageFolder is a temp
@@ -391,11 +421,11 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    * @param e exception
    */
   private void setState(Exception e) {
-    // keep the step that was running when the first failure was reported
-    if (failedStep == null) {
+    // keep the first failure and the step that was running then, the most specific; later calls are for its wrappers
+    if (exception == null) {
       failedStep = state;
+      exception = e;
     }
-    exception = e;
     state = (exception instanceof InterruptedException) ? STATE.CANCELLED : STATE.FAILED;
     report();
   }

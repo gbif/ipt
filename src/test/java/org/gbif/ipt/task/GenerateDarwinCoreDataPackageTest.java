@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.task;
 
+import org.gbif.datapackage.DataPackage;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
@@ -31,6 +32,8 @@ import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -203,6 +206,44 @@ public class GenerateDarwinCoreDataPackageTest {
     StatusReport report = generator.report();
     assertTrue(report.hasException());
     assertEquals("METADATA", report.getStep());
+  }
+
+  /**
+   * A failure's root cause is in the messages, shown on the publication page and in the publication log in any mode,
+   * and the validation report of a previous publication is deleted.
+   */
+  @Test
+  public void testFailureMessageAndPreviousValidationReport() throws Exception {
+    File previousReport = new File(tmpDir, "datapackage-validation-report.json");
+    Files.writeString(previousReport.toPath(), "{}");
+    when(mockDataDir.resourceDataPackageValidationReportFile(RESOURCE_SHORTNAME)).thenReturn(previousReport);
+    // installed schema without profile: fails while adding metadata
+    mockMetadataFiles();
+
+    assertThrows(GeneratorException.class, () -> generator.call());
+
+    assertFalse(previousReport.exists());
+    String lastMessage = generator.report().getMessages().get(generator.report().getMessages().size() - 1).getMessage();
+    assertTrue(lastMessage.startsWith("Data Package generation failed: Data package schema"), lastMessage);
+  }
+
+  /**
+   * If the analyser crashes, the failure says why, and no validation report is written.
+   */
+  @Test
+  public void testValidationCrash() throws Exception {
+    File reportFile = new File(tmpDir, "datapackage-validation-report.json");
+    when(mockDataDir.resourceDataPackageValidationReportFile(RESOURCE_SHORTNAME)).thenReturn(reportFile);
+    DataPackage dataPackage = mock(DataPackage.class);
+    when(dataPackage.validate(dataPackageFolder)).thenThrow(new IOException("Data package validation could not be executed",
+        new SQLException("Invalid Input Error: Could not detect CSV dialect")));
+    generator.setDataPackage(dataPackage);
+
+    GeneratorException e = assertThrows(GeneratorException.class, () -> generator.validateArchive());
+
+    assertEquals("Data package validation could not be run: Invalid Input Error: Could not detect CSV dialect",
+        e.getMessage());
+    assertFalse(reportFile.exists());
   }
 
   private void mockMetadataFiles() throws Exception {

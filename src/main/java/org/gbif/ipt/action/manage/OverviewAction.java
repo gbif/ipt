@@ -1992,6 +1992,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return StringUtils.trimToNull(summary);
   }
 
+  /**
+   * @return true if the resource has a data package validation report, i.e. validation ran in its last publication
+   */
+  public boolean isValidationReportAvailable() {
+    return resource != null
+        && cfg.getDataDir().resourceDataPackageValidationReportFile(resource.getShortname()).exists();
+  }
+
   public boolean isDataPackageResource() {
     return resource.getDataPackageIdentifier() != null;
   }
