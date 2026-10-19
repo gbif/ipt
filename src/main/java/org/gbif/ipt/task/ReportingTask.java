@@ -85,6 +85,13 @@ public abstract class ReportingTask {
   protected abstract String currentState();
 
   /**
+   * Step the task is at, or failed or was cancelled at. Tasks without steps return null.
+   */
+  protected String currentStep() {
+    return null;
+  }
+
+  /**
    * Reports back the state of the task to the reporting handler configured.
    * Call this method at least once a second inside your task if possible, so users keep updated.
    */
@@ -92,21 +99,9 @@ public abstract class ReportingTask {
     Exception e = currentException();
 
     if (e != null) {
-      String failedStep = null;
-      if (e instanceof GeneratorException ge) {
-        failedStep = ge.getFailedStep();
-      }
-
-      lastReport = new StatusReport(
-          e,
-          currentState(),
-          failedStep,
-          messages);
+      lastReport = new StatusReport(e, currentState(), currentStep(), messages);
     } else {
-      lastReport = new StatusReport(
-          completed(),
-          currentState(),
-          messages);
+      lastReport = new StatusReport(completed(), currentState(), currentStep(), messages);
     }
 
     handler.report(resourceShortname, lastReport);

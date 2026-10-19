@@ -28,52 +28,37 @@ public class StatusReport {
   private final Throwable exception;
   private final long timestamp;
   private final String state; // human-readable state
-  private final String step; // step name (e.g., METADATA or VALIDATING)
+  // step the task is at, or failed or was cancelled at (e.g., METADATA or VALIDATING), null if the task has no steps
+  private final String step;
   private final List<TaskMessage> messages;
 
   public StatusReport(boolean completed, String state, List<TaskMessage> messages) {
-    this.completed = completed;
-    this.state = state;
-    this.step = null;
-    this.messages = messages;
-    this.timestamp = new Date().getTime();
-    this.exception = null;
+    this(completed, state, null, messages);
   }
 
   public StatusReport(boolean completed, String state, String step, List<TaskMessage> messages) {
-    this.completed = completed;
-    this.state = state;
-    this.step = null;
-    this.messages = messages;
-    this.timestamp = new Date().getTime();
-    this.exception = null;
+    this(completed, null, state, step, messages);
   }
 
   public StatusReport(Throwable exception, String state, List<TaskMessage> messages) {
-    this.completed = true;
-    this.state = state;
-    this.step = null;
-    this.messages = messages;
-    this.timestamp = new Date().getTime();
-    this.exception = exception;
+    this(exception, state, null, messages);
   }
 
   public StatusReport(Throwable exception, String state, String step, List<TaskMessage> messages) {
-    this.completed = true;
+    this(true, exception, state, step, messages);
+  }
+
+  public StatusReport(String state, List<TaskMessage> messages) {
+    this(false, state, messages);
+  }
+
+  private StatusReport(boolean completed, Throwable exception, String state, String step, List<TaskMessage> messages) {
+    this.completed = completed;
+    this.exception = exception;
     this.state = state;
     this.step = step;
     this.messages = messages;
     this.timestamp = new Date().getTime();
-    this.exception = exception;
-  }
-
-  public StatusReport(String state, List<TaskMessage> messages) {
-    this.completed = false;
-    this.state = state;
-    this.step = null;
-    this.messages = messages;
-    this.timestamp = new Date().getTime();
-    this.exception = null;
   }
 
   public String getExceptionMessage() {

@@ -101,6 +101,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private final DataPackageSchemaManager schemaManager;
   private final AppConfig cfg;
   private STATE state = STATE.WAITING;
+  // step generation failed or was cancelled at
+  private STATE failedStep;
   private Exception exception;
   private File dataPackageFolder;
   private DataPackage dataPackage;
@@ -230,6 +232,11 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     };
   }
 
+  @Override
+  protected String currentStep() {
+    return failedStep != null ? failedStep.name() : state.name();
+  }
+
   private void validateArchive() throws Exception {
     checkForInterruption();
     setState(STATE.VALIDATING);
@@ -238,7 +245,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     try {
       validationResult = dataPackage.validate(dataPackageFolder);
     } catch (IOException e) {
-      throw new GeneratorException("Problem occurred while validating data package", e, STATE.VALIDATING.name());
+      throw new GeneratorException("Problem occurred while validating data package", e);
     }
 
     // persist the report to the permanent resource dir - dataPackageFolder is a temp
@@ -254,7 +261,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
     if (hasViolations) {
       addMessage(Level.ERROR, "Data package failed validation, see validation report for details");
-      throw new GeneratorException("Data package validation failed for resource " + resource.getShortname(), STATE.VALIDATING.name());
+      throw new GeneratorException("Data package validation failed for resource " + resource.getShortname());
     }
 
     addMessage(Level.INFO, "Data package validated successfully");
@@ -384,6 +391,10 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    * @param e exception
    */
   private void setState(Exception e) {
+    // keep the step that was running when the first failure was reported
+    if (failedStep == null) {
+      failedStep = state;
+    }
     exception = e;
     state = (exception instanceof InterruptedException) ? STATE.CANCELLED : STATE.FAILED;
     report();

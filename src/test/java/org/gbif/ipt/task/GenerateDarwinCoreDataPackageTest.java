@@ -189,6 +189,22 @@ public class GenerateDarwinCoreDataPackageTest {
     assertThrows(GeneratorException.class, () -> generator.addDataPackageMetadata());
   }
 
+  /**
+   * The report keeps the step generation failed at, for the publication stepper.
+   */
+  @Test
+  public void testReportHasFailedStep() throws Exception {
+    // installed schema without profile: fails while adding metadata
+    mockMetadataFiles();
+    assertEquals("WAITING", generator.report().getStep());
+
+    assertThrows(GeneratorException.class, () -> generator.call());
+
+    StatusReport report = generator.report();
+    assertTrue(report.hasException());
+    assertEquals("METADATA", report.getStep());
+  }
+
   private void mockMetadataFiles() throws Exception {
     File metadataFile = new File(tmpDir, "datapackage.json");
     Files.writeString(metadataFile.toPath(), "{\"profile\": \"data-package\"}");

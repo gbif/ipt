@@ -3,77 +3,45 @@
 <#assign isDwcDp=resource.isDwcDp()/>
 
 <#if isDwcDp>
-    <#if report.state == "Not started yet">
-        <#assign currentStep = "WAITING">
-    <#elseif report.state == "Starting Data Package generation">
-        <#assign currentStep = "STARTED">
-    <#elseif report.state?starts_with("Processing record")>
-        <#assign currentStep = "DATARESOURCES">
-    <#elseif report.state == "Creating metadata files">
-        <#assign currentStep = "METADATA">
-    <#elseif report.state == "Compressing Data Package (archive)">
-        <#assign currentStep = "BUNDLING">
-    <#elseif report.state == "Data Package generated!">
-        <#assign currentStep = "COMPLETED">
-    <#elseif report.state == "Validating Data Package">
-        <#assign currentStep = "VALIDATING">
-    <#elseif report.state == "Archiving version of data package">
-        <#assign currentStep = "ARCHIVING">
-    <#else>
-        <#assign currentStep = "COMPLETED">
-    </#if>
-
+    <#-- steps in the order the generator runs them -->
     <#assign steps = [
     {"id":"WAITING",       "label":"Waiting"},
     {"id":"STARTED",       "label":"Started"},
     {"id":"METADATA",      "label":"Metadata"},
     {"id":"DATARESOURCES", "label":"Resources"},
-    {"id":"BUNDLING",      "label":"Bundling"},
     {"id":"VALIDATING",    "label":"Validating"},
+    {"id":"BUNDLING",      "label":"Bundling"},
     {"id":"ARCHIVING",     "label":"Archiving"},
     {"id":"COMPLETED",     "label":"Completed"}
     ]>
 
-    <#assign stateOrder = {
-    "WAITING":0,
-    "STARTED":1,
-    "METADATA":2,
-    "DATARESOURCES":3,
-    "BUNDLING":4,
-    "VALIDATING":5,
-    "ARCHIVING":6,
-    "COMPLETED":7,
-    "FAILED":7
-    }>
-
-    <#assign failedIndex = -1>
-    <#if currentStep == "COMPLETED" && report.step?has_content>
-        <#assign failedIndex = stateOrder[report.step]>
+    <#assign lastIndex = steps?size - 1>
+    <#-- index of the step the task is at or failed at; past the last step once completed -->
+    <#assign currentIndex = -1>
+    <#list steps as step>
+        <#if step.id == (report.step!"")>
+            <#assign currentIndex = step_index>
+        </#if>
+    </#list>
+    <#if report.completed && !report.hasException()>
+        <#assign currentIndex = lastIndex + 1>
+    <#elseif currentIndex == -1>
+        <#-- no step: failed outside the generator (e.g. while registering), or not started yet -->
+        <#assign currentIndex = report.hasException()?then(lastIndex, 0)>
     </#if>
 
     <div id="state-stepper" class="px-3 pb-3 border rounded-2 publication-stepper-wrapper">
         <div class="publication-box-root">
             <ol class="publication-stepper-root publication-stepper-horizontal publication-stepper-label-horizontal">
                 <#list steps as step>
-                    <#assign stepIndex = stateOrder[step.id]>
-                    <#assign currentIndex = stateOrder[currentStep]>
-
-                    <#if failedIndex != -1>
-                        <#if stepIndex == failedIndex>
-                            <#assign css = "error">
-                        <#elseif stepIndex < failedIndex>
-                            <#assign css = "completed">
-                        <#else>
-                            <#assign css = "disabled">
-                        </#if>
+                    <#if step_index lt currentIndex>
+                        <#assign css = "completed">
+                    <#elseif step_index gt currentIndex>
+                        <#assign css = "disabled">
+                    <#elseif report.hasException()>
+                        <#assign css = "error">
                     <#else>
-                        <#if stepIndex < currentIndex || currentIndex == 7>
-                            <#assign css = "completed">
-                        <#elseif step.id == currentStep>
-                            <#assign css = "active">
-                        <#else>
-                            <#assign css = "disabled">
-                        </#if>
+                        <#assign css = "active">
                     </#if>
 
                     <li class="publication-step-root publication-step-horizontal publication-step-label ${css}">

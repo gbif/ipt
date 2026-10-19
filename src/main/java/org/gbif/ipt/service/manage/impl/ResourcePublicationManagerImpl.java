@@ -381,9 +381,10 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
 
             // update StatusReport on publishing page
             if (cause != null) {
-              // TODO: add copy constructor?
+              // keep the step publication failed at
               StatusReport previous = processReports.get(shortname);
-              StatusReport updated = new StatusReport(cause, msg, previous.getStep(), getTaskMessages(shortname));
+              String step = previous != null ? previous.getStep() : null;
+              StatusReport updated = new StatusReport(cause, msg, step, getTaskMessages(shortname));
               processReports.put(shortname, updated);
             }
 
