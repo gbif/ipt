@@ -922,7 +922,10 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     addMessage(Level.INFO, "Metadata added");
   }
 
-  private void addDataPackageMetadata() throws Exception {
+  /**
+   * Loads the data package metadata and adds the properties computed from the resource, its EML and installed schema.
+   */
+  void addDataPackageMetadata() throws Exception {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
     dataPackage = DataPackage.load(metadataFile);
     setDataPackageProperty("created", MetadataUtils.formatDataPackageCreated(Instant.now()));
@@ -930,9 +933,13 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     File emlFile = dataDir.resourceEmlFile(resource.getShortname());
     Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
 
-    // TODO: use a stub here to test the analyser
-//    setDataPackageProperty("profile", resource.getDataPackageIdentifier() + "/" + resource.getDataPackageVersion() + "/dwc-dp-profile.json");
-    setDataPackageProperty("profile", "https://dwc-prerelease.rs.tdwg.org/dwc-dp/1.0_DEV/dwc-dp-profile.json");
+    // the profile of the installed schema, the analyser validates against its version
+    DataPackageSchema dataPackageSchema = schemaManager.get(resource.getDataPackageIdentifier());
+    if (dataPackageSchema == null || StringUtils.isBlank(dataPackageSchema.getProfile())) {
+      throw new GeneratorException("Data package schema " + resource.getDataPackageIdentifier()
+          + " is not installed or has no profile, update or reinstall it");
+    }
+    setDataPackageProperty("profile", dataPackageSchema.getProfile());
     setDataPackageProperty("name", resource.getShortname());
     setContributorsDataPackageProperty(eml);
     setDataPackageStringProperty("title", eml.getTitle());

@@ -78,6 +78,8 @@ public class GenerateDarwinCoreDataPackageTest {
   private DataPackageTableSchema eventTableSchema;
   private SourceManager mockSourceManager;
   private DataPackageSchemaManager mockSchemaManager;
+  private DataDir mockDataDir;
+  private Resource resource;
   private File schemaFile;
   private GenerateDarwinCoreDataPackage generator;
 
@@ -101,10 +103,10 @@ public class GenerateDarwinCoreDataPackageTest {
     dataPackageFolder = new File(tmpDir, "dp");
     dataPackageFolder.mkdir();
 
-    DataDir mockDataDir = mock(DataDir.class);
+    mockDataDir = mock(DataDir.class);
     when(mockDataDir.resourcePublicationLogFile(RESOURCE_SHORTNAME)).thenReturn(new File(tmpDir, "publication.log"));
 
-    Resource resource = new Resource();
+    resource = new Resource();
     resource.setShortname(RESOURCE_SHORTNAME);
 
     mockSourceManager = mock(SourceManager.class);
@@ -164,6 +166,38 @@ public class GenerateDarwinCoreDataPackageTest {
 
     assertThrows(GeneratorException.class, () -> generator.addDataResource(eventTableSchema,
         List.of(mapping(source, new DataPackageFieldMapping(0, field("eventID")))), true));
+  }
+
+  /**
+   * The profile, which decides the DwC-DP version the analyser validates against, is the installed schema's.
+   */
+  @Test
+  public void testProfileFromInstalledSchema() throws Exception {
+    String profile = "https://rs.tdwg.org/dwc-dp/0.1/dwc-dp-profile.json";
+    dataPackageSchema.setProfile(profile);
+    mockMetadataFiles();
+
+    generator.addDataPackageMetadata();
+
+    assertEquals(profile, generator.getDataPackage().getProfile());
+  }
+
+  @Test
+  public void testNoProfileInInstalledSchema() throws Exception {
+    mockMetadataFiles();
+
+    assertThrows(GeneratorException.class, () -> generator.addDataPackageMetadata());
+  }
+
+  private void mockMetadataFiles() throws Exception {
+    File metadataFile = new File(tmpDir, "datapackage.json");
+    Files.writeString(metadataFile.toPath(), "{\"profile\": \"data-package\"}");
+    resource.setDataPackageIdentifier("http://rs.tdwg.org/dwc/dwc-dp");
+
+    when(mockDataDir.resourceDatapackageMetadataFile(RESOURCE_SHORTNAME, resource.getCoreType())).thenReturn(metadataFile);
+    when(mockDataDir.resourceEmlFile(RESOURCE_SHORTNAME))
+        .thenReturn(org.gbif.utils.file.FileUtils.getClasspathFile("data/eml.xml"));
+    when(mockSchemaManager.get("http://rs.tdwg.org/dwc/dwc-dp")).thenReturn(dataPackageSchema);
   }
 
   /**
