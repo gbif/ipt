@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gbif-ipt\n"
 "POT-Creation-Date: 2026-10-16 16:35+0000\n"
-"PO-Revision-Date: 2026-10-16 16:53\n"
+"PO-Revision-Date: 2026-10-19 15:57\n"
 "Last-Translator: \n"
 "Language-Team: Spanish, Colombia\n"
 "Language: es_CO\n"
@@ -126,7 +126,7 @@ msgstr "reinicie el IPT en el contenedor del servlet."
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:32
 msgid "update the metadata for the IPT as described in the <<Bulk publication>> section of this user manual."
-msgstr ""
+msgstr "actualice los metadatos del IPT tal como se describe en la sección <<Bulk publication>> de este manual de usuario."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:36
@@ -220,121 +220,121 @@ msgstr "Publicación masiva"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:55
 msgid "This page allows a user having the Admin role to publish many resources in one go, instead of publishing them individually from their overview pages. For each Darwin Core resource it creates a new Darwin Core Archive, EML metadata and RTF; for each data package resource it creates a new data package and metadata file. Each new version is broadcast to the GBIF Registry and via RSS, just as with the Publish button."
-msgstr ""
+msgstr "Esta página permite a un usuario con el rol de administrador publicar varios recursos de una sola vez, en lugar de publicarlos individualmente desde sus respectivas páginas de resumen. Para cada recurso Darwin Core, el sistema genera un nuevo Darwin Core Archive, metadatos EML y un archivo RTF; para cada recurso de paquete de datos, crea un nuevo paquete de datos y un archivo de metadatos. Cada nueva versión se notifica al Registro de GBIF y se difunde a través de RSS, tal como ocurre al utilizar el botón Publicar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:57
 msgid "Use bulk publication when:"
-msgstr ""
+msgstr "Utiliza la publicación masiva cuando:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:59
 msgid "multiple resources have been updated and you want to publish a new version of all of them at once."
-msgstr ""
+msgstr "se han actualizado varios recursos y deseas publicar una nueva versión de todos ellos a la vez."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:60
 msgid "the <<public-url,Public URL>> has been changed and you want the IPT's registered resources to reflect the change."
-msgstr ""
+msgstr "La <<public-url,Public URL>> ha cambiado y deseas que los recursos registrados en el IPT reflejen dicho cambio."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:61
 #, no-wrap
 msgid "Bulk publication options"
-msgstr ""
+msgstr "Opciones de publicación masiva"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:63
 msgid "Choose which resources to publish:"
-msgstr ""
+msgstr "Elige qué recursos publicar:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:65
 #, no-wrap
 msgid "*Publish all resources* (the default) - publishes a new version of every resource on the IPT.\n"
-msgstr ""
+msgstr "*Publicar todos los recursos* (opción predeterminada): publica una nueva versión de cada recurso en el IPT.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:66
 #, no-wrap
 msgid "*Publish all resources changed since last publication* - goes through every resource, but publishes a new version only of those that have changed since they were last published. A resource is skipped when:\n"
-msgstr ""
+msgstr "*Publicar todos los recursos modificados desde la última publicación*: analiza todos los recursos, pero publica una nueva versión únicamente de aquellos que han cambiado desde su última publicación. Se omite un recurso cuando:\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:67
 #, no-wrap
 msgid "its data and metadata are both unchanged. To check the data, the IPT generates the archive and compares it with the last published one, so this mode can take about as long as publishing everything.\n"
-msgstr ""
+msgstr "tanto sus datos como sus metadatos permanecen inalterados. Para verificar los datos, el IPT genera el archivo y lo compara con el publicado anteriormente; por tanto, este proceso puede llevar aproximadamente el mismo tiempo que publicar la totalidad de los datos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:68
 #, no-wrap
 msgid "all of its sources are files (CSV, TSV, Excel, ...) and none of them has been modified since the last publication.\n"
-msgstr ""
+msgstr "todas sus fuentes son archivos (CSV, TSV, Excel, ...) y ninguno de ellos ha sido modificado desde la última publicación.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:69
 #, no-wrap
 msgid "it is a metadata-only resource whose metadata has not been modified since the last publication.\n"
-msgstr ""
+msgstr "se trata de un recurso que solo contiene metadatos, cuyos metadatos no han sido modificados desde la última publicación.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:71
 msgid "A resource whose visibility has changed is always published."
-msgstr ""
+msgstr "Un recurso cuya visibilidad ha cambiado siempre se publica."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:72
 #, no-wrap
 msgid "*Publish only selected resources* - publishes only the resources chosen in the list that appears below this option. Type in the box to search for a resource by title or shortname.\n"
-msgstr ""
+msgstr "*Publicar solo los recursos seleccionados*: publica únicamente los recursos elegidos en la lista que aparece debajo de esta opción. Escribe en el cuadro para buscar un recurso por su título o nombre abreviado.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:73
 #, no-wrap
 msgid "*Publish all excluding selected resources* - publishes every resource except those chosen in the list that appears below this option.\n"
-msgstr ""
+msgstr "*Publicar todo, excepto los recursos seleccionados* - publica todos los recursos, a excepción de aquellos elegidos en la lista que aparece debajo de esta opción.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:75
 msgid "Click \"Publish\" and confirm to start. Before publishing, and whatever option is chosen, the IPT also updates its own registration and the registration of all its registered resources in the GBIF Registry, provided the IPT has been registered."
-msgstr ""
+msgstr "Haz clic en \"Publicar\" y confirma para comenzar. Antes de publicar, independientemente de la opción elegida, el IPT también actualiza su propio registro y el de todos sus recursos registrados en el Registro de GBIF, siempre y cuando el IPT haya sido registrado."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:77
 msgid "Note the following:"
-msgstr ""
+msgstr "Tenga en cuenta lo siguiente:"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:79
 msgid "A resource with missing mandatory metadata is reported with a warning."
-msgstr ""
+msgstr "Un recurso al que le faltan metadatos obligatorios se notifica con una advertencia."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:80
 msgid "A resource that is already being published is reported as such and is not published again."
-msgstr ""
+msgstr "Un recurso que ya se está publicando se registra como tal y no vuelve a publicarse."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:81
 msgid "Auto-publishing stops for a resource after it has failed several times in a row (see xref:manage-resources.adoc#auto-publishing[Auto-publishing]). Bulk publication ignores that limit and resets the failure count, so it can be used to give such resources a fresh start."
-msgstr ""
+msgstr "La publicación automática de un recurso se detiene tras varios fallos consecutivos (véase xref:manage-resources.adoc#auto-publishing[Publicación automática]). La publicación masiva ignora este límite y restablece el contador de fallos, por lo que puede utilizarse para dar a dichos recursos un nuevo comienzo."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:82
 msgid "If publishing a resource fails, its previous version is restored."
-msgstr ""
+msgstr "Si la publicación de un recurso falla, se restaura su versión anterior."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:83
 #, no-wrap
 msgid "Publication report"
-msgstr ""
+msgstr "Informe de publicación"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:85
 msgid "While bulk publication is running, the page shows the progress of each resource being published, with its current status and log messages. Once a resource finishes, it moves to the \"Recently Published\" list, with its result (Completed or Failed). Click on \"Show logs\" to see the log messages for that resource. Click on a resource's shortname to open its overview page. A message is displayed once all the resources have been processed; see the <<View IPT logs,IPT logs>> for more detail."
-msgstr ""
+msgstr "Mientras se ejecuta la publicación masiva, la página muestra el progreso de cada recurso que se está publicando, junto con su estado actual y los mensajes de registro. Una vez que un recurso termina de publicarse, pasa a la lista de \"Publicados recientemente\", indicando su resultado (Completado o Fallido). Haga clic en \"Mostrar registros\" para ver los mensajes de registro de dicho recurso. Haga clic en el nombre abreviado de un recurso para abrir su página de resumen. Una vez que se han procesado todos los recursos, aparece un mensaje; consulte la sección <<View IPT logs,IPT logs>> para obtener más detalles."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:86
@@ -345,59 +345,59 @@ msgstr "Configuración de la publicación automática"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:88
 msgid "This page allows a user having the Admin role to control scheduled (automatic) publishing for the whole IPT instance. Resource managers set up the schedule for each resource themselves (see xref:manage-resources.adoc#auto-publishing[Auto-publishing]); the settings on this page decide whether those schedules run at all, and who is allowed to change them."
-msgstr ""
+msgstr "Esta página permite a un usuario con el rol de administrador controlar la publicación programada (automática) para toda la instancia de IPT. Los gestores de recursos establecen la programación para cada recurso (véase xref:manage-resources.adoc#auto-publishing[Publicación automática]); la configuración en esta página determina si dichas programaciones se ejecutan y quién tiene permiso para modificarlas."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:90
 #, no-wrap
 msgid "*Allow scheduled (automatic) publishing* - When switched on (the default), resources with an auto-publishing schedule are published automatically at their next scheduled time. When switched off, no scheduled publication runs on this IPT. Switching it off has the following effects:\n"
-msgstr ""
+msgstr "*Permitir la publicación programada (automática)* - Cuando esta opción está activada (configuración predeterminada), los recursos que cuentan con un programa de publicación automática se publican de forma automática en la siguiente fecha programada. Cuando está desactivada, no se ejecuta ninguna publicación programada en esta instancia de IPT. Desactivarla conlleva los siguientes efectos:\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:91
 #, no-wrap
 msgid "Existing schedules are paused, not deleted. Each resource keeps its publishing interval and options, and its schedule resumes when auto-publishing is switched back on.\n"
-msgstr ""
+msgstr "Los programas existentes quedan en pausa, no se eliminan. Cada recurso conserva su intervalo y sus opciones de publicación, y su programación se reanuda cuando se vuelve a activar la publicación automática.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:92
 #, no-wrap
 msgid "Manual publishing is not affected: resources can still be published with the Publish button or with <<Bulk publication>>.\n"
-msgstr ""
+msgstr "La publicación manual no se ve afectada: los recursos pueden seguir publicándose mediante el botón Publicar o mediante la <<Bulk publication>>.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:93
 #, no-wrap
 msgid "A publication that is already in progress finishes normally.\n"
-msgstr ""
+msgstr "Una publicación que ya está en curso finaliza con normalidad.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:94
 #, no-wrap
 msgid "Resource managers cannot turn on or change auto-publishing for a resource. The only change they can make is to turn off an existing schedule, so that a resource does not start publishing again unexpectedly when auto-publishing is switched back on.\n"
-msgstr ""
+msgstr "Los gestores de recursos no pueden activar ni modificar la publicación automática de un recurso. El único cambio que pueden realizar es desactivar una programación existente, de modo que el recurso no comience a publicarse de nuevo de forma inesperada cuando se vuelva a activar la publicación automática.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:95
 #, no-wrap
 msgid "The next publication date is no longer shown on the resource overview page.\n"
-msgstr ""
+msgstr "La próxima fecha de publicación ya no aparece en la página de resumen de recursos.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:96
 #, no-wrap
 msgid "*Auto-publication for administrators only* - This option is only shown while scheduled publishing is allowed. When checked, only users having the Admin role can turn on or change auto-publishing for a resource. Other resource managers can see the existing schedule of their resources and can turn it off, but cannot turn it on or change its interval. Existing schedules keep running as before. When unchecked (the default), any user who can manage a resource can configure its auto-publishing.\n"
-msgstr ""
+msgstr "*Publicación automática solo para administradores* - Esta opción solo se muestra cuando la publicación programada está permitida. Si se marca, solo los usuarios con el rol de administrador pueden activar o modificar la publicación automática de un recurso. Otros gestores de recursos pueden ver la programación existente para sus recursos y desactivarla, pero no pueden activarla ni cambiar su intervalo. Las programaciones ya existentes siguen funcionando como hasta ahora. Si no se marca (opción predeterminada), cualquier usuario con permisos para gestionar un recurso puede configurar su publicación automática.\n"
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:98
 msgid "Click \"Save\" to apply the changes. The change takes effect from the next check for due publications: there is no need to restart the IPT. Changes to these settings are recorded in the IPT log, together with the email address of the user who made them."
-msgstr ""
+msgstr "Haz clic en \"Guardar\" para aplicar los cambios. El cambio surtirá efecto a partir de la siguiente comprobación de publicaciones pendientes; no es necesario reiniciar el IPT. Los cambios en esta configuración quedan registrados en el registro (log) del IPT, junto con la dirección de correo electrónico del usuario que los realizó."
 
 #. type: delimited block =
 #: en/modules/ROOT/pages/administration.adoc:102
 msgid "If scheduled publishing is switched off and later switched back on, any resource whose next publication date passed while it was switched off is due straight away, and will be published shortly after the setting is saved."
-msgstr ""
+msgstr "Si la publicación programada se desactiva y posteriormente se vuelve a activar, cualquier recurso cuya fecha de publicación prevista haya pasado durante el periodo en que estuvo desactivada quedará pendiente de publicación de inmediato, y se publicará poco después de guardar la configuración."
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:104
@@ -408,12 +408,12 @@ msgstr "Ver publicaciones programadas"
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:106
 msgid "Click on the \"View scheduled publications\" button to open a table listing every resource that has auto-publishing turned on. For each resource the table shows its managers, its publishing interval, when it was last published, when it is next due to be published and its number of records. By default the table is sorted by the next publication date, so the resources due to be published soonest are shown first."
-msgstr ""
+msgstr "Haz clic en el botón \"Ver publicaciones programadas\" para abrir una tabla que enumera todos los recursos que tienen activada la publicación automática. Para cada recurso, la tabla muestra sus responsables, el intervalo de publicación, la fecha de la última publicación, la fecha de la próxima publicación programada y el número de registros. De forma predeterminada, la tabla está ordenada según la fecha de la próxima publicación, de modo que los recursos cuya publicación está prevista para más pronto aparecen en primer lugar."
 
 #. type: Plain text
 #: en/modules/ROOT/pages/administration.adoc:108
 msgid "If scheduled publishing is switched off, a message at the top of the page warns that none of the listed publications will run until it is switched back on."
-msgstr ""
+msgstr "Si la publicación programada está desactivada, un mensaje en la parte superior de la página advierte que ninguna de las publicaciones enumeradas se llevará a cabo hasta que se vuelva a activar."
 
 #. type: Title ==
 #: en/modules/ROOT/pages/administration.adoc:109
@@ -743,7 +743,7 @@ msgstr "*Guardar*: cuando toda la información anterior haya sido ingresada o se
 #: en/modules/ROOT/pages/administration.adoc:211
 #, no-wrap
 msgid "*Note*: Any changes to the IPT registration (rather than resource registration - for which see the \"Visibility\" section under the \"Resource Overview\" heading in the \"Manage Resources Menu\" section as well as the information under the \"Bulk publication\" heading in the \"Administration Menu\" section) will have to be done in consultation with the GBIF Help Desk (helpdesk@gbif.org).\n"
-msgstr ""
+msgstr "*Nota*: Cualquier modificación en el registro del IPT (a diferencia del registro de recursos - para lo cual debe consultarse la sección \"Visibilidad\" bajo el epígrafe \"Resumen del Recurso\" en el apartado \"Menú de Gestión de Recursos\", así como la información que aparece bajo el epígrafe \"Publicación Masiva\" en el apartado \"Menú de Administración\") deberá realizarse previa consulta con el Servicio de Asistencia de GBIF (helpdesk@gbif.org).\n"
 
 #. type: Title ===
 #: en/modules/ROOT/pages/administration.adoc:212
