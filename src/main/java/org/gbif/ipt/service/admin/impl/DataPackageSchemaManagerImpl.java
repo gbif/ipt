@@ -33,13 +33,13 @@ import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -48,15 +48,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOCase;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.lang3.Strings;
 import org.apache.http.StatusLine;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 
 import jakarta.inject.Inject;
 
@@ -77,10 +77,10 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   // create instance of BaseAction - allows class to retrieve i18n terms via getText()
   private final BaseAction baseAction;
 
-  private List<DataPackageSchema> dataPackageSchemas = new ArrayList<>();
-  private Map<String, DataPackageSchema> dataPackageSchemasByIdentifiers = new HashMap<>();
-  private Map<String, String> dataPackageSchemaRawContentByName = new HashMap<>();
-  private Map<String, Set<String>> alternativeIdentifiers = new HashMap<>();
+  // installed data schemas, replaced as a whole on every change so that readers always see a consistent state;
+  // null until loaded from the data dir
+  private volatile Installed installed;
+  private final Map<String, Set<String>> alternativeIdentifiers = new HashMap<>();
 
   @Inject
   public DataPackageSchemaManagerImpl(
@@ -103,9 +103,63 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     this.alternativeIdentifiers.put(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER, Set.of(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER_2));
   }
 
+  /**
+   * Snapshot of the installed data schemas, with the raw content of their main schema files by schema name. Never
+   * modified: changes create a new one.
+   */
+  private record Installed(List<DataPackageSchema> schemas, Map<String, String> rawContentByName) {
+
+    DataPackageSchema byIdentifier(String identifier) {
+      return schemas.stream()
+          .filter(schema -> Objects.equals(schema.getIdentifier(), identifier))
+          .findFirst()
+          .orElse(null);
+    }
+
+    /**
+     * @return snapshot with the schema, replacing the installed one with the same identifier and the replaced one
+     */
+    Installed with(DataPackageSchema schema, String rawContent, DataPackageSchema replaced) {
+      Installed result = without(schema);
+      if (replaced != null) {
+        result = result.without(replaced);
+      }
+      List<DataPackageSchema> resultSchemas = new ArrayList<>(result.schemas);
+      resultSchemas.add(schema);
+      Map<String, String> resultRawContent = new HashMap<>(result.rawContentByName);
+      resultRawContent.put(schema.getName(), rawContent);
+      return new Installed(List.copyOf(resultSchemas), Map.copyOf(resultRawContent));
+    }
+
+    Installed without(DataPackageSchema schema) {
+      List<DataPackageSchema> resultSchemas = schemas.stream()
+          .filter(installedSchema -> !Objects.equals(installedSchema.getIdentifier(), schema.getIdentifier()))
+          .toList();
+      Map<String, String> resultRawContent = new HashMap<>(rawContentByName);
+      resultRawContent.remove(schema.getName());
+      return new Installed(resultSchemas, Map.copyOf(resultRawContent));
+    }
+  }
+
+  /**
+   * @return the installed data schemas, loaded from the data dir on first use
+   */
+  private Installed installed() {
+    Installed current = installed;
+    if (current == null) {
+      synchronized (this) {
+        if (installed == null) {
+          load();
+        }
+        current = installed;
+      }
+    }
+    return current;
+  }
+
   @Override
   public void uninstallSafely(String schemaIdentifier, String schemaName) {
-    if (dataPackageSchemasByIdentifiers.containsKey(schemaIdentifier)) {
+    if (installed().byIdentifier(schemaIdentifier) != null) {
       uninstall(schemaIdentifier, schemaName);
     } else {
       LOG.warn("Data schema not installed locally, can't delete {}", schemaIdentifier);
@@ -146,66 +200,44 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       return null;
     }
 
-    // load data packages if empty
-    if (dataPackageSchemas.isEmpty()) {
-      load();
-    }
-
-    return Optional.ofNullable(dataPackageSchemasByIdentifiers.get(identifier))
-        .or(() -> getWithoutProtocol(identifier))
-        .or(() -> getByAlternativeIdentifiers(identifier))
-        .or(() -> getByName(identifier))
+    Installed current = installed();
+    return Optional.ofNullable(current.byIdentifier(identifier))
+        .or(() -> getWithoutProtocol(current, identifier))
+        .or(() -> getByAlternativeIdentifiers(current, identifier))
+        .or(() -> getByName(current, identifier))
         .orElse(null);
   }
 
   @Override
   public String getVersion(String identifier) {
-    if (identifier == null) {
-      return null;
-    }
-
-    // load data packages if empty
-    if (dataPackageSchemas.isEmpty()) {
-      load();
-    }
-
-    return Optional.ofNullable(dataPackageSchemasByIdentifiers.get(identifier))
-        .or(() -> getWithoutProtocol(identifier))
-        .or(() -> getByAlternativeIdentifiers(identifier))
-        .or(() -> getByName(identifier))
-        .map(DataPackageSchema::getVersion)
-        .orElse(null);
+    DataPackageSchema schema = get(identifier);
+    return schema != null ? schema.getVersion() : null;
   }
 
-  private Optional<DataPackageSchema> getWithoutProtocol(String identifier) {
-    return dataPackageSchemasByIdentifiers.entrySet().stream()
-        .filter(e -> org.gbif.ipt.utils.StringUtils.equalsWithoutProtocol(e.getKey(), identifier))
-        .map(Map.Entry::getValue)
+  private Optional<DataPackageSchema> getWithoutProtocol(Installed current, String identifier) {
+    return current.schemas().stream()
+        .filter(schema -> org.gbif.ipt.utils.StringUtils.equalsWithoutProtocol(schema.getIdentifier(), identifier))
         .findFirst();
   }
 
-  private Optional<DataPackageSchema> getByAlternativeIdentifiers(String identifier) {
+  private Optional<DataPackageSchema> getByAlternativeIdentifiers(Installed current, String identifier) {
     Optional<String> baseIdentifier = alternativeIdentifiers.entrySet().stream()
         .filter(e -> e.getValue().contains(identifier))
         .map(Map.Entry::getKey)
         .findFirst();
 
-    return baseIdentifier.map(i -> dataPackageSchemasByIdentifiers.get(i));
+    return baseIdentifier.map(current::byIdentifier);
   }
 
-  private Optional<DataPackageSchema> getByName(String identifier) {
-    for (DataPackageSchema ds : dataPackageSchemas) {
-      if (identifier.equals(ds.getName()) || identifier.equals(ds.getIdentifier())) {
-        return Optional.of(ds);
-      }
-    }
-
-    return Optional.empty();
+  private Optional<DataPackageSchema> getByName(Installed current, String identifier) {
+    return current.schemas().stream()
+        .filter(schema -> identifier.equals(schema.getName()))
+        .findFirst();
   }
 
   @Override
   public String getRawData(String name) {
-    return dataPackageSchemaRawContentByName.get(name);
+    return name != null ? installed().rawContentByName().get(name) : null;
   }
 
   /**
@@ -214,11 +246,10 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    * @param identifier identifier of data schema to uninstall
    * @param name name of data schema to uninstall
    */
-  private void uninstall(String identifier, String name) {
-    if (dataPackageSchemasByIdentifiers.containsKey(identifier)) {
-      dataPackageSchemasByIdentifiers.remove(identifier);
-      dataPackageSchemaRawContentByName.remove(name);
-      dataPackageSchemas.removeIf(d -> Strings.CS.equals(d.getIdentifier(), identifier));
+  private synchronized void uninstall(String identifier, String name) {
+    DataPackageSchema schema = installed().byIdentifier(identifier);
+    if (schema != null) {
+      installed = installed().without(schema);
 
       File f = getDataSchemaDirectory(name);
       if (f.exists()) {
@@ -242,7 +273,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   @Override
   public synchronized void install(DataPackageSchema dataPackageSchema) throws InvalidConfigException {
     Objects.requireNonNull(dataPackageSchema);
-    install(dataPackageSchema, dataPackageSchemasByIdentifiers.get(dataPackageSchema.getIdentifier()));
+    install(dataPackageSchema, installed().byIdentifier(dataPackageSchema.getIdentifier()));
   }
 
   /**
@@ -257,6 +288,9 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       throws InvalidConfigException {
     File stagingFolder = dataDir.tmpDir();
     try {
+      Objects.requireNonNull(dataPackageSchema.getIdentifier(), "Data package schema identifier is required");
+      Objects.requireNonNull(dataPackageSchema.getName(), "Data package schema name is required");
+
       // the schema as described by the registry, with the identifiers and URLs of its table schemas
       File mainSchemaFile = new File(stagingFolder, getDataSchemaFileName(dataPackageSchema.getIdentifier()));
       try (Writer writer = Files.newBufferedWriter(mainSchemaFile.toPath(), StandardCharsets.UTF_8)) {
@@ -278,17 +312,11 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       replaceFolder(getDataSchemaDirectory(dataPackageSchema.getName()), stagingFolder);
       dataPackageSchema.setTableSchemas(tableSchemas);
 
-      // keep data schemas in local lookup: allowed one installed data schema per identifier
-      if (replaced != null) {
-        removeFromLookup(replaced);
-        if (!Objects.equals(replaced.getName(), dataPackageSchema.getName())) {
-          FileUtils.deleteQuietly(getDataSchemaDirectory(replaced.getName()));
-        }
+      if (replaced != null && !Objects.equals(replaced.getName(), dataPackageSchema.getName())) {
+        FileUtils.deleteQuietly(getDataSchemaDirectory(replaced.getName()));
       }
-      removeFromLookup(dataPackageSchema);
-      dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
-      dataPackageSchemaRawContentByName.put(dataPackageSchema.getName(), rawContent);
-      dataPackageSchemas.add(dataPackageSchema);
+      // allowed one installed data schema per identifier
+      installed = installed().with(dataPackageSchema, rawContent, replaced);
     } catch (Exception e) {
       String msg = baseAction.getText("admin.dataPackages.install.error",
           new String[] {Objects.toString(dataPackageSchema.getUrl(), dataPackageSchema.getIdentifier())});
@@ -328,12 +356,6 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     }
   }
 
-  private void removeFromLookup(DataPackageSchema schema) {
-    dataPackageSchemasByIdentifiers.remove(schema.getIdentifier());
-    dataPackageSchemaRawContentByName.remove(schema.getName());
-    dataPackageSchemas.removeIf(d -> Strings.CS.equals(d.getIdentifier(), schema.getIdentifier()));
-  }
-
   /**
    * @return true if the candidate has an issued date later than the installed one, or the only one
    */
@@ -346,71 +368,100 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
   @Override
   public List<DataPackageSchema> list() {
-    if (dataPackageSchemas.isEmpty()) {
-      load();
-    }
-    return dataPackageSchemas;
+    return installed().schemas();
   }
 
+  /**
+   * Loads the installed data schemas from the data dir, replacing the ones in memory. A schema that can't be loaded
+   * is skipped, with a startup warning, so it doesn't prevent loading the others.
+   *
+   * @return number of data schemas that have been loaded successfully
+   */
   @Override
-  public int load() {
-    File dataPackageSchemasDir = dataDir.configFile(CONFIG_FOLDER);
-    int counter = 0;
-    if (dataPackageSchemasDir.isDirectory()) {
-      String[] dataSchemaNames = dataPackageSchemasDir.list((current, name) -> new File(current, name).isDirectory());
-      FilenameFilter filter = new SuffixFileFilter(DATA_SCHEMA_FILE_SUFFIX, IOCase.INSENSITIVE);
-      DataPackageSchema dataPackageSchema;
-      Set<DataPackageTableSchema> tableSchemas;
+  public synchronized int load() {
+    List<DataPackageSchema> schemas = new ArrayList<>();
+    Map<String, String> rawContentByName = new HashMap<>();
 
-      try {
-        if (dataSchemaNames != null) {
-          dataPackageSchemasByIdentifiers.clear();
-          dataPackageSchemaRawContentByName.clear();
-          dataPackageSchemas.clear();
-          for (String dataSchemaDirectoryName : dataSchemaNames) {
-            tableSchemas = new LinkedHashSet<>();
-            File dataSchemaDirectory = new File(dataPackageSchemasDir, dataSchemaDirectoryName);
-            File[] files = dataSchemaDirectory.listFiles(filter);
-
-            if (files != null) {
-              File mainSchemaFile = getMainSchemaFileFromFiles(files);
-
-              String dataPackageRawContent = "Failed to read the data package schema file";
-              try {
-                dataPackageRawContent = new String(Files.readAllBytes(mainSchemaFile.toPath()), StandardCharsets.UTF_8);
-              } catch (IOException e) {
-                LOG.error("Failed to read the data package schema file {}", mainSchemaFile, e);
-              }
-
-              dataPackageSchema = loadSchemaFromFile(mainSchemaFile);
-              // keep data schema in local lookup
-              dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
-              dataPackageSchemaRawContentByName.put(dataPackageSchema.getName(), dataPackageRawContent);
-
-              for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
-                // TODO: 02/03/2023 HTTP vs HTTPS concerns
-                String filename = IptFileUtils
-                    .getSuffixedFileName(tableSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX);
-                File tableSchemaFile = getTableSchemaConfigFileByName(files, filename);
-                tableSchemas.add(loadTableSchemaFromFile(tableSchemaFile));
-              }
-
-              dataPackageSchema.setTableSchemas(tableSchemas);
-              dataPackageSchemas.add(dataPackageSchema);
-            }
-            counter++;
+    File[] schemaFolders = dataDir.configFile(CONFIG_FOLDER).listFiles(File::isDirectory);
+    if (schemaFolders != null) {
+      Arrays.sort(schemaFolders);
+      for (File schemaFolder : schemaFolders) {
+        try {
+          File mainSchemaFile = getMainSchemaFile(schemaFolder);
+          DataPackageSchema schema = loadSchemaFolder(schemaFolder, mainSchemaFile);
+          if (schemas.stream().anyMatch(s -> s.getIdentifier().equals(schema.getIdentifier())
+              || s.getName().equals(schema.getName()))) {
+            throw new InvalidConfigException(INVALID_DATA_SCHEMA,
+                "Data package schema " + schema.getIdentifier() + " is installed more than once");
           }
+          schemas.add(schema);
+          rawContentByName.put(schema.getName(), Files.readString(mainSchemaFile.toPath(), StandardCharsets.UTF_8));
+        } catch (Exception e) {
+          String msg = "Failed to load data package schema from " + schemaFolder.getAbsolutePath() + ": " + e.getMessage();
+          LOG.error(msg, e);
+          warnings.addStartupError(msg);
         }
-      } catch (InvalidConfigException e) {
-        // TODO: 14/03/2022 delete corrupted files
-        LOG.error("Failed to load data schemas", e);
       }
     }
-    return counter;
+
+    installed = new Installed(List.copyOf(schemas), Map.copyOf(rawContentByName));
+    return schemas.size();
+  }
+
+  /**
+   * Loads a data schema and its table schemas from its folder.
+   *
+   * @param schemaFolder data schema folder
+   * @param mainSchemaFile main schema file in the folder
+   * @return data schema
+   * @throws InvalidConfigException if the data schema or one of its table schemas is missing or invalid
+   */
+  private DataPackageSchema loadSchemaFolder(File schemaFolder, File mainSchemaFile) throws InvalidConfigException {
+    DataPackageSchema schema = loadSchemaFromFile(mainSchemaFile);
+    if (schema.getIdentifier() == null || schema.getName() == null) {
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA,
+          "Data package schema file has no identifier or name: " + mainSchemaFile.getName());
+    }
+    // its files are looked up in the folder named after it, e.g. for publishing
+    if (!schemaFolder.getName().equals(schema.getName())) {
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA,
+          "Data package schema " + schema.getName() + " is installed in folder " + schemaFolder.getName());
+    }
+
+    Set<DataPackageTableSchema> tableSchemas = new LinkedHashSet<>();
+    if (schema.getTableSchemas() != null) {
+      for (DataPackageTableSchema tableSchema : schema.getTableSchemas()) {
+        tableSchemas.add(loadTableSchemaFromFile(getInstalledTableSchemaFile(schemaFolder, schema, tableSchema)));
+      }
+    }
+    schema.setTableSchemas(tableSchemas);
+    return schema;
+  }
+
+  /**
+   * Finds the installed file of a table schema, named like on install, or after the table schema identifier by older
+   * IPT versions.
+   */
+  private File getInstalledTableSchemaFile(File schemaFolder, DataPackageSchema schema,
+                                           DataPackageTableSchema tableSchema) throws InvalidConfigException {
+    List<String> fileNames = new ArrayList<>();
+    if (tableSchema.getName() != null) {
+      fileNames.add(getTableSchemaFileName(schema.getIdentifier(), tableSchema.getName()));
+    }
+    if (tableSchema.getIdentifier() != null) {
+      fileNames.add(IptFileUtils.getSuffixedFileName(tableSchema.getIdentifier(), DATA_SCHEMA_FILE_SUFFIX));
+    }
+
+    return fileNames.stream()
+        .map(fileName -> new File(schemaFolder, fileName))
+        .filter(File::isFile)
+        .findFirst()
+        .orElseThrow(() -> new InvalidConfigException(INVALID_DATA_SCHEMA,
+            "Table schema file was not found: " + String.join(" or ", fileNames)));
   }
 
   @Override
-  public void installOrUpdateDefaults() {
+  public synchronized void installOrUpdateDefaults() {
     try {
       List<DataPackageSchema> supportedDataPackageSchemas = registryManager.getSupportedDataSchemas();
 
@@ -429,7 +480,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   private void installOrUpdateDefault(DataPackageSchema supportedDataPackageSchema) {
-    DataPackageSchema installedDataSchema = dataPackageSchemasByIdentifiers.get(supportedDataPackageSchema.getIdentifier());
+    DataPackageSchema installedDataSchema = installed().byIdentifier(supportedDataPackageSchema.getIdentifier());
 
     if (installedDataSchema == null) {
       LOG.info("Missing default data package schema {}. Installing", supportedDataPackageSchema.getIdentifier());
@@ -444,56 +495,31 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   /**
-   * Find and get a table schema file from an array of files.
+   * Finds the main schema file in a data schema folder: the JSON file starting with an underscore.
    *
-   * @param files array of files
-   * @param filename table schema file name
-   * @return table schema file from an array
-   */
-  private File getTableSchemaConfigFileByName(File[] files, String filename) {
-    for (File file : files) {
-      if (filename.equals(file.getName())) {
-        return file;
-      }
-    }
-
-    throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Table schema file was not found: " + filename);
-  }
-
-  /**
-   * Find and get main schema file from array of files (it starts with underscore character).
-   *
-   * @param files array of files
+   * @param schemaFolder data schema folder
    * @return main schema file
    */
-  private File getMainSchemaFileFromFiles(File[] files) {
-    for (File file : files) {
-      if (file.getName().startsWith("_")) {
-        return file;
-      }
+  private File getMainSchemaFile(File schemaFolder) throws InvalidConfigException {
+    File[] files = schemaFolder.listFiles(
+        (dir, name) -> name.startsWith("_") && Strings.CI.endsWith(name, DATA_SCHEMA_FILE_SUFFIX));
+    if (files == null || files.length == 0) {
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Main schema file was not found");
     }
-
-    throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Main schema file was not found!");
+    if (files.length > 1) {
+      // which one is installed is unknown
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA, "More than one main schema file: "
+          + Arrays.stream(files).map(File::getName).sorted().collect(Collectors.joining(", ")));
+    }
+    return files[0];
   }
 
   @Override
   public boolean isSchemaInstalled(String nameOrIdentifier) {
-    boolean result = false;
-
-    if (dataPackageSchemas.isEmpty()) {
-      load();
-    }
-
-    for (DataPackageSchema dataPackageSchema : dataPackageSchemas) {
-      if (dataPackageSchema.getIdentifier().equals(nameOrIdentifier)
-          || dataPackageSchema.getName().equals(nameOrIdentifier)) {
-        result = true;
-        break;
-      }
-    }
-
-    return result;
+    return installed().schemas().stream()
+        .anyMatch(schema -> schema.getIdentifier().equals(nameOrIdentifier) || schema.getName().equals(nameOrIdentifier));
   }
+
   @Override
   public boolean isSchemaType(String nameOrIdentifier) {
     boolean result = false;
@@ -593,18 +619,17 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    */
   protected DataPackageSchema loadSchemaFromFile(File localFile) throws InvalidConfigException {
     Objects.requireNonNull(localFile);
-    if (!localFile.exists()) {
-      throw new IllegalStateException();
-    }
-
     try {
       DataPackageSchema dataPackageSchema = factory.buildSchema(localFile);
+      if (dataPackageSchema == null) {
+        throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Data package schema file is empty: " + localFile.getName());
+      }
       LOG.info("Successfully loaded data package schema file {}", dataPackageSchema.getIdentifier());
       return dataPackageSchema;
-    } catch (IOException e) {
-      LOG.error("Can't access local data package schema file ({})", localFile.getAbsolutePath(), e);
+    } catch (IOException | JsonParseException e) {
+      LOG.error("Can't read local data package schema file ({})", localFile.getAbsolutePath(), e);
       throw new InvalidConfigException(INVALID_DATA_SCHEMA,
-          "Can't access local data schema file");
+          "Can't read local data package schema file " + localFile.getName() + ": " + e.getMessage(), e);
     }
   }
 
@@ -619,18 +644,17 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    */
   protected DataPackageTableSchema loadTableSchemaFromFile(File localFile) throws InvalidConfigException {
     Objects.requireNonNull(localFile);
-    if (!localFile.exists()) {
-      throw new IllegalStateException();
-    }
-
     try {
       DataPackageTableSchema tableSchema = factory.buildTableSchema(localFile);
+      if (tableSchema == null) {
+        throw new InvalidConfigException(INVALID_DATA_SCHEMA, "Table schema file is empty: " + localFile.getName());
+      }
       LOG.info("Successfully loaded table schema file {}", tableSchema.getName());
       return tableSchema;
-    } catch (IOException e) {
-      LOG.error("Can't access local data schema file ({})", localFile.getAbsolutePath(), e);
+    } catch (IOException | JsonParseException e) {
+      LOG.error("Can't read local table schema file ({})", localFile.getAbsolutePath(), e);
       throw new InvalidConfigException(INVALID_DATA_SCHEMA,
-          "Can't access local data schema file");
+          "Can't read local table schema file " + localFile.getName() + ": " + e.getMessage(), e);
     }
   }
 

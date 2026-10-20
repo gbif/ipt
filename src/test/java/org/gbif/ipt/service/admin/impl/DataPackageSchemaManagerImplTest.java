@@ -44,6 +44,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -63,14 +64,17 @@ public class DataPackageSchemaManagerImplTest {
 
   // "remote" files served by the fake downloader, by URL
   private final Map<String, String> remoteFiles = new HashMap<>();
+  private DataDir dataDir;
+  private HttpClient downloader;
   private RegistryManager registryManager;
+  private ConfigWarnings warnings;
   private DataPackageSchemaManagerImpl manager;
 
   @BeforeEach
   public void setUp() throws Exception {
-    DataDir dataDir = DataDir.buildFromString(dataDirFolder.getAbsolutePath());
+    dataDir = DataDir.buildFromString(dataDirFolder.getAbsolutePath());
 
-    HttpClient downloader = mock(HttpClient.class);
+    downloader = mock(HttpClient.class);
     when(downloader.download(any(URL.class), any(File.class))).thenAnswer(invocation -> {
       String content = remoteFiles.get(invocation.getArgument(0, URL.class).toString());
       if (content == null) {
@@ -81,10 +85,16 @@ public class DataPackageSchemaManagerImplTest {
     });
 
     registryManager = mock(RegistryManager.class);
+    manager = newManager();
+  }
 
-    manager = new DataPackageSchemaManagerImpl(mock(AppConfig.class), dataDir, new ConfigWarnings(),
-        new DataSchemaFactory(), mock(SimpleTextProvider.class), mock(RegistrationManager.class), registryManager,
-        downloader);
+  /**
+   * A new manager on the same data dir, like after a restart.
+   */
+  private DataPackageSchemaManagerImpl newManager() {
+    warnings = new ConfigWarnings();
+    return new DataPackageSchemaManagerImpl(mock(AppConfig.class), dataDir, warnings, new DataSchemaFactory(),
+        mock(SimpleTextProvider.class), mock(RegistrationManager.class), registryManager, downloader);
   }
 
   @Test
@@ -228,6 +238,157 @@ public class DataPackageSchemaManagerImplTest {
     assertEquals(1, manager.list().size());
   }
 
+  @Test
+  public void testLoad() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event", "occurrence"));
+    manager.install(schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon"));
+
+    DataPackageSchemaManagerImpl restarted = newManager();
+
+    assertEquals(2, restarted.list().size());
+    assertEquals(Set.of("event", "occurrence"), tableSchemaNames(restarted.get(IDENTIFIER)));
+    assertTableSchemaLoaded(restarted.get(IDENTIFIER), "occurrence");
+    assertTableSchemaLoaded(restarted.get(OTHER_IDENTIFIER), "taxon");
+    assertTrue(restarted.getRawData("dp").contains("\"version\": \"1.0\""));
+  }
+
+  /**
+   * Schemas that can't be loaded are skipped with a startup warning and don't prevent loading the others.
+   */
+  @Test
+  public void testLoadSkipsBrokenSchemas() throws Exception {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    manager.install(schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon"));
+    // broken schemas, loaded before the valid ones (folders are loaded in name order)
+    DataPackageSchema missingTable = schema("http://example.org/missing-table", "a-missing-table", "1.0", "2025-01-01",
+        "event", "occurrence");
+    manager.install(missingTable);
+    Files.delete(manager.getTableSchemaFile(missingTable, "occurrence").toPath());
+    Files.createDirectories(schemaFolder("a-no-main-file").toPath());
+    Files.writeString(new File(schemaFolder("a-no-main-file"), "table.json").toPath(), "{}");
+    Files.createDirectories(schemaFolder("a-malformed").toPath());
+    Files.writeString(new File(schemaFolder("a-malformed"), "_malformed.json").toPath(), "{\"identifier\": ");
+    Files.createDirectories(schemaFolder("a-empty").toPath());
+    Files.writeString(new File(schemaFolder("a-empty"), "_empty.json").toPath(), "");
+
+    DataPackageSchemaManagerImpl restarted = newManager();
+
+    assertEquals(2, restarted.load());
+    assertEquals(Set.of(IDENTIFIER, OTHER_IDENTIFIER),
+        restarted.list().stream().map(DataPackageSchema::getIdentifier).collect(Collectors.toSet()));
+    assertEquals(4, warnings.getStartupErrors().size(), warnings.getStartupErrors().toString());
+  }
+
+  /**
+   * A schema folder with more than one main schema file, or not named after its schema, isn't loaded: which schema is
+   * installed, or where its files are, is unknown.
+   */
+  @Test
+  public void testLoadSkipsAmbiguousSchemaFolders() throws Exception {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    manager.install(schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon"));
+    Files.copy(new File(schemaFolder("dp"), "_http_example_org_dp.json").toPath(),
+        new File(schemaFolder("dp"), "_http_example_org_dp_copy.json").toPath());
+    Files.move(schemaFolder("other-dp").toPath(), schemaFolder("renamed").toPath());
+
+    DataPackageSchemaManagerImpl restarted = newManager();
+
+    assertTrue(restarted.list().isEmpty());
+    assertEquals(2, warnings.getStartupErrors().size(), warnings.getStartupErrors().toString());
+    assertTrue(warnings.getStartupErrors().stream().anyMatch(e -> e.contains("More than one main schema file")));
+    assertTrue(warnings.getStartupErrors().stream().anyMatch(e -> e.contains("installed in folder renamed")));
+  }
+
+  /**
+   * Table schema files are found by the same names they are installed with, whatever the table schema identifiers.
+   */
+  @Test
+  public void testLoadTableSchemaIdentifiersUnlikeSchemaIdentifier() {
+    DataPackageSchema schema = schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event");
+    schema.getTableSchemas().forEach(t -> t.setIdentifier("http://example.org/tables/" + t.getName()));
+    manager.install(schema);
+
+    assertTableSchemaLoaded(newManager().get(IDENTIFIER), "event");
+  }
+
+  /**
+   * Table schema files named after the table schema identifier, by older IPT versions, still load.
+   */
+  @Test
+  public void testLoadOldTableSchemaFileNames() throws Exception {
+    DataPackageSchema schema = schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event");
+    schema.getTableSchemas().forEach(t -> t.setIdentifier("http://example.org/tables/" + t.getName()));
+    manager.install(schema);
+    File installedFile = manager.getTableSchemaFile(schema, "event");
+    Files.move(installedFile.toPath(), new File(installedFile.getParentFile(), "http_example_org_tables_event.json").toPath());
+
+    assertTableSchemaLoaded(newManager().get(IDENTIFIER), "event");
+  }
+
+  @Test
+  public void testLoadWithoutSchemas() throws Exception {
+    assertEquals(0, manager.load());
+    assertTrue(manager.list().isEmpty());
+    assertNull(manager.get(IDENTIFIER));
+
+    Files.createDirectories(new File(dataDirFolder, "config/.dataPackages").toPath());
+    assertEquals(0, manager.load());
+    assertTrue(manager.list().isEmpty());
+  }
+
+  @Test
+  public void testGet() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+
+    assertEquals(IDENTIFIER, manager.get(IDENTIFIER).getIdentifier());
+    assertEquals(IDENTIFIER, manager.get("https://example.org/dp").getIdentifier());
+    assertEquals(IDENTIFIER, manager.get("dp").getIdentifier());
+    assertEquals("1.0", manager.getVersion("dp"));
+    assertNull(manager.get("http://example.org/unknown"));
+    assertNull(manager.get(null));
+    assertNull(manager.getVersion(null));
+    assertNull(manager.getRawData(null));
+    assertTrue(manager.isSchemaInstalled("dp"));
+    assertFalse(manager.isSchemaInstalled("unknown"));
+  }
+
+  /**
+   * The installed schemas returned are a snapshot, not changed by later installs.
+   */
+  @Test
+  public void testListIsSnapshot() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    List<DataPackageSchema> listed = manager.list();
+
+    manager.install(schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon"));
+
+    assertEquals(1, listed.size());
+    assertEquals(2, manager.list().size());
+  }
+
+  /**
+   * Lookups while schemas are being reloaded always find the installed schema.
+   */
+  @Test
+  public void testGetDuringLoad() throws Exception {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    Thread loader = new Thread(() -> {
+      for (int i = 0; i < 200; i++) {
+        manager.load();
+      }
+    });
+
+    loader.start();
+    int lookups = 0;
+    while (loader.isAlive()) {
+      assertNotNull(manager.get(IDENTIFIER));
+      lookups++;
+    }
+    loader.join();
+
+    assertTrue(lookups > 0);
+  }
+
   /**
    * Builds a schema as the registry describes it, and serves its table schemas from the fake downloader.
    */
@@ -269,10 +430,24 @@ public class DataPackageSchemaManagerImplTest {
     return BASE_URL + name + "/" + version + "/table-schemas/" + tableSchemaName + ".json";
   }
 
+  private File schemaFolder(String name) {
+    return new File(dataDirFolder, "config/.dataPackages/" + name);
+  }
+
   private List<String> schemaFiles(String name) {
     File folder = new File(dataDirFolder, "config/.dataPackages/" + name);
     String[] files = folder.list();
     return files == null ? List.of() : List.of(files);
+  }
+
+  /**
+   * Asserts the table schema was loaded from its file, with fields, not just listed in the main schema file.
+   */
+  private static void assertTableSchemaLoaded(DataPackageSchema schema, String tableSchemaName) {
+    DataPackageTableSchema tableSchema = schema.tableSchemaByName(tableSchemaName);
+    assertNotNull(tableSchema, tableSchemaName);
+    assertNotNull(tableSchema.getFields(), tableSchemaName + " fields");
+    assertEquals(tableSchemaName + "ID", tableSchema.getFields().get(0).getName());
   }
 
   private static Set<String> tableSchemaNames(DataPackageSchema schema) {
