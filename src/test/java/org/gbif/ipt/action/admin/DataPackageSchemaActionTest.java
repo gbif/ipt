@@ -66,7 +66,7 @@ public class DataPackageSchemaActionTest {
 
     action.delete();
 
-    verify(schemaManager, never()).uninstallSafely(any());
+    verify(schemaManager, never()).uninstall(any());
   }
 
   @Test
@@ -75,7 +75,7 @@ public class DataPackageSchemaActionTest {
 
     action.delete();
 
-    verify(schemaManager).uninstallSafely(IDENTIFIER);
+    verify(schemaManager).uninstall(IDENTIFIER);
   }
 
   @Test
@@ -84,7 +84,7 @@ public class DataPackageSchemaActionTest {
 
     action.delete();
 
-    verify(schemaManager, never()).uninstallSafely(any());
+    verify(schemaManager, never()).uninstall(any());
   }
 
   private static Resource resource(String dataPackageIdentifier, boolean mapped) {

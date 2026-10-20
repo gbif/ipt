@@ -396,7 +396,7 @@ public class DataPackageSchemaManagerImplTest {
     manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
     manager.install(schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon"));
 
-    manager.uninstallSafely(IDENTIFIER);
+    manager.uninstall(IDENTIFIER);
 
     assertNull(manager.get(IDENTIFIER));
     assertNull(manager.getRawData("dp"));
@@ -412,12 +412,12 @@ public class DataPackageSchemaManagerImplTest {
   @Test
   public void testUninstallByOtherIdentifierForms() {
     manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
-    manager.uninstallSafely("https://example.org/dp");
+    manager.uninstall("https://example.org/dp");
     assertNull(manager.get(IDENTIFIER));
     assertFalse(schemaFolder("dp").exists());
 
     manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
-    manager.uninstallSafely("dp");
+    manager.uninstall("dp");
     assertNull(manager.get(IDENTIFIER));
   }
 
@@ -425,8 +425,8 @@ public class DataPackageSchemaManagerImplTest {
   public void testUninstallUnknown() {
     manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
 
-    manager.uninstallSafely("http://example.org/unknown");
-    manager.uninstallSafely(null);
+    manager.uninstall("http://example.org/unknown");
+    manager.uninstall(null);
 
     assertNotNull(manager.get(IDENTIFIER));
     assertTrue(schemaFolder("dp").exists());
@@ -472,6 +472,22 @@ public class DataPackageSchemaManagerImplTest {
 
     assertNull(manager.get(IDENTIFIER));
     assertNotNull(manager.get(OTHER_IDENTIFIER));
+  }
+
+  /**
+   * A supported schema the registry doesn't return is reported like a failed one, after installing the others.
+   */
+  @Test
+  public void testInstallSupportedDataPackageSchemasWithMissingSchema() throws Exception {
+    when(cfg.getSupportedDataSchemaNamesWithVersions()).thenReturn(Map.of("dp", "1.0", "missing-dp", "1.0"));
+    when(registryManager.getSupportedDataSchemas()).thenReturn(List.of(
+        schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event")));
+
+    InvalidConfigException e = assertThrows(InvalidConfigException.class,
+        () -> manager.installSupportedDataPackageSchemas());
+
+    assertTrue(e.getMessage().contains("missing-dp"), e.getMessage());
+    assertNotNull(manager.get(IDENTIFIER));
   }
 
   @Test

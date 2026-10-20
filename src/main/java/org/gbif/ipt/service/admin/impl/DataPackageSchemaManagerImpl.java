@@ -159,7 +159,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   @Override
-  public synchronized void uninstallSafely(String identifier) {
+  public synchronized void uninstall(String identifier) {
     DataPackageSchema schema = get(identifier);
     if (schema == null) {
       LOG.warn("Data schema not installed locally, can't delete {}", identifier);
@@ -260,13 +260,23 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
   @Override
   public void installSupportedDataPackageSchemas() throws InvalidConfigException {
-    List<String> failed = new ArrayList<>();
+    List<DataPackageSchema> supportedDataPackageSchemas = getSupportedDataSchemas();
+
+    // supported schemas the registry didn't return, and the ones failing to install, are reported together
+    Set<String> loadedNames = supportedDataPackageSchemas.stream()
+        .map(DataPackageSchema::getName)
+        .collect(Collectors.toSet());
+    List<String> failed = cfg.getSupportedDataSchemaNamesWithVersions().keySet().stream()
+        .filter(name -> !loadedNames.contains(name))
+        .sorted()
+        .collect(Collectors.toCollection(ArrayList::new));
+
     // one failing schema must not stop the others
-    for (DataPackageSchema schema : getSupportedDataSchemas()) {
+    for (DataPackageSchema schema : supportedDataPackageSchemas) {
       try {
         install(schema);
       } catch (InvalidConfigException e) {
-        failed.add(schema.getIdentifier());
+        failed.add(schema.getName());
       }
     }
 
@@ -614,18 +624,6 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       String msg = "No supported data package schemas could be loaded";
       LOG.error(msg);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, msg);
-    }
-
-    // the supported schemas depend on the registry type, e.g. some are for development only
-    Set<String> loadedNames = supportedDataPackageSchemas.stream()
-        .map(DataPackageSchema::getName)
-        .collect(Collectors.toSet());
-    List<String> missingNames = cfg.getSupportedDataSchemaNamesWithVersions().keySet().stream()
-        .filter(name -> !loadedNames.contains(name))
-        .sorted()
-        .toList();
-    if (!missingNames.isEmpty()) {
-      LOG.warn("Supported data package schemas could not be loaded: {}", String.join(", ", missingNames));
     }
     return supportedDataPackageSchemas;
   }

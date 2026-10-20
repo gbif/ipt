@@ -113,7 +113,7 @@ public class DataPackageSchemaAction extends POSTAction {
         }
       }
 
-      schemaManager.uninstallSafely(schema.getIdentifier());
+      schemaManager.uninstall(schema.getIdentifier());
       addActionMessage(getText("admin.dataPackages.delete.success", new String[]{id}));
     } catch (DeletionNotAllowedException | InvalidConfigException e) {
       addActionWarning(getText("admin.dataPackages.delete.error", new String[]{id}));

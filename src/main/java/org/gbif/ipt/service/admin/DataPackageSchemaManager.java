@@ -27,7 +27,7 @@ public interface DataPackageSchemaManager {
    *
    * @param identifier identifier or name of the installed data schema, see {@link #get(String)}
    */
-  void uninstallSafely(String identifier);
+  void uninstall(String identifier);
 
   /**
    * Update an installed data schema to the latest version.
