@@ -13,6 +13,9 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.ipt.model.DataPackageSchema;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.metadata.eml.ipt.model.Eml;
 
 import org.junit.jupiter.api.Test;
@@ -20,6 +23,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ResourceLoaderImplTest {
 
@@ -64,5 +69,35 @@ public class ResourceLoaderImplTest {
 
     // missing rights
     assertFalse(ResourceLoaderImpl.restoreStrippedLicenseLink(new Eml()));
+  }
+
+  /**
+   * A resource with another form of the installed schema identifier gets the installed one, so its mappings, which refer
+   * to the installed schema, are used.
+   */
+  @Test
+  public void testNormalizeDataPackageIdentifier() {
+    DataPackageSchemaManager schemaManager = mock(DataPackageSchemaManager.class);
+    DataPackageSchema installed = DataPackageSchema.builder().identifier("http://rs.tdwg.org/dwc/dwc-dp").build();
+    when(schemaManager.get("http://rs.gbif.org/data-packages/dwc-dp")).thenReturn(installed);
+    when(schemaManager.get("http://rs.tdwg.org/dwc/dwc-dp")).thenReturn(installed);
+
+    Resource alternative = resource("http://rs.gbif.org/data-packages/dwc-dp");
+    assertTrue(ResourceLoaderImpl.normalizeDataPackageIdentifier(alternative, schemaManager));
+    assertEquals("http://rs.tdwg.org/dwc/dwc-dp", alternative.getDataPackageIdentifier());
+
+    Resource same = resource("http://rs.tdwg.org/dwc/dwc-dp");
+    assertFalse(ResourceLoaderImpl.normalizeDataPackageIdentifier(same, schemaManager));
+
+    Resource notInstalled = resource("http://example.org/unknown");
+    assertFalse(ResourceLoaderImpl.normalizeDataPackageIdentifier(notInstalled, schemaManager));
+    assertEquals("http://example.org/unknown", notInstalled.getDataPackageIdentifier());
+  }
+
+  private static Resource resource(String dataPackageIdentifier) {
+    Resource resource = new Resource();
+    resource.setShortname("res");
+    resource.setDataPackageIdentifier(dataPackageIdentifier);
+    return resource;
   }
 }

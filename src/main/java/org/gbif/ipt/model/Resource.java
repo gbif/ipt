@@ -786,7 +786,8 @@ public class Resource implements Serializable, Comparable<Resource> {
 
     if (dataPackageIdentifier != null) {
       for (DataPackageMapping m : dataPackageMappings) {
-        if (dataPackageIdentifier.equals(m.getDataPackageSchema().getIdentifier())) {
+        // the schema is null if it isn't installed
+        if (m.getDataPackageSchema() != null && dataPackageIdentifier.equals(m.getDataPackageSchema().getIdentifier())) {
           maps.add(m);
         }
       }

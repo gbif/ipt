@@ -15,9 +15,11 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -29,6 +31,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -85,6 +89,43 @@ public class DataPackageSchemaActionTest {
     action.delete();
 
     verify(schemaManager, never()).uninstall(any());
+  }
+
+  /**
+   * Updating a schema changes the mappings of the resources using it, not of resources using another schema.
+   */
+  @Test
+  public void testUpdateOnlyChangesResourcesUsingTheSchema() throws Exception {
+    DataPackageSchema updated = DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version("2.0").build();
+    when(schemaManager.update(IDENTIFIER)).thenReturn(updated);
+    Resource usingSchema = resource(IDENTIFIER, true);
+    Resource usingOtherSchema = resource("http://example.org/other", true);
+    when(resourceManager.list()).thenReturn(List.of(usingSchema, usingOtherSchema));
+
+    action.update();
+
+    assertSame(updated, usingSchema.getDataPackageMappings().get(0).getDataPackageSchema());
+    // mappings pointing to another schema than the resource's are hidden
+    assertEquals(1, usingOtherSchema.getDataPackageMappings().size());
+  }
+
+  /**
+   * The Camtrap DP profile of a resource isn't replaced by the profile of another schema being updated.
+   */
+  @Test
+  public void testUpdateKeepsCamtrapProfileOfResourcesUsingAnotherSchema() throws Exception {
+    when(schemaManager.update(IDENTIFIER)).thenReturn(
+        DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version("2.0").profile("http://example.org/dp-profile").build());
+    Resource camtrap = resource("http://example.org/camtrap-dp", true);
+    camtrap.setCoreType(Constants.CAMTRAP_DP);
+    CamtrapMetadata metadata = new CamtrapMetadata();
+    metadata.setProfile("http://example.org/camtrap-profile");
+    camtrap.setDataPackageMetadata(metadata);
+    when(resourceManager.list()).thenReturn(List.of(camtrap));
+
+    action.update();
+
+    assertEquals("http://example.org/camtrap-profile", metadata.getProfile());
   }
 
   private static Resource resource(String dataPackageIdentifier, boolean mapped) {

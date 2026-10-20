@@ -933,4 +933,19 @@ public class ResourceTest extends IptBaseTest {
     r.addMapping(getOccExtensionMapping());
     assertTrue(r.hasOccurrenceMapping());
   }
+
+  /**
+   * A mapping whose schema isn't installed (null) is left out, not failing.
+   */
+  @Test
+  public void testGetDataPackageMappingsWithoutInstalledSchema() {
+    Resource resource = new Resource();
+    resource.setDataPackageIdentifier("http://example.org/dp");
+    DataPackageMapping mapping = new DataPackageMapping();
+    mapping.setDataPackageSchema(DataPackageSchema.builder().identifier("http://example.org/dp").build());
+    resource.addDataPackageMapping(mapping);
+    mapping.setDataPackageSchema(null);
+
+    assertTrue(resource.getDataPackageMappings().isEmpty());
+  }
 }

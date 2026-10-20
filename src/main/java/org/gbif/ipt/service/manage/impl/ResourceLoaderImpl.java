@@ -19,6 +19,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.FileSource;
@@ -243,6 +244,9 @@ public class ResourceLoaderImpl implements ResourceLoader {
         // clean up data package mappings (remove dangling field mappings)
         // backfill data package version if not set
         if (resource.isDataPackage()) {
+          if (normalizeDataPackageIdentifier(resource, schemaManager)) {
+            callbacks.save(resource);
+          }
           cleanUpDataPackageMappings(resource);
           backfillDataPackageVersion(resource, callbacks);
         }
@@ -382,6 +386,28 @@ public class ResourceLoaderImpl implements ResourceLoader {
             resource.getShortname(), identifier);
       }
     }
+  }
+
+  /**
+   * Sets the identifier of the installed schema as the resource's data package identifier, if it has another form of
+   * it, e.g. https instead of http, or an alternative identifier. Its mappings refer to the installed schema, and
+   * only mappings with the resource's data package identifier are used.
+   *
+   * @param resource data package resource
+   * @param schemaManager data package schema manager
+   * @return true if the identifier was changed
+   */
+  static boolean normalizeDataPackageIdentifier(Resource resource, DataPackageSchemaManager schemaManager) {
+    String identifier = resource.getDataPackageIdentifier();
+    DataPackageSchema installed = schemaManager.get(identifier);
+    if (installed == null || installed.getIdentifier().equals(identifier)) {
+      return false;
+    }
+
+    resource.setDataPackageIdentifier(installed.getIdentifier());
+    LOG.warn("Changed data package identifier of resource {} from {} to {}", resource.getShortname(), identifier,
+        installed.getIdentifier());
+    return true;
   }
 
   private boolean onlyFieldIndexPresent(DataPackageFieldMapping dpfm) {

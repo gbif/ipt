@@ -151,8 +151,16 @@ public class DataPackageSchemaAction extends POSTAction {
   private void updateResourcesAfterSchemaUpdate(DataPackageSchema newlyInstalledSchema) {
     resourceManager.list()
         .stream()
-        .filter(Resource::isDataPackage)
+        .filter(res -> usesSchema(res, newlyInstalledSchema))
         .forEach(res -> updateResourceAfterSchemaUpdate(res, newlyInstalledSchema));
+  }
+
+  /**
+   * @return true if the resource is a data package of the schema, whichever form of the schema identifier it has
+   */
+  private boolean usesSchema(Resource resource, DataPackageSchema schema) {
+    DataPackageSchema resourceSchema = schemaManager.get(resource.getDataPackageIdentifier());
+    return resourceSchema != null && schema.getIdentifier().equals(resourceSchema.getIdentifier());
   }
 
   private void updateResourceAfterSchemaUpdate(Resource resource, DataPackageSchema newlyInstalledSchema) {
