@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -61,7 +62,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   @Serial
   private static final long serialVersionUID = -2005597864256786458L;
 
-  private static final Pattern FIELD_FORBIDDEN_CHARACTERS_PATTERN = Pattern.compile("[\\W\\s_0-9]+");
+  private static final Pattern NAME_IGNORED_CHARACTERS_PATTERN = Pattern.compile("[\\W_]+");
 
   private final DataPackageSchemaManager schemaManager;
   private final SourceManager sourceManager;
@@ -317,7 +318,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       boolean mappingEmpty = fieldsBySchema.isEmpty();
 
       if (mappingEmpty) {
-        int automapped = automap();
+        int automapped = automap(fields, columns);
         if (automapped > 0) {
           addActionMessage(getText("manage.mapping.automaped", new String[]{String.valueOf(automapped)}));
         }
@@ -347,80 +348,55 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   }
 
   /**
-   * This method auto-maps a source's columns.
+   * Auto-maps a source's columns to the table schema fields with the same name. A column matching the field name
+   * (ignoring case) wins over one that only matches after normalization, see {@link #normalizeName(String)}.
    *
+   * @param fields field mappings of the table schema
+   * @param columns source columns
    * @return the number of fields that have been automapped
    */
-  private int automap() {
-    // keep track of how many fields were automapped
+  static int automap(List<DataPackageFieldMapping> fields, List<String> columns) {
     int automapped = 0;
 
-    // next, try to automap the source's remaining columns against the data schema fields
     for (DataPackageFieldMapping f : fields) {
-      int idx2 = 0;
-      for (String col : columns) {
-        String normCol = normalizeColumnName(col);
-        if (f.getField().getName().equalsIgnoreCase(normCol)) {
-          f.setIndex(idx2);
-          // we have automapped the field, so increment automapped counter and exit
-          automapped++;
-          break;
-        }
-        idx2++;
+      String fieldName = f.getField().getName();
+      int index = indexOfColumn(columns, column -> fieldName.equalsIgnoreCase(withoutPrefix(column)));
+      if (index == -1) {
+        String normalizedFieldName = normalizeName(fieldName);
+        index = indexOfColumn(columns, column -> normalizedFieldName.equals(normalizeName(column)));
+      }
+      if (index != -1) {
+        f.setIndex(index);
+        automapped++;
       }
     }
 
     return automapped;
   }
 
-  private int automap(List<DataPackageFieldMapping> fields, List<String> columns) {
-    // keep track of how many fields were automapped
-    int automapped = 0;
-
-    // next, try to automap the source's remaining columns against the data schema fields
-    for (DataPackageFieldMapping f : fields) {
-      int idx2 = 0;
-      for (String col : columns) {
-        String normCol = normalizeColumnName(col);
-        if (f.getField().getName().equalsIgnoreCase(normCol)) {
-          f.setIndex(idx2);
-          // we have automapped the field, so increment automapped counter and exit
-          automapped++;
-          break;
-        }
-        idx2++;
+  private static int indexOfColumn(List<String> columns, Predicate<String> matches) {
+    for (int i = 0; i < columns.size(); i++) {
+      if (StringUtils.isNotBlank(columns.get(i)) && matches.test(columns.get(i))) {
+        return i;
       }
     }
-
-    return automapped;
+    return -1;
   }
 
   /**
-   * Normalizes an incoming column name so that it can later be compared against a schema's field name.
-   * This method converts the incoming string to lower case and will take the substring up to, but not including the
-   * first ":".
-   * <p>
-   * Columns like <code>_id</code>, <code>*_pk</code> and <code>*fk</code> are excluded from character stripping.
-   *
-   * @param col column name
-   * @return the normalized column name, or null if the incoming name was null or empty
+   * Strips a namespace prefix, e.g. "dwc:eventID" becomes "eventID".
    */
-  private String normalizeColumnName(String col) {
-    String result;
-    if (StringUtils.isNotBlank(col)) {
-      String trimmed = col.trim();
-      // exclude _id field and *_pk fields from character stripping
-      if ("_id".equals(trimmed) || trimmed.toLowerCase().endsWith("_pk") || trimmed.toLowerCase().endsWith("fk")) {
-        result = trimmed.toLowerCase();
-      } else {
-        result = FIELD_FORBIDDEN_CHARACTERS_PATTERN.matcher(col.toLowerCase()).replaceAll("");
-      }
-      if (result.contains(":")) {
-        result = StringUtils.substringAfter(col, ":");
-      }
-      return result;
-    }
-    return null;
+  private static String withoutPrefix(String name) {
+    String trimmed = name.trim();
+    return trimmed.contains(":") ? StringUtils.substringAfter(trimmed, ":") : trimmed;
+  }
+
+  /**
+   * Normalizes a column or field name for comparison: no namespace prefix, lower case, letters and digits only.
+   * Applied to both sides, so e.g. "Assembly Name" matches "assembly_name" and "event-pk" matches "event_pk".
+   */
+  static String normalizeName(String name) {
+    return NAME_IGNORED_CHARACTERS_PATTERN.matcher(withoutPrefix(name).toLowerCase()).replaceAll("");
   }
 
   /**
