@@ -20,6 +20,7 @@ import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.DeletionNotAllowedException;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -63,8 +64,6 @@ public class DataPackageSchemaAction extends POSTAction {
   private List<DataPackageSchema> schemas;
   @Getter
   private List<DataPackageSchema> newSchemas;
-  @Setter
-  private String schemaName;
   @Getter
   private DataPackageSchema dataPackageSchema;
   @Getter
@@ -96,20 +95,27 @@ public class DataPackageSchemaAction extends POSTAction {
 
   @Override
   public String delete() throws Exception {
+    DataPackageSchema schema = schemaManager.get(id);
+    if (schema == null) {
+      addActionWarning(getText("admin.dataPackages.delete.error", new String[]{id}));
+      return SUCCESS;
+    }
+
     try {
-      // check if it's used by some resources
+      // check if it's used by some resources, whichever form of the schema identifier they have
       for (Resource r : resourceManager.list()) {
-        if (r.getDataPackageIdentifier() != null
-            && r.getDataPackageIdentifier().equals(id) && !r.getDataPackageMappings().isEmpty()) {
+        DataPackageSchema resourceSchema = schemaManager.get(r.getDataPackageIdentifier());
+        if (resourceSchema != null && schema.getIdentifier().equals(resourceSchema.getIdentifier())
+            && !r.getDataPackageMappings().isEmpty()) {
           LOG.warn("Schema mapped in resource {}", r.getShortname());
           String msg = getText("admin.dataPackages.delete.error.mapped", new String[]{r.getShortname()});
           throw new DeletionNotAllowedException(DeletionNotAllowedException.Reason.DATA_SCHEMA_MAPPED, msg);
         }
       }
 
-      schemaManager.uninstallSafely(id, schemaName);
+      schemaManager.uninstallSafely(schema.getIdentifier());
       addActionMessage(getText("admin.dataPackages.delete.success", new String[]{id}));
-    } catch (DeletionNotAllowedException e) {
+    } catch (DeletionNotAllowedException | InvalidConfigException e) {
       addActionWarning(getText("admin.dataPackages.delete.error", new String[]{id}));
       addActionExceptionWarning(e);
     }
@@ -215,7 +221,12 @@ public class DataPackageSchemaAction extends POSTAction {
 
     if (id != null) {
       dataPackageSchema = schemaManager.get(id);
-      dataPackageSchemaRawData = schemaManager.getRawData(dataPackageSchema.getName());
+      if (dataPackageSchema != null) {
+        dataPackageSchemaRawData = schemaManager.getRawData(dataPackageSchema.getName());
+      } else if (!isHttpPost()) {
+        // no installed schema to show; a POST installs one
+        notFound = true;
+      }
     }
   }
 

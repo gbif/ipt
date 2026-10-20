@@ -68,6 +68,7 @@ public class DataPackageSchemaManagerImplTest {
   private HttpClient downloader;
   private RegistryManager registryManager;
   private ConfigWarnings warnings;
+  private AppConfig cfg;
   private DataPackageSchemaManagerImpl manager;
 
   @BeforeEach
@@ -85,6 +86,7 @@ public class DataPackageSchemaManagerImplTest {
     });
 
     registryManager = mock(RegistryManager.class);
+    cfg = mock(AppConfig.class);
     manager = newManager();
   }
 
@@ -93,7 +95,7 @@ public class DataPackageSchemaManagerImplTest {
    */
   private DataPackageSchemaManagerImpl newManager() {
     warnings = new ConfigWarnings();
-    return new DataPackageSchemaManagerImpl(mock(AppConfig.class), dataDir, warnings, new DataSchemaFactory(),
+    return new DataPackageSchemaManagerImpl(cfg, dataDir, warnings, new DataSchemaFactory(),
         mock(SimpleTextProvider.class), mock(RegistrationManager.class), registryManager, downloader);
   }
 
@@ -387,6 +389,96 @@ public class DataPackageSchemaManagerImplTest {
     loader.join();
 
     assertTrue(lookups > 0);
+  }
+
+  @Test
+  public void testUninstall() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    manager.install(schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon"));
+
+    manager.uninstallSafely(IDENTIFIER);
+
+    assertNull(manager.get(IDENTIFIER));
+    assertNull(manager.getRawData("dp"));
+    assertFalse(schemaFolder("dp").exists());
+    assertNotNull(manager.get(OTHER_IDENTIFIER));
+    assertEquals(List.of(OTHER_IDENTIFIER),
+        newManager().list().stream().map(DataPackageSchema::getIdentifier).collect(Collectors.toList()));
+  }
+
+  /**
+   * A schema is uninstalled by any form of its identifier, or its name.
+   */
+  @Test
+  public void testUninstallByOtherIdentifierForms() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    manager.uninstallSafely("https://example.org/dp");
+    assertNull(manager.get(IDENTIFIER));
+    assertFalse(schemaFolder("dp").exists());
+
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    manager.uninstallSafely("dp");
+    assertNull(manager.get(IDENTIFIER));
+  }
+
+  @Test
+  public void testUninstallUnknown() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+
+    manager.uninstallSafely("http://example.org/unknown");
+    manager.uninstallSafely(null);
+
+    assertNotNull(manager.get(IDENTIFIER));
+    assertTrue(schemaFolder("dp").exists());
+  }
+
+  /**
+   * The schema name is its folder name, so it can't point anywhere else.
+   */
+  @Test
+  public void testInstallRejectsInvalidName() {
+    DataPackageSchema schema = schema(IDENTIFIER, "../dp", "1.0", "2025-01-01", "event");
+
+    assertThrows(InvalidConfigException.class, () -> manager.install(schema));
+
+    assertNull(manager.get(IDENTIFIER));
+    assertFalse(new File(dataDirFolder, "config/dp").exists());
+  }
+
+  /**
+   * Installs the schemas supported for the registry type, e.g. without the ones for development on production.
+   */
+  @Test
+  public void testInstallSupportedDataPackageSchemas() throws Exception {
+    when(cfg.getSupportedDataSchemaNamesWithVersions()).thenReturn(Map.of("dp", "1.0", "other-dp", "1.0"));
+    when(registryManager.getSupportedDataSchemas()).thenReturn(List.of(
+        schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"),
+        schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon")));
+
+    manager.installSupportedDataPackageSchemas();
+
+    assertEquals(2, manager.list().size());
+  }
+
+  @Test
+  public void testInstallSupportedDataPackageSchemasContinuesAfterFailure() throws Exception {
+    DataPackageSchema failing = schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event");
+    remoteFiles.remove(tableSchemaUrl("dp", "1.0", "event"));
+    when(registryManager.getSupportedDataSchemas()).thenReturn(List.of(
+        failing,
+        schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon")));
+
+    assertThrows(InvalidConfigException.class, () -> manager.installSupportedDataPackageSchemas());
+
+    assertNull(manager.get(IDENTIFIER));
+    assertNotNull(manager.get(OTHER_IDENTIFIER));
+  }
+
+  @Test
+  public void testInstallSupportedDataPackageSchemasWithoutAny() throws Exception {
+    when(registryManager.getSupportedDataSchemas()).thenReturn(List.of());
+
+    assertThrows(InvalidConfigException.class, () -> manager.installSupportedDataPackageSchemas());
   }
 
   /**

@@ -23,12 +23,11 @@ import java.util.List;
 public interface DataPackageSchemaManager {
 
   /**
-   * Safely remove an installed data schema by its unique identifier, making sure no mappings to this data schema exist.
+   * Uninstalls a data schema, removing its files. Callers must make sure no resource uses it.
    *
-   * @param identifier of installed data schema to remove
-   * @param name of installed data schema to remove
+   * @param identifier identifier or name of the installed data schema, see {@link #get(String)}
    */
-  void uninstallSafely(String identifier, String name);
+  void uninstallSafely(String identifier);
 
   /**
    * Update an installed data schema to the latest version.

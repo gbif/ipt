@@ -18,7 +18,6 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.config.SupportedDataPackageType;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.factory.DataSchemaFactory;
@@ -48,6 +47,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
@@ -67,6 +67,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
   private static final String CONFIG_FOLDER = ".dataPackages";
   private static final String DATA_SCHEMA_FILE_SUFFIX = ".json";
+  private static final Pattern VALID_SCHEMA_NAME = Pattern.compile("[A-Za-z0-9][A-Za-z0-9._-]*");
 
   private final ConfigWarnings warnings;
   private final DataSchemaFactory factory;
@@ -158,12 +159,29 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   @Override
-  public void uninstallSafely(String schemaIdentifier, String schemaName) {
-    if (installed().byIdentifier(schemaIdentifier) != null) {
-      uninstall(schemaIdentifier, schemaName);
-    } else {
-      LOG.warn("Data schema not installed locally, can't delete {}", schemaIdentifier);
+  public synchronized void uninstallSafely(String identifier) {
+    DataPackageSchema schema = get(identifier);
+    if (schema == null) {
+      LOG.warn("Data schema not installed locally, can't delete {}", identifier);
+      return;
     }
+
+    // the folder of the installed schema, never one derived from the request
+    File folder = getDataSchemaDirectory(schema.getName());
+    if (folder.exists()) {
+      // moved away first, so a failure leaves the schema installed rather than half deleted
+      File removed = new File(dataDir.tmpDir(), folder.getName());
+      try {
+        FileUtils.moveDirectory(folder, removed);
+      } catch (IOException e) {
+        throw new InvalidConfigException(INVALID_DATA_SCHEMA,
+            "Failed to remove data package schema " + schema.getIdentifier() + ": " + e.getMessage(), e);
+      }
+      FileUtils.deleteQuietly(removed.getParentFile());
+    } else {
+      LOG.warn("Data schema doesn't exist locally {}", schema.getIdentifier());
+    }
+    installed = installed().without(schema);
   }
 
   @Override
@@ -240,33 +258,21 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     return name != null ? installed().rawContentByName().get(name) : null;
   }
 
-  /**
-   * Uninstall data schema by its unique identifier.
-   *
-   * @param identifier identifier of data schema to uninstall
-   * @param name name of data schema to uninstall
-   */
-  private synchronized void uninstall(String identifier, String name) {
-    DataPackageSchema schema = installed().byIdentifier(identifier);
-    if (schema != null) {
-      installed = installed().without(schema);
-
-      File f = getDataSchemaDirectory(name);
-      if (f.exists()) {
-        FileUtils.deleteQuietly(f);
-      } else {
-        LOG.warn("Data schema doesn't exist locally, can't delete {}", identifier);
-      }
-    } else {
-      LOG.warn("Data schema not installed locally, can't delete {}", identifier);
-    }
-  }
-
   @Override
   public void installSupportedDataPackageSchemas() throws InvalidConfigException {
-    List<DataPackageSchema> schemas = getSupportedDataSchemas();
-    for (DataPackageSchema schema : schemas) {
-      install(schema);
+    List<String> failed = new ArrayList<>();
+    // one failing schema must not stop the others
+    for (DataPackageSchema schema : getSupportedDataSchemas()) {
+      try {
+        install(schema);
+      } catch (InvalidConfigException e) {
+        failed.add(schema.getIdentifier());
+      }
+    }
+
+    if (!failed.isEmpty()) {
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA,
+          "Failed to install data package schemas: " + String.join(", ", failed));
     }
   }
 
@@ -290,6 +296,11 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     try {
       Objects.requireNonNull(dataPackageSchema.getIdentifier(), "Data package schema identifier is required");
       Objects.requireNonNull(dataPackageSchema.getName(), "Data package schema name is required");
+      // the name is the schema folder's
+      if (!VALID_SCHEMA_NAME.matcher(dataPackageSchema.getName()).matches()) {
+        throw new IllegalArgumentException("Data package schema name is not a valid folder name: "
+            + dataPackageSchema.getName());
+      }
 
       // the schema as described by the registry, with the identifiers and URLs of its table schemas
       File mainSchemaFile = new File(stagingFolder, getDataSchemaFileName(dataPackageSchema.getIdentifier()));
@@ -599,11 +610,22 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       LOG.error(msg);
     }
 
-    // throw exception if all supported data schemas could not be loaded
-    if (SupportedDataPackageType.values().length != supportedDataPackageSchemas.size()) {
-      String msg = "Not all supported data schemas were loaded!";
+    if (supportedDataPackageSchemas.isEmpty()) {
+      String msg = "No supported data package schemas could be loaded";
       LOG.error(msg);
       throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_DIR, msg);
+    }
+
+    // the supported schemas depend on the registry type, e.g. some are for development only
+    Set<String> loadedNames = supportedDataPackageSchemas.stream()
+        .map(DataPackageSchema::getName)
+        .collect(Collectors.toSet());
+    List<String> missingNames = cfg.getSupportedDataSchemaNamesWithVersions().keySet().stream()
+        .filter(name -> !loadedNames.contains(name))
+        .sorted()
+        .toList();
+    if (!missingNames.isEmpty()) {
+      LOG.warn("Supported data package schemas could not be loaded: {}", String.join(", ", missingNames));
     }
     return supportedDataPackageSchemas;
   }
