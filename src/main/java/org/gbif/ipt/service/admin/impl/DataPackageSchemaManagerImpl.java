@@ -33,9 +33,9 @@ import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -126,23 +126,12 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
         latestCompatibleSchema = registryManager.getSchema(installed.getName(), latestCompatibleSchemaVersion);
       }
 
-      boolean isNewVersion = false;
-      if (latestCompatibleSchema != null) {
-        Date issued = installed.getIssued();
-        Date issuedLatest = latestCompatibleSchema.getIssued();
-
-        if (issued == null && issuedLatest != null) {
-          isNewVersion = true;
-        } else if (issued != null && issuedLatest != null) {
-          // the latest version must have newer issued date
-          isNewVersion = (issuedLatest.compareTo(issued) > 0);
-        }
-      }
+      boolean isNewVersion = latestCompatibleSchema != null
+          && isIssuedLater(latestCompatibleSchema.getIssued(), installed.getIssued());
 
       if (isNewVersion && latestCompatibleSchema.getUrl() != null) {
-        // uninstall and install new version
-        uninstall(identifier, latestCompatibleSchema.getName());
-        install(latestCompatibleSchema);
+        // replaces the installed version only once the new one is installed
+        install(latestCompatibleSchema, installed);
       } else {
         return null;
       }
@@ -253,53 +242,106 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   @Override
   public synchronized void install(DataPackageSchema dataPackageSchema) throws InvalidConfigException {
     Objects.requireNonNull(dataPackageSchema);
+    install(dataPackageSchema, dataPackageSchemasByIdentifiers.get(dataPackageSchema.getIdentifier()));
+  }
+
+  /**
+   * Installs a data package schema, replacing an installed one (e.g. its previous version). All files are downloaded
+   * and read into a staging folder first, which then replaces the schema folder: if anything fails, the installed
+   * schema stays as it was, on disk and in memory.
+   *
+   * @param dataPackageSchema data schema to install
+   * @param replaced installed data schema it replaces, or null
+   */
+  private synchronized void install(DataPackageSchema dataPackageSchema, DataPackageSchema replaced)
+      throws InvalidConfigException {
+    File stagingFolder = dataDir.tmpDir();
     try {
-      String filename = IptFileUtils
-          .getSuffixedFileName("_" + dataPackageSchema.getIdentifier().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
-      File tmpFileSchema = dataDir.tmpFile(filename);
-      String dataPackageFileRawContent = "Failed to read the data package schema file";
-
-      try {
-        dataPackageFileRawContent = new String(Files.readAllBytes(tmpFileSchema.toPath()), StandardCharsets.UTF_8);
-      } catch (IOException e) {
-        LOG.error("Failed to read the data package schema file {}. {}", filename, e.getMessage());
+      // the schema as described by the registry, with the identifiers and URLs of its table schemas
+      File mainSchemaFile = new File(stagingFolder, getDataSchemaFileName(dataPackageSchema.getIdentifier()));
+      try (Writer writer = Files.newBufferedWriter(mainSchemaFile.toPath(), StandardCharsets.UTF_8)) {
+        gson.toJson(dataPackageSchema, writer);
       }
-
-      try (FileWriter fw = new FileWriter(tmpFileSchema)) {
-        gson.toJson(dataPackageSchema, fw);
-      }
-      finishInstallSchema(tmpFileSchema, dataPackageSchema.getIdentifier(), dataPackageSchema.getName());
+      String rawContent = Files.readString(mainSchemaFile.toPath(), StandardCharsets.UTF_8);
 
       Set<DataPackageTableSchema> tableSchemas = new LinkedHashSet<>();
       for (DataPackageTableSchema ts : dataPackageSchema.getTableSchemas()) {
-        File tmpFile = download(ts.getUrl());
-        DataPackageTableSchema tableSchema = loadTableSchemaFromFile(tmpFile);
-        finishInstallTableSchema(tmpFile, dataPackageSchema.getIdentifier(), dataPackageSchema.getName(), tableSchema);
+        File downloaded = download(ts.getUrl(), new File(stagingFolder, "download" + DATA_SCHEMA_FILE_SUFFIX));
+        DataPackageTableSchema tableSchema = loadTableSchemaFromFile(downloaded);
+        Objects.requireNonNull(tableSchema, "Table schema is empty: " + ts.getUrl());
+        Objects.requireNonNull(tableSchema.getName(), "Table schema name is required: " + ts.getUrl());
+        FileUtils.moveFile(downloaded,
+            new File(stagingFolder, getTableSchemaFileName(dataPackageSchema.getIdentifier(), tableSchema.getName())));
         tableSchemas.add(tableSchema);
       }
 
+      replaceFolder(getDataSchemaDirectory(dataPackageSchema.getName()), stagingFolder);
       dataPackageSchema.setTableSchemas(tableSchemas);
 
       // keep data schemas in local lookup: allowed one installed data schema per identifier
-      dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
-      dataPackageSchemaRawContentByName.put(dataPackageSchema.getName(), dataPackageFileRawContent);
-      dataPackageSchemas.add(dataPackageSchema);
-    } catch (InvalidConfigException e) {
-      throw e;
-    } catch (Exception e) {
-      String msg = baseAction.getText("admin.dataPackages.install.error", new String[] {dataPackageSchema.getUrl().toString()});
-      LOG.error(msg, e);
-
-      // clean directory if installation failed
-      try {
-        File schemaConfigFolder = dataDir.configFile(CONFIG_FOLDER + "/" + dataPackageSchema.getName());
-        FileUtils.cleanDirectory(schemaConfigFolder);
-      } catch (IOException ioe) {
-        LOG.error("Failed to clean directory for schema {}", dataPackageSchema.getName(), e);
+      if (replaced != null) {
+        removeFromLookup(replaced);
+        if (!Objects.equals(replaced.getName(), dataPackageSchema.getName())) {
+          FileUtils.deleteQuietly(getDataSchemaDirectory(replaced.getName()));
+        }
       }
-
+      removeFromLookup(dataPackageSchema);
+      dataPackageSchemasByIdentifiers.put(dataPackageSchema.getIdentifier(), dataPackageSchema);
+      dataPackageSchemaRawContentByName.put(dataPackageSchema.getName(), rawContent);
+      dataPackageSchemas.add(dataPackageSchema);
+    } catch (Exception e) {
+      String msg = baseAction.getText("admin.dataPackages.install.error",
+          new String[] {Objects.toString(dataPackageSchema.getUrl(), dataPackageSchema.getIdentifier())});
+      LOG.error(msg, e);
       throw new InvalidConfigException(INVALID_DATA_SCHEMA, msg, e);
+    } finally {
+      FileUtils.deleteQuietly(stagingFolder);
     }
+  }
+
+  /**
+   * Replaces a folder with another one. The folder is moved aside first, and moved back if the replacement fails.
+   *
+   * @param folder folder to replace, may not exist
+   * @param replacement folder replacing it
+   */
+  private void replaceFolder(File folder, File replacement) throws IOException {
+    // set aside in the temp folder, not among the schema folders, in case it's left behind
+    File backup = null;
+    if (folder.exists()) {
+      backup = new File(dataDir.tmpDir(), folder.getName());
+      FileUtils.moveDirectory(folder, backup);
+    }
+
+    try {
+      FileUtils.moveDirectory(replacement, folder);
+    } catch (IOException e) {
+      if (backup != null) {
+        FileUtils.deleteQuietly(folder);
+        FileUtils.moveDirectory(backup, folder);
+      }
+      throw e;
+    }
+
+    if (backup != null) {
+      FileUtils.deleteQuietly(backup.getParentFile());
+    }
+  }
+
+  private void removeFromLookup(DataPackageSchema schema) {
+    dataPackageSchemasByIdentifiers.remove(schema.getIdentifier());
+    dataPackageSchemaRawContentByName.remove(schema.getName());
+    dataPackageSchemas.removeIf(d -> Strings.CS.equals(d.getIdentifier(), schema.getIdentifier()));
+  }
+
+  /**
+   * @return true if the candidate has an issued date later than the installed one, or the only one
+   */
+  private static boolean isIssuedLater(Date candidate, Date installed) {
+    if (candidate == null) {
+      return false;
+    }
+    return installed == null || candidate.after(installed);
   }
 
   @Override
@@ -373,33 +415,31 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       List<DataPackageSchema> supportedDataPackageSchemas = registryManager.getSupportedDataSchemas();
 
       for (DataPackageSchema supportedDataPackageSchema : supportedDataPackageSchemas) {
-        if (!isSchemaInstalled(supportedDataPackageSchema.getIdentifier())) {
-          // schema is not installed, install it
-          LOG.info("Missing default data package schema {}. Installing", supportedDataPackageSchema.getIdentifier());
-          install(supportedDataPackageSchema);
-        } else {
-          // schema is installed, make sure the proper version used
-          DataPackageSchema installedDataSchema = dataPackageSchemasByIdentifiers.get(supportedDataPackageSchema.getIdentifier());
-
-          String installedDataSchemaVersion = installedDataSchema.getVersion();
-          String dataSchemaName = installedDataSchema.getName();
-          String dataSchemaIdentifier = installedDataSchema.getIdentifier();
-          Date installedSchemaIssuedDate = installedDataSchema.getIssued();
-          Date supportedSchemaIssuedDate = supportedDataPackageSchema.getIssued();
-
-          // version must not match
-          // installed schema must be older than supported one (do not downgrade)
-          if (!installedDataSchemaVersion.equals(supportedDataPackageSchema.getVersion())
-              && installedSchemaIssuedDate.compareTo(supportedSchemaIssuedDate) < 0) {
-            LOG.info("Schema {} uses outdated version {}. Updating to {}",
-                supportedDataPackageSchema.getIdentifier(), installedDataSchemaVersion, supportedDataPackageSchema.getVersion());
-            uninstall(dataSchemaIdentifier, dataSchemaName);
-            install(supportedDataPackageSchema);
-          }
+        // one failing schema must not stop the others
+        try {
+          installOrUpdateDefault(supportedDataPackageSchema);
+        } catch (Exception e) {
+          LOG.error("Failed to install/update default data package schema {}",
+              supportedDataPackageSchema.getIdentifier(), e);
         }
       }
     } catch (Exception e) {
       LOG.error("Failed to install/update default data package schemas", e);
+    }
+  }
+
+  private void installOrUpdateDefault(DataPackageSchema supportedDataPackageSchema) {
+    DataPackageSchema installedDataSchema = dataPackageSchemasByIdentifiers.get(supportedDataPackageSchema.getIdentifier());
+
+    if (installedDataSchema == null) {
+      LOG.info("Missing default data package schema {}. Installing", supportedDataPackageSchema.getIdentifier());
+      install(supportedDataPackageSchema, null);
+    } else if (!Objects.equals(installedDataSchema.getVersion(), supportedDataPackageSchema.getVersion())
+        // do not downgrade
+        && isIssuedLater(supportedDataPackageSchema.getIssued(), installedDataSchema.getIssued())) {
+      LOG.info("Schema {} uses outdated version {}. Updating to {}", supportedDataPackageSchema.getIdentifier(),
+          installedDataSchema.getVersion(), supportedDataPackageSchema.getVersion());
+      install(supportedDataPackageSchema, installedDataSchema);
     }
   }
 
@@ -489,14 +529,13 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    * Download a data schema into temporary file and return it.
    *
    * @param url URL of data schema to download
+   * @param tmpFile file to download to
    *
-   * @return temporary file data schema was downloaded to, or null if it failed to be downloaded
+   * @return temporary file data schema was downloaded to
+   * @throws IOException if it failed to be downloaded
    */
-  private File download(URL url) throws IOException {
+  private File download(URL url, File tmpFile) throws IOException {
     Objects.requireNonNull(url);
-    String filename = IptFileUtils
-        .getSuffixedFileName(url.toString().replace(DATA_SCHEMA_FILE_SUFFIX, ""), DATA_SCHEMA_FILE_SUFFIX);
-    File tmpFile = dataDir.tmpFile(filename);
     StatusLine statusLine = downloader.download(url, tmpFile);
     if (success(statusLine)) {
       LOG.info("Successfully downloaded data schema: {}", url);
@@ -595,58 +634,13 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     }
   }
 
-  /**
-   * Move and rename temporary file to final version.
-   *
-   * @param tmpFile   downloaded data schema (in temporary location with temporary filename)
-   * @param schemaIdentifier schema identifier
-   * @param schemaName schema name
-   *
-   * @throws IOException if moving file fails
-   */
-  private void finishInstallSchema(File tmpFile, String schemaIdentifier, String schemaName) throws IOException {
-    Objects.requireNonNull(tmpFile);
-
-    try {
-      File installedFile = getDataSchema(schemaIdentifier, schemaName);
-      FileUtils.moveFile(tmpFile, installedFile);
-    } catch (IOException e) {
-      LOG.error("Installing data schema failed, while trying to move and rename data schema file: {}", e.getMessage(), e);
-      throw e;
-    }
-  }
-
-  /**
-   * Move and rename temporary file to final version.
-   *
-   * @param tmpFile   downloaded data schema file (in temporary location with temporary filename)
-   * @param schemaIdentifier schema identifier
-   * @param schemaName schema name
-   * @param tableSchema data schema file being installed
-   *
-   * @throws IOException if moving file fails
-   */
-  private void finishInstallTableSchema(File tmpFile, String schemaIdentifier, String schemaName, DataPackageTableSchema tableSchema) throws IOException {
-    Objects.requireNonNull(tmpFile);
-    Objects.requireNonNull(tableSchema, "Table schema must not be null");
-    Objects.requireNonNull(tableSchema.getName(), "Table schema name is required");
-
-    try {
-      File installedFile = getTableSchemaFile(schemaIdentifier, schemaName, tableSchema.getName());
-      FileUtils.moveFile(tmpFile, installedFile);
-    } catch (IOException e) {
-      LOG.error("Installing data schema failed, while trying to move and rename data schema file: {}", e.getMessage(), e);
-      throw e;
-    }
-  }
-
   @Override
   public File getTableSchemaFile(DataPackageSchema schema, String tableSchemaName) {
     return getTableSchemaFile(schema.getIdentifier(), schema.getName(), tableSchemaName);
   }
 
   /**
-   * Retrieve data schema file by its unique identifier.
+   * Retrieve a data schema file by its unique identifier.
    *
    * @param schemaIdentifier schema identifier
    * @param schemaName schema name
@@ -655,21 +649,22 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
    * @return data schema file
    */
   private File getTableSchemaFile(String schemaIdentifier, String schemaName, String tableSchemaName) {
-    String filename = IptFileUtils.getSuffixedFileName(schemaIdentifier + "_" + tableSchemaName, DATA_SCHEMA_FILE_SUFFIX);
-    return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + filename);
+    return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + getTableSchemaFileName(schemaIdentifier, tableSchemaName));
+  }
+
+  private static String getTableSchemaFileName(String schemaIdentifier, String tableSchemaName) {
+    return IptFileUtils.getSuffixedFileName(schemaIdentifier + "_" + tableSchemaName, DATA_SCHEMA_FILE_SUFFIX);
   }
 
   /**
-   * Retrieve data schema file by its unique identifier.
+   * Retrieve a data schema file by its unique identifier.
    *
    * @param schemaIdentifier schema identifier
-   * @param schemaName schema name
    *
    * @return data schema file
    */
-  private File getDataSchema(String schemaIdentifier, String schemaName) {
-    String filename = "_" + IptFileUtils.getSuffixedFileName(schemaIdentifier, DATA_SCHEMA_FILE_SUFFIX);
-    return dataDir.configFile(CONFIG_FOLDER + "/" + schemaName + "/" + filename);
+  private static String getDataSchemaFileName(String schemaIdentifier) {
+    return "_" + IptFileUtils.getSuffixedFileName(schemaIdentifier, DATA_SCHEMA_FILE_SUFFIX);
   }
 
   /**
