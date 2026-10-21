@@ -1,6 +1,19 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageDataPackageSchemas"/></title>
 
+    <script>
+        $(document).ready(function () {
+            $(".update-schema").on("click", displayProcessing);
+        });
+
+        // the page may be restored from the browser cache with the processing overlay, e.g. going back
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted) {
+                hideProcessing();
+            }
+        });
+    </script>
+
     <#macro installedSchemaItem ds>
         <div class="d-flex flex-column col-lg-6 col-12 px-2">
             <div class="data-package-schema-item border rounded-2 d-flex flex-column overflow-hidden w-100 flex-auto mb-3">
@@ -43,7 +56,7 @@
                             <@s.text name="button.view"/>
                         </a>
                         <#if !ds.latest && ds.updatable>
-                            <a href="dataPackageUpdateImpact.do?id=${ds.identifier?url}" class="action-link-button action-link-button-primary">
+                            <a href="dataPackageUpdateImpact.do?id=${ds.identifier?url}" class="action-link-button action-link-button-primary update-schema">
                                 <@s.text name="button.update"/>
                             </a>
                         </#if>

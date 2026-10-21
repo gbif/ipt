@@ -4,6 +4,19 @@
 <#assign schemaTitle = impact.installed.title!impact.installed.name/>
 <title><@s.text name="admin.dataPackages.update.title"><@s.param>${schemaTitle}</@s.param></@s.text></title>
 
+<script>
+    $(document).ready(function () {
+        $("#update").on("click", displayProcessing);
+    });
+
+    // the page may be restored from the browser cache with the processing overlay, e.g. going back
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+            hideProcessing();
+        }
+    });
+</script>
+
 <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
@@ -55,7 +68,7 @@
                 <div class="mt-2">
                     <form action="updateDataPackage.do" method="post" class="d-inline">
                         <input type="hidden" name="id" value="${impact.installed.identifier}"/>
-                        <button type="submit" name="update" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
+                        <button id="update" type="submit" name="update" class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
                             <@s.text name="admin.dataPackages.update.button"><@s.param>${impact.update.version!}</@s.param></@s.text>
                         </button>
                     </form>
