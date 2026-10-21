@@ -1,6 +1,5 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <title><@s.text name="admin.home.manageDataPackageSchemas"/></title>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 
     <#macro installedSchemaItem ds>
         <div class="d-flex flex-column col-lg-6 col-12 px-2">
@@ -44,13 +43,9 @@
                             <@s.text name="button.view"/>
                         </a>
                         <#if !ds.latest && ds.updatable>
-                            <form action='updateDataPackage.do' method='post'>
-                                <input type='hidden' name='id' value='${ds.identifier}' />
-
-                                <button type="submit" value="Update" id="update" name="update" class="confirm action-link-button action-link-button-primary">
-                                    <@s.text name="button.update"/>
-                                </button>
-                            </form>
+                            <a href="dataPackageUpdateImpact.do?id=${ds.identifier?url}" class="action-link-button action-link-button-primary">
+                                <@s.text name="button.update"/>
+                            </a>
                         </#if>
                     </div>
                 </div>

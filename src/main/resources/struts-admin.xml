@@ -86,6 +86,10 @@
     <action name="dataPackages" class="org.gbif.ipt.action.admin.DataPackageSchemaAction" method="list">
       <result>/WEB-INF/pages/admin/dataPackageSchemas.ftl</result>
     </action>
+    <action name="dataPackageUpdateImpact" class="org.gbif.ipt.action.admin.DataPackageSchemaAction" method="updateImpact">
+      <result>/WEB-INF/pages/admin/dataPackageUpdateImpact.ftl</result>
+      <result name="input" type="redirect">${baseURL}/admin/dataPackages.do</result>
+    </action>
     <action name="updateDataPackage" class="org.gbif.ipt.action.admin.DataPackageSchemaAction" method="update">
       <result type="redirect">${baseURL}/admin/dataPackages.do</result>
     </action>

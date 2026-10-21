@@ -3109,6 +3109,10 @@ span.contact-citation-banner {
     background: #fff3cd;
     color: #856404;
 }
+.schema-status-blocked {
+    background: #f8d7da;
+    color: #842029;
+}
 .schema-status-not-installed {
     background: #f1f1f1;
     color: #767676;

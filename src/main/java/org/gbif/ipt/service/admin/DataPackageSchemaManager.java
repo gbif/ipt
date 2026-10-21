@@ -35,6 +35,14 @@ public interface DataPackageSchemaManager {
   DataPackageSchema update(String identifier) throws IOException;
 
   /**
+   * Get the version an installed data schema would be updated to, with its table schemas, without installing it.
+   *
+   * @param identifier identifier or name of the installed data schema
+   * @return the newer version, or null if there is none or the data schema isn't installed
+   */
+  DataPackageSchema getUpdate(String identifier) throws IOException;
+
+  /**
    * Get a locally installed data schema by its identifier or name.
    *
    * @return data schema for that identifier/name or null if not installed

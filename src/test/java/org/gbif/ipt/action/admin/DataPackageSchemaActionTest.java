@@ -13,11 +13,13 @@
  */
 package org.gbif.ipt.action.admin;
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
+import org.gbif.ipt.model.DataPackageSchemaUpdateImpact.ResourceImpact;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
@@ -26,12 +28,15 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -126,6 +131,47 @@ public class DataPackageSchemaActionTest {
     action.update();
 
     assertEquals("http://example.org/camtrap-profile", metadata.getProfile());
+  }
+
+  /**
+   * The impact of an update covers the resources using the schema, whichever form of its identifier they have.
+   */
+  @Test
+  public void testUpdateImpact() throws Exception {
+    when(schemaManager.getUpdate(IDENTIFIER))
+        .thenReturn(DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version("2.0").build());
+    Resource usingSchema = resource("https://example.org/dp", true);
+    when(resourceManager.list()).thenReturn(List.of(usingSchema, resource("http://example.org/other", true)));
+
+    assertEquals(BaseAction.SUCCESS, action.updateImpact());
+
+    assertEquals("2.0", action.getUpdateImpact().getUpdate().getVersion());
+    assertEquals(List.of(usingSchema),
+        action.getUpdateImpact().getResources().stream().map(ResourceImpact::getResource).toList());
+    verify(schemaManager, never()).update(any());
+  }
+
+  @Test
+  public void testUpdateImpactWithoutUpdate() throws Exception {
+    assertEquals(BaseAction.INPUT, action.updateImpact());
+    assertNull(action.getUpdateImpact());
+
+    action.id = "http://example.org/unknown";
+    assertEquals(BaseAction.NOT_FOUND, action.updateImpact());
+  }
+
+  /**
+   * An update that can't be read is reported, and nothing is shown or updated.
+   */
+  @Test
+  public void testUpdateImpactFailure() throws Exception {
+    when(schemaManager.getUpdate(IDENTIFIER)).thenThrow(new IOException("unreachable"));
+
+    assertEquals(BaseAction.INPUT, action.updateImpact());
+
+    assertNull(action.getUpdateImpact());
+    assertFalse(action.getActionWarnings().isEmpty());
+    verify(schemaManager, never()).update(any());
   }
 
   private static Resource resource(String dataPackageIdentifier, boolean mapped) {

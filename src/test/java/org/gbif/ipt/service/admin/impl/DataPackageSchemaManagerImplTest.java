@@ -26,6 +26,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -157,6 +158,51 @@ public class DataPackageSchemaManagerImplTest {
 
     assertNull(manager.update(IDENTIFIER));
     assertEquals("1.0", manager.get(IDENTIFIER).getVersion());
+  }
+
+  /**
+   * The update is read with its table schemas, but not installed.
+   */
+  @Test
+  public void testGetUpdate() throws Exception {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    registryHasLatest(schema(IDENTIFIER, "dp", "2.0", "2025-06-01", "event", "occurrence"));
+
+    DataPackageSchema update = manager.getUpdate(IDENTIFIER);
+
+    assertEquals("2.0", update.getVersion());
+    assertTableSchemaLoaded(update, "event");
+    assertTableSchemaLoaded(update, "occurrence");
+    assertEquals("1.0", manager.get(IDENTIFIER).getVersion());
+    assertFalse(manager.getTableSchemaFile(manager.get(IDENTIFIER), "occurrence").exists());
+    assertTrue(manager.getRawData("dp").contains("\"version\": \"1.0\""));
+    assertTrue(tmpFiles().isEmpty(), tmpFiles().toString());
+  }
+
+  /**
+   * An update that can't be read fails, leaving the installed version as it was.
+   */
+  @Test
+  public void testFailedGetUpdateKeepsInstalledVersion() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    registryHasLatest(schema(IDENTIFIER, "dp", "2.0", "2025-06-01", "event", "occurrence"));
+    remoteFiles.remove(tableSchemaUrl("dp", "2.0", "occurrence"));
+
+    assertThrows(IOException.class, () -> manager.getUpdate(IDENTIFIER));
+
+    DataPackageSchema installed = manager.get(IDENTIFIER);
+    assertEquals("1.0", installed.getVersion());
+    assertTrue(manager.getTableSchemaFile(installed, "event").exists());
+    assertTrue(tmpFiles().isEmpty(), tmpFiles().toString());
+  }
+
+  @Test
+  public void testGetUpdateNotNewer() throws Exception {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    registryHasLatest(schema(IDENTIFIER, "dp", "2.0", "2025-01-01", "event"));
+
+    assertNull(manager.getUpdate(IDENTIFIER));
+    assertNull(manager.getUpdate(OTHER_IDENTIFIER));
   }
 
   /**
@@ -540,6 +586,14 @@ public class DataPackageSchemaManagerImplTest {
 
   private File schemaFolder(String name) {
     return new File(dataDirFolder, "config/.dataPackages/" + name);
+  }
+
+  /**
+   * @return files left in the temp folder
+   */
+  private List<String> tmpFiles() {
+    String[] files = dataDir.tmpFile("").list();
+    return files == null ? List.of() : List.of(files);
   }
 
   private List<String> schemaFiles(String name) {

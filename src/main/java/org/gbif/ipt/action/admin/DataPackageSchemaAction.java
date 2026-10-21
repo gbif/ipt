@@ -17,6 +17,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.DataPackageSchema;
+import org.gbif.ipt.model.DataPackageSchemaUpdateImpact;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -36,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -76,6 +78,9 @@ public class DataPackageSchemaAction extends POSTAction {
   private boolean upToDate = true;
   @Getter
   private boolean iptReinstallationRequired = false;
+  // what updating the data schema would change, shown before updating
+  @Getter
+  private DataPackageSchemaUpdateImpact updateImpact;
 
   @Inject
   public DataPackageSchemaAction(
@@ -144,6 +149,39 @@ public class DataPackageSchemaAction extends POSTAction {
     } catch (Exception e) {
       LOG.error(e);
       addActionWarning(getText("admin.dataPackages.update.error", new String[]{e.getMessage()}), e);
+    }
+    return SUCCESS;
+  }
+
+  /**
+   * Shows what updating the installed data schema to the latest version would change, and how it affects the
+   * resources using it before updating.
+   *
+   * @return struts2 result: success to show the impact, input if there's nothing to update or the update can't be
+   * read, 404 if the data schema isn't installed
+   */
+  public String updateImpact() {
+    DataPackageSchema installed = schemaManager.get(id);
+    if (installed == null) {
+      return NOT_FOUND;
+    }
+
+    try {
+      DataPackageSchema update = schemaManager.getUpdate(id);
+      if (update == null) {
+        addActionMessage(getText("admin.dataPackages.update.none",
+            new String[]{Objects.toString(installed.getTitle(), installed.getName())}));
+        return INPUT;
+      }
+
+      List<Resource> resources = resourceManager.list().stream()
+          .filter(res -> usesSchema(res, installed))
+          .toList();
+      updateImpact = DataPackageSchemaUpdateImpact.of(installed, update, resources);
+    } catch (Exception e) {
+      LOG.error("Failed to get the update of data schema {}", id, e);
+      addActionWarning(getText("admin.dataPackages.update.impact.error", new String[]{id}), e);
+      return INPUT;
     }
     return SUCCESS;
   }

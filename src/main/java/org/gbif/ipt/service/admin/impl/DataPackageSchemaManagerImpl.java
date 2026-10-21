@@ -188,28 +188,48 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   public synchronized DataPackageSchema update(String identifier) throws IOException, RegistryException {
     // identify installed data schema by identifier
     DataPackageSchema installed = get(identifier);
-    DataPackageSchema latestCompatibleSchema = null;
+    DataPackageSchema latestCompatibleSchema = installed == null ? null : findUpdate(installed);
 
-    if (installed != null) {
-      // verify there is a newer version
-      String latestCompatibleSchemaVersion = registryManager.getLatestCompatibleSchemaVersion(installed.getName(), installed.getVersion());
-
-      if (latestCompatibleSchemaVersion != null) {
-        latestCompatibleSchema = registryManager.getSchema(installed.getName(), latestCompatibleSchemaVersion);
-      }
-
-      boolean isNewVersion = latestCompatibleSchema != null
-          && isIssuedLater(latestCompatibleSchema.getIssued(), installed.getIssued());
-
-      if (isNewVersion && latestCompatibleSchema.getUrl() != null) {
-        // replaces the installed version only once the new one is installed
-        install(latestCompatibleSchema, installed);
-      } else {
-        return null;
-      }
+    if (latestCompatibleSchema != null) {
+      // replaces the installed version only once the new one is installed
+      install(latestCompatibleSchema, installed);
     }
 
     return latestCompatibleSchema;
+  }
+
+  @Override
+  public DataPackageSchema getUpdate(String identifier) throws IOException, RegistryException {
+    DataPackageSchema installed = get(identifier);
+    DataPackageSchema latestCompatibleSchema = installed == null ? null : findUpdate(installed);
+    if (latestCompatibleSchema == null) {
+      return null;
+    }
+
+    File folder = dataDir.tmpDir();
+    try {
+      latestCompatibleSchema.setTableSchemas(downloadTableSchemas(latestCompatibleSchema, folder));
+      return latestCompatibleSchema;
+    } finally {
+      FileUtils.deleteQuietly(folder);
+    }
+  }
+
+  /**
+   * @param installed installed data schema
+   * @return the latest compatible version of the data schema from the registry, without its table schemas loaded, or
+   * null if it isn't newer than the installed one
+   */
+  private DataPackageSchema findUpdate(DataPackageSchema installed) throws RegistryException {
+    String latestCompatibleSchemaVersion = registryManager.getLatestCompatibleSchemaVersion(installed.getName(), installed.getVersion());
+    if (latestCompatibleSchemaVersion == null) {
+      return null;
+    }
+
+    DataPackageSchema latestCompatibleSchema = registryManager.getSchema(installed.getName(), latestCompatibleSchemaVersion);
+    boolean isNewVersion = latestCompatibleSchema != null
+        && isIssuedLater(latestCompatibleSchema.getIssued(), installed.getIssued());
+    return isNewVersion && latestCompatibleSchema.getUrl() != null ? latestCompatibleSchema : null;
   }
 
   @Override
@@ -319,16 +339,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       }
       String rawContent = Files.readString(mainSchemaFile.toPath(), StandardCharsets.UTF_8);
 
-      Set<DataPackageTableSchema> tableSchemas = new LinkedHashSet<>();
-      for (DataPackageTableSchema ts : dataPackageSchema.getTableSchemas()) {
-        File downloaded = download(ts.getUrl(), new File(stagingFolder, "download" + DATA_SCHEMA_FILE_SUFFIX));
-        DataPackageTableSchema tableSchema = loadTableSchemaFromFile(downloaded);
-        Objects.requireNonNull(tableSchema, "Table schema is empty: " + ts.getUrl());
-        Objects.requireNonNull(tableSchema.getName(), "Table schema name is required: " + ts.getUrl());
-        FileUtils.moveFile(downloaded,
-            new File(stagingFolder, getTableSchemaFileName(dataPackageSchema.getIdentifier(), tableSchema.getName())));
-        tableSchemas.add(tableSchema);
-      }
+      Set<DataPackageTableSchema> tableSchemas = downloadTableSchemas(dataPackageSchema, stagingFolder);
 
       replaceFolder(getDataSchemaDirectory(dataPackageSchema.getName()), stagingFolder);
       dataPackageSchema.setTableSchemas(tableSchemas);
@@ -346,6 +357,28 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     } finally {
       FileUtils.deleteQuietly(stagingFolder);
     }
+  }
+
+  /**
+   * Downloads and reads the table schemas of a data schema.
+   *
+   * @param dataPackageSchema data schema as described by the registry, with the URLs of its table schemas
+   * @param folder folder the table schema files are downloaded to
+   * @return table schemas
+   */
+  private Set<DataPackageTableSchema> downloadTableSchemas(DataPackageSchema dataPackageSchema, File folder)
+      throws IOException {
+    Set<DataPackageTableSchema> tableSchemas = new LinkedHashSet<>();
+    for (DataPackageTableSchema ts : dataPackageSchema.getTableSchemas()) {
+      File downloaded = download(ts.getUrl(), new File(folder, "download" + DATA_SCHEMA_FILE_SUFFIX));
+      DataPackageTableSchema tableSchema = loadTableSchemaFromFile(downloaded);
+      Objects.requireNonNull(tableSchema, "Table schema is empty: " + ts.getUrl());
+      Objects.requireNonNull(tableSchema.getName(), "Table schema name is required: " + ts.getUrl());
+      FileUtils.moveFile(downloaded,
+          new File(folder, getTableSchemaFileName(dataPackageSchema.getIdentifier(), tableSchema.getName())));
+      tableSchemas.add(tableSchema);
+    }
+    return tableSchemas;
   }
 
   /**
