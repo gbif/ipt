@@ -13,9 +13,9 @@
                 baseUrl: "${baseURL}",
                 logo: "success"
             });
-        });
 
-        $("#synchronise").on("click", displayProcessing);
+            $("#synchronise").on("click", displayProcessing);
+        });
     </script>
 
     <#macro installedExtensionItem ext >
