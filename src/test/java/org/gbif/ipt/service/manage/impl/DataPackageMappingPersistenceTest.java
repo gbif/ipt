@@ -176,6 +176,20 @@ public class DataPackageMappingPersistenceTest {
     assertTrue(mapping.getUnresolvedFieldNames().isEmpty());
   }
 
+  /**
+   * Fields not in the schema that aren't mapped, neither to a column nor with a default value, aren't an issue.
+   */
+  @Test
+  public void testUnmappedFieldsNotUnresolved() {
+    DataPackageMapping mapping = mapping(schema("1.0", "eventID"), "eventID");
+    mapping.getFields().add(new DataPackageFieldMapping(null, field("removedUnmapped")));
+    DataPackageFieldMapping withDefault = new DataPackageFieldMapping(null, field("removedWithDefault"));
+    withDefault.setDefaultValue("default");
+    mapping.getFields().add(withDefault);
+
+    assertEquals(List.of("removedWithDefault"), mapping.getUnresolvedFieldNames());
+  }
+
   private Resource load(String xml) {
     return persister.load(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
   }

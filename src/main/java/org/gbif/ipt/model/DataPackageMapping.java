@@ -96,7 +96,8 @@ public class DataPackageMapping implements Serializable {
   }
 
   /**
-   * @return field mappings of fields that aren't in the installed schema (anymore), e.g. after a schema update
+   * @return mapped field mappings of fields that aren't in the installed schema (anymore), e.g. after a schema update.
+   * Unmapped ones are left out: there's nothing to keep, publish or review
    */
   public List<DataPackageFieldMapping> getUnresolvedFieldMappings() {
     if (fields == null) {
@@ -108,7 +109,7 @@ public class DataPackageMapping implements Serializable {
         : table.getFields().stream().map(DataPackageField::getName).collect(Collectors.toSet());
 
     return fields.stream()
-        .filter(fm -> fm.getField() != null && !fieldNames.contains(fm.getField().getName()))
+        .filter(fm -> fm.getField() != null && fm.isMapped() && !fieldNames.contains(fm.getField().getName()))
         .collect(Collectors.toList());
   }
 
