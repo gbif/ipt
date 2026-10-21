@@ -32,6 +32,7 @@ import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -127,6 +128,46 @@ public class GenerateDataPackageTest {
 
     assertThrows(GeneratorException.class,
         () -> generator.addDataResource("camtrap-dp", tableSchema, List.of(mapping)));
+  }
+
+  /**
+   * Values are written in table schema field order, whatever the order of the field mappings, and field mappings of
+   * fields not in the schema (anymore) are left out.
+   */
+  @Test
+  public void testFieldMappingsInSchemaOrder() {
+    DataPackageField deploymentID = field("deploymentID");
+    DataPackageField locationName = field("locationName");
+    DataPackageFieldMapping locationNameMapping = new DataPackageFieldMapping(1, locationName);
+    DataPackageFieldMapping deploymentIDMapping = new DataPackageFieldMapping(0, deploymentID);
+    DataPackageMapping outOfOrder = new DataPackageMapping();
+    outOfOrder.setFields(new ArrayList<>(List.of(
+        locationNameMapping, new DataPackageFieldMapping(2, field("removedField")), deploymentIDMapping)));
+
+    List<DataPackageFieldMapping> inSchemaOrder = GenerateDataPackage.fieldMappingsInSchemaOrder(
+        List.of(deploymentID, field("unmappedField"), locationName), outOfOrder);
+
+    assertEquals(Arrays.asList(deploymentIDMapping, null, locationNameMapping), inSchemaOrder);
+  }
+
+  /**
+   * A table schema field without a field mapping, e.g. added by a schema update, is written as an empty column.
+   */
+  @Test
+  public void testFieldWithoutFieldMappingWrittenEmpty() throws Exception {
+    tableSchema.setFields(List.of(tableSchema.getFields().get(0), field("locationName")));
+
+    generator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
+
+    List<String> lines = Files.readAllLines(new File(tmpDir, "dp/deployments.csv").toPath());
+    assertEquals(List.of("deploymentID,locationName", "d1,"), lines);
+  }
+
+  private static DataPackageField field(String name) {
+    DataPackageField field = new DataPackageField();
+    field.setName(name);
+    field.setType("string");
+    return field;
   }
 
   /**

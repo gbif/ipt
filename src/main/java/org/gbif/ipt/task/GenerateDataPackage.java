@@ -447,7 +447,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             headerWritten = true;
           }
 
-          dumpData(writer, dataPackageMapping, dataPackageMapping.getFields(), totalColumns);
+          dumpData(writer, dataPackageMapping, fieldMappingsInSchemaOrder(fields, dataPackageMapping), totalColumns);
 
           // store record number by extension rowType
           recordsByTableSchema.put(tableSchema.getName(), currRecords);
@@ -517,6 +517,27 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
+   * Field mappings in the order of the table schema fields, null for fields that aren't mapped: values are written by
+   * position. The mapping's own order may differ, e.g. after a schema update.
+   *
+   * @param fields table schema fields
+   * @param mapping mapping
+   * @return field mappings, one per table schema field
+   */
+  static List<DataPackageFieldMapping> fieldMappingsInSchemaOrder(List<DataPackageField> fields,
+                                                                  DataPackageMapping mapping) {
+    Map<String, DataPackageFieldMapping> fieldMappingsByName = new HashMap<>();
+    for (DataPackageFieldMapping fieldMapping : mapping.getFields()) {
+      if (fieldMapping.getField() != null) {
+        fieldMappingsByName.putIfAbsent(fieldMapping.getField().getName(), fieldMapping);
+      }
+    }
+    return fields.stream()
+        .map(field -> fieldMappingsByName.get(field.getName()))
+        .collect(Collectors.toList());
+  }
+
+  /**
    * Write data resource for mappings.
    *
    * @param writer                   file writer for single data resource
@@ -537,6 +558,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     ClosableReportingIterator<String[]> iter = null;
     int line = 0;
     Optional<Integer> maxMappedColumnIndexOpt = tableSchemaFieldMappings.stream()
+        .filter(Objects::nonNull)
         .map(DataPackageFieldMapping::getIndex)
         .filter(Objects::nonNull)
         .max(Comparator.naturalOrder());
