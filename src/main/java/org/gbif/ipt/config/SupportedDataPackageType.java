@@ -24,7 +24,7 @@ public enum SupportedDataPackageType {
 
   CAMTRAP_DP(Constants.CAMTRAP_DP, DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER, "1.0", "prod"),
   COLDP(Constants.COL_DP, DATA_PACKAGE_COLDP_IDENTIFIER, "1.1", "prod"),
-  DWC_DP(Constants.DWC_DP, DATA_PACKAGE_DWC_DP_IDENTIFIER, "0.1", "dev");
+  DWC_DP(Constants.DWC_DP, DATA_PACKAGE_DWC_DP_IDENTIFIER, "1.0_DEV", "dev");
 
   private final String name;
   private final String identifier;
