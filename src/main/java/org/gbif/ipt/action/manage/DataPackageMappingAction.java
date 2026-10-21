@@ -64,6 +64,17 @@ public class DataPackageMappingAction extends ManagerBaseAction {
 
   private static final Pattern NAME_IGNORED_CHARACTERS_PATTERN = Pattern.compile("[\\W_]+");
 
+  // choices for a field mapping of a field not in the installed schema, see unresolvedFieldActions
+  static final String UNRESOLVED_DISCARD = "discard";
+  static final String UNRESOLVED_MOVE_TO_PREFIX = "field:";
+
+  /**
+   * What happened to a field mapping of a field not in the installed schema on save.
+   */
+  enum UnresolvedFieldResult {
+    KEPT, DISCARDED, MOVED, TARGET_MAPPED
+  }
+
   private final DataPackageSchemaManager schemaManager;
   private final SourceManager sourceManager;
 
@@ -85,6 +96,9 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private List<String> newTableSchemas = new ArrayList<>();
   @Getter
   private List<String> newSources = new ArrayList<>();
+  // what to do with field mappings of fields not in the installed schema, by field name: kept unless "discard", or
+  // moved to the field named after "field:"
+  private final Map<String, String> unresolvedFieldActions = new HashMap<>();
 
   @Inject
   public DataPackageMappingAction(
@@ -105,12 +119,28 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       dataPackageSchema = schemaManager.get(id);
     }
 
+    // the mapping is made against the installed version
+    mapping.setVersion(dataPackageSchema.getVersion());
+
     // a new mapping?
     if (resource.getDataPackageMapping(mid) == null) {
       mid = resource.addDataPackageMapping(mapping);
     } else {
-      // save field mappings
-      mapping.setFields(fields);
+      // save field mappings, and the ones of fields not in the installed schema unless discarded or moved
+      List<DataPackageFieldMapping> savedFields = new ArrayList<>(fields);
+      for (DataPackageFieldMapping unresolved : mapping.getUnresolvedFieldMappings()) {
+        String fieldName = unresolved.getField().getName();
+        String action = unresolvedFieldActions.get(fieldName);
+        UnresolvedFieldResult result = applyUnresolvedFieldAction(unresolved, action, fields);
+        if (result == UnresolvedFieldResult.TARGET_MAPPED) {
+          addActionWarning(getText("manage.mapping.unresolved.targetMapped",
+              new String[] {fieldName, StringUtils.removeStart(action, UNRESOLVED_MOVE_TO_PREFIX)}));
+        }
+        if (result == UnresolvedFieldResult.KEPT || result == UnresolvedFieldResult.TARGET_MAPPED) {
+          savedFields.add(unresolved);
+        }
+      }
+      mapping.setFields(savedFields);
       int fieldsMapped = fields.stream()
           .map(DataPackageFieldMapping::getIndex)
           .filter(Objects::nonNull)
@@ -118,9 +148,6 @@ public class DataPackageMappingAction extends ManagerBaseAction {
           .reduce(0, Integer::sum);
       mapping.setFieldsMapped(fieldsMapped);
     }
-    // update schema version
-    resource.setDataPackageVersion(dataPackageSchema.getVersion());
-
     // update last modified dates
     Date lastModified = new Date();
     mapping.setLastModified(lastModified);
@@ -132,6 +159,42 @@ public class DataPackageMappingAction extends ManagerBaseAction {
     validateAndReport();
 
     return defaultResult;
+  }
+
+  /**
+   * Applies the choice made for a field mapping of a field not in the installed schema: discarding it, or moving its
+   * column, default value and translations to an unmapped field of the installed schema. Anything else keeps it.
+   *
+   * @param unresolved field mapping of a field not in the installed schema
+   * @param action "discard", "field:" followed by the name of the field to move it to, or null to keep it
+   * @param fields field mappings of the installed schema fields
+   * @return what happened to it
+   */
+  static UnresolvedFieldResult applyUnresolvedFieldAction(DataPackageFieldMapping unresolved, String action,
+                                                          List<DataPackageFieldMapping> fields) {
+    if (UNRESOLVED_DISCARD.equals(action)) {
+      return UnresolvedFieldResult.DISCARDED;
+    }
+    if (action == null || !action.startsWith(UNRESOLVED_MOVE_TO_PREFIX)) {
+      return UnresolvedFieldResult.KEPT;
+    }
+
+    String targetName = action.substring(UNRESOLVED_MOVE_TO_PREFIX.length());
+    DataPackageFieldMapping target = fields.stream()
+        .filter(fm -> fm.getField() != null && targetName.equals(fm.getField().getName()))
+        .findFirst()
+        .orElse(null);
+    if (target == null) {
+      return UnresolvedFieldResult.KEPT;
+    }
+    if (target.getIndex() != null || StringUtils.isNotEmpty(target.getDefaultValue())) {
+      return UnresolvedFieldResult.TARGET_MAPPED;
+    }
+
+    target.setIndex(unresolved.getIndex());
+    target.setDefaultValue(unresolved.getDefaultValue());
+    target.setTranslation(unresolved.getTranslation());
+    return UnresolvedFieldResult.MOVED;
   }
 
   private void readSource() {
@@ -198,6 +261,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       Source source = resource.getSource(sourceName);
       newMapping.setSource(source);
       newMapping.setDataPackageSchema(dataPackageSchema);
+      newMapping.setVersion(dataPackageSchema.getVersion());
       newMapping.setDataPackageTableSchemaName(new DataPackageTableSchemaName(tableSchemaName));
       newMapping.setFilter(new RecordFilter());
 
@@ -500,5 +564,10 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   @StrutsParameter(depth = 2)
   public List<DataPackageFieldMapping> getFields() {
     return fields;
+  }
+
+  @StrutsParameter(depth = 2)
+  public Map<String, String> getUnresolvedFieldActions() {
+    return unresolvedFieldActions;
   }
 }

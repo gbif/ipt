@@ -1,6 +1,29 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#assign lastModifiedNotSet><@s.text name='basic.lastModified.not.set'/></#assign>
 
+<#-- what a data package mapping needs reviewed for: made against another schema version than the installed one,
+     or its table or fields aren't in the installed schema (anymore) -->
+<#macro dataPackageMappingIssues m>
+    <#local issues = []>
+    <#if (m.version!"") != (m.dataPackageSchema.version)!"">
+        <#local issue><@s.text name="manage.overview.mappings.outdated"><@s.param>${m.version!"?"}</@s.param></@s.text></#local>
+        <#local issues = issues + [issue]>
+    </#if>
+    <#if m.tableSchemaMissing>
+        <#local issue><@s.text name="manage.overview.mappings.tableMissing"/></#local>
+        <#local issues = issues + [issue]>
+    <#elseif m.unresolvedFieldNames?has_content>
+        <#local issue><@s.text name="manage.overview.mappings.fieldsMissing"><@s.param>${m.unresolvedFieldNames?join(", ")}</@s.param></@s.text></#local>
+        <#local issues = issues + [issue]>
+    </#if>
+    <#if issues?has_content>
+        <br>
+        <small class="text-gbif-danger" title="<#list issues as issue>${issue}<#sep>; </#sep></#list>">
+            <i class="bi bi-exclamation-triangle-fill"></i> <#list issues as issue>${issue}<#sep>; </#sep></#list>
+        </small>
+    </#if>
+</#macro>
+
 <!-- Represents source data section on resource overview page -->
 <span class="anchor anchor-overview-page" id="anchor-sources"></span>
 <div class="py-5 border-bottom section" id="sources">
@@ -231,7 +254,7 @@
                 <p class="text-gbif-danger">
                     <@s.text name='manage.overview.mappings.schemaChanged'>
                         <@s.param><b>${installedSchemaName!"?"}</b></@s.param>
-                        <@s.param><b>v${resource.dataPackageVersion!"?"}</b></@s.param>
+                        <@s.param><b>v${outdatedMappingVersions!"?"}</b></@s.param>
                         <@s.param><b>v${installedSchemaVersion!"?"}</b></@s.param>
                     </@s.text>
                 </p>
@@ -270,7 +293,7 @@
                                                 <i class="bi bi-arrow-right"></i>
                                                 <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
                                                 <br>
-                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small><@dataPackageMappingIssues m/>
                                             </div>
                                             <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                                 <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
@@ -325,7 +348,7 @@
                                             <i class="bi bi-arrow-right"></i>
                                             <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
                                             <br>
-                                            <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                            <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small><@dataPackageMappingIssues m/>
                                         </div>
                                         <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                             <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
@@ -380,7 +403,7 @@
                                                 <i class="bi bi-arrow-right"></i>
                                                 <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
                                                 <br>
-                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small><@dataPackageMappingIssues m/>
                                             </div>
                                             <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                                 <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
@@ -435,7 +458,7 @@
                                                 <i class="bi bi-arrow-right"></i>
                                                 <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
                                                 <br>
-                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                                <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small><@dataPackageMappingIssues m/>
                                             </div>
                                             <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                                 <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
@@ -490,7 +513,7 @@
                                                     <i class="bi bi-arrow-right"></i>
                                                     <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
                                                     <br>
-                                                    <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                                    <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small><@dataPackageMappingIssues m/>
                                                 </div>
                                                 <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                                     <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">
@@ -544,7 +567,7 @@
                                             <i class="bi bi-arrow-right"></i>
                                             <strong class="fs-smaller">${(m.dataPackageTableSchemaName.name)!"?"}</strong>
                                             <br>
-                                            <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small>
+                                            <small><@s.text name='manage.overview.mappings.fields'><@s.param>${(m.fields)!?size}</@s.param></@s.text> | ${(m.lastModified?datetime?string.medium)!lastModifiedNotSet}</small><@dataPackageMappingIssues m/>
                                         </div>
                                         <div class="my-auto d-flex justify-content-end pt-0 mapping-item-actions">
                                             <a title="<@s.text name="button.edit"/>" class="icon-button icon-material-actions mapping-item-action fs-smaller-2 d-sm-max-none" type="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${m_index}">

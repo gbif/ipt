@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -41,6 +42,8 @@ public class DataPackageMapping implements Serializable {
 
   private Source source;
   private DataPackageSchema dataPackageSchema;
+  // version of the schema the mapping was made against, the installed one may be newer
+  private String version;
   private DataPackageTableSchemaName dataPackageTableSchemaName;
   private List<DataPackageFieldMapping> fields = new ArrayList<>();
   private int fieldsMapped;
@@ -90,6 +93,50 @@ public class DataPackageMapping implements Serializable {
       }
     }
     return null;
+  }
+
+  /**
+   * @return field mappings of fields that aren't in the installed schema (anymore), e.g. after a schema update
+   */
+  public List<DataPackageFieldMapping> getUnresolvedFieldMappings() {
+    if (fields == null) {
+      return List.of();
+    }
+    DataPackageTableSchema table = getTableSchema();
+    Set<String> fieldNames = table == null || table.getFields() == null
+        ? Set.of()
+        : table.getFields().stream().map(DataPackageField::getName).collect(Collectors.toSet());
+
+    return fields.stream()
+        .filter(fm -> fm.getField() != null && !fieldNames.contains(fm.getField().getName()))
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * @return true if the mapped table isn't in the installed schema (anymore), e.g. after a schema update
+   */
+  public boolean isTableSchemaMissing() {
+    return dataPackageTableSchemaName != null && getTableSchema() == null;
+  }
+
+  /**
+   * @return names of the mapped fields that aren't in the installed table schema (anymore), empty if the table is missing
+   */
+  public List<String> getUnresolvedFieldNames() {
+    if (isTableSchemaMissing()) {
+      return List.of();
+    }
+    return getUnresolvedFieldMappings().stream()
+        .map(fm -> fm.getField().getName())
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * @return label of the mapping for messages, e.g. "occurrences.csv → occurrence"
+   */
+  public String getLabel() {
+    return (source != null ? source.getName() : "?") + " → "
+        + (dataPackageTableSchemaName != null ? dataPackageTableSchemaName.getName() : "?");
   }
 
   public DataPackageTableSchema getTableSchema() {

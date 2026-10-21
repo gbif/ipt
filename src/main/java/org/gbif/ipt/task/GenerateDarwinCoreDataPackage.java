@@ -453,6 +453,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     // before starting to add a table schema, check all required schemas mapped
     checkRequiredTableSchemasMapped(mappedTableSchemas, dataPackageSchema);
 
+    checkMappingsResolved(allMappings, dataPackageSchema);
+
     for (DataPackageTableSchema tableSchema : dataPackageSchema.getTableSchemas()) {
       // skip unmapped (optional) schemas
       if (!mappedTableSchemas.contains(tableSchema.getName())) {
@@ -470,6 +472,35 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     // final reporting
     addMessage(Level.INFO, "All Data Resources completed");
     report();
+  }
+
+  /**
+   * Fails if a mapping refers to a table not in the installed schema (anymore), its data would be left out. Mapped
+   * fields not in the installed schema are left out with a warning: they may be kept on purpose until reviewed.
+   *
+   * @param allMappings mappings of the resource
+   * @param dataPackageSchema installed schema
+   */
+  void checkMappingsResolved(List<DataPackageMapping> allMappings, DataPackageSchema dataPackageSchema)
+      throws GeneratorException {
+    List<String> missingTables = allMappings.stream()
+        .filter(DataPackageMapping::isTableSchemaMissing)
+        .map(DataPackageMapping::getLabel)
+        .toList();
+    if (!missingTables.isEmpty()) {
+      String msg = "Mappings refer to tables not in " + dataPackageSchema.getName() + " v" + dataPackageSchema.getVersion()
+          + ", delete or remap them: " + String.join(", ", missingTables);
+      addMessage(Level.ERROR, msg);
+      throw new GeneratorException(msg);
+    }
+
+    for (DataPackageMapping mapping : allMappings) {
+      List<String> unresolvedFields = mapping.getUnresolvedFieldNames();
+      if (!unresolvedFields.isEmpty()) {
+        addMessage(Level.WARN, "Mapping " + mapping.getLabel() + ": fields not in " + dataPackageSchema.getName() + " v"
+            + dataPackageSchema.getVersion() + " are not published: " + String.join(", ", unresolvedFields));
+      }
+    }
   }
 
   /**

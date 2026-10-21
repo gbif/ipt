@@ -246,6 +246,34 @@ public class GenerateDarwinCoreDataPackageTest {
     assertFalse(reportFile.exists());
   }
 
+  /**
+   * A mapping to a table not in the installed schema prevents publication, its data would be left out.
+   */
+  @Test
+  public void testMappingToMissingTableFails() throws Exception {
+    DataPackageMapping mapping = mapping(source("a"), new DataPackageFieldMapping(0, field("eventID")));
+    mapping.setDataPackageTableSchemaName(new DataPackageTableSchemaName("removedTable"));
+
+    GeneratorException e = assertThrows(GeneratorException.class,
+        () -> generator.checkMappingsResolved(List.of(mapping), dataPackageSchema));
+    assertTrue(e.getMessage().contains("a → removedTable"), e.getMessage());
+  }
+
+  /**
+   * Mapped fields not in the installed schema don't prevent publication, but are reported.
+   */
+  @Test
+  public void testMappedFieldsMissingFromSchemaAreReported() throws Exception {
+    DataPackageMapping mapping = mapping(source("a"),
+        new DataPackageFieldMapping(0, field("eventID")), new DataPackageFieldMapping(1, field("removedField")));
+
+    generator.checkMappingsResolved(List.of(mapping), dataPackageSchema);
+
+    List<TaskMessage> messages = generator.report().getMessages();
+    String last = messages.get(messages.size() - 1).getMessage();
+    assertTrue(last.contains("a → event") && last.contains("removedField"), last);
+  }
+
   private void mockMetadataFiles() throws Exception {
     File metadataFile = new File(tmpDir, "datapackage.json");
     Files.writeString(metadataFile.toPath(), "{\"profile\": \"data-package\"}");

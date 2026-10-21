@@ -52,6 +52,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import javax.annotation.Nullable;
@@ -70,7 +71,7 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
  * <p>
  * This class owns no in-memory index and does not decide when a resource is persisted; where the
  * original logic needed to sync EML fields or save the resource back to disk as a side effect of
- * loading (see {@link #backfillDataPackageVersion}), those are delegated back to the owning manager
+ * loading (see {@link #backfillDataPackageMappingVersions}), those are delegated back to the owning manager
  * via the callbacks passed as arguments, to avoid this class depending on {@code ResourceManagerImpl}
  * directly.
  */
@@ -248,7 +249,9 @@ public class ResourceLoaderImpl implements ResourceLoader {
             callbacks.save(resource);
           }
           cleanUpDataPackageMappings(resource);
-          backfillDataPackageVersion(resource, callbacks);
+          if (backfillDataPackageMappingVersions(resource, schemaManager)) {
+            callbacks.save(resource);
+          }
         }
 
         // DwC-DP resources: rename versioned EML files wrongly converted by older IPT versions, e.g. eml-9.0.xml -> eml-9.xml
@@ -366,26 +369,29 @@ public class ResourceLoaderImpl implements ResourceLoader {
   }
 
   /**
-   * Backfill the data package version if not set.
+   * Sets the installed schema version on mappings stored before mappings had a version.
    *
-   * @param resource  resource
-   * @param callbacks called to persist a resource whose data package version was backfilled during a load
-   *                  (currently {@code ResourceManagerImpl::save})
+   * @param resource data package resource
+   * @param schemaManager data package schema manager
+   * @return true if a mapping version was set
    */
-  private void backfillDataPackageVersion(Resource resource, ResourceLoadCallbacks callbacks) {
-    if (resource.getDataPackageVersion() == null) {
-      String identifier = resource.getDataPackageIdentifier();
-      String installedVersion = schemaManager.getVersion(identifier);
-      if (installedVersion != null) {
-        resource.setDataPackageVersion(installedVersion);
-        callbacks.save(resource);
-        LOG.warn("Backfilled dataPackageVersion={} for resource {} (schema {})",
-            installedVersion, resource.getShortname(), identifier);
-      } else {
-        LOG.error("Could not backfill dataPackageVersion for resource {}: schema {} not installed",
-            resource.getShortname(), identifier);
-      }
+  static boolean backfillDataPackageMappingVersions(Resource resource, DataPackageSchemaManager schemaManager) {
+    List<DataPackageMapping> withoutVersion = resource.getDataPackageMappings().stream()
+        .filter(mapping -> mapping.getVersion() == null)
+        .toList();
+    if (withoutVersion.isEmpty()) {
+      return false;
     }
+
+    String installedVersion = schemaManager.getVersion(resource.getDataPackageIdentifier());
+    if (installedVersion == null) {
+      LOG.error("No version for {} mappings of resource {}: schema {} not installed", withoutVersion.size(),
+          resource.getShortname(), resource.getDataPackageIdentifier());
+      return false;
+    }
+
+    withoutVersion.forEach(mapping -> mapping.setVersion(installedVersion));
+    return true;
   }
 
   /**

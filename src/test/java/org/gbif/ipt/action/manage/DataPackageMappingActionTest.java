@@ -17,6 +17,7 @@ import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,6 +67,47 @@ public class DataPackageMappingActionTest {
     DataPackageMappingAction.automap(fields, columns);
 
     assertEquals(1, fields.get(0).getIndex());
+  }
+
+  /**
+   * A field mapping of a field not in the installed schema is kept, discarded, or moved to an unmapped field.
+   */
+  @Test
+  public void testApplyUnresolvedFieldAction() {
+    List<DataPackageFieldMapping> fields = fieldMappings("eventDate", "locality");
+    DataPackageFieldMapping unresolved = fieldMappings("eventDateOld").get(0);
+    unresolved.setIndex(3);
+    unresolved.setDefaultValue("2020");
+    unresolved.setTranslation(Map.of("a", "b"));
+
+    assertEquals(DataPackageMappingAction.UnresolvedFieldResult.KEPT,
+        DataPackageMappingAction.applyUnresolvedFieldAction(unresolved, null, fields));
+    assertEquals(DataPackageMappingAction.UnresolvedFieldResult.KEPT,
+        DataPackageMappingAction.applyUnresolvedFieldAction(unresolved, "field:unknown", fields));
+    assertEquals(DataPackageMappingAction.UnresolvedFieldResult.DISCARDED,
+        DataPackageMappingAction.applyUnresolvedFieldAction(unresolved, "discard", fields));
+
+    assertEquals(DataPackageMappingAction.UnresolvedFieldResult.MOVED,
+        DataPackageMappingAction.applyUnresolvedFieldAction(unresolved, "field:eventDate", fields));
+    DataPackageFieldMapping eventDate = fields.get(0);
+    assertEquals(3, eventDate.getIndex());
+    assertEquals("2020", eventDate.getDefaultValue());
+    assertEquals(Map.of("a", "b"), eventDate.getTranslation());
+  }
+
+  /**
+   * A field mapping isn't moved to a field mapped already, which is left as it is.
+   */
+  @Test
+  public void testApplyUnresolvedFieldActionToMappedField() {
+    List<DataPackageFieldMapping> fields = fieldMappings("eventDate");
+    fields.get(0).setIndex(0);
+    DataPackageFieldMapping unresolved = fieldMappings("eventDateOld").get(0);
+    unresolved.setIndex(3);
+
+    assertEquals(DataPackageMappingAction.UnresolvedFieldResult.TARGET_MAPPED,
+        DataPackageMappingAction.applyUnresolvedFieldAction(unresolved, "field:eventDate", fields));
+    assertEquals(0, fields.get(0).getIndex());
   }
 
   private static List<DataPackageFieldMapping> fieldMappings(String... names) {

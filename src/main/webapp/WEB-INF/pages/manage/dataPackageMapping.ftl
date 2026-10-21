@@ -428,11 +428,11 @@
                             </@s.text>
                         </p>
 
-                        <#if dataPackageSchema.version != resource.dataPackageVersion>
+                        <#if (mapping.version)?? && mapping.version != dataPackageSchema.version>
                         <p class="text-smaller text-gbif-danger">
                             <@s.text name='manage.overview.mappings.schemaChanged'>
                                 <@s.param><b>${dataPackageSchema.name}</b></@s.param>
-                                <@s.param><b>v${resource.dataPackageVersion!"unknown"}</b></@s.param>
+                                <@s.param><b>v${mapping.version}</b></@s.param>
                                 <@s.param><b>v${dataPackageSchema.version}</b></@s.param>
                             </@s.text>
                         </p>
@@ -496,6 +496,60 @@
                     </div>
 
                     <div id="sections">
+                        <#if !(mapping.tableSchema)?? && (mapping.dataPackageTableSchemaName.name)??>
+                            <div id="table-missing" class="mt-lg-3 p-3 border border-gbif-danger rounded-2">
+                                <h4 class="pb-2 mb-2 text-gbif-danger fs-5 fw-400">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                    <@s.text name="manage.overview.mappings.tableMissing"/>
+                                </h4>
+                                <p class="text-smaller mb-0">
+                                    <@s.text name="manage.mapping.tableMissing.info">
+                                        <@s.param><strong>${mapping.dataPackageTableSchemaName.name}</strong></@s.param>
+                                        <@s.param>${dataPackageSchema.name}</@s.param>
+                                        <@s.param>${dataPackageSchema.version}</@s.param>
+                                    </@s.text>
+                                </p>
+                            </div>
+                        <#elseif mapping.unresolvedFieldMappings?has_content>
+                            <div id="unresolved-fields" class="mt-lg-3 p-3 border border-gbif-danger rounded-2">
+                                <h4 class="pb-2 mb-2 text-gbif-danger fs-5 fw-400">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                    <@s.text name="manage.mapping.unresolved.title"/>
+                                </h4>
+                                <p class="text-smaller">
+                                    <@s.text name="manage.mapping.unresolved.info">
+                                        <@s.param>${dataPackageSchema.name}</@s.param>
+                                        <@s.param>${dataPackageSchema.version}</@s.param>
+                                    </@s.text>
+                                </p>
+                                <#list mapping.unresolvedFieldMappings as unresolved>
+                                    <div class="row g-2 mb-2 align-items-center">
+                                        <div class="col-lg-4 text-smaller">
+                                            <strong>${unresolved.field.name}</strong>
+                                            <br>
+                                            <#if unresolved.index??>
+                                                <@s.text name="manage.mapping.unresolved.column"><@s.param>${columns[unresolved.index]!("#" + unresolved.index)}</@s.param></@s.text>
+                                            </#if>
+                                            <#if unresolved.defaultValue?has_content>
+                                                <@s.text name="manage.mapping.unresolved.default"><@s.param>${unresolved.defaultValue}</@s.param></@s.text>
+                                            </#if>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <select class="form-select form-select-sm" name="unresolvedFieldActions['${unresolved.field.name}']">
+                                                <option value=""><@s.text name="manage.mapping.unresolved.keep"/></option>
+                                                <option value="discard"><@s.text name="manage.mapping.unresolved.discard"/></option>
+                                                <#list fields as field>
+                                                    <#if !field.index?? && !field.defaultValue?has_content>
+                                                        <option value="field:${field.field.name}"><@s.text name="manage.mapping.unresolved.moveTo"><@s.param>${field.field.name}</@s.param></@s.text></option>
+                                                    </#if>
+                                                </#list>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </#list>
+                            </div>
+                        </#if>
+
                         <#list dataPackageSchema.tableSchemas as tableSchema>
                             <#if (mapping.dataPackageTableSchemaName.name)?? && mapping.dataPackageTableSchemaName.name == tableSchema.name>
                                 <div id="${tableSchema.name}" class="mt-lg-3">

@@ -1784,6 +1784,16 @@
                             </div>
                         </div>
 
+                        <#if isDataPackage && dataPackageUnresolvedFields?has_content>
+                            <div class="mt-4 text-smaller text-gbif-danger">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                <@s.text name="manage.overview.published.unresolvedFields"/>
+                                <#list dataPackageUnresolvedFields as mappingLabel, fieldNames>
+                                    <br><strong>${mappingLabel}</strong>: <#list fieldNames as fieldName><code>${fieldName}</code><#sep>, </#sep></#list>
+                                </#list>
+                            </div>
+                        </#if>
+
                         <#assign autoPublicationSuspendedForThisResource = action.hasMaxProcessFailures()>
                         <#assign autoPublicationEnabledForIPT = cfg.autoPublishingEnabled/>
 
@@ -2961,6 +2971,18 @@
                                 <#list value as field>
                                     <code>${field.name}</code><#sep>, </#sep>
                                 </#list><br>
+                            </#list>
+                        </p>
+
+                        <!-- resources cannot be published if mappings refer to tables not in the installed schema (for DPs) -->
+                    <#elseif isDataPackage && dataPackageMappingsWithMissingTable?has_content>
+                        <p>
+                            <@s.text name="manage.overview.published.missing.tables"/>
+                        </p>
+
+                        <p class="mb-0">
+                            <#list dataPackageMappingsWithMissingTable as mappingLabel>
+                                <code>${mappingLabel}</code><#sep><br></#sep>
                             </#list>
                         </p>
 

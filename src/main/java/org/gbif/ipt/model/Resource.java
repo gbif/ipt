@@ -187,9 +187,6 @@ public class Resource implements Serializable, Comparable<Resource> {
   private List<DataPackageMapping> dataPackageMappings = new ArrayList<>();
   @Setter
   private String dataPackageIdentifier;
-  @Getter
-  @Setter
-  private String dataPackageVersion;
 
   // the change summary, explaining what has changed in this version compared with the last
   @Getter

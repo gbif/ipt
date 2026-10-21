@@ -43,6 +43,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -168,6 +169,32 @@ public class GenerateDataPackageTest {
     field.setName(name);
     field.setType("string");
     return field;
+  }
+
+  /**
+   * A mapping to a table not in the installed schema prevents publication, its data would be left out.
+   */
+  @Test
+  public void testMappingToMissingTableFails() {
+    mapping.setDataPackageTableSchemaName(new DataPackageTableSchemaName("removedTable"));
+
+    GeneratorException e = assertThrows(GeneratorException.class,
+        () -> generator.checkMappingsResolved(List.of(mapping), mapping.getDataPackageSchema()));
+    assertTrue(e.getMessage().contains("deployments → removedTable"), e.getMessage());
+  }
+
+  /**
+   * Mapped fields not in the installed schema don't prevent publication, but are reported.
+   */
+  @Test
+  public void testMappedFieldsMissingFromSchemaAreReported() throws Exception {
+    mapping.getFields().add(new DataPackageFieldMapping(1, field("removedField")));
+
+    generator.checkMappingsResolved(List.of(mapping), mapping.getDataPackageSchema());
+
+    List<TaskMessage> messages = generator.report().getMessages();
+    String last = messages.get(messages.size() - 1).getMessage();
+    assertTrue(last.contains("deployments → deployments") && last.contains("removedField"), last);
   }
 
   /**

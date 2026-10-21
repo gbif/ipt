@@ -29,6 +29,7 @@ import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.DataPackageField;
+import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
@@ -228,6 +229,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private String installedSchemaVersion;
   @Getter
   private String installedSchemaName;
+  // versions the outdated mappings were made against, e.g. "1.0, v1.1"
+  @Getter
+  private String outdatedMappingVersions;
+  // labels of the mappings to tables not in the installed schema, preventing publication
+  @Getter
+  private List<String> dataPackageMappingsWithMissingTable = new ArrayList<>();
+  // names of the mapped fields not in the installed schema by mapping label, published without them
+  @Getter
+  private Map<String, List<String>> dataPackageUnresolvedFields = new LinkedHashMap<>();
 
   // preview
   private GenerateDwcaFactory dwcaFactory;
@@ -1254,10 +1264,29 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
       if (isDataPackageResource()) {
         DataPackageSchema dataPackageSchema = schemaManager.get(resource.getDataPackageIdentifier());
-        if (dataPackageSchema != null && !Objects.equals(dataPackageSchema.getVersion(), resource.getDataPackageVersion())) {
-          dataPackageSchemaChanged = true;
-          installedSchemaName = dataPackageSchema.getName();
-          installedSchemaVersion = dataPackageSchema.getVersion();
+        if (dataPackageSchema != null) {
+          // versions of the mappings made against another version than the installed one
+          List<String> mappedVersions = resource.getDataPackageMappings().stream()
+              .map(DataPackageMapping::getVersion)
+              .filter(v -> !Objects.equals(v, dataPackageSchema.getVersion()))
+              .map(v -> Objects.toString(v, "?"))
+              .distinct()
+              .sorted()
+              .toList();
+          if (!mappedVersions.isEmpty()) {
+            dataPackageSchemaChanged = true;
+            installedSchemaName = dataPackageSchema.getName();
+            installedSchemaVersion = dataPackageSchema.getVersion();
+            outdatedMappingVersions = String.join(", v", mappedVersions);
+          }
+        }
+
+        for (DataPackageMapping mapping : resource.getDataPackageMappings()) {
+          if (mapping.isTableSchemaMissing()) {
+            dataPackageMappingsWithMissingTable.add(mapping.getLabel());
+          } else if (!mapping.getUnresolvedFieldNames().isEmpty()) {
+            dataPackageUnresolvedFields.put(mapping.getLabel(), mapping.getUnresolvedFieldNames());
+          }
         }
 
         missingRequiredFieldsDataPackage = computeAllRequiredFieldsMappedDataPackage();

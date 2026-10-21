@@ -172,10 +172,8 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     }
 
     String schemaIdentifier = schemaManager.getSchemaIdentifier(type);
-    String schemaVersion = schemaManager.getVersion(schemaIdentifier);
     if (schemaIdentifier != null) {
       res.setDataPackageIdentifier(schemaIdentifier);
-      res.setDataPackageVersion(schemaVersion);
     }
 
     res.setCoreType(type);
@@ -949,6 +947,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     }
 
     map.setDataPackageSchema(dataPackageSchema);
+    map.setVersion(dataPackageSchema.getVersion());
     map.setDataPackageTableSchemaName(new DataPackageTableSchemaName(tableSchema.getName()));
     map.setSource(source);
 

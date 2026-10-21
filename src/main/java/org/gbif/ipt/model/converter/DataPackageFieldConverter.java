@@ -75,7 +75,10 @@ public class DataPackageFieldConverter implements Converter {
     }
 
     if (field == null) {
-      LOG.warn("Cant unmarshall field {}", reader.getValue());
+      // not in the installed schema (anymore): keep its name, so the mapping isn't lost and can be reviewed
+      LOG.warn("Field {} of table schema {} not found in the installed schema", reader.getValue(), tableSchemaName);
+      field = new DataPackageField();
+      field.setName(reader.getValue());
     }
 
     return field;
