@@ -17,9 +17,13 @@ import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.DataPackageField;
+import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageSchemaUpdateImpact.ResourceImpact;
+import org.gbif.ipt.model.DataPackageTableSchema;
+import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
@@ -29,17 +33,22 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -150,6 +159,44 @@ public class DataPackageSchemaActionTest {
   }
 
   /**
+   * Mappings the update doesn't affect are marked as made against the new version, the others keep the version they
+   * were made against, to be reviewed. The resource is saved.
+   */
+  @Test
+  public void testUpdateMarksUnaffectedMappingsAsUpToDate() throws Exception {
+    DataPackageSchema installed = DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version("1.0")
+        .tableSchemas(new LinkedHashSet<>(List.of(
+            table("event", "eventID", "locality"), table("occurrence", "occurrenceID")))).build();
+    DataPackageSchema updated = DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version("2.0")
+        .tableSchemas(new LinkedHashSet<>(List.of(
+            table("event", "eventID"), table("occurrence", "occurrenceID")))).build();
+    when(schemaManager.get(IDENTIFIER)).thenReturn(installed);
+    when(schemaManager.update(IDENTIFIER)).thenReturn(updated);
+
+    Resource resource = new Resource();
+    resource.setShortname("res");
+    resource.setDataPackageIdentifier(IDENTIFIER);
+    DataPackageMapping unaffected = mapping(installed, "1.0", "occurrence", "occurrenceID");
+    // mapped field removed by the update
+    DataPackageMapping affected = mapping(installed, "1.0", "event", "eventID", "locality");
+    // made against an older version than the replaced one: still to be reviewed
+    DataPackageMapping older = mapping(installed, "0.9", "occurrence", "occurrenceID");
+    // made against an unknown version
+    DataPackageMapping withoutVersion = mapping(installed, null, "occurrence", "occurrenceID");
+    List.of(unaffected, affected, older, withoutVersion).forEach(resource::addDataPackageMapping);
+    when(resourceManager.list()).thenReturn(List.of(resource));
+
+    action.update();
+
+    assertEquals("2.0", unaffected.getVersion());
+    assertEquals("1.0", affected.getVersion());
+    assertEquals("0.9", older.getVersion());
+    assertNull(withoutVersion.getVersion());
+    List.of(unaffected, affected, older, withoutVersion).forEach(m -> assertSame(updated, m.getDataPackageSchema()));
+    verify(resourceManager).save(resource);
+  }
+
+  /**
    * The Camtrap DP profile of a resource isn't replaced by the profile of another schema being updated.
    */
   @Test
@@ -166,6 +213,41 @@ public class DataPackageSchemaActionTest {
     action.update();
 
     assertEquals("http://example.org/camtrap-profile", metadata.getProfile());
+  }
+
+  /**
+   * The new profile of a Camtrap DP resource using the schema is saved with its metadata, before the resource, as
+   * saving the metadata sets its modified date.
+   */
+  @Test
+  public void testUpdateSavesNewCamtrapProfile() throws Exception {
+    when(schemaManager.update(IDENTIFIER)).thenReturn(DataPackageSchema.builder().identifier(IDENTIFIER).name("dp")
+        .version("2.0").profile("http://example.org/profile-2").build());
+    Resource camtrap = camtrapResource("http://example.org/profile-1");
+    when(resourceManager.list()).thenReturn(List.of(camtrap));
+
+    action.update();
+
+    assertEquals("http://example.org/profile-2", ((CamtrapMetadata) camtrap.getDataPackageMetadata()).getProfile());
+    InOrder inOrder = inOrder(resourceManager);
+    inOrder.verify(resourceManager).saveDatapackageMetadata(camtrap);
+    inOrder.verify(resourceManager).save(camtrap);
+  }
+
+  /**
+   * The metadata isn't saved if the profile doesn't change, so the resource isn't marked as modified.
+   */
+  @Test
+  public void testUpdateWithSameCamtrapProfileDoesNotSaveMetadata() throws Exception {
+    when(schemaManager.update(IDENTIFIER)).thenReturn(DataPackageSchema.builder().identifier(IDENTIFIER).name("dp")
+        .version("2.0").profile("http://example.org/profile-1").build());
+    Resource camtrap = camtrapResource("http://example.org/profile-1");
+    when(resourceManager.list()).thenReturn(List.of(camtrap));
+
+    action.update();
+
+    verify(resourceManager, never()).saveDatapackageMetadata(any());
+    verify(resourceManager).save(camtrap);
   }
 
   /**
@@ -207,6 +289,45 @@ public class DataPackageSchemaActionTest {
     assertNull(action.getUpdateImpact());
     assertFalse(action.getActionWarnings().isEmpty());
     verify(schemaManager, never()).update(any());
+  }
+
+  private static Resource camtrapResource(String profile) {
+    Resource resource = resource(IDENTIFIER, true);
+    resource.setCoreType(Constants.CAMTRAP_DP);
+    CamtrapMetadata metadata = new CamtrapMetadata();
+    metadata.setProfile(profile);
+    resource.setDataPackageMetadata(metadata);
+    return resource;
+  }
+
+  private static DataPackageTableSchema table(String name, String... fieldNames) {
+    DataPackageTableSchema table = new DataPackageTableSchema();
+    table.setName(name);
+    table.setFields(Arrays.stream(fieldNames).map(DataPackageSchemaActionTest::field).toList());
+    return table;
+  }
+
+  private static DataPackageField field(String name) {
+    DataPackageField field = new DataPackageField();
+    field.setName(name);
+    return field;
+  }
+
+  /**
+   * Mapping of a table, made against the given version, with the given fields mapped to columns.
+   */
+  private static DataPackageMapping mapping(DataPackageSchema schema, String version, String tableName,
+                                            String... mappedFields) {
+    DataPackageMapping mapping = new DataPackageMapping();
+    mapping.setDataPackageSchema(schema);
+    mapping.setVersion(version);
+    mapping.setDataPackageTableSchemaName(new DataPackageTableSchemaName(tableName));
+    List<DataPackageFieldMapping> fields = new ArrayList<>();
+    for (int i = 0; i < mappedFields.length; i++) {
+      fields.add(new DataPackageFieldMapping(i, field(mappedFields[i])));
+    }
+    mapping.setFields(fields);
+    return mapping;
   }
 
   private static Resource resource(String dataPackageIdentifier, boolean mapped) {

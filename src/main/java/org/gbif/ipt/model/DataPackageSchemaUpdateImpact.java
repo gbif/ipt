@@ -149,6 +149,16 @@ public class DataPackageSchemaUpdateImpact {
     return resources.stream().filter(r -> r.getSeverity() == Severity.NONE).toList();
   }
 
+  /**
+   * @param mapping mapping made against the installed data schema
+   * @param installed installed data schema
+   * @param update newer version of the data schema, with its table schemas
+   * @return true if the update affects the mapping, i.e. it's listed in the impact of the update and needs review
+   */
+  public static boolean affects(DataPackageMapping mapping, DataPackageSchema installed, DataPackageSchema update) {
+    return MappingImpact.of(mapping, tablesByName(installed), tablesByName(update)).hasImpact();
+  }
+
   private static Map<String, DataPackageTableSchema> tablesByName(DataPackageSchema schema) {
     if (schema.getTableSchemas() == null) {
       return Map.of();

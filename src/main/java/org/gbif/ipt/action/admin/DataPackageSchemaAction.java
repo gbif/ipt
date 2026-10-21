@@ -16,6 +16,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
+import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageSchemaUpdateImpact;
 import org.gbif.ipt.model.Resource;
@@ -139,10 +140,12 @@ public class DataPackageSchemaAction extends POSTAction {
   public String update() throws Exception {
     try {
       LOG.info("Updating data schema {} to the latest version...", id);
+      // the version being replaced, to tell which mappings the update affects
+      DataPackageSchema replacedSchema = schemaManager.get(id);
       DataPackageSchema latestCompatibleSchema = schemaManager.update(id);
 
       if (latestCompatibleSchema != null) {
-        updateResourcesAfterSchemaUpdate(latestCompatibleSchema);
+        updateResourcesAfterSchemaUpdate(replacedSchema, latestCompatibleSchema);
       }
 
       addActionMessage(getText("admin.dataPackages.update.success", new String[]{id}));
@@ -186,11 +189,12 @@ public class DataPackageSchemaAction extends POSTAction {
     return SUCCESS;
   }
 
-  private void updateResourcesAfterSchemaUpdate(DataPackageSchema newlyInstalledSchema) {
+  private void updateResourcesAfterSchemaUpdate(DataPackageSchema replacedSchema,
+                                                DataPackageSchema newlyInstalledSchema) {
     resourceManager.list()
         .stream()
         .filter(res -> usesSchema(res, newlyInstalledSchema))
-        .forEach(res -> updateResourceAfterSchemaUpdate(res, newlyInstalledSchema));
+        .forEach(res -> updateResourceAfterSchemaUpdate(res, replacedSchema, newlyInstalledSchema));
   }
 
   /**
@@ -201,20 +205,54 @@ public class DataPackageSchemaAction extends POSTAction {
     return resourceSchema != null && schema.getIdentifier().equals(resourceSchema.getIdentifier());
   }
 
-  private void updateResourceAfterSchemaUpdate(Resource resource, DataPackageSchema newlyInstalledSchema) {
+  /**
+   * Moves the resource to the new version of the schema. Its mappings made against the replaced version that the
+   * update doesn't affect are marked as made against the new one, so only the ones to review are flagged as outdated.
+   * The resource is saved, and its metadata if its profile changed, so this is kept after a restart.
+   *
+   * @param resource resource using the schema
+   * @param replacedSchema version of the schema replaced by the update, or null if unknown
+   * @param newlyInstalledSchema version of the schema installed by the update
+   */
+  private void updateResourceAfterSchemaUpdate(Resource resource, DataPackageSchema replacedSchema,
+                                               DataPackageSchema newlyInstalledSchema) {
     // update metadata profile
+    boolean profileChanged = false;
     if (CAMTRAP_DP.equals(resource.getCoreType())) {
-      if (resource.getDataPackageMetadata() instanceof CamtrapMetadata metadata) {
+      if (resource.getDataPackageMetadata() instanceof CamtrapMetadata metadata
+          && !Objects.equals(metadata.getProfile(), newlyInstalledSchema.getProfile())) {
         metadata.setProfile(newlyInstalledSchema.getProfile());
+        profileChanged = true;
       }
     }
 
-    // update schema in mappings
-    resource.getDataPackageMappings().forEach(m -> m.setDataPackageSchema(newlyInstalledSchema));
+    // update schema in mappings, and the version of the ones with nothing to review
+    for (DataPackageMapping mapping : resource.getDataPackageMappings()) {
+      boolean nothingToReview = replacedSchema != null && mapping.getVersion() != null
+          && mapping.getVersion().equals(replacedSchema.getVersion())
+          && !DataPackageSchemaUpdateImpact.affects(mapping, replacedSchema, newlyInstalledSchema);
+      mapping.setDataPackageSchema(newlyInstalledSchema);
+      if (nothingToReview) {
+        mapping.setVersion(newlyInstalledSchema.getVersion());
+      }
+    }
 
     // the identifier may change between versions, and only mappings with the resource's one are used: changed after
     // the mappings, which are found by the current one
     resource.setDataPackageIdentifier(newlyInstalledSchema.getIdentifier());
+
+    try {
+      // the metadata first: saving it sets the modified date of the resource, saved with the resource
+      if (profileChanged) {
+        resourceManager.saveDatapackageMetadata(resource);
+      }
+      resourceManager.save(resource);
+    } catch (RuntimeException e) {
+      // saving the resource fails with an InvalidConfigException, and saving the metadata with a runtime exception
+      LOG.error("Failed to save resource {} after updating data schema {}", resource.getShortname(), id, e);
+      addActionWarning(getText("admin.dataPackages.update.resource.save.error",
+          new String[]{resource.getShortname()}), e);
+    }
   }
 
   /**

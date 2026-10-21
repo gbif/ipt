@@ -303,6 +303,25 @@ public class DataPackageSchemaUpdateImpactTest {
     assertEquals(Severity.NONE, DataPackageSchemaUpdateImpact.of(INSTALLED, UPDATE, List.of(unaffected)).getSeverity());
   }
 
+  /**
+   * A mapping is affected by the update exactly when it's listed in the impact of the update.
+   */
+  @Test
+  public void testAffects() {
+    // only unchanged fields mapped: the renamed field isn't
+    assertFalse(DataPackageSchemaUpdateImpact.affects(mapping("occ.csv", "occurrence", "occurrenceID"),
+        INSTALLED, UPDATE));
+    // mapped field possibly renamed
+    assertTrue(DataPackageSchemaUpdateImpact.affects(
+        mapping("occ.csv", "occurrence", "occurrenceID", "verbatimLabel"), INSTALLED, UPDATE));
+    // newly required field not mapped
+    assertTrue(DataPackageSchemaUpdateImpact.affects(mapping("events.csv", "event", "eventID", "locality"),
+        INSTALLED, UPDATE));
+    // table removed
+    assertTrue(DataPackageSchemaUpdateImpact.affects(mapping("ages.csv", "chronometric-age", "chronometricAgeID"),
+        INSTALLED, UPDATE));
+  }
+
   private static DataPackageSchema schema(String version, DataPackageTableSchema... tables) {
     return DataPackageSchema.builder()
         .identifier("http://example.org/dp")
