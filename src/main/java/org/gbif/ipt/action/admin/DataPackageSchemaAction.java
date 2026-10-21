@@ -211,6 +211,10 @@ public class DataPackageSchemaAction extends POSTAction {
 
     // update schema in mappings
     resource.getDataPackageMappings().forEach(m -> m.setDataPackageSchema(newlyInstalledSchema));
+
+    // the identifier may change between versions, and only mappings with the resource's one are used: changed after
+    // the mappings, which are found by the current one
+    resource.setDataPackageIdentifier(newlyInstalledSchema.getIdentifier());
   }
 
   /**
@@ -229,10 +233,7 @@ public class DataPackageSchemaAction extends POSTAction {
 
     // populate the list of uninstalled data schemas, removing data schemas installed already, showing only the latest versions
     newSchemas = getLatestDataSchemasVersions();
-    List<String> installedSchemasIdentifiers = schemas.stream()
-        .map(DataPackageSchema::getIdentifier)
-        .toList();
-    newSchemas.removeIf(ds -> installedSchemasIdentifiers.contains(ds.getIdentifier()));
+    newSchemas.removeIf(ds -> schemas.stream().anyMatch(installed -> isSameSchema(installed, ds)));
 
     return SUCCESS;
   }
@@ -318,18 +319,18 @@ public class DataPackageSchemaAction extends POSTAction {
         .sorted(Comparator.comparing(DataPackageSchema::getIssued, Comparator.nullsLast(Comparator.reverseOrder())))
         .toList();
 
-    // populate the list of the latest data schema versions
-    Map<String, DataPackageSchema> dataPackageSchemasByIdentifier = new HashMap<>();
+    // populate the list of the latest data schema versions, by name as the identifier may change between versions
+    Map<String, DataPackageSchema> dataPackageSchemasByName = new HashMap<>();
     if (!sorted.isEmpty()) {
       for (DataPackageSchema dataPackageSchema : sorted) {
-        String identifier = dataPackageSchema.getIdentifier();
-        if (identifier != null && !dataPackageSchemasByIdentifier.containsKey(identifier)) {
-          dataPackageSchemasByIdentifier.put(identifier, dataPackageSchema);
+        String name = dataPackageSchema.getName();
+        if (name != null && !dataPackageSchemasByName.containsKey(name)) {
+          dataPackageSchemasByName.put(name, dataPackageSchema);
         }
       }
     }
 
-    return new ArrayList<>(dataPackageSchemasByIdentifier.values());
+    return new ArrayList<>(dataPackageSchemasByName.values());
   }
 
   /**
@@ -372,7 +373,7 @@ public class DataPackageSchemaAction extends POSTAction {
     installedSchema.setLatest(true);
 
     for (DataPackageSchema registeredSchema : registeredSchemas) {
-      if (isLatest(registeredSchema) && isSameIdentifier(installedSchema, registeredSchema)) {
+      if (isLatest(registeredSchema) && isSameSchema(installedSchema, registeredSchema)) {
         handleSchema(installedSchema, registeredSchema);
         break;
       }
@@ -427,8 +428,13 @@ public class DataPackageSchemaAction extends POSTAction {
     }
   }
 
-  private boolean isSameIdentifier(DataPackageSchema first, DataPackageSchema second) {
-    return first.getIdentifier().equalsIgnoreCase(second.getIdentifier());
+  /**
+   * @return true if both are versions of the same schema: same identifier, or same name as the identifier may change
+   * between versions
+   */
+  private boolean isSameSchema(DataPackageSchema first, DataPackageSchema second) {
+    return first.getIdentifier().equalsIgnoreCase(second.getIdentifier())
+        || Objects.equals(first.getName(), second.getName());
   }
 
   private boolean isLatest(DataPackageSchema schema) {

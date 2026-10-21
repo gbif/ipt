@@ -286,6 +286,63 @@ public class DataPackageSchemaManagerImplTest {
     assertEquals(1, manager.list().size());
   }
 
+  /**
+   * A new version may have another identifier, e.g. a versioned one. It replaces the installed version, which is still
+   * found by its identifier, e.g. the one stored in resources, also after a restart.
+   */
+  @Test
+  public void testUpdateWithChangedIdentifier() throws Exception {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    registryHasLatest(schema("http://example.org/dp/2.0", "dp", "2.0", "2025-06-01", "event", "occurrence"));
+
+    assertEquals("2.0", manager.update(IDENTIFIER).getVersion());
+
+    assertEquals(1, manager.list().size());
+    assertEquals("http://example.org/dp/2.0", manager.get("http://example.org/dp/2.0").getIdentifier());
+    assertEquals("http://example.org/dp/2.0", manager.get(IDENTIFIER).getIdentifier());
+    // and in its other forms
+    assertEquals("http://example.org/dp/2.0", manager.get("https://example.org/dp").getIdentifier());
+
+    DataPackageSchemaManagerImpl restarted = newManager();
+    assertEquals(1, restarted.list().size());
+    assertEquals("2.0", restarted.get(IDENTIFIER).getVersion());
+    assertEquals(Set.of("event", "occurrence"), tableSchemaNames(restarted.get(IDENTIFIER)));
+  }
+
+  /**
+   * The identifiers of all earlier versions are kept, not only the one of the replaced version.
+   */
+  @Test
+  public void testUpdatesWithChangedIdentifiersKeepAllPreviousOnes() throws Exception {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    registryHasLatest(schema("http://example.org/dp/2.0", "dp", "2.0", "2025-06-01", "event"));
+    manager.update(IDENTIFIER);
+    registryHasLatest(schema("http://example.org/dp/3.0", "dp", "3.0", "2025-09-01", "event"));
+    manager.update("http://example.org/dp/2.0");
+
+    DataPackageSchemaManagerImpl restarted = newManager();
+    assertEquals("3.0", restarted.get(IDENTIFIER).getVersion());
+    assertEquals("3.0", restarted.get("http://example.org/dp/2.0").getVersion());
+    assertEquals(Set.of(IDENTIFIER, "http://example.org/dp/2.0"), restarted.get(IDENTIFIER).getPreviousIdentifiers());
+  }
+
+  /**
+   * A default schema with another identifier than the installed version updates it, rather than being installed next
+   * to it.
+   */
+  @Test
+  public void testInstallOrUpdateDefaultsWithChangedIdentifier() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    when(registryManager.getSupportedDataSchemas()).thenReturn(List.of(
+        schema("http://example.org/dp/2.0", "dp", "2.0", "2025-06-01", "event")));
+
+    manager.installOrUpdateDefaults();
+
+    assertEquals(1, manager.list().size());
+    assertEquals("2.0", manager.get(IDENTIFIER).getVersion());
+    assertEquals("http://example.org/dp/2.0", manager.get(IDENTIFIER).getIdentifier());
+  }
+
   @Test
   public void testLoad() {
     manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event", "occurrence"));

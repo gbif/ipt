@@ -29,6 +29,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -112,6 +113,40 @@ public class DataPackageSchemaActionTest {
     assertSame(updated, usingSchema.getDataPackageMappings().get(0).getDataPackageSchema());
     // mappings pointing to another schema than the resource's are hidden
     assertEquals(1, usingOtherSchema.getDataPackageMappings().size());
+  }
+
+  /**
+   * A new version with another identifier becomes the identifier of the resources using the schema, so their mappings
+   * are still used.
+   */
+  @Test
+  public void testUpdateWithChangedIdentifierChangesResourceIdentifier() throws Exception {
+    DataPackageSchema updated = DataPackageSchema.builder().identifier("http://example.org/dp/2.0").name("dp")
+        .version("2.0").build();
+    when(schemaManager.update(IDENTIFIER)).thenReturn(updated);
+    // the installed schema is found by its previous identifier
+    when(schemaManager.get(IDENTIFIER)).thenReturn(updated);
+    Resource usingSchema = resource(IDENTIFIER, true);
+    when(resourceManager.list()).thenReturn(List.of(usingSchema));
+
+    action.update();
+
+    assertEquals("http://example.org/dp/2.0", usingSchema.getDataPackageIdentifier());
+    assertEquals(1, usingSchema.getDataPackageMappings().size());
+    assertSame(updated, usingSchema.getDataPackageMappings().get(0).getDataPackageSchema());
+  }
+
+  /**
+   * Versions of a schema are recognised by name, as the identifier may change between versions.
+   */
+  @Test
+  public void testGetLatestVersionsByName() {
+    DataPackageSchema older = DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version("1.0")
+        .issued(new Date(1000)).build();
+    DataPackageSchema newer = DataPackageSchema.builder().identifier("http://example.org/dp/2.0").name("dp")
+        .version("2.0").issued(new Date(2000)).build();
+
+    assertEquals(List.of(newer), action.getLatestVersions(List.of(older, newer)));
   }
 
   /**

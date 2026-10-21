@@ -117,6 +117,22 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
           .orElse(null);
     }
 
+    DataPackageSchema byName(String name) {
+      return schemas.stream()
+          .filter(schema -> Objects.equals(schema.getName(), name))
+          .findFirst()
+          .orElse(null);
+    }
+
+    /**
+     * @return the installed schema the given one is a version of: the one with its identifier, or else its name, as
+     * the identifier may change between versions
+     */
+    DataPackageSchema versionOf(DataPackageSchema schema) {
+      return Optional.ofNullable(byIdentifier(schema.getIdentifier()))
+          .orElseGet(() -> byName(schema.getName()));
+    }
+
     /**
      * @return snapshot with the schema, replacing the installed one with the same identifier and the replaced one
      */
@@ -241,6 +257,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     Installed current = installed();
     return Optional.ofNullable(current.byIdentifier(identifier))
         .or(() -> getWithoutProtocol(current, identifier))
+        .or(() -> getByPreviousIdentifier(current, identifier))
         .or(() -> getByAlternativeIdentifiers(current, identifier))
         .or(() -> getByName(current, identifier))
         .orElse(null);
@@ -258,6 +275,17 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
         .findFirst();
   }
 
+  /**
+   * Finds the schema by an identifier of one of its earlier versions, e.g. one still referenced by resources.
+   */
+  private Optional<DataPackageSchema> getByPreviousIdentifier(Installed current, String identifier) {
+    return current.schemas().stream()
+        .filter(schema -> schema.getPreviousIdentifiers() != null)
+        .filter(schema -> schema.getPreviousIdentifiers().stream()
+            .anyMatch(previous -> org.gbif.ipt.utils.StringUtils.equalsWithoutProtocol(previous, identifier)))
+        .findFirst();
+  }
+
   private Optional<DataPackageSchema> getByAlternativeIdentifiers(Installed current, String identifier) {
     Optional<String> baseIdentifier = alternativeIdentifiers.entrySet().stream()
         .filter(e -> e.getValue().contains(identifier))
@@ -268,9 +296,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   private Optional<DataPackageSchema> getByName(Installed current, String identifier) {
-    return current.schemas().stream()
-        .filter(schema -> identifier.equals(schema.getName()))
-        .findFirst();
+    return Optional.ofNullable(current.byName(identifier));
   }
 
   @Override
@@ -309,7 +335,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   @Override
   public synchronized void install(DataPackageSchema dataPackageSchema) throws InvalidConfigException {
     Objects.requireNonNull(dataPackageSchema);
-    install(dataPackageSchema, installed().byIdentifier(dataPackageSchema.getIdentifier()));
+    install(dataPackageSchema, installed().versionOf(dataPackageSchema));
   }
 
   /**
@@ -331,6 +357,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
         throw new IllegalArgumentException("Data package schema name is not a valid folder name: "
             + dataPackageSchema.getName());
       }
+      keepPreviousIdentifiers(dataPackageSchema, replaced);
 
       // the schema as described by the registry, with the identifiers and URLs of its table schemas
       File mainSchemaFile = new File(stagingFolder, getDataSchemaFileName(dataPackageSchema.getIdentifier()));
@@ -347,7 +374,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       if (replaced != null && !Objects.equals(replaced.getName(), dataPackageSchema.getName())) {
         FileUtils.deleteQuietly(getDataSchemaDirectory(replaced.getName()));
       }
-      // allowed one installed data schema per identifier
+      // allowed one installed data schema per identifier and name
       installed = installed().with(dataPackageSchema, rawContent, replaced);
     } catch (Exception e) {
       String msg = baseAction.getText("admin.dataPackages.install.error",
@@ -357,6 +384,26 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     } finally {
       FileUtils.deleteQuietly(stagingFolder);
     }
+  }
+
+  /**
+   * Adds the identifiers of the replaced schema to the previous identifiers of the one replacing it, if they differ,
+   * so that resources and mappings referencing the replaced one still find it.
+   *
+   * @param dataPackageSchema data schema being installed
+   * @param replaced installed data schema it replaces, or null
+   */
+  private static void keepPreviousIdentifiers(DataPackageSchema dataPackageSchema, DataPackageSchema replaced) {
+    if (replaced == null) {
+      return;
+    }
+
+    Set<String> previousIdentifiers = new LinkedHashSet<>();
+    Optional.ofNullable(dataPackageSchema.getPreviousIdentifiers()).ifPresent(previousIdentifiers::addAll);
+    Optional.ofNullable(replaced.getPreviousIdentifiers()).ifPresent(previousIdentifiers::addAll);
+    previousIdentifiers.add(replaced.getIdentifier());
+    previousIdentifiers.remove(dataPackageSchema.getIdentifier());
+    dataPackageSchema.setPreviousIdentifiers(previousIdentifiers.isEmpty() ? null : previousIdentifiers);
   }
 
   /**
@@ -534,7 +581,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   private void installOrUpdateDefault(DataPackageSchema supportedDataPackageSchema) {
-    DataPackageSchema installedDataSchema = installed().byIdentifier(supportedDataPackageSchema.getIdentifier());
+    DataPackageSchema installedDataSchema = installed().versionOf(supportedDataPackageSchema);
 
     if (installedDataSchema == null) {
       LOG.info("Missing default data package schema {}. Installing", supportedDataPackageSchema.getIdentifier());

@@ -39,6 +39,11 @@ public class DataPackageSchema implements Serializable {
   private String identifier;
 
   /**
+   * Identifiers of earlier versions of the schema, if the identifier changed between versions. Null if none
+   */
+  private Set<String> previousIdentifiers;
+
+  /**
    * Schema full title
    */
   private String title;
