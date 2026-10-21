@@ -84,16 +84,7 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
 
     Locale currentLocale = Locale.forLanguageTag(request.getLocale());
 
-    Map<String, String> datasetTypes =
-        MapUtils.getMapWithLowercaseKeys(
-            vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
-    // add data packages
-    List<DataPackageSchema> installedSchemas = schemaManager.list();
-    for (DataPackageSchema installedSchema : installedSchemas) {
-      datasetTypes.put(
-          installedSchema.getName(),
-          Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
-    }
+    Map<String, String> datasetTypes = datasetTypesVocab(request.getLocale(), currentLocale);
 
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(
@@ -126,16 +117,7 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
 
     Locale currentLocale = Locale.forLanguageTag(request.getLocale());
 
-    Map<String, String> datasetTypes =
-        MapUtils.getMapWithLowercaseKeys(
-            vocabManager.getI18nDatasetTypesVocab(request.getLocale(), false));
-    // add data packages
-    List<DataPackageSchema> installedSchemas = schemaManager.list();
-    for (DataPackageSchema installedSchema : installedSchemas) {
-      datasetTypes.put(
-          installedSchema.getName(),
-          Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()));
-    }
+    Map<String, String> datasetTypes = datasetTypesVocab(request.getLocale(), currentLocale);
     Map<String, String> datasetSubtypes =
         MapUtils.getMapWithLowercaseKeys(
             vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
@@ -239,6 +221,28 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
     }
 
     return "<a class=\"resource-table-link\" href='" + cfg.getBaseUrl() + "/resource?r=" + resource.getShortname() + "#anchor-dataRecords'>" + format.format(resource.getRecordsPublished()) + "</a>";
+  }
+
+  /**
+   * Dataset types vocabulary with the installed data package schemas added, named the same as on the resource overview.
+   *
+   * @param lang   language of the vocabulary
+   * @param locale locale of the data package names
+   * @return dataset types by lowercase type
+   */
+  private Map<String, String> datasetTypesVocab(String lang, Locale locale) {
+    Map<String, String> datasetTypes =
+        MapUtils.getMapWithLowercaseKeys(vocabManager.getI18nDatasetTypesVocab(lang, false));
+    for (DataPackageSchema installedSchema : schemaManager.list()) {
+      datasetTypes.put(
+          installedSchema.getName(),
+          textProvider.getText(
+              locale,
+              "portal.resource.type." + installedSchema.getName(),
+              Optional.ofNullable(installedSchema.getShortTitle()).orElse(installedSchema.getName()),
+              Collections.emptyList()));
+    }
+    return datasetTypes;
   }
 
   /**

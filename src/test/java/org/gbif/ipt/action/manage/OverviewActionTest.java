@@ -20,6 +20,8 @@ import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -75,6 +77,7 @@ public class OverviewActionTest extends IptBaseTest {
 
   private OverviewAction action;
   private File emlFile;
+  private DataPackageSchemaManager mockSchemaManager;
 
   @BeforeEach
   public void setup()
@@ -97,6 +100,8 @@ public class OverviewActionTest extends IptBaseTest {
     when(mockDataDir.resourceEmlFile(any(), any(BigDecimal.class))).thenReturn(emlFile);
     when(mockCfg.getDataDir()).thenReturn(mockDataDir);
 
+    mockSchemaManager = mock(DataPackageSchemaManager.class);
+
     // mock action
     action =
       new OverviewAction(
@@ -110,8 +115,58 @@ public class OverviewActionTest extends IptBaseTest {
           mock(GenerateDataPackageFactory.class),
           mock(VocabulariesManager.class),
           mock(RegistryManager.class),
-          mock(DataPackageSchemaManager.class),
+          mockSchemaManager,
           mockResourcePublicationManager);
+  }
+
+  @Test
+  public void testLoadDataPackageSchemaVersions() {
+    DataPackageSchema schema = DataPackageSchema.builder().identifier("dwc-dp").name("dwc-dp").version("1.0").build();
+    when(mockSchemaManager.get("dwc-dp")).thenReturn(schema);
+    action.setResource(dataPackageResource(schema, "1.0", "1.0"));
+
+    action.loadDataPackageSchemaVersions();
+
+    assertEquals("1.0", action.getInstalledSchemaVersion());
+    assertEquals("dwc-dp", action.getInstalledSchemaName());
+    assertFalse(action.isDataPackageSchemaChanged());
+    assertNull(action.getOutdatedMappingVersions());
+  }
+
+  @Test
+  public void testLoadDataPackageSchemaVersionsWithOutdatedMappings() {
+    DataPackageSchema schema = DataPackageSchema.builder().identifier("dwc-dp").name("dwc-dp").version("1.0").build();
+    when(mockSchemaManager.get("dwc-dp")).thenReturn(schema);
+    action.setResource(dataPackageResource(schema, "1.0", "0.1", null));
+
+    action.loadDataPackageSchemaVersions();
+
+    assertEquals("1.0", action.getInstalledSchemaVersion());
+    assertTrue(action.isDataPackageSchemaChanged());
+    assertEquals("0.1, v?", action.getOutdatedMappingVersions());
+  }
+
+  @Test
+  public void testLoadDataPackageSchemaVersionsWithoutInstalledSchema() {
+    DataPackageSchema schema = DataPackageSchema.builder().identifier("dwc-dp").name("dwc-dp").version("1.0").build();
+    action.setResource(dataPackageResource(schema, "0.1"));
+
+    action.loadDataPackageSchemaVersions();
+
+    assertNull(action.getInstalledSchemaVersion());
+    assertFalse(action.isDataPackageSchemaChanged());
+  }
+
+  private static Resource dataPackageResource(DataPackageSchema schema, String... mappingVersions) {
+    Resource resource = new Resource();
+    resource.setDataPackageIdentifier(schema.getIdentifier());
+    for (String version : mappingVersions) {
+      DataPackageMapping mapping = new DataPackageMapping();
+      mapping.setDataPackageSchema(schema);
+      mapping.setVersion(version);
+      resource.addDataPackageMapping(mapping);
+    }
+    return resource;
   }
 
   @Test

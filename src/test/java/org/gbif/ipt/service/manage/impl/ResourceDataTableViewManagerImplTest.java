@@ -426,6 +426,23 @@ class ResourceDataTableViewManagerImplTest {
   }
 
   @Test
+  void namesDataPackageSchemasAsOnResourceOverview() throws Exception {
+    ResourceSummaryView dwcDpResource = resource("dwc-dp-res");
+    dwcDpResource.setCoreType("dwc-dp");
+    seed(dwcDpResource);
+
+    when(schemaManager.list()).thenReturn(List.of(
+        DataPackageSchema.builder().name("dwc-dp").shortTitle("dwc-dp").build()));
+    when(textProvider.getText(any(Locale.class), eq("portal.resource.type.dwc-dp"), anyString(), anyList()))
+        .thenReturn("Darwin Core DP");
+
+    DatatableResult result = manager.listPublishedPublicResourceSummaries(request());
+
+    String badge = result.getData().get(0).get(COL_CORE_TYPE_BADGE);
+    assertTrue(badge.contains(">Darwin Core DP<"), "expected badge to contain the translated name, was: " + badge);
+  }
+
+  @Test
   void rowContainsCreatorNameShortnameAndSubjectVerbatim() throws Exception {
     ResourceSummaryView r = resource("res-a");
     r.setCreatorName("Jane Doe");

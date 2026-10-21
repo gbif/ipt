@@ -1263,23 +1263,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       }
 
       if (isDataPackageResource()) {
-        DataPackageSchema dataPackageSchema = schemaManager.get(resource.getDataPackageIdentifier());
-        if (dataPackageSchema != null) {
-          // versions of the mappings made against another version than the installed one
-          List<String> mappedVersions = resource.getDataPackageMappings().stream()
-              .map(DataPackageMapping::getVersion)
-              .filter(v -> !Objects.equals(v, dataPackageSchema.getVersion()))
-              .map(v -> Objects.toString(v, "?"))
-              .distinct()
-              .sorted()
-              .toList();
-          if (!mappedVersions.isEmpty()) {
-            dataPackageSchemaChanged = true;
-            installedSchemaName = dataPackageSchema.getName();
-            installedSchemaVersion = dataPackageSchema.getVersion();
-            outdatedMappingVersions = String.join(", v", mappedVersions);
-          }
-        }
+        loadDataPackageSchemaVersions();
 
         for (DataPackageMapping mapping : resource.getDataPackageMappings()) {
           if (mapping.isTableSchemaMissing()) {
@@ -2035,6 +2019,31 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
   public boolean isDataPackageMappingsMissing() {
     return resource.getDataPackageMappings().isEmpty();
+  }
+
+  /**
+   * Sets the installed schema name and version, and the versions of the mappings made against another version.
+   */
+  void loadDataPackageSchemaVersions() {
+    DataPackageSchema dataPackageSchema = schemaManager.get(resource.getDataPackageIdentifier());
+    if (dataPackageSchema == null) {
+      return;
+    }
+    installedSchemaName = dataPackageSchema.getName();
+    installedSchemaVersion = dataPackageSchema.getVersion();
+
+    // versions of the mappings made against another version than the installed one
+    List<String> mappedVersions = resource.getDataPackageMappings().stream()
+        .map(DataPackageMapping::getVersion)
+        .filter(v -> !Objects.equals(v, dataPackageSchema.getVersion()))
+        .map(v -> Objects.toString(v, "?"))
+        .distinct()
+        .sorted()
+        .toList();
+    if (!mappedVersions.isEmpty()) {
+      dataPackageSchemaChanged = true;
+      outdatedMappingVersions = String.join(", v", mappedVersions);
+    }
   }
 
   private Map<String, List<DataPackageField>> computeAllRequiredFieldsMappedDataPackage() {

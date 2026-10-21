@@ -1488,7 +1488,7 @@
 
                     <div>
                         <div class="my-auto me-3">
-                            <span class="fs-smaller-2 text-nowrap type-pill dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
+                            <span class="fs-smaller-2 text-nowrap type-pill dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"<#if installedSchemaVersion?has_content> title="<@s.text name="manage.overview.schemaVersion"/>"</#if>><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/><#if installedSchemaVersion?has_content> &middot; ${installedSchemaVersion}</#if></span>
                             <#if resourceSubtypeLowerCase?has_content>
                                 <span class="fs-smaller-2 text-nowrap subtype-pill dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
                             </#if>
