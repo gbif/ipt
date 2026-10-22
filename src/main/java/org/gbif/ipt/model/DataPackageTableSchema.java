@@ -18,6 +18,8 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,6 +43,8 @@ public class DataPackageTableSchema implements Serializable {
   private String name;
   private String title;
   private String description;
+  // DwC-DP 1.0 calls it "notes"
+  @SerializedName(value = "comments", alternate = {"notes"})
   private String comments;
   private String examples;
   private List<DataPackageField> fields;

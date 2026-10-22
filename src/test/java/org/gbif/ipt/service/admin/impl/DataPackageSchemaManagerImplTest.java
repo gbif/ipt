@@ -138,6 +138,30 @@ public class DataPackageSchemaManagerImplTest {
   }
 
   /**
+   * Table schema comments are read from "comments", or from "notes" as in DwC-DP 1.0.
+   */
+  @Test
+  public void testInstallTableSchemaNotes() {
+    DataPackageSchema schema = schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event", "occurrence");
+    String eventUrl = tableSchemaUrl("dp", "1.0", "event");
+    String occurrenceUrl = tableSchemaUrl("dp", "1.0", "occurrence");
+    remoteFiles.put(eventUrl, remoteFiles.get(eventUrl).replaceFirst("\\{", "{\"notes\": \"Event notes\","));
+    remoteFiles.put(occurrenceUrl,
+        remoteFiles.get(occurrenceUrl).replaceFirst("\\{", "{\"comments\": \"Occurrence comments\","));
+
+    manager.install(schema);
+
+    DataPackageSchema installed = manager.get(IDENTIFIER);
+    assertEquals("Event notes", installed.tableSchemaByName("event").getComments());
+    assertEquals("Occurrence comments", installed.tableSchemaByName("occurrence").getComments());
+
+    // and after a restart, from the installed files
+    manager = newManager();
+    assertEquals("Event notes", manager.get(IDENTIFIER).tableSchemaByName("event").getComments());
+    assertEquals("Occurrence comments", manager.get(IDENTIFIER).tableSchemaByName("occurrence").getComments());
+  }
+
+  /**
    * A table schema that can't be downloaded fails the installation, leaving neither files nor an installed schema.
    */
   @Test
