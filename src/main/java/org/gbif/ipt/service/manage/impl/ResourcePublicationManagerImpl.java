@@ -59,6 +59,7 @@ import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.ActionLogger;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.PublicationFailureEmailUtils;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.EmlValidator;
@@ -82,7 +83,6 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,7 +126,6 @@ import static org.gbif.ipt.model.Resource.CoreRowType.METADATA;
 public class ResourcePublicationManagerImpl extends BaseManager implements ResourcePublicationManager, ReportHandler {
 
   private static final int MAX_PROCESS_FAILURES = 3;
-  public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   private final ResourceManager resourceManager;
   private final RegistryManager registryManager;
@@ -186,8 +185,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
       // cancel job, even if it's running
       canceled = f.cancel(true);
       if (canceled) {
-        // remove process from locking list
-        processFutures.remove(shortname);
+        // remove process from locking list, unless it was replaced by a new publication meanwhile
+        processFutures.remove(shortname, f);
       } else {
         LOG.warn("Canceling publication of resource {} failed", shortname);
       }
@@ -206,216 +205,232 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
 
   @Override
   public boolean isLocked(String shortname, BaseAction action) {
-    if (processFutures.containsKey(shortname)) {
-      Resource resource = resourceManager.get(shortname);
-      BigDecimal version = resource.getMetadataVersion();
+    // is listed as locked, but the task might be finished, check
+    Future<Map<String, Integer>> f = processFutures.get(shortname);
+    if (f == null) {
+      return false;
+    }
+    if (!f.isDone()) {
+      return true;
+    }
 
-      // is listed as locked, but the task might be finished, check
-      Future<Map<String, Integer>> f = processFutures.get(shortname);
-      // if this task finished
-      if (f.isDone()) {
-        // remove the process from the locking list immediately! Fixes Issue 1141
-        processFutures.remove(shortname);
-        boolean succeeded = false;
-        boolean checksumMatches = false;
-        boolean metadataChanged = isMetadataModifiedSinceLastPublication(resource);
-        boolean dataOrMetadataChanged = true;
-        boolean skipIfNotChanged = resourcesToSkip.contains(shortname) || resource.isSkipPublicationIfNotChanged();
-        boolean noSignificantRecordsDrop = true;
-        double dropPercentage;
-        String reasonFailed = null;
-        Throwable cause = null;
+    // remove the process from the locking list immediately! Fixes Issue 1141
+    // Only the caller that removes it finishes the publication: callers checking at the same time (e.g. the publishing
+    // monitor and a request) see the resource unlocked, and don't finish it again
+    if (!processFutures.remove(shortname, f)) {
+      return false;
+    }
+
+    // cancelled by cancelPublishing, whose caller restores the previous version
+    if (f.isCancelled()) {
+      return false;
+    }
+
+    Resource resource = resourceManager.get(shortname);
+    if (resource == null) {
+      LOG.warn("Resource {} was removed while being published", shortname);
+      resourcesToSkip.remove(shortname);
+      resourcesToNotifyPublicationFailure.remove(shortname);
+      return false;
+    }
+    BigDecimal version = resource.getMetadataVersion();
+
+    boolean succeeded = false;
+    boolean checksumMatches = false;
+    boolean metadataChanged = isMetadataModifiedSinceLastPublication(resource);
+    boolean dataOrMetadataChanged = true;
+    boolean skipIfNotChanged = resourcesToSkip.contains(shortname) || resource.isSkipPublicationIfNotChanged();
+    boolean noSignificantRecordsDrop = true;
+    double dropPercentage;
+    String reasonFailed = null;
+    Throwable cause = null;
+    try {
+      if (resource.isSkipPublicationIfRecordsDrop()) {
+        // check the number of records after publishing
+        int newRecordCount = getResourceRecordsCount(resource, f.get());
+        int previousRecordCount = resource.getRecordsPublished();
+        int dropThreshold = resource.getRecordsDropThreshold();
+
+        int dropAmount = previousRecordCount - newRecordCount;
+        dropPercentage = previousRecordCount == 0 ? 0 : (dropAmount * 100.0) / previousRecordCount;
+
+        if (dropPercentage > dropThreshold) {
+          // drop is too big, prevent publication
+          noSignificantRecordsDrop = false;
+          String message = String.format(
+              "The number of records dropped more than allowed %d%%: %.2f%%.",
+              dropThreshold,
+              dropPercentage
+          );
+          LOG.error(message);
+          getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, message));
+        } else {
+          LOG.debug("No significant drop in records detected.");
+          getTaskMessages(shortname).add(new TaskMessage(Level.ERROR,
+              "No significant drop in records detected."));
+        }
+      }
+
+      // if no significant drop (or it's switched off) - proceed with the publication
+      if (noSignificantRecordsDrop) {
+        // store record counts by extension
+        resource.setRecordsByExtension(f.get());
+        // populate record count
+        Integer recordCount = getResourceRecordsCount(resource);
+        resource.setRecordsPublished(recordCount);
+
+        if (skipIfNotChanged) {
+          getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Checking if data has been changed since last published"));
+        }
+
+        File resourceArchiveFile = dataDir.resourceArchiveFile(resource, version);
+        LOG.debug("Calculating checksum for the resource: {}", shortname);
         try {
-          if (resource.isSkipPublicationIfRecordsDrop()) {
-            // check the number of records after publishing
-            int newRecordCount = getResourceRecordsCount(resource, f.get());
-            int previousRecordCount = resource.getRecordsPublished();
-            int dropThreshold = resource.getRecordsDropThreshold();
+          String archiveChecksum = calculateArchiveChecksum(resourceArchiveFile);
+          String lastPublishedArchiveChecksum = resource.getLastPublishedArchiveChecksum();
+          checksumMatches = archiveChecksum.equals(lastPublishedArchiveChecksum);
 
-            int dropAmount = previousRecordCount - newRecordCount;
-            dropPercentage = previousRecordCount == 0 ? 0 : (dropAmount * 100.0) / previousRecordCount;
+          if (lastPublishedArchiveChecksum == null) {
+            LOG.debug("No checksum found for the resource {}", shortname);
+            resource.setLastPublishedArchiveChecksum(archiveChecksum);
 
-            if (dropPercentage > dropThreshold) {
-              // drop is too big, prevent publication
-              noSignificantRecordsDrop = false;
-              String message = String.format(
-                  "The number of records dropped more than allowed %d%%: %.2f%%.",
-                  dropThreshold,
-                  dropPercentage
-              );
-              LOG.error(message);
-              getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, message));
-            } else {
-              LOG.debug("No significant drop in records detected.");
-              getTaskMessages(shortname).add(new TaskMessage(Level.ERROR,
-                  "No significant drop in records detected."));
+            // do not log additional info about checksum if it is disabled
+            if (skipIfNotChanged) {
+              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "No checksum found for comparison, skipping."));
             }
-          }
-
-          // if no significant drop (or it's switched off) - proceed with the publication
-          if (noSignificantRecordsDrop) {
-            // store record counts by extension
-            resource.setRecordsByExtension(f.get());
-            // populate record count
-            Integer recordCount = getResourceRecordsCount(resource);
-            resource.setRecordsPublished(recordCount);
+          } else if (checksumMatches) {
+            LOG.debug("New checksum [{}] matches the stored one [{}] for the resource {}",
+                archiveChecksum, lastPublishedArchiveChecksum, resource.getShortname());
 
             if (skipIfNotChanged) {
-              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "? Checking if data has been changed since last published"));
+              getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Checksum has not changed since last published"));
             }
 
-            File resourceArchiveFile = dataDir.resourceArchiveFile(resource, version);
-            LOG.debug("Calculating checksum for the resource: {}", shortname);
-            try {
-              String archiveChecksum = calculateArchiveChecksum(resourceArchiveFile);
-              String lastPublishedArchiveChecksum = resource.getLastPublishedArchiveChecksum();
-              checksumMatches = archiveChecksum.equals(lastPublishedArchiveChecksum);
-
-              if (lastPublishedArchiveChecksum == null) {
-                LOG.debug("No checksum found for the resource {}", shortname);
-                resource.setLastPublishedArchiveChecksum(archiveChecksum);
-
-                // do not log additional info about checksum if it is disabled
-                if (skipIfNotChanged) {
-                  getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "No checksum found for comparison, skipping."));
-                }
-              } else if (checksumMatches) {
-                LOG.debug("New checksum [{}] matches the stored one [{}] for the resource {}",
-                    archiveChecksum, lastPublishedArchiveChecksum, resource.getShortname());
-
-                if (skipIfNotChanged) {
-                  getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Checksum has not changed since last published"));
-                }
-
-                if (skipIfNotChanged && !metadataChanged) {
-                  getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Metadata has not changed since last published"));
-                  dataOrMetadataChanged = false;
-                }
-              } else {
-                LOG.debug("New checksum [{}] for the resource {}", archiveChecksum, resource.getShortname());
-                resource.setLastPublishedArchiveChecksum(archiveChecksum);
-
-                if (skipIfNotChanged) {
-                  getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "✓ Checksum has changed since last published"));
-                }
-              }
-            } catch (Exception e) {
-              LOG.error("Failed to calculate checksum for DwC-A: {}", resourceArchiveFile.getName(), e);
-
-              if (skipIfNotChanged) {
-                getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Failed to calculate checksum"));
-              }
-            }
-
-            boolean visibilityChanged = resource.getPendingStatus() != null;
-            if (visibilityChanged) {
-              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Visibility changed to: " + resource.getPendingStatus()));
-            }
-
-            // If all sources are file (CSV, TSV, Excel) also check when they were changed
-            boolean onlyFileSources = isOnlyFileSources(resource);
-            boolean sourcesModifiedSinceLastPublication = isSourcesModifiedSinceLastPublication(resource);
-
-            if (skipIfNotChanged && onlyFileSources && !sourcesModifiedSinceLastPublication) {
+            if (skipIfNotChanged && !metadataChanged) {
+              getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Metadata has not changed since last published"));
               dataOrMetadataChanged = false;
-
-              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Source files has not changed since last published"));
             }
+          } else {
+            LOG.debug("New checksum [{}] for the resource {}", archiveChecksum, resource.getShortname());
+            resource.setLastPublishedArchiveChecksum(archiveChecksum);
 
-            if (dataOrMetadataChanged || visibilityChanged) {
-              // finish publication (update registration, persist resource changes)
-              publishEnd(resource, action, version);
-              // important: indicate publishing finished successfully!
-              succeeded = true;
+            if (skipIfNotChanged) {
+              getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "✓ Checksum has changed since last published"));
             }
           }
-        } catch (ExecutionException e) {
-          // getCause holds the actual exception our callable (GenerateDwca) threw
-          cause = e.getCause();
-          if (cause instanceof GeneratorException) {
-            reasonFailed = action.getText("dwca.failed", new String[]{shortname, cause.getMessage()});
-          } else if (cause instanceof InterruptedException) {
-            reasonFailed = action.getText("dwca.interrupted", new String[]{shortname, cause.getMessage()});
-          } else {
-            reasonFailed = action.getText("dwca.failed", new String[]{shortname, cause.getMessage()});
-          }
-        } catch (InterruptedException e) {
-          reasonFailed = action.getText("dwca.interrupted", new String[]{shortname, e.getMessage()});
-          cause = e;
-        } catch (PublicationException e) {
-          reasonFailed = action.getText("publishing.error", new String[]{e.getType().toString(), e.getMessage()});
-          cause = e;
-          // this type of exception happens outside GenerateDwca - so add reason to StatusReport
-          getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
-        } finally {
-          // if publication was successful
-          if (succeeded) {
-            // update StatusReport on publishing page
-            String msg =
-                action.getText("publishing.success", new String[]{version.toPlainString(), resource.getShortname()});
-            StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
-            processReports.put(shortname, updated);
-            resourcesToNotifyPublicationFailure.remove(resource.getShortname());
-          } else {
-            boolean failedDueToDataNotChanged = !dataOrMetadataChanged;
-            boolean failedDueToRecordsDrop = !noSignificantRecordsDrop;
+        } catch (Exception e) {
+          LOG.error("Failed to calculate checksum for DwC-A: {}", resourceArchiveFile.getName(), e);
 
-            if (failedDueToDataNotChanged) {
-              reasonFailed = action.getText("publishing.dataNotChanged");
-            }
-
-            if (failedDueToRecordsDrop) {
-              reasonFailed = action.getText("publishing.dropInRecords");
-            }
-
-            // alert user publication failed
-            String msg =
-                action.getText("publishing.failed", new String[]{version.toPlainString(), shortname, reasonFailed});
-            action.addActionError(msg);
-
-            // update StatusReport on publishing page
-            if (cause != null) {
-              // keep the step publication failed at
-              StatusReport previous = processReports.get(shortname);
-              String step = previous != null ? previous.getStep() : null;
-              StatusReport updated = new StatusReport(cause, msg, step, getTaskMessages(shortname));
-              processReports.put(shortname, updated);
-            }
-
-            if (failedDueToDataNotChanged) {
-              String dataNotChanged = action.getText("publishing.dataNotChanged.revert");
-              StatusReport updated = new StatusReport(true, dataNotChanged, getTaskMessages(shortname));
-              processReports.put(shortname, updated);
-              updateNextPublishedDate(new Date(), resource);
-            }
-
-            if (failedDueToRecordsDrop) {
-              String dropInRecords = action.getText("publishing.dropInRecords.revert");
-              StatusReport updated = new StatusReport(true, dropInRecords, getTaskMessages(shortname));
-              processReports.put(shortname, updated);
-              updateNextPublishedDate(new Date(), resource);
-            }
-
-            // the previous version needs to be rolled back
-            restoreVersion(resource, version, action);
-
-            // do not count "data not changed" as an actual failure
-            if (!failedDueToDataNotChanged) {
-              // keep track of how many failures on auto publication have happened
-              processFailures
-                  .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
-                  .add(new Date());
-
-              sendPublicationFailureEmail(resource, version, reasonFailed);
-            }
-
-            resourcesToSkip.remove(resource.getShortname());
-            resourcesToNotifyPublicationFailure.remove(resource.getShortname());
+          if (skipIfNotChanged) {
+            getTaskMessages(shortname).add(new TaskMessage(Level.WARN, "Failed to calculate checksum"));
           }
         }
-        return false;
+
+        boolean visibilityChanged = resource.getPendingStatus() != null;
+        if (visibilityChanged) {
+          getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Visibility changed to: " + resource.getPendingStatus()));
+        }
+
+        // If all sources are file (CSV, TSV, Excel) also check when they were changed
+        boolean onlyFileSources = isOnlyFileSources(resource);
+        boolean sourcesModifiedSinceLastPublication = isSourcesModifiedSinceLastPublication(resource);
+
+        if (skipIfNotChanged && onlyFileSources && !sourcesModifiedSinceLastPublication) {
+          dataOrMetadataChanged = false;
+
+          getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Source files has not changed since last published"));
+        }
+
+        if (dataOrMetadataChanged || visibilityChanged) {
+          // finish publication (update registration, persist resource changes)
+          publishEnd(resource, action, version);
+          // important: indicate publishing finished successfully!
+          succeeded = true;
+        }
       }
-      return true;
+    } catch (ExecutionException e) {
+      // getCause holds the actual exception our callable (GenerateDwca) threw
+      cause = e.getCause();
+      if (cause instanceof GeneratorException) {
+        reasonFailed = action.getText("dwca.failed", new String[]{shortname, cause.getMessage()});
+      } else if (cause instanceof InterruptedException) {
+        reasonFailed = action.getText("dwca.interrupted", new String[]{shortname, cause.getMessage()});
+      } else {
+        reasonFailed = action.getText("dwca.failed", new String[]{shortname, cause.getMessage()});
+      }
+    } catch (InterruptedException e) {
+      reasonFailed = action.getText("dwca.interrupted", new String[]{shortname, e.getMessage()});
+      cause = e;
+    } catch (PublicationException e) {
+      reasonFailed = action.getText("publishing.error", new String[]{e.getType().toString(), e.getMessage()});
+      cause = e;
+      // this type of exception happens outside GenerateDwca - so add reason to StatusReport
+      getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
+    } finally {
+      // if publication was successful
+      if (succeeded) {
+        // update StatusReport on publishing page
+        String msg =
+            action.getText("publishing.success", new String[]{version.toPlainString(), resource.getShortname()});
+        StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
+        processReports.put(shortname, updated);
+        resourcesToNotifyPublicationFailure.remove(resource.getShortname());
+      } else {
+        boolean failedDueToDataNotChanged = !dataOrMetadataChanged;
+        boolean failedDueToRecordsDrop = !noSignificantRecordsDrop;
+
+        if (failedDueToDataNotChanged) {
+          reasonFailed = action.getText("publishing.dataNotChanged");
+        }
+
+        if (failedDueToRecordsDrop) {
+          reasonFailed = action.getText("publishing.dropInRecords");
+        }
+
+        // alert user publication failed
+        String msg =
+            action.getText("publishing.failed", new String[]{version.toPlainString(), shortname, reasonFailed});
+        action.addActionError(msg);
+
+        // update StatusReport on publishing page
+        if (cause != null) {
+          // keep the step publication failed at
+          StatusReport previous = processReports.get(shortname);
+          String step = previous != null ? previous.getStep() : null;
+          StatusReport updated = new StatusReport(cause, msg, step, getTaskMessages(shortname));
+          processReports.put(shortname, updated);
+        }
+
+        if (failedDueToDataNotChanged) {
+          String dataNotChanged = action.getText("publishing.dataNotChanged.revert");
+          StatusReport updated = new StatusReport(true, dataNotChanged, getTaskMessages(shortname));
+          processReports.put(shortname, updated);
+          updateNextPublishedDate(new Date(), resource);
+        }
+
+        if (failedDueToRecordsDrop) {
+          String dropInRecords = action.getText("publishing.dropInRecords.revert");
+          StatusReport updated = new StatusReport(true, dropInRecords, getTaskMessages(shortname));
+          processReports.put(shortname, updated);
+          updateNextPublishedDate(new Date(), resource);
+        }
+
+        // the previous version needs to be rolled back
+        restoreVersion(resource, version, action);
+
+        // do not count "data not changed" as an actual failure
+        if (!failedDueToDataNotChanged) {
+          // keep track of how many failures on auto publication have happened
+          processFailures
+              .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
+              .add(new Date());
+
+          sendPublicationFailureEmail(resource, version, reasonFailed);
+        }
+
+        resourcesToSkip.remove(resource.getShortname());
+        resourcesToNotifyPublicationFailure.remove(resource.getShortname());
+      }
     }
     return false;
   }
@@ -1470,8 +1485,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
       InferredCamtrapTemporalScope inferredTemporalScope = inferredMetadata.getInferredTemporalScope();
 
       Temporal temporal = new Temporal();
-      temporal.setStart(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getStartDate()));
-      temporal.setEnd(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getEndDate()));
+      temporal.setStart(MetadataUtils.formatCamtrapTemporalDate(inferredTemporalScope.getStartDate()));
+      temporal.setEnd(MetadataUtils.formatCamtrapTemporalDate(inferredTemporalScope.getEndDate()));
 
       ((CamtrapMetadata) resource.getDataPackageMetadata()).setTemporal(temporal);
     }

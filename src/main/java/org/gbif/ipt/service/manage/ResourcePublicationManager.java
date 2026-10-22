@@ -23,7 +23,6 @@ import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.task.StatusReport;
 
 import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +30,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
-
 
 import javax.annotation.Nullable;
 
@@ -58,6 +56,9 @@ public interface ResourcePublicationManager {
    * Checks whether the resource is currently locked or not. It then checks if the task is done or not. If done
    * successfully, the remaining steps in publishing are executed. If it failed for any reason,
    * the previous published version is restored.
+   * <p>
+   * A finished task is completed by only one caller, even when several check at the same time. A cancelled task isn't
+   * completed: the caller of {@link #cancelPublishing(String)} restores the previous version.
    *
    * @param shortname Resource shortname
    * @param action    the action to use for logging messages

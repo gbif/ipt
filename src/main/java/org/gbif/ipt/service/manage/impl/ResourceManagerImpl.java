@@ -63,7 +63,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -92,8 +91,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private final ResourceImportService resourceImportService;
   private final ResourceLoader resourceLoader;
   private final ResourcePersister resourcePersister;
-
-  public static final SimpleDateFormat CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
   @Inject
   public ResourceManagerImpl(

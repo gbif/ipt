@@ -43,6 +43,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 
 import jakarta.inject.Inject;
@@ -66,7 +67,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-import static org.gbif.ipt.service.manage.impl.ResourceManagerImpl.CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT;
 
 public class DataPackageMetadataAction extends ManagerBaseAction {
 
@@ -496,8 +496,8 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
           InferredCamtrapTemporalScope inferredTemporalScope = inferredCamtrapMetadata.getInferredTemporalScope();
 
           Temporal temporal = new Temporal();
-          temporal.setStart(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getStartDate()));
-          temporal.setEnd(CAMTRAP_TEMPORAL_METADATA_DATE_FORMAT.format(inferredTemporalScope.getEndDate()));
+          temporal.setStart(MetadataUtils.formatCamtrapTemporalDate(inferredTemporalScope.getStartDate()));
+          temporal.setEnd(MetadataUtils.formatCamtrapTemporalDate(inferredTemporalScope.getEndDate()));
 
           camtrapMetadata.setTemporal(temporal);
         }

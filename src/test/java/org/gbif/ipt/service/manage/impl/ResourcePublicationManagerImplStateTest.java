@@ -40,11 +40,17 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -64,6 +70,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -132,6 +139,94 @@ public class ResourcePublicationManagerImplStateTest {
 
     assertTrue(manager.isLocked(SHORTNAME));
     assertTrue(manager.getProcessFutures().containsKey(SHORTNAME));
+  }
+
+  /**
+   * The publishing monitor and requests check the lock at the same time: a finished publication must be finished
+   * (registration, DOI, version history...) by only one of them.
+   */
+  @Test
+  public void testFinishedPublicationIsFinishedOnce() throws Exception {
+    // the resource is only looked up by the caller finishing the publication
+    when(resourceManager.get(SHORTNAME)).thenReturn(null);
+    manager.getProcessFutures().put(SHORTNAME, CompletableFuture.completedFuture(Map.of()));
+
+    int callers = 16;
+    ExecutorService pool = Executors.newFixedThreadPool(callers);
+    try {
+      CountDownLatch start = new CountDownLatch(1);
+      List<Future<Boolean>> results = new ArrayList<>();
+      for (int i = 0; i < callers; i++) {
+        results.add(pool.submit(() -> {
+          start.await();
+          return manager.isLocked(SHORTNAME);
+        }));
+      }
+      start.countDown();
+      for (Future<Boolean> result : results) {
+        assertFalse(result.get(10, TimeUnit.SECONDS));
+      }
+    } finally {
+      pool.shutdownNow();
+    }
+
+    verify(resourceManager, times(1)).get(SHORTNAME);
+    assertFalse(manager.getProcessFutures().containsKey(SHORTNAME));
+  }
+
+  @Test
+  public void testFinishedPublicationOfRemovedResource() {
+    when(resourceManager.get(SHORTNAME)).thenReturn(null);
+    manager.getProcessFutures().put(SHORTNAME, CompletableFuture.completedFuture(Map.of()));
+
+    assertFalse(manager.isLocked(SHORTNAME));
+    assertFalse(manager.getProcessFutures().containsKey(SHORTNAME));
+    // status() checks the lock too
+    assertNull(manager.status(SHORTNAME));
+  }
+
+  @Test
+  public void testLockedWhilePublishingDoesNotLookUpResource() {
+    manager.getProcessFutures().put(SHORTNAME, new CompletableFuture<>());
+
+    assertTrue(manager.isLocked(SHORTNAME));
+    verify(resourceManager, never()).get(any());
+  }
+
+  /**
+   * The lock is checked (e.g. by the publishing monitor) between cancelling the job and removing it.
+   */
+  @Test
+  public void testCancelledPublicationIsNotFinished() {
+    when(resourceManager.get(SHORTNAME)).thenReturn(resource());
+    CompletableFuture<Map<String, Integer>> cancelled = new CompletableFuture<>();
+    cancelled.cancel(true);
+    manager.getProcessFutures().put(SHORTNAME, cancelled);
+
+    assertFalse(manager.isLocked(SHORTNAME));
+
+    assertFalse(manager.getProcessFutures().containsKey(SHORTNAME));
+    verify(resourceManager, never()).get(any());
+    assertFalse(manager.getProcessFailures().containsKey(SHORTNAME));
+  }
+
+  @Test
+  public void testCancelPublishingKeepsNewPublication() {
+    CompletableFuture<Map<String, Integer>> next = new CompletableFuture<>();
+    // a new publication is started while the previous one is being cancelled
+    CompletableFuture<Map<String, Integer>> cancelled = new CompletableFuture<>() {
+      @Override
+      public boolean cancel(boolean mayInterruptIfRunning) {
+        manager.getProcessFutures().put(SHORTNAME, next);
+        return super.cancel(mayInterruptIfRunning);
+      }
+    };
+    manager.getProcessFutures().put(SHORTNAME, cancelled);
+
+    assertTrue(manager.cancelPublishing(SHORTNAME));
+
+    assertSame(next, manager.getProcessFutures().get(SHORTNAME));
+    assertTrue(manager.isLocked(SHORTNAME));
   }
 
   @Test

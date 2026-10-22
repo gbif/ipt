@@ -19,8 +19,10 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 import org.apache.commons.lang3.Strings;
 
@@ -29,6 +31,8 @@ import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DWC_DP;
 
 public final class MetadataUtils {
+
+  private static final DateTimeFormatter CAMTRAP_TEMPORAL_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   private MetadataUtils() {
   }
@@ -53,5 +57,13 @@ public final class MetadataUtils {
    */
   public static String formatDataPackageCreated(Instant instant) {
     return DateTimeFormatter.ISO_INSTANT.format(instant.truncatedTo(ChronoUnit.SECONDS));
+  }
+
+  /**
+   * Formats a date of the Camtrap DP temporal scope (start/end), e.g. 2026-01-15, in the server time zone. Unlike a
+   * shared SimpleDateFormat, it can be called from several threads at once (requests and publications).
+   */
+  public static String formatCamtrapTemporalDate(Date date) {
+    return CAMTRAP_TEMPORAL_DATE_FORMAT.format(Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()));
   }
 }
