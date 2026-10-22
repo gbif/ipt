@@ -39,6 +39,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -88,8 +89,8 @@ public class PublishingMonitor {
     public void run() {
       running.set(true);
       while (running.get()) {
+        monitorSafely();
         try {
-          monitorOnce();
           // just poll once every 'interval' millisecond
           Thread.sleep(MONITOR_INTERVAL_MS);
         } catch (InterruptedException e) {
@@ -97,6 +98,18 @@ public class PublishingMonitor {
           LOG.error("Monitor thread has been interrupted!", e);
         }
       }
+    }
+  }
+
+  /**
+   * Runs one monitor cycle. Unexpected errors are logged, so the monitor thread keeps running and the next cycle
+   * still finishes and auto-publishes resources.
+   */
+  void monitorSafely() {
+    try {
+      monitorOnce();
+    } catch (Exception e) {
+      LOG.error("Publishing monitor cycle failed", e);
     }
   }
 
@@ -109,7 +122,11 @@ public class PublishingMonitor {
       shortNames.addAll(processFutures.keySet());
       // in order for publishing to finish entirely, resourceManager.isLocked() must be called
       for (String shortName : shortNames) {
-        resourcePublicationManager.isLocked(shortName, baseAction);
+        try {
+          resourcePublicationManager.isLocked(shortName, baseAction);
+        } catch (Exception e) {
+          LOG.error("Monitor: failed to finish the publication of {}", shortName, e);
+        }
       }
     }
 
@@ -125,87 +142,114 @@ public class PublishingMonitor {
       boolean autoPublishingEnabled = cfg.isAutoPublishingEnabled();
 
       for (Resource resource : resources) {
-        if (autoPublishingEnabled && resource.usesAutoPublishing()) {
-          Date next = resource.getNextPublished();
-          BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
-          if (next != null) {
-            // ensure resource is due to auto-publication
-            if (next.before(now)) {
-              // ensure resource isn't already being published
-              if (!shortNames.contains(resource.getShortname())) {
-                // ensure resource has not exceeded the maximum number of publication failures
-                if (resourcePublicationManager.hasMaxProcessFailures(resource)) {
-                  // once the limit is reached, only log once per day to avoid flooding the logs every interval
-                  if (shouldSkipExcessiveLogging(resource.getShortname(), today)) {
-                    LOG.debug("Skipping auto-publication for [{}] since it has exceeded the maximum number of failed publish attempts. " +
-                        "Please try to publish this resource individually to fix the problem(s)",
-                        resource.getTitleAndShortname());
-                    lastLoggedSkips.put(resource.getShortname(), today);
-                  }
-                } else if (isWithinRetryCooldown(resource, now)) {
-                  // avoid logging every time for the duration of the cooldown
-                  if (shouldSkipExcessiveLogging(resource.getShortname(), today)) {
-                    // recently failed - wait before retrying instead of re-attempting on the next monitor cycle
-                    LOG.debug("Skipping auto-publication for [{}] since it failed recently; waiting before retrying",
-                        resource.getTitleAndShortname());
-                  }
-                } else {
-                  try {
-                    // reset version change summary
-                    resource.setChangeSummary(null);
+        try {
+          monitorResource(resource, shortNames, autoPublishingEnabled, now, today);
+        } catch (Exception e) {
+          LOG.error("Monitor: failed to process resource {}", resource.getShortname(), e);
+        }
+      }
+    }
+  }
 
-                    PublicationOptions options = PublicationOptions.builder()
-                        .skipPublicationIfNotChanged(resource.isSkipPublicationIfNotChanged())
-                        .skipPublicationIfRecordsDrop(resource.isSkipPublicationIfRecordsDrop())
-                        .notifyPublicationFailure(resource.isNotifyPublicationFailure())
-                        .recordsDropThreshold(resource.getRecordsDropThreshold())
-                        .build();
-
-                    LOG.debug("Monitor: {} v#{} due to be auto-published: {}",
-                        resource.getTitleAndShortname(), nextVersion.toPlainString(), next);
-                    resourcePublicationManager.publish(resource, nextVersion, null, options);
-                  } catch (PublicationException e) {
-                    if (PublicationException.TYPE.LOCKED == e.getType()) {
-                      LOG.error("Monitor: {} cannot be auto-published, because it is currently being published",
-                          resource.getTitleAndShortname());
-                    } else {
-                      // alert user publication failed
-                      LOG.error("Publishing version #{} of resource {} failed: {}",
-                          nextVersion.toPlainString(), resource.getTitleAndShortname(), e.getMessage());
-                      // restore the previous version since publication was unsuccessful
-                      resourcePublicationManager.restoreVersion(resource, nextVersion, null);
-                      // keep track of how many failures on auto publication have happened
-                      resourcePublicationManager.getProcessFailures()
-                          .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
-                          .add(new Date());
-                      sendPublicationFailureEmail(resource, nextVersion, e.getMessage());
-                    }
-                  } catch (InvalidConfigException e) {
-                    // with this type of error, the version cannot be rolled back - just alert user it failed
-                    LOG.error("Publishing version #{} of resource {} failed: {}",
-                        nextVersion.toPlainString(), resource.getShortname(), e.getMessage(), e);
-                    sendPublicationFailureEmail(resource, nextVersion, e.getMessage());
-                  }
-                }
-              } else {
-                LOG.debug("Skipping auto-publication for [{}] since it is already in progress",
+  /**
+   * Auto-publishes the resource if it is due, and makes it public if its make public date has passed.
+   */
+  private void monitorResource(Resource resource, Set<String> shortNames, boolean autoPublishingEnabled, Date now,
+                               LocalDate today) {
+    if (autoPublishingEnabled && resource.usesAutoPublishing()) {
+      Date next = resource.getNextPublished();
+      BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
+      if (next != null) {
+        // ensure resource is due to auto-publication
+        if (next.before(now)) {
+          // ensure resource isn't already being published
+          if (!shortNames.contains(resource.getShortname())) {
+            // ensure resource has not exceeded the maximum number of publication failures
+            if (resourcePublicationManager.hasMaxProcessFailures(resource)) {
+              // once the limit is reached, only log once per day to avoid flooding the logs every interval
+              if (shouldSkipExcessiveLogging(resource.getShortname(), today)) {
+                LOG.debug("Skipping auto-publication for [{}] since it has exceeded the maximum number of failed publish attempts. " +
+                    "Please try to publish this resource individually to fix the problem(s)",
+                    resource.getTitleAndShortname());
+                lastLoggedSkips.put(resource.getShortname(), today);
+              }
+            } else if (isWithinRetryCooldown(resource, now)) {
+              // avoid logging every time for the duration of the cooldown
+              if (shouldSkipExcessiveLogging(resource.getShortname(), today)) {
+                // recently failed - wait before retrying instead of re-attempting on the next monitor cycle
+                LOG.debug("Skipping auto-publication for [{}] since it failed recently; waiting before retrying",
                     resource.getTitleAndShortname());
               }
-            }
-          }
-        }
+            } else {
+              try {
+                // reset version change summary
+                resource.setChangeSummary(null);
 
-        // ensure resource is due to become public
-        if (resource.getMakePublicDate() != null && resource.getMakePublicDate().before(now)) {
-          try {
-            resourcePublicationManager.visibilityToPublic(resource, null);
-          } catch (Exception e) {
-            LOG.error("Resource {} failed to go public automatically",
-                resource.getShortname(), e);
+                PublicationOptions options = PublicationOptions.builder()
+                    .skipPublicationIfNotChanged(resource.isSkipPublicationIfNotChanged())
+                    .skipPublicationIfRecordsDrop(resource.isSkipPublicationIfRecordsDrop())
+                    .notifyPublicationFailure(resource.isNotifyPublicationFailure())
+                    .recordsDropThreshold(resource.getRecordsDropThreshold())
+                    .build();
+
+                LOG.debug("Monitor: {} v#{} due to be auto-published: {}",
+                    resource.getTitleAndShortname(), nextVersion.toPlainString(), next);
+                resourcePublicationManager.publish(resource, nextVersion, null, options);
+              } catch (PublicationException e) {
+                if (PublicationException.TYPE.LOCKED == e.getType()) {
+                  LOG.error("Monitor: {} cannot be auto-published, because it is currently being published",
+                      resource.getTitleAndShortname());
+                } else {
+                  // alert user publication failed
+                  LOG.error("Publishing version #{} of resource {} failed: {}",
+                      nextVersion.toPlainString(), resource.getTitleAndShortname(), e.getMessage());
+                  handleAutoPublicationFailure(resource, nextVersion, e.getMessage());
+                }
+              } catch (InvalidConfigException e) {
+                // with this type of error, the version cannot be rolled back - just alert user it failed
+                LOG.error("Publishing version #{} of resource {} failed: {}",
+                    nextVersion.toPlainString(), resource.getShortname(), e.getMessage(), e);
+                sendPublicationFailureEmail(resource, nextVersion, e.getMessage());
+              } catch (Exception e) {
+                // counted as a failure, so it is retried after the retry delay rather than on every cycle
+                LOG.error("Publishing version #{} of resource {} failed unexpectedly",
+                    nextVersion.toPlainString(), resource.getTitleAndShortname(), e);
+                handleAutoPublicationFailure(resource, nextVersion,
+                    StringUtils.defaultIfBlank(e.getMessage(), e.getClass().getSimpleName()));
+              }
+            }
+          } else {
+            LOG.debug("Skipping auto-publication for [{}] since it is already in progress",
+                resource.getTitleAndShortname());
           }
         }
       }
     }
+
+    // ensure resource is due to become public
+    if (resource.getMakePublicDate() != null && resource.getMakePublicDate().before(now)) {
+      try {
+        resourcePublicationManager.visibilityToPublic(resource, null);
+      } catch (Exception e) {
+        LOG.error("Resource {} failed to go public automatically",
+            resource.getShortname(), e);
+      }
+    }
+  }
+
+  /**
+   * Restores the previous version of a resource whose auto-publication failed, counts the failure and notifies about
+   * it.
+   */
+  private void handleAutoPublicationFailure(Resource resource, BigDecimal version, String reason) {
+    // keep track of how many failures on auto publication have happened, first, so the retry delay applies even if
+    // restoring fails
+    resourcePublicationManager.getProcessFailures()
+        .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
+        .add(new Date());
+    // restore the previous version since publication was unsuccessful
+    resourcePublicationManager.restoreVersion(resource, version, null);
+    sendPublicationFailureEmail(resource, version, reason);
   }
 
   /**
