@@ -13,11 +13,6 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
-import org.gbif.api.model.common.DOI;
-import org.gbif.doi.metadata.datacite.DataCiteMetadata;
-import org.gbif.doi.service.DoiException;
-import org.gbif.doi.service.DoiExistsException;
-import org.gbif.doi.service.InvalidMetadataException;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -40,13 +35,13 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
-import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.BaseManager;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceDoiService;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
@@ -64,9 +59,7 @@ import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
 import org.gbif.ipt.utils.ActionLogger;
-import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.PublicationFailureEmailUtils;
-import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.EmlValidator;
 import org.gbif.metadata.eml.InvalidEmlException;
@@ -78,7 +71,6 @@ import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
 import org.xml.sax.SAXException;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -99,7 +91,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -149,6 +140,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   private final GenerateDarwinCoreDataPackageFactory dwcDpFactory;
   private final SimpleTextProvider textProvider;
   private final ResourceMetadataInferringService resourceMetadataInferringService;
+  private final ResourceDoiService resourceDoiService;
 
   private final ThreadPoolExecutor executor;
   private final Map<String, Future<Map<String, Integer>>> processFutures = new ConcurrentHashMap<>();
@@ -169,7 +161,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
       GenerateDataPackageFactory dataPackageFactory,
       GenerateDarwinCoreDataPackageFactory dwcDpFactory,
       SimpleTextProvider textProvider,
-      ResourceMetadataInferringService resourceMetadataInferringService) {
+      ResourceMetadataInferringService resourceMetadataInferringService,
+      ResourceDoiService resourceDoiService) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
     this.registryManager = registryManager;
@@ -180,6 +173,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     this.dwcDpFactory = dwcDpFactory;
     this.textProvider = textProvider;
     this.resourceMetadataInferringService = resourceMetadataInferringService;
+    this.resourceDoiService = resourceDoiService;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
   }
 
@@ -1165,7 +1159,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     // set the next published date (if resource configured for auto-publishing)
     updateNextPublishedDate(new Date(), resource);
     // register/update DOI
-    executeDoiWorkflow(resource, version, replacedMetadataVersion, action);
+    resourceDoiService.executeDoiWorkflow(resource, version, replacedMetadataVersion, action);
     // finalise/update version history
     addOrUpdateVersionHistory(resource, version, true, action);
 
@@ -1491,192 +1485,6 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
       } catch (MessagingException e) {
         LOG.error("Failed to send publication failure email for resource {}", resource.getShortname(), e);
       }
-    }
-  }
-
-  /**
-   * Depending on the state of the resource and its DOI, execute one of the following operations:
-   * - Register DOI
-   * - Update DOI
-   * - Register DOI and replace previous DOI
-   *
-   * @param resource        resource published
-   * @param version         resource version being published
-   * @param versionReplaced resource version being replaced
-   * @param action          action
-   * @throws PublicationException thrown if any part of DOI workflow failed
-   */
-  private void executeDoiWorkflow(Resource resource, BigDecimal version, BigDecimal versionReplaced, BaseAction action)
-      throws PublicationException {
-    // All DOI operations require resource be publicly available, and resource DOI be PUBLIC/PUBLIC_PENDING_PUBLICATION
-    if (resource.getDoi() != null && resource.isPubliclyAvailable() && (
-        resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION) || resource
-            .getIdentifierStatus().equals(IdentifierStatus.PUBLIC))) {
-      if (resource.getIdentifierStatus().equals(IdentifierStatus.PUBLIC_PENDING_PUBLICATION)) {
-        if (resource.isAlreadyAssignedDoi()) {
-          // another new major version that replaces previous version
-          doReplaceDoi(resource, version, versionReplaced);
-          String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion.replaces",
-              new String[]{resource.getDoi().toString()});
-          LOG.info(msg);
-          action.addActionMessage(msg);
-        } else {
-          // initial major version
-          doRegisterDoi(resource, null);
-          String msg = action.getText("manage.overview.publishing.doi.publish.newMajorVersion",
-              new String[]{resource.getDoi().toString()});
-          LOG.info(msg);
-          action.addActionMessage(msg);
-        }
-      } else {
-        // minor version increment
-        doUpdateDoi(resource);
-        String msg = action.getText("manage.overview.publishing.doi.publish.newMinorVersion",
-            new String[]{resource.getDoi().toString()});
-        LOG.info(msg);
-        action.addActionMessage(msg);
-      }
-    }
-  }
-
-  /**
-   * Update DOI metadata. The DOI URI isn't changed. This is done for each minor version change.
-   *
-   * @param resource resource whose DOI will be updated
-   */
-  @Override
-  public void doUpdateDoi(Resource resource) {
-    Objects.requireNonNull(resource);
-
-    if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
-      DOI doi = resource.getDoi();
-      try {
-        DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
-        registrationManager.getDoiService().update(doi, dataCiteMetadata);
-      } catch (DoiException e) {
-        String errorMsg = "Failed to update " + doi.toString() + " metadata: " + e.getMessage();
-        LOG.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      }
-    } else {
-      throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DOI_REGISTRATION, "Resource not in required state to update DOI!");
-    }
-  }
-
-  /**
-   * Replace DOI currently assigned to resource with new DOI that has been reserved for resource.
-   * This corresponds to a new major version change.
-   *
-   * @param resource        resource whose DOI will be registered
-   * @param version         new version
-   * @param replacedVersion previous version being replaced
-   */
-  @Override
-  public void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion) {
-    Objects.requireNonNull(resource);
-
-    DOI doiToRegister = resource.getDoi();
-    DOI doiToReplace = resource.getAssignedDoi();
-
-    if (doiToRegister != null && resource.isPubliclyAvailable() && doiToReplace != null
-        && resource.getMetadataVersion() != null && resource.getMetadataVersion().compareTo(version) == 0
-        && replacedVersion != null && resource.findVersionHistory(replacedVersion) != null) {
-
-      // register new DOI first, indicating it replaces former DOI
-      doRegisterDoi(resource, doiToReplace);
-
-      // update previously assigned DOI, indicating it has been replaced by new DOI
-      try {
-        // reconstruct last published version (version being replaced)
-        File replacedVersionEmlFile = dataDir.resourceEmlFile(resource.getShortname(), replacedVersion);
-        Resource lastPublishedVersion = ResourceUtils
-            .reconstructVersion(replacedVersion, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(), doiToReplace, resource.getOrganisation(),
-                resource.findVersionHistory(replacedVersion), replacedVersionEmlFile, resource.getKey());
-
-        DataCiteMetadata assignedDoiMetadata =
-            DataCiteMetadataBuilder.createDataCiteMetadata(doiToReplace, lastPublishedVersion);
-
-        // add isPreviousVersionOf new resource version registered above
-        DataCiteMetadataBuilder.addIsPreviousVersionOfDOIRelatedIdentifier(assignedDoiMetadata, doiToRegister);
-
-        // update its URI first
-        URI resourceVersionUri = cfg.getResourceVersionUri(resource.getShortname(), replacedVersion);
-        registrationManager.getDoiService().update(doiToReplace, resourceVersionUri);
-        // then update its metadata
-        registrationManager.getDoiService().update(doiToReplace, assignedDoiMetadata);
-
-      } catch (InvalidMetadataException e) {
-        String errorMsg = "Failed to update " + doiToReplace + " metadata: " + e.getMessage();
-        LOG.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      } catch (DoiException e) {
-        String errorMsg = "Failed to update " + doiToReplace + ": " + e.getMessage();
-        LOG.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      } catch (IllegalArgumentException e) {
-        String errorMsg = "Failed to update " + doiToReplace + ": " + e.getMessage();
-        LOG.error(errorMsg, e);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      }
-    } else {
-      throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DOI_REGISTRATION, "Resource not in required state to replace DOI!");
-    }
-  }
-
-  /**
-   * Register DOI. Corresponds to a major version change.
-   *
-   * @param resource resource whose DOI will be registered
-   */
-  @Override
-  public void doRegisterDoi(Resource resource, @Nullable DOI replaced) {
-    Objects.requireNonNull(resource);
-
-    if (resource.getDoi() != null && resource.isPubliclyAvailable()) {
-      DataCiteMetadata dataCiteMetadata = null;
-      DOI doi = resource.getDoi();
-      try {
-        // DOI resolves to IPT public resource page
-        URI uri = cfg.getResourceUri(resource.getShortname());
-        dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
-
-        // if this resource (DOI) replaces a former resource version (DOI) add isNewVersionOf RelatedIdentifier
-        if (replaced != null) {
-          DataCiteMetadataBuilder.addIsNewVersionOfDOIRelatedIdentifier(dataCiteMetadata, replaced);
-        }
-
-        registrationManager.getDoiService().register(doi, uri, dataCiteMetadata);
-        resource.setIdentifierStatus(IdentifierStatus.PUBLIC);
-        resource.updateAlternateIdentifierForDOI();
-        resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
-      } catch (DoiExistsException e) {
-        LOG.warn(
-            "Received DoiExistsException registering resource meaning this is an existing DOI that should be updated instead",
-            e);
-        try {
-          registrationManager.getDoiService().update(doi, dataCiteMetadata);
-          resource.setIdentifierStatus(
-              IdentifierStatus.PUBLIC); // must transition reused (registered DOI) from public_pending_publication to public
-          resource.updateAlternateIdentifierForDOI();
-          resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
-        } catch (DoiException e2) {
-          String errorMsg = "Failed to update existing DOI  " + doi.toString() + ": " + e2.getMessage();
-          LOG.error(errorMsg, e2);
-          throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e2);
-        }
-      } catch (InvalidMetadataException e) {
-        String errorMsg =
-            "Failed to register " + doi.toString() + " because DOI metadata was invalid: " + e.getMessage();
-        LOG.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      } catch (DoiException e) {
-        String errorMsg = "Failed to register " + doi.toString() + ": " + e.getMessage();
-        LOG.error(errorMsg);
-        throw new PublicationException(PublicationException.TYPE.DOI, errorMsg, e);
-      }
-    } else {
-      throw new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DOI_REGISTRATION,
-          "Resource not in required state to register DOI!");
     }
   }
 

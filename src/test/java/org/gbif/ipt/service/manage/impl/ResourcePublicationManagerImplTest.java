@@ -212,7 +212,8 @@ public class ResourcePublicationManagerImplTest {
         mock(GenerateDataPackageFactory.class),
         mock(GenerateDarwinCoreDataPackageFactory.class),
         mockSimpleTextProvider,
-        mock(ResourceMetadataInferringService.class));
+        mock(ResourceMetadataInferringService.class),
+        new ResourceDoiServiceImpl(mockAppConfig, mockedDataDir, mockRegistrationManager));
 
     // update alt. id
     manager.updateAlternateIdentifierForIPTURLToResource(resource);
@@ -791,7 +792,8 @@ public class ResourcePublicationManagerImplTest {
         mock(GenerateDataPackageFactory.class),
         mock(GenerateDarwinCoreDataPackageFactory.class),
         mockSimpleTextProvider,
-        mock(ResourceMetadataInferringService.class)
+        mock(ResourceMetadataInferringService.class),
+        new ResourceDoiServiceImpl(mockAppConfig, mockedDataDir, mockRegistrationManager)
     );
   }
 

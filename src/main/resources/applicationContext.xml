@@ -225,6 +225,13 @@
     <constructor-arg ref="dwcDpFactory"/>
     <constructor-arg ref="simpleTextProvider"/>
     <constructor-arg ref="resourceMetadataInferringService"/>
+    <constructor-arg ref="resourceDoiService"/>
+  </bean>
+
+  <bean id="resourceDoiService" class="org.gbif.ipt.service.manage.impl.ResourceDoiServiceImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="registrationManager"/>
   </bean>
 
   <bean id="resourceDataTableViewManager" class="org.gbif.ipt.service.manage.impl.ResourceDataTableViewManagerImpl">

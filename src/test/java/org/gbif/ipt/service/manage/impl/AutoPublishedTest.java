@@ -66,7 +66,8 @@ public class AutoPublishedTest extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(GenerateDarwinCoreDataPackageFactory.class),
         mock(SimpleTextProvider.class),
-        mock(ResourceMetadataInferringService.class));
+        mock(ResourceMetadataInferringService.class),
+        new ResourceDoiServiceImpl(mockAppConfig, mock(DataDir.class), mock(RegistrationManager.class)));
   }
 
   public Resource getResource() {

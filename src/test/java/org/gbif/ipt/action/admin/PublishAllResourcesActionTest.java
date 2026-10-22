@@ -64,6 +64,7 @@ import org.gbif.ipt.service.manage.ResourceTypeService;
 import org.gbif.ipt.service.manage.ResourceVersioningService;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.impl.ResourceConvertersManager;
+import org.gbif.ipt.service.manage.impl.ResourceDoiServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceImportServiceImpl;
 import org.gbif.ipt.service.manage.impl.ResourceLoaderImpl;
 import org.gbif.ipt.service.manage.impl.ResourceManagerImpl;
@@ -390,7 +391,8 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(GenerateDarwinCoreDataPackageFactory.class),
         mockSimpleTextProvider,
-        mock(ResourceMetadataInferringService.class));
+        mock(ResourceMetadataInferringService.class),
+        new ResourceDoiServiceImpl(mockAppConfig, mockedDataDir, mockRegistrationManager));
   }
 
   public Resource getNonRegisteredMetadataOnlyResource() throws Exception {

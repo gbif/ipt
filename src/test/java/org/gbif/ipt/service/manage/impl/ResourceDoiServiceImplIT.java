@@ -24,7 +24,6 @@ import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
-import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -33,15 +32,7 @@ import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
-import org.gbif.ipt.service.manage.ResourcePublicationManager;
-import org.gbif.ipt.service.registry.RegistryManager;
-import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.task.Eml2Rtf;
-import org.gbif.ipt.task.GenerateDarwinCoreDataPackageFactory;
-import org.gbif.ipt.task.GenerateDataPackageFactory;
-import org.gbif.ipt.task.GenerateDwcaFactory;
+import org.gbif.ipt.service.manage.ResourceDoiService;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.metadata.eml.ipt.IptEmlWriter;
@@ -76,9 +67,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ResourceManagerImplIT extends IptBaseTest {
+public class ResourceDoiServiceImplIT extends IptBaseTest {
 
-  private static final Logger LOG = LogManager.getLogger(ResourceManagerImplIT.class);
+  private static final Logger LOG = LogManager.getLogger(ResourceDoiServiceImplIT.class);
   private static final DataDir MOCK_DATA_DIR = mock(DataDir.class);
   private static File TMP_EML_FILE;
 
@@ -93,12 +84,6 @@ public class ResourceManagerImplIT extends IptBaseTest {
         .thenReturn(URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants"));
     when(mockAppConfig.getResourceVersionUri("ants", new BigDecimal("1.1")))
         .thenReturn(URI.create("http://www.gbif-uat.org:7001/ipt/resource?r=ants&v=1.1"));
-    when(mockAppConfig.getMaxThreads()).thenReturn(3);
-
-    RegistryManager mockRegistryManager = MockRegistryManager.buildMock();
-    GenerateDwcaFactory mockDwcaFactory = mock(GenerateDwcaFactory.class);
-    Eml2Rtf mockEml2Rtf = mock(Eml2Rtf.class);
-    SimpleTextProvider mockSimpleTextProvider = mock(SimpleTextProvider.class);
 
     // persist eml file for version 1.0 (contents written later)
     TMP_EML_FILE = File.createTempFile("eml-1.0", ".xml");
@@ -132,23 +117,13 @@ public class ResourceManagerImplIT extends IptBaseTest {
     DoiService dataCiteService = new RestJsonApiDataCiteService(cfg.getBaseApiUrl(), cfg.getUser(), cfg.getPassword());
     when(mockRegistrationManagerDataCite.getDoiService()).thenReturn(dataCiteService);
 
-    // mock ResourceManagerImpl for DataCite
-    ResourcePublicationManager managerDataCite = new ResourcePublicationManagerImpl(
-        mockAppConfig,
-        MOCK_DATA_DIR,
-        mock(ResourceManager.class),
-        mockRegistryManager,
-        mockRegistrationManagerDataCite,
-        mockEml2Rtf,
-        mockDwcaFactory,
-        mock(GenerateDataPackageFactory.class),
-        mock(GenerateDarwinCoreDataPackageFactory.class),
-        mockSimpleTextProvider,
-        mock(ResourceMetadataInferringService.class));
+    // DOI service for DataCite
+    ResourceDoiService doiServiceDataCite =
+        new ResourceDoiServiceImpl(mockAppConfig, MOCK_DATA_DIR, mockRegistrationManagerDataCite);
 
     return Stream.of(
         Arguments.of(
-            managerDataCite,
+            doiServiceDataCite,
             DOIRegistrationAgency.DATACITE,
             DOIUtils.mintDOI(DOIRegistrationAgency.DATACITE, Constants.TEST_DOI_PREFIX),
             mockRegistrationManagerDataCite)
@@ -204,7 +179,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
    */
   @ParameterizedTest
   @MethodSource("data")
-  public void testRegisterDoiWorkflow(ResourcePublicationManager manager,
+  public void testRegisterDoiWorkflow(ResourceDoiService doiService,
                                       DOIRegistrationAgency type,
                                       DOI doi,
                                       RegistrationManager registrationManager) throws Exception {
@@ -230,7 +205,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
     }
 
     // register DOI
-    manager.doRegisterDoi(resource, null);
+    doiService.registerDoi(resource, null);
     assertEquals(IdentifierStatus.PUBLIC, resource.getIdentifierStatus());
     LOG.info("DOI was registered successfully, DOI={}", doi.getDoiName());
 
@@ -262,7 +237,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
     resource.setMetadataVersion(nextVersion);
     assertEquals("1.1", resource.getEmlVersion().toPlainString());
     assertEquals("1.0", resource.getReplacedMetadataVersion().toPlainString());
-    manager.doUpdateDoi(resource);
+    doiService.updateDoi(resource);
     LOG.info("DOI was updated successfully, DOI={}", doi.getDoiName());
 
     // check DOI remains registered, and its target is the same
@@ -305,7 +280,7 @@ public class ResourceManagerImplIT extends IptBaseTest {
     assertEquals("2.0", resource.getEmlVersion().toPlainString());
     assertNotNull(resource.getAssignedDoi());
     assertEquals("1.1", resource.getReplacedMetadataVersion().toPlainString());
-    manager.doReplaceDoi(resource, resource.getEmlVersion(), resource.getReplacedMetadataVersion());
+    doiService.replaceDoi(resource, resource.getEmlVersion(), resource.getReplacedMetadataVersion());
 
     // check new DOI is registered now, and its target is equal to resource URI
     doiData = registrationManager.getDoiService().resolve(newDoi);

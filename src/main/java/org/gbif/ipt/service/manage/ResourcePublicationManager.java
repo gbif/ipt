@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.service.manage;
 
-import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
@@ -37,9 +36,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import javax.annotation.Nullable;
 
 /**
- * Publication lifecycle for resources: publishing (EML/RTF/DwC-A/data package generation), DOI
- * registration/replacement, GBIF Registry registration and updates, version restore/removal, auto-publication
- * scheduling, checksum calculation, and tracking of in-flight publication jobs.
+ * Publication lifecycle for resources: publishing (EML/RTF/DwC-A/data package generation), GBIF Registry
+ * registration and updates, version restore/removal, auto-publication scheduling, checksum calculation, and tracking
+ * of in-flight publication jobs. DOIs are registered/replaced on publication by {@link ResourceDoiService}.
  * <p>
  * Any service, Struts action, or scheduled job that needs to publish, register, restore, or check the publication
  * status of a resource should depend on this interface directly, rather than going through {@link ResourceManager}.
@@ -288,30 +287,6 @@ public interface ResourcePublicationManager {
   void clearProcessReports();
 
   List<String> detectDuplicateUsesOfUUID(UUID candidate, String shortname);
-
-  /**
-   * Update DOI metadata. The DOI URI isn't changed. This is done for each minor version change.
-   *
-   * @param resource resource whose DOI will be updated
-   */
-  void doUpdateDoi(Resource resource);
-
-  /**
-   * Replace DOI currently assigned to resource with new DOI that has been reserved for resource.
-   * This corresponds to a new major version change.
-   *
-   * @param resource        resource whose DOI will be registered
-   * @param version         new version
-   * @param replacedVersion previous version being replaced
-   */
-  void doReplaceDoi(Resource resource, BigDecimal version, BigDecimal replacedVersion);
-
-  /**
-   * Register DOI. Corresponds to a major version change.
-   *
-   * @param resource resource whose DOI will be registered
-   */
-  void doRegisterDoi(Resource resource, @Nullable DOI replaced);
 
   void updateNextPublishedDate(Date currentDate, Resource resource) throws PublicationException;
 }

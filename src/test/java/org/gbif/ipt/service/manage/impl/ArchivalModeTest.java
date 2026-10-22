@@ -73,7 +73,8 @@ public class ArchivalModeTest extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(GenerateDarwinCoreDataPackageFactory.class),
         mock(SimpleTextProvider.class),
-        mock(ResourceMetadataInferringService.class));
+        mock(ResourceMetadataInferringService.class),
+        new ResourceDoiServiceImpl(mockAppConfig, mockDataDir, mock(RegistrationManager.class)));
   }
 
   public Resource getResource(String shortName) {
