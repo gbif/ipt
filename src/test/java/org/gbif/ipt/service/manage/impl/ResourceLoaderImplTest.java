@@ -21,7 +21,9 @@ import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.InferredEmlMetadata;
+import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
@@ -462,6 +464,68 @@ public class ResourceLoaderImplTest {
     loader.loadInferredMetadata(resource);
 
     assertInstanceOf(InferredEmlMetadata.class, resource.getInferredMetadata());
+  }
+
+  @Test
+  public void testLoadInferredCamtrapMetadata() throws Exception {
+    Files.createFile(inferredMetadataFile.toPath());
+    InferredCamtrapMetadata inferred = new InferredCamtrapMetadata();
+    when(resourcePersister.loadInferredCamtrapMetadata(any(InputStream.class))).thenReturn(inferred);
+    Resource resource = camtrapResource();
+
+    loader.loadInferredMetadata(resource);
+
+    assertSame(inferred, resource.getInferredMetadata());
+    verify(resourcePersister, never()).loadInferredEmlMetadata(any());
+  }
+
+  @Test
+  public void testLoadMissingInferredCamtrapMetadata() {
+    Resource resource = camtrapResource();
+
+    loader.loadInferredMetadata(resource);
+
+    assertInstanceOf(InferredCamtrapMetadata.class, resource.getInferredMetadata());
+    verify(resourcePersister, never()).loadInferredCamtrapMetadata(any());
+  }
+
+  @Test
+  public void testLoadUnreadableInferredCamtrapMetadata() throws Exception {
+    Files.createFile(inferredMetadataFile.toPath());
+    when(resourcePersister.loadInferredCamtrapMetadata(any(InputStream.class)))
+        .thenThrow(new ClassCastException("not Camtrap"));
+    Resource resource = camtrapResource();
+
+    loader.loadInferredMetadata(resource);
+
+    assertInstanceOf(InferredCamtrapMetadata.class, resource.getInferredMetadata());
+  }
+
+  /**
+   * Metadata is inferred only for Camtrap DP, so other data packages have no inferred metadata to load.
+   */
+  @Test
+  public void testLoadInferredMetadataSkipsOtherDataPackages() throws Exception {
+    Files.createFile(inferredMetadataFile.toPath());
+    Resource resource = new Resource();
+    resource.setShortname(SHORTNAME);
+    resource.setCoreType("dwc-dp");
+    resource.setDataPackageIdentifier(DWC_DP_IDENTIFIER);
+    InferredMetadata before = resource.getInferredMetadata();
+
+    loader.loadInferredMetadata(resource);
+
+    assertSame(before, resource.getInferredMetadata());
+    verify(resourcePersister, never()).loadInferredCamtrapMetadata(any());
+    verify(resourcePersister, never()).loadInferredEmlMetadata(any());
+  }
+
+  private static Resource camtrapResource() {
+    Resource resource = new Resource();
+    resource.setShortname(SHORTNAME);
+    resource.setCoreType("camtrap-dp");
+    resource.setDataPackageIdentifier(CAMTRAP_DP_IDENTIFIER);
+    return resource;
   }
 
   private void doLoadMetadata(Consumer<Resource> metadataLoader) {

@@ -280,8 +280,8 @@ public class ResourceLoaderImpl implements ResourceLoader {
     File inferredMetadataFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
 
     if (resource.isDataPackage()) {
-      // skip non-camtrap resources
-      if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      // skip non-camtrap resources: metadata is inferred only for Camtrap DP
+      if (!CAMTRAP_DP.equals(resource.getCoreType())) {
         return;
       }
 
