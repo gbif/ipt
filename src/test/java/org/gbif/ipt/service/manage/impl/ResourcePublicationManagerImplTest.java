@@ -727,6 +727,7 @@ public class ResourcePublicationManagerImplTest {
     when(mockedDataDir.resourceDwcaFile("res2", new BigDecimal("60.0"))).thenReturn(dwca60);
 
     manager.removeArchiveVersion(resource.getShortname(), new BigDecimal("60.0"));
+    assertFalse(dwca60.exists());
   }
 
   public ResourcePublicationManagerImpl getResourcePublicationManagerImpl(ResourceManager resourceManager) throws Exception {
