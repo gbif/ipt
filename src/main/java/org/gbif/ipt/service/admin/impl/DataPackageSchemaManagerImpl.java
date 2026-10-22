@@ -34,6 +34,8 @@ import org.gbif.utils.HttpClient;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -56,7 +58,10 @@ import org.apache.http.StatusLine;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 
 import jakarta.inject.Inject;
 
@@ -418,6 +423,7 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     Set<DataPackageTableSchema> tableSchemas = new LinkedHashSet<>();
     for (DataPackageTableSchema ts : dataPackageSchema.getTableSchemas()) {
       File downloaded = download(ts.getUrl(), new File(folder, "download" + DATA_SCHEMA_FILE_SUFFIX));
+      makeTableSchemaUrlAbsolute(downloaded, ts.getUrl());
       DataPackageTableSchema tableSchema = loadTableSchemaFromFile(downloaded);
       Objects.requireNonNull(tableSchema, "Table schema is empty: " + ts.getUrl());
       Objects.requireNonNull(tableSchema.getName(), "Table schema name is required: " + ts.getUrl());
@@ -426,6 +432,39 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
       tableSchemas.add(tableSchema);
     }
     return tableSchemas;
+  }
+
+  /**
+   * Replaces a relative table schema url (e.g. "table-schemas/agent.json", as in DwC-DP) with the URL the table schema
+   * was downloaded from, as the url is read into a URL and written to generated data packages. The file is left as it
+   * is if its url is absolute or missing.
+   *
+   * @param file downloaded table schema file
+   * @param downloadUrl URL the table schema was downloaded from
+   */
+  private void makeTableSchemaUrlAbsolute(File file, URL downloadUrl) throws IOException {
+    JsonElement json = JsonParser.parseString(Files.readString(file.toPath(), StandardCharsets.UTF_8));
+    if (!json.isJsonObject()) {
+      return;
+    }
+    JsonObject tableSchema = json.getAsJsonObject();
+    JsonElement url = tableSchema.get("url");
+    if (url == null || !url.isJsonPrimitive() || isAbsoluteUrl(url.getAsString())) {
+      return;
+    }
+    LOG.info("Replacing relative table schema url {} with {}", url.getAsString(), downloadUrl);
+    tableSchema.addProperty("url", downloadUrl.toString());
+    try (Writer writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
+      gson.toJson(tableSchema, writer);
+    }
+  }
+
+  private static boolean isAbsoluteUrl(String url) {
+    try {
+      return new URI(url).isAbsolute();
+    } catch (URISyntaxException e) {
+      return false;
+    }
   }
 
   /**

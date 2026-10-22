@@ -114,6 +114,30 @@ public class DataPackageSchemaManagerImplTest {
   }
 
   /**
+   * A relative table schema url, as in DwC-DP, is replaced with the URL the table schema was downloaded from.
+   */
+  @Test
+  public void testInstallRelativeTableSchemaUrl() throws Exception {
+    DataPackageSchema schema = schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event");
+    String url = tableSchemaUrl("dp", "1.0", "event");
+    // the registry lists the absolute URL, the served file has a relative one
+    remoteFiles.put(url, remoteFiles.get(url).replace(url, "table-schemas/event.json"));
+    assertTrue(remoteFiles.get(url).contains("\"url\": \"table-schemas/event.json\""), remoteFiles.get(url));
+    assertEquals(url, schema.tableSchemaByName("event").getUrl().toString());
+
+    manager.install(schema);
+
+    DataPackageSchema installed = manager.get(IDENTIFIER);
+    assertEquals(url, installed.tableSchemaByName("event").getUrl().toString());
+    assertTableSchemaLoaded(installed, "event");
+    assertTrue(Files.readString(manager.getTableSchemaFile(installed, "event").toPath()).contains(url));
+
+    // and after a restart, from the installed file
+    manager = newManager();
+    assertEquals(url, manager.get(IDENTIFIER).tableSchemaByName("event").getUrl().toString());
+  }
+
+  /**
    * A table schema that can't be downloaded fails the installation, leaving neither files nor an installed schema.
    */
   @Test
