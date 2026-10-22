@@ -148,8 +148,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     BigDecimal v = resource.getLastPublishedVersionsVersion();
     String shortname = resource.getShortname();
 
-    File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
-    File versionDatapacakgeFile = cfg.getDataDir().resourceDatapackageMetadataFile(shortname, resource.getCoreType(), v);
+    File versionEmlFile = dataDir.resourceEmlFile(shortname, v);
+    File versionDatapacakgeFile = dataDir.resourceDatapackageMetadataFile(shortname, resource.getCoreType(), v);
     MetadataFiles metadataFiles = MetadataFiles.builder()
         .eml(versionEmlFile)
         .datapackage(versionDatapacakgeFile)

@@ -34,7 +34,7 @@ public class XStreamResourcePersister implements ResourcePersister {
   public XStreamResourcePersister(
       ResourceConvertersManager resourceConvertersManager,
       PasswordEncrypter passwordEncrypter) {
-    this.xstream = ResourceXStreamFactory.create(resourceConvertersManager, passwordEncrypter);;
+    this.xstream = ResourceXStreamFactory.create(resourceConvertersManager, passwordEncrypter);
   }
 
   @Override
