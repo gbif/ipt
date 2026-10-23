@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -139,7 +138,6 @@ public class SourceManagerImplTest extends IptBaseTest {
     assertEquals("\t", fileSource.getFieldsTerminatedBy());
   }
 
-  @Disabled("dwca-io does not validate this anymore")
   @Test
   public void testAnalyzeEmptyFile() {
     // analyze individual source file absolutely no data inside at all

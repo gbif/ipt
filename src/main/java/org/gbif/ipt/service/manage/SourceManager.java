@@ -44,7 +44,7 @@ public interface SourceManager {
    *
    * @return file or excel source that has been added
    *
-   * @throws ImportException if the file cant be copied or read
+   * @throws ImportException if the file is empty or cannot be copied or read
    * @throws InvalidFilenameException if the source filename contained illegal characters
    */
   FileSource add(Resource resource, File file, @Nullable String sourceName)

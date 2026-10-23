@@ -452,6 +452,11 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     LOG.debug("ADDING SOURCE {} FROM {}", fileName, file.getAbsolutePath());
 
     if (acceptableFileName(fileName)) {
+      // reject empty files, they would be added as readable sources with no columns
+      if (file.length() == 0) {
+        throw new ImportException("File is empty");
+      }
+
       FileSource src;
       String suffix = FilenameUtils.getExtension(fileName);
       if (suffix != null && (suffix.equalsIgnoreCase("xls") || suffix.equalsIgnoreCase("xlsx"))) {
