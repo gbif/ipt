@@ -24,9 +24,11 @@ import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.InferredCamtrapTaxonomicScope;
 import org.gbif.ipt.model.InferredCamtrapTemporalScope;
+import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.FileUtils;
@@ -39,8 +41,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -48,6 +54,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -166,6 +174,237 @@ public class ResourceCamtrapMetadataInferringTest extends IptBaseTest {
         () -> assertTrue(taxonomic.getData().contains(taxonomic("Aves")), "Taxa must contain \"Aves\". Values: " + toString(taxonomic)),
         () -> assertTrue(taxonomic.getData().contains(taxonomic("Ardea")), "Taxa must contain \"Ardea\". Values: " + toString(taxonomic))
     );
+  }
+
+  @DisplayName("Test errors for partially mapped deployments and observations")
+  @Test
+  public void testInferMetadataPartialMappings() {
+    Resource resource = getCamtrapResource("partial-mappings");
+    TextFileSource source = getTextFileSource("deployments", "data/deployments.txt");
+    resource.addDataPackageMapping(mapping("deployments", source,
+        fieldMapping("deploymentID", 0), fieldMapping("latitude", 1), fieldMapping("deploymentStart", 2)));
+    resource.addDataPackageMapping(mapping("observations", source, fieldMapping("observationID", 0)));
+
+    InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
+
+    // nothing to infer, so the sources are not read
+    assertAll(
+        () -> assertEquals(Collections.singleton("datapackagemetadata.geographic.error.longitudeNotMapped"),
+            inferredMetadata.getInferredGeographicScope().getErrors()),
+        () -> assertEquals(Collections.singleton("datapackagemetadata.temporal.error.deploymentEndNotMapped"),
+            inferredMetadata.getInferredTemporalScope().getErrors()),
+        () -> assertEquals(Collections.singleton("datapackagemetadata.taxonomic.error.scientificNameNotMapped"),
+            inferredMetadata.getInferredTaxonomicScope().getErrors()));
+  }
+
+  @DisplayName("Test the taxonomic scope is limited, and sources are not read further once the limit is reached")
+  @Test
+  public void testInferMetadataTaxonLimit() throws Exception {
+    List<String[]> rows = new ArrayList<>();
+    for (int i = 0; i < ResourceMetadataInferringServiceImpl.CAMTRAP_TAXON_LIMIT + 10; i++) {
+      rows.add(new String[] {"o" + i, String.format("Taxon %03d", i)});
+    }
+    when(sourceManagerMock.rowIterator(any(Source.class))).thenAnswer(invocation -> new InMemoryRowIterator(rows));
+    Resource resource = getCamtrapResource("taxon-limit");
+    TextFileSource source = getTextFileSource("observations", "data/observations.txt");
+    resource.addDataPackageMapping(mapping("observations", source, fieldMapping("scientificName", 1)));
+    resource.addDataPackageMapping(mapping("observations", source, fieldMapping("scientificName", 1)));
+
+    InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
+
+    InferredCamtrapTaxonomicScope taxonomic = inferredMetadata.getInferredTaxonomicScope();
+    assertAll(
+        () -> assertTrue(taxonomic.isInferred()),
+        () -> assertEquals(ResourceMetadataInferringServiceImpl.CAMTRAP_TAXON_LIMIT, taxonomic.getData().size()),
+        () -> assertEquals("Taxon 000", taxonomic.getData().get(0).getScientificName()),
+        () -> verify(sourceManagerMock, times(1)).rowIterator(any(Source.class)));
+  }
+
+  @DisplayName("Test deployments with reversed or incomplete dates, mixed offsets and invalid coordinates")
+  @Test
+  public void testInferMetadataDeploymentEdgeCases() throws Exception {
+    List<String[]> rows = Arrays.asList(
+        // end before start
+        new String[] {"d1", "10", "10", "2021-06-01T00:00:00Z", "2021-05-01T00:00:00Z"},
+        // only one valid date, skipped for the temporal scope
+        new String[] {"d2", "20", "20", "2019-01-01T00:00:00Z", "not a date"},
+        // local dates are used, not UTC
+        new String[] {"d3", "NaN", "30", "2020-12-31T23:30:00-05:00", "2022-01-01T00:30:00+02:00"},
+        new String[] {"d4", null, null, null, null});
+    when(sourceManagerMock.rowIterator(any(Source.class))).thenAnswer(invocation -> new InMemoryRowIterator(rows));
+    Resource resource = getCamtrapResource("deployment-edge-cases");
+    resource.addDataPackageMapping(mapping("deployments", getTextFileSource("deployments", "data/deployments.txt"),
+        fieldMapping("deploymentID", 0), fieldMapping("latitude", 1), fieldMapping("longitude", 2),
+        fieldMapping("deploymentStart", 3), fieldMapping("deploymentEnd", 4)));
+
+    InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
+
+    InferredCamtrapGeographicScope geographic = inferredMetadata.getInferredGeographicScope();
+    InferredCamtrapTemporalScope temporal = inferredMetadata.getInferredTemporalScope();
+    assertAll(
+        () -> assertEquals(10.0, geographic.getMinLatitude()),
+        () -> assertEquals(20.0, geographic.getMaxLatitude()),
+        () -> assertEquals(20.0, geographic.getMaxLongitude()),
+        () -> assertEquals("2020-12-31", formatDate(temporal.getStartDate())),
+        () -> assertEquals("2022-01-01", formatDate(temporal.getEndDate())));
+  }
+
+  @DisplayName("Test a deployment ending before it starts gives a start before the end")
+  @Test
+  public void testInferMetadataReversedDeployment() throws Exception {
+    when(sourceManagerMock.rowIterator(any(Source.class))).thenAnswer(invocation -> new InMemoryRowIterator(
+        Collections.singletonList(new String[] {"d1", "2021-06-01T00:00:00Z", "2021-05-01T00:00:00Z"})));
+    Resource resource = getCamtrapResource("reversed-deployment");
+    resource.addDataPackageMapping(mapping("deployments", getTextFileSource("deployments", "data/deployments.txt"),
+        fieldMapping("deploymentID", 0), fieldMapping("deploymentStart", 1), fieldMapping("deploymentEnd", 2)));
+
+    InferredCamtrapTemporalScope temporal =
+        ((InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource)).getInferredTemporalScope();
+
+    assertAll(
+        () -> assertTrue(temporal.isInferred()),
+        () -> assertEquals("2021-05-01", formatDate(temporal.getStartDate())),
+        () -> assertEquals("2021-06-01", formatDate(temporal.getEndDate())));
+  }
+
+  @DisplayName("Test default values, translations and filters are applied like during the publication")
+  @Test
+  public void testInferMetadataDefaultsTranslationsAndFilter() throws Exception {
+    List<String[]> rows = Arrays.asList(
+        new String[] {"o1", "Vulpes vulpes", "animal"},
+        new String[] {"o2", "VV", "animal"},
+        new String[] {"o3", null, "animal"},
+        new String[] {"o4", "Homo sapiens", "human"});
+    when(sourceManagerMock.rowIterator(any(Source.class))).thenAnswer(invocation -> new InMemoryRowIterator(rows));
+    DataPackageFieldMapping scientificName = fieldMapping("scientificName", 1);
+    scientificName.setDefaultValue("Animalia");
+    scientificName.setTranslation(new TreeMap<>(Collections.singletonMap("VV", "Vulpes vulpes")));
+    DataPackageMapping observations = mapping("observations", getTextFileSource("observations", "data/observations.txt"),
+        fieldMapping("observationID", 0), scientificName, fieldMapping("observationType", 2));
+    RecordFilter filter = new RecordFilter();
+    filter.setColumn(2);
+    filter.setComparator(RecordFilter.Comparator.Equals);
+    filter.setParam("animal");
+    filter.setFilterTime(RecordFilter.FilterTime.BeforeTranslation);
+    observations.setFilter(filter);
+    Resource resource = getCamtrapResource("defaults-translations-filter");
+    resource.addDataPackageMapping(observations);
+
+    InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
+
+    assertEquals(Arrays.asList("Animalia", "Vulpes vulpes"), inferredMetadata.getInferredTaxonomicScope().getData().stream()
+        .map(Taxonomic::getScientificName)
+        .collect(Collectors.toList()));
+  }
+
+  @DisplayName("Test coordinates and dates mapped in different deployments mappings, and an unreadable observations source")
+  @Test
+  public void testInferMetadataFieldsInDifferentMappingsAndUnreadableSource() throws Exception {
+    when(sourceManagerMock.rowIterator(any(Source.class))).thenAnswer(invocation -> new InMemoryRowIterator(
+        Collections.singletonList(new String[] {"o1", "Vulpes vulpes"})).failingAt(0, new IllegalStateException("broken")));
+    TextFileSource source = getTextFileSource("deployments", "data/deployments.txt");
+    Resource resource = getCamtrapResource("different-mappings");
+    resource.addDataPackageMapping(mapping("deployments", source, fieldMapping("latitude", 1), fieldMapping("deploymentStart", 3)));
+    resource.addDataPackageMapping(mapping("deployments", source, fieldMapping("longitude", 2), fieldMapping("deploymentEnd", 4)));
+    resource.addDataPackageMapping(mapping("observations", source, fieldMapping("scientificName", 1)));
+
+    InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
+
+    assertAll(
+        () -> assertEquals(Collections.singleton("datapackagemetadata.geographic.error.fieldsNotMapped"),
+            inferredMetadata.getInferredGeographicScope().getErrors()),
+        () -> assertEquals(Collections.singleton("datapackagemetadata.temporal.error.fieldsNotMapped"),
+            inferredMetadata.getInferredTemporalScope().getErrors()),
+        () -> assertEquals(Collections.singleton("datapackagemetadata.error.serverError"),
+            inferredMetadata.getInferredTaxonomicScope().getErrors()));
+  }
+
+  @DisplayName("Test an unreadable observations source fails only the taxonomic scope")
+  @Test
+  public void testInferMetadataUnreadableObservations() throws Exception {
+    TextFileSource deployments = getTextFileSource("deployments", "data/deployments.txt");
+    TextFileSource observations = getTextFileSource("observations", "data/observations.txt");
+    when(sourceManagerMock.rowIterator(any(Source.class))).thenAnswer(invocation -> {
+      Source source = invocation.getArgument(0);
+      if ("observations".equals(source.getName())) {
+        throw new SourceException("can't read observations");
+      }
+      return new InMemoryRowIterator(Collections.singletonList(
+          new String[] {"d1", "10", "20", "2021-01-01T00:00:00Z", "2021-02-01T00:00:00Z"}));
+    });
+    Resource resource = getCamtrapResource("unreadable-observations");
+    resource.addDataPackageMapping(mapping("deployments", deployments,
+        fieldMapping("latitude", 1), fieldMapping("longitude", 2), fieldMapping("deploymentStart", 3),
+        fieldMapping("deploymentEnd", 4)));
+    resource.addDataPackageMapping(mapping("observations", observations, fieldMapping("scientificName", 1)));
+
+    InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
+
+    assertAll(
+        () -> assertTrue(inferredMetadata.getInferredGeographicScope().isInferred()),
+        () -> assertTrue(inferredMetadata.getInferredTemporalScope().isInferred()),
+        () -> assertEquals(Collections.singleton("datapackagemetadata.error.serverError"),
+            inferredMetadata.getInferredTaxonomicScope().getErrors()));
+  }
+
+  @DisplayName("Test scientific names are trimmed, blank and duplicate names are skipped, taxa are sorted")
+  @Test
+  public void testInferMetadataScientificNames() throws Exception {
+    when(sourceManagerMock.rowIterator(any(Source.class))).thenAnswer(invocation -> new InMemoryRowIterator(Arrays.asList(
+        new String[] {"o1", " Vulpes vulpes "},
+        new String[] {"o2", "   "},
+        new String[] {"o3", "Vulpes vulpes"},
+        new String[] {"o4", "Ardea cinerea"},
+        new String[] {"o5", ""})));
+    Resource resource = getCamtrapResource("scientific-names");
+    resource.addDataPackageMapping(mapping("observations", getTextFileSource("observations", "data/observations.txt"),
+        fieldMapping("scientificName", 1)));
+
+    InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) metadataInferringService.inferMetadata(resource);
+
+    assertEquals(Arrays.asList("Ardea cinerea", "Vulpes vulpes"), inferredMetadata.getInferredTaxonomicScope().getData().stream()
+        .map(Taxonomic::getScientificName)
+        .collect(Collectors.toList()));
+  }
+
+  @DisplayName("Test mappings changed while the sources are read make the result outdated")
+  @Test
+  public void testInferMetadataMappingsChangedWhileInferring() throws Exception {
+    Resource resource = getCamtrapResource("mappings-changed");
+    when(sourceManagerMock.rowIterator(any(Source.class))).thenAnswer(invocation -> new InMemoryRowIterator(
+        Collections.singletonList(new String[] {"o1", "Vulpes vulpes"})) {
+      @Override
+      public String[] next() {
+        ResourceEmlMetadataInferringTest.changeMappingsLater(resource);
+        return super.next();
+      }
+    });
+    resource.addDataPackageMapping(mapping("observations", getTextFileSource("observations", "data/observations.txt"),
+        fieldMapping("scientificName", 1)));
+
+    resource.setInferredMetadata(metadataInferringService.inferMetadata(resource));
+
+    assertTrue(resource.isInferredMetadataOutdated(InferredCamtrapMetadata.class));
+  }
+
+  private static DataPackageMapping mapping(String tableSchema, Source source, DataPackageFieldMapping... fields) {
+    return DataPackageMapping.builder()
+        .dataPackageSchema(
+            DataPackageSchema.builder()
+                .name("camtrap-dp")
+                .identifier("http://rs.gbif.org/schemas/camtrap-dp")
+                .build())
+        .dataPackageTableSchemaName(new DataPackageTableSchemaName(tableSchema))
+        .source(source)
+        .fields(Arrays.asList(fields))
+        .build();
+  }
+
+  private static DataPackageFieldMapping fieldMapping(String name, int index) {
+    return DataPackageFieldMapping.builder()
+        .index(index)
+        .field(DataPackageField.builder().name(name).type("string").build())
+        .build();
   }
 
   private static String toString(InferredCamtrapTaxonomicScope taxonomic) {

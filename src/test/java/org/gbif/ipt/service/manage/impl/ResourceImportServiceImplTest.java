@@ -16,6 +16,7 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
@@ -152,6 +153,7 @@ public class ResourceImportServiceImplTest {
     Resource resource = service.createNew(SHORTNAME, CAMTRAP_DP, creator);
 
     assertInstanceOf(CamtrapMetadata.class, resource.getDataPackageMetadata());
+    assertInstanceOf(InferredCamtrapMetadata.class, resource.getInferredMetadata());
     assertEquals("https://rs.gbif.org/sandbox/data-packages/camtrap-dp", resource.getDataPackageIdentifier());
     assertTrue(resource.isInferGeocoverageAutomatically());
     assertTrue(resource.isInferTaxonomicCoverageAutomatically());

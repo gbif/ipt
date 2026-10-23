@@ -15,6 +15,7 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
@@ -502,15 +503,34 @@ public class ResourceLoaderImplTest {
   }
 
   /**
-   * Metadata is inferred only for Camtrap DP, so other data packages have no inferred metadata to load.
+   * DwC-DP metadata is EML, so is its inferred metadata.
+   */
+  @Test
+  public void testLoadInferredDwcDpMetadata() throws Exception {
+    Files.createFile(inferredMetadataFile.toPath());
+    InferredEmlMetadata inferred = new InferredEmlMetadata();
+    when(resourcePersister.loadInferredEmlMetadata(any(InputStream.class))).thenReturn(inferred);
+    Resource resource = new Resource();
+    resource.setShortname(SHORTNAME);
+    resource.setCoreType("dwc-dp");
+    resource.setDataPackageIdentifier(DWC_DP_IDENTIFIER);
+
+    loader.loadInferredMetadata(resource);
+
+    assertSame(inferred, resource.getInferredMetadata());
+    verify(resourcePersister, never()).loadInferredCamtrapMetadata(any());
+  }
+
+  /**
+   * Metadata is inferred only for Camtrap DP and DwC-DP, so other data packages have no inferred metadata to load.
    */
   @Test
   public void testLoadInferredMetadataSkipsOtherDataPackages() throws Exception {
     Files.createFile(inferredMetadataFile.toPath());
     Resource resource = new Resource();
     resource.setShortname(SHORTNAME);
-    resource.setCoreType("dwc-dp");
-    resource.setDataPackageIdentifier(DWC_DP_IDENTIFIER);
+    resource.setCoreType(Constants.COL_DP);
+    resource.setDataPackageIdentifier(Constants.DATA_PACKAGE_COLDP_IDENTIFIER);
     InferredMetadata before = resource.getInferredMetadata();
 
     loader.loadInferredMetadata(resource);

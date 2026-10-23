@@ -299,25 +299,20 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    boolean mappingsChangedAfterLastTry =
-        !DATASET_TYPE_METADATA_IDENTIFIER.equals(resource.getCoreType())
-            && resource.getInferredMetadata() != null
-            && resource.getInferredMetadata().getLastModified() != null
-            && resource.getMappingsModified() != null
-            && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
-
     // infer metadata if:
     // 1) It was requested
-    // 2) It is absent
-    // 3) Mappings were changed
-    if (reinferMetadata || resource.getInferredMetadata() == null || mappingsChangedAfterLastTry) {
+    // 2) It was never inferred, or mappings were changed since (not for metadata-only resources)
+    boolean inferredMetadataOutdated = !DATASET_TYPE_METADATA_IDENTIFIER.equals(resource.getCoreType())
+        && resource.isInferredMetadataOutdated(InferredEmlMetadata.class);
+    if (reinferMetadata || inferredMetadataOutdated) {
       InferredMetadata inferredMetadataRaw = resourceMetadataInferringService.inferMetadata(resource);
 
       if (inferredMetadataRaw instanceof InferredEmlMetadata) {
         inferredMetadata = (InferredEmlMetadata) inferredMetadataRaw;
       } else {
         LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
-            InferredEmlMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
+            InferredEmlMetadata.class.getSimpleName(),
+            inferredMetadataRaw == null ? null : inferredMetadataRaw.getClass().getSimpleName());
         inferredMetadata = new InferredEmlMetadata();
       }
       resource.setInferredMetadata(inferredMetadata);
@@ -327,7 +322,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
         inferredMetadata = (InferredEmlMetadata) resource.getInferredMetadata();
       } else {
         LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
-            InferredEmlMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
+            InferredEmlMetadata.class.getSimpleName(),
+            resource.getInferredMetadata() == null ? null : resource.getInferredMetadata().getClass().getSimpleName());
         inferredMetadata = new InferredEmlMetadata();
       }
     }

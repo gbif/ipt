@@ -279,8 +279,9 @@ public class ResourceLoaderImpl implements ResourceLoader {
   public void loadInferredMetadata(Resource resource) {
     File inferredMetadataFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
 
-    if (resource.isDataPackage()) {
-      // skip non-camtrap resources: metadata is inferred only for Camtrap DP
+    // DwC-DP metadata is EML, so its inferred metadata is too
+    if (resource.isDataPackage() && !resource.isDwcDp()) {
+      // skip other data packages: metadata is inferred only for Camtrap DP
       if (!CAMTRAP_DP.equals(resource.getCoreType())) {
         return;
       }

@@ -34,6 +34,7 @@ import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
@@ -166,6 +167,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     // make sure the correct metadata class is set
     if (CAMTRAP_DP.equals(type)) {
       res.setDataPackageMetadata(new CamtrapMetadata());
+      res.setInferredMetadata(new InferredCamtrapMetadata());
       res.inferCoverageMetadataAutomatically(true);
     } else if (COL_DP.equals(type)) {
       res.setDataPackageMetadata(new FrictionlessColMetadata());

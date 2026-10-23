@@ -1364,6 +1364,19 @@ public class Resource implements Serializable, Comparable<Resource> {
   }
 
   /**
+   * Whether the metadata has to be inferred again: it is not of the expected type, it was never inferred (e.g. the
+   * empty instance of a new resource), or the mappings changed after it was inferred.
+   *
+   * @param expectedType inferred metadata type of the resource
+   */
+  public boolean isInferredMetadataOutdated(Class<? extends InferredMetadata> expectedType) {
+    if (!expectedType.isInstance(inferredMetadata) || inferredMetadata.getLastModified() == null) {
+      return true;
+    }
+    return mappingsModified != null && mappingsModified.after(inferredMetadata.getLastModified());
+  }
+
+  /**
    * @param recordsByExtension map of record counts (map value) by extension (map key)
    */
   public void setRecordsByExtension(Map<String, Integer> recordsByExtension) {

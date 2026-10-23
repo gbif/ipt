@@ -258,20 +258,16 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    boolean mappingsChangedAfterLastTry = resource.getInferredMetadata() != null
-        && resource.getInferredMetadata().getLastModified() != null
-        && resource.getMappingsModified() != null
-        && resource.getMappingsModified().after(resource.getInferredMetadata().getLastModified());
-
-    // infer metadata if absent, re-infer if requested or mappings changed
-    if (reinferMetadata || resource.getInferredMetadata() == null || mappingsChangedAfterLastTry) {
+    // infer metadata if requested, never inferred (or of another type), or mappings changed since
+    if (reinferMetadata || resource.isInferredMetadataOutdated(InferredCamtrapMetadata.class)) {
       InferredMetadata inferredMetadataRaw = metadataInferringService.inferMetadata(resource);
 
       if (inferredMetadataRaw instanceof InferredCamtrapMetadata) {
         inferredMetadata = inferredMetadataRaw;
       } else {
         LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
-            InferredCamtrapMetadata.class.getSimpleName(), inferredMetadataRaw.getClass().getSimpleName());
+            InferredCamtrapMetadata.class.getSimpleName(),
+            inferredMetadataRaw == null ? null : inferredMetadataRaw.getClass().getSimpleName());
         inferredMetadata = new InferredCamtrapMetadata();
       }
       resource.setInferredMetadata(inferredMetadata);
@@ -281,7 +277,8 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
         inferredMetadata = resource.getInferredMetadata();
       } else {
         LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
-            InferredCamtrapMetadata.class.getSimpleName(), resource.getInferredMetadata().getClass().getSimpleName());
+            InferredCamtrapMetadata.class.getSimpleName(),
+            resource.getInferredMetadata() == null ? null : resource.getInferredMetadata().getClass().getSimpleName());
         inferredMetadata = new InferredCamtrapMetadata();
       }
     }

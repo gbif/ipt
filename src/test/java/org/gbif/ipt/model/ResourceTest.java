@@ -948,4 +948,35 @@ public class ResourceTest extends IptBaseTest {
 
     assertTrue(resource.getDataPackageMappings().isEmpty());
   }
+
+  @Test
+  public void testInferredMetadataOutdated() {
+    Date inferred = new Date(1_000_000L);
+    Resource resource = new Resource();
+
+    // empty instance of a new resource, never inferred
+    assertTrue(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+
+    // another type, e.g. a new Camtrap DP resource with the EML default
+    InferredEmlMetadata eml = new InferredEmlMetadata();
+    eml.setLastModified(inferred);
+    resource.setInferredMetadata(eml);
+    assertTrue(resource.isInferredMetadataOutdated(InferredCamtrapMetadata.class));
+    assertFalse(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+
+    // missing
+    resource.setInferredMetadata(null);
+    assertTrue(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+
+    // mappings changed before or at the same time as inferring: up to date
+    resource.setInferredMetadata(eml);
+    resource.setMappingsModified(new Date(inferred.getTime() - 1));
+    assertFalse(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+    resource.setMappingsModified(new Date(inferred.getTime()));
+    assertFalse(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+
+    // mappings changed after inferring
+    resource.setMappingsModified(new Date(inferred.getTime() + 1));
+    assertTrue(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+  }
 }

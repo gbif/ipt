@@ -13,10 +13,10 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.api.util.IsoDateInterval;
 import org.gbif.common.parsers.core.OccurrenceParseResult;
-import org.gbif.common.parsers.core.ParseResult;
-import org.gbif.common.parsers.date.DateParsers;
-import org.gbif.common.parsers.date.TemporalParser;
+import org.gbif.common.parsers.date.TemporalAccessorUtils;
+import org.gbif.common.parsers.date.TemporalRangeParser;
 import org.gbif.common.parsers.geospatial.CoordinateParseUtils;
 import org.gbif.common.parsers.geospatial.LatLng;
 import org.gbif.ipt.action.portal.OrganizedTaxonomicCoverage;
@@ -36,7 +36,9 @@ import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
 import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
@@ -47,17 +49,19 @@ import org.gbif.metadata.eml.ipt.model.Point;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 import org.gbif.metadata.eml.ipt.model.TaxonomicCoverage;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverage;
-import org.gbif.metadata.eml.ipt.util.DateUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 
-import java.text.ParseException;
-import java.time.YearMonth;
-import java.time.chrono.ChronoLocalDate;
-import java.time.chrono.ChronoZonedDateTime;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,7 +69,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiConsumer;
+import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -90,9 +96,22 @@ import static org.gbif.ipt.config.Constants.VOCAB_KINGDOM;
 import static org.gbif.ipt.config.Constants.VOCAB_ORDER;
 import static org.gbif.ipt.config.Constants.VOCAB_PHYLUM;
 
+/**
+ * Infers geographic, temporal, and taxonomic coverage from the mapped source data of a resource.
+ * <p>
+ * Values are read the same way they are published: rows rejected by the mapping filter are skipped, translations are
+ * applied, and default values are used for missing values.
+ */
 public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInferringService {
 
-  protected final Logger LOG = LogManager.getLogger(ResourceMetadataInferringServiceImpl.class);
+  private static final Logger LOG = LogManager.getLogger(ResourceMetadataInferringServiceImpl.class);
+
+  // DwC-DP tables the EML coverages are inferred from
+  private static final String DWC_DP_EVENT = "event";
+  private static final Set<String> DWC_DP_TAXA_TABLES = new HashSet<>(Arrays.asList("identification", "identification-taxon"));
+  private static final String DWC_DP_DECIMAL_LATITUDE = "decimalLatitude";
+  private static final String DWC_DP_DECIMAL_LONGITUDE = "decimalLongitude";
+  private static final String DWC_DP_EVENT_DATE = "eventDate";
 
   private static final String CAMTRAP_DEPLOYMENTS = "deployments";
   private static final String CAMTRAP_OBSERVATIONS = "observations";
@@ -101,7 +120,21 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   public static final String CAMTRAP_DEPLOYMENTS_LONGITUDE = "longitude";
   public static final String CAMTRAP_DEPLOYMENTS_DEPLOYMENT_START = "deploymentStart";
   public static final String CAMTRAP_DEPLOYMENTS_DEPLOYMENT_END = "deploymentEnd";
+  // max number of distinct names per rank, ranks exceeding it are left out of the EML taxonomic coverage
   public static final int TAXON_LIMIT = 100;
+  // max number of distinct names in the Camtrap DP taxonomic scope, the rest is ignored
+  public static final int CAMTRAP_TAXON_LIMIT = 200;
+
+  // EML taxonomic coverage ranks and the terms they are inferred from
+  private static final Map<String, String> EML_RANK_TERMS = new LinkedHashMap<>();
+
+  static {
+    EML_RANK_TERMS.put(KINGDOM, VOCAB_KINGDOM);
+    EML_RANK_TERMS.put(PHYLUM, VOCAB_PHYLUM);
+    EML_RANK_TERMS.put(CLASS, VOCAB_CLASS);
+    EML_RANK_TERMS.put(ORDER, VOCAB_ORDER);
+    EML_RANK_TERMS.put(FAMILY, VOCAB_FAMILY);
+  }
 
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
@@ -113,1314 +146,759 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
   @Override
   public InferredMetadata inferMetadata(Resource resource) {
-    if (resource.isDataPackage()) {
-      if (CAMTRAP_DP.equals(resource.getCoreType())) {
-        return inferCamtrapMetadata(resource);
-      } else {
-        LOG.error("Metadata inferring is not supported for the type {}", resource.getCoreType());
-        return null;
-      }
-    } else {
+    if (!resource.isDataPackage() || resource.isDwcDp()) {
       return inferEmlMetadata(resource);
+    } else if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      return inferCamtrapMetadata(resource);
+    } else {
+      LOG.error("Metadata inferring is not supported for the type {}", resource.getCoreType());
+      return null;
     }
   }
 
+  /**
+   * Each mapping is read only for the coverages it has the fields for: e.g. an event core for the geographic and
+   * temporal coverages, an occurrence extension for the taxonomic coverage.
+   */
   private InferredEmlMetadata inferEmlMetadata(Resource resource) {
-    InferredEmlMetadata inferredMetadata = new InferredEmlMetadata();
-    InferredEmlMetadataParams params = new InferredEmlMetadataParams();
+    // the time inferring started: mappings changed while reading the sources make the result outdated
+    Date started = new Date();
+    List<EmlMapping> mappings = resource.isDwcDp()
+        ? resource.getDataPackageMappings().stream().map(ResourceMetadataInferringServiceImpl::emlMapping).toList()
+        : resource.getMappings().stream().map(ResourceMetadataInferringServiceImpl::emlMapping).toList();
 
-    boolean mappingsExist = mappingsExist(resource, params);
+    GeographicCoverageInference geographic = new GeographicCoverageInference();
+    TemporalCoverageInference temporal = new TemporalCoverageInference();
+    TaxonomicCoverageInference taxonomic = new TaxonomicCoverageInference();
+    List<EmlCoverageInference> coverages = List.of(geographic, temporal, taxonomic);
 
-    if (mappingsExist) {
-      for (ExtensionMapping mapping : resource.getMappings()) {
-        processMapping(mapping, params);
+    for (EmlMapping mapping : mappings) {
+      List<EmlCoverageInference> coveragesOfMapping = coverages.stream()
+          .filter(coverage -> coverage.hasFields(mapping))
+          .toList();
+      if (coveragesOfMapping.isEmpty()) {
+        continue;
+      }
+      coveragesOfMapping.forEach(EmlCoverageInference::markFieldsMapped);
+
+      boolean read = readRows(mapping.source, mapping.filter, mapping.fields, row -> {
+        coveragesOfMapping.forEach(coverage -> coverage.add(mapping, row));
+        return true;
+      });
+
+      if (!read) {
+        coveragesOfMapping.forEach(EmlCoverageInference::markReadFailed);
       }
     }
 
-    finalizeInferredMetadata(inferredMetadata, params);
-    inferredMetadata.setLastModified(new Date());
+    boolean mappingsExist = !mappings.isEmpty();
+    InferredEmlMetadata inferredMetadata = new InferredEmlMetadata();
+    inferredMetadata.setInferredGeographicCoverage(geographic.result(mappingsExist));
+    inferredMetadata.setInferredTemporalCoverage(temporal.result(mappingsExist));
+    inferredMetadata.setInferredTaxonomicCoverage(taxonomic.result(mappingsExist, this::organizeTaxonomicCoverage));
+    inferredMetadata.setLastModified(started);
 
     return inferredMetadata;
   }
 
-  private boolean mappingsExist(Resource resource, InferredEmlMetadataParams params) {
-    boolean mappingsExist = !resource.getMappings().isEmpty();
-
-    params.geographic.mappingsExist = mappingsExist;
-    params.temporal.mappingsExist = mappingsExist;
-    params.taxonomic.mappingsExist = mappingsExist;
-
-    return mappingsExist;
-  }
-
-  private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlMetadataParams params) {
-    finalizeInferredMetadata(metadata, params.geographic);
-    finalizeInferredMetadata(metadata, params.temporal);
-    finalizeInferredMetadata(metadata, params.taxonomic);
-  }
-
-  private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlGeographicMetadataParams params) {
-    InferredEmlGeographicCoverage inferredGeographicMetadata = new InferredEmlGeographicCoverage();
-    metadata.setInferredGeographicCoverage(inferredGeographicMetadata);
-
-    boolean errorOccurredWhileProcessingGeographicMetadata
-        = handleEmlGeographicMetadataErrors(inferredGeographicMetadata, params);
-
-    if (!errorOccurredWhileProcessingGeographicMetadata) {
-      inferredGeographicMetadata.setInferred(true);
-      GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
-      geospatialCoverage.setBoundingCoordinates(
-          new BBox(
-              new Point(params.minDecimalLatitude, params.minDecimalLongitude),
-              new Point(params.maxDecimalLatitude, params.maxDecimalLongitude)));
-      inferredGeographicMetadata.setData(geospatialCoverage);
-    }
-  }
-
-  private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlTemporalMetadataParams params) {
-    InferredEmlTemporalCoverage inferredTemporalMetadata = new InferredEmlTemporalCoverage();
-    metadata.setInferredTemporalCoverage(inferredTemporalMetadata);
-
-    boolean errorOccurredWhileProcessingGeographicMetadata
-        = handleEmlTemporalMetadataErrors(inferredTemporalMetadata, params);
-
-    if (!errorOccurredWhileProcessingGeographicMetadata) {
-      TemporalCoverage tempCoverage = new TemporalCoverage();
-      try {
-        tempCoverage.setStart(params.startDateTA.toString());
-        tempCoverage.setEnd(params.endDateTA.toString());
-        inferredTemporalMetadata.setInferred(true);
-        inferredTemporalMetadata.setData(tempCoverage);
-      } catch (ParseException e) {
-        LOG.error("Failed to parse date for temporal coverage", e);
-        inferredTemporalMetadata.addError("eml.temporalCoverages.error.dateParseException");
-      }
-    }
-  }
-
-  private void finalizeInferredMetadata(InferredEmlMetadata metadata, InferredEmlTaxonomicMetadataParams params) {
-    InferredEmlTaxonomicCoverage inferredTaxonomicMetadata = new InferredEmlTaxonomicCoverage();
-    metadata.setInferredTaxonomicCoverage(inferredTaxonomicMetadata);
-
-    boolean errorOccurredWhileProcessingTaxonomicMetadata
-        = handleEmlTaxonomicMetadataErrors(inferredTaxonomicMetadata, params);
-
-    if (!errorOccurredWhileProcessingTaxonomicMetadata) {
-      TaxonomicCoverage taxCoverage = new TaxonomicCoverage();
-      taxCoverage.setTaxonKeywords(new ArrayList<>(params.taxa));
-      OrganizedTaxonomicCoverage organizedTaxCoverage = constructOrganizedTaxonomicCoverage(taxCoverage);
-      inferredTaxonomicMetadata.setInferred(true);
-      inferredTaxonomicMetadata.setData(taxCoverage);
-      inferredTaxonomicMetadata.setOrganizedData(organizedTaxCoverage);
-    }
-  }
-
-  private boolean handleEmlGeographicMetadataErrors(
-      InferredEmlGeographicCoverage inferredGeographicMetadata,
-      InferredEmlGeographicMetadataParams params) {
-    boolean errorsPresent = false;
-
-    if (params.serverError) {
-      inferredGeographicMetadata.addError("eml.error.serverError");
-      errorsPresent = true;
-    } else if (!params.mappingsExist) {
-      inferredGeographicMetadata.addError("eml.error.noMappings");
-      errorsPresent = true;
-    } else if (!params.isDecimalLatitudeMappedForAtLeastOneMapping()
-        || !params.isDecimalLongitudeMappedForAtLeastOneMapping()) {
-      inferredGeographicMetadata.addError("eml.geospatialCoverages.error.fieldsNotMapped");
-      errorsPresent = true;
-    } else if (params.noValidDataGeo) {
-      inferredGeographicMetadata.addError("eml.error.noValidData");
-      errorsPresent = true;
-    }
-
-    return errorsPresent;
-  }
-
-  private boolean handleEmlTemporalMetadataErrors(
-      InferredEmlTemporalCoverage inferredTemporalMetadata,
-      InferredEmlTemporalMetadataParams params) {
-    boolean errorsPresent = false;
-
-    if (params.serverError) {
-      inferredTemporalMetadata.addError("eml.error.serverError");
-      errorsPresent = true;
-    } else if (!params.mappingsExist) {
-      inferredTemporalMetadata.addError("eml.error.noMappings");
-      errorsPresent = true;
-    } else if (!params.isEventDatePropertyMappedForAtLeastOneMapping()) {
-      inferredTemporalMetadata.addError("eml.temporalCoverages.error.fieldsNotMapped");
-      errorsPresent = true;
-    } else if (params.noValidDataTemporal) {
-      inferredTemporalMetadata.addError("eml.error.noValidData");
-      errorsPresent = true;
-    }
-
-    return errorsPresent;
-  }
-
-  private boolean handleEmlTaxonomicMetadataErrors(
-      InferredEmlTaxonomicCoverage inferredTaxonomicMetadata,
-      InferredEmlTaxonomicMetadataParams params) {
-    boolean errorsPresent = false;
-
-    if (params.serverError) {
-      inferredTaxonomicMetadata.addError("eml.error.serverError");
-      errorsPresent = true;
-    } else if (!params.mappingsExist) {
-      inferredTaxonomicMetadata.addError("eml.error.noMappings");
-      errorsPresent = true;
-    } else if (!params.isDataMapped()) {
-      inferredTaxonomicMetadata.addError("eml.taxonomicCoverages.error.fieldsNotMapped");
-      errorsPresent = true;
-    } else if (params.taxonItemsAdded == 0) {
-      inferredTaxonomicMetadata.addError("eml.error.noValidData");
-      errorsPresent = true;
-    }
-
-    if (params.kingdomsLimitExceeded) {
-      inferredTaxonomicMetadata.addRankWarning(KINGDOM, "eml.warning.limitExceeded");
-    }
-
-    if (params.phylumsLimitExceeded) {
-      inferredTaxonomicMetadata.addRankWarning(PHYLUM, "eml.warning.limitExceeded");
-    }
-
-    if (params.classesLimitExceeded) {
-      inferredTaxonomicMetadata.addRankWarning(CLASS, "eml.warning.limitExceeded");
-    }
-
-    if (params.ordersLimitExceeded) {
-      inferredTaxonomicMetadata.addRankWarning(ORDER, "eml.warning.limitExceeded");
-    }
-
-    if (params.familiesLimitExceeded) {
-      inferredTaxonomicMetadata.addRankWarning(FAMILY, "eml.warning.limitExceeded");
-    }
-
-    return errorsPresent;
-  }
-
-  private void processMapping(ExtensionMapping mapping, InferredEmlMetadataParams params) {
-    BiConsumer<String[], InferredEmlMetadataParams> lineProcessor;
-
-    // skip unsuitable mapping, calculate column indexes
-    if (DWC_ROWTYPE_OCCURRENCE.equals(mapping.getExtension().getRowType())) {
-      findGeoAndTemporalFieldsIndexes(mapping, params);
-      findTaxaFieldsIndexes(mapping, params);
-      lineProcessor = this::occurrenceMappingLineProcessor;
-    } else if (DWC_ROWTYPE_EVENT.equals(mapping.getExtension().getRowType())) {
-      findGeoAndTemporalFieldsIndexes(mapping, params);
-      lineProcessor = this::eventMappingLineProcessor;
-    } else if (DWC_ROWTYPE_TAXON.equals(mapping.getExtension().getRowType())) {
-      findTaxaFieldsIndexes(mapping, params);
-      lineProcessor = this::taxonMappingLineProcessor;
-    } else {
-      return;
-    }
-
-    ClosableReportingIterator<String[]> iter = null;
-    try {
-      // get the source iterator
-      iter = sourceManager.rowIterator(mapping.getSource());
-
-      while (iter.hasNext()) {
-        String[] in = iter.next();
-        if (in == null || in.length == 0) {
-          continue;
-        }
-
-        // process line
-        lineProcessor.accept(in, params);
-      }
-      // Catch ParseException, occurs for Excel files. Find out why
-    } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
-      LOG.error("Error while trying to infer metadata: {}", e.getMessage());
-    } catch (Exception e) {
-      LOG.error("Error while trying to infer metadata from source data", e);
-      params.geographic.serverError = true;
-      params.temporal.serverError = true;
-      params.taxonomic.serverError = true;
-    } finally {
-      if (iter != null) {
-        try {
-          iter.close();
-        } catch (Exception e) {
-          LOG.error("Error while closing iterator", e);
-          params.geographic.serverError = true;
-          params.temporal.serverError = true;
-          params.taxonomic.serverError = true;
-        }
-      }
-    }
-  }
-
-  private void occurrenceMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
-    processLine(in, params.geographic);
-    processLine(in, params.temporal);
-    processLine(in, params.taxonomic);
-  }
-
-  private void eventMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
-    processLine(in, params.geographic);
-    processLine(in, params.temporal);
-  }
-
-  private void taxonMappingLineProcessor(String[] in, InferredEmlMetadataParams params) {
-    processLine(in, params.taxonomic);
-  }
-
-  private void findGeoAndTemporalFieldsIndexes(ExtensionMapping mapping, InferredEmlMetadataParams params) {
-    params.geographic.resetIndexParams();
-    params.temporal.resetIndexParams();
-
+  /**
+   * DwC-A: place and time from occurrences and events, taxa from occurrences and taxa.
+   */
+  private static EmlMapping emlMapping(ExtensionMapping mapping) {
+    String rowType = mapping.getExtension() != null ? mapping.getExtension().getRowType() : null;
+    boolean hasPlaceAndTime = DWC_ROWTYPE_OCCURRENCE.equals(rowType) || DWC_ROWTYPE_EVENT.equals(rowType);
+    boolean hasTaxa = DWC_ROWTYPE_OCCURRENCE.equals(rowType) || DWC_ROWTYPE_TAXON.equals(rowType);
+    // mapped fields by term, e.g. "http://rs.tdwg.org/dwc/terms/eventDate" -> its index, default value and translation
+    Map<String, MappedField> fields = new HashMap<>();
     for (PropertyMapping field : mapping.getFields()) {
-      if (VOCAB_DECIMAL_LONGITUDE.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.geographic.decimalLongitudeSourceColumnIndex = field.getIndex();
-          params.geographic.decimalLatitudeSourceColumnPresentInOneOfMappings = true;
-        } else if (field.getDefaultValue() != null) {
-          params.geographic.decimalLongitudeSourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index nor default value for decimalLongitude, something wrong with the mapping: {}", field);
-        }
-      } else if (VOCAB_DECIMAL_LATITUDE.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.geographic.decimalLatitudeSourceColumnIndex = field.getIndex();
-          params.geographic.decimalLongitudeSourceColumnPresentInOneOfMappings = true;
-        } else if (field.getDefaultValue() != null) {
-          params.geographic.decimalLatitudeSourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index nor default value for decimalLatitude, something wrong with the mapping: {}", field);
-        }
-      } else if (VOCAB_EVENT_DATE.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.temporal.eventDateSourceColumnIndex = field.getIndex();
-          params.temporal.eventDateSourceColumnPresentInOneOfMappings = true;
-        } else if (field.getDefaultValue() != null) {
-          params.temporal.eventDateSourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index or default value for eventDate, something is wrong with the mapping: {}", field);
-        }
+      if (field.getTerm() != null) {
+        // a term mapped twice: keep the first one
+        fields.putIfAbsent(field.getTerm().qualifiedName(), MappedField.of(field));
       }
     }
+
+    EmlMapping result = new EmlMapping(mapping.getSource(), mapping.getFilter(), fields.values());
+    if (hasPlaceAndTime) {
+      result.latitude = fields.getOrDefault(VOCAB_DECIMAL_LATITUDE, MappedField.UNMAPPED);
+      result.longitude = fields.getOrDefault(VOCAB_DECIMAL_LONGITUDE, MappedField.UNMAPPED);
+      result.eventDate = fields.getOrDefault(VOCAB_EVENT_DATE, MappedField.UNMAPPED);
+    }
+    if (hasTaxa) {
+      EML_RANK_TERMS.forEach((rank, term) -> result.addRank(rank, fields.getOrDefault(term, MappedField.UNMAPPED)));
+    }
+    return result;
   }
 
-  private void findTaxaFieldsIndexes(ExtensionMapping mapping, InferredEmlMetadataParams params) {
-    params.taxonomic.resetIndexParams();
+  /**
+   * DwC-DP: place and time from events, taxa from identifications. Fields are named after the ranks.
+   */
+  private static EmlMapping emlMapping(DataPackageMapping mapping) {
+    String table = Optional.ofNullable(mapping.getDataPackageTableSchemaName())
+        .map(DataPackageTableSchemaName::getName)
+        .orElse(null);
+    List<MappedField> fields = mapping.getFields() == null
+        ? Collections.emptyList()
+        : mapping.getFields().stream().map(MappedField::of).collect(Collectors.toList());
 
-    for (PropertyMapping field : mapping.getFields()) {
-      if (VOCAB_KINGDOM.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.taxonomic.kingdomSourceColumnIndex = field.getIndex();
-        } else if (field.getDefaultValue() != null) {
-          params.taxonomic.kingdomSourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index nor default value for kingdom, something wrong with the mapping: {}", field);
-        }
-      } else if (VOCAB_PHYLUM.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.taxonomic.phylumSourceColumnIndex = field.getIndex();
-        } else if (field.getDefaultValue() != null) {
-          params.taxonomic.phylumSourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index or default value for phylum, something is wrong with the mapping: {}", field);
-        }
-      } else if (VOCAB_CLASS.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.taxonomic.classSourceColumnIndex = field.getIndex();
-        } else if (field.getDefaultValue() != null) {
-          params.taxonomic.classSourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index or default value for class, something is wrong with the mapping: {}", field);
-        }
-      } else if (VOCAB_ORDER.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.taxonomic.orderSourceColumnIndex = field.getIndex();
-        } else if (field.getDefaultValue() != null) {
-          params.taxonomic.orderSourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index or default value for order, something is wrong with the mapping: {}", field);
-        }
-      } else if (VOCAB_FAMILY.equals(field.getTerm().qualifiedName())) {
-        if (field.getIndex() != null) {
-          params.taxonomic.familySourceColumnIndex = field.getIndex();
-        } else if (field.getDefaultValue() != null) {
-          params.taxonomic.familySourceDefaultValue = field.getDefaultValue();
-        } else {
-          LOG.error("There is no index or default value for family, something is wrong with the mapping: {}", field);
-        }
-      }
+    EmlMapping result = new EmlMapping(mapping.getSource(), mapping.getFilter(), fields);
+    if (DWC_DP_EVENT.equals(table)) {
+      result.latitude = MappedField.of(mapping.getField(DWC_DP_DECIMAL_LATITUDE));
+      result.longitude = MappedField.of(mapping.getField(DWC_DP_DECIMAL_LONGITUDE));
+      result.eventDate = MappedField.of(mapping.getField(DWC_DP_EVENT_DATE));
     }
+    if (DWC_DP_TAXA_TABLES.contains(table)) {
+      EML_RANK_TERMS.keySet().forEach(rank -> result.addRank(rank, MappedField.of(mapping.getField(rank))));
+    }
+    return result;
   }
 
-  private void processLine(String[] in, InferredEmlGeographicMetadataParams params) {
-    if (params.isDecimalLongitudePropertyMapped()
-        && params.isDecimalLatitudePropertyMapped()
-        && params.isColumnIndexesWithingRanges(in.length)) {
-      String rawLatitudeValue = params.decimalLatitudeSourceDefaultValue != null
-          ? params.decimalLatitudeSourceDefaultValue : in[params.decimalLatitudeSourceColumnIndex];
-      String rawLongitudeValue = params.decimalLongitudeSourceDefaultValue != null
-          ? params.decimalLongitudeSourceDefaultValue : in[params.decimalLongitudeSourceColumnIndex];
+  /**
+   * Groups the taxon keywords by rank for the UI, in the order of the ranks vocabulary.
+   */
+  private OrganizedTaxonomicCoverage organizeTaxonomicCoverage(TaxonomicCoverage coverage) {
+    Map<String, List<String>> namesByRank = coverage.getTaxonKeywords().stream()
+        .collect(Collectors.groupingBy(
+            k -> StringUtils.lowerCase(k.getRank(), Locale.ENGLISH),
+            Collectors.mapping(TaxonKeyword::getScientificName, Collectors.toList())));
 
-      OccurrenceParseResult<LatLng> latLngParseResult =
-          CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
-      LatLng latLng = latLngParseResult.getPayload();
-
-      // skip erratic records
-      if (latLng != null && latLngParseResult.isSuccessful()) {
-        params.noValidDataGeo = false;
-
-        // initialize min and max values
-        if (!params.coordinatesInitialized) {
-          params.minDecimalLatitude = latLng.getLat();
-          params.maxDecimalLatitude = latLng.getLat();
-          params.minDecimalLongitude = latLng.getLng();
-          params.maxDecimalLongitude = latLng.getLng();
-          params.coordinatesInitialized = true;
-        }
-
-        if (latLng.getLat() > params.maxDecimalLatitude) {
-          params.maxDecimalLatitude = latLng.getLat();
-        }
-        if (latLng.getLat() < params.minDecimalLatitude) {
-          params.minDecimalLatitude = latLng.getLat();
-        }
-
-        if (latLng.getLng() > params.maxDecimalLongitude) {
-          params.maxDecimalLongitude = latLng.getLng();
-        }
-        if (latLng.getLng() < params.minDecimalLongitude) {
-          params.minDecimalLongitude = latLng.getLng();
-        }
-      }
-    }
-  }
-
-  private void processLine(String[] in, InferredEmlTemporalMetadataParams params) {
-    if (params.isEventDatePropertyMapped() && params.isColumnIndexesWithingRanges(in.length)) {
-      String rawEventDateValue = params.eventDateSourceDefaultValue != null
-          ? params.eventDateSourceDefaultValue : in[params.eventDateSourceColumnIndex];
-
-      TemporalParser temporalParser = DateParsers.defaultTemporalParser();
-      ParseResult<TemporalAccessor> parsedEventDateResult = temporalParser.parse(rawEventDateValue);
-      TemporalAccessor parsedEventDateTA = parsedEventDateResult.getPayload();
-
-      // skip erratic records
-      if (!parsedEventDateResult.isSuccessful() || parsedEventDateTA == null || !parsedEventDateTA.isSupported(ChronoField.YEAR)) {
-        return;
-      } else {
-        params.noValidDataTemporal = false;
-      }
-
-      if (params.startDateTA == null) {
-        params.startDateTA = parsedEventDateTA;
-        params.startDateStr = rawEventDateValue;
-      }
-      if (params.endDateTA == null) {
-        params.endDateTA = parsedEventDateTA;
-        params.endDateStr = rawEventDateValue;
-      }
-
-      if (parsedEventDateTA instanceof YearMonth) {
-        parsedEventDateTA = ((YearMonth) parsedEventDateTA).atEndOfMonth();
-      }
-
-      if (parsedEventDateTA instanceof ChronoLocalDate
-          && params.startDateTA instanceof ChronoLocalDate
-          && ((ChronoLocalDate) params.startDateTA).isAfter((ChronoLocalDate) parsedEventDateTA)) {
-        params.startDateTA = parsedEventDateTA;
-        params.startDateStr = rawEventDateValue;
-      }
-
-      if (parsedEventDateTA instanceof ChronoLocalDate
-          && params.endDateTA instanceof ChronoLocalDate
-          && ((ChronoLocalDate) params.endDateTA).isBefore((ChronoLocalDate) parsedEventDateTA)) {
-        params.endDateTA = parsedEventDateTA;
-        params.endDateStr = rawEventDateValue;
-      }
-    }
-  }
-
-  private void processLine(String[] in, InferredEmlTaxonomicMetadataParams params) {
-    if (params.isDataMapped()) {
-      // kingdom
-      if (params.kingdomSourceDefaultValue != null && !params.defaultKingdomValueAdded) {
-        params.addNewKingdom(params.kingdomSourceDefaultValue);
-        params.defaultKingdomValueAdded = true;
-      } else if (params.isMaxNumberOfKingdomsExceeded()) {
-        if (!params.kingdomsLimitExceeded) {
-          params.removeAllKingdoms();
-          params.kingdomsLimitExceeded = true;
-        }
-      } else if (params.isKingdomPropertyMapped() && params.isKingdomIndexWithingRange(in.length)) {
-        params.addNewKingdom(in[params.kingdomSourceColumnIndex]);
-      }
-
-      // phylum
-      if (params.phylumSourceDefaultValue != null && !params.defaultPhylumValueAdded) {
-        params.addNewPhylum(params.phylumSourceDefaultValue);
-        params.defaultPhylumValueAdded = true;
-      } else if (params.isMaxNumberOfPhylumsExceeded()) {
-        if (!params.phylumsLimitExceeded) {
-          params.removeAllPhylums();
-          params.phylumsLimitExceeded = true;
-        }
-      } else if (params.isPhylumPropertyMapped() && params.isPhylumIndexWithinRange(in.length)) {
-        params.addNewPhylum(in[params.phylumSourceColumnIndex]);
-      }
-
-      // class
-      if (params.classSourceDefaultValue != null && !params.defaultClassValueAdded) {
-        params.addNewClass(params.classSourceDefaultValue);
-        params.defaultClassValueAdded = true;
-      } else if (params.isMaxNumberOfClassesExceeded()) {
-        if (!params.classesLimitExceeded) {
-          params.removeAllClasses();
-          params.classesLimitExceeded = true;
-        }
-      } else if (params.isClassPropertyMapped() && params.isClassIndexWithinRange(in.length)) {
-        params.addNewClass(in[params.classSourceColumnIndex]);
-      }
-
-      // order
-      if (params.orderSourceDefaultValue != null && !params.defaultOrderValueAdded) {
-        params.addNewOrder(params.orderSourceDefaultValue);
-        params.defaultOrderValueAdded = true;
-      } else if (params.isMaxNumberOfOrdersExceeded()) {
-        if (!params.ordersLimitExceeded) {
-          params.removeAllOrders();
-          params.ordersLimitExceeded = true;
-        }
-      } else if (params.isOrderPropertyMapped() && params.isOrderIndexWithinRange(in.length)) {
-        params.addNewOrder(in[params.orderSourceColumnIndex]);
-      }
-
-      // family
-      if (params.familySourceDefaultValue != null && !params.defaultFamilyValueAdded) {
-        params.addNewFamily(params.familySourceDefaultValue);
-        params.defaultFamilyValueAdded = true;
-      } else if (params.isMaxNumberOfFamiliesExceeded()) {
-        if (!params.familiesLimitExceeded) {
-          params.removeAllFamilies();
-          params.familiesLimitExceeded = true;
-        }
-      } else if (params.isFamilyPropertyMapped() && params.isFamilyIndexWithingRange(in.length)) {
-        params.addNewFamily(in[params.familySourceColumnIndex]);
-      }
-    }
-  }
-
-  static class InferredEmlMetadataParams {
-    private final InferredEmlGeographicMetadataParams geographic = new InferredEmlGeographicMetadataParams();
-    private final InferredEmlTemporalMetadataParams temporal = new InferredEmlTemporalMetadataParams();
-    private final InferredEmlTaxonomicMetadataParams taxonomic = new InferredEmlTaxonomicMetadataParams();
-  }
-
-  static class InferredEmlGeographicMetadataParams {
-    private int decimalLongitudeSourceColumnIndex = -1;
-    private boolean decimalLongitudeSourceColumnPresentInOneOfMappings = false;
-    private String decimalLongitudeSourceDefaultValue;
-    private int decimalLatitudeSourceColumnIndex = -1;
-    private boolean decimalLatitudeSourceColumnPresentInOneOfMappings = false;
-    private String decimalLatitudeSourceDefaultValue;
-    private boolean mappingsExist;
-    private boolean serverError;
-    private boolean noValidDataGeo = true;
-    private Double minDecimalLongitude = -180.0D;
-    private Double maxDecimalLongitude = 180.0D;
-    private Double minDecimalLatitude = -90.0D;
-    private Double maxDecimalLatitude = 90.0D;
-    private boolean coordinatesInitialized;
-
-    public boolean isColumnIndexesWithingRanges(int range) {
-      return decimalLongitudeSourceColumnIndex < range && decimalLatitudeSourceColumnIndex < range;
+    List<OrganizedTaxonomicKeywords> organizedKeywords = new ArrayList<>();
+    for (String rank : vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.ENGLISH.getLanguage(), false).keySet()) {
+      OrganizedTaxonomicKeywords keywords = new OrganizedTaxonomicKeywords();
+      keywords.setRank(rank);
+      keywords.setDisplayNames(new ArrayList<>(namesByRank.getOrDefault(rank.toLowerCase(Locale.ENGLISH), Collections.emptyList())));
+      organizedKeywords.add(keywords);
     }
 
-    public boolean isDecimalLongitudePropertyMapped() {
-      return decimalLongitudeSourceColumnIndex != -1 || decimalLongitudeSourceDefaultValue != null;
-    }
-
-    public boolean isDecimalLatitudePropertyMapped() {
-      return decimalLatitudeSourceColumnIndex != -1 || decimalLatitudeSourceDefaultValue != null;
-    }
-
-    public boolean isDecimalLongitudeMappedForAtLeastOneMapping() {
-      return decimalLongitudeSourceColumnPresentInOneOfMappings || decimalLongitudeSourceDefaultValue != null;
-    }
-
-    public boolean isDecimalLatitudeMappedForAtLeastOneMapping() {
-      return decimalLatitudeSourceColumnPresentInOneOfMappings || decimalLatitudeSourceDefaultValue != null;
-    }
-
-    public void resetIndexParams() {
-      decimalLongitudeSourceColumnIndex = -1;
-      decimalLongitudeSourceDefaultValue = null;
-      decimalLatitudeSourceColumnIndex = -1;
-      decimalLatitudeSourceDefaultValue = null;
-    }
-  }
-
-  static class InferredEmlTemporalMetadataParams {
-    private int eventDateSourceColumnIndex = -1;
-    private boolean eventDateSourceColumnPresentInOneOfMappings = false;
-    private String eventDateSourceDefaultValue;
-    private boolean mappingsExist;
-    private boolean serverError;
-    boolean noValidDataTemporal = true;
-    private String startDateStr = null;
-    private TemporalAccessor startDateTA = null;
-    private String endDateStr = null;
-    private TemporalAccessor endDateTA = null;
-
-    public boolean isColumnIndexesWithingRanges(int range) {
-      return eventDateSourceColumnIndex < range;
-    }
-
-    public boolean isEventDatePropertyMapped() {
-      return eventDateSourceColumnIndex != -1 || eventDateSourceDefaultValue != null;
-    }
-
-    public boolean isEventDatePropertyMappedForAtLeastOneMapping() {
-      return eventDateSourceColumnPresentInOneOfMappings || eventDateSourceDefaultValue != null;
-    }
-
-    public void resetIndexParams() {
-      eventDateSourceColumnIndex = -1;
-      eventDateSourceDefaultValue = null;
-    }
-  }
-
-  static class InferredEmlTaxonomicMetadataParams {
-    private int kingdomSourceColumnIndex = -1;
-    private String kingdomSourceDefaultValue;
-    private int phylumSourceColumnIndex = -1;
-    private String phylumSourceDefaultValue;
-    private int classSourceColumnIndex = -1;
-    private String classSourceDefaultValue;
-    private int orderSourceColumnIndex = -1;
-    private String orderSourceDefaultValue;
-    private int familySourceColumnIndex = -1;
-    private String familySourceDefaultValue;
-    private boolean mappingsExist;
-    private boolean serverError;
-    private int taxonItemsAdded = 0;
-    private int kingdomsAdded = 0;
-    private int phylumsAdded = 0;
-    private int classesAdded = 0;
-    private int ordersAdded = 0;
-    private int familiesAdded = 0;
-    private boolean defaultKingdomValueAdded = false;
-    private boolean defaultPhylumValueAdded = false;
-    private boolean defaultClassValueAdded = false;
-    private boolean defaultOrderValueAdded = false;
-    private boolean defaultFamilyValueAdded = false;
-    private boolean kingdomsLimitExceeded = false;
-    private boolean phylumsLimitExceeded = false;
-    private boolean classesLimitExceeded = false;
-    private boolean ordersLimitExceeded = false;
-    private boolean familiesLimitExceeded = false;
-
-    private final Set<TaxonKeyword> taxa = new HashSet<>();
-
-    public void addNewTaxon(String taxon, String type) {
-      if (StringUtils.isNotEmpty(taxon)) {
-        int sizeBeforeAdding = taxa.size();
-        taxa.add(new TaxonKeyword(taxon, type, null));
-        int sizeAfterAdding = taxa.size();
-
-        if (sizeAfterAdding > sizeBeforeAdding) {
-          taxonItemsAdded++;
-
-          switch (type) {
-            case KINGDOM:
-              kingdomsAdded++;
-              break;
-            case PHYLUM:
-              phylumsAdded++;
-              break;
-            case CLASS:
-              classesAdded++;
-              break;
-            case ORDER:
-              ordersAdded++;
-              break;
-            case FAMILY:
-              familiesAdded++;
-              break;
-            default:
-          }
-        }
-      }
-    }
-
-    public void addNewKingdom(String taxon) {
-      addNewTaxon(taxon, KINGDOM);
-    }
-
-    public void addNewPhylum(String taxon) {
-      addNewTaxon(taxon, PHYLUM);
-    }
-
-    public void addNewClass(String taxon) {
-      addNewTaxon(taxon, CLASS);
-    }
-
-    public void addNewOrder(String taxon) {
-      addNewTaxon(taxon, ORDER);
-    }
-
-    public void addNewFamily(String taxon) {
-      addNewTaxon(taxon, FAMILY);
-    }
-
-    public void removeAllKingdoms() {
-      taxa.removeIf(tk -> KINGDOM.equals(tk.getRank()));
-    }
-
-    public void removeAllPhylums() {
-      taxa.removeIf(tk -> PHYLUM.equals(tk.getRank()));
-    }
-
-    public void removeAllClasses() {
-      taxa.removeIf(tk -> CLASS.equals(tk.getRank()));
-    }
-
-    public void removeAllOrders() {
-      taxa.removeIf(tk -> ORDER.equals(tk.getRank()));
-    }
-
-    public void removeAllFamilies() {
-      taxa.removeIf(tk -> FAMILY.equals(tk.getRank()));
-    }
-
-    public boolean isMaxNumberOfKingdomsExceeded() {
-      return kingdomsAdded > TAXON_LIMIT;
-    }
-
-    public boolean isMaxNumberOfPhylumsExceeded() {
-      return phylumsAdded > TAXON_LIMIT;
-    }
-
-    public boolean isMaxNumberOfClassesExceeded() {
-      return classesAdded > TAXON_LIMIT;
-    }
-
-    public boolean isMaxNumberOfOrdersExceeded() {
-      return ordersAdded > TAXON_LIMIT;
-    }
-
-    public boolean isMaxNumberOfFamiliesExceeded() {
-      return familiesAdded > TAXON_LIMIT;
-    }
-
-    public boolean isDataMapped() {
-      return kingdomSourceColumnIndex != -1 || kingdomSourceDefaultValue != null
-          || phylumSourceColumnIndex != -1 || phylumSourceDefaultValue != null
-          || classSourceColumnIndex != -1 || classSourceDefaultValue != null
-          || orderSourceColumnIndex != -1 || orderSourceDefaultValue != null
-          || familySourceColumnIndex != -1 || familySourceDefaultValue != null;
-    }
-
-    public boolean isKingdomPropertyMapped() {
-      return kingdomSourceColumnIndex != -1;
-    }
-
-    public boolean isKingdomIndexWithingRange(int range) {
-      return kingdomSourceColumnIndex < range;
-    }
-
-    public boolean isPhylumPropertyMapped() {
-      return phylumSourceColumnIndex != -1;
-    }
-
-    public boolean isPhylumIndexWithinRange(int range) {
-      return phylumSourceColumnIndex < range;
-    }
-
-    public boolean isClassPropertyMapped() {
-      return classSourceColumnIndex != -1;
-    }
-
-    public boolean isClassIndexWithinRange(int range) {
-      return classSourceColumnIndex < range;
-    }
-
-    public boolean isOrderPropertyMapped() {
-      return orderSourceColumnIndex != -1;
-    }
-
-    public boolean isOrderIndexWithinRange(int range) {
-      return orderSourceColumnIndex < range;
-    }
-
-    public boolean isFamilyPropertyMapped() {
-      return familySourceColumnIndex != -1;
-    }
-
-    public boolean isFamilyIndexWithingRange(int range) {
-      return familySourceColumnIndex < range;
-    }
-
-    public void resetIndexParams() {
-      kingdomSourceColumnIndex = -1;
-      kingdomSourceDefaultValue = null;
-      phylumSourceColumnIndex = -1;
-      phylumSourceDefaultValue = null;
-      classSourceColumnIndex = -1;
-      classSourceDefaultValue = null;
-      orderSourceColumnIndex = -1;
-      orderSourceDefaultValue = null;
-      familySourceColumnIndex = -1;
-      familySourceDefaultValue = null;
-      defaultKingdomValueAdded = false;
-      defaultPhylumValueAdded = false;
-      defaultClassValueAdded = false;
-      defaultOrderValueAdded = false;
-      defaultFamilyValueAdded = false;
-    }
-  }
-
-  public List<OrganizedTaxonomicCoverage> constructOrganizedTaxonomicCoverages(List<TaxonomicCoverage> coverages) {
-    List<OrganizedTaxonomicCoverage> organizedTaxonomicCoverages = new ArrayList<>();
-    for (TaxonomicCoverage coverage : coverages) {
-      OrganizedTaxonomicCoverage organizedCoverage = constructOrganizedTaxonomicCoverage(coverage);
-      organizedTaxonomicCoverages.add(organizedCoverage);
-    }
-    return organizedTaxonomicCoverages;
-  }
-
-  public OrganizedTaxonomicCoverage constructOrganizedTaxonomicCoverage(TaxonomicCoverage coverage) {
     OrganizedTaxonomicCoverage organizedCoverage = new OrganizedTaxonomicCoverage();
     organizedCoverage.setDescription(coverage.getDescription());
-    organizedCoverage.setKeywords(setOrganizedTaxonomicKeywords(coverage.getTaxonKeywords()));
+    organizedCoverage.setKeywords(organizedKeywords);
     return organizedCoverage;
   }
 
-  private List<OrganizedTaxonomicKeywords> setOrganizedTaxonomicKeywords(List<TaxonKeyword> keywords) {
-    List<OrganizedTaxonomicKeywords> organizedTaxonomicKeywordsList = new ArrayList<>();
+  private InferredCamtrapMetadata inferCamtrapMetadata(Resource resource) {
+    // the time inferring started: mappings changed while reading the sources make the result outdated
+    Date started = new Date();
+    TemporalRangeParser dateParser = TemporalRangeParser.builder().create();
+    CoordinateBounds coordinates = new CoordinateBounds();
+    DateBounds dates = new DateBounds();
+    Set<String> taxa = new TreeSet<>();
+    SectionState geographic = new SectionState();
+    SectionState temporal = new SectionState();
+    SectionState taxonomic = new SectionState();
+    // whether a field is mapped in any deployments mapping, to tell which one is missing
+    boolean latitudeMapped = false;
+    boolean longitudeMapped = false;
+    boolean deploymentStartMapped = false;
+    boolean deploymentEndMapped = false;
+    boolean deploymentsMapped = false;
+    boolean observationsMapped = false;
 
-    // also, we want a unique set of names corresponding to empty rank
-    Set<String> uniqueNamesForEmptyRank = new HashSet<>();
+    for (DataPackageMapping mapping : resource.getDataPackageMappings()) {
+      String tableSchema = Optional.ofNullable(mapping.getDataPackageTableSchemaName())
+          .map(DataPackageTableSchemaName::getName)
+          .orElse(null);
+      List<MappedField> allFields = mapping.getFields() == null
+          ? Collections.emptyList()
+          : mapping.getFields().stream().map(MappedField::of).collect(Collectors.toList());
 
-    Map<String, String> ranks = new LinkedHashMap<>(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, Locale.ENGLISH.getLanguage(), false));
+      if (CAMTRAP_DEPLOYMENTS.equals(tableSchema)) {
+        deploymentsMapped = true;
+        MappedField latitude = MappedField.of(mapping.getField(CAMTRAP_DEPLOYMENTS_LATITUDE));
+        MappedField longitude = MappedField.of(mapping.getField(CAMTRAP_DEPLOYMENTS_LONGITUDE));
+        MappedField deploymentStart = MappedField.of(mapping.getField(CAMTRAP_DEPLOYMENTS_DEPLOYMENT_START));
+        MappedField deploymentEnd = MappedField.of(mapping.getField(CAMTRAP_DEPLOYMENTS_DEPLOYMENT_END));
+        latitudeMapped |= latitude.isMapped();
+        longitudeMapped |= longitude.isMapped();
+        deploymentStartMapped |= deploymentStart.isMapped();
+        deploymentEndMapped |= deploymentEnd.isMapped();
 
-    for (String rank : ranks.keySet()) {
-      OrganizedTaxonomicKeywords organizedKeywords = new OrganizedTaxonomicKeywords();
-      // set rank
-      organizedKeywords.setRank(rank);
-      // construct display name for each TaxonKeyword, and add display name to organized keywords list
-      for (TaxonKeyword keyword : keywords) {
-        // add display name to appropriate list if it isn't null
-        String displayName = createKeywordDisplayName(keyword);
-        if (displayName != null) {
-          if (rank.equalsIgnoreCase(keyword.getRank())) {
-            organizedKeywords.getDisplayNames().add(displayName);
-          } else if (StringUtils.trimToNull(keyword.getRank()) == null) {
-            uniqueNamesForEmptyRank.add(displayName);
+        boolean geographicMapped = latitude.isMapped() && longitude.isMapped();
+        boolean temporalMapped = deploymentStart.isMapped() && deploymentEnd.isMapped();
+        geographic.mapped |= geographicMapped;
+        temporal.mapped |= temporalMapped;
+
+        if (!geographicMapped && !temporalMapped) {
+          continue;
+        }
+
+        boolean read = readRows(mapping.getSource(), mapping.getFilter(), allFields, row -> {
+          if (geographicMapped) {
+            coordinates.add(latitude.value(row), longitude.value(row));
           }
+          if (temporalMapped) {
+            // only deployments with both dates valid
+            Optional<IsoDateInterval> start = parseInterval(dateParser, deploymentStart.value(row));
+            Optional<IsoDateInterval> end = parseInterval(dateParser, deploymentEnd.value(row));
+            if (start.isPresent() && end.isPresent()) {
+              dates.add(earliestDate(start.get()), latestDate(end.get()));
+            }
+          }
+          return true;
+        });
+
+        if (!read) {
+          geographic.failed |= geographicMapped;
+          temporal.failed |= temporalMapped;
+        }
+      } else if (CAMTRAP_OBSERVATIONS.equals(tableSchema)) {
+        observationsMapped = true;
+        MappedField scientificName = MappedField.of(mapping.getField(CAMTRAP_OBSERVATIONS_SCIENTIFIC_NAME));
+        taxonomic.mapped |= scientificName.isMapped();
+
+        if (!scientificName.isMapped() || taxa.size() >= CAMTRAP_TAXON_LIMIT) {
+          continue;
+        }
+
+        boolean read = readRows(mapping.getSource(), mapping.getFilter(), allFields, row -> {
+          Optional.ofNullable(scientificName.value(row)).ifPresent(taxa::add);
+          return taxa.size() < CAMTRAP_TAXON_LIMIT;
+        });
+
+        if (!read) {
+          taxonomic.failed = true;
         }
       }
-      // add to list
-      organizedTaxonomicKeywordsList.add(organizedKeywords);
     }
-    // if there were actually some names with empty ranks, add the special OrganizedTaxonomicKeywords for empty rank
-    if (!uniqueNamesForEmptyRank.isEmpty()) {
-      // create special OrganizedTaxonomicKeywords for empty rank
-      OrganizedTaxonomicKeywords emptyRankKeywords = new OrganizedTaxonomicKeywords();
-      emptyRankKeywords.setRank("Unranked");
-      emptyRankKeywords.setDisplayNames(new ArrayList<>(uniqueNamesForEmptyRank));
-      organizedTaxonomicKeywordsList.add(emptyRankKeywords);
-    }
-    // return list
-    return organizedTaxonomicKeywordsList;
-  }
 
-  private String createKeywordDisplayName(TaxonKeyword keyword) {
-    String combined = null;
-    if (keyword != null) {
-      String scientificName = StringUtils.trimToNull(keyword.getScientificName());
-      String commonName = StringUtils.trimToNull(keyword.getCommonName());
-      if (scientificName != null && commonName != null) {
-        combined = scientificName + " (" + commonName + ")";
-      } else if (scientificName != null) {
-        combined = scientificName;
-      } else if (commonName != null) {
-        combined = commonName;
-      }
+    if (taxa.size() >= CAMTRAP_TAXON_LIMIT) {
+      LOG.debug("Inferred taxonomic scope of resource {} is limited to {} taxa", resource.getShortname(), CAMTRAP_TAXON_LIMIT);
     }
-    return combined;
-  }
 
-  private InferredCamtrapMetadata inferCamtrapMetadata(Resource resource) {
+    InferredCamtrapGeographicScope geographicScope = new InferredCamtrapGeographicScope();
+    if (geographic.failed) {
+      geographicScope.addError("datapackagemetadata.error.serverError");
+    } else if (!deploymentsMapped) {
+      geographicScope.addError("datapackagemetadata.error.noDeploymentsMapped");
+    } else if (!latitudeMapped && longitudeMapped) {
+      geographicScope.addError("datapackagemetadata.geographic.error.latitudeNotMapped");
+    } else if (latitudeMapped && !longitudeMapped) {
+      geographicScope.addError("datapackagemetadata.geographic.error.longitudeNotMapped");
+    } else if (!geographic.mapped) {
+      geographicScope.addError("datapackagemetadata.geographic.error.fieldsNotMapped");
+    } else if (!coordinates.hasData()) {
+      geographicScope.addError("datapackagemetadata.error.noValidData");
+    } else {
+      geographicScope.setMinLatitude(coordinates.minLatitude);
+      geographicScope.setMinLongitude(coordinates.minLongitude);
+      geographicScope.setMaxLatitude(coordinates.maxLatitude);
+      geographicScope.setMaxLongitude(coordinates.maxLongitude);
+      geographicScope.setInferred(true);
+    }
+
+    InferredCamtrapTemporalScope temporalScope = new InferredCamtrapTemporalScope();
+    if (temporal.failed) {
+      temporalScope.addError("datapackagemetadata.error.serverError");
+    } else if (!deploymentsMapped) {
+      temporalScope.addError("datapackagemetadata.error.noDeploymentsMapped");
+    } else if (!deploymentStartMapped && deploymentEndMapped) {
+      temporalScope.addError("datapackagemetadata.temporal.error.deploymentStartNotMapped");
+    } else if (deploymentStartMapped && !deploymentEndMapped) {
+      temporalScope.addError("datapackagemetadata.temporal.error.deploymentEndNotMapped");
+    } else if (!temporal.mapped) {
+      temporalScope.addError("datapackagemetadata.temporal.error.fieldsNotMapped");
+    } else if (!dates.hasData()) {
+      temporalScope.addError("datapackagemetadata.error.noValidData");
+    } else {
+      temporalScope.setStartDate(toDate(dates.earliest));
+      temporalScope.setEndDate(toDate(dates.latest));
+      temporalScope.setInferred(true);
+    }
+
+    InferredCamtrapTaxonomicScope taxonomicScope = new InferredCamtrapTaxonomicScope();
+    if (taxonomic.failed) {
+      taxonomicScope.addError("datapackagemetadata.error.serverError");
+    } else if (!observationsMapped) {
+      taxonomicScope.addError("datapackagemetadata.error.noObservationsMapped");
+    } else if (!taxonomic.mapped) {
+      taxonomicScope.addError("datapackagemetadata.taxonomic.error.scientificNameNotMapped");
+    } else if (taxa.isEmpty()) {
+      taxonomicScope.addError("datapackagemetadata.error.noValidData");
+    } else {
+      taxonomicScope.setData(taxa.stream().map(name -> {
+        Taxonomic t = new Taxonomic();
+        t.setScientificName(name);
+        return t;
+      }).collect(Collectors.toList()));
+      taxonomicScope.setInferred(true);
+    }
+
     InferredCamtrapMetadata inferredMetadata = new InferredCamtrapMetadata();
-    InferredCamtrapMetadataParams params = new InferredCamtrapMetadataParams();
-
-    boolean requiredSchemasMapped = isRequiredSchemasMapped(resource, params);
-
-    if (requiredSchemasMapped) {
-      for (DataPackageMapping mapping : resource.getDataPackageMappings()) {
-        processMapping(mapping, params);
-      }
-    }
-
-    finalizeInferredMetadata(inferredMetadata, params);
-    inferredMetadata.setLastModified(new Date());
+    inferredMetadata.setInferredGeographicScope(geographicScope);
+    inferredMetadata.setInferredTemporalScope(temporalScope);
+    inferredMetadata.setInferredTaxonomicScope(taxonomicScope);
+    inferredMetadata.setLastModified(started);
 
     return inferredMetadata;
   }
 
-  private boolean isRequiredSchemasMapped(Resource resource, InferredCamtrapMetadataParams params) {
-    boolean isDeploymentsMapped = isSchemaMapped(resource, CAMTRAP_DEPLOYMENTS);
-    boolean isObservationsMapped = isSchemaMapped(resource, CAMTRAP_OBSERVATIONS);
-    params.geographic.isDeploymentsMapped = isDeploymentsMapped;
-    params.temporal.isDeploymentsMapped = isDeploymentsMapped;
-    params.taxonomic.isObservationsMapped = isObservationsMapped;
-
-    return isDeploymentsMapped || isObservationsMapped;
-  }
-
-  private void processMapping(DataPackageMapping mapping, InferredCamtrapMetadataParams params) {
-    if (CAMTRAP_DEPLOYMENTS.equals(mapping.getDataPackageTableSchemaName().getName())) {
-      processDeploymentsMapping(mapping, params);
-    } else if (CAMTRAP_OBSERVATIONS.equals(mapping.getDataPackageTableSchemaName().getName())) {
-      processObservationsMapping(mapping, params);
-    }
-  }
-
-  private void processObservationsMapping(DataPackageMapping mapping, InferredCamtrapMetadataParams params) {
-    // calculate column indexes for mapping
-    params.taxonomic.scientificNameSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_OBSERVATIONS_SCIENTIFIC_NAME);
-
-    ClosableReportingIterator<String[]> iter = null;
-    try {
-      // get the source iterator
-      iter = sourceManager.rowIterator(mapping.getSource());
-
+  /**
+   * Passes the rows of the source that match the mapping filter to the row handler, until it returns false.
+   *
+   * @return false if the source could not be read
+   */
+  private boolean readRows(Source source, RecordFilter filter, Collection<MappedField> fields,
+                           Predicate<String[]> rowHandler) {
+    try (ClosableReportingIterator<String[]> iter = sourceManager.rowIterator(source)) {
       while (iter.hasNext()) {
-        String[] in = iter.next();
-        if (in == null || in.length == 0) {
+        String[] row = iter.next();
+        if (row == null || row.length == 0 || iter.hasRowError() || !matchesFilter(filter, row, fields)) {
           continue;
         }
-
-        processLine(in, params.taxonomic);
-
-        if (isMaxNumberOfTaxaReached(params.taxonomic)) {
+        if (!rowHandler.test(row)) {
           break;
         }
       }
+      return true;
       // Catch ParseException, occurs for Excel files. Find out why
     } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
-      LOG.error("Error while trying to infer metadata: {}", e.getMessage());
+      LOG.warn("Error while reading source {} to infer metadata, using the rows read so far: {}",
+          source != null ? source.getName() : null, e.getMessage());
+      return true;
     } catch (Exception e) {
-      LOG.error("Error while trying to infer metadata from source data", e);
-      params.taxonomic.serverError = true;
-    } finally {
-      if (iter != null) {
-        try {
-          iter.close();
-        } catch (Exception e) {
-          LOG.error("Error while closing iterator", e);
-          params.taxonomic.serverError = true;
-        }
+      LOG.error("Error while trying to infer metadata from source {}", source != null ? source.getName() : null, e);
+      return false;
+    }
+  }
+
+  /**
+   * Same filtering as during the publication.
+   */
+  private static boolean matchesFilter(RecordFilter filter, String[] row, Collection<MappedField> fields) {
+    if (filter == null || filter.getColumn() == null || filter.getComparator() == null || filter.getParam() == null) {
+      return true;
+    }
+
+    if (filter.getFilterTime() == RecordFilter.FilterTime.AfterTranslation) {
+      String[] translated = row.clone();
+      fields.forEach(field -> field.translate(translated));
+      return filter.matches(translated);
+    }
+
+    return filter.matches(row);
+  }
+
+  private static Optional<IsoDateInterval> parseInterval(TemporalRangeParser dateParser, String value) {
+    if (value == null) {
+      return Optional.empty();
+    }
+
+    OccurrenceParseResult<IsoDateInterval> result = dateParser.parse(value);
+    IsoDateInterval interval = result.isSuccessful() ? result.getPayload() : null;
+    if (interval == null || interval.getFrom() == null) {
+      return Optional.empty();
+    }
+
+    return Optional.of(interval);
+  }
+
+  /**
+   * The first day of the interval, e.g. 2020-01-01 for "2020" (offsets are ignored, the local date is used).
+   */
+  private static LocalDate earliestDate(IsoDateInterval interval) {
+    return toLocalDate(TemporalAccessorUtils.toEarliestLocalDateTime(interval.getFrom(), true));
+  }
+
+  /**
+   * The last day of the interval, e.g. 2020-12-31 for "2020" (offsets are ignored, the local date is used).
+   */
+  private static LocalDate latestDate(IsoDateInterval interval) {
+    Temporal to = interval.getTo() != null ? interval.getTo() : interval.getFrom();
+    return toLocalDate(TemporalAccessorUtils.toLatestLocalDateTime(to, true));
+  }
+
+  private static LocalDate toLocalDate(LocalDateTime dateTime) {
+    return dateTime != null ? dateTime.toLocalDate() : null;
+  }
+
+  /**
+   * Midnight in the default time zone. Uses the Julian-Gregorian calendar of java.util.Date, so dates before 1582 are
+   * formatted back unchanged.
+   */
+  private static Date toDate(LocalDate date) {
+    Calendar calendar = new GregorianCalendar();
+    calendar.clear();
+    calendar.set(Calendar.YEAR, date.getYear());
+    calendar.set(Calendar.MONTH, date.getMonthValue() - 1);
+    calendar.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());
+    return calendar.getTime();
+  }
+
+  /**
+   * The fields of a DwC-A or DwC-DP mapping that EML coverages are inferred from.
+   */
+  private static final class EmlMapping {
+    private final Source source;
+    private final RecordFilter filter;
+    // all fields, for translating rows before filtering
+    private final Collection<MappedField> fields;
+    private MappedField latitude = MappedField.UNMAPPED;
+    private MappedField longitude = MappedField.UNMAPPED;
+    private MappedField eventDate = MappedField.UNMAPPED;
+    private final Map<String, MappedField> ranks = new LinkedHashMap<>();
+
+    private EmlMapping(Source source, RecordFilter filter, Collection<MappedField> fields) {
+      this.source = source;
+      this.filter = filter;
+      this.fields = fields;
+    }
+
+    private void addRank(String rank, MappedField field) {
+      if (field.isMapped()) {
+        ranks.put(rank, field);
       }
     }
   }
 
-  private void processDeploymentsMapping(DataPackageMapping mapping, InferredCamtrapMetadataParams params) {
-    // calculate column indexes for mapping
-    params.geographic.latitudeSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_LATITUDE);
-    params.geographic.longitudeSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_LONGITUDE);
-    params.temporal.deploymentStartSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_DEPLOYMENT_START);
-    params.temporal.deploymentEndSourceColumnIndex = getFieldIndexInMapping(mapping, CAMTRAP_DEPLOYMENTS_DEPLOYMENT_END);
+  /**
+   * An EML coverage, inferred from the mappings that have its fields.
+   */
+  private abstract static class EmlCoverageInference {
+    // at least one mapping has the fields of the coverage
+    private boolean fieldsMapped;
+    // reading the source of one of these mappings failed
+    private boolean readFailed;
 
-    ClosableReportingIterator<String[]> iter = null;
-    try {
-      // get the source iterator
-      iter = sourceManager.rowIterator(mapping.getSource());
+    /**
+     * @return whether the mapping has the fields the coverage is inferred from
+     */
+    abstract boolean hasFields(EmlMapping mapping);
 
-      while (iter.hasNext()) {
-        String[] in = iter.next();
-        if (in == null || in.length == 0) {
-          continue;
-        }
+    /**
+     * Adds the values of a source row, of a mapping that has the fields.
+     */
+    abstract void add(EmlMapping mapping, String[] row);
 
-        processLine(in, params.geographic);
-        processLine(in, params.temporal);
+    /**
+     * @return whether at least one valid value was added
+     */
+    abstract boolean hasData();
+
+    /**
+     * @return the error when no mapping has the fields
+     */
+    abstract String fieldsNotMappedError();
+
+    void markFieldsMapped() {
+      fieldsMapped = true;
+    }
+
+    void markReadFailed() {
+      readFailed = true;
+    }
+
+    /**
+     * @return the error explaining why the coverage could not be inferred, or null if it was inferred
+     */
+    String error(boolean mappingsExist) {
+      if (readFailed) {
+        return "eml.error.serverError";
+      } else if (!mappingsExist) {
+        return "eml.error.noMappings";
+      } else if (!fieldsMapped) {
+        return fieldsNotMappedError();
+      } else if (!hasData()) {
+        return "eml.error.noValidData";
       }
-      // Catch ParseException, occurs for Excel files. Find out why
-    } catch (com.github.pjfanning.xlsx.exceptions.ParseException e) {
-      LOG.error("Error while trying to infer metadata: {}", e.getMessage());
-    } catch (Exception e) {
-      LOG.error("Error while trying to infer metadata from source data", e);
-      params.geographic.serverError = true;
-      params.temporal.serverError = true;
-    } finally {
-      if (iter != null) {
-        try {
-          iter.close();
-        } catch (Exception e) {
-          LOG.error("Error while closing iterator", e);
-          params.geographic.serverError = true;
-          params.temporal.serverError = true;
-        }
-      }
+      return null;
     }
   }
 
-  private void processLine(String[] in, InferredCamtrapGeographicScopeParams params) {
-    if (params.isLatitudeMapped()
-        && params.isLongitudeMapped()
-        && params.isColumnIndexesWithinRange(in.length)) {
-      String rawLatitudeValue = in[params.latitudeSourceColumnIndex];
-      String rawLongitudeValue = in[params.longitudeSourceColumnIndex];
+  /**
+   * Bounding box of the decimal coordinates.
+   */
+  private static final class GeographicCoverageInference extends EmlCoverageInference {
+    private final CoordinateBounds coordinates = new CoordinateBounds();
 
-      OccurrenceParseResult<LatLng> latLngParseResult =
-          CoordinateParseUtils.parseLatLng(rawLatitudeValue, rawLongitudeValue);
-      LatLng latLng = latLngParseResult.getPayload();
-
-      // skip erratic records
-      // TODO: 23/10/2023 store invalid values?
-      if (latLng != null && latLngParseResult.isSuccessful()) {
-        params.noValidDataGeo = false;
-
-        // initialize min and max values
-        if (!params.coordinatesInitialized) {
-          params.minDecimalLatitude = latLng.getLat();
-          params.maxDecimalLatitude = latLng.getLat();
-          params.minDecimalLongitude = latLng.getLng();
-          params.maxDecimalLongitude = latLng.getLng();
-          params.coordinatesInitialized = true;
-        }
-
-        if (latLng.getLat() > params.maxDecimalLatitude) {
-          params.maxDecimalLatitude = latLng.getLat();
-        }
-        if (latLng.getLat() < params.minDecimalLatitude) {
-          params.minDecimalLatitude = latLng.getLat();
-        }
-
-        if (latLng.getLng() > params.maxDecimalLongitude) {
-          params.maxDecimalLongitude = latLng.getLng();
-        }
-        if (latLng.getLng() < params.minDecimalLongitude) {
-          params.minDecimalLongitude = latLng.getLng();
-        }
-      }
+    @Override
+    boolean hasFields(EmlMapping mapping) {
+      return mapping.latitude.isMapped() && mapping.longitude.isMapped();
     }
-  }
 
-  private void processLine(String[] in, InferredCamtrapTemporalScopeParams params) {
-    if (params.isDeploymentStartMapped()
-        && params.isDeploymentEndMapped()
-        && params.isColumnIndexesWithinRange(in.length)) {
-      String rawDeploymentStartValue = in[params.deploymentStartSourceColumnIndex];
-      String rawDeploymentEndValue = in[params.deploymentEndSourceColumnIndex];
+    @Override
+    void add(EmlMapping mapping, String[] row) {
+      coordinates.add(mapping.latitude.value(row), mapping.longitude.value(row));
+    }
 
-      TemporalParser temporalParser = DateParsers.defaultTemporalParser();
-      ParseResult<TemporalAccessor> parsedDeploymentStartResult = temporalParser.parse(rawDeploymentStartValue);
-      ParseResult<TemporalAccessor> parsedDeploymentEndResult = temporalParser.parse(rawDeploymentEndValue);
-      TemporalAccessor parsedDeploymentStartTA = parsedDeploymentStartResult.getPayload();
-      TemporalAccessor parsedDeploymentEndTA = parsedDeploymentEndResult.getPayload();
+    @Override
+    boolean hasData() {
+      return coordinates.hasData();
+    }
 
-      // skip erratic records
-      if (!parsedDeploymentStartResult.isSuccessful() || parsedDeploymentStartTA == null || !parsedDeploymentStartTA.isSupported(ChronoField.YEAR)
-          || !parsedDeploymentEndResult.isSuccessful() || parsedDeploymentEndTA == null || !parsedDeploymentEndTA.isSupported(ChronoField.YEAR)) {
-        return;
+    @Override
+    String fieldsNotMappedError() {
+      return "eml.geospatialCoverages.error.fieldsNotMapped";
+    }
+
+    private InferredEmlGeographicCoverage result(boolean mappingsExist) {
+      InferredEmlGeographicCoverage result = new InferredEmlGeographicCoverage();
+      String error = error(mappingsExist);
+
+      if (error != null) {
+        result.addError(error);
       } else {
-        params.noValidDataTemporal = false;
+        GeospatialCoverage geospatialCoverage = new GeospatialCoverage();
+        geospatialCoverage.setBoundingCoordinates(
+            new BBox(
+                new Point(coordinates.minLatitude, coordinates.minLongitude),
+                new Point(coordinates.maxLatitude, coordinates.maxLongitude)));
+        result.setData(geospatialCoverage);
+        result.setInferred(true);
       }
 
-      if (parsedDeploymentStartTA instanceof YearMonth) {
-        parsedDeploymentStartTA = ((YearMonth) parsedDeploymentStartTA).atEndOfMonth();
+      return result;
+    }
+  }
+
+  /**
+   * Earliest and latest event date.
+   */
+  private static final class TemporalCoverageInference extends EmlCoverageInference {
+    // a new parser for each run, parsers are not guaranteed to be thread-safe
+    private final TemporalRangeParser dateParser = TemporalRangeParser.builder().create();
+    private final DateBounds dates = new DateBounds();
+
+    @Override
+    boolean hasFields(EmlMapping mapping) {
+      return mapping.eventDate.isMapped();
+    }
+
+    @Override
+    void add(EmlMapping mapping, String[] row) {
+      parseInterval(dateParser, mapping.eventDate.value(row))
+          .ifPresent(interval -> dates.add(earliestDate(interval), latestDate(interval)));
+    }
+
+    @Override
+    boolean hasData() {
+      return dates.hasData();
+    }
+
+    @Override
+    String fieldsNotMappedError() {
+      return "eml.temporalCoverages.error.fieldsNotMapped";
+    }
+
+    private InferredEmlTemporalCoverage result(boolean mappingsExist) {
+      InferredEmlTemporalCoverage result = new InferredEmlTemporalCoverage();
+      String error = error(mappingsExist);
+
+      if (error != null) {
+        result.addError(error);
+      } else {
+        TemporalCoverage temporalCoverage = new TemporalCoverage();
+        temporalCoverage.setStartDate(toDate(dates.earliest));
+        temporalCoverage.setEndDate(toDate(dates.latest));
+        result.setData(temporalCoverage);
+        result.setInferred(true);
       }
 
-      if (parsedDeploymentEndTA instanceof YearMonth) {
-        parsedDeploymentEndTA = ((YearMonth) parsedDeploymentEndTA).atEndOfMonth();
-      }
+      return result;
+    }
+  }
 
-      if (params.startDateTA == null) {
-        params.startDateTA = parsedDeploymentStartTA;
-        params.startDateStr = rawDeploymentStartValue;
-      }
-      if (params.endDateTA == null) {
-        params.endDateTA = parsedDeploymentEndTA;
-        params.endDateStr = rawDeploymentEndValue;
-      }
+  /**
+   * Distinct names of each rank, kingdom to family.
+   */
+  private static final class TaxonomicCoverageInference extends EmlCoverageInference {
+    private final Map<String, RankTaxa> taxaByRank = new LinkedHashMap<>();
 
-      if (parsedDeploymentStartTA instanceof ChronoLocalDate
-          && params.startDateTA instanceof ChronoLocalDate) {
-        ChronoLocalDate parsedLocalDate = (ChronoLocalDate) parsedDeploymentStartTA;
-        ChronoLocalDate existingLocalDate = (ChronoLocalDate) params.startDateTA;
+    private TaxonomicCoverageInference() {
+      EML_RANK_TERMS.keySet().forEach(rank -> taxaByRank.put(rank, new RankTaxa()));
+    }
 
-        if (existingLocalDate.isAfter(parsedLocalDate)) {
-          params.startDateTA = parsedDeploymentStartTA;
-          params.startDateStr = rawDeploymentStartValue;
+    @Override
+    boolean hasFields(EmlMapping mapping) {
+      return !mapping.ranks.isEmpty();
+    }
+
+    @Override
+    void add(EmlMapping mapping, String[] row) {
+      mapping.ranks.forEach((rank, field) -> taxaByRank.get(rank).add(field.value(row)));
+    }
+
+    @Override
+    boolean hasData() {
+      return taxaByRank.values().stream().anyMatch(taxa -> taxa.limitExceeded || !taxa.names.isEmpty());
+    }
+
+    @Override
+    String fieldsNotMappedError() {
+      return "eml.taxonomicCoverages.error.fieldsNotMapped";
+    }
+
+    private InferredEmlTaxonomicCoverage result(boolean mappingsExist,
+                                                Function<TaxonomicCoverage, OrganizedTaxonomicCoverage> organizer) {
+      InferredEmlTaxonomicCoverage result = new InferredEmlTaxonomicCoverage();
+      String error = error(mappingsExist);
+
+      taxaByRank.forEach((rank, taxa) -> {
+        if (taxa.limitExceeded) {
+          result.addRankWarning(rank, "eml.warning.limitExceeded");
         }
-      } else if (parsedDeploymentStartTA instanceof ChronoZonedDateTime
-          && params.startDateTA instanceof ChronoZonedDateTime) {
-        ChronoLocalDate parsedLocalDate = ((ChronoZonedDateTime<?>) parsedDeploymentStartTA).toLocalDate();
-        ChronoLocalDate existingLocalDate = ((ChronoZonedDateTime<?>) params.startDateTA).toLocalDate();
+      });
 
-        if (existingLocalDate.isAfter(parsedLocalDate)) {
-          params.startDateTA = parsedDeploymentStartTA;
-          params.startDateStr = rawDeploymentStartValue;
-        }
+      if (error != null) {
+        result.addError(error);
+      } else {
+        List<TaxonKeyword> keywords = new ArrayList<>();
+        taxaByRank.forEach((rank, taxa) -> taxa.names.forEach(name -> keywords.add(new TaxonKeyword(name, rank, null))));
+        TaxonomicCoverage taxonomicCoverage = new TaxonomicCoverage();
+        taxonomicCoverage.setTaxonKeywords(keywords);
+        result.setData(taxonomicCoverage);
+        result.setOrganizedData(organizer.apply(taxonomicCoverage));
+        result.setInferred(true);
       }
 
-      if (parsedDeploymentEndTA instanceof ChronoLocalDate
-          && params.endDateTA instanceof ChronoLocalDate) {
-        ChronoLocalDate parsedLocalDate = (ChronoLocalDate) parsedDeploymentEndTA;
-        ChronoLocalDate existingLocalDate = (ChronoLocalDate) params.endDateTA;
+      return result;
+    }
+  }
 
-        if (existingLocalDate.isBefore(parsedLocalDate)) {
-          params.endDateTA = parsedDeploymentEndTA;
-          params.endDateStr = rawDeploymentEndValue;
-        }
-      } else if (parsedDeploymentEndTA instanceof ChronoZonedDateTime
-          && params.endDateTA instanceof ChronoZonedDateTime) {
-        ChronoLocalDate parsedLocalDate = ((ChronoZonedDateTime<?>) parsedDeploymentEndTA).toLocalDate();
-        ChronoLocalDate existingLocalDate = ((ChronoZonedDateTime<?>) params.endDateTA).toLocalDate();
+  /**
+   * Whether an inferred section is mapped in at least one mapping, and whether reading one of them failed.
+   */
+  private static final class SectionState {
+    private boolean mapped;
+    private boolean failed;
+  }
 
-        if (existingLocalDate.isBefore(parsedLocalDate)) {
-          params.endDateTA = parsedDeploymentEndTA;
-          params.endDateStr = rawDeploymentEndValue;
+  /**
+   * A mapped field reads its value from a source row the same way it is published.
+   */
+  private record MappedField(Integer index, String defaultValue, Map<String, String> translation) {
+    private static final MappedField UNMAPPED = new MappedField(null, null, null);
+
+    private static MappedField of(PropertyMapping mapping) {
+      return new MappedField(mapping.getIndex(), mapping.getDefaultValue(), mapping.getTranslation());
+    }
+
+    private static MappedField of(DataPackageFieldMapping mapping) {
+      return mapping == null
+          ? UNMAPPED
+          : new MappedField(mapping.getIndex(), mapping.getDefaultValue(), mapping.getTranslation());
+    }
+
+    // same as DataPackageFieldMapping#isMapped, a blank default value doesn't count
+    private boolean isMapped() {
+      return index != null || StringUtils.isNotBlank(defaultValue);
+    }
+
+    /**
+     * @return the translated value, the default value if the value is missing, or null if blank
+     */
+    private String value(String[] row) {
+      String value = null;
+      if (index != null && index >= 0 && index < row.length) {
+        value = row[index];
+        // translations are TreeMaps, which reject null keys
+        if (value != null && translation != null && translation.containsKey(value)) {
+          value = translation.get(value);
         }
+      }
+      if (value == null) {
+        value = defaultValue;
+      }
+      return StringUtils.trimToNull(value);
+    }
+
+    /**
+     * Replaces the source value by its translation in the row.
+     */
+    private void translate(String[] row) {
+      if (translation != null && index != null && index >= 0 && index < row.length
+          && row[index] != null && translation.containsKey(row[index])) {
+        row[index] = translation.get(row[index]);
       }
     }
   }
 
-  private void processLine(String[] in, InferredCamtrapTaxonomicScopeParams params) {
-    if (params.isScientificNameMapped()
-        && params.isColumnIndexesWithinRange(in.length)
-        && StringUtils.isNotEmpty(in[params.scientificNameSourceColumnIndex])) {
-      params.taxa.add(in[params.scientificNameSourceColumnIndex]);
+  /**
+   * Bounding box of all valid coordinates.
+   */
+  private static final class CoordinateBounds {
+    private double minLatitude = Double.POSITIVE_INFINITY;
+    private double maxLatitude = Double.NEGATIVE_INFINITY;
+    private double minLongitude = Double.POSITIVE_INFINITY;
+    private double maxLongitude = Double.NEGATIVE_INFINITY;
+
+    private void add(String latitude, String longitude) {
+      // the parser rounds NaN to 0 and reports it as valid
+      if (latitude == null || longitude == null || isNaN(latitude) || isNaN(longitude)) {
+        return;
+      }
+
+      OccurrenceParseResult<LatLng> result = CoordinateParseUtils.parseLatLng(latitude, longitude);
+      LatLng latLng = result.getPayload();
+      if (!result.isSuccessful() || latLng == null || latLng.getLat() == null || latLng.getLng() == null) {
+        return;
+      }
+
+      minLatitude = Math.min(minLatitude, latLng.getLat());
+      maxLatitude = Math.max(maxLatitude, latLng.getLat());
+      minLongitude = Math.min(minLongitude, latLng.getLng());
+      maxLongitude = Math.max(maxLongitude, latLng.getLng());
     }
-  }
 
-  private boolean isMaxNumberOfTaxaReached(InferredCamtrapTaxonomicScopeParams params) {
-    return params.taxa.size() >= params.maxNumberOfTaxonItems;
-  }
-
-  private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapMetadataParams params) {
-    finalizeInferredMetadata(metadata, params.geographic);
-    finalizeInferredMetadata(metadata, params.temporal);
-    finalizeInferredMetadata(metadata, params.taxonomic);
-  }
-
-  private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapGeographicScopeParams params) {
-    InferredCamtrapGeographicScope inferredGeographicScope = new InferredCamtrapGeographicScope();
-    metadata.setInferredGeographicScope(inferredGeographicScope);
-    boolean errorOccurredWhileProcessingGeographicMetadata
-        = handleCamtrapGeographicScopeErrors(inferredGeographicScope, params);
-
-    if (!errorOccurredWhileProcessingGeographicMetadata) {
-      inferredGeographicScope.setMinLatitude(params.minDecimalLatitude);
-      inferredGeographicScope.setMinLongitude(params.minDecimalLongitude);
-      inferredGeographicScope.setMaxLatitude(params.maxDecimalLatitude);
-      inferredGeographicScope.setMaxLongitude(params.maxDecimalLongitude);
-      inferredGeographicScope.setInferred(true);
+    private boolean hasData() {
+      return minLatitude <= maxLatitude;
     }
-  }
 
-  private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapTemporalScopeParams params) {
-    InferredCamtrapTemporalScope inferredTemporalScope = new InferredCamtrapTemporalScope();
-    metadata.setInferredTemporalScope(inferredTemporalScope);
-
-    boolean errorOccurredWhileProcessingTemporalMetadata
-        = handleCamtrapTemporalScopeErrors(inferredTemporalScope, params);
-
-    if (!errorOccurredWhileProcessingTemporalMetadata) {
+    private static boolean isNaN(String value) {
       try {
-        inferredTemporalScope.setStartDate(DateUtils.calendarDate(params.startDateTA.toString()));
-        inferredTemporalScope.setEndDate(DateUtils.calendarDate(params.endDateTA.toString()));
-        inferredTemporalScope.setInferred(true);
-      } catch (ParseException e) {
-        LOG.error("Failed to parse date for temporal coverage", e);
-        inferredTemporalScope.addError("datapackagemetadata.temporal.error.dateParseException");
+        return Double.isNaN(Double.parseDouble(value));
+      } catch (NumberFormatException e) {
+        return false;
       }
     }
   }
 
-  private void finalizeInferredMetadata(InferredCamtrapMetadata metadata, InferredCamtrapTaxonomicScopeParams params) {
-    InferredCamtrapTaxonomicScope inferredTaxonomicScope = new InferredCamtrapTaxonomicScope();
-    metadata.setInferredTaxonomicScope(inferredTaxonomicScope);
-    boolean errorOccurredWhileProcessingTaxonomicMetadata
-        = handleCamtrapTaxonomicScopeErrors(inferredTaxonomicScope, params);
+  /**
+   * Earliest and latest of all valid dates.
+   */
+  private static final class DateBounds {
+    private LocalDate earliest;
+    private LocalDate latest;
 
-    if (!errorOccurredWhileProcessingTaxonomicMetadata) {
-      List<Taxonomic> taxCoverage = params.taxa.stream()
-          .map(val -> {
-            Taxonomic t = new Taxonomic();
-            t.setScientificName(val);
-            return t;
-          })
-          .collect(Collectors.toList());
-      inferredTaxonomicScope.setData(taxCoverage);
-      inferredTaxonomicScope.setInferred(true);
+    private void add(LocalDate start, LocalDate end) {
+      if (start == null || end == null) {
+        return;
+      }
+      // e.g. a deployment ending before it starts
+      if (end.isBefore(start)) {
+        LocalDate swap = start;
+        start = end;
+        end = swap;
+      }
+
+      if (earliest == null || start.isBefore(earliest)) {
+        earliest = start;
+      }
+      if (latest == null || end.isAfter(latest)) {
+        latest = end;
+      }
+    }
+
+    private boolean hasData() {
+      return earliest != null;
     }
   }
 
-  private boolean isSchemaMapped(Resource resource, String schemaName) {
-    return resource.getDataPackageMappings().stream()
-        .map(DataPackageMapping::getDataPackageTableSchemaName)
-        .map(DataPackageTableSchemaName::getName)
-        .anyMatch(schemaName::equals);
-  }
+  /**
+   * Distinct names of a rank, dropped once there are more than {@link #TAXON_LIMIT}.
+   */
+  private static final class RankTaxa {
+    private final Set<String> names = new TreeSet<>();
+    private boolean limitExceeded;
 
-  private int getFieldIndexInMapping(DataPackageMapping mapping, String fieldName) {
-    return Optional.ofNullable(mapping.getField(fieldName))
-        .map(DataPackageFieldMapping::getIndex)
-        .orElse(-1);
-  }
+    private void add(String name) {
+      if (name == null || limitExceeded) {
+        return;
+      }
 
-  private boolean handleCamtrapGeographicScopeErrors(
-      InferredCamtrapGeographicScope metadata,
-      InferredCamtrapGeographicScopeParams params) {
-    boolean errorsPresent = false;
-
-    if (params.serverError) {
-      metadata.addError("datapackagemetadata.error.serverError");
-      errorsPresent = true;
-    } else if (!params.isDeploymentsMapped) {
-      metadata.addError("datapackagemetadata.error.noDeploymentsMapped");
-      errorsPresent = true;
-    } else if (!params.isLatitudeMapped() && !params.isLongitudeMapped()) {
-      metadata.addError("datapackagemetadata.geographic.error.fieldsNotMapped");
-      errorsPresent = true;
-    } else if (!params.isLatitudeMapped()) {
-      metadata.addError("datapackagemetadata.geographic.error.latitudeNotMapped");
-      errorsPresent = true;
-    } else if (!params.isLongitudeMapped()) {
-      metadata.addError("datapackagemetadata.geographic.error.longitudeNotMapped");
-      errorsPresent = true;
-    } else if (params.noValidDataGeo) {
-      metadata.addError("datapackagemetadata.error.noValidData");
-      errorsPresent = true;
-    }
-
-    return errorsPresent;
-  }
-
-  private boolean handleCamtrapTaxonomicScopeErrors(
-      InferredCamtrapTaxonomicScope metadata,
-      InferredCamtrapTaxonomicScopeParams params) {
-    boolean errorOccurred = false;
-
-    if (params.serverError) {
-      metadata.addError("datapackagemetadata.error.serverError");
-      errorOccurred = true;
-    } else if (!params.isObservationsMapped) {
-      metadata.addError("datapackagemetadata.error.noObservationsMapped");
-      errorOccurred = true;
-    } else if (!params.isScientificNameMapped()) {
-      metadata.addError("datapackagemetadata.taxonomic.error.scientificNameNotMapped");
-      errorOccurred = true;
-    } else if (params.taxa.size() == 0) {
-      metadata.addError("datapackagemetadata.error.noValidData");
-      errorOccurred = true;
-    }
-
-    return errorOccurred;
-  }
-
-  private boolean handleCamtrapTemporalScopeErrors(
-      InferredCamtrapTemporalScope metadata,
-      InferredCamtrapTemporalScopeParams params) {
-    boolean errorOccurred = false;
-
-    if (params.serverError) {
-      metadata.addError("datapackagemetadata.error.serverError");
-      errorOccurred = true;
-    } else if (!params.isDeploymentsMapped) {
-      metadata.addError("datapackagemetadata.error.noDeploymentsMapped");
-      errorOccurred = true;
-    } else if (!params.isDeploymentStartMapped() && !params.isDeploymentEndMapped()) {
-      metadata.addError("datapackagemetadata.temporal.error.fieldsNotMapped");
-      errorOccurred = true;
-    } else if (!params.isDeploymentStartMapped()) {
-      metadata.addError("datapackagemetadata.temporal.error.deploymentStartNotMapped");
-      errorOccurred = true;
-    } else if (!params.isDeploymentEndMapped()) {
-      metadata.addError("datapackagemetadata.temporal.error.deploymentEndNotMapped");
-      errorOccurred = true;
-    } else if (params.noValidDataTemporal) {
-      metadata.addError("datapackagemetadata.error.noValidData");
-      errorOccurred = true;
-    }
-
-    return errorOccurred;
-  }
-
-  static class InferredCamtrapMetadataParams {
-    private final InferredCamtrapGeographicScopeParams geographic = new InferredCamtrapGeographicScopeParams();
-    private final InferredCamtrapTemporalScopeParams temporal = new InferredCamtrapTemporalScopeParams();
-    private final InferredCamtrapTaxonomicScopeParams taxonomic = new InferredCamtrapTaxonomicScopeParams();
-  }
-
-  static class InferredCamtrapGeographicScopeParams {
-    private Double minDecimalLongitude = -180.0D;
-    private Double maxDecimalLongitude = 180.0D;
-    private Double minDecimalLatitude = -90.0D;
-    private Double maxDecimalLatitude = 90.0D;
-    private boolean coordinatesInitialized;
-    private int longitudeSourceColumnIndex = -1;
-    private int latitudeSourceColumnIndex = -1;
-    private boolean serverError;
-    private boolean isDeploymentsMapped;
-    private boolean noValidDataGeo = true;
-
-    public boolean isLatitudeMapped() {
-      return latitudeSourceColumnIndex != -1;
-    }
-
-    public boolean isLongitudeMapped() {
-      return longitudeSourceColumnIndex != -1;
-    }
-
-    public boolean isColumnIndexesWithinRange(int range) {
-      return longitudeSourceColumnIndex < range && latitudeSourceColumnIndex < range;
-    }
-  }
-
-  static class InferredCamtrapTaxonomicScopeParams {
-    private final int maxNumberOfTaxonItems = 200;
-    private final Set<String> taxa = new HashSet<>();
-    private int scientificNameSourceColumnIndex = -1;
-    private boolean serverError;
-    private boolean isObservationsMapped;
-
-    public boolean isColumnIndexesWithinRange(int range) {
-      return scientificNameSourceColumnIndex < range;
-    }
-
-    public boolean isScientificNameMapped() {
-      return scientificNameSourceColumnIndex != -1;
-    }
-  }
-
-  static class InferredCamtrapTemporalScopeParams {
-    private String startDateStr = null;
-    private TemporalAccessor startDateTA = null;
-    private String endDateStr = null;
-    private TemporalAccessor endDateTA = null;
-    private int deploymentStartSourceColumnIndex = -1;
-    private int deploymentEndSourceColumnIndex = -1;
-    private boolean serverError;
-    private boolean isDeploymentsMapped;
-    private boolean noValidDataTemporal = true;
-
-    public boolean isColumnIndexesWithinRange(int range) {
-      return deploymentEndSourceColumnIndex < range && deploymentStartSourceColumnIndex < range;
-    }
-
-    public boolean isDeploymentStartMapped() {
-      return deploymentStartSourceColumnIndex != -1;
-    }
-
-    public boolean isDeploymentEndMapped() {
-      return deploymentEndSourceColumnIndex != -1;
+      names.add(name);
+      if (names.size() > TAXON_LIMIT) {
+        names.clear();
+        limitExceeded = true;
+      }
     }
   }
 }
