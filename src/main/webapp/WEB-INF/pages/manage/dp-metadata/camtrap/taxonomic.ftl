@@ -428,6 +428,7 @@
                                     </div>
                                 </div>
 
+                                <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
                                 <div class="border rounded p-3">
                                     <#if (inferredMetadata.inferredTaxonomicScope.data)?has_content>
                                         <div class="table-responsive">

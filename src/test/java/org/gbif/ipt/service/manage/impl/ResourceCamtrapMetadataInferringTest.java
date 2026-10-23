@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.OptionalLong;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -385,6 +386,25 @@ public class ResourceCamtrapMetadataInferringTest extends IptBaseTest {
     resource.setInferredMetadata(metadataInferringService.inferMetadata(resource));
 
     assertTrue(resource.isInferredMetadataOutdated(InferredCamtrapMetadata.class));
+  }
+
+  @DisplayName("Test rows to read: deployments with coordinates or dates, observations with scientific names")
+  @Test
+  public void testCountRowsToRead() {
+    Resource resource = getCamtrapResource("rows-to-read");
+    TextFileSource deployments = getTextFileSource("deployments", "data/deployments.txt");
+    deployments.setRows(50);
+    TextFileSource observations = getTextFileSource("observations", "data/observations.txt");
+    observations.setRows(700);
+    TextFileSource media = getTextFileSource("media", "data/observations.txt");
+    media.setRows(9999);
+    resource.addDataPackageMapping(mapping("deployments", deployments, fieldMapping("latitude", 1), fieldMapping("longitude", 2)));
+    resource.addDataPackageMapping(mapping("observations", observations, fieldMapping("scientificName", 1)));
+    // not read: no scope fields, or another table
+    resource.addDataPackageMapping(mapping("observations", media, fieldMapping("observationID", 0)));
+    resource.addDataPackageMapping(mapping("media", media, fieldMapping("mediaID", 0)));
+
+    assertEquals(OptionalLong.of(750), metadataInferringService.countRowsToRead(resource));
   }
 
   private static DataPackageMapping mapping(String tableSchema, Source source, DataPackageFieldMapping... fields) {

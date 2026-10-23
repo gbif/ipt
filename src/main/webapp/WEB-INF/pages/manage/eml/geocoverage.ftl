@@ -538,6 +538,7 @@
                                 </div>
                             </div>
                         </div>
+                        <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
                         </#if>
 
                         <div id="static-coordinates" class="mt-3" style="display: none;">

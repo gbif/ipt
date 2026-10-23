@@ -36,8 +36,8 @@ import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
 import org.gbif.ipt.model.voc.CamtrapMetadataSection;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
@@ -70,7 +70,7 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
 
   private static final Logger LOG = LogManager.getLogger(CamtrapMetadataAction.class);
 
-  private final ResourceMetadataInferringService metadataInferringService;
+  private final InferredMetadataManager inferredMetadataManager;
   private final DataPackageMetadataValidator metadataValidator;
   private final ObjectMapper objectMapper;
   private final DataPackageSchemaManager dataPackageSchemaManager;
@@ -81,6 +81,9 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
   private Map<String, String> organisations = new LinkedHashMap<>();
   @Getter
   private InferredMetadata inferredMetadata;
+  // the metadata is being inferred in the background
+  @Getter
+  private boolean inferring;
   @Getter
   private String customGeoJson;
 
@@ -215,13 +218,13 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
       RegistrationManager registrationManager,
       ResourceManager resourceManager,
       DataPackageMetadataValidator metadataValidator,
-      ResourceMetadataInferringService metadataInferringService,
+      InferredMetadataManager inferredMetadataManager,
       DataPackageSchemaManager dataPackageSchemaManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.metadataValidator = metadataValidator;
     this.dataPackageSchemaManager = dataPackageSchemaManager;
     this.objectMapper = new ObjectMapper();
-    this.metadataInferringService = metadataInferringService;
+    this.inferredMetadataManager = inferredMetadataManager;
   }
 
   @StrutsParameter(depth = 4)
@@ -258,30 +261,15 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    // infer metadata if requested, never inferred (or of another type), or mappings changed since
-    if (reinferMetadata || resource.isInferredMetadataOutdated(InferredCamtrapMetadata.class)) {
-      InferredMetadata inferredMetadataRaw = metadataInferringService.inferMetadata(resource);
-
-      if (inferredMetadataRaw instanceof InferredCamtrapMetadata) {
-        inferredMetadata = inferredMetadataRaw;
-      } else {
-        LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
-            InferredCamtrapMetadata.class.getSimpleName(),
-            inferredMetadataRaw == null ? null : inferredMetadataRaw.getClass().getSimpleName());
-        inferredMetadata = new InferredCamtrapMetadata();
-      }
-      resource.setInferredMetadata(inferredMetadata);
-      resourceManager.saveInferredMetadata(resource);
-    } else {
-      if (resource.getInferredMetadata() instanceof InferredCamtrapMetadata) {
-        inferredMetadata = resource.getInferredMetadata();
-      } else {
-        LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
-            InferredCamtrapMetadata.class.getSimpleName(),
-            resource.getInferredMetadata() == null ? null : resource.getInferredMetadata().getClass().getSimpleName());
-        inferredMetadata = new InferredCamtrapMetadata();
-      }
-    }
+    // the scope pages infer the metadata if requested, never inferred, or outdated: big datasets in the background
+    boolean scopeSection = section == CamtrapMetadataSection.GEOGRAPHIC_SECTION
+        || section == CamtrapMetadataSection.TAXONOMIC_SECTION
+        || section == CamtrapMetadataSection.TEMPORAL_SECTION;
+    InferredMetadata current = scopeSection
+        ? inferredMetadataManager.getInferredMetadata(resource, reinferMetadata)
+        : resource.getInferredMetadata();
+    inferredMetadata = current instanceof InferredCamtrapMetadata ? current : new InferredCamtrapMetadata();
+    inferring = inferredMetadataManager.isInferring(resource.getShortname());
 
     switch (section) {
       case BASIC_SECTION:

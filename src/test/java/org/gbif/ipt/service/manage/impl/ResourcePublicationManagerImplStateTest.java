@@ -22,8 +22,8 @@ import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.Eml2Rtf;
@@ -111,7 +111,7 @@ public class ResourcePublicationManagerImplStateTest {
     manager = new ResourcePublicationManagerImpl(cfg, dataDir, resourceManager, mock(RegistryManager.class),
         mock(RegistrationManager.class), mock(Eml2Rtf.class), mock(GenerateDwcaFactory.class),
         mock(GenerateDataPackageFactory.class), mock(GenerateDarwinCoreDataPackageFactory.class),
-        mock(SimpleTextProvider.class), mock(ResourceMetadataInferringService.class),
+        mock(SimpleTextProvider.class), mock(InferredMetadataManager.class),
         new ResourceDoiServiceImpl(cfg, dataDir, mock(RegistrationManager.class)));
   }
 

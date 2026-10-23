@@ -26,6 +26,7 @@ import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.InferredCamtrapGeographicScope;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.InferredCamtrapTaxonomicScope;
@@ -68,6 +69,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -124,6 +126,9 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   public static final int TAXON_LIMIT = 100;
   // max number of distinct names in the Camtrap DP taxonomic scope, the rest is ignored
   public static final int CAMTRAP_TAXON_LIMIT = 200;
+  // errors when a source can't be read or inferring fails unexpectedly: publishing infers again, they can be temporary
+  public static final String EML_SERVER_ERROR = "eml.error.serverError";
+  public static final String CAMTRAP_SERVER_ERROR = "datapackagemetadata.error.serverError";
 
   // EML taxonomic coverage ranks and the terms they are inferred from
   private static final Map<String, String> EML_RANK_TERMS = new LinkedHashMap<>();
@@ -163,9 +168,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   private InferredEmlMetadata inferEmlMetadata(Resource resource) {
     // the time inferring started: mappings changed while reading the sources make the result outdated
     Date started = new Date();
-    List<EmlMapping> mappings = resource.isDwcDp()
-        ? resource.getDataPackageMappings().stream().map(ResourceMetadataInferringServiceImpl::emlMapping).toList()
-        : resource.getMappings().stream().map(ResourceMetadataInferringServiceImpl::emlMapping).toList();
+    List<EmlMapping> mappings = emlMappings(resource);
 
     GeographicCoverageInference geographic = new GeographicCoverageInference();
     TemporalCoverageInference temporal = new TemporalCoverageInference();
@@ -199,6 +202,67 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     inferredMetadata.setLastModified(started);
 
     return inferredMetadata;
+  }
+
+  @Override
+  public OptionalLong countRowsToRead(Resource resource) {
+    List<Source> sourcesToRead = new ArrayList<>();
+
+    if (!resource.isDataPackage() || resource.isDwcDp()) {
+      List<EmlCoverageInference> coverages =
+          List.of(new GeographicCoverageInference(), new TemporalCoverageInference(), new TaxonomicCoverageInference());
+      for (EmlMapping mapping : emlMappings(resource)) {
+        if (coverages.stream().anyMatch(coverage -> coverage.hasFields(mapping))) {
+          sourcesToRead.add(mapping.source);
+        }
+      }
+    } else if (CAMTRAP_DP.equals(resource.getCoreType())) {
+      for (DataPackageMapping mapping : resource.getDataPackageMappings()) {
+        if (hasCamtrapScopeFields(mapping)) {
+          sourcesToRead.add(mapping.getSource());
+        }
+      }
+    }
+
+    long rows = 0;
+    for (Source source : sourcesToRead) {
+      if (source == null) {
+        continue;
+      }
+      // a source mapped several times is read several times
+      if (!(source instanceof FileSource fileSource)) {
+        return OptionalLong.empty();
+      }
+      rows += fileSource.getRows();
+    }
+    return OptionalLong.of(rows);
+  }
+
+  private static List<EmlMapping> emlMappings(Resource resource) {
+    return resource.isDwcDp()
+        ? resource.getDataPackageMappings().stream().map(ResourceMetadataInferringServiceImpl::emlMapping).toList()
+        : resource.getMappings().stream().map(ResourceMetadataInferringServiceImpl::emlMapping).toList();
+  }
+
+  /**
+   * Whether a Camtrap DP mapping is read: deployments with both coordinates or both dates, observations with
+   * scientific names.
+   */
+  private static boolean hasCamtrapScopeFields(DataPackageMapping mapping) {
+    String tableSchema = Optional.ofNullable(mapping.getDataPackageTableSchemaName())
+        .map(DataPackageTableSchemaName::getName)
+        .orElse(null);
+
+    if (CAMTRAP_DEPLOYMENTS.equals(tableSchema)) {
+      boolean coordinatesMapped = MappedField.of(mapping.getField(CAMTRAP_DEPLOYMENTS_LATITUDE)).isMapped()
+          && MappedField.of(mapping.getField(CAMTRAP_DEPLOYMENTS_LONGITUDE)).isMapped();
+      boolean datesMapped = MappedField.of(mapping.getField(CAMTRAP_DEPLOYMENTS_DEPLOYMENT_START)).isMapped()
+          && MappedField.of(mapping.getField(CAMTRAP_DEPLOYMENTS_DEPLOYMENT_END)).isMapped();
+      return coordinatesMapped || datesMapped;
+    } else if (CAMTRAP_OBSERVATIONS.equals(tableSchema)) {
+      return MappedField.of(mapping.getField(CAMTRAP_OBSERVATIONS_SCIENTIFIC_NAME)).isMapped();
+    }
+    return false;
   }
 
   /**
@@ -278,7 +342,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   private InferredCamtrapMetadata inferCamtrapMetadata(Resource resource) {
     // the time inferring started: mappings changed while reading the sources make the result outdated
     Date started = new Date();
-    TemporalRangeParser dateParser = TemporalRangeParser.builder().create();
+    DateRangeParser dateParser = new DateRangeParser();
     CoordinateBounds coordinates = new CoordinateBounds();
     DateBounds dates = new DateBounds();
     Set<String> taxa = new TreeSet<>();
@@ -327,10 +391,10 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
           }
           if (temporalMapped) {
             // only deployments with both dates valid
-            Optional<IsoDateInterval> start = parseInterval(dateParser, deploymentStart.value(row));
-            Optional<IsoDateInterval> end = parseInterval(dateParser, deploymentEnd.value(row));
+            Optional<DateRange> start = dateParser.parse(deploymentStart.value(row));
+            Optional<DateRange> end = dateParser.parse(deploymentEnd.value(row));
             if (start.isPresent() && end.isPresent()) {
-              dates.add(earliestDate(start.get()), latestDate(end.get()));
+              dates.add(start.get().first(), end.get().last());
             }
           }
           return true;
@@ -366,7 +430,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     InferredCamtrapGeographicScope geographicScope = new InferredCamtrapGeographicScope();
     if (geographic.failed) {
-      geographicScope.addError("datapackagemetadata.error.serverError");
+      geographicScope.addError(CAMTRAP_SERVER_ERROR);
     } else if (!deploymentsMapped) {
       geographicScope.addError("datapackagemetadata.error.noDeploymentsMapped");
     } else if (!latitudeMapped && longitudeMapped) {
@@ -387,7 +451,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     InferredCamtrapTemporalScope temporalScope = new InferredCamtrapTemporalScope();
     if (temporal.failed) {
-      temporalScope.addError("datapackagemetadata.error.serverError");
+      temporalScope.addError(CAMTRAP_SERVER_ERROR);
     } else if (!deploymentsMapped) {
       temporalScope.addError("datapackagemetadata.error.noDeploymentsMapped");
     } else if (!deploymentStartMapped && deploymentEndMapped) {
@@ -406,7 +470,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     InferredCamtrapTaxonomicScope taxonomicScope = new InferredCamtrapTaxonomicScope();
     if (taxonomic.failed) {
-      taxonomicScope.addError("datapackagemetadata.error.serverError");
+      taxonomicScope.addError(CAMTRAP_SERVER_ERROR);
     } else if (!observationsMapped) {
       taxonomicScope.addError("datapackagemetadata.error.noObservationsMapped");
     } else if (!taxonomic.mapped) {
@@ -475,35 +539,6 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
 
     return filter.matches(row);
-  }
-
-  private static Optional<IsoDateInterval> parseInterval(TemporalRangeParser dateParser, String value) {
-    if (value == null) {
-      return Optional.empty();
-    }
-
-    OccurrenceParseResult<IsoDateInterval> result = dateParser.parse(value);
-    IsoDateInterval interval = result.isSuccessful() ? result.getPayload() : null;
-    if (interval == null || interval.getFrom() == null) {
-      return Optional.empty();
-    }
-
-    return Optional.of(interval);
-  }
-
-  /**
-   * The first day of the interval, e.g. 2020-01-01 for "2020" (offsets are ignored, the local date is used).
-   */
-  private static LocalDate earliestDate(IsoDateInterval interval) {
-    return toLocalDate(TemporalAccessorUtils.toEarliestLocalDateTime(interval.getFrom(), true));
-  }
-
-  /**
-   * The last day of the interval, e.g. 2020-12-31 for "2020" (offsets are ignored, the local date is used).
-   */
-  private static LocalDate latestDate(IsoDateInterval interval) {
-    Temporal to = interval.getTo() != null ? interval.getTo() : interval.getFrom();
-    return toLocalDate(TemporalAccessorUtils.toLatestLocalDateTime(to, true));
   }
 
   private static LocalDate toLocalDate(LocalDateTime dateTime) {
@@ -591,7 +626,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
      */
     String error(boolean mappingsExist) {
       if (readFailed) {
-        return "eml.error.serverError";
+        return EML_SERVER_ERROR;
       } else if (!mappingsExist) {
         return "eml.error.noMappings";
       } else if (!fieldsMapped) {
@@ -653,8 +688,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
    * Earliest and latest event date.
    */
   private static final class TemporalCoverageInference extends EmlCoverageInference {
-    // a new parser for each run, parsers are not guaranteed to be thread-safe
-    private final TemporalRangeParser dateParser = TemporalRangeParser.builder().create();
+    private final DateRangeParser dateParser = new DateRangeParser();
     private final DateBounds dates = new DateBounds();
 
     @Override
@@ -664,8 +698,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     @Override
     void add(EmlMapping mapping, String[] row) {
-      parseInterval(dateParser, mapping.eventDate.value(row))
-          .ifPresent(interval -> dates.add(earliestDate(interval), latestDate(interval)));
+      dateParser.parse(mapping.eventDate.value(row)).ifPresent(range -> dates.add(range.first(), range.last()));
     }
 
     @Override
@@ -848,6 +881,55 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       } catch (NumberFormatException e) {
         return false;
       }
+    }
+  }
+
+  /**
+   * First and last day of a date or date range, e.g. 2020-01-01 and 2020-12-31 for "2020".
+   */
+  private record DateRange(LocalDate first, LocalDate last) {
+  }
+
+  /**
+   * Parses dates and date ranges, remembering the most recent distinct values: in big datasets many records share
+   * the same dates, and parsing is by far the slowest part of inferring.
+   * <p>
+   * Not thread-safe, one per inferring run.
+   */
+  private static final class DateRangeParser {
+    private static final int CACHE_SIZE = 10_000;
+
+    private TemporalRangeParser parser;
+    private final Map<String, Optional<DateRange>> cache = new LinkedHashMap<>(16, 0.75f, true) {
+      @Override
+      protected boolean removeEldestEntry(Map.Entry<String, Optional<DateRange>> eldest) {
+        return size() > CACHE_SIZE;
+      }
+    };
+
+    private Optional<DateRange> parse(String value) {
+      if (value == null) {
+        return Optional.empty();
+      }
+      return cache.computeIfAbsent(value, this::parseUncached);
+    }
+
+    private Optional<DateRange> parseUncached(String value) {
+      if (parser == null) {
+        parser = TemporalRangeParser.builder().create();
+      }
+
+      OccurrenceParseResult<IsoDateInterval> result = parser.parse(value);
+      IsoDateInterval interval = result.isSuccessful() ? result.getPayload() : null;
+      if (interval == null || interval.getFrom() == null) {
+        return Optional.empty();
+      }
+
+      // offsets are ignored, the local date is used
+      Temporal to = interval.getTo() != null ? interval.getTo() : interval.getFrom();
+      LocalDate first = toLocalDate(TemporalAccessorUtils.toEarliestLocalDateTime(interval.getFrom(), true));
+      LocalDate last = toLocalDate(TemporalAccessorUtils.toLatestLocalDateTime(to, true));
+      return first == null || last == null ? Optional.empty() : Optional.of(new DateRange(first, last));
     }
   }
 

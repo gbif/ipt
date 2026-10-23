@@ -16,6 +16,8 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Resource;
 
+import java.util.OptionalLong;
+
 public interface ResourceMetadataInferringService {
 
     /**
@@ -26,4 +28,14 @@ public interface ResourceMetadataInferringService {
      * @return inferred metadata
      */
     InferredMetadata inferMetadata(Resource resource);
+
+    /**
+     * Counts the rows inferring the metadata would read, from the row counts of the analysed source files.
+     *
+     * @param resource resource
+     *
+     * @return number of rows, or empty if a source is read remotely (SQL, URL): its size is unknown, and its data can
+     * change without the IPT knowing
+     */
+    OptionalLong countRowsToRead(Resource resource);
 }

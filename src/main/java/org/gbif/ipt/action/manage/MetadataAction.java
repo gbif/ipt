@@ -30,8 +30,8 @@ import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
@@ -75,8 +75,6 @@ import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import lombok.Getter;
 import lombok.Setter;
 
-import static org.gbif.ipt.config.Constants.DATASET_TYPE_METADATA_IDENTIFIER;
-
 public class MetadataAction extends ManagerBaseAction implements UploadedFilesAware {
 
   @Serial
@@ -87,7 +85,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   private final ResourceValidator validatorRes = new ResourceValidator();
   private final EmlValidator emlValidator;
   private final VocabulariesManager vocabManager;
-  private final ResourceMetadataInferringService resourceMetadataInferringService;
+  private final InferredMetadataManager inferredMetadataManager;
   private static final String LICENSES_PROPFILE_PATH = "/org/gbif/metadata/eml/licenses.properties";
   private static final String LICENSE_NAME_PROPERTY_PREFIX = "license.name.";
   private static final String LICENSE_TEXT_PROPERTY_PREFIX = "license.text.";
@@ -135,6 +133,9 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   private boolean doiReservedOrAssigned = false;
   @Getter
   private InferredEmlMetadata inferredMetadata;
+  // the metadata is being inferred in the background
+  @Getter
+  private boolean inferring;
   private final ConfigWarnings configWarnings;
   private static Properties licenseProperties;
   private static Properties directoriesProperties;
@@ -153,12 +154,12 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
       RegistrationManager registrationManager,
       ResourceManager resourceManager,
       VocabulariesManager vocabManager,
-      ResourceMetadataInferringService resourceMetadataInferringService,
+      InferredMetadataManager inferredMetadataManager,
       ConfigWarnings configWarnings,
       DataDir dataDir) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
-    this.resourceMetadataInferringService = resourceMetadataInferringService;
+    this.inferredMetadataManager = inferredMetadataManager;
     this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
     this.configWarnings = configWarnings;
     this.dataDir = dataDir;
@@ -299,34 +300,15 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
-    // infer metadata if:
-    // 1) It was requested
-    // 2) It was never inferred, or mappings were changed since (not for metadata-only resources)
-    boolean inferredMetadataOutdated = !DATASET_TYPE_METADATA_IDENTIFIER.equals(resource.getCoreType())
-        && resource.isInferredMetadataOutdated(InferredEmlMetadata.class);
-    if (reinferMetadata || inferredMetadataOutdated) {
-      InferredMetadata inferredMetadataRaw = resourceMetadataInferringService.inferMetadata(resource);
-
-      if (inferredMetadataRaw instanceof InferredEmlMetadata) {
-        inferredMetadata = (InferredEmlMetadata) inferredMetadataRaw;
-      } else {
-        LOG.error("Wrong type of the inferred metadata class, expected {} got {}",
-            InferredEmlMetadata.class.getSimpleName(),
-            inferredMetadataRaw == null ? null : inferredMetadataRaw.getClass().getSimpleName());
-        inferredMetadata = new InferredEmlMetadata();
-      }
-      resource.setInferredMetadata(inferredMetadata);
-      resourceManager.saveInferredMetadata(resource);
-    } else {
-      if (resource.getInferredMetadata() instanceof InferredEmlMetadata) {
-        inferredMetadata = (InferredEmlMetadata) resource.getInferredMetadata();
-      } else {
-        LOG.error("Wrong type of the stored inferred metadata class, expected {} got {}",
-            InferredEmlMetadata.class.getSimpleName(),
-            resource.getInferredMetadata() == null ? null : resource.getInferredMetadata().getClass().getSimpleName());
-        inferredMetadata = new InferredEmlMetadata();
-      }
-    }
+    // the coverage pages infer the metadata if requested, never inferred, or outdated: big datasets in the background
+    boolean coverageSection = section == MetadataSection.GEOGRAPHIC_COVERAGE_SECTION
+        || section == MetadataSection.TAXANOMIC_COVERAGE_SECTION
+        || section == MetadataSection.TEMPORAL_COVERAGE_SECTION;
+    InferredMetadata current = coverageSection
+        ? inferredMetadataManager.getInferredMetadata(resource, reinferMetadata)
+        : resource.getInferredMetadata();
+    inferredMetadata = current instanceof InferredEmlMetadata eml ? eml : new InferredEmlMetadata();
+    inferring = inferredMetadataManager.isInferring(resource.getShortname());
 
     switch (section) {
       case BASIC_SECTION:

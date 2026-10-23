@@ -24,12 +24,14 @@ import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
+import org.gbif.ipt.service.manage.impl.InferredMetadataManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.OptionalLong;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -72,6 +74,8 @@ public class CamtrapMetadataActionInferringTest {
     inferred = new InferredCamtrapMetadata();
     inferred.setLastModified(new Date());
     when(inferringService.inferMetadata(any(Resource.class))).thenReturn(inferred);
+    // a small dataset: inferred right away
+    when(inferringService.countRowsToRead(any(Resource.class))).thenReturn(OptionalLong.of(0));
 
     HttpServletRequest req = mock(HttpServletRequest.class);
     when(req.getRequestURI()).thenReturn("/ipt/manage/camtrap-metadata-geographic.do");
@@ -79,8 +83,8 @@ public class CamtrapMetadataActionInferringTest {
     when(req.getMethod()).thenReturn("GET");
 
     action = new CamtrapMetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
-        mock(RegistrationManager.class), resourceManager, mock(DataPackageMetadataValidator.class), inferringService,
-        mock(DataPackageSchemaManager.class));
+        mock(RegistrationManager.class), resourceManager, mock(DataPackageMetadataValidator.class),
+        new InferredMetadataManagerImpl(inferringService, resourceManager, Runnable::run), mock(DataPackageSchemaManager.class));
     action.withServletRequest(req);
     Map<String, Object> session = new HashMap<>();
     session.put(Constants.SESSION_USER, new User());

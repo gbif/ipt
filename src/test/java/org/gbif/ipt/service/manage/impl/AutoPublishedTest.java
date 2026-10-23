@@ -20,8 +20,8 @@ import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -66,7 +66,7 @@ public class AutoPublishedTest extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(GenerateDarwinCoreDataPackageFactory.class),
         mock(SimpleTextProvider.class),
-        mock(ResourceMetadataInferringService.class),
+        mock(InferredMetadataManager.class),
         new ResourceDoiServiceImpl(mockAppConfig, mock(DataDir.class), mock(RegistrationManager.class)));
   }
 

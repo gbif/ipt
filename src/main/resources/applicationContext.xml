@@ -164,6 +164,21 @@
     <constructor-arg ref="vocabulariesManager"/>
   </bean>
 
+  <bean id="inferredMetadataManager" class="org.gbif.ipt.service.manage.impl.InferredMetadataManagerImpl">
+    <constructor-arg ref="resourceMetadataInferringService"/>
+    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="metadataInferringExecutor"/>
+  </bean>
+
+  <!-- infers the metadata of big datasets in the background, one at a time -->
+  <bean id="metadataInferringExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    <property name="corePoolSize" value="1"/>
+    <property name="maxPoolSize" value="1"/>
+    <property name="threadNamePrefix" value="metadata-inferring-"/>
+    <!-- never keeps the IPT from shutting down -->
+    <property name="daemon" value="true"/>
+  </bean>
+
   <bean id="dwcaFactory" class="org.gbif.ipt.task.GenerateDwcaFactoryImpl">
     <constructor-arg ref="dataDir" />
     <constructor-arg ref="sourceManager" />
@@ -224,7 +239,7 @@
     <constructor-arg ref="dataPackageFactory"/>
     <constructor-arg ref="dwcDpFactory"/>
     <constructor-arg ref="simpleTextProvider"/>
-    <constructor-arg ref="resourceMetadataInferringService"/>
+    <constructor-arg ref="inferredMetadataManager"/>
     <constructor-arg ref="resourceDoiService"/>
   </bean>
 

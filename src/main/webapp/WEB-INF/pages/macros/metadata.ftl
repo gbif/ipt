@@ -84,8 +84,9 @@ $(document).ready(function(){
                 <#if !taxon?is_first>
                     addNewSubItemByIndex(0, "");
                 </#if>
-                $('#eml\\.taxonomicCoverages\\[0\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.scientificName').val("${taxon.scientificName}");
-                $('#eml\\.taxonomicCoverages\\[0\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.rank').val("${taxon.rank}");
+                $('#eml\\.taxonomicCoverages\\[0\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.scientificName').val("${taxon.scientificName?js_string?no_esc}");
+                // select2 shows the new value only after a change event
+                $('#eml\\.taxonomicCoverages\\[0\\]\\.taxonKeywords\\[' + subItemIndex + '\\]\\.rank').val("${(taxon.rank!)?lower_case}").trigger('change');
                 subItemIndex++;
             </#list>
         </#if>

@@ -34,6 +34,13 @@
         <param name="root">suggestedAgents</param>
       </result>
     </action>
+
+    <action name="inferring-status" class="org.gbif.ipt.action.manage.InferringStatusAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">status</param>
+      </result>
+    </action>
   </package>
 
   <!-- The entry to the manage section -->

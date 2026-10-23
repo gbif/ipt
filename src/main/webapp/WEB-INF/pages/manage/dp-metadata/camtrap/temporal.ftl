@@ -155,6 +155,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
                                 <div class="table-responsive border rounded p-3">
                                     <#if temporalScopeMetadataIsInferred>
                                         <table class="text-smaller table table-sm table-borderless mb-0">

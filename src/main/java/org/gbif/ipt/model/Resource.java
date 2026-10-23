@@ -1365,7 +1365,7 @@ public class Resource implements Serializable, Comparable<Resource> {
 
   /**
    * Whether the metadata has to be inferred again: it is not of the expected type, it was never inferred (e.g. the
-   * empty instance of a new resource), or the mappings changed after it was inferred.
+   * empty instance of a new resource), or the mappings or sources changed after it was inferred.
    *
    * @param expectedType inferred metadata type of the resource
    */
@@ -1373,7 +1373,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (!expectedType.isInstance(inferredMetadata) || inferredMetadata.getLastModified() == null) {
       return true;
     }
-    return mappingsModified != null && mappingsModified.after(inferredMetadata.getLastModified());
+    Date inferred = inferredMetadata.getLastModified();
+    return (mappingsModified != null && mappingsModified.after(inferred))
+        || (sourcesModified != null && sourcesModified.after(inferred));
   }
 
   /**

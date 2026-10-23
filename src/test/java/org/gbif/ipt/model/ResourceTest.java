@@ -978,5 +978,12 @@ public class ResourceTest extends IptBaseTest {
     // mappings changed after inferring
     resource.setMappingsModified(new Date(inferred.getTime() + 1));
     assertTrue(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+
+    // sources changed after inferring, e.g. a file uploaded again
+    resource.setMappingsModified(new Date(inferred.getTime() - 1));
+    resource.setSourcesModified(new Date(inferred.getTime() - 1));
+    assertFalse(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+    resource.setSourcesModified(new Date(inferred.getTime() + 1));
+    assertTrue(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
   }
 }

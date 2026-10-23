@@ -52,11 +52,11 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
+import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
 import org.gbif.ipt.service.manage.ResourceLoader;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourceMetadataLoader;
 import org.gbif.ipt.service.manage.ResourcePersister;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
@@ -391,7 +391,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mock(GenerateDataPackageFactory.class),
         mock(GenerateDarwinCoreDataPackageFactory.class),
         mockSimpleTextProvider,
-        mock(ResourceMetadataInferringService.class),
+        mock(InferredMetadataManager.class),
         new ResourceDoiServiceImpl(mockAppConfig, mockedDataDir, mockRegistrationManager));
   }
 

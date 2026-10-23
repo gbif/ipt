@@ -99,7 +99,7 @@ public class ResourcePublicationManagerImplInferredMetadataTest extends IptBaseT
     manager = new ResourcePublicationManagerImpl(cfg, dataDir, resourceManager, mock(RegistryManager.class),
         mock(RegistrationManager.class), mock(Eml2Rtf.class), mock(GenerateDwcaFactory.class),
         mock(GenerateDataPackageFactory.class), mock(GenerateDarwinCoreDataPackageFactory.class),
-        mock(SimpleTextProvider.class), inferringService,
+        mock(SimpleTextProvider.class), new InferredMetadataManagerImpl(inferringService, resourceManager, Runnable::run),
         new ResourceDoiServiceImpl(cfg, dataDir, mock(RegistrationManager.class)));
   }
 

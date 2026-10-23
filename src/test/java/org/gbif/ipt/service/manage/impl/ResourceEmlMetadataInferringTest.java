@@ -34,13 +34,16 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,6 +52,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalLong;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Supplier;
@@ -717,6 +721,86 @@ public class ResourceEmlMetadataInferringTest extends IptBaseTest {
       Thread.currentThread().interrupt();
     }
     resource.setMappingsModified(new Date());
+  }
+
+  @DisplayName("Rows to read: the rows of the sources of mappings with coverage fields")
+  @Test
+  public void testCountRowsToRead() {
+    ExtensionMapping events = mapping(Constants.DWC_ROWTYPE_EVENT, "events", field(DwcTerm.eventDate, EVENT_DATE, null));
+    rows(events.getSource(), 1000);
+    ExtensionMapping occurrences = mapping(Constants.DWC_ROWTYPE_OCCURRENCE, "occurrences", field(DwcTerm.kingdom, KINGDOM, null));
+    rows(occurrences.getSource(), 500);
+    // no coverage fields: not read
+    ExtensionMapping withoutCoverage = mapping(Constants.DWC_ROWTYPE_OCCURRENCE, "other", field(DwcTerm.scientificName, 1, null));
+    rows(withoutCoverage.getSource(), 9999);
+    // the same source in another mapping is read again
+    ExtensionMapping eventsAgain = mapping(Constants.DWC_ROWTYPE_OCCURRENCE, "events", field(DwcTerm.kingdom, KINGDOM, null));
+    eventsAgain.setSource(events.getSource());
+
+    assertAll(
+        () -> assertEquals(OptionalLong.of(1500), metadataInferringService.countRowsToRead(resource(events, occurrences, withoutCoverage))),
+        () -> assertEquals(OptionalLong.of(2500), metadataInferringService.countRowsToRead(resource(events, occurrences, eventsAgain))),
+        () -> assertEquals(OptionalLong.of(0), metadataInferringService.countRowsToRead(new Resource())));
+  }
+
+  @DisplayName("Rows to read: unknown for sources read remotely, SQL and URL")
+  @Test
+  public void testCountRowsToReadRemoteSources() {
+    ExtensionMapping events = mapping(Constants.DWC_ROWTYPE_EVENT, "events", field(DwcTerm.eventDate, EVENT_DATE, null));
+    rows(events.getSource(), 1000);
+    ExtensionMapping fromSql = mapping(Constants.DWC_ROWTYPE_OCCURRENCE, "sql", field(DwcTerm.kingdom, KINGDOM, null));
+    SqlSource sql = new SqlSource();
+    sql.setName("sql");
+    fromSql.setSource(sql);
+    ExtensionMapping fromUrl = mapping(Constants.DWC_ROWTYPE_OCCURRENCE, "url", field(DwcTerm.kingdom, KINGDOM, null));
+    UrlSource url = new UrlSource();
+    url.setName("url");
+    // the row count of the last analysis, the data at the URL can have changed since
+    url.setRows(10);
+    fromUrl.setSource(url);
+
+    assertAll(
+        () -> assertEquals(OptionalLong.empty(), metadataInferringService.countRowsToRead(resource(events, fromSql))),
+        () -> assertEquals(OptionalLong.empty(), metadataInferringService.countRowsToRead(resource(events, fromUrl))));
+  }
+
+  @DisplayName("DwC-DP rows to read: the event and identification tables")
+  @Test
+  public void testCountRowsToReadDwcDp() {
+    DataPackageMapping events = dwcDpMapping("event", "events", dwcDpField("eventDate", 3));
+    rows(events.getSource(), 100);
+    DataPackageMapping identifications = dwcDpMapping("identification", "identifications", dwcDpField("kingdom", 1));
+    rows(identifications.getSource(), 20);
+    DataPackageMapping occurrences = dwcDpMapping("occurrence", "occurrences", dwcDpField("kingdom", 1));
+    rows(occurrences.getSource(), 9999);
+
+    assertEquals(OptionalLong.of(120), metadataInferringService.countRowsToRead(dwcDpResource(events, identifications, occurrences)));
+  }
+
+  @DisplayName("More distinct dates than the parser remembers: all of them still count")
+  @Test
+  public void testManyDistinctDates() {
+    List<String[]> rows = new ArrayList<>();
+    LocalDate first = LocalDate.of(1980, 1, 1);
+    // more than the 10,000 dates the parser remembers, then the first ones again
+    for (int i = 0; i < 12_000; i++) {
+      rows.add(row(String.valueOf(i), null, null, first.plusDays(i).toString()));
+    }
+    for (int i = 0; i < 100; i++) {
+      rows.add(row("again" + i, null, null, first.plusDays(i).toString()));
+    }
+    sources.put("events", () -> new InMemoryRowIterator(rows));
+    Resource resource = resource(mapping(Constants.DWC_ROWTYPE_EVENT, "events", field(DwcTerm.eventDate, EVENT_DATE, null)));
+
+    InferredEmlTemporalCoverage temporal = infer(resource).getInferredTemporalCoverage();
+
+    assertAll(
+        () -> assertEquals("1980-01-01", format(temporal.getData().getStartDate())),
+        () -> assertEquals(first.plusDays(11_999).toString(), format(temporal.getData().getEndDate())));
+  }
+
+  private static void rows(Source source, int rows) {
+    ((TextFileSource) source).setRows(rows);
   }
 
   private InferredEmlMetadata infer(Resource resource) {

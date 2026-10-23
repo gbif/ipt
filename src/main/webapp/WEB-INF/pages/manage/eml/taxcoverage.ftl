@@ -293,6 +293,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
                             </#if>
 
                             <p class="my-3 intro">

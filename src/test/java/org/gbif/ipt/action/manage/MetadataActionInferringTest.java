@@ -22,13 +22,16 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
+import org.gbif.ipt.service.manage.impl.InferredMetadataManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.OptionalLong;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -36,9 +39,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -71,6 +76,8 @@ public class MetadataActionInferringTest {
     inferred = new InferredEmlMetadata();
     inferred.setLastModified(new Date());
     when(inferringService.inferMetadata(any(Resource.class))).thenReturn(inferred);
+    // a small dataset: inferred right away
+    when(inferringService.countRowsToRead(any(Resource.class))).thenReturn(OptionalLong.of(0));
 
     req = mock(HttpServletRequest.class);
     when(req.getRequestURI()).thenReturn("/ipt/manage/metadata-geocoverage.do");
@@ -78,7 +85,8 @@ public class MetadataActionInferringTest {
     when(req.getMethod()).thenReturn("GET");
 
     action = new MetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-        resourceManager, mock(VocabulariesManager.class), inferringService, mock(ConfigWarnings.class), mock(DataDir.class));
+        resourceManager, mock(VocabulariesManager.class), new InferredMetadataManagerImpl(inferringService, resourceManager, Runnable::run),
+        mock(ConfigWarnings.class), mock(DataDir.class));
     action.withServletRequest(req);
     Map<String, Object> session = new HashMap<>();
     session.put(Constants.SESSION_USER, new User());
@@ -164,6 +172,38 @@ public class MetadataActionInferringTest {
     action.prepare();
 
     verify(inferringService, never()).inferMetadata(any());
+  }
+
+  @DisplayName("Other metadata sections don't infer")
+  @Test
+  public void testOtherSectionsDontInfer() {
+    when(req.getRequestURI()).thenReturn("/ipt/manage/metadata-contacts.do");
+
+    action.prepare();
+
+    verify(inferringService, never()).inferMetadata(any());
+    assertFalse(action.isInferring());
+  }
+
+  @DisplayName("Inferring in the background: shown on the page")
+  @Test
+  public void testInferringInBackground() {
+    InferredMetadataManager manager = mock(InferredMetadataManager.class);
+    InferredEmlMetadata stored = inferredAt(new Date(1_000_000L));
+    when(manager.getInferredMetadata(resource, false)).thenReturn(stored);
+    when(manager.isInferring(SHORTNAME)).thenReturn(true);
+    MetadataAction backgroundAction = new MetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
+        mock(RegistrationManager.class), resourceManager, mock(VocabulariesManager.class), manager,
+        mock(ConfigWarnings.class), mock(DataDir.class));
+    backgroundAction.withServletRequest(req);
+    Map<String, Object> session = new HashMap<>();
+    session.put(Constants.SESSION_USER, new User());
+    backgroundAction.withSession(session);
+
+    backgroundAction.prepare();
+
+    assertTrue(backgroundAction.isInferring());
+    assertSame(stored, backgroundAction.getInferredMetadata());
   }
 
   private static InferredEmlMetadata inferredAt(Date date) {

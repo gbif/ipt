@@ -41,9 +41,9 @@ import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.PublicationException;
 import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.ResourceDoiService;
 import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourceMetadataInferringService;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -138,7 +138,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   @Getter
   private final GenerateDarwinCoreDataPackageFactory dwcDpFactory;
   private final SimpleTextProvider textProvider;
-  private final ResourceMetadataInferringService resourceMetadataInferringService;
+  private final InferredMetadataManager inferredMetadataManager;
   private final ResourceDoiService resourceDoiService;
 
   private final ThreadPoolExecutor executor;
@@ -160,7 +160,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
       GenerateDataPackageFactory dataPackageFactory,
       GenerateDarwinCoreDataPackageFactory dwcDpFactory,
       SimpleTextProvider textProvider,
-      ResourceMetadataInferringService resourceMetadataInferringService,
+      InferredMetadataManager inferredMetadataManager,
       ResourceDoiService resourceDoiService) {
     super(cfg, dataDir);
     this.resourceManager = resourceManager;
@@ -171,7 +171,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     this.dataPackageFactory = dataPackageFactory;
     this.dwcDpFactory = dwcDpFactory;
     this.textProvider = textProvider;
-    this.resourceMetadataInferringService = resourceMetadataInferringService;
+    this.inferredMetadataManager = inferredMetadataManager;
     this.resourceDoiService = resourceDoiService;
     this.executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(cfg.getMaxThreads());
   }
@@ -597,10 +597,9 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         && (resource.isInferGeocoverageAutomatically()
         || resource.isInferTaxonomicCoverageAutomatically()
         || resource.isInferTemporalCoverageAutomatically())) {
-      InferredCamtrapMetadata inferredMetadata = (InferredCamtrapMetadata) resourceMetadataInferringService.inferMetadata(resource);
-      // save inferred metadata
-      resource.setInferredMetadata(inferredMetadata);
-      resourceManager.saveInferredMetadata(resource);
+      // inferred again only if outdated
+      InferredCamtrapMetadata inferredMetadata =
+          (InferredCamtrapMetadata) inferredMetadataManager.getUpToDateInferredMetadata(resource);
 
       if (resource.isInferGeocoverageAutomatically()) {
         updateCamtrapGeographicScopeWithInferredFromSourceData(resource, inferredMetadata);
@@ -1809,10 +1808,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
       return;
     }
 
-    InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) resourceMetadataInferringService.inferMetadata(resource);
-    // save inferred metadata
-    resource.setInferredMetadata(inferredMetadata);
-    resourceManager.saveInferredMetadata(resource);
+    // inferred again only if outdated
+    InferredEmlMetadata inferredMetadata = (InferredEmlMetadata) inferredMetadataManager.getUpToDateInferredMetadata(resource);
 
     if (resource.isInferGeocoverageAutomatically()) {
       updateEmlGeocoverageWithInferredFromSourceData(resource, inferredMetadata);
