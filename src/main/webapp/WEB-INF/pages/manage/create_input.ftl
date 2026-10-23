@@ -89,6 +89,15 @@
 
         var dataPackages = ${schemasJson?no_esc};
 
+        // Texts for the precheck panel, {0}-style placeholders are filled in by the renderer
+        const precheckMessages = {
+            <#list ["files", "metadata", "noDataFiles", "unreadable", "notInSchema", "noPath", "unmapped",
+                    "missing.partial", "missing.skipped", "success", "error", "warning",
+                    "warning.missing", "warning.missingSkipped", "warning.unmapped"] as key>
+            '${key}': '${action.getText("manage.resource.create.precheck." + key)?js_string?no_esc}'<#sep>,</#sep>
+            </#list>
+        };
+
         const datasetTypeMap = {
             "Occurrence": "occurrence",
             "Checklist": "checklist",
@@ -148,7 +157,7 @@
             const result = await DataPackagePrecheck.run(file, dataPackages);
 
             if (result && result.type === 'data-package') {
-                renderPrecheckPanel(result, file.name, $precheckPanel.get(0));
+                renderPrecheckPanel(result, file.name, $precheckPanel.get(0), precheckMessages);
             } else {
                 $precheckPanel.empty();
             }

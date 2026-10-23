@@ -7,12 +7,15 @@
  * ranged File.slice() calls, so it never loads the whole archive into memory.
  *
  * Usage:
- *   const result = await DataPackagePrecheck.run(fileInput.files[0]);
+ *   const result = await DataPackagePrecheck.run(fileInput.files[0], dataPackages);
  *   // result.type   -> 'data-package' | 'dwc-a' | 'unknown'
  *   // result.ready  -> boolean, can IPT create a resource from this
  *   // result.reason -> string explaining a not-ready state, else null
+ *   // result.actualType, result.version -> data package type and version from datapackage.json
  *   // result.files -> [{ path, resources: [{ name, inSchema }] }]
- *   // result.unmappedFiles -> string[]
+ *   // result.unmappedFiles -> entries of result.files not referenced by any resource
+ *   // result.skippedResources -> string[], resources with none of their files in the archive
+ *   // result.unresolvedPaths -> [{ resourceName, path }], declared paths missing from the archive
  */
 (function (global) {
     'use strict';
@@ -287,12 +290,13 @@
 
         // normalizedPath (relative to root) -> Set<resourceName>
         const pathToResources = new Map();
-        const unresolvedPaths = []; // informational only: { resourceName, path }
+        const unresolvedPaths = []; // { resourceName, path }, doesn't affect ready
         const skippedResources = new Set(); // resource names with zero resolved paths
 
         for (const resource of resources) {
             const name = resource.name || '(unnamed resource)';
-            const declaredPaths = Array.isArray(resource.path) ? resource.path : [resource.path];
+            // An empty path list is treated like a missing path, so the resource still shows up as unresolved
+            const declaredPaths = Array.isArray(resource.path) && resource.path.length ? resource.path : [resource.path];
             let resolvedAny = false;
 
             for (const p of declaredPaths) {
@@ -361,13 +365,6 @@
             reasons.push(`Resource(s) not recognized by schema: ${unknownSchemaResources.join(', ')}`);
         }
 
-        // Warning - add it only if the rest is fine
-        if (ready) {
-            if (skippedResources.size > 0) {
-                reasons.push(`Skipped resource(s) with missing file(s): ${[...skippedResources].join(', ')}`);
-            }
-        }
-
         return {
             type: 'data-package',
             actualType,
@@ -377,7 +374,7 @@
             files: fileResults,
             unmappedFiles,
             skippedResources: [...skippedResources],
-            unresolvedPaths, // not blocking
+            unresolvedPaths,
         };
     }
 
