@@ -156,14 +156,21 @@
                                     </div>
                                 </div>
                                 <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
+                                <#if (inferredMetadata.inferredTemporalScope.errors)?has_content>
+                                    <#list inferredMetadata.inferredTemporalScope.errors as error>
+                                        <div class="callout callout-danger text-smaller">
+                                            <@s.text name="${error}"/>
+                                        </div>
+                                    </#list>
+                                <#else>
                                 <div class="table-responsive border rounded p-3">
                                     <#if temporalScopeMetadataIsInferred>
                                         <table class="text-smaller table table-sm table-borderless mb-0">
                                             <tr>
                                                 <th class="col-4"><@s.text name='datapackagemetadata.temporal.start'/> / <@s.text name='datapackagemetadata.temporal.end'/></th>
                                                 <td>
-                                                    <#if (metadata.temporal.start)?? && (metadata.temporal.end)??>
-                                                        ${(inferredMetadata.inferredTemporalScope.startDate)!?date} / ${(inferredMetadata.inferredTemporalScope.endDate)!?date}
+                                                    <#if (inferredMetadata.inferredTemporalScope.startDate)?? && (inferredMetadata.inferredTemporalScope.endDate)??>
+                                                        ${inferredMetadata.inferredTemporalScope.startDate?date} / ${inferredMetadata.inferredTemporalScope.endDate?date}
                                                     <#else>
                                                         -
                                                     </#if>
@@ -174,6 +181,7 @@
                                         <@s.text name="datapackagemetadata.noData"/>
                                     </#if>
                                 </div>
+                                </#if>
                             </div>
 
                         </div>

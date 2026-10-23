@@ -429,6 +429,13 @@
                                 </div>
 
                                 <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
+                                <#if (inferredMetadata.inferredTaxonomicScope.errors)?has_content>
+                                    <#list inferredMetadata.inferredTaxonomicScope.errors as error>
+                                        <div class="callout callout-danger text-smaller">
+                                            <@s.text name="${error}"/>
+                                        </div>
+                                    </#list>
+                                <#else>
                                 <div class="border rounded p-3">
                                     <#if (inferredMetadata.inferredTaxonomicScope.data)?has_content>
                                         <div class="table-responsive">
@@ -447,6 +454,7 @@
                                         <span class="text-discreet"><@s.text name="datapackagemetadata.noData"/></span>
                                     </#if>
                                 </div>
+                                </#if>
                             </div>
                         </div>
                     </div>

@@ -214,6 +214,13 @@
                                     </div>
                                 </div>
                                 <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
+                                <#if (inferredMetadata.inferredGeographicScope.errors)?has_content>
+                                    <#list inferredMetadata.inferredGeographicScope.errors as error>
+                                        <div class="callout callout-danger text-smaller">
+                                            <@s.text name="${error}"/>
+                                        </div>
+                                    </#list>
+                                <#else>
                                 <div class="table-responsive border rounded p-3">
                                     <#if geographicScopeMetadataIsInferred>
                                         <table class="text-smaller table table-sm table-borderless mb-0">
@@ -238,6 +245,7 @@
                                         <@s.text name="datapackagemetadata.noData"/>
                                     </#if>
                                 </div>
+                                </#if>
                             </div>
                         </div>
                     </div>
