@@ -442,7 +442,7 @@
 
                     <div class="bd-content">
                         <div class="my-md-3 p-3">
-                            <#if resource.dataPackage==false>
+                            <#if resource.dataPackage==false || resource.dwcDp>
                             <div class="row g-2 mt-0">
                                 <div class="col-md-6">
                                     <@checkbox name="resource.inferTemporalCoverageAutomatically" value=resource.inferTemporalCoverageAutomatically i18nkey="eml.inferAutomatically"/>
