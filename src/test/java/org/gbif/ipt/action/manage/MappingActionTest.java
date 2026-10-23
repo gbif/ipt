@@ -37,11 +37,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -51,12 +49,13 @@ import static org.mockito.Mockito.when;
 public class MappingActionTest extends IptBaseTest {
 
   private MappingAction action;
+  private HttpServletRequest req;
   private static final String RESOURCE_SHORT_NAME = "myResource";
 
   @BeforeEach
   public void setup() {
     // Mock HttpServletRequest
-    HttpServletRequest req = mock(HttpServletRequest.class);
+    req = mock(HttpServletRequest.class);
     // to return Occurrence Rowtype for parameter "id"
     when(req.getParameter("id")).thenReturn(Constants.DWC_ROWTYPE_OCCURRENCE);
     // to return Resource shortname "myResource" for parameter Constants.REQ_PARAM_RESOURCE
@@ -146,16 +145,19 @@ public class MappingActionTest extends IptBaseTest {
     assertEquals("dwc:scientificname", action.normalizeColumnName(col3));
   }
 
-  @Disabled("the mapping and the resource's mapping are not the same object and so the remove(mapping) is always false")
+  @Test
   public void testDelete() {
+    // mid selects the resource's existing core mapping, otherwise prepare() creates a new mapping
+    when(req.getParameter("mid")).thenReturn("0");
     // prepare id, mid parameters
     action.prepare();
-    // to begin with, show the resource's core type isn't null
-    assertNotNull(action.getResource().getCoreType());
-    // simulate delete core type mapping being deleted
+    // to begin with, show the resource has a core mapping
+    assertEquals(Constants.DWC_ROWTYPE_OCCURRENCE, action.getResource().getCoreRowType());
+    // simulate the only core mapping being deleted
     action.delete();
-    // assert the resource's core type has been reset
-    assertNull(action.getResource().getCoreType());
+    // assert deleting the only core mapping removes all mappings
+    assertTrue(action.getResource().getMappings().isEmpty());
+    assertNull(action.getResource().getCoreRowType());
   }
 
   @Test
