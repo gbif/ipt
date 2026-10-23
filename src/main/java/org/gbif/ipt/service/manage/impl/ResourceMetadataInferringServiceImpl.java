@@ -114,6 +114,10 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
   private static final String DWC_DP_DECIMAL_LATITUDE = "decimalLatitude";
   private static final String DWC_DP_DECIMAL_LONGITUDE = "decimalLongitude";
   private static final String DWC_DP_EVENT_DATE = "eventDate";
+  private static final String DWC_DP_IDENTIFICATION = "identification";
+  private static final String DWC_DP_IS_ACCEPTED_IDENTIFICATION = "isAcceptedIdentification";
+  // values of isAcceptedIdentification for superseded identifications, compared ignoring case; blank counts as accepted
+  private static final Set<String> NOT_ACCEPTED_VALUES = Set.of("false", "0", "no");
 
   private static final String CAMTRAP_DEPLOYMENTS = "deployments";
   private static final String CAMTRAP_OBSERVATIONS = "observations";
@@ -312,6 +316,9 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
     if (DWC_DP_TAXA_TABLES.contains(table)) {
       EML_RANK_TERMS.keySet().forEach(rank -> result.addRank(rank, MappedField.of(mapping.getField(rank))));
+    }
+    if (DWC_DP_IDENTIFICATION.equals(table)) {
+      result.acceptedIdentification = MappedField.of(mapping.getField(DWC_DP_IS_ACCEPTED_IDENTIFICATION));
     }
     return result;
   }
@@ -570,6 +577,8 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     private MappedField longitude = MappedField.UNMAPPED;
     private MappedField eventDate = MappedField.UNMAPPED;
     private final Map<String, MappedField> ranks = new LinkedHashMap<>();
+    // DwC-DP identifications: superseded ones are left out of the taxonomic coverage
+    private MappedField acceptedIdentification = MappedField.UNMAPPED;
 
     private EmlMapping(Source source, RecordFilter filter, Collection<MappedField> fields) {
       this.source = source;
@@ -581,6 +590,11 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
       if (field.isMapped()) {
         ranks.put(rank, field);
       }
+    }
+
+    private boolean isSupersededIdentification(String[] row) {
+      String accepted = acceptedIdentification.value(row);
+      return accepted != null && NOT_ACCEPTED_VALUES.contains(accepted.toLowerCase(Locale.ENGLISH));
     }
   }
 
@@ -746,6 +760,9 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
 
     @Override
     void add(EmlMapping mapping, String[] row) {
+      if (mapping.isSupersededIdentification(row)) {
+        return;
+      }
       mapping.ranks.forEach((rank, field) -> taxaByRank.get(rank).add(field.value(row)));
     }
 

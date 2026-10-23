@@ -511,6 +511,29 @@ public class ResourceEmlMetadataInferringTest extends IptBaseTest {
         () -> assertEquals(Arrays.asList("Animalia", "Fungi"), names(metadata.getInferredTaxonomicCoverage(), Constants.KINGDOM)));
   }
 
+  @DisplayName("DwC-DP: superseded identifications are left out of the taxonomic coverage, blank counts as accepted")
+  @Test
+  public void testDwcDpSupersededIdentifications() {
+    addSource("identifications",
+        row("i1", "Animalia", "true"),
+        row("i2", "Plantae", "FALSE"),
+        row("i3", "Fungi", "0"),
+        row("i4", "Bacteria", "No"),
+        row("i5", "Chromista", null),
+        row("i6", "Protozoa", "1"));
+    addSource("identification-taxa", row("t1", "Archaea"));
+    Resource resource = dwcDpResource(
+        dwcDpMapping("identification", "identifications",
+            dwcDpField("identificationID", 0), dwcDpField("kingdom", 1), dwcDpField("isAcceptedIdentification", 2)),
+        // no such field: all rows are read
+        dwcDpMapping("identification-taxon", "identification-taxa", dwcDpField("kingdom", 1)));
+
+    InferredEmlMetadata metadata = infer(resource);
+
+    assertEquals(Arrays.asList("Animalia", "Archaea", "Chromista", "Protozoa"),
+        names(metadata.getInferredTaxonomicCoverage(), Constants.KINGDOM));
+  }
+
   @DisplayName("DwC-DP: errors without mappings and without the coverage fields mapped")
   @Test
   public void testDwcDpErrors() {
