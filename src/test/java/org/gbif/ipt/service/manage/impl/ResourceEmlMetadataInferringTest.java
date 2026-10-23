@@ -698,7 +698,7 @@ public class ResourceEmlMetadataInferringTest extends IptBaseTest {
         () -> assertEquals("eml.warning.limitExceeded", taxonomic.getRankWarnings().get(Constants.FAMILY)));
   }
 
-  @DisplayName("If every mapped rank exceeds the limit, the coverage is inferred empty with warnings")
+  @DisplayName("If every mapped rank exceeds the limit, nothing is inferred: an error, and the warnings")
   @Test
   public void testAllRanksExceedLimit() {
     List<String[]> rows = new ArrayList<>();
@@ -711,9 +711,9 @@ public class ResourceEmlMetadataInferringTest extends IptBaseTest {
     InferredEmlTaxonomicCoverage taxonomic = infer(resource).getInferredTaxonomicCoverage();
 
     assertAll(
-        () -> assertTrue(taxonomic.isInferred()),
-        () -> assertTrue(taxonomic.getErrors().isEmpty()),
-        () -> assertTrue(taxonomic.getData().getTaxonKeywords().isEmpty()),
+        () -> assertFalse(taxonomic.isInferred()),
+        () -> assertEquals(Collections.singleton("eml.taxonomicCoverages.error.limitExceeded"), taxonomic.getErrors()),
+        () -> assertNull(taxonomic.getData()),
         () -> assertEquals("eml.warning.limitExceeded", taxonomic.getRankWarnings().get(Constants.FAMILY)));
   }
 

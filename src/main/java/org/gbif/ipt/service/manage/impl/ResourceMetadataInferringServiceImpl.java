@@ -280,7 +280,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     Map<String, MappedField> fields = new HashMap<>();
     for (PropertyMapping field : mapping.getFields()) {
       if (field.getTerm() != null) {
-        // a term mapped twice: keep the first one
+        // terms are unique in a mapping (a TreeSet by term), putIfAbsent only guards a set given otherwise
         fields.putIfAbsent(field.getTerm().qualifiedName(), MappedField.of(field));
       }
     }
@@ -787,11 +787,15 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
         }
       });
 
+      List<TaxonKeyword> keywords = new ArrayList<>();
+      taxaByRank.forEach((rank, taxa) -> taxa.names.forEach(name -> keywords.add(new TaxonKeyword(name, rank, null))));
+
       if (error != null) {
         result.addError(error);
+      } else if (keywords.isEmpty()) {
+        // every mapped rank has too many names: nothing to publish, which an empty table of warnings wouldn't say
+        result.addError("eml.taxonomicCoverages.error.limitExceeded");
       } else {
-        List<TaxonKeyword> keywords = new ArrayList<>();
-        taxaByRank.forEach((rank, taxa) -> taxa.names.forEach(name -> keywords.add(new TaxonKeyword(name, rank, null))));
         TaxonomicCoverage taxonomicCoverage = new TaxonomicCoverage();
         taxonomicCoverage.setTaxonKeywords(keywords);
         result.setData(taxonomicCoverage);
