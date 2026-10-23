@@ -166,7 +166,16 @@
                     <div class="py-2 me-3">
                         <span class="fs-smaller-2 text-nowrap me-1 my-1 dt-content-link dt-content-pill type-${resourceTypeLowerCase}"[#if installedSchemaVersion?has_content] title="[@s.text name="manage.overview.schemaVersion"/]"[/#if]>[@s.text name="portal.resource.type.${resourceTypeLowerCase}"/][#if installedSchemaVersion?has_content] &middot; ${installedSchemaVersion}[/#if]</span>
 
-                        [#if resource.status??]
+                        [#if resource.pendingStatus?has_content && resource.status != resource.pendingStatus]
+                        <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.pendingStatus?lower_case}">
+                            [#if resource.pendingStatus == "PUBLIC" || resource.pendingStatus == "PRIVATE"]
+                                <i class="bi bi-circle fs-smaller-2"></i>
+                            [#else]
+                                <i class="bi bi-circle-fill fs-smaller-2"></i>
+                            [/#if]
+                            <span>[@s.text name="manage.home.visible.pending.${resource.pendingStatus?lower_case}"/]</span>
+                        </span>
+                        [#elseif resource.status??]
                         <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
                             [#if resource.status == "PUBLIC" || resource.status == "PRIVATE"]
                                 <i class="bi bi-circle fs-smaller-2"></i>
