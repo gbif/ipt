@@ -38,6 +38,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,8 +52,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.converters.ConversionException;
@@ -76,6 +78,10 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   private DataDir mockDataDir;
 
   private List<Resource> resourcesList = new ArrayList<>();
+
+  // RegistrationManagerImpl deletes registration.xml and overwrites registration2.xml, so tests work on copies
+  @TempDir
+  Path tempDir;
 
   @BeforeEach
   public void setup() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
@@ -112,11 +118,11 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     resourcesList.add(r2);
 
     // mock returning registration.xml file
-    File registrationXML = FileUtils.getClasspathFile("config/registration.xml");
+    File registrationXML = copyToTempDir("config/registration.xml");
     when(mockDataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V1)).thenReturn(registrationXML);
 
     // mock returning registration2.xml file
-    File registrationXML2 = FileUtils.getClasspathFile("config/registration2.xml");
+    File registrationXML2 = copyToTempDir("config/registration2.xml");
     when(mockDataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V2)).thenReturn(registrationXML2);
 
     // mock returning list of registered Organisation with local test resource
@@ -144,6 +150,16 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
 
     // load associatedOrganisations, hostingOrganisation, etc
     registrationManager.load();
+  }
+
+  /**
+   * Copies a classpath file into the temporary directory, so the original test resource is never modified.
+   */
+  private File copyToTempDir(String classpathFile) throws IOException {
+    File source = FileUtils.getClasspathFile(classpathFile);
+    Path target = tempDir.resolve(source.getName());
+    Files.copy(source.toPath(), target);
+    return target.toFile();
   }
 
   @Test
@@ -179,10 +195,9 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
    * missing its mandatory key.
    */
   @Test
-  @Disabled("floating behaviour")
-  public void testEncryptRegistrationFailsOnOrganisationMissingKey() {
-    // mock returning registration.xml file, with organization missing name which is NotNull field
-    File registrationXML = FileUtils.getClasspathFile("config/registration_invalid.xml");
+  public void testEncryptRegistrationFailsOnOrganisationMissingKey() throws IOException {
+    // mock returning registration.xml file, with organization missing key which is NotNull field
+    File registrationXML = copyToTempDir("config/registration_invalid.xml");
     when(mockDataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V1)).thenReturn(registrationXML);
 
     assertThrows(ConversionException.class, () -> registrationManager.encryptRegistration());

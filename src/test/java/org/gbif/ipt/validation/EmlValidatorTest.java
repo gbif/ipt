@@ -41,7 +41,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
 
@@ -167,7 +166,6 @@ public class EmlValidatorTest extends IptBaseTest {
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
-  @Disabled("Currently not applicable because of DocBook")
   @Test
   public void testBasicPartDescriptionMissing() {
     // invalid
@@ -177,6 +175,23 @@ public class EmlValidatorTest extends IptBaseTest {
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     // valid
     eml.setDescription("long_enough");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
+
+  @Test
+  public void testBasicPartDescriptionWithMarkup() {
+    // invalid - tags and &nbsp; are not counted towards the length
+    eml.setDescription("<p></p>");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    eml.setDescription("<p>shrt</p>");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    eml.setDescription("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // invalid - not well-formed
+    eml.setDescription("<p>unclosed long enough");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // valid
+    eml.setDescription("<para>long enough</para>");
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
