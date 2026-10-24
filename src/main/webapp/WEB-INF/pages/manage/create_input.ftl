@@ -70,6 +70,14 @@
         display: block;
     }
 
+    /* nothing can be changed while an archive is uploaded: the start method, link buttons (Cancel, Install) */
+    #create-form.uploading .path-option,
+    #create-form.uploading a.btn {
+        opacity: .6;
+        cursor: default;
+        pointer-events: none;
+    }
+
     /* precheck panel contents, a <details> */
     .precheck-contents > summary {
         list-style: none;
@@ -427,10 +435,21 @@
             $uploadBar.parent().attr('aria-valuenow', percent);
         }
 
-        // nothing is changed or sent again while the archive is on its way (see validate() too)
+        // Nothing is changed or sent again while the archive is on its way (see validate() too). Fields and buttons
+        // are disabled, the start method and link buttons made inactive (the uploading class); if the upload fails,
+        // all is as it was again.
         function setUploading(value) {
             uploading = value;
-            $file.prop('disabled', value);
+            $('#create-form').find('input, select, textarea, button').each(function () {
+                if (value) {
+                    this.dataset.disabledBefore = this.disabled;
+                    this.disabled = true;
+                } else {
+                    this.disabled = this.dataset.disabledBefore === 'true';
+                    delete this.dataset.disabledBefore;
+                }
+            });
+            $('#create-form').toggleClass('uploading', value);
             if (!value) $upload.prop('hidden', true);
             validate();
         }
@@ -441,6 +460,7 @@
         }
 
         function uploadArchive(form, submitter) {
+            // before the fields are disabled, disabled ones aren't sent
             const data = new FormData(form);
             if (submitter && submitter.name) data.append(submitter.name, submitter.value);
 
