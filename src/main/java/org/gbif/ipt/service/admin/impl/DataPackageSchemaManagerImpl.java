@@ -274,6 +274,19 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
     return schema != null ? schema.getVersion() : null;
   }
 
+  @Override
+  public Set<String> getAcceptedIdentifiers(DataPackageSchema schema) {
+    Set<String> identifiers = new LinkedHashSet<>();
+    identifiers.add(schema.getIdentifier());
+    if (schema.getPreviousIdentifiers() != null) {
+      identifiers.addAll(schema.getPreviousIdentifiers());
+    }
+    identifiers.addAll(alternativeIdentifiers.getOrDefault(schema.getIdentifier(), Set.of()));
+    identifiers.add(schema.getName());
+    identifiers.remove(null);
+    return identifiers;
+  }
+
   private Optional<DataPackageSchema> getWithoutProtocol(Installed current, String identifier) {
     return current.schemas().stream()
         .filter(schema -> org.gbif.ipt.utils.StringUtils.equalsWithoutProtocol(schema.getIdentifier(), identifier))
@@ -293,7 +306,8 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
   private Optional<DataPackageSchema> getByAlternativeIdentifiers(Installed current, String identifier) {
     Optional<String> baseIdentifier = alternativeIdentifiers.entrySet().stream()
-        .filter(e -> e.getValue().contains(identifier))
+        .filter(e -> e.getValue().stream()
+            .anyMatch(alternative -> org.gbif.ipt.utils.StringUtils.equalsWithoutProtocol(alternative, identifier)))
         .map(Map.Entry::getKey)
         .findFirst();
 

@@ -662,6 +662,25 @@ public class ResourceManagerImplTest extends IptBaseTest {
     // create a new resource.
     assertThrows(ImportException.class,
         () -> resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction));
+    // the copy of the rejected folder is removed, else it would be loaded as a resource on the next start
+    assertFalse(new File(resourceDir, "res1").exists());
+  }
+
+  /**
+   * test resource creation from a zipped resource folder whose data package type isn't installed.
+   */
+  @Test
+  public void testCreateFromZippedFileNonInstalledDataPackageType() throws Exception {
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource_nonexistent_dp.xml");
+    when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDir);
+    ResourceManager resourceManager = getResourceManagerImpl();
+    File zippedResourceFolder = FileUtils.getClasspathFile("resources/res1.zip");
+
+    assertThrows(ImportException.class,
+        () -> resourceManager.create("res1", null, zippedResourceFolder, creator, baseAction));
+    assertFalse(new File(resourceDir, "res1").exists());
+    assertNull(resourceManager.get("res1"));
   }
 
   /**

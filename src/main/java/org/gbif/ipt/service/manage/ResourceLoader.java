@@ -40,6 +40,17 @@ public interface ResourceLoader {
   Resource load(File resourceDir, @Nullable User creator, ActionLogger alog, ResourceLoadCallbacks callbacks) throws InvalidConfigException;
 
   /**
+   * Checks that the data package type of a loaded resource is installed, for the resource and all its data package
+   * mappings. Unlike missing extensions this isn't checked on every load, only when importing a resource from
+   * another IPT.
+   *
+   * @param resource loaded resource
+   * @param alog     action logging
+   * @throws InvalidConfigException if the data package type isn't installed
+   */
+  void checkDataPackageTypeInstalled(Resource resource, ActionLogger alog) throws InvalidConfigException;
+
+  /**
    * Loads a resource's inferred metadata from the XML file located inside its resource directory.
    * If no inferredMetadata.xml file was found, the resource is loaded with an empty InferredMetadata instance.
    *

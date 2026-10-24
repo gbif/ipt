@@ -88,15 +88,24 @@
         $("#create").on('click', displayProcessing);
 
         var dataPackages = ${schemasJson?no_esc};
+        const installed = {
+            extensions: ${(extensionsJson!"[]")?no_esc},
+            dataPackageIdentifiers: ${(dataPackageIdentifiersJson!"[]")?no_esc}
+        };
 
         // Texts for the precheck panel, {0}-style placeholders are filled in by the renderer
+        <#assign precheckPrefix = "manage.resource.create.precheck.">
         const precheckMessages = {
-            <#list ["files", "metadata", "noDataFiles", "unreadable", "notInSchema", "noPath", "unmapped",
-                    "missing.partial", "missing.skipped", "success", "error", "warning",
-                    "warning.missing", "warning.missingSkipped", "warning.unmapped"] as key>
-            '${key}': '${action.getText("manage.resource.create.precheck." + key)?js_string?no_esc}'<#sep>,</#sep>
+            <#list action.texts.keySet()?filter(k -> k?starts_with(precheckPrefix)) as key>
+            '${key?remove_beginning(precheckPrefix)?js_string?no_esc}': '${action.getText(key)?js_string?no_esc}'<#sep>,</#sep>
             </#list>
         };
+
+        // Only admins can install a missing extension or data package type, so only they get links to do it
+        const precheckOptions = <#if adminRights>{
+            extensionsUrl: '${baseURL?js_string?no_esc}/admin/extensions.do',
+            dataPackagesUrl: '${baseURL?js_string?no_esc}/admin/dataPackages.do'
+        }<#else>{}</#if>;
 
         const datasetTypeMap = {
             "Occurrence": "occurrence",
@@ -154,12 +163,19 @@
 
         async function detectDatasetType(file) {
             // Let DataPackagePrecheck have a look first (drives the precheck panel)
-            const result = await DataPackagePrecheck.run(file, dataPackages);
+            const result = await DataPackagePrecheck.run(file, dataPackages, installed);
 
-            if (result && result.type === 'data-package') {
-                renderPrecheckPanel(result, file.name, $precheckPanel.get(0), precheckMessages);
+            if (result && result.type !== 'unknown') {
+                renderPrecheckPanel(result, file.name, $precheckPanel.get(0), precheckMessages, precheckOptions);
+                showInstallable(result, file);
             } else {
                 $precheckPanel.empty();
+            }
+
+            // For DwC-As and resource folders the server takes the type from the archive itself
+            if (result && result.datasetType) {
+                applyDatasetType(result.datasetType);
+                return;
             }
 
             // TODO: precheck should do this eventually
@@ -186,6 +202,27 @@
                 processEmlXml(await file.text());
             } else {
                 console.log('Unsupported file type. Please upload datapackage.json, eml.xml, or a ZIP archive.');
+            }
+        }
+
+        // The registry is only asked when the archive needs something that isn't installed,
+        // then the panel is shown again saying whether it can be installed
+        async function showInstallable(result, file) {
+            const missing = DataPackagePrecheck.missingTypes(result);
+            if (!missing.rowTypes.length && !missing.dataPackageTypes.length) return;
+
+            const params = new URLSearchParams();
+            missing.rowTypes.forEach((rowType) => params.append('rowType', rowType));
+            missing.dataPackageTypes.forEach((type) => params.append('dataPackageType', type));
+            try {
+                const response = await fetch('${baseURL?js_string?no_esc}/manager-api/installable?' + params);
+                const installable = await response.json();
+                // skip if another file was chosen meanwhile
+                if ($file.get(0).files[0] !== file) return;
+                renderPrecheckPanel(result, file.name, $precheckPanel.get(0), precheckMessages,
+                    Object.assign({}, precheckOptions, { installable: installable }));
+            } catch (e) {
+                console.log('Could not check whether the missing types can be installed: ' + e.message);
             }
         }
 

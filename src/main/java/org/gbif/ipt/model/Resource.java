@@ -1774,6 +1774,15 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.makePublicDate = makePublicDate;
   }
 
+  /**
+   * Data package mappings without a schema are left out by {@link #getDataPackageMappings()}.
+   *
+   * @return true if a data package mapping has no schema, because its data package type isn't installed
+   */
+  public boolean hasDataPackageMappingWithoutSchema() {
+    return dataPackageMappings != null && dataPackageMappings.stream().anyMatch(m -> m.getDataPackageSchema() == null);
+  }
+
   public boolean isDataPackage() {
     return dataPackageIdentifier != null;
   }

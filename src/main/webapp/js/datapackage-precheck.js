@@ -1,14 +1,25 @@
 ﻿/**
- * Verifies the content of the archive, checking datapackage.json and
- * available table schemas in the IPT. Does NOT inspect table contents,
- * columns, or relationships between resources — structural existence only.
+ * Verifies the content of an archive before it's uploaded, mirroring what the server
+ * checks when creating a resource from it:
+ * - IPT resource folder: resource.xml, its sources and whether the mapped extensions are installed
+ * - data package: datapackage.json against the available table schemas
+ * - Darwin Core Archive: meta.xml (or a single data file) against the installed extensions
+ * Does NOT inspect table contents or relationships between tables — structural existence only.
  *
- * Reads only the ZIP central directory plus the datapackage.json entry, via
- * ranged File.slice() calls, so it never loads the whole archive into memory.
+ * Reads only the ZIP central directory plus the descriptor entries (and the start of a data file
+ * without meta.xml), via ranged File.slice() calls, so it never loads the whole archive into memory.
  *
  * Usage:
- *   const result = await DataPackagePrecheck.run(fileInput.files[0], dataPackages);
- *   // result.type   -> 'data-package' | 'dwc-a' | 'unknown'
+ *   const result = await DataPackagePrecheck.run(fileInput.files[0], dataPackages, installed);
+ *   // installed.extensions -> [{ rowType, title }]
+ *   // installed.dataPackageIdentifiers -> [[identifier, ...]], the identifiers accepted for each data package type
+ *   // result.type   -> 'ipt-resource' | 'data-package' | 'dwc-a' | 'unknown'
+ *
+ * Resource folders and DwC-As: see checkResourceFolder() and dwcaResult() for the result,
+ * problems are in result.errors / result.warnings as [{ key, args }] text keys.
+ * DataPackagePrecheck.missingTypes(result) lists the extensions and data package types it needs but aren't installed.
+ *
+ * Data packages:
  *   // result.ready  -> boolean, can IPT create a resource from this
  *   // result.reason -> string explaining a not-ready state, else null
  *   // result.actualType, result.version -> data package type and version from datapackage.json
@@ -80,7 +91,7 @@
     // Local file headers can pad name/extra fields slightly differently than
     // the central directory does, so we read the local header to find the
     // real start of the compressed data rather than assuming an offset.
-    async function extractEntry(file, entry) {
+    async function compressedData(file, entry) {
         const headBuf = new DataView(
             await readSlice(file, entry.localHeaderOffset, entry.localHeaderOffset + 30)
         );
@@ -90,9 +101,12 @@
         const nameLen = headBuf.getUint16(26, true);
         const extraLen = headBuf.getUint16(28, true);
         const dataStart = entry.localHeaderOffset + 30 + nameLen + extraLen;
-        const compressed = await readSlice(file, dataStart, dataStart + entry.compressedSize);
+        return file.slice(dataStart, dataStart + entry.compressedSize);
+    }
 
-        if (entry.method === 0) return new Uint8Array(compressed); // stored, no compression
+    // Stream of the uncompressed entry content, null for stored (uncompressed) entries
+    function inflate(entry, compressed) {
+        if (entry.method === 0) return null;
 
         if (entry.method === 8) {
             if (typeof DecompressionStream === 'undefined') {
@@ -101,11 +115,42 @@
                     'Vendor a small fallback inflate library for older browsers if needed.'
                 );
             }
-            const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
-            return new Uint8Array(await new Response(stream).arrayBuffer());
+            return compressed.stream().pipeThrough(new DecompressionStream('deflate-raw'));
         }
 
         throw new Error(`Unsupported compression method (${entry.method}) for ${entry.name}`);
+    }
+
+    async function extractEntry(file, entry) {
+        const compressed = await compressedData(file, entry);
+        const stream = inflate(entry, compressed);
+        return new Uint8Array(await (stream ? new Response(stream) : compressed).arrayBuffer());
+    }
+
+    // Only the first maxBytes of the entry, so a big data file is never inflated completely
+    async function extractEntryHead(file, entry, maxBytes = 64 * 1024) {
+        const compressed = await compressedData(file, entry);
+        const stream = inflate(entry, compressed);
+        if (!stream) return new Uint8Array(await compressed.slice(0, maxBytes).arrayBuffer());
+
+        const reader = stream.getReader();
+        const chunks = [];
+        let size = 0;
+        while (size < maxBytes) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            size += value.length;
+        }
+        reader.cancel().catch(() => {});
+
+        const head = new Uint8Array(size);
+        let offset = 0;
+        for (const chunk of chunks) {
+            head.set(chunk, offset);
+            offset += chunk.length;
+        }
+        return head;
     }
 
     function normalizePath(p) {
@@ -229,7 +274,357 @@
         return candidate;
     }
 
-    async function run(file, availableDataPackages) {
+    // ---- Archive root, as the server sees it after unzipping ----
+
+    // The server skips hidden files and removes a single top folder when unzipping (CompressionUtil),
+    // so paths are taken relative to that folder. Keyed by normalized path, keeps the original for display.
+    function archiveRootFiles(fileEntries) {
+        const visible = fileEntries
+            .filter((e) => !e.name.split('/').pop().startsWith('.'))
+            .map((e) => ({ entry: e, original: e.name.replace(/^\.\//, '').replace(/\\/g, '/').replace(/^\/+/, '') }));
+
+        const topFolders = new Set(visible.map((f) => (f.original.includes('/') ? f.original.split('/')[0] : '')));
+        const prefix = topFolders.size === 1 && !topFolders.has('') ? [...topFolders][0] + '/' : '';
+
+        return new Map(
+            visible.map((f) => {
+                const path = f.original.slice(prefix.length);
+                return [path.toLowerCase(), { entry: f.entry, path }];
+            })
+        );
+    }
+
+    function parseXml(bytes) {
+        const doc = new DOMParser().parseFromString(new TextDecoder('utf-8').decode(bytes), 'application/xml');
+        const error = doc.getElementsByTagName('parsererror')[0];
+        // Chrome wraps the message in a "This page contains the following errors" page, the <div> has the message
+        if (error) throw new Error((error.querySelector('div') ?? error).textContent.trim().split('\n')[0]);
+        return doc;
+    }
+
+    function childElements(parent, localName) {
+        return parent ? [...parent.children].filter((el) => !localName || el.localName === localName) : [];
+    }
+
+    function childText(parent, localName) {
+        return childElements(parent, localName)[0]?.textContent.trim() ?? null;
+    }
+
+    function installedTable(rowType, installedByRowType) {
+        const installed = installedByRowType.get(rowType);
+        return {
+            rowType,
+            title: installed?.title || rowType.split(/[/#]/).pop(),
+            installed: !!installed,
+        };
+    }
+
+    // ---- Darwin Core Archive ----
+
+    const DWC_NS = 'http://rs.tdwg.org/dwc/terms/';
+
+    // Resource type the server derives from the core (ResourceImportServiceImpl), anything else is "other"
+    const CORE_DATASET_TYPES = {
+        [DWC_NS + 'Occurrence']: 'occurrence',
+        [DWC_NS + 'Taxon']: 'checklist',
+        [DWC_NS + 'Event']: 'samplingevent',
+    };
+
+    // Without meta.xml the core type comes from the first of these columns found in the header (dwca-io)
+    const ID_COLUMN_ROW_TYPES = [
+        ['occurrenceid', DWC_NS + 'Occurrence'],
+        ['taxonid', DWC_NS + 'Taxon'],
+        ['eventid', DWC_NS + 'Event'],
+    ];
+
+    // Files dwca-io takes as data files when there is no meta.xml
+    const DATA_FILE_EXTENSIONS = ['.csv', '.txt', '.tsv', '.tab', '.text', '.data', '.dwca'];
+
+    const DWCA_METADATA_FILES = new Set(['meta.xml', 'eml.xml', 'metadata.xml']);
+
+    function dwcaResult(layout) {
+        return {
+            type: 'dwc-a',
+            layout, // 'meta-xml' | 'single-file'
+            ready: false,
+            datasetType: null,
+            tables: [], // [{ role, rowType, title, installed, path, found, extraPaths, idMissing, skipped, detectedFrom }]
+            unmappedFiles: [], // paths
+            metadataFiles: [], // paths
+            errors: [], // [{ key, args }], keys of manage.resource.create.precheck.* texts
+            warnings: [],
+        };
+    }
+
+    function finishDwca(result) {
+        const core = result.tables.find((t) => t.role === 'core');
+        if (core?.rowType) result.datasetType = CORE_DATASET_TYPES[core.rowType] ?? 'other';
+        result.ready = result.errors.length === 0;
+        return result;
+    }
+
+    // Column name as a bare lowercase term name, e.g. "dwc:occurrenceID" or a term URI -> "occurrenceid"
+    function normalizeColumn(column) {
+        return column.split(/[/#:]/).pop().replace(/[^A-Za-z0-9]/g, '').toLowerCase();
+    }
+
+    function headerColumns(bytes) {
+        const line = new TextDecoder('utf-8').decode(bytes).replace(/^﻿/, '').split(/\r?\n/)[0];
+        // The delimiter used most in the header line, tab wins a tie
+        const delimiter = ['\t', ',', ';', '|']
+            .map((d) => [d, line.split(d).length])
+            .reduce((best, d) => (d[1] > best[1] ? d : best))[0];
+        return line.split(delimiter).map((c) => c.trim().replace(/^"(.*)"$/, '$1'));
+    }
+
+    async function checkMetaXml(file, rootFiles, installedByRowType) {
+        const result = dwcaResult('meta-xml');
+        const referenced = new Set(['meta.xml']);
+
+        let archive;
+        try {
+            archive = parseXml(await extractEntry(file, rootFiles.get('meta.xml').entry)).documentElement;
+        } catch (err) {
+            result.errors.push({ key: 'dwca.error.unreadable', args: [err.message] });
+            return finishDwca(result);
+        }
+
+        const core = childElements(archive, 'core')[0];
+        const extensions = childElements(archive, 'extension');
+        if (!core) {
+            result.errors.push({ key: 'dwca.error.noCore', args: [] });
+        } else if (!core.getAttribute('rowType')) {
+            result.errors.push({ key: 'dwca.error.noRowType', args: [] });
+        }
+
+        // dwca-io drops an extension without <coreid>, the server never sees it
+        const linkedExtensions = extensions.filter((el) => childElements(el, 'coreid').length);
+
+        const declared = [...(core ? [[core, 'core']] : []), ...extensions.map((el) => [el, 'extension'])];
+        for (const [el, role] of declared) {
+            const rowType = el.getAttribute('rowType');
+            const locations = [...el.getElementsByTagNameNS('*', 'location')].map((l) => l.textContent.trim());
+            locations.forEach((l) => referenced.add(normalizePath(l)));
+            const [path = null, ...extraPaths] = locations;
+            // The server only needs the core <id> when there are extensions to link to it
+            const idElement = childElements(el, role === 'core' ? 'id' : 'coreid')[0];
+            const skipped = role === 'extension' && !idElement;
+
+            result.tables.push({
+                role,
+                ...(rowType ? installedTable(rowType, installedByRowType) : { rowType: null, title: null, installed: false }),
+                path,
+                found: path !== null && rootFiles.has(normalizePath(path)),
+                extraPaths,
+                idMissing: !idElement && (role === 'extension' || linkedExtensions.length > 0),
+                skipped,
+                detectedFrom: null,
+            });
+        }
+
+        const metadataAttribute = archive.getAttribute('metadata');
+        if (metadataAttribute) referenced.add(normalizePath(metadataAttribute));
+
+        for (const [key, f] of rootFiles) {
+            if (DWCA_METADATA_FILES.has(key) || (metadataAttribute && key === normalizePath(metadataAttribute))) {
+                result.metadataFiles.push(f.path);
+            } else if (!referenced.has(key)) {
+                result.unmappedFiles.push(f.path);
+            }
+        }
+
+        // Each of these makes the server reject the archive
+        const imported = result.tables.filter((t) => !t.skipped);
+        const notInstalled = imported.filter((t) => t.rowType && !t.installed).length;
+        const missing = imported.filter((t) => !t.found).length;
+        if (notInstalled) result.errors.push({ key: 'dwca.error.notInstalled', args: [notInstalled] });
+        if (missing) result.errors.push({ key: 'dwca.error.missing', args: [missing] });
+        if (imported.some((t) => t.idMissing)) result.errors.push({ key: 'dwca.error.noId', args: [] });
+
+        const skipped = result.tables.length - imported.length;
+        if (skipped) result.warnings.push({ key: 'dwca.warning.noCoreId', args: [skipped] });
+
+        // The server only imports the first file of each table
+        const extraPaths = result.tables.reduce((n, t) => n + t.extraPaths.length, 0);
+        if (extraPaths) result.warnings.push({ key: 'dwca.warning.extraLocations', args: [extraPaths] });
+        if (result.unmappedFiles.length) {
+            result.warnings.push({ key: 'dwca.warning.unmapped', args: [result.unmappedFiles.length] });
+        }
+
+        return finishDwca(result);
+    }
+
+    async function checkSingleDataFile(file, rootFiles, installedByRowType) {
+        const result = dwcaResult('single-file');
+
+        // dwca-io only looks at files directly in the archive root
+        const dataFiles = [];
+        for (const [key, f] of rootFiles) {
+            if (DWCA_METADATA_FILES.has(key)) {
+                result.metadataFiles.push(f.path);
+            } else if (!key.includes('/') && DATA_FILE_EXTENSIONS.some((ext) => key.endsWith(ext))) {
+                dataFiles.push(f);
+            } else {
+                result.unmappedFiles.push(f.path);
+            }
+        }
+
+        if (dataFiles.length !== 1) {
+            result.unmappedFiles.unshift(...dataFiles.map((f) => f.path));
+            result.errors.push(
+                dataFiles.length
+                    ? { key: 'dwca.error.manyDataFiles', args: [dataFiles.length] }
+                    : { key: 'dwca.error.noDataFiles', args: [] }
+            );
+            return finishDwca(result);
+        }
+
+        const dataFile = dataFiles[0];
+        let columns = [];
+        try {
+            columns = headerColumns(await extractEntryHead(file, dataFile.entry));
+        } catch (err) {
+            result.errors.push({ key: 'dwca.error.dataUnreadable', args: [err.message] });
+        }
+
+        const normalized = columns.map(normalizeColumn);
+        const match = ID_COLUMN_ROW_TYPES.find(([column]) => normalized.includes(column));
+        result.tables.push({
+            role: 'core',
+            ...(match ? installedTable(match[1], installedByRowType) : { rowType: null, title: null, installed: false }),
+            path: dataFile.path,
+            found: true,
+            extraPaths: [],
+            idMissing: false,
+            skipped: false,
+            detectedFrom: match ? columns[normalized.indexOf(match[0])] : null,
+        });
+
+        if (!match && columns.length) {
+            result.errors.push({ key: 'dwca.error.noIdColumn', args: [] });
+        } else if (match && !result.tables[0].installed) {
+            result.errors.push({ key: 'dwca.error.notInstalled', args: [1] });
+        }
+        if (result.unmappedFiles.length) {
+            result.warnings.push({ key: 'dwca.warning.unmapped', args: [result.unmappedFiles.length] });
+        }
+
+        return finishDwca(result);
+    }
+
+    // ---- IPT resource folder (a resource directory copied from another IPT's data directory) ----
+
+    const RESOURCE_FOLDER_METADATA_FILES = ['eml.xml', 'datapackage.json', 'metadata.yml'];
+
+    // Same test as ResourceManagerImpl.isIPTResourceFolder
+    function isResourceFolder(rootFiles) {
+        return rootFiles.has('resource.xml') && RESOURCE_FOLDER_METADATA_FILES.some((f) => rootFiles.has(f));
+    }
+
+    // resource.xml is written by XStream, which replaces repeated objects with a relative XPath reference
+    function dereference(el) {
+        const reference = el?.getAttribute('reference');
+        if (!reference) return el;
+        return el.ownerDocument
+            .evaluate(reference, el, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)
+            .singleNodeValue;
+    }
+
+    // Same matching as DataPackageSchemaManager.get(): any accepted identifier, ignoring the protocol
+    function dataPackageTypeInstalled(identifier, dataPackageIdentifiers) {
+        const stripped = (id) => id.replace(/^https?:\/\//, '');
+        return dataPackageIdentifiers.some((ids) => ids.some((id) => stripped(id) === stripped(identifier)));
+    }
+
+    async function checkResourceFolder(file, rootFiles, installedByRowType, dataPackageIdentifiers) {
+        const result = {
+            type: 'ipt-resource',
+            ready: false,
+            datasetType: null,
+            sources: [], // [{ name, kind, path, found, tables: [{ rowType, title, installed, schema }] }]
+            missingDataPackageTypes: [], // identifiers
+            metadataFiles: ['resource.xml', ...RESOURCE_FOLDER_METADATA_FILES]
+                .filter((f) => rootFiles.has(f))
+                .map((f) => rootFiles.get(f).path),
+            errors: [],
+            warnings: [],
+        };
+
+        let resource;
+        try {
+            resource = parseXml(await extractEntry(file, rootFiles.get('resource.xml').entry)).documentElement;
+        } catch (err) {
+            result.errors.push({ key: 'ipt.error.unreadable', args: [err.message] });
+            return result;
+        }
+
+        result.datasetType = childText(resource, 'coreType')?.toLowerCase() || null;
+
+        // Sources are stored as sources/<name>.<suffix>, database sources have no file
+        const sourcesByElement = new Map();
+        for (const el of childElements(childElements(resource, 'sources')[0])) {
+            const name = childText(el, 'name') ?? '';
+            const hasFile = el.localName !== 'sqlsource';
+            const prefix = `sources/${name.toLowerCase()}.`;
+            const stored = [...rootFiles.keys()].find((k) => k.startsWith(prefix) && !k.endsWith('.log'));
+            const source = {
+                name,
+                kind: el.localName,
+                path: stored ? rootFiles.get(stored).path : hasFile ? `sources/${name}` : name,
+                found: !hasFile || !!stored,
+                tables: [],
+            };
+            sourcesByElement.set(el, source);
+            result.sources.push(source);
+        }
+
+        for (const mapping of childElements(childElements(resource, 'mappings')[0], 'mapping')) {
+            const source = sourcesByElement.get(dereference(childElements(mapping, 'source')[0]));
+            const rowType = dereference(childElements(mapping, 'extension')[0])?.textContent.trim();
+            if (source && rowType) source.tables.push(installedTable(rowType, installedByRowType));
+        }
+
+        const missingTypes = new Set();
+        const dataPackageType = childText(resource, 'dataPackageIdentifier');
+        if (dataPackageType && !dataPackageTypeInstalled(dataPackageType, dataPackageIdentifiers)) {
+            missingTypes.add(dataPackageType);
+        }
+
+        for (const mapping of childElements(childElements(resource, 'dataPackageMappings')[0], 'dataPackageMapping')) {
+            const source = sourcesByElement.get(dereference(childElements(mapping, 'source')[0]));
+            const schema = dereference(childElements(mapping, 'dataPackageSchema')[0])?.textContent.trim();
+            const installed = !!schema && dataPackageTypeInstalled(schema, dataPackageIdentifiers);
+            if (!installed && schema) missingTypes.add(schema);
+            if (source) {
+                source.tables.push({
+                    rowType: schema,
+                    title: childText(mapping, 'dataPackageTableSchemaName'),
+                    installed,
+                    schema: true,
+                });
+            }
+        }
+
+        // Mappings to extensions or a data package type that aren't installed make the server reject the folder
+        // (ResourceLoaderImpl)
+        const notInstalled = new Set(
+            result.sources.flatMap((s) => s.tables.filter((t) => !t.installed && !t.schema).map((t) => t.rowType))
+        );
+        if (notInstalled.size) result.errors.push({ key: 'ipt.error.notInstalled', args: [notInstalled.size] });
+        for (const type of missingTypes) {
+            result.errors.push({ key: 'ipt.error.dataPackageTypeNotInstalled', args: [type] });
+        }
+        result.missingDataPackageTypes = [...missingTypes];
+        const missingSources = result.sources.filter((s) => !s.found).length;
+        if (missingSources) result.warnings.push({ key: 'ipt.warning.missingSources', args: [missingSources] });
+
+        result.ready = result.errors.length === 0;
+        return result;
+    }
+
+    // ---- Entry point ----
+
+    async function run(file, availableDataPackages, installed = {}) {
         let entries;
         try {
             entries = await readCentralDirectory(file);
@@ -238,6 +633,13 @@
         }
 
         const fileEntries = entries.filter((e) => !e.isDirectory && !isMacZipArtifact(e.name));
+        const rootFiles = archiveRootFiles(fileEntries);
+        const installedByRowType = new Map((installed.extensions ?? []).map((e) => [e.rowType, e]));
+
+        // Checked first, like on the server: a resource folder can contain a datapackage.json too
+        if (isResourceFolder(rootFiles)) {
+            return checkResourceFolder(file, rootFiles, installedByRowType, installed.dataPackageIdentifiers ?? []);
+        }
 
         // Find datapackage.json — prefer the shallowest one if there are multiple.
         const manifestCandidates = fileEntries
@@ -247,14 +649,11 @@
 
         const manifestCandidate = manifestCandidates[0];
 
+        // Any other archive is imported as a Darwin Core Archive, with or without meta.xml
         if (!manifestCandidate) {
-            const looksLikeDwcA = fileEntries.some((e) => /(^|\/)meta\.xml$/i.test(e.name));
-            return {
-                type: looksLikeDwcA ? 'dwc-a' : 'unknown',
-                ready: false,
-                reason: 'No datapackage.json found in archive.',
-                files: fileEntries.map((e) => e.name),
-            };
+            return rootFiles.has('meta.xml')
+                ? checkMetaXml(file, rootFiles, installedByRowType)
+                : checkSingleDataFile(file, rootFiles, installedByRowType);
         }
 
         const manifestEntry = manifestCandidate.entry;
@@ -378,5 +777,16 @@
         };
     }
 
-    global.DataPackagePrecheck = { run };
+    // Extensions and data package types the archive needs but this IPT doesn't have
+    function missingTypes(result) {
+        const tables = result.type === 'dwc-a'
+            ? result.tables.filter((t) => !t.skipped)
+            : (result.sources ?? []).flatMap((s) => s.tables.filter((t) => !t.schema));
+        return {
+            rowTypes: [...new Set(tables.filter((t) => t.rowType && !t.installed).map((t) => t.rowType))],
+            dataPackageTypes: result.missingDataPackageTypes ?? [],
+        };
+    }
+
+    global.DataPackagePrecheck = { run, missingTypes };
 })(window);

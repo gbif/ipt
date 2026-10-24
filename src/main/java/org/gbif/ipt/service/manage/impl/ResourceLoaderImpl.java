@@ -270,6 +270,20 @@ public class ResourceLoaderImpl implements ResourceLoader {
     return null;
   }
 
+  @Override
+  public void checkDataPackageTypeInstalled(Resource resource, ActionLogger alog) throws InvalidConfigException {
+    if (!resource.isDataPackage()) {
+      return;
+    }
+
+    // the identifier of a type that isn't installed is kept, but the mappings lose their schema on load
+    boolean typeInstalled = schemaManager.get(resource.getDataPackageIdentifier()) != null;
+    if (!typeInstalled || resource.hasDataPackageMappingWithoutSchema()) {
+      alog.warn("manage.resource.create.dataPackageType.null", new String[]{resource.getDataPackageIdentifier()});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource references non-installed data package type");
+    }
+  }
+
   /**
    * Loads a resource's inferred metadata from the XML file located inside its resource directory.
    * If no inferredMetadata.xml file was found, the resource is loaded with an empty InferredMetadata instance.

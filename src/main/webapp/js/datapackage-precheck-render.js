@@ -6,11 +6,13 @@
  * in a .ftl template.
  *
  * Usage:
- *   const result = await DataPackagePrecheck.run(file, dataPackages);
- *   renderPrecheckPanel(result, file.name, document.getElementById('precheckPanel'), messages);
+ *   const result = await DataPackagePrecheck.run(file, dataPackages, installed);
+ *   renderPrecheckPanel(result, file.name, document.getElementById('precheckPanel'), messages, options);
  *
  * messages holds the translated texts (manage.resource.create.precheck.* keys),
- * with {0}-style placeholders left in for the arguments.
+ * with {0}-style placeholders left in for the arguments. options.extensionsUrl and
+ * options.dataPackagesUrl are optional, missing extensions and data package types link to them
+ * when options.installable says the registry has them.
  */
 (function (global) {
     'use strict';
@@ -30,6 +32,10 @@
     }
 
     let messages = {};
+    // { extensionsUrl, dataPackagesUrl } - links to install what's missing, only given to admins
+    // { installable: { rowTypes: { <rowType>: boolean }, dataPackageTypes: { <identifier>: boolean } } }
+    //   - whether the registry has what's missing, unknown until asked
+    let options = {};
 
     // Translated text as escaped HTML, with {0}, {1}... replaced by the arguments
     function msg(key, ...args) {
@@ -110,13 +116,142 @@
         <div style="${cell} flex-wrap:wrap; gap:6px; font-size:13px; padding-right:0;">${row.target ?? ''}${separator}${row.note}</div>`;
     }
 
-    function fileRows(dataFiles, result) {
+    function dataPackageRows(dataFiles, result) {
         const skippedResources = new Set(result.skippedResources ?? []);
-        const rows = [
+        return rowsGrid([
             ...dataFiles.map(fileRowModel),
             ...(result.unresolvedPaths ?? []).map((u) => missingRowModel(u, skippedResources)),
-        ];
+        ]);
+    }
 
+    // Notes of a row, coloured by how serious they are, joined into one flex item
+    const NOTE_CLASSES = { danger: 'text-gbif-danger', warning: 'text-gbif-warning-dark', muted: 'text-muted' };
+
+    function notesMarkup(notes) {
+        return notes.length
+            ? `<span>${notes.map(([level, html]) => `<span class="${NOTE_CLASSES[level]}">${html}</span>`).join('; ')}</span>`
+            : '';
+    }
+
+    // Only offers to install what the registry has: admins get a link, everybody else is pointed to them.
+    // kind: 'rowTypes' | 'dataPackageTypes'
+    function notInstalledNote(kind, identifier) {
+        const installable = options.installable?.[kind]?.[identifier]; // undefined until the registry answered
+        if (installable === false) return msg('notInstalled.unavailable');
+
+        const installUrl = kind === 'rowTypes' ? options.extensionsUrl : options.dataPackagesUrl;
+        if (!installUrl) return msg('notInstalled.contactAdmin');
+        return installable
+            ? `${msg('notInstalled')}, <a href="${escapeHtml(installUrl)}">${msg('notInstalled.install')}</a>`
+            : msg('notInstalled');
+    }
+
+    function dwcaRows(result) {
+        const rows = [];
+
+        for (const table of result.tables) {
+            const notes = [];
+            let status = 'success';
+            let target = null;
+
+            // The server never sees a skipped extension, so its other problems don't matter
+            if (table.skipped) {
+                rows.push({
+                    status: 'warning',
+                    path: escapeHtml(table.path ?? ''),
+                    target: escapeHtml(table.title ?? table.rowType ?? ''),
+                    note: notesMarkup([['warning', msg('dwca.noCoreId')]]),
+                });
+                continue;
+            }
+
+            if (table.rowType && table.installed) {
+                const role = msg(table.role === 'core' ? 'dwca.core' : 'dwca.extension');
+                target = `${escapeHtml(table.title)} <span class="text-muted">(${role})</span>`;
+            } else if (table.rowType) {
+                status = 'danger';
+                target = `<span class="text-gbif-danger">${escapeHtml(table.rowType)}</span>`;
+                notes.push(['danger', notInstalledNote('rowTypes', table.rowType)]);
+            } else {
+                status = 'danger';
+                notes.push(['danger', msg(result.layout === 'single-file' ? 'dwca.noIdColumn' : 'dwca.noRowType')]);
+            }
+            if (!table.found) {
+                status = 'danger';
+                notes.push(['danger', msg('dwca.fileMissing')]);
+            }
+            if (table.idMissing) {
+                status = 'danger';
+                notes.push(['danger', msg('dwca.noId')]);
+            }
+            if (table.detectedFrom) {
+                notes.push(['muted', msg('dwca.detectedFrom', table.detectedFrom)]);
+            }
+
+            const path = table.path ? escapeHtml(table.path) : `<em>${msg('noPath')}</em>`;
+            rows.push({
+                status,
+                path: table.found ? path : `<span class="text-muted">${path}</span>`,
+                target,
+                note: notesMarkup(notes),
+            });
+
+            for (const extraPath of table.extraPaths) {
+                rows.push({
+                    status: 'warning',
+                    path: escapeHtml(extraPath),
+                    target: escapeHtml(table.title ?? table.rowType ?? ''),
+                    note: notesMarkup([['warning', msg('dwca.extraLocation')]]),
+                });
+            }
+        }
+
+        for (const path of result.unmappedFiles) {
+            rows.push({
+                status: 'warning',
+                path: escapeHtml(path),
+                target: null,
+                note: notesMarkup([['warning', msg(result.layout === 'single-file' ? 'dwca.notImported' : 'dwca.unmapped')]]),
+            });
+        }
+
+        return rowsGrid(rows);
+    }
+
+    function resourceFolderRows(result) {
+        return rowsGrid(result.sources.map((source) => {
+            const notes = [];
+            let status = 'success';
+
+            // Data package tables keep their name, the missing type is named in the verdict
+            const target = source.tables
+                .map((t) => {
+                    if (t.installed) return escapeHtml(t.title);
+                    return `<span class="text-gbif-danger">${escapeHtml(t.schema ? t.title : t.rowType)}</span>`;
+                })
+                .join(', ');
+            // Extensions are installed one by one, a data package type as a whole, so that's only in the verdict
+            if (source.tables.some((t) => !t.installed)) status = 'danger';
+            const missingExtension = source.tables.find((t) => !t.installed && !t.schema);
+            if (missingExtension) notes.push(['danger', notInstalledNote('rowTypes', missingExtension.rowType)]);
+            if (!source.found) {
+                if (status === 'success') status = 'warning';
+                notes.push(['warning', msg('ipt.fileMissing')]);
+            }
+            if (source.kind === 'sqlsource') notes.push(['muted', msg('ipt.sqlSource')]);
+            if (!source.tables.length) notes.push(['muted', msg('ipt.notMapped')]);
+
+            const path = escapeHtml(source.path);
+            return {
+                status,
+                path: source.found ? path : `<span class="text-muted">${path}</span>`,
+                target: target || null,
+                note: notesMarkup(notes),
+            };
+        }));
+    }
+
+    function rowsGrid(rows) {
         if (!rows.length) {
             return `<p style="font-size:13px; padding:8px 0;">${msg('noDataFiles')}</p>`;
         }
@@ -130,18 +265,18 @@
       </div>`;
     }
 
-    function metadataRow(file, isLast) {
+    function metadataRow(path, isLast) {
         const border = isLast ? '' : 'border-bottom:0.5px solid var(--border-color);';
         return `
       <div style="display:flex; align-items:center; gap:8px; padding:6px 0; ${border}">
         <i class="bi bi-file-earmark-text" style="font-size:14px;"></i>
-        <span style="font-size:13px;">${escapeHtml(file.path)}</span>
+        <span style="font-size:13px;">${escapeHtml(path)}</span>
       </div>`;
     }
 
-    function metadataSection(files) {
-        if (!files.length) return '';
-        const rows = files.map((f, i) => metadataRow(f, i === files.length - 1)).join('');
+    function metadataSection(paths) {
+        if (!paths.length) return '';
+        const rows = paths.map((p, i) => metadataRow(p, i === paths.length - 1)).join('');
         return `
       <div style="border-top:0.5px solid var(--border-color); margin-top:12px; padding-top:12px;">
         <p style="font-size:13px; margin:0 0 8px;">${msg('metadata')}</p>
@@ -149,21 +284,45 @@
       </div>`;
     }
 
-    function verdictSection(result) {
+    function dataPackageVerdict(result) {
         const skipped = result.skippedResources ?? [];
         const missing = result.unresolvedPaths ?? [];
         // Metadata files are listed separately, so they don't count as unmapped data
         const unmapped = (result.unmappedFiles ?? []).filter((f) => !isMetadataFile(f.path));
 
-        let state; // 'success' | 'warning' | 'danger'
         if (!result.ready) {
-            state = 'danger';
-        } else if (missing.length > 0 || unmapped.length > 0) {
-            state = 'warning';
-        } else {
-            state = 'success';
+            return verdictSection('danger', result.reason ? [escapeHtml(result.reason)] : []);
         }
 
+        // a summary only, the affected files are marked in the list above
+        const items = [];
+        if (missing.length > 0) {
+            items.push(skipped.length > 0
+                ? msg('warning.missingSkipped', missing.length, skipped.length)
+                : msg('warning.missing', missing.length));
+        }
+        if (unmapped.length > 0) {
+            items.push(msg('warning.unmapped', unmapped.length));
+        }
+        return verdictSection(items.length ? 'warning' : 'success', items);
+    }
+
+    // DwC-As and resource folders list their problems as text keys
+    // Problems about something missing, followed by whether and how it can be installed
+    const NOT_INSTALLED_PROBLEMS = { 'ipt.error.dataPackageTypeNotInstalled': 'dataPackageTypes' };
+
+    function problemsVerdict(result) {
+        const problems = result.ready ? result.warnings : result.errors;
+        const items = problems.map((p) => {
+            const text = msg(p.key, ...p.args);
+            const kind = NOT_INSTALLED_PROBLEMS[p.key];
+            return kind ? `${text} ${notInstalledNote(kind, p.args[0])}` : text;
+        });
+        return verdictSection(!result.ready ? 'danger' : items.length ? 'warning' : 'success', items);
+    }
+
+    // state: 'success' | 'warning' | 'danger', items: HTML of the problems behind it
+    function verdictSection(state, items) {
         if (state === 'success') {
             return `
   <div style="border-top:0.5px solid var(--border-color); margin-top:12px; padding-top:12px; display:flex; align-items:center; gap:8px;">
@@ -172,8 +331,9 @@
   </div>`;
         }
 
-        if (state === 'danger') {
-            const message = `${msg('error')}${result.reason ? ' — ' + escapeHtml(result.reason) : ''}`;
+        // A single error fits on the headline, more get a list like the warnings
+        if (state === 'danger' && items.length <= 1) {
+            const message = `${msg('error')}${items.length ? ' — ' + items[0] : ''}`;
             return `
   <div style="border-top:0.5px solid var(--border-color); margin-top:12px; padding-top:12px; display:flex; align-items:center; gap:8px;">
     <i class="bi bi-x text-gbif-danger" style="font-size:16px;"></i>
@@ -181,66 +341,89 @@
   </div>`;
         }
 
-        // warning state - a summary only, the affected files are marked in the list above
-        const bullets = [];
-        if (missing.length > 0) {
-            const text = skipped.length > 0
-                ? msg('warning.missingSkipped', missing.length, skipped.length)
-                : msg('warning.missing', missing.length);
-            bullets.push(`
-      <li>${text}</li>`);
-        }
-        if (unmapped.length > 0) {
-            bullets.push(`
-      <li>${msg('warning.unmapped', unmapped.length)}</li>`);
-        }
+        const [icon, cssClass, headline] = state === 'danger'
+            ? ['bi-x', 'text-gbif-danger', msg('error.list')]
+            : ['bi-exclamation-triangle', 'text-gbif-warning-dark', msg('warning')];
 
         return `
   <div style="border-top:0.5px solid var(--border-color); margin-top:12px; padding-top:12px;">
     <div style="display:flex; align-items:center; gap:8px;">
-      <i class="bi bi-exclamation-triangle text-gbif-warning-dark" style="font-size:16px;"></i>
-      <span class="text-gbif-warning-dark" style="font-size:13px;">${msg('warning')}</span>
+      <i class="bi ${icon} ${cssClass}" style="font-size:16px;"></i>
+      <span class="${cssClass}" style="font-size:13px;">${headline}</span>
     </div>
-    <ul style="margin:6px 0 0 24px; padding:0; font-size:13px;" class="text-gbif-warning-dark">
-      ${bullets.join('')}
+    <ul style="margin:6px 0 0 24px; padding:0; font-size:13px;" class="${cssClass}">
+      ${items.map((item) => `<li>${item}</li>`).join('')}
     </ul>
   </div>`;
     }
 
-    function renderPrecheckPanel(result, fileName, container, translatedMessages) {
-        messages = translatedMessages ?? {};
+    // File rows, metadata files and verdict for each kind of archive
+    function panelSections(result) {
+        if (result.type === 'data-package') {
+            const allFiles = result.files || [];
+            return {
+                kind: msg('kind.dataPackage'),
+                heading: msg('files'),
+                rows: dataPackageRows(allFiles.filter((f) => !isMetadataFile(f.path)), result),
+                metadata: allFiles.filter((f) => isMetadataFile(f.path)).map((f) => f.path),
+                verdict: dataPackageVerdict(result),
+            };
+        }
+        if (result.type === 'dwc-a') {
+            return {
+                kind: msg(result.layout === 'single-file' ? 'kind.dwcaSingleFile' : 'kind.dwca'),
+                heading: msg('files.dwca'),
+                rows: dwcaRows(result),
+                metadata: result.metadataFiles,
+                verdict: problemsVerdict(result),
+            };
+        }
+        if (result.type === 'ipt-resource') {
+            return {
+                kind: msg('kind.iptResource'),
+                heading: msg('files.iptResource'),
+                rows: resourceFolderRows(result),
+                metadata: result.metadataFiles,
+                verdict: problemsVerdict(result),
+            };
+        }
+        return null;
+    }
 
-        const allFiles = result.files || [];
-        const metadataFiles = allFiles.filter((f) => isMetadataFile(f.path));
-        const dataFiles = allFiles.filter((f) => !isMetadataFile(f.path));
+    function renderPrecheckPanel(result, fileName, container, translatedMessages, panelOptions) {
+        messages = translatedMessages ?? {};
+        options = panelOptions ?? {};
+
+        const sections = panelSections(result);
 
         container.innerHTML = `
       <div class="mt-3" style="border-radius: 12px; border: 0.5px solid var(--border-color); padding: 1rem 1.25rem;">
 
-        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <i class="bi bi-file-earmark-zip" style="font-size:20px;"></i>
-            <span style="font-weight:500; font-size:15px;">${escapeHtml(fileName)}</span>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <i class="bi bi-file-earmark-zip" style="font-size:20px;"></i>
+          <div>
+            <div style="font-weight:500; font-size:15px;">${escapeHtml(fileName)}</div>
+            ${sections ? `<div class="text-muted" style="font-size:13px;">${sections.kind}</div>` : ''}
           </div>
         </div>
 
         ${
-            result.type === 'data-package'
+            sections
                 ? `
         <div style="border-top:0.5px solid var(--border-color); padding-top:12px;">
-          <p style="font-size:13px; margin:0 0 8px;">${msg('files')}</p>
-          ${fileRows(dataFiles, result)}
+          <p style="font-size:13px; margin:0 0 8px;">${sections.heading}</p>
+          ${sections.rows}
         </div>
-        ${metadataSection(metadataFiles)}
+        ${metadataSection(sections.metadata)}
+        ${sections.verdict}
         `
                 : `
         <div style="border-top:0.5px solid var(--border-color); padding-top:12px;">
           <p style="font-size:13px; margin:0;">${result.reason ? escapeHtml(result.reason) : msg('unreadable')}</p>
         </div>
+        ${verdictSection('danger', [])}
         `
         }
-
-        ${verdictSection(result)}
 
       </div>`;
     }

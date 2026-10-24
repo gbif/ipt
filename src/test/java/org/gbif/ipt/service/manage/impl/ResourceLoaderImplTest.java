@@ -219,6 +219,49 @@ public class ResourceLoaderImplTest {
   }
 
   @Test
+  public void testCheckDataPackageTypeInstalledIgnoresDwcResources() {
+    loader.checkDataPackageTypeInstalled(new Resource(), alog);
+
+    verify(schemaManager, never()).get(any());
+  }
+
+  @Test
+  public void testCheckDataPackageTypeInstalledAcceptsInstalledType() {
+    DataPackageSchema schema = DataPackageSchema.builder().identifier(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER).build();
+    DataPackageMapping mapping = new DataPackageMapping();
+    mapping.setDataPackageSchema(schema);
+    Resource resource = new Resource();
+    resource.setDataPackageIdentifier(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER);
+    resource.addDataPackageMapping(mapping);
+    when(schemaManager.get(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER)).thenReturn(schema);
+
+    loader.checkDataPackageTypeInstalled(resource, alog);
+  }
+
+  @Test
+  public void testCheckDataPackageTypeInstalledFailsForNonInstalledType() {
+    Resource resource = new Resource();
+    resource.setDataPackageIdentifier("http://rs.gbif.org/data-packages/not-installed");
+
+    assertThrows(InvalidConfigException.class, () -> loader.checkDataPackageTypeInstalled(resource, alog));
+    verify(action).getText(eq("manage.resource.create.dataPackageType.null"), any(String[].class));
+  }
+
+  @Test
+  public void testCheckDataPackageTypeInstalledFailsForMappingWithoutSchema() {
+    Resource resource = new Resource();
+    resource.setDataPackageIdentifier(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER);
+    DataPackageMapping mapping = new DataPackageMapping();
+    mapping.setDataPackageSchema(DataPackageSchema.builder().identifier(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER).build());
+    resource.addDataPackageMapping(mapping);
+    // the mapping's schema couldn't be resolved on load
+    mapping.setDataPackageSchema(null);
+    when(schemaManager.get(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER)).thenReturn(DataPackageSchema.builder().identifier(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER).build());
+
+    assertThrows(InvalidConfigException.class, () -> loader.checkDataPackageTypeInstalled(resource, alog));
+  }
+
+  @Test
   public void testLoadFailsWhenResourceCannotBeRead() {
     when(resourcePersister.load(any(InputStream.class))).thenThrow(new RuntimeException("broken XML"));
 

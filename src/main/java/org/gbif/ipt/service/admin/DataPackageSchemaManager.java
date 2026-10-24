@@ -19,6 +19,7 @@ import org.gbif.ipt.service.InvalidConfigException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 public interface DataPackageSchemaManager {
 
@@ -48,6 +49,14 @@ public interface DataPackageSchemaManager {
    * @return data schema for that identifier/name or null if not installed
    */
   DataPackageSchema get(String identifier);
+
+  /**
+   * All identifiers {@link #get(String)} resolves to an installed data schema: its identifier, previous identifiers,
+   * alternative identifiers and name. Apart from the name, they also match with another protocol (http/https).
+   *
+   * @return accepted identifiers of the data schema
+   */
+  Set<String> getAcceptedIdentifiers(DataPackageSchema schema);
 
   /**
    * Get a locally installed data schema's version by its identifier or name.

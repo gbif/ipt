@@ -301,6 +301,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   private Resource createFromIPTResourceFolder(String shortname, File folder, User creator, ActionLogger alog)
       throws AlreadyExistingException, ImportException {
     Resource res;
+    File dest = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
+    // a rejected import must not leave its copy behind, it would be loaded as a resource on the next start
+    boolean destExisted = dest.exists();
     try {
 
       // shortname supplied is unique?
@@ -309,7 +312,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       }
 
       // copy folder (renamed using shortname) to resources directory in data_dir
-      File dest = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
       FileUtils.copyDirectory(folder, dest);
 
       // proceed with resource creation (using destination folder in data_dir)
@@ -317,6 +319,9 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
       // ensure this resource is safe to import!
       if (res != null) {
+        // data package mappings of a type that isn't installed here would be left without a schema
+        resourceLoader.checkDataPackageTypeInstalled(res, alog);
+
         // remove all managers associated to resource
         res.getManagers().clear();
         // change creator to the User that uploaded resource
@@ -369,14 +374,25 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       }
 
     } catch (InvalidConfigException e) {
+      removeCopy(dest, destExisted);
       alog.error(e.getMessage(), e);
       throw new ImportException(e);
     } catch (IOException e) {
+      removeCopy(dest, destExisted);
       alog.error("Could not copy resource folder into data directory: " + e.getMessage(), e);
       throw new ImportException(e);
     }
 
     return res;
+  }
+
+  /**
+   * Removes the copy of a resource folder whose import failed, unless the folder was there before the import.
+   */
+  private void removeCopy(File dest, boolean destExisted) {
+    if (!destExisted && !FileUtils.deleteQuietly(dest)) {
+      LOG.warn("Could not remove the copy of the resource folder that failed to import: {}", dest);
+    }
   }
 
   /**

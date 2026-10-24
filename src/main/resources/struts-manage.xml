@@ -41,6 +41,13 @@
         <param name="root">status</param>
       </result>
     </action>
+
+    <action name="installable" class="org.gbif.ipt.action.manage.InstallableAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">installable</param>
+      </result>
+    </action>
   </package>
 
   <!-- The entry to the manage section -->

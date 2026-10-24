@@ -20,6 +20,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -79,7 +80,8 @@ public class CreateResourceActionTest extends IptBaseTest {
     // mock action
     action =
       new CreateResourceAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-        mockResourceManager, mockDataDir, mock(VocabulariesManager.class), mock(DataPackageSchemaManager.class));
+        mockResourceManager, mockDataDir, mock(VocabulariesManager.class), mock(DataPackageSchemaManager.class),
+        mock(ExtensionManager.class));
   }
 
   /**

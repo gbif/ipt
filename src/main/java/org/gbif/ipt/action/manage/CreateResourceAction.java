@@ -25,6 +25,7 @@ import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
+import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -80,8 +81,13 @@ public class CreateResourceAction extends POSTAction implements UploadedFilesAwa
   private List<Organisation> organisations;
   @Getter
   private String schemasJson;
+  @Getter
+  private String extensionsJson;
+  @Getter
+  private String dataPackageIdentifiersJson;
   private final VocabulariesManager vocabManager;
   private final DataPackageSchemaManager schemaManager;
+  private final ExtensionManager extensionManager;
   private final ResourceValidator validator = new ResourceValidator();
   private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -93,12 +99,14 @@ public class CreateResourceAction extends POSTAction implements UploadedFilesAwa
       ResourceManager resourceManager,
       DataDir dataDir,
       VocabulariesManager vocabManager,
-      DataPackageSchemaManager schemaManager) {
+      DataPackageSchemaManager schemaManager,
+      ExtensionManager extensionManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
     this.dataDir = dataDir;
     this.vocabManager = vocabManager;
     this.schemaManager = schemaManager;
+    this.extensionManager = extensionManager;
   }
 
   @Override
@@ -110,6 +118,24 @@ public class CreateResourceAction extends POSTAction implements UploadedFilesAwa
       schemasJson = objectMapper.writeValueAsString(schemaManager.list());
     } catch (JsonProcessingException e) {
       LOG.error("Failed to serialize schemas to JSON", e);
+    }
+    // installed core types and extensions, used by the archive precheck
+    try {
+      extensionsJson = objectMapper.writeValueAsString(extensionManager.list().stream()
+          .map(e -> Map.of(
+              "rowType", e.getRowType(),
+              "title", StringUtils.defaultIfBlank(e.getTitle(), StringUtils.defaultString(e.getName()))))
+          .toList());
+    } catch (JsonProcessingException e) {
+      LOG.error("Failed to serialize extensions to JSON", e);
+    }
+    // identifiers resolving to each installed data package type, used by the archive precheck
+    try {
+      dataPackageIdentifiersJson = objectMapper.writeValueAsString(schemaManager.list().stream()
+          .map(schemaManager::getAcceptedIdentifiers)
+          .toList());
+    } catch (JsonProcessingException e) {
+      LOG.error("Failed to serialize data package identifiers to JSON", e);
     }
   }
 

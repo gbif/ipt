@@ -14,6 +14,7 @@
 package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageSchema;
@@ -503,6 +504,28 @@ public class DataPackageSchemaManagerImplTest {
     assertNull(manager.getRawData(null));
     assertTrue(manager.isSchemaInstalled("dp"));
     assertFalse(manager.isSchemaInstalled("unknown"));
+  }
+
+  /**
+   * Alternative identifiers, like other identifiers, match with either protocol.
+   */
+  @Test
+  public void testGetByAlternativeIdentifier() {
+    manager.install(schema(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER, "dwc-dp", "1.0", "2025-01-01", "event"));
+
+    assertEquals(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER,
+        manager.get(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER_2).getIdentifier());
+    assertEquals(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER,
+        manager.get(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER_2.replace("http://", "https://")).getIdentifier());
+  }
+
+  @Test
+  public void testGetAcceptedIdentifiers() {
+    manager.install(schema(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER, "dwc-dp", "1.0", "2025-01-01", "event"));
+
+    assertEquals(
+        Set.of(Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER, Constants.DATA_PACKAGE_DWC_DP_IDENTIFIER_2, "dwc-dp"),
+        manager.getAcceptedIdentifiers(manager.get("dwc-dp")));
   }
 
   /**
