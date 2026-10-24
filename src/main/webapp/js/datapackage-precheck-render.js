@@ -129,7 +129,7 @@
         const installable = options.installable?.[kind]?.[id]; // undefined until the registry answered
         const installUrl = kind === 'rowTypes' ? options.extensionsUrl : options.dataPackagesUrl;
         if (installable === false) {
-            view.notes.push(msg('install.unavailable'));
+            view.notes.push(msg(kind === 'dataPackageVersions' ? 'install.versionUnavailable' : 'install.unavailable'));
         } else if (!installUrl) {
             view.notes.push(msg('install.askAdmin'));
         } else if (installable) {
@@ -283,8 +283,9 @@
             return tables.get(name);
         };
         dataFiles.forEach((f) => f.resources.forEach((r) => {
-            table(r.name).inSchema = r.inSchema;
-            table(r.name).files.push({ path: f.path, size: f.size, found: true });
+            const t = table(r.name);
+            t.inSchema = r.inSchema;
+            t.files.push({ path: f.path, size: f.size, found: true, unmappedColumns: r.unmappedColumns ?? [] });
         }));
         (result.unresolvedPaths ?? []).forEach((u) => table(u.resourceName).files.push({
             path: typeof u.path === 'string' ? u.path : null,
@@ -308,6 +309,17 @@
                     detail: escapeHtml(t.files.map((f) => f.path).join(', ')),
                     notes: [msg('dp.problem.notInSchema.note')],
                 });
+            }
+            // columns the installed table doesn't have: their data stays in the source but isn't mapped
+            const unmappedColumns = [...new Set(t.files.flatMap((f) => f.unmappedColumns ?? []))];
+            if (unmappedColumns.length) {
+                problems.push({
+                    level: 'warning',
+                    text: msg('dp.problem.unmappedColumns', t.name, unmappedColumns.length),
+                    detail: escapeHtml(unmappedColumns.join(', ')),
+                    notes: [msg('dp.problem.unmappedColumns.note', typeName ?? '', result.installedVersion ?? '')],
+                });
+                notes.push(['warning', msg('row.unmappedColumns', unmappedColumns.length)]);
             }
             if (missing.length && missing.length === t.files.length) {
                 problems.push({
@@ -373,6 +385,16 @@
                 detail: result.profile ? escapeHtml(result.profile) : null,
                 notes: [msg('dp.typeFromTables.note')],
             });
+        } else if (result.versionRelation === 'newer') {
+            // what's new in that version isn't imported, unless the installed type is updated first
+            const newer = {
+                level: 'warning',
+                text: msg('dp.newerVersion', typeName, result.declaredVersion, result.installedVersion),
+                detail: null,
+                notes: [msg('dp.newerVersion.note', result.declaredVersion)],
+            };
+            addInstallHint(newer, { kind: 'dataPackageVersions', id: `${result.datasetType}/${result.declaredVersion}` });
+            problems.unshift(newer);
         }
         // other reasons it can't be imported (no resources, nothing found, unreadable) only come as text
         if (!result.ready && !problems.some((p) => p.level === 'danger')) {
@@ -387,6 +409,11 @@
         const version = result.version?.value && result.version.value !== 'unknown' ? ' ' + result.version.value : '';
         return {
             kind: msg('kind.dataPackage'),
+            // made for an older (or not comparable) version: imported as the installed one, columns that don't fit
+            // are in the problems
+            note: result.versionRelation === 'older' || result.versionRelation === 'different'
+                ? msg('dp.olderVersion', typeName, result.declaredVersion, result.installedVersion)
+                : null,
             summary: [
                 typeName ? escapeHtml(typeName + version) : null,
                 tables.size ? msg('contents.tables', tables.size) : null,
@@ -416,7 +443,7 @@
             const count = problems.filter((other) => other.install?.kind === p.install.kind).length;
             const label = p.install.kind === 'rowTypes'
                 ? msg(count > 1 ? 'install.extensions' : 'install.extension')
-                : msg('install.dataPackageType');
+                : msg(p.install.kind === 'dataPackageVersions' ? 'install.dataPackageVersion' : 'install.dataPackageType');
             buttons.set(p, `<a href="${escapeHtml(p.install.href)}" class="btn btn-sm btn-outline-gbif-primary" style="white-space:nowrap;">${label}</a>`);
         }
         return buttons;

@@ -339,15 +339,16 @@
             validate();
         }
 
-        // The registry is only asked when the archive needs something that isn't installed,
-        // then the panel is shown again saying whether it can be installed
+        // The registry is only asked when the archive needs something that isn't installed (or a newer version of an
+        // installed data package type), then the panel is shown again saying whether it can be installed
         async function showInstallable(result, file) {
             const missing = DataPackagePrecheck.missingTypes(result);
-            if (!missing.rowTypes.length && !missing.dataPackageTypes.length) return;
+            if (!missing.rowTypes.length && !missing.dataPackageTypes.length && !missing.dataPackageVersions.length) return;
 
             const params = new URLSearchParams();
             missing.rowTypes.forEach((rowType) => params.append('rowType', rowType));
             missing.dataPackageTypes.forEach((type) => params.append('dataPackageType', type));
+            missing.dataPackageVersions.forEach((version) => params.append('dataPackageVersion', version));
             try {
                 const response = await fetch('${baseURL?js_string?no_esc}/manager-api/installable?' + params);
                 const answer = await response.json();

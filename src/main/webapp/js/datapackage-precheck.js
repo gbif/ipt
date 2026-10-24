@@ -35,6 +35,9 @@
  *   // result.unmappedFiles -> entries of result.files not referenced by any resource
  *   // result.skippedResources -> string[], resources with none of their files in the archive
  *   // result.unresolvedPaths -> [{ resourceName, path }], declared paths missing from the archive
+ *   // result.files[].resources[].unmappedColumns -> columns of the file the installed table doesn't have
+ *   // result.versionRelation -> 'newer' | 'older' | 'different' than the installed version (declaredVersion,
+ *   //   installedVersion), null when the same or not known
  */
 (function (global) {
     'use strict';
@@ -293,22 +296,22 @@
             const resources = manifest.resources || [];
 
             if (profile.includes('/dwc-dp/')) {
-                result.value = extractVersion(profile, 'dwc-dp');
+                result.value = extractVersion(manifest.profile, 'dwc-dp');
                 result.comment = "Inferred from profile";
             } else if (profile.includes('/camtrap-dp/')) {
-                result.value = extractVersion(profile, 'camtrap-dp');
+                result.value = extractVersion(manifest.profile, 'camtrap-dp');
                 result.comment = "Inferred from profile";
             } else if (profile.includes('/coldp/')) {
-                result.value = extractVersion(profile, 'coldp');
+                result.value = extractVersion(manifest.profile, 'coldp');
                 result.comment = "Inferred from profile";
             } else if (profile.includes('data-package')) {
                 const identifier = resources[0]?.schema?.url?.toLowerCase() || '';
 
                 if (identifier.includes('/dwc-dp/')) {
-                    result.value = extractVersion(identifier, 'dwc-dp');
+                    result.value = extractVersion(resources[0].schema.url, 'dwc-dp');
                     result.comment = "Inferred from resources";
                 } else if (identifier.includes('/coldp/')) {
-                    result.value = extractVersion(identifier, 'coldp');
+                    result.value = extractVersion(resources[0].schema.url, 'coldp');
                     result.comment = "Inferred from resources";
                 }
             }
@@ -327,8 +330,8 @@
         // Escape keyword in case it has regex special chars
         const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-        // Match: /<keyword>/<segment>/
-        const match = url.match(new RegExp(`/${escapedKeyword}/([^/]+)/`));
+        // Match: /<keyword>/<segment>/, the version as written (1.0_DEV), whatever the case of the rest
+        const match = url.match(new RegExp(`/${escapedKeyword}/([^/]+)/`, 'i'));
         if (!match) return null;
 
         const candidate = match[1];
@@ -814,6 +817,9 @@
         let actualType = inferActualType(manifest);
         let version = inferVersion(manifest);
         let dataPackageSchema = findDataPackageSchema(availableDataPackages, actualType);
+        // as datapackage.json says, before the type or version are taken from elsewhere
+        const declaredType = actualType.value;
+        const declaredVersion = version.value;
 
         const selectedSchema = selectedType && availableDataPackages.find((s) => s.name === selectedType);
         if (selectedSchema) {
@@ -886,6 +892,33 @@
             };
         });
 
+        // Columns the installed table doesn't have are skipped by the server (importDataPackageMappings matches names
+        // exactly), e.g. ones added in a newer version of the type. Only the header line of each file is read.
+        const tableFields = new Map((dataPackageSchema?.tableSchemas ?? [])
+            .map((t) => [t.name, new Set((t.fields ?? []).map((f) => f.name))]));
+        for (const f of fileResults) {
+            const tables = f.resources.filter((r) => r.inSchema);
+            if (!tables.length) continue;
+            let columns;
+            try {
+                columns = headerColumns(await extractEntryHead(file, byNormalizedPath.get(f.path))).filter(Boolean);
+            } catch (err) {
+                continue; // not known, nothing said about it
+            }
+            for (const r of tables) {
+                r.unmappedColumns = columns.filter((c) => !tableFields.get(r.name).has(c));
+            }
+        }
+
+        // How the version the package was made for relates to the installed one, when it says which and it's
+        // checked against that type
+        let versionRelation = null;
+        if (dataPackageSchema && dataPackageSchema.name === declaredType && declaredVersion
+            && declaredVersion !== 'unknown' && dataPackageSchema.version) {
+            const comparison = compareVersions(declaredVersion, dataPackageSchema.version);
+            versionRelation = comparison === null ? 'different' : comparison > 0 ? 'newer' : comparison < 0 ? 'older' : null;
+        }
+
         const IGNORED_UNMAPPED_FILES = new Set(['datapackage.json', 'eml.xml']);
         const unmappedFiles = fileResults.filter(
             (f) => f.resources.length === 0 && !IGNORED_UNMAPPED_FILES.has(f.path)
@@ -929,6 +962,10 @@
             datasetType: dataPackageSchema ? dataPackageSchema.name : null,
             typeFromTables,
             profile: typeof manifest.profile === 'string' ? manifest.profile : null,
+            // the version datapackage.json names, the installed one, and 'newer' | 'older' | 'different' | null (same)
+            declaredVersion: versionRelation ? declaredVersion : null,
+            installedVersion: dataPackageSchema?.version ?? null,
+            versionRelation,
             ready,
             reason: reasons.length ? reasons.join(' ') : null,
             files: fileResults,
@@ -938,11 +975,31 @@
         });
     }
 
-    // Extensions and data package types the archive needs but this IPT doesn't have
+    // Extensions and data package types the archive needs but this IPT doesn't have, and the newer version of a data
+    // package type it was made for (name/version)
     function missingTypes(result) {
         const installs = (result.problems ?? []).filter((p) => p.install).map((p) => p.install);
         const ids = (kind) => [...new Set(installs.filter((i) => i.kind === kind).map((i) => i.id))];
-        return { rowTypes: ids('rowTypes'), dataPackageTypes: ids('dataPackageTypes') };
+        return {
+            rowTypes: ids('rowTypes'),
+            dataPackageTypes: ids('dataPackageTypes'),
+            dataPackageVersions: result.versionRelation === 'newer' ? [`${result.datasetType}/${result.declaredVersion}`] : [],
+        };
+    }
+
+    // Versions made of numbers compare numerically (1.0.10 > 1.0.2), 1.0 is 1.0.0. Others (1.0_DEV) can only be
+    // the same or not: 0 or null.
+    function compareVersions(a, b) {
+        if (a === b) return 0;
+        const numeric = /^\d+(\.\d+)*$/;
+        if (!numeric.test(a) || !numeric.test(b)) return null;
+        const partsA = a.split('.').map(Number);
+        const partsB = b.split('.').map(Number);
+        for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+            const diff = (partsA[i] ?? 0) - (partsB[i] ?? 0);
+            if (diff !== 0) return Math.sign(diff);
+        }
+        return 0;
     }
 
     // The server would reject the archive. Never when the archive couldn't be fully read here.
