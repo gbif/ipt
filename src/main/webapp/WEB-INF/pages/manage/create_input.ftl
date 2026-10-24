@@ -178,6 +178,10 @@
         let fileChosen = false;
         // precheck of the chosen archive, the Create button is disabled when the server would reject it
         let precheckResult = null;
+        // the registry's answer for what the archive misses, see showInstallable()
+        let installable = null;
+        // 'taken' | 'invalid' when the resource can't be created under the shortname entered, see checkShortname()
+        let shortnameProblem = null;
         // the type select is being set from the archive, not by the person
         let applyingType = false;
         // the archive is on its way to the server: nothing can be sent again or changed
@@ -187,6 +191,7 @@
             const file = e.target.files[0];
             fileChosen = !!file;
             precheckResult = null;
+            installable = null;
 
             if (!file) {
                 validate();
@@ -196,6 +201,7 @@
             $importNote.hide();
 
             deriveShortname(file.name);
+            checkShortname();
             await detectDatasetType(file);
 
             validate();
@@ -258,7 +264,7 @@
 
             precheckResult = result;
             if (result.type !== 'unknown') {
-                renderPrecheckPanel(result, $precheckPanel.get(0), precheckMessages, precheckOptions);
+                renderPanel();
                 showInstallable(result, file);
             } else {
                 $precheckPanel.empty();
@@ -287,6 +293,52 @@
             }
         }
 
+        // The precheck panel, with what's known about the archive, the registry's answer and the shortname
+        function renderPanel() {
+            if (!precheckResult || precheckResult.type === 'unknown') return;
+            renderPrecheckPanel(precheckResult, $precheckPanel.get(0), precheckMessages, Object.assign({}, precheckOptions, {
+                installable: installable,
+                shortname: shortnameProblem ? { value: $shortname.val().trim(), problem: shortnameProblem } : null
+            }));
+        }
+
+        // The shortname is checked like on create (ResourceValidator, CreateResourceAction): its format here, whether
+        // it's taken by the server. Only the latest check counts.
+        const SHORTNAME_PATTERN = /^[a-zA-Z0-9_-]{3,}$/;
+        let shortnameCheck = 0;
+        let shortnameTimer = null;
+
+        async function checkShortname() {
+            const value = $shortname.val().trim();
+            const check = ++shortnameCheck;
+            if (!value) return showShortnameProblem(null);
+            if (!SHORTNAME_PATTERN.test(value)) return showShortnameProblem('invalid');
+            try {
+                const response = await fetch('${baseURL?js_string?no_esc}/manager-api/shortname-available?shortname=' + encodeURIComponent(value));
+                const status = await response.json();
+                if (check === shortnameCheck) showShortnameProblem(status.available ? null : 'taken');
+            } catch (e) {
+                // unknown, the server checks it on create anyway
+                if (check === shortnameCheck) showShortnameProblem(null);
+            }
+        }
+
+        function showShortnameProblem(problem) {
+            shortnameProblem = problem;
+            // the server's own messages for these
+            const texts = {
+                taken: '${action.getText("validation.resource.shortname.exists")?js_string?no_esc}'.replace('{0}', $shortname.val().trim()),
+                invalid: '${action.getText("validation.resource.shortname.invalid")?js_string?no_esc}'
+            };
+            // the server's message from a create that failed is replaced by this check of the name as it is now
+            $('#field-error-shortname').remove();
+            $shortname.toggleClass('is-invalid', !!problem);
+            // shown next to the input's own wrapper, so not by Bootstrap's .is-invalid ~ .invalid-feedback rule
+            $('#shortnameFeedback').text(problem ? texts[problem] : '').css('display', problem ? 'block' : 'none');
+            renderPanel();
+            validate();
+        }
+
         // The registry is only asked when the archive needs something that isn't installed,
         // then the panel is shown again saying whether it can be installed
         async function showInstallable(result, file) {
@@ -298,11 +350,11 @@
             missing.dataPackageTypes.forEach((type) => params.append('dataPackageType', type));
             try {
                 const response = await fetch('${baseURL?js_string?no_esc}/manager-api/installable?' + params);
-                const installable = await response.json();
-                // skip if another file was chosen meanwhile
-                if ($file.get(0).files[0] !== file) return;
-                renderPrecheckPanel(result, $precheckPanel.get(0), precheckMessages,
-                    Object.assign({}, precheckOptions, { installable: installable }));
+                const answer = await response.json();
+                // skip if another file or type was chosen meanwhile
+                if ($file.get(0).files[0] !== file || precheckResult !== result) return;
+                installable = answer;
+                renderPanel();
             } catch (e) {
                 console.log('Could not check whether the missing types can be installed: ' + e.message);
             }
@@ -400,7 +452,11 @@
             validate();
             recheckForType();
         });
-        $shortname.on('input', validate);
+        $shortname.on('input', function () {
+            validate();
+            clearTimeout(shortnameTimer);
+            shortnameTimer = setTimeout(checkShortname, 300);
+        });
 
         function validate() {
             let valid = true;
@@ -411,6 +467,7 @@
             // the panel says why
             if (currentPath !== 'blank' && DataPackagePrecheck.blocksUpload(precheckResult)) valid = false;
             if (uploading) valid = false;
+            if (shortnameProblem) valid = false;
 
             $createBtn.prop('disabled', !valid);
         }
@@ -500,6 +557,8 @@
         }
 
         updatePathUI();
+        // e.g. the page shown again by the server after a failed create
+        if ($shortname.val().trim()) checkShortname();
     });
 </script>
 
@@ -612,6 +671,7 @@
             <div class="row g-3 mt-0 mb-2">
                 <div class="col-md-6" id="shortnameField">
                     <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" requiredField=true size=40/>
+                    <div id="shortnameFeedback" class="invalid-feedback my-1" role="alert"></div>
                 </div>
 
                 <div class="col-md-6" id="typeField">

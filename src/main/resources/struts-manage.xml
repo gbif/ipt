@@ -42,6 +42,13 @@
       </result>
     </action>
 
+    <action name="shortname-available" class="org.gbif.ipt.action.manage.ShortnameAvailableAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">status</param>
+      </result>
+    </action>
+
     <action name="installable" class="org.gbif.ipt.action.manage.InstallableAction">
       <result name="success" type="json">
         <param name="noCache">true</param>

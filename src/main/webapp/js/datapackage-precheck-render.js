@@ -14,8 +14,9 @@
  *
  * messages holds the translated texts (manage.resource.create.precheck.* keys),
  * with {0}-style placeholders left in for the arguments. options are all optional:
- * extensionsUrl, dataPackagesUrl (install links, only for admins), typeLabels (resource type -> its label)
- * and installable (whether the registry has what's missing, see showInstallable() in create_input.ftl).
+ * extensionsUrl, dataPackagesUrl (install links, only for admins), typeLabels (resource type -> its label),
+ * installable (whether the registry has what's missing, see showInstallable() in create_input.ftl) and
+ * shortname ({ value, problem: 'taken' | 'invalid' }: the resource can't be created under that name).
  */
 (function (global) {
     'use strict';
@@ -540,6 +541,17 @@
         if (result.unverified) {
             view.problems.filter((p) => p.level === 'danger').forEach((p) => { p.level = 'warning'; });
             view.title = msg('title.unverified');
+        }
+
+        // whatever the archive, the resource can't be created under a shortname that's taken or not allowed
+        if (options.shortname?.problem) {
+            view.problems.unshift({
+                level: 'danger',
+                text: msg(options.shortname.problem === 'taken' ? 'shortname.taken' : 'shortname.invalid', options.shortname.value),
+                detail: null,
+                notes: [msg('shortname.note')],
+            });
+            view.title = msg('title.notCreated');
         }
 
         const status = statusOf(view.problems);
