@@ -69,6 +69,29 @@
     .import-block.show {
         display: block;
     }
+
+    /* precheck panel contents, a <details> */
+    .precheck-contents > summary {
+        list-style: none;
+    }
+
+    .precheck-contents > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .precheck-contents .precheck-chevron {
+        display: inline-block;
+        transition: transform .15s ease;
+    }
+
+    .precheck-contents[open] .precheck-chevron {
+        transform: rotate(90deg);
+    }
+
+    .precheck-contents:not([open]) .precheck-hide,
+    .precheck-contents[open] .precheck-show {
+        display: none;
+    }
 </style>
 
 <script>
@@ -101,11 +124,22 @@
             </#list>
         };
 
+        // Resource types as the type select names them, for the panel's summary
+        const typeLabels = {};
+        $('#resourceType option').each(function () {
+            if (this.value) typeLabels[this.value] = $(this).text().trim();
+        });
+        // data package types by their short title, e.g. "Camtrap DP" rather than the full name
+        dataPackages.forEach(function (schema) {
+            if (schema.shortTitle) typeLabels[schema.name] = schema.shortTitle;
+        });
+
         // Only admins can install a missing extension or data package type, so only they get links to do it
         const precheckOptions = <#if adminRights>{
+            typeLabels: typeLabels,
             extensionsUrl: '${baseURL?js_string?no_esc}/admin/extensions.do',
             dataPackagesUrl: '${baseURL?js_string?no_esc}/admin/dataPackages.do'
-        }<#else>{}</#if>;
+        }<#else>{ typeLabels: typeLabels }</#if>;
 
         const datasetTypeMap = {
             "Occurrence": "occurrence",
@@ -132,10 +166,15 @@
 
         let currentPath = 'blank';
         let fileChosen = false;
+        // precheck of the chosen archive, the Create button is disabled when the server would reject it
+        let precheckResult = null;
+        // the type select is being set from the archive, not by the person
+        let applyingType = false;
 
         $file.on('change', async function (e) {
             const file = e.target.files[0];
             fileChosen = !!file;
+            precheckResult = null;
 
             if (!file) {
                 validate();
@@ -162,18 +201,12 @@
         }
 
         async function detectDatasetType(file) {
-            // Let DataPackagePrecheck have a look first (drives the precheck panel)
-            const result = await DataPackagePrecheck.run(file, dataPackages, installed);
+            // Let DataPackagePrecheck have a look first (drives the precheck panel and the Create button)
+            const result = await precheck(file, null);
+            if (!result) return;
 
-            if (result && result.type !== 'unknown') {
-                renderPrecheckPanel(result, file.name, $precheckPanel.get(0), precheckMessages, precheckOptions);
-                showInstallable(result, file);
-            } else {
-                $precheckPanel.empty();
-            }
-
-            // For DwC-As and resource folders the server takes the type from the archive itself
-            if (result && result.datasetType) {
+            // The type found in the archive: for DwC-As and resource folders the server takes it from there too
+            if (result.datasetType) {
                 applyDatasetType(result.datasetType);
                 return;
             }
@@ -205,6 +238,43 @@
             }
         }
 
+        // Checks the archive as the server would import it with the selected type (none: guessed from the archive)
+        async function precheck(file, selectedType) {
+            const result = await DataPackagePrecheck.run(file, dataPackages, installed, selectedType);
+            // another file was chosen meanwhile
+            if ($file.get(0).files[0] !== file) return null;
+
+            precheckResult = result;
+            if (result.type !== 'unknown') {
+                renderPrecheckPanel(result, $precheckPanel.get(0), precheckMessages, precheckOptions);
+                showInstallable(result, file);
+            } else {
+                $precheckPanel.empty();
+            }
+            validate();
+            return result;
+        }
+
+        // The server imports an archive as a data package only with a data package type selected, as a DwC-A
+        // with any other. A resource folder is imported as it is, whatever the type.
+        const dataPackageTypes = new Set(dataPackages.map((schema) => schema.name));
+
+        function checkedAs(result) {
+            return result.type === 'data-package' ? (result.datasetType || 'unknown data package') : 'dwc-a';
+        }
+
+        // The person chose another type: checked again when that changes how the archive would be imported
+        function recheckForType() {
+            if (applyingType || currentPath === 'blank' || !precheckResult) return;
+            if (precheckResult.type === 'ipt-resource' || precheckResult.type === 'unknown') return;
+
+            const selected = $typeSelect.val();
+            if (!selected) return;
+            if ((dataPackageTypes.has(selected) ? selected : 'dwc-a') !== checkedAs(precheckResult)) {
+                precheck($file.get(0).files[0], selected);
+            }
+        }
+
         // The registry is only asked when the archive needs something that isn't installed,
         // then the panel is shown again saying whether it can be installed
         async function showInstallable(result, file) {
@@ -219,7 +289,7 @@
                 const installable = await response.json();
                 // skip if another file was chosen meanwhile
                 if ($file.get(0).files[0] !== file) return;
-                renderPrecheckPanel(result, file.name, $precheckPanel.get(0), precheckMessages,
+                renderPrecheckPanel(result, $precheckPanel.get(0), precheckMessages,
                     Object.assign({}, precheckOptions, { installable: installable }));
             } catch (e) {
                 console.log('Could not check whether the missing types can be installed: ' + e.message);
@@ -275,7 +345,9 @@
         function applyDatasetType(datasetType) {
             const hasOption = datasetType && $typeSelect.find('option[value="' + datasetType + '"]').length;
 
+            applyingType = true;
             $typeSelect.val(hasOption ? datasetType : 'other').trigger('change');
+            applyingType = false;
             if (!hasOption) console.log('No matching dataset type found.');
 
             validate();
@@ -308,7 +380,10 @@
             updatePathUI();
         });
 
-        $typeSelect.on('change', validate);
+        $typeSelect.on('change', function () {
+            validate();
+            recheckForType();
+        });
         $shortname.on('input', validate);
 
         function validate() {
@@ -317,6 +392,8 @@
             if (!$shortname.val().trim()) valid = false;
             if (!$typeSelect.val()) valid = false;
             if (currentPath !== 'blank' && !fileChosen) valid = false;
+            // the panel says why
+            if (currentPath !== 'blank' && DataPackagePrecheck.blocksUpload(precheckResult)) valid = false;
 
             $createBtn.prop('disabled', !valid);
         }

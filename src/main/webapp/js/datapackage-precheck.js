@@ -10,20 +10,28 @@
  * without meta.xml), via ranged File.slice() calls, so it never loads the whole archive into memory.
  *
  * Usage:
- *   const result = await DataPackagePrecheck.run(fileInput.files[0], dataPackages, installed);
+ *   const result = await DataPackagePrecheck.run(fileInput.files[0], dataPackages, installed, selectedType);
+ *   // selectedType -> the resource type selected, if any: like on the server, a data package type checks the archive
+ *   //   as that data package, any other type as a DwC-A. None: the type is guessed from the archive.
+ *   // DataPackagePrecheck.blocksUpload(result) -> true when the server would reject the archive
  *   // installed.extensions -> [{ rowType, title }]
  *   // installed.dataPackageIdentifiers -> [[identifier, ...]], the identifiers accepted for each data package type
  *   // result.type   -> 'ipt-resource' | 'data-package' | 'dwc-a' | 'unknown'
  *
+ *   // result.totalSize -> uncompressed size of all files, in bytes (every type)
+ *   // result.unverified -> true when an entry couldn't be read here (e.g. an unsupported compression)
+ *
  * Resource folders and DwC-As: see checkResourceFolder() and dwcaResult() for the result,
- * problems are in result.errors / result.warnings as [{ key, args }] text keys.
+ * problems are in result.problems, see problem().
  * DataPackagePrecheck.missingTypes(result) lists the extensions and data package types it needs but aren't installed.
  *
  * Data packages:
  *   // result.ready  -> boolean, can IPT create a resource from this
  *   // result.reason -> string explaining a not-ready state, else null
- *   // result.actualType, result.version -> data package type and version from datapackage.json
- *   // result.files -> [{ path, resources: [{ name, inSchema }] }]
+ *   // result.actualType, result.version -> data package type and version from datapackage.json,
+ *   //   or from the installed type having all its tables (result.typeFromTables) when its profile isn't known
+ *   // result.datasetType -> the type to select, null if no installed type fits
+ *   // result.files -> [{ path, size, resources: [{ name, inSchema }] }]
  *   // result.unmappedFiles -> entries of result.files not referenced by any resource
  *   // result.skippedResources -> string[], resources with none of their files in the archive
  *   // result.unresolvedPaths -> [{ resourceName, path }], declared paths missing from the archive
@@ -74,6 +82,7 @@
 
             const method = buf.getUint16(offset + 10, true);
             const compressedSize = buf.getUint32(offset + 20, true);
+            const size = buf.getUint32(offset + 24, true); // uncompressed
             const nameLen = buf.getUint16(offset + 28, true);
             const extraLen = buf.getUint16(offset + 30, true);
             const commentLen = buf.getUint16(offset + 32, true);
@@ -81,7 +90,7 @@
             const nameBytes = new Uint8Array(buf.buffer, buf.byteOffset + offset + 46, nameLen);
             const name = decoder.decode(nameBytes);
 
-            entries.push({ name, isDirectory: name.endsWith('/'), method, compressedSize, localHeaderOffset });
+            entries.push({ name, isDirectory: name.endsWith('/'), method, compressedSize, size, localHeaderOffset });
             offset += 46 + nameLen + extraLen + commentLen;
         }
 
@@ -121,14 +130,30 @@
         throw new Error(`Unsupported compression method (${entry.method}) for ${entry.name}`);
     }
 
+    // An entry the browser couldn't read (compression it doesn't support, corrupt data...): says nothing about
+    // whether the server can import the archive, so a result with one never blocks the upload
+    class ReadError extends Error {}
+
     async function extractEntry(file, entry) {
-        const compressed = await compressedData(file, entry);
-        const stream = inflate(entry, compressed);
-        return new Uint8Array(await (stream ? new Response(stream) : compressed).arrayBuffer());
+        try {
+            const compressed = await compressedData(file, entry);
+            const stream = inflate(entry, compressed);
+            return new Uint8Array(await (stream ? new Response(stream) : compressed).arrayBuffer());
+        } catch (err) {
+            throw new ReadError(err.message);
+        }
     }
 
     // Only the first maxBytes of the entry, so a big data file is never inflated completely
     async function extractEntryHead(file, entry, maxBytes = 64 * 1024) {
+        try {
+            return await readEntryHead(file, entry, maxBytes);
+        } catch (err) {
+            throw new ReadError(err.message);
+        }
+    }
+
+    async function readEntryHead(file, entry, maxBytes) {
         const compressed = await compressedData(file, entry);
         const stream = inflate(entry, compressed);
         if (!stream) return new Uint8Array(await compressed.slice(0, maxBytes).arrayBuffer());
@@ -342,25 +367,41 @@
 
     const DWCA_METADATA_FILES = new Set(['meta.xml', 'eml.xml', 'metadata.xml']);
 
+    // A problem the panel shows, key and args name a manage.resource.create.precheck.* text.
+    // extra: detail (shown as is, e.g. a row type or file names), note ({ key, args }),
+    // install ({ kind: 'rowTypes' | 'dataPackageTypes', id }: something missing that might be installable)
+    function problem(level, key, args = [], extra = {}) {
+        return { level, key, args, ...extra };
+    }
+
+    function sizeOf(rootFiles, path) {
+        return path ? rootFiles.get(normalizePath(path))?.entry.size ?? null : null;
+    }
+
     function dwcaResult(layout) {
         return {
             type: 'dwc-a',
             layout, // 'meta-xml' | 'single-file'
             ready: false,
             datasetType: null,
-            tables: [], // [{ role, rowType, title, installed, path, found, extraPaths, idMissing, skipped, detectedFrom }]
-            unmappedFiles: [], // paths
+            // [{ role, rowType, title, installed, path, size, found, extraPaths, idMissing, skipped, detectedFrom }]
+            tables: [],
+            unmappedFiles: [], // [{ path, size }]
             metadataFiles: [], // paths
-            errors: [], // [{ key, args }], keys of manage.resource.create.precheck.* texts
-            warnings: [],
+            problems: [], // see problem()
         };
     }
 
     function finishDwca(result) {
         const core = result.tables.find((t) => t.role === 'core');
         if (core?.rowType) result.datasetType = CORE_DATASET_TYPES[core.rowType] ?? 'other';
-        result.ready = result.errors.length === 0;
+        result.ready = !result.problems.some((p) => p.level === 'error');
         return result;
+    }
+
+    function notInstalledProblem(table) {
+        return problem('error', table.role === 'core' ? 'dwca.problem.coreNotInstalled' : 'dwca.problem.extensionNotInstalled',
+            [table.title], { detail: table.rowType, install: { kind: 'rowTypes', id: table.rowType } });
     }
 
     // Column name as a bare lowercase term name, e.g. "dwc:occurrenceID" or a term URI -> "occurrenceid"
@@ -385,16 +426,17 @@
         try {
             archive = parseXml(await extractEntry(file, rootFiles.get('meta.xml').entry)).documentElement;
         } catch (err) {
-            result.errors.push({ key: 'dwca.error.unreadable', args: [err.message] });
+            result.unverified = err instanceof ReadError;
+            result.problems.push(problem('error', 'dwca.problem.unreadable', [], { detail: err.message }));
             return finishDwca(result);
         }
 
         const core = childElements(archive, 'core')[0];
         const extensions = childElements(archive, 'extension');
         if (!core) {
-            result.errors.push({ key: 'dwca.error.noCore', args: [] });
+            result.problems.push(problem('error', 'dwca.problem.noCore'));
         } else if (!core.getAttribute('rowType')) {
-            result.errors.push({ key: 'dwca.error.noRowType', args: [] });
+            result.problems.push(problem('error', 'dwca.problem.noRowType'));
         }
 
         // dwca-io drops an extension without <coreid>, the server never sees it
@@ -408,16 +450,16 @@
             const [path = null, ...extraPaths] = locations;
             // The server only needs the core <id> when there are extensions to link to it
             const idElement = childElements(el, role === 'core' ? 'id' : 'coreid')[0];
-            const skipped = role === 'extension' && !idElement;
 
             result.tables.push({
                 role,
                 ...(rowType ? installedTable(rowType, installedByRowType) : { rowType: null, title: null, installed: false }),
                 path,
+                size: sizeOf(rootFiles, path),
                 found: path !== null && rootFiles.has(normalizePath(path)),
                 extraPaths,
                 idMissing: !idElement && (role === 'extension' || linkedExtensions.length > 0),
-                skipped,
+                skipped: role === 'extension' && !idElement,
                 detectedFrom: null,
             });
         }
@@ -429,26 +471,35 @@
             if (DWCA_METADATA_FILES.has(key) || (metadataAttribute && key === normalizePath(metadataAttribute))) {
                 result.metadataFiles.push(f.path);
             } else if (!referenced.has(key)) {
-                result.unmappedFiles.push(f.path);
+                result.unmappedFiles.push({ path: f.path, size: f.entry.size });
             }
         }
 
-        // Each of these makes the server reject the archive
-        const imported = result.tables.filter((t) => !t.skipped);
-        const notInstalled = imported.filter((t) => t.rowType && !t.installed).length;
-        const missing = imported.filter((t) => !t.found).length;
-        if (notInstalled) result.errors.push({ key: 'dwca.error.notInstalled', args: [notInstalled] });
-        if (missing) result.errors.push({ key: 'dwca.error.missing', args: [missing] });
-        if (imported.some((t) => t.idMissing)) result.errors.push({ key: 'dwca.error.noId', args: [] });
+        // Each of these makes the server reject the archive, the skipped extensions aside
+        for (const table of result.tables.filter((t) => !t.skipped)) {
+            if (table.rowType && !table.installed) result.problems.push(notInstalledProblem(table));
+            if (!table.found) {
+                result.problems.push(table.path
+                    ? problem('error', 'dwca.problem.fileMissing', [table.path])
+                    : problem('error', 'dwca.problem.noFile', [table.title ?? table.role]));
+            }
+            if (table.idMissing) result.problems.push(problem('error', 'dwca.problem.noId'));
+        }
 
-        const skipped = result.tables.length - imported.length;
-        if (skipped) result.warnings.push({ key: 'dwca.warning.noCoreId', args: [skipped] });
+        for (const table of result.tables.filter((t) => t.skipped)) {
+            result.problems.push(problem('warning', 'dwca.problem.extensionSkipped', [table.title ?? table.path],
+                { note: { key: 'dwca.problem.extensionSkipped.note', args: [table.path ?? ''] } }));
+        }
 
         // The server only imports the first file of each table
-        const extraPaths = result.tables.reduce((n, t) => n + t.extraPaths.length, 0);
-        if (extraPaths) result.warnings.push({ key: 'dwca.warning.extraLocations', args: [extraPaths] });
+        const extraPaths = result.tables.flatMap((t) => t.extraPaths);
+        if (extraPaths.length) {
+            result.problems.push(problem('warning', 'dwca.problem.extraLocations', [extraPaths.length],
+                { detail: extraPaths.join(', ') }));
+        }
         if (result.unmappedFiles.length) {
-            result.warnings.push({ key: 'dwca.warning.unmapped', args: [result.unmappedFiles.length] });
+            result.problems.push(problem('warning', 'dwca.problem.unmapped', [result.unmappedFiles.length],
+                { detail: result.unmappedFiles.map((f) => f.path).join(', ') }));
         }
 
         return finishDwca(result);
@@ -465,17 +516,16 @@
             } else if (!key.includes('/') && DATA_FILE_EXTENSIONS.some((ext) => key.endsWith(ext))) {
                 dataFiles.push(f);
             } else {
-                result.unmappedFiles.push(f.path);
+                result.unmappedFiles.push({ path: f.path, size: f.entry.size });
             }
         }
 
         if (dataFiles.length !== 1) {
-            result.unmappedFiles.unshift(...dataFiles.map((f) => f.path));
-            result.errors.push(
-                dataFiles.length
-                    ? { key: 'dwca.error.manyDataFiles', args: [dataFiles.length] }
-                    : { key: 'dwca.error.noDataFiles', args: [] }
-            );
+            result.unmappedFiles.unshift(...dataFiles.map((f) => ({ path: f.path, size: f.entry.size })));
+            result.problems.push(dataFiles.length
+                ? problem('error', 'dwca.problem.manyDataFiles', [dataFiles.length],
+                    { detail: dataFiles.map((f) => f.path).join(', ') })
+                : problem('error', 'dwca.problem.noDataFiles'));
             return finishDwca(result);
         }
 
@@ -484,29 +534,34 @@
         try {
             columns = headerColumns(await extractEntryHead(file, dataFile.entry));
         } catch (err) {
-            result.errors.push({ key: 'dwca.error.dataUnreadable', args: [err.message] });
+            result.unverified = err instanceof ReadError;
+            result.problems.push(problem('error', 'dwca.problem.dataUnreadable', [dataFile.path], { detail: err.message }));
         }
 
         const normalized = columns.map(normalizeColumn);
         const match = ID_COLUMN_ROW_TYPES.find(([column]) => normalized.includes(column));
-        result.tables.push({
+        const core = {
             role: 'core',
             ...(match ? installedTable(match[1], installedByRowType) : { rowType: null, title: null, installed: false }),
             path: dataFile.path,
+            size: dataFile.entry.size,
             found: true,
             extraPaths: [],
             idMissing: false,
             skipped: false,
             detectedFrom: match ? columns[normalized.indexOf(match[0])] : null,
-        });
+        };
+        result.tables.push(core);
 
         if (!match && columns.length) {
-            result.errors.push({ key: 'dwca.error.noIdColumn', args: [] });
-        } else if (match && !result.tables[0].installed) {
-            result.errors.push({ key: 'dwca.error.notInstalled', args: [1] });
+            result.problems.push(problem('error', 'dwca.problem.noIdColumn', [],
+                { note: { key: 'dwca.problem.noIdColumn.note', args: [] } }));
+        } else if (match && !core.installed) {
+            result.problems.push(notInstalledProblem(core));
         }
         if (result.unmappedFiles.length) {
-            result.warnings.push({ key: 'dwca.warning.unmapped', args: [result.unmappedFiles.length] });
+            result.problems.push(problem('warning', 'dwca.problem.otherFiles', [result.unmappedFiles.length],
+                { detail: result.unmappedFiles.map((f) => f.path).join(', ') }));
         }
 
         return finishDwca(result);
@@ -541,20 +596,21 @@
             type: 'ipt-resource',
             ready: false,
             datasetType: null,
-            sources: [], // [{ name, kind, path, found, tables: [{ rowType, title, installed, schema }] }]
-            missingDataPackageTypes: [], // identifiers
+            // [{ name, kind, path, size, found, tables: [{ rowType, title, installed, schema }] }]
+            sources: [],
+            missingDataPackageType: false,
             metadataFiles: ['resource.xml', ...RESOURCE_FOLDER_METADATA_FILES]
                 .filter((f) => rootFiles.has(f))
                 .map((f) => rootFiles.get(f).path),
-            errors: [],
-            warnings: [],
+            problems: [], // see problem()
         };
 
         let resource;
         try {
             resource = parseXml(await extractEntry(file, rootFiles.get('resource.xml').entry)).documentElement;
         } catch (err) {
-            result.errors.push({ key: 'ipt.error.unreadable', args: [err.message] });
+            result.unverified = err instanceof ReadError;
+            result.problems.push(problem('error', 'ipt.problem.unreadable', [], { detail: err.message }));
             return result;
         }
 
@@ -570,7 +626,8 @@
             const source = {
                 name,
                 kind: el.localName,
-                path: stored ? rootFiles.get(stored).path : hasFile ? `sources/${name}` : name,
+                path: stored ? rootFiles.get(stored).path : hasFile ? `sources/${name}` : null,
+                size: stored ? rootFiles.get(stored).entry.size : null,
                 found: !hasFile || !!stored,
                 tables: [],
             };
@@ -607,24 +664,31 @@
 
         // Mappings to extensions or a data package type that aren't installed make the server reject the folder
         // (ResourceLoaderImpl)
-        const notInstalled = new Set(
-            result.sources.flatMap((s) => s.tables.filter((t) => !t.installed && !t.schema).map((t) => t.rowType))
-        );
-        if (notInstalled.size) result.errors.push({ key: 'ipt.error.notInstalled', args: [notInstalled.size] });
-        for (const type of missingTypes) {
-            result.errors.push({ key: 'ipt.error.dataPackageTypeNotInstalled', args: [type] });
+        const missingExtensions = new Map();
+        result.sources.flatMap((s) => s.tables).filter((t) => !t.installed && !t.schema)
+            .forEach((t) => missingExtensions.set(t.rowType, t));
+        for (const t of missingExtensions.values()) {
+            result.problems.push(problem('error', 'ipt.problem.extensionNotInstalled', [t.title],
+                { detail: t.rowType, install: { kind: 'rowTypes', id: t.rowType } }));
         }
-        result.missingDataPackageTypes = [...missingTypes];
-        const missingSources = result.sources.filter((s) => !s.found).length;
-        if (missingSources) result.warnings.push({ key: 'ipt.warning.missingSources', args: [missingSources] });
+        for (const type of missingTypes) {
+            result.problems.push(problem('error', 'ipt.problem.dataPackageTypeNotInstalled', [type.split('/').pop()],
+                { detail: type, install: { kind: 'dataPackageTypes', id: type } }));
+        }
+        result.missingDataPackageType = missingTypes.size > 0;
 
-        result.ready = result.errors.length === 0;
+        for (const source of result.sources.filter((s) => !s.found)) {
+            result.problems.push(problem('warning', 'ipt.problem.sourceMissing', [source.name],
+                { note: { key: 'ipt.problem.sourceMissing.note', args: [] } }));
+        }
+
+        result.ready = !result.problems.some((p) => p.level === 'error');
         return result;
     }
 
     // ---- Entry point ----
 
-    async function run(file, availableDataPackages, installed = {}) {
+    async function run(file, availableDataPackages, installed = {}, selectedType = null) {
         let entries;
         try {
             entries = await readCentralDirectory(file);
@@ -635,10 +699,15 @@
         const fileEntries = entries.filter((e) => !e.isDirectory && !isMacZipArtifact(e.name));
         const rootFiles = archiveRootFiles(fileEntries);
         const installedByRowType = new Map((installed.extensions ?? []).map((e) => [e.rowType, e]));
+        const withTotalSize = (result) => ({
+            ...result,
+            totalSize: [...rootFiles.values()].reduce((sum, f) => sum + f.entry.size, 0),
+        });
 
         // Checked first, like on the server: a resource folder can contain a datapackage.json too
         if (isResourceFolder(rootFiles)) {
-            return checkResourceFolder(file, rootFiles, installedByRowType, installed.dataPackageIdentifiers ?? []);
+            return withTotalSize(
+                await checkResourceFolder(file, rootFiles, installedByRowType, installed.dataPackageIdentifiers ?? []));
         }
 
         // Find datapackage.json — prefer the shallowest one if there are multiple.
@@ -649,11 +718,24 @@
 
         const manifestCandidate = manifestCandidates[0];
 
-        // Any other archive is imported as a Darwin Core Archive, with or without meta.xml
+        // ColDP's own metadata without a datapackage.json isn't checked here, it isn't a DwC-A either
+        const colDpMetadata = ['metadata.yml', 'metadata.yaml'].some((f) => rootFiles.has(f));
+
+        // The server imports a data package only with a data package type selected, anything else as a DwC-A.
+        // Nothing selected yet: guessed from the archive, the page then selects the type found.
+        const dataPackageTypes = new Set(availableDataPackages.map((s) => s.name));
+        const asDataPackage = selectedType ? dataPackageTypes.has(selectedType) : !!manifestCandidate;
+
+        if (!asDataPackage) {
+            if (colDpMetadata && !manifestCandidate && !rootFiles.has('meta.xml')) return { type: 'unknown', ready: false };
+            return withTotalSize(rootFiles.has('meta.xml')
+                ? await checkMetaXml(file, rootFiles, installedByRowType)
+                : await checkSingleDataFile(file, rootFiles, installedByRowType));
+        }
+
         if (!manifestCandidate) {
-            return rootFiles.has('meta.xml')
-                ? checkMetaXml(file, rootFiles, installedByRowType)
-                : checkSingleDataFile(file, rootFiles, installedByRowType);
+            if (colDpMetadata) return { type: 'unknown', ready: false };
+            return withTotalSize({ type: 'data-package', ready: false, noManifest: true, datasetType: selectedType });
         }
 
         const manifestEntry = manifestCandidate.entry;
@@ -675,17 +757,47 @@
             const bytes = await extractEntry(file, manifestEntry);
             manifest = JSON.parse(new TextDecoder('utf-8').decode(bytes));
         } catch (err) {
-            return { type: 'data-package', ready: false, reason: 'datapackage.json could not be read: ' + err.message };
+            return withTotalSize({
+                type: 'data-package',
+                ready: false,
+                unverified: err instanceof ReadError,
+                reason: 'datapackage.json could not be read: ' + err.message,
+            });
         }
 
-        const actualType = inferActualType(manifest);
-        const version = inferVersion(manifest);
-        const dataPackageSchema = findDataPackageSchema(availableDataPackages, actualType);
+        const resources = Array.isArray(manifest.resources) ? manifest.resources : [];
+
+        let actualType = inferActualType(manifest);
+        let version = inferVersion(manifest);
+        let dataPackageSchema = findDataPackageSchema(availableDataPackages, actualType);
+
+        const selectedSchema = selectedType && availableDataPackages.find((s) => s.name === selectedType);
+        if (selectedSchema) {
+            dataPackageSchema = selectedSchema;
+            if (actualType.value !== selectedSchema.name) {
+                actualType = { value: selectedSchema.name, comment: 'Selected' };
+                version = { value: selectedSchema.version, comment: 'Installed version' };
+            }
+        }
+
+        // The server takes the type from the type select, not the profile. Without a known profile, the type is
+        // the only installed one having all the tables, which the page then selects.
+        let typeFromTables = false;
+        if (!dataPackageSchema) {
+            const names = resources.map((r) => r.name).filter(Boolean);
+            const matching = availableDataPackages.filter((schema) => names.length
+                && names.every((name) => (schema.tableSchemas ?? []).some((t) => t.name === name)));
+            if (matching.length === 1) {
+                dataPackageSchema = matching[0];
+                actualType = { value: dataPackageSchema.name, comment: 'Inferred from tables' };
+                version = { value: dataPackageSchema.version, comment: 'Installed version' };
+                typeFromTables = true;
+            }
+        }
+
         const knownTableNames = new Set(
             (dataPackageSchema?.tableSchemas ?? []).map((t) => t.name)
         );
-
-        const resources = Array.isArray(manifest.resources) ? manifest.resources : [];
 
         // normalizedPath (relative to root) -> Set<resourceName>
         const pathToResources = new Map();
@@ -722,6 +834,7 @@
             const mappedResources = [...(pathToResources.get(path) ?? [])];
             return {
                 path,
+                size: byNormalizedPath.get(path).size,
                 resources: mappedResources.map((name) => ({
                     name,
                     inSchema: knownTableNames.has(name),
@@ -764,29 +877,34 @@
             reasons.push(`Resource(s) not recognized by schema: ${unknownSchemaResources.join(', ')}`);
         }
 
-        return {
+        return withTotalSize({
             type: 'data-package',
             actualType,
             version,
+            // null when no installed type fits, the page then leaves the type to the person
+            datasetType: dataPackageSchema ? dataPackageSchema.name : null,
+            typeFromTables,
+            profile: typeof manifest.profile === 'string' ? manifest.profile : null,
             ready,
             reason: reasons.length ? reasons.join(' ') : null,
             files: fileResults,
             unmappedFiles,
             skippedResources: [...skippedResources],
             unresolvedPaths,
-        };
+        });
     }
 
     // Extensions and data package types the archive needs but this IPT doesn't have
     function missingTypes(result) {
-        const tables = result.type === 'dwc-a'
-            ? result.tables.filter((t) => !t.skipped)
-            : (result.sources ?? []).flatMap((s) => s.tables.filter((t) => !t.schema));
-        return {
-            rowTypes: [...new Set(tables.filter((t) => t.rowType && !t.installed).map((t) => t.rowType))],
-            dataPackageTypes: result.missingDataPackageTypes ?? [],
-        };
+        const installs = (result.problems ?? []).filter((p) => p.install).map((p) => p.install);
+        const ids = (kind) => [...new Set(installs.filter((i) => i.kind === kind).map((i) => i.id))];
+        return { rowTypes: ids('rowTypes'), dataPackageTypes: ids('dataPackageTypes') };
     }
 
-    global.DataPackagePrecheck = { run, missingTypes };
+    // The server would reject the archive. Never when the archive couldn't be fully read here.
+    function blocksUpload(result) {
+        return !!result && result.type !== 'unknown' && !result.ready && !result.unverified;
+    }
+
+    global.DataPackagePrecheck = { run, missingTypes, blocksUpload };
 })(window);
