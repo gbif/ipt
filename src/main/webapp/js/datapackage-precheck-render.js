@@ -47,6 +47,9 @@
 
     const MONO = "'Roboto Mono', SFMono-Regular, Menlo, monospace";
 
+    // Data from this size on takes a while to upload and to be read by the server
+    const LARGE_ARCHIVE_SIZE = 100 * 1000 * 1000;
+
     function escapeHtml(str) {
         const div = document.createElement('div');
         div.textContent = str;
@@ -68,16 +71,18 @@
         return METADATA_FILENAMES.has(base);
     }
 
+    // Decimal units (1 KB = 1000 bytes), like file sizes elsewhere in the IPT
     function formatSize(bytes) {
         if (bytes == null) return '';
-        const units = ['B', 'KB', 'MB', 'GB'];
+        const units = ['B', 'KB', 'MB', 'GB', 'TB'];
         let value = bytes;
         let unit = 0;
-        while (value >= 1024 && unit < units.length - 1) {
-            value /= 1024;
+        while (value >= 1000 && unit < units.length - 1) {
+            value /= 1000;
             unit++;
         }
-        return `${unit === 0 || value >= 10 ? Math.round(value) : value.toFixed(1)} ${units[unit]}`;
+        // one decimal below 100 (11.3 GB), none above or for bytes, no trailing ".0"
+        return `${unit === 0 || value >= 100 ? Math.round(value) : Number(value.toFixed(1))} ${units[unit]}`;
     }
 
     // File name without folders and extension, to tell whether it just repeats the table name
@@ -413,7 +418,7 @@
         return buttons;
     }
 
-    function headerMarkup(view, status, totalSize) {
+    function headerMarkup(view, status, totalSize, archiveSize) {
         const s = STATUS[status];
         const title = view.title ?? (status === 'success' ? msg('title.ready')
             : status === 'warning' ? msg('title.warnings', view.problems.length) : msg('title.error'));
@@ -428,6 +433,11 @@
         <div style="font-size:16px; font-weight:500; line-height:28px; color:${s.fg};">${title}</div>
         <div style="display:flex; flex-wrap:wrap; gap:6px;">${chips}</div>
         ${view.note ? `<div style="font-size:13px; color:#5C636A;">${view.note}</div>` : ''}
+        ${totalSize >= LARGE_ARCHIVE_SIZE ? `
+        <div style="display:flex; align-items:baseline; gap:6px; font-size:13px; color:#5C636A;">
+          <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+          <span>${msg('large', formatSize(totalSize), formatSize(archiveSize))}</span>
+        </div>` : ''}
       </div>
     </div>`;
     }
@@ -538,7 +548,7 @@
 
         container.innerHTML = `
   <section class="mt-3" style="background:#FFFFFF; border:1px solid ${STATUS[status].border}; border-radius:10px; overflow:hidden;">
-    ${headerMarkup(view, status, result.totalSize)}
+    ${headerMarkup(view, status, result.totalSize, result.archiveSize)}
     ${problemsMarkup(view.problems, status)}
     ${contentsMarkup(view, open)}
   </section>`;

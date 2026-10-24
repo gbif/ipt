@@ -18,7 +18,7 @@
  *   // installed.dataPackageIdentifiers -> [[identifier, ...]], the identifiers accepted for each data package type
  *   // result.type   -> 'ipt-resource' | 'data-package' | 'dwc-a' | 'unknown'
  *
- *   // result.totalSize -> uncompressed size of all files, in bytes (every type)
+ *   // result.totalSize -> uncompressed size of all files, result.archiveSize -> size of the zip, in bytes (every type)
  *   // result.unverified -> true when an entry couldn't be read here (e.g. an unsupported compression)
  *
  * Resource folders and DwC-As: see checkResourceFolder() and dwcaResult() for the result,
@@ -45,6 +45,12 @@
     const EOCD_MIN_SIZE = 22;
     const MAX_COMMENT_SIZE = 65535; // zip comment field is at most 64KB per spec
 
+    // ZIP64: a size or offset that doesn't fit in 32 bits is 0xFFFFFFFF, the real value is in a ZIP64 record
+    const ZIP64_EOCD_LOCATOR_SIGNATURE = 0x07064b50;
+    const ZIP64_EOCD_SIGNATURE = 0x06064b50;
+    const ZIP64_EXTRA_FIELD_ID = 0x0001;
+    const MAX_UINT32 = 0xFFFFFFFF;
+
     function readSlice(file, start, end) {
         return file.slice(start, end).arrayBuffer();
     }
@@ -59,13 +65,48 @@
 
         for (let i = buf.byteLength - EOCD_MIN_SIZE; i >= 0; i--) {
             if (buf.getUint32(i, true) === EOCD_SIGNATURE) {
-                return {
-                    centralDirSize: buf.getUint32(i + 12, true),
-                    centralDirOffset: buf.getUint32(i + 16, true),
-                };
+                const centralDirSize = buf.getUint32(i + 12, true);
+                const centralDirOffset = buf.getUint32(i + 16, true);
+                // an archive over 4 GB keeps them in the ZIP64 end record, its locator comes right before
+                if ((centralDirSize === MAX_UINT32 || centralDirOffset === MAX_UINT32)
+                    && i >= 20 && buf.getUint32(i - 20, true) === ZIP64_EOCD_LOCATOR_SIGNATURE) {
+                    return readZip64EndOfCentralDirectory(file, Number(buf.getBigUint64(i - 20 + 8, true)));
+                }
+                return { centralDirSize, centralDirOffset };
             }
         }
         throw new Error('No end-of-central-directory record found — not a valid zip file');
+    }
+
+    async function readZip64EndOfCentralDirectory(file, offset) {
+        const buf = new DataView(await readSlice(file, offset, offset + 56));
+        if (buf.getUint32(0, true) !== ZIP64_EOCD_SIGNATURE) {
+            throw new Error('Corrupt ZIP64 end-of-central-directory record');
+        }
+        return {
+            centralDirSize: Number(buf.getBigUint64(40, true)),
+            centralDirOffset: Number(buf.getBigUint64(48, true)),
+        };
+    }
+
+    // The ZIP64 extra field holds, in this order, only the values that are 0xFFFFFFFF in the entry itself
+    function applyZip64ExtraField(buf, start, length, entry) {
+        let pos = start;
+        while (pos + 4 <= start + length) {
+            const id = buf.getUint16(pos, true);
+            const size = buf.getUint16(pos + 2, true);
+            if (id === ZIP64_EXTRA_FIELD_ID) {
+                let field = pos + 4;
+                for (const key of ['size', 'compressedSize', 'localHeaderOffset']) {
+                    if (entry[key] === MAX_UINT32 && field + 8 <= pos + 4 + size) {
+                        entry[key] = Number(buf.getBigUint64(field, true));
+                        field += 8;
+                    }
+                }
+                return;
+            }
+            pos += 4 + size;
+        }
     }
 
     async function readCentralDirectory(file) {
@@ -90,7 +131,9 @@
             const nameBytes = new Uint8Array(buf.buffer, buf.byteOffset + offset + 46, nameLen);
             const name = decoder.decode(nameBytes);
 
-            entries.push({ name, isDirectory: name.endsWith('/'), method, compressedSize, size, localHeaderOffset });
+            const entry = { name, isDirectory: name.endsWith('/'), method, compressedSize, size, localHeaderOffset };
+            applyZip64ExtraField(buf, offset + 46 + nameLen, extraLen, entry);
+            entries.push(entry);
             offset += 46 + nameLen + extraLen + commentLen;
         }
 
@@ -702,6 +745,7 @@
         const withTotalSize = (result) => ({
             ...result,
             totalSize: [...rootFiles.values()].reduce((sum, f) => sum + f.entry.size, 0),
+            archiveSize: file.size,
         });
 
         // Checked first, like on the server: a resource folder can contain a datapackage.json too

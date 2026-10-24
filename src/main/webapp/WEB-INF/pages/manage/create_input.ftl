@@ -108,7 +108,9 @@
             theme: 'bootstrap4'
         });
 
-        $("#create").on('click', displayProcessing);
+        $("#create").on('click', function () {
+            if (currentPath === 'blank') displayProcessing();
+        });
 
         var dataPackages = ${schemasJson?no_esc};
         const installed = {
@@ -170,6 +172,8 @@
         let precheckResult = null;
         // the type select is being set from the archive, not by the person
         let applyingType = false;
+        // the archive is on its way to the server: nothing can be sent again or changed
+        let uploading = false;
 
         $file.on('change', async function (e) {
             const file = e.target.files[0];
@@ -374,7 +378,11 @@
             validate();
         }
 
-        $pathOptions.on('click', function () {
+        $pathOptions.on('click', function (e) {
+            if (uploading) {
+                e.preventDefault();
+                return;
+            }
             currentPath = $(this).data('path');
             $(this).find('input[type=radio]').prop('checked', true);
             updatePathUI();
@@ -394,8 +402,81 @@
             if (currentPath !== 'blank' && !fileChosen) valid = false;
             // the panel says why
             if (currentPath !== 'blank' && DataPackagePrecheck.blocksUpload(precheckResult)) valid = false;
+            if (uploading) valid = false;
 
             $createBtn.prop('disabled', !valid);
+        }
+
+        // An archive is uploaded in the background, to show how far along it is. The server answers with the new
+        // resource (a redirect), or with this page again, showing what went wrong.
+        $('#create-form').on('submit', function (e) {
+            if (currentPath === 'blank' || !fileChosen) return;
+            e.preventDefault();
+            uploadArchive(this, e.originalEvent && e.originalEvent.submitter);
+        });
+
+        // Shown like an upload of sources on the resource overview
+        const $upload = $('#fileList');
+        const $uploadBar = $('#uploadProgress');
+
+        // percent null: the server is working, the bar runs
+        function showProgress(status, percent) {
+            $upload.prop('hidden', false);
+            $('#uploadStatus').text(status);
+            $uploadBar.toggleClass('progressBar-loader', percent === null).css('width', percent === null ? '' : percent + '%');
+            $uploadBar.parent().attr('aria-valuenow', percent);
+        }
+
+        // nothing is changed or sent again while the archive is on its way (see validate() too)
+        function setUploading(value) {
+            uploading = value;
+            $file.prop('disabled', value);
+            if (!value) $upload.prop('hidden', true);
+            validate();
+        }
+
+        function stayOnPage(e) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+
+        function uploadArchive(form, submitter) {
+            const data = new FormData(form);
+            if (submitter && submitter.name) data.append(submitter.name, submitter.value);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', form.action);
+            xhr.upload.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const percent = Math.round(e.loaded / e.total * 100);
+                    showProgress(percent + '% (' + formatFileSize(e.loaded, 1) + ' / ' + formatFileSize(e.total, 1) + ')', percent);
+                }
+            };
+            xhr.upload.onload = function () {
+                showProgress('${action.getText("manage.resource.create.progress.creating")?js_string?no_esc}', null);
+            };
+            xhr.onload = function () {
+                window.removeEventListener('beforeunload', stayOnPage);
+                if (xhr.responseURL && xhr.responseURL.indexOf('/manage/create.do') === -1) {
+                    window.location.href = xhr.responseURL;
+                } else {
+                    document.open();
+                    document.write(xhr.responseText);
+                    document.close();
+                }
+            };
+            xhr.onerror = function () {
+                window.removeEventListener('beforeunload', stayOnPage);
+                setUploading(false);
+                alert('${action.getText("manage.resource.create.progress.failed")?js_string?no_esc}');
+            };
+
+            // leaving now would lose the upload
+            window.addEventListener('beforeunload', stayOnPage);
+            $('#uploadFileName').text($file.get(0).files[0].name);
+            showProgress('${action.getText("manage.resource.create.progress.uploading")?js_string?no_esc}', 0);
+            setUploading(true);
+            xhr.send(data);
         }
 
         updatePathUI();
@@ -466,6 +547,24 @@
                         <@s.fielderror cssClass="fielderror" fieldName="file"/>
                         <label for="file" class="form-label"><@s.text name="manage.resource.create.file"/> <span class="text-gbif-danger">*</span> </label>
                         <@s.file name="file" cssClass="form-control" key="manage.resource.create.file" />
+                    </div>
+
+                    <div id="fileList" class="mt-3" hidden>
+                        <div class="fileItem">
+                            <div class="fileItem-inner">
+                                <div class="fileInfo">
+                                    <div class="fileDoneIcon"><i class="bi bi-check2 text-gbif-primary"></i></div>
+                                    <div class="fileMeta">
+                                        <div class="fileName" id="uploadFileName"></div>
+                                        <div class="fileStatus" id="uploadStatus" role="status" aria-live="polite"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label="<@s.text name='manage.resource.create.progress.uploading'/>">
+                                <div class="progressBar-value" id="uploadProgress"></div>
+                            </div>
+                            <div class="fileStatus ms-4"><@s.text name="manage.resource.create.progress.note"/></div>
+                        </div>
                     </div>
 
                     <div id="precheckPanel"></div>
