@@ -47,6 +47,9 @@
 
     const MONO = "'Roboto Mono', SFMono-Regular, Menlo, monospace";
 
+    // The header starts where the text of the upload progress (create_input.ftl, #fileList) does
+    const HEADER_INDENT = 36;
+
     // Data from this size on takes a while to upload and to be read by the server
     const LARGE_ARCHIVE_SIZE = 100 * 1000 * 1000;
 
@@ -427,10 +430,12 @@
             .map((chip) => `<span style="font-size:12px; line-height:16px; padding:3px 9px; border-radius:999px; background:#FFFFFF; border:1px solid #DEE2E6; color:#4E565F;">${chip}</span>`)
             .join('');
         return `
-    <div style="display:flex; gap:8px; align-items:flex-start; padding:16px 18px; background:${s.bg};">
-      <i class="bi ${s.icon}" style="font-size:16px; line-height:28px; color:${s.fg};" aria-hidden="true"></i>
+    <div style="padding:16px 18px 16px ${HEADER_INDENT}px; background:${s.bg};">
       <div style="display:flex; flex-direction:column; gap:8px; min-width:0;">
-        <div style="font-size:16px; font-weight:500; line-height:28px; color:${s.fg};">${title}</div>
+        <div style="display:flex; align-items:center; gap:8px; font-size:16px; font-weight:500; line-height:28px; color:${s.fg};">
+          <i class="bi ${s.icon}" style="font-size:16px; line-height:1;" aria-hidden="true"></i>
+          <span>${title}</span>
+        </div>
         <div style="display:flex; flex-wrap:wrap; gap:6px;">${chips}</div>
         ${view.note ? `<div style="font-size:13px; color:#5C636A;">${view.note}</div>` : ''}
         ${totalSize >= LARGE_ARCHIVE_SIZE ? `
