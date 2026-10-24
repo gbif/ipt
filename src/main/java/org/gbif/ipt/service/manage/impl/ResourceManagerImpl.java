@@ -63,11 +63,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -83,6 +88,9 @@ import static org.gbif.ipt.utils.IptFileUtils.getFileExtension;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceManagerImpl extends BaseManager implements ResourceManager {
+
+  // Files dwca-io takes as the data file of an archive without meta.xml
+  private static final Set<String> DATA_FILE_EXTENSIONS = Set.of("csv", "txt", "tsv", "tab", "text", "data");
 
   private final ResourceIndex resourceIndex = new ResourceIndex();
 
@@ -241,21 +249,37 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     if (CollectionUtils.isEmpty(decompressed)) {
       // try again as single gzip file
       try {
-        decompressed = CompressionUtil.ungzipFile(archiveDir, archiveOrSingleFile, false);
+        decompressed = withUploadedNames(shortname, CompressionUtil.ungzipFile(archiveDir, archiveOrSingleFile, false));
       } catch (Exception e2) {
         LOG.debug("2nd attempt to decompress file failed: {}", e2.getMessage(), e2);
       }
     }
 
+    // a single data file is imported like an archive of just that file (a DwC-A without meta.xml, the core type comes
+    // from its id column), so it's put where an archive is decompressed
+    if (CollectionUtils.isEmpty(decompressed)
+        && DATA_FILE_EXTENSIONS.contains(getFileExtension(archiveOrSingleFile).toLowerCase(Locale.ENGLISH))) {
+      try {
+        File dataFile = new File(archiveDir, uploadedName(shortname, archiveOrSingleFile));
+        Files.move(archiveOrSingleFile.toPath(), dataFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        decompressed = List.of(dataFile);
+      } catch (IOException e) {
+        alog.error("manage.resource.create.failed");
+        throw new ImportException(e);
+      }
+    }
+
     // create resource:
-    // if decompression failed, create resource from single file: eml.xml, datapackage.json or metadata.yml
+    // if decompression failed (and it isn't a data file), create resource from single file: eml.xml, datapackage.json
+    // or metadata.yaml
     if (CollectionUtils.isEmpty(decompressed)) {
-      String fileExtension = getFileExtension(archiveOrSingleFile);
+      String fileExtension = getFileExtension(archiveOrSingleFile).toLowerCase(Locale.ENGLISH);
 
       resource = switch (fileExtension) {
         case "xml" -> resourceImportService.createFromEml(shortname, archiveOrSingleFile, creator, alog);
         case "json" -> resourceImportService.createFromPackageDescriptor(shortname, type, archiveOrSingleFile, creator, alog);
-        case "yml" -> resourceImportService.createFromColDpMetadata(shortname, archiveOrSingleFile, creator, alog);
+        // ColDP names it metadata.yaml or metadata.yml
+        case "yml", "yaml" -> resourceImportService.createFromColDpMetadata(shortname, archiveOrSingleFile, creator, alog);
         default -> throw new ImportException("Invalid file extension: " + fileExtension);
       };
     }
@@ -279,6 +303,30 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     }
 
     return resource;
+  }
+
+  /**
+   * The name the file had when uploaded: temporary upload files are named shortname + a random number + that name
+   * (DataDir.tmpFile), which would otherwise end up as the source's name.
+   */
+  static String uploadedName(String shortname, File file) {
+    String name = file.getName().replaceFirst("^" + Pattern.quote(shortname) + "-?\\d+", "");
+    return name.isEmpty() ? file.getName() : name;
+  }
+
+  /**
+   * The files of a decompressed single gzip file, renamed as uploaded (see {@link #uploadedName(String, File)}).
+   */
+  private static List<File> withUploadedNames(String shortname, List<File> files) throws IOException {
+    List<File> renamed = new ArrayList<>();
+    for (File file : files) {
+      File target = new File(file.getParentFile(), uploadedName(shortname, file));
+      if (!target.equals(file)) {
+        Files.move(file.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      }
+      renamed.add(target);
+    }
+    return renamed;
   }
 
   /**

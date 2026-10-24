@@ -111,10 +111,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ResourceManagerImplTest extends IptBaseTest {
@@ -495,6 +497,45 @@ public class ResourceManagerImplTest extends IptBaseTest {
   /**
    * test resource creation from a single DwC-A gzipped file.
    */
+  /**
+   * A plain data file is imported like a gzipped one, as an archive of just that file.
+   */
+  @Test
+  public void testCreateFromSinglePlainDataFile() throws Exception {
+    ResourceManager resourceManager = getResourceManagerImpl();
+
+    // the uploaded file, named like a temporary upload file: shortname + random number + uploaded name
+    File tmpDir = FileUtils.createTempDir();
+    File plain = CompressionUtil.ungzipFile(tmpDir, FileUtils.getClasspathFile("resources/occurrence2.txt.gz"), false).get(0);
+    File uploaded = new File(tmpDir, "res-single-txt-1234occurrence2.txt");
+    assertTrue(plain.renameTo(uploaded));
+
+    TextFileSource fileSource = new TextFileSource();
+    fileSource.setFile(uploaded);
+    fileSource.setRows(16);
+    fileSource.setIgnoreHeaderLines(1);
+    fileSource.setEncoding("UTF-8");
+    fileSource.setFieldsTerminatedByEscaped("/t");
+    fileSource.setName("occurrence2");
+    when(mockSourceManager.add(any(Resource.class), any(File.class), anyString())).thenReturn(fileSource);
+
+    resourceManager.create("res-single-txt", null, uploaded, creator, baseAction);
+
+    Resource res = resourceManager.get("res-single-txt");
+    assertEquals("res-single-txt", res.getShortname());
+    assertEquals(1, res.getMappings().size());
+    // the source is named as the file was uploaded, not after the temporary file
+    verify(mockSourceManager).add(any(Resource.class), argThat((File f) -> f.getName().equals("occurrence2.txt")), anyString());
+  }
+
+  @Test
+  public void testUploadedName() {
+    assertEquals("occurrence.txt", ResourceManagerImpl.uploadedName("res1", new File("res1-123456occurrence.txt")));
+    assertEquals("occurrence.txt", ResourceManagerImpl.uploadedName("res1", new File("res1987occurrence.txt")));
+    // not a temporary upload file
+    assertEquals("occurrence.txt", ResourceManagerImpl.uploadedName("res1", new File("occurrence.txt")));
+  }
+
   @Test
   public void testCreateFromSingleGzipFile() throws Exception {
 

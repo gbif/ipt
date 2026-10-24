@@ -165,7 +165,7 @@
         if (table.skipped) {
             notes.push(['warning', msg('row.noCoreId')]);
         } else {
-            if (!table.rowType) notes.push(['danger', msg(layout === 'single-file' ? 'row.noIdColumn' : 'row.noRowType')]);
+            if (!table.rowType) notes.push(['danger', msg(layout === 'meta-xml' ? 'row.noRowType' : 'row.noIdColumn')]);
             else if (!table.installed) notes.push(['danger', msg('row.notInstalled')]);
             if (!table.found) notes.push(['danger', msg('row.missing')]);
             if (table.idMissing) notes.push(['danger', msg('row.noId')]);
@@ -197,7 +197,9 @@
             ? typeLabel(result.datasetType)
             : core?.installed ? core.title : null;
         return {
-            kind: msg(result.layout === 'single-file' ? 'kind.dwcaSingleFile' : 'kind.dwca'),
+            kind: msg({ 'single-file': 'kind.dwcaSingleFile', 'data-file': 'kind.dataFile', 'gzip-file': 'kind.dataFileGzip' }[result.layout] ?? 'kind.dwca'),
+            // not zipped: a large one is worth zipping first, see headerMarkup()
+            plain: result.layout === 'data-file',
             summary: [
                 type ? escapeHtml(type) : null,
                 extensions.length ? msg('summary.extensions', extensions.length) : null,
@@ -469,7 +471,9 @@
         ${totalSize >= LARGE_ARCHIVE_SIZE ? `
         <div style="display:flex; align-items:baseline; gap:6px; font-size:13px; color:#5C636A;">
           <i class="bi bi-hourglass-split" aria-hidden="true"></i>
-          <span>${msg('large', formatSize(totalSize), formatSize(archiveSize))}</span>
+          <span>${totalSize === archiveSize && view.plain
+              ? msg('large.plain', formatSize(archiveSize))
+              : msg('large', formatSize(totalSize), formatSize(archiveSize))}</span>
         </div>` : ''}
       </div>
     </div>`;
@@ -547,7 +551,22 @@
     </details>`;
     }
 
+    // A metadata file on its own: the resource gets only the metadata, its data is added afterwards
+    function metadataView(result) {
+        const type = typeLabel(result.datasetType);
+        return {
+            kind: msg({ eml: 'kind.metadataEml', datapackage: 'kind.metadataDataPackage', coldp: 'kind.metadataColDp' }[result.format]),
+            note: msg('metadata.only'),
+            summary: [type ? escapeHtml(type) : null],
+            problems: result.problems.map(problemView),
+            rows: [],
+            count: '',
+            metadata: result.metadataFiles,
+        };
+    }
+
     function viewOf(result) {
+        if (result.type === 'metadata') return metadataView(result);
         if (result.type === 'data-package') return dataPackageView(result);
         if (result.type === 'dwc-a') return dwcaView(result);
         if (result.type === 'ipt-resource') return resourceFolderView(result);

@@ -16,7 +16,9 @@
  *   // DataPackagePrecheck.blocksUpload(result) -> true when the server would reject the archive
  *   // installed.extensions -> [{ rowType, title }]
  *   // installed.dataPackageIdentifiers -> [[identifier, ...]], the identifiers accepted for each data package type
- *   // result.type   -> 'ipt-resource' | 'data-package' | 'dwc-a' | 'unknown'
+ *   // result.type   -> 'ipt-resource' | 'data-package' | 'dwc-a' | 'metadata' | 'unknown'
+ *   //   (a data file that isn't zipped is a 'dwc-a' of layout 'data-file'), or 'metadata' for a metadata file on its
+ *   //   own (see checkMetadataFile())
  *
  *   // result.totalSize -> uncompressed size of all files, result.archiveSize -> size of the zip, in bytes (every type)
  *   // result.unverified -> true when an entry couldn't be read here (e.g. an unsupported compression)
@@ -203,7 +205,11 @@
         const compressed = await compressedData(file, entry);
         const stream = inflate(entry, compressed);
         if (!stream) return new Uint8Array(await compressed.slice(0, maxBytes).arrayBuffer());
+        return readStreamHead(stream, maxBytes);
+    }
 
+    // The first maxBytes of a stream, the rest is never read
+    async function readStreamHead(stream, maxBytes) {
         const reader = stream.getReader();
         const chunks = [];
         let size = 0;
@@ -427,7 +433,7 @@
     function dwcaResult(layout) {
         return {
             type: 'dwc-a',
-            layout, // 'meta-xml' | 'single-file'
+            layout, // 'meta-xml' | 'single-file' | 'data-file' (not zipped) | 'gzip-file' (a gzipped data file)
             ready: false,
             datasetType: null,
             // [{ role, rowType, title, installed, path, size, found, extraPaths, idMissing, skipped, detectedFrom }]
@@ -576,12 +582,24 @@
         }
 
         const dataFile = dataFiles[0];
+        await addCoreFromHeader(result, dataFile.path, dataFile.entry.size, () => extractEntryHead(file, dataFile.entry),
+            installedByRowType);
+        if (result.unmappedFiles.length) {
+            result.problems.push(problem('warning', 'dwca.problem.otherFiles', [result.unmappedFiles.length],
+                { detail: result.unmappedFiles.map((f) => f.path).join(', ') }));
+        }
+
+        return finishDwca(result);
+    }
+
+    // The core of a DwC-A without meta.xml: its type comes from the first id column of the header (dwca-io)
+    async function addCoreFromHeader(result, path, size, readHead, installedByRowType) {
         let columns = [];
         try {
-            columns = headerColumns(await extractEntryHead(file, dataFile.entry));
+            columns = headerColumns(await readHead());
         } catch (err) {
             result.unverified = err instanceof ReadError;
-            result.problems.push(problem('error', 'dwca.problem.dataUnreadable', [dataFile.path], { detail: err.message }));
+            result.problems.push(problem('error', 'dwca.problem.dataUnreadable', [path], { detail: err.message }));
         }
 
         const normalized = columns.map(normalizeColumn);
@@ -589,8 +607,8 @@
         const core = {
             role: 'core',
             ...(match ? installedTable(match[1], installedByRowType) : { rowType: null, title: null, installed: false }),
-            path: dataFile.path,
-            size: dataFile.entry.size,
+            path,
+            size,
             found: true,
             extraPaths: [],
             idMissing: false,
@@ -605,17 +623,109 @@
         } else if (match && !core.installed) {
             result.problems.push(notInstalledProblem(core));
         }
-        if (result.unmappedFiles.length) {
-            result.problems.push(problem('warning', 'dwca.problem.otherFiles', [result.unmappedFiles.length],
-                { detail: result.unmappedFiles.map((f) => f.path).join(', ') }));
+    }
+
+    // A single data file, not zipped: the server imports it like a DwC-A of just that file
+    async function checkPlainDataFile(file, installedByRowType) {
+        const result = dwcaResult('data-file');
+        await addCoreFromHeader(result, file.name, file.size,
+            async () => new Uint8Array(await file.slice(0, 64 * 1024).arrayBuffer()), installedByRowType);
+        return { ...finishDwca(result), totalSize: file.size, archiveSize: file.size };
+    }
+
+    // A single gzipped data file: only its start is decompressed. Gzip keeps the uncompressed size in its last
+    // 4 bytes (modulo 4 GB, so a bigger file shows smaller).
+    async function checkGzippedDataFile(file, name, installedByRowType) {
+        const result = dwcaResult('gzip-file');
+        let size = null;
+        try {
+            size = new DataView(await file.slice(file.size - 4).arrayBuffer()).getUint32(0, true);
+        } catch (err) {
+            // unknown
+        }
+        await addCoreFromHeader(result, name, size, async () => {
+            try {
+                if (typeof DecompressionStream === 'undefined') throw new Error('This browser has no gzip support');
+                return await readStreamHead(file.stream().pipeThrough(new DecompressionStream('gzip')), 64 * 1024);
+            } catch (err) {
+                throw new ReadError(err.message);
+            }
+        }, installedByRowType);
+        return { ...finishDwca(result), totalSize: size, archiveSize: file.size };
+    }
+
+    // ---- A metadata file on its own ----
+
+    // File extension (any case, as the server takes it) -> what it's imported as
+    const METADATA_FILE_FORMATS = { xml: 'eml', json: 'datapackage', yml: 'coldp', yaml: 'coldp' };
+
+    // The resource gets the metadata only, no data: EML makes a resource of type metadata whatever type is chosen,
+    // a datapackage.json one of the data package type chosen, ColDP metadata a ColDP resource
+    async function checkMetadataFile(file, format, availableDataPackages, selectedType) {
+        const result = {
+            type: 'metadata',
+            format, // 'eml' | 'datapackage' | 'coldp'
+            ready: false,
+            datasetType: { eml: 'metadata', coldp: 'coldp' }[format] ?? null,
+            metadataFiles: [file.name],
+            problems: [], // see problem()
+            totalSize: file.size,
+            archiveSize: file.size,
+        };
+        const finish = () => ({ ...result, ready: !result.problems.some((p) => p.level === 'error') });
+
+        // a big one isn't parsed here (cut short it wouldn't parse), the server checks it
+        if (file.size > 5 * 1024 * 1024) {
+            if (format === 'datapackage' && selectedType) result.datasetType = selectedType;
+            return finish();
+        }
+        const readText = async () => new TextDecoder('utf-8').decode(await file.arrayBuffer());
+
+        if (format === 'eml') {
+            try {
+                const root = parseXml(new TextEncoder().encode(await readText())).documentElement;
+                // the server still makes a resource, with empty metadata
+                if (root.localName !== 'eml') result.problems.push(problem('warning', 'meta.problem.notEml', [file.name]));
+            } catch (err) {
+                result.problems.push(problem('error', 'meta.problem.unreadable', [file.name], { detail: err.message }));
+            }
+            return finish();
         }
 
-        return finishDwca(result);
+        if (format === 'datapackage') {
+            let manifest;
+            try {
+                manifest = JSON.parse(await readText());
+            } catch (err) {
+                result.problems.push(problem('error', 'meta.problem.unreadable', [file.name], { detail: err.message }));
+                return finish();
+            }
+            // the type chosen, else the one its profile names. With another type the server still makes a resource,
+            // but doesn't use the metadata: it's created empty.
+            const dataPackageTypes = availableDataPackages.map((s) => s.name);
+            if (selectedType && !dataPackageTypes.includes(selectedType)) {
+                result.problems.push(problem('warning', 'meta.problem.needsDataPackageType', [],
+                    { note: { key: 'meta.problem.needsDataPackageType.note', args: [] } }));
+                return finish();
+            }
+            const schema = selectedType
+                ? availableDataPackages.find((s) => s.name === selectedType)
+                : findDataPackageSchema(availableDataPackages, inferActualType(manifest));
+            if (!schema) {
+                result.problems.push(problem('warning', 'meta.problem.unknownType', [],
+                    { detail: typeof manifest.profile === 'string' ? manifest.profile : null,
+                        note: { key: 'meta.problem.needsDataPackageType.note', args: [] } }));
+                return finish();
+            }
+            result.datasetType = schema.name;
+        }
+        return finish();
     }
 
     // ---- IPT resource folder (a resource directory copied from another IPT's data directory) ----
 
-    const RESOURCE_FOLDER_METADATA_FILES = ['eml.xml', 'datapackage.json', 'metadata.yml'];
+    // as the server names them (DataDir: EML_XML_FILENAME, FRICTIONLESS_METADATA_FILENAME, COL_DP_METADATA_FILENAME)
+    const RESOURCE_FOLDER_METADATA_FILES = ['eml.xml', 'datapackage.json', 'metadata.yaml'];
 
     // Same test as ResourceManagerImpl.isIPTResourceFolder
     function isResourceFolder(rootFiles) {
@@ -735,16 +845,37 @@
     // ---- Entry point ----
 
     async function run(file, availableDataPackages, installed = {}, selectedType = null) {
+        const installedByRowType = new Map((installed.extensions ?? []).map((e) => [e.rowType, e]));
         let entries;
         try {
             entries = await readCentralDirectory(file);
         } catch (err) {
+            // not a zip: a data file on its own is imported as a DwC-A of just that file (or, with a data package
+            // type chosen, as a data package without its datapackage.json)
+            const extension = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+            // a metadata file on its own makes a resource with only that metadata (ResourceManagerImpl.create)
+            if (METADATA_FILE_FORMATS[extension]) {
+                return checkMetadataFile(file, METADATA_FILE_FORMATS[extension], availableDataPackages, selectedType);
+            }
+            // a gzipped data file is un-gzipped by the server, then imported the same way (tar.gz archives aside)
+            const gzipped = extension === 'gz' && !/\.tar\.gz$/i.test(file.name);
+            const dataName = gzipped ? file.name.slice(0, -3) : file.name;
+            const dataExtension = dataName.includes('.') ? dataName.split('.').pop().toLowerCase() : '';
+            if (DATA_FILE_EXTENSIONS.includes('.' + dataExtension) && dataExtension !== 'dwca') {
+                const asDataPackage = selectedType && availableDataPackages.some((s) => s.name === selectedType);
+                if (asDataPackage) {
+                    return { type: 'data-package', ready: false, noManifest: true, datasetType: selectedType,
+                        totalSize: file.size, archiveSize: file.size };
+                }
+                return gzipped
+                    ? checkGzippedDataFile(file, dataName, installedByRowType)
+                    : checkPlainDataFile(file, installedByRowType);
+            }
             return { type: 'unknown', ready: false, reason: 'Could not read this as a zip archive: ' + err.message };
         }
 
         const fileEntries = entries.filter((e) => !e.isDirectory && !isMacZipArtifact(e.name));
         const rootFiles = archiveRootFiles(fileEntries);
-        const installedByRowType = new Map((installed.extensions ?? []).map((e) => [e.rowType, e]));
         const withTotalSize = (result) => ({
             ...result,
             totalSize: [...rootFiles.values()].reduce((sum, f) => sum + f.entry.size, 0),

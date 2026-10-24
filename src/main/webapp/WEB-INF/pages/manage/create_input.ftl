@@ -214,7 +214,10 @@
             if (shortnameMatch && shortnameMatch[2]) {
                 $shortname.val(shortnameMatch[2]);
             } else {
-                $shortname.val(lower.replace(/\.[^/.]+$/, ""));
+                // the name without its extensions (occurrence.txt.gz -> occurrence), anything a shortname can't
+                // have as - (my data.zip -> my-data)
+                const name = lower.replace(/\.(gz|zip|tgz|bz2)$/, '').replace(/\.tar$/, '').replace(/\.[^/.]+$/, '');
+                $shortname.val(name.replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, ''));
             }
         }
 
@@ -278,13 +281,16 @@
         const dataPackageTypes = new Set(dataPackages.map((schema) => schema.name));
 
         function checkedAs(result) {
-            return result.type === 'data-package' ? (result.datasetType || 'unknown data package') : 'dwc-a';
+            const asDataPackage = result.type === 'data-package' || (result.type === 'metadata' && result.format === 'datapackage');
+            return asDataPackage ? (result.datasetType || 'unknown data package') : 'dwc-a';
         }
 
         // The person chose another type: checked again when that changes how the archive would be imported
         function recheckForType() {
             if (applyingType || currentPath === 'blank' || !precheckResult) return;
             if (precheckResult.type === 'ipt-resource' || precheckResult.type === 'unknown') return;
+            // EML and ColDP metadata make a resource of their own type, whatever is chosen
+            if (precheckResult.type === 'metadata' && precheckResult.format !== 'datapackage') return;
 
             const selected = $typeSelect.val();
             if (!selected) return;
