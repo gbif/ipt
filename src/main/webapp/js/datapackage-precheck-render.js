@@ -347,7 +347,8 @@
                 rows.push(row({
                     level: typeUnknown && !notes.length ? 'muted' : levelOf(notes),
                     name: escapeHtml(t.name),
-                    file: f.path && stem(f.path) !== stem(t.name) ? escapeHtml(f.path) : null,
+                    // a ColDP's files can be named in many ways, it's shown which one a table is
+                    file: f.path && (result.colDp || stem(f.path) !== stem(t.name)) ? escapeHtml(f.path) : null,
                     size: f.size,
                     missing: !f.found,
                     notes,

@@ -867,10 +867,28 @@ public class ResourceImportServiceImpl implements ResourceImportService {
   private String colDpTableForFile(File file, File packageRoot, Map<String, String> colDpTables) {
     String extension = FilenameUtils.getExtension(file.getName()).toLowerCase(Locale.ENGLISH);
     String tableName = packageRoot.equals(file.getParentFile()) && COL_DP_DATA_FILE_EXTENSIONS.contains(extension)
-        ? colDpTables.get(normalizeColDpName(FilenameUtils.removeExtension(file.getName())))
+        ? colDpTableForName(FilenameUtils.removeExtension(file.getName()), colDpTables)
         : null;
     if (tableName == null) {
       LOG.warn("File {} is not a ColDP table", packageRoot.toPath().relativize(file.toPath()));
+    }
+    return tableName;
+  }
+
+  /**
+   * The ColDP table a file name (without extension) is for. Like ChecklistBank, it can be in the plural too, e.g.
+   * SpeciesInteractions for species-interaction or Taxa for taxon.
+   *
+   * @return the table name, null if there's none
+   */
+  static String colDpTableForName(String name, Map<String, String> colDpTables) {
+    String normalized = normalizeColDpName(name);
+    String tableName = colDpTables.get(normalized);
+    if (tableName == null && normalized.endsWith("s")) {
+      tableName = colDpTables.get(normalized.substring(0, normalized.length() - 1));
+    }
+    if (tableName == null && "taxa".equals(normalized)) {
+      tableName = colDpTables.get("taxon");
     }
     return tableName;
   }

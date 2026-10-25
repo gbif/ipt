@@ -738,6 +738,15 @@
         return name.replace(/[-_\s]/g, '').toLowerCase();
     }
 
+    // The ColDP table a file name (without extension) is for, in the plural too like ChecklistBank, e.g.
+    // SpeciesInteractions or Taxa (ResourceImportServiceImpl.colDpTableForName)
+    function colDpTableForName(name, tables) {
+        const normalized = normalizeColDpName(name);
+        return tables.get(normalized)
+            ?? (normalized.endsWith('s') ? tables.get(normalized.slice(0, -1)) : undefined)
+            ?? (normalized === 'taxa' ? tables.get('taxon') : undefined);
+    }
+
     // A ColDP's metadata doesn't list its files: a data file in the root of the archive is the table it's named after,
     // its columns are the fields named the same, ignoring a col: prefix and case
     // (ResourceImportServiceImpl.colDpTableForFile, colDpField). The result is the one of a data package.
@@ -752,7 +761,7 @@
             const dot = key.lastIndexOf('.');
             const extension = dot > 0 ? key.slice(dot + 1) : '';
             const table = !key.includes('/') && COL_DP_DATA_FILE_EXTENSIONS.includes(extension)
-                ? tables.get(normalizeColDpName(f.path.slice(0, f.path.lastIndexOf('.'))))
+                ? colDpTableForName(f.path.slice(0, f.path.lastIndexOf('.')), tables)
                 : null;
             const resource = table ? { name: table.name, inSchema: true } : null;
             if (resource) {

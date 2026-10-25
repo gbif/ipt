@@ -432,6 +432,20 @@ public class ResourceImportServiceImplTest {
     assertEquals("nameusage", ResourceImportServiceImpl.normalizeColDpName("name_usage"));
   }
 
+  /**
+   * File names in the plural are tables too, like in ChecklistBank.
+   */
+  @Test
+  public void testColDpTableForName() {
+    Map<String, String> tables = Map.of("speciesinteraction", "species-interaction", "taxon", "taxon",
+        "reference", "reference");
+    assertEquals("species-interaction", ResourceImportServiceImpl.colDpTableForName("SpeciesInteraction", tables));
+    assertEquals("species-interaction", ResourceImportServiceImpl.colDpTableForName("speciesinteractions", tables));
+    assertEquals("taxon", ResourceImportServiceImpl.colDpTableForName("Taxa", tables));
+    assertEquals("reference", ResourceImportServiceImpl.colDpTableForName("references", tables));
+    assertNull(ResourceImportServiceImpl.colDpTableForName("notes", tables));
+  }
+
   private static DataPackageSchema colDpSchema() {
     return DataPackageSchema.builder()
         .identifier(COL_DP_IDENTIFIER)
