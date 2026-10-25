@@ -382,6 +382,46 @@ public class ResourceImportServiceImplTest {
     verify(sourceManager).analyze(nameUsageSource);
   }
 
+  /**
+   * A ColDP doesn't have to have metadata: it's created with blank metadata, which it can't be published with.
+   */
+  @Test
+  public void testCreateFromColDpArchiveWithoutMetadata() throws Exception {
+    when(schemaManager.get(COL_DP)).thenReturn(colDpSchema());
+    when(schemaManager.getSchemaIdentifier(COL_DP)).thenReturn(COL_DP_IDENTIFIER);
+    when(sourceManager.add(any(Resource.class), any(File.class), anyString())).thenAnswer(invocation -> {
+      TextFileSource source = new TextFileSource();
+      source.setName(invocation.getArgument(2, String.class));
+      source.setFile(invocation.getArgument(1, File.class));
+      source.setIgnoreHeaderLines(1);
+      return source;
+    });
+
+    Path archive = Files.createDirectory(tempDir.resolve("archive"));
+    File nameUsage = Files.writeString(archive.resolve("NameUsage.tsv"), "ID\tscientificName\nt1\tAus bus\n").toFile();
+
+    Resource resource = service.createFromFrictionlessDataPackage(SHORTNAME, archive.toFile(), COL_DP,
+        List.of(nameUsage), creator, alog);
+
+    assertInstanceOf(ColMetadata.class, resource.getDataPackageMetadata());
+    assertNull(((ColMetadata) resource.getDataPackageMetadata()).getTitle());
+    assertEquals(1, resource.getDataPackageMappings().size());
+    verify(action, atLeastOnce()).getText("manage.resource.dp.create.coldp.no.metadata");
+    verify(metadataReader, never()).readValue(any(File.class), any());
+  }
+
+  /**
+   * Other data packages can't be created without their datapackage.json.
+   */
+  @Test
+  public void testCreateFromCamtrapArchiveWithoutMetadataFails() throws Exception {
+    Path archive = Files.createDirectory(tempDir.resolve("archive"));
+    File deployments = Files.writeString(archive.resolve("deployments.csv"), "deploymentID\nd1\n").toFile();
+
+    assertThrows(ImportException.class, () -> service.createFromFrictionlessDataPackage(SHORTNAME, archive.toFile(),
+        CAMTRAP_DP, List.of(deployments), creator, alog));
+  }
+
   @Test
   public void testColDpCsvIsCommaSeparatedAndQuoted() throws Exception {
     when(schemaManager.get(COL_DP)).thenReturn(colDpSchema());

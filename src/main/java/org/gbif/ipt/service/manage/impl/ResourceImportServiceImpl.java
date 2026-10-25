@@ -443,6 +443,13 @@ public class ResourceImportServiceImpl implements ResourceImportService {
           throw new ImportException("Failed to read/parse data package metadata from " + metadataFile.getName());
         }
         declaredResources = extractDeclaredResources(metadata);
+      } else if (COL_DP.equals(packageType)) {
+        // a ColDP should have metadata, but doesn't have to: it's created with the blank metadata of a new resource,
+        // which can't be published until the metadata is uploaded
+        LOG.warn("No metadata file found in ColDP {}", shortname);
+        alog.warn("manage.resource.dp.create.coldp.no.metadata");
+        metadata = null;
+        declaredResources = Collections.emptyMap();
       } else {
         LOG.error("No metadata file found in Frictionless package");
         alog.error("manage.resource.dp.create.no.metadata");

@@ -42,6 +42,7 @@
  *   //   installedVersion), null when the same or not known
  *   // result.colDp -> true for a ColDP, checked as a data package without datapackage.json, see checkColDp()
  *   // result.metadataFiles -> its metadata file (ColDP only, otherwise taken from result.files)
+ *   // result.noMetadata -> true for a ColDP without metadata, which is created without
  */
 (function (global) {
     'use strict';
@@ -747,22 +748,34 @@
             ?? (normalized === 'taxa' ? tables.get('taxon') : undefined);
     }
 
+    // The ColDP tables by their normalized name
+    function colDpTables(schema) {
+        return new Map((schema.tableSchemas ?? []).map((t) => [normalizeColDpName(t.name), t]));
+    }
+
+    // The ColDP table of an archive file: a data file in the root of the archive named after it
+    // (ResourceImportServiceImpl.colDpTableForFile)
+    function colDpTableForFile(key, f, tables) {
+        const dot = key.lastIndexOf('.');
+        const extension = dot > 0 ? key.slice(dot + 1) : '';
+        return !key.includes('/') && COL_DP_DATA_FILE_EXTENSIONS.includes(extension)
+            ? colDpTableForName(f.path.slice(0, f.path.lastIndexOf('.')), tables)
+            : undefined;
+    }
+
     // A ColDP's metadata doesn't list its files: a data file in the root of the archive is the table it's named after,
     // its columns are the fields named the same, ignoring a col: prefix and case
-    // (ResourceImportServiceImpl.colDpTableForFile, colDpField). The result is the one of a data package.
+    // (ResourceImportServiceImpl.colDpTableForFile, colDpField). The result is the one of a data package. It can have
+    // no metadata: the resource is then created without (result.noMetadata).
     async function checkColDp(file, rootFiles, schema) {
         const metadataKey = COL_DP_METADATA_FILES.find((f) => rootFiles.has(f));
-        const metadataPath = rootFiles.get(metadataKey).path;
-        const tables = new Map((schema.tableSchemas ?? []).map((t) => [normalizeColDpName(t.name), t]));
+        const metadataPath = metadataKey ? rootFiles.get(metadataKey).path : null;
+        const tables = colDpTables(schema);
 
         const files = [];
         for (const [key, f] of rootFiles) {
             if (key === metadataKey) continue;
-            const dot = key.lastIndexOf('.');
-            const extension = dot > 0 ? key.slice(dot + 1) : '';
-            const table = !key.includes('/') && COL_DP_DATA_FILE_EXTENSIONS.includes(extension)
-                ? colDpTableForName(f.path.slice(0, f.path.lastIndexOf('.')), tables)
-                : null;
+            const table = colDpTableForFile(key, f, tables);
             const resource = table ? { name: table.name, inSchema: true } : null;
             if (resource) {
                 const fields = new Set((table.fields ?? []).map((field) => field.name.toLowerCase()));
@@ -796,7 +809,7 @@
         return {
             type: 'data-package',
             colDp: true,
-            actualType: { value: schema.name, comment: 'ColDP metadata' },
+            actualType: { value: schema.name, comment: metadataPath ? 'ColDP metadata' : 'ColDP table names' },
             version: { value: schema.version, comment: 'Installed version' },
             datasetType: schema.name,
             typeFromTables: false,
@@ -808,7 +821,8 @@
             unverified,
             reason,
             files,
-            metadataFiles: [metadataPath],
+            metadataFiles: metadataPath ? [metadataPath] : [],
+            noMetadata: !metadataPath,
             unmappedFiles: files.filter((f) => !f.resources.length),
             skippedResources: [],
             unresolvedPaths: [],
@@ -997,10 +1011,23 @@
         // exported by the IPT has both, ResourceImportServiceImpl.findMetadataFile). Nothing selected yet: a ColDP if it
         // has no datapackage.json (otherwise the type comes from that), the page then selects ColDP. With another type
         // selected, it's checked as that type.
+        // A ColDP can have no metadata. With ColDP selected, it's then checked as a ColDP without a datapackage.json
+        // too. Nothing selected yet, it's taken for a ColDP if two of its files are ColDP tables: a single one (e.g.
+        // taxon.txt) is imported as a Darwin Core Archive.
         const colDpSchema = availableDataPackages.find((s) => s.name === 'coldp');
-        const colDp = colDpSchema && !rootFiles.has('meta.xml')
-            && COL_DP_METADATA_FILES.some((f) => rootFiles.has(f))
-            && (selectedType ? selectedType === colDpSchema.name : !manifestCandidate);
+        const colDpMetadata = COL_DP_METADATA_FILES.some((f) => rootFiles.has(f));
+        const looksLikeColDp = () => {
+            const tables = colDpTables(colDpSchema);
+            return [...rootFiles].filter(([key, f]) => colDpTableForFile(key, f, tables)).length >= 2;
+        };
+        let colDp = false;
+        if (colDpSchema && !rootFiles.has('meta.xml')) {
+            if (selectedType) {
+                colDp = selectedType === colDpSchema.name && (colDpMetadata || !manifestCandidate);
+            } else {
+                colDp = !manifestCandidate && (colDpMetadata || looksLikeColDp());
+            }
+        }
         if (colDp) {
             return withTotalSize(await checkColDp(file, rootFiles, colDpSchema));
         }

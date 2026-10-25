@@ -300,6 +300,11 @@
 
         const problems = [];
         const rows = [];
+        // a ColDP doesn't have to have metadata, the resource is created without
+        if (result.noMetadata) {
+            problems.push({ level: 'warning', text: msg('dp.coldp.noMetadata'), detail: null,
+                notes: [msg('dp.coldp.noMetadata.note')] });
+        }
         for (const t of tables.values()) {
             const missing = t.files.filter((f) => !f.found);
             const missingPaths = missing.map((f) => f.path ?? '').join(', ');
