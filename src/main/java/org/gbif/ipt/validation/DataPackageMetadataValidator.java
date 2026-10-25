@@ -58,6 +58,11 @@ public class DataPackageMetadataValidator {
   }
 
   public boolean isValid(Resource resource) {
+    // ColDP metadata has its own constraints, not in the frictionless sections
+    if (resource.getDataPackageMetadata() instanceof ColMetadata colMetadata) {
+      return validator.validate(colMetadata).isEmpty();
+    }
+
     Set<ConstraintViolation<DataPackageMetadata>> violations
         = validator.validate(resource.getDataPackageMetadata(), BasicMetadata.class, GeographicScopeMetadata.class,
         TaxonomicScopeMetadata.class, TemporalScopeMetadata.class, KeywordsMetadata.class, ProjectMetadata.class,

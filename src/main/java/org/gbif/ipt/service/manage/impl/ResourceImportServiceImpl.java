@@ -46,7 +46,6 @@ import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
-import org.gbif.ipt.model.datapackage.metadata.col.FrictionlessColMetadata;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -174,7 +173,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       res.setInferredMetadata(new InferredCamtrapMetadata());
       res.inferCoverageMetadataAutomatically(true);
     } else if (COL_DP.equals(type)) {
-      res.setDataPackageMetadata(new FrictionlessColMetadata());
+      res.setDataPackageMetadata(new ColMetadata());
     }
 
     String schemaIdentifier = schemaManager.getSchemaIdentifier(type);

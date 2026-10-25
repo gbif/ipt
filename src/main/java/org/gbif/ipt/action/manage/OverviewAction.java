@@ -1201,7 +1201,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       try {
         if (COL_DP.equals(resource.getCoreType())) {
           File metadataFile = cfg.getDataDir().resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-          datapackageMetadataRaw = org.apache.commons.io.FileUtils.readFileToString(metadataFile, StandardCharsets.UTF_8);
+          // a ColDP doesn't have metadata until it's uploaded
+          if (metadataFile.isFile()) {
+            datapackageMetadataRaw = org.apache.commons.io.FileUtils.readFileToString(metadataFile, StandardCharsets.UTF_8);
+          }
         }
       } catch (Exception e) {
         LOG.error("Failed to read ColDP metadata", e);
