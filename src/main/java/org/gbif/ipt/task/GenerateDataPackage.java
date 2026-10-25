@@ -24,6 +24,7 @@ import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.manage.MetadataReader;
@@ -47,6 +48,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -61,6 +63,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.frictionlessdata.datapackage.exceptions.DataPackageValidationException;
 import io.frictionlessdata.datapackage.JSONBase;
@@ -84,6 +88,10 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   private static final Pattern ESCAPE_CHARS = Pattern.compile("[\t\n\r]");
+  // descriptor properties a ColDP's additional metadata properties can't set: the descriptor's own, and those it takes
+  // from the ColDP's metadata, which the package is only created with as it expects them
+  private static final Set<String> DESCRIPTOR_OWN_PROPERTIES = Set.of("profile", "id", "name", "resources", "created",
+      "version", "title", "description", "contributors", "keywords", "homepage", "image", "licenses");
 
   private final Resource resource;
   private final SourceManager sourceManager;
@@ -143,18 +151,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       // create a temp dir to copy all files to
       dataPackageFolder = dataDir.tmpDir();
 
-      // different order - for Camtrap/Material/etc. first create metadata and then add resources
-      if (COL_DP.equals(resource.getCoreType())) {
-        // create data resources
-        createDataResources();
-        // create datapackage descriptor file (metadata.yml)
-        addMetadata();
-      } else {
-        // copy datapackage descriptor file (datapackage.json)
-        addMetadata();
-        // create data resources
-        createDataResources();
-      }
+      // create the datapackage descriptor (datapackage.json), then add resources to it
+      addMetadata();
+      createDataResources();
 
       // validation is a part of frictionless datapackage generation
       // zip archive and copy to resource folder
@@ -888,22 +887,48 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     addMessage(Level.INFO, "Metadata added");
   }
 
-  private void addColMetadata() throws IOException {
+  /**
+   * Creates the data package descriptor from the ColDP metadata (metadata.yaml, which goes in the archive too). The
+   * package is created from it as JSON: properties like version, created, homepage, contributors and licenses are
+   * only read from JSON, they're left out when set on a package.
+   */
+  void addColMetadata() throws Exception {
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
     ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
 
-    // Basic metadata
-    setDataPackageProperty("created", MetadataUtils.formatDataPackageCreated(Instant.now()));
-    setDataPackageProperty("version", colMetadata.getVersion());
-    setDataPackageStringProperty("title", colMetadata.getTitle());
-    setDataPackageCollectionProperty("contributors", colMetadata.getContributor());
-    setDataPackageStringProperty("description", colMetadata.getDescription());
-    setDataPackageCollectionProperty("keywords", colMetadata.getKeyword());
-    setDataPackageProperty("homepage", colMetadata.getUrl());
-    setDataPackageCollectionProperty("licenses", Collections.singleton(colMetadata.getLicense()));
+    Map<String, Object> descriptor = new LinkedHashMap<>();
+    descriptor.put("created", MetadataUtils.formatDataPackageCreated(Instant.now()));
+    putIfNotEmpty(descriptor, "version", colMetadata.getVersion());
+    putIfNotEmpty(descriptor, "title", colMetadata.getTitle());
+    putIfNotEmpty(descriptor, "description", colMetadata.getDescription());
+    // ColDP agents and license as the descriptor has them
+    putIfNotEmpty(descriptor, "contributors", MetadataUtils.colDpContributorsForDescriptor(colMetadata));
+    putIfNotEmpty(descriptor, "keywords", colMetadata.getKeyword());
+    putIfNotEmpty(descriptor, "homepage", MetadataUtils.httpUrlOrNull(colMetadata.getUrl()));
+    putIfNotEmpty(descriptor, "image", MetadataUtils.httpUrlOrNull(colMetadata.getLogo()));
+    List<FrictionlessLicense> licenses = MetadataUtils.colDpLicensesForDescriptor(colMetadata.getLicense());
+    if (licenses.isEmpty() && StringUtils.isNotBlank(colMetadata.getLicense())) {
+      addMessage(Level.WARN, "License " + colMetadata.getLicense()
+          + " is not known, it's left out of datapackage.json and only in metadata.yaml");
+    }
+    putIfNotEmpty(descriptor, "licenses", licenses);
 
     // additional properties
-    colMetadata.getAdditionalProperties().forEach((key, value) -> dataPackage.setProperty(key, value));
+    colMetadata.getAdditionalProperties().forEach((key, value) -> {
+      if (!DESCRIPTOR_OWN_PROPERTIES.contains(key)) {
+        descriptor.put(key, value);
+      }
+    });
+    descriptor.put("resources", Collections.emptyList());
+
+    dataPackage = new Package(new ObjectMapper().writeValueAsString(descriptor), dataPackageFolder.toPath(), false);
+  }
+
+  private static void putIfNotEmpty(Map<String, Object> descriptor, String name, Object value) {
+    if (value instanceof String s ? StringUtils.isNotBlank(s)
+        : value instanceof Collection<?> c ? !c.isEmpty() : value != null) {
+      descriptor.put(name, value);
+    }
   }
 
   private void addCamtrapMetadata() throws Exception {
@@ -915,19 +940,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
   private void setDataPackageProperty(String name, Object property) {
     if (property != null) {
-      dataPackage.setProperty(name, property);
-    }
-  }
-
-  private void setDataPackageStringProperty(String name, String property) {
-    if (StringUtils.isNotEmpty(property)) {
-      dataPackage.setProperty(name, property);
-    }
-  }
-
-  @SuppressWarnings("rawtypes")
-  private void setDataPackageCollectionProperty(String name, Collection property) {
-    if (property != null && !property.isEmpty()) {
       dataPackage.setProperty(name, property);
     }
   }

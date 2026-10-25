@@ -46,7 +46,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
  * Generated from <a href="https://github.com/CatalogueOfLife/coldp/blob/master/metadata.json">JSON schema</a>.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
+// image is the logo (getImage), which the IPT used to write as image too
+@JsonIgnoreProperties(value = "image", ignoreUnknown = true)
 @JsonPropertyOrder({
     "doi",
     "identifier",

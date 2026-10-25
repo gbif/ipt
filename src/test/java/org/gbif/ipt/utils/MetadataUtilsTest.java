@@ -13,6 +13,12 @@
  */
 package org.gbif.ipt.utils;
 
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
+import org.gbif.ipt.model.datapackage.metadata.col.Agent;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+
+import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +34,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MetadataUtilsTest {
 
@@ -113,5 +120,77 @@ public class MetadataUtilsTest {
     for (String license : Arrays.asList("CC BY 3.0", "CC BY-SA", "CC-BY-ND-4.0", "other", "", null)) {
       assertNull(MetadataUtils.colDpLicenseToGbifCode(license), license);
     }
+  }
+
+  /**
+   * A descriptor's license needs a name or path: it's the SPDX name and URL of a known license, none for another.
+   */
+  @Test
+  public void testColDpLicensesForDescriptor() {
+    List<FrictionlessLicense> licenses = MetadataUtils.colDpLicensesForDescriptor("CC BY 4.0");
+    assertEquals(1, licenses.size());
+    assertEquals("CC-BY-4.0", licenses.get(0).getName());
+    assertEquals("https://creativecommons.org/licenses/by/4.0/", licenses.get(0).getPath());
+
+    assertEquals("CC0-1.0", MetadataUtils.colDpLicensesForDescriptor("cc0").get(0).getName());
+    assertTrue(MetadataUtils.colDpLicensesForDescriptor("other").isEmpty());
+    assertTrue(MetadataUtils.colDpLicensesForDescriptor(null).isEmpty());
+  }
+
+  /**
+   * A descriptor's contributors have a title and a role, they're the ColDP's agents with their name.
+   */
+  @Test
+  public void testColDpContributorsForDescriptor() {
+    ColMetadata metadata = new ColMetadata();
+    metadata.setCreator(List.of(agent("Kwang-Tsao", "Shao", "Academia Sinica", "0000-0001-9650-3136"),
+        agent(null, null, null, null)));
+    metadata.setEditor(List.of(agent(null, "Lee", null, null)));
+    metadata.setPublisher(agent(null, null, "TaiBIF", null));
+    Agent contact = agent("Sz-Yi", "Tsai", null, null);
+    contact.setEmail("contact@example.org");
+    metadata.setContact(contact);
+
+    List<FrictionlessContributor> contributors = MetadataUtils.colDpContributorsForDescriptor(metadata);
+
+    assertEquals(List.of("Kwang-Tsao Shao:author", "Lee:contributor", "TaiBIF:publisher", "Sz-Yi Tsai:maintainer"),
+        contributors.stream().map(c -> c.getTitle() + ":" + c.getRole()).toList());
+    assertEquals("Academia Sinica", contributors.get(0).getOrganization());
+    assertEquals("https://orcid.org/0000-0001-9650-3136", contributors.get(0).getPath());
+    // an organisation is the title, not its organization
+    assertNull(contributors.get(2).getOrganization());
+    assertEquals("contact@example.org", contributors.get(3).getEmail());
+  }
+
+  /**
+   * A contributor's path is its ORCID, written as an ID or URL, or else its URL, but only a full one: the descriptor
+   * can't be created with another.
+   */
+  @Test
+  public void testColDpContributorPath() {
+    ColMetadata metadata = new ColMetadata();
+    Agent orcidUrl = agent("A", "B", null, "https://orcid.org/0000-0001-9650-3136");
+    Agent orcidWithoutScheme = agent("G", "H", null, "orcid.org/0000-0001-9650-3136");
+    Agent url = agent("C", "D", null, null);
+    url.setUrl(URI.create("https://example.org"));
+    Agent partialUrl = agent("E", "F", null, null);
+    partialUrl.setUrl(URI.create("www.example.org"));
+    metadata.setCreator(List.of(orcidUrl, url, partialUrl, orcidWithoutScheme));
+
+    List<FrictionlessContributor> contributors = MetadataUtils.colDpContributorsForDescriptor(metadata);
+
+    assertEquals("https://orcid.org/0000-0001-9650-3136", contributors.get(0).getPath());
+    assertEquals("https://example.org", contributors.get(1).getPath());
+    assertNull(contributors.get(2).getPath());
+    assertEquals("https://orcid.org/0000-0001-9650-3136", contributors.get(3).getPath());
+  }
+
+  private static Agent agent(String given, String family, String organisation, String orcid) {
+    Agent agent = new Agent();
+    agent.setGiven(given);
+    agent.setFamily(family);
+    agent.setOrganisation(organisation);
+    agent.setOrcid(orcid);
+    return agent;
   }
 }

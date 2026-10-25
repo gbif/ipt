@@ -14,17 +14,26 @@
 package org.gbif.ipt.utils;
 
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
+import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.Agent;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 
+import java.net.URI;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -35,6 +44,11 @@ import static org.gbif.ipt.config.Constants.DWC_DP;
 public final class MetadataUtils {
 
   private static final DateTimeFormatter CAMTRAP_TEMPORAL_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  // the URLs of the GBIF-supported licenses a ColDP can have, see colDpLicenseToGbifCode
+  private static final Map<String, String> COLDP_LICENSE_URLS = Map.of(
+      "CC0-1.0", "https://creativecommons.org/publicdomain/zero/1.0/",
+      "CC-BY-4.0", "https://creativecommons.org/licenses/by/4.0/",
+      "CC-BY-NC-4.0", "https://creativecommons.org/licenses/by-nc/4.0/");
 
   private MetadataUtils() {
   }
@@ -62,6 +76,94 @@ public final class MetadataUtils {
       return null;
     }
     return COLDP_LICENSES_CODES_TO_GBIF.get(license.replaceAll("[\\s_-]", "").toUpperCase(Locale.ENGLISH));
+  }
+
+  /**
+   * A ColDP license as a frictionless descriptor's licenses: a license with its SPDX name and URL, as the descriptor
+   * requires a name or path. Empty if the license isn't known, it's in the ColDP's metadata.yaml anyway.
+   *
+   * @param license ColDP license
+   * @return licenses, empty if not known
+   */
+  public static List<FrictionlessLicense> colDpLicensesForDescriptor(String license) {
+    String code = colDpLicenseToGbifCode(license);
+    String path = code != null ? COLDP_LICENSE_URLS.get(code) : null;
+    if (path == null) {
+      return Collections.emptyList();
+    }
+    FrictionlessLicense frictionlessLicense = new FrictionlessLicense();
+    frictionlessLicense.setName(code);
+    frictionlessLicense.setPath(path);
+    return List.of(frictionlessLicense);
+  }
+
+  /**
+   * A ColDP's agents as a frictionless descriptor's contributors, with a title and a role: creators are authors,
+   * editors and contributors contributors, the publisher the publisher and the contact the maintainer. Agents with
+   * no name nor organisation are left out, a contributor needs a title.
+   *
+   * @param metadata ColDP metadata
+   * @return contributors
+   */
+  public static List<FrictionlessContributor> colDpContributorsForDescriptor(ColMetadata metadata) {
+    List<FrictionlessContributor> contributors = new ArrayList<>();
+    addColDpContributors(contributors, metadata.getCreator(), "author");
+    addColDpContributors(contributors, metadata.getEditor(), "contributor");
+    addColDpContributors(contributors, metadata.getContributor(), "contributor");
+    addColDpContributors(contributors, Collections.singletonList(metadata.getPublisher()), "publisher");
+    addColDpContributors(contributors, Collections.singletonList(metadata.getContact()), "maintainer");
+    return contributors;
+  }
+
+  private static void addColDpContributors(List<FrictionlessContributor> contributors, List<Agent> agents,
+                                           String role) {
+    if (agents == null) {
+      return;
+    }
+    for (Agent agent : agents) {
+      if (agent == null) {
+        continue;
+      }
+      String name = StringUtils.trimToNull(
+          StringUtils.trimToEmpty(agent.getGiven()) + " " + StringUtils.trimToEmpty(agent.getFamily()));
+      String title = name != null ? name : StringUtils.trimToNull(agent.getOrganisation());
+      if (title == null) {
+        continue;
+      }
+      FrictionlessContributor contributor = new FrictionlessContributor();
+      contributor.setTitle(title);
+      contributor.setRole(role);
+      contributor.setEmail(StringUtils.trimToNull(agent.getEmail()));
+      if (name != null) {
+        contributor.setOrganization(StringUtils.trimToNull(agent.getOrganisation()));
+      }
+      contributor.setPath(colDpAgentPath(agent));
+      contributors.add(contributor);
+    }
+  }
+
+  /**
+   * A ColDP agent's ORCID (an ID or its URL, with or without https://) or else URL, as a contributor's path, if it's a
+   * full http(s) URL.
+   */
+  private static String colDpAgentPath(Agent agent) {
+    String orcid = StringUtils.trimToNull(agent.getOrcid());
+    if (orcid != null) {
+      return isHttpUrl(orcid) ? orcid : "https://orcid.org/" + Strings.CI.removeStart(orcid, "orcid.org/");
+    }
+    return httpUrlOrNull(agent.getUrl());
+  }
+
+  /**
+   * The URL if it's a full http(s) URL, otherwise null: a data package descriptor can't be created with another (e.g.
+   * www.example.org) as a homepage, image or contributor path.
+   */
+  public static String httpUrlOrNull(URI url) {
+    return url != null && isHttpUrl(url.toString()) ? url.toString() : null;
+  }
+
+  private static boolean isHttpUrl(String url) {
+    return Strings.CI.startsWithAny(url, "http://", "https://");
   }
 
   public static boolean isDataPackageType(String type) {

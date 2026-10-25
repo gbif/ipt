@@ -26,6 +26,9 @@ import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.service.manage.impl.JsonServiceImpl;
+import org.gbif.ipt.service.manage.impl.MetadataReaderImpl;
+import org.gbif.ipt.service.manage.impl.YamlServiceImpl;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
@@ -36,11 +39,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipFile;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -63,6 +71,8 @@ public class GenerateDataPackageTest {
   private DataPackageTableSchema tableSchema;
   private DataPackageMapping mapping;
   private GenerateDataPackage generator;
+  private SourceManager sourceManager;
+  private DataPackageSchemaManager schemaManager;
 
   @BeforeEach
   public void init() throws Exception {
@@ -88,6 +98,7 @@ public class GenerateDataPackageTest {
     TextFileSource source = new TextFileSource();
     source.setName("deployments");
     SourceManager mockSourceManager = mock(SourceManager.class);
+    sourceManager = mockSourceManager;
     when(mockSourceManager.rowIterator(source)).thenReturn(new RowIterator(List.<String[]>of(new String[] {"d1"})));
 
     mapping = new DataPackageMapping();
@@ -97,6 +108,7 @@ public class GenerateDataPackageTest {
     mapping.setFields(new ArrayList<>(List.of(new DataPackageFieldMapping(0, field))));
 
     DataPackageSchemaManager mockSchemaManager = mock(DataPackageSchemaManager.class);
+    schemaManager = mockSchemaManager;
     when(mockSchemaManager.getTableSchemaFile(dataPackageSchema, "deployments")).thenReturn(schemaFile);
 
     DataDir mockDataDir = mock(DataDir.class);
@@ -121,6 +133,80 @@ public class GenerateDataPackageTest {
     generator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
 
     assertEquals("deploymentID", generator.getDataPackage().getResource("deployments").getSchema().getPrimaryKey());
+  }
+
+  /**
+   * A ColDP's descriptor has its metadata as frictionless has it: version, created, homepage and keywords, contributors
+   * with a title and role, licenses with a name and path, the logo as image, and its tables. Additional properties don't
+   * set the descriptor's own.
+   */
+  @Test
+  public void testColDpDescriptor() throws Exception {
+    File metadataYaml = new File(tmpDir, "metadata.yaml");
+    Files.writeString(metadataYaml.toPath(), String.join("\n",
+        "title: Cycads",
+        "version: '3'",
+        "license: CC BY 4.0",
+        "url: https://cycadlist.org",
+        "logo: https://cycadlist.org/logo.png",
+        "keyword: [cycads]",
+        "creator:",
+        "  - given: Michael",
+        "    family: Calonje",
+        "    orcid: 0000-0001-9650-3136",
+        "contact:",
+        "  given: Michael",
+        "  family: Calonje",
+        "  email: michaelc@example.org",
+        "customField: custom",
+        "resources: not-a-resource",
+        "contributors: not-contributors",
+        ""));
+
+    Resource resource = new Resource();
+    resource.setShortname(RESOURCE_SHORTNAME);
+    resource.setCoreType(COL_DP);
+    DataDir dataDir = mock(DataDir.class);
+    when(dataDir.resourcePublicationLogFile(RESOURCE_SHORTNAME)).thenReturn(new File(tmpDir, "publication.log"));
+    when(dataDir.resourceDatapackageMetadataFile(RESOURCE_SHORTNAME, COL_DP)).thenReturn(metadataYaml);
+    GenerateDataPackage colDpGenerator = new GenerateDataPackage(resource, mock(ReportHandler.class), dataDir,
+        sourceManager, schemaManager, mock(AppConfig.class),
+        new MetadataReaderImpl(new JsonServiceImpl(), new YamlServiceImpl()));
+    File dataPackageFolder = new File(tmpDir, "coldp");
+    dataPackageFolder.mkdir();
+    colDpGenerator.setDataPackageFolder(dataPackageFolder);
+
+    colDpGenerator.addColMetadata();
+    // the tables are added to it
+    colDpGenerator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
+    File zip = new File(tmpDir, "coldp.zip");
+    colDpGenerator.getDataPackage().write(zip, true);
+
+    JsonNode descriptor;
+    try (ZipFile zipFile = new ZipFile(zip)) {
+      descriptor = new ObjectMapper().readTree(zipFile.getInputStream(zipFile.getEntry("datapackage.json")));
+    }
+    assertEquals("Cycads", descriptor.get("title").asText());
+    assertEquals("3", descriptor.get("version").asText());
+    assertTrue(descriptor.get("created").asText().endsWith("Z"));
+    assertEquals("https://cycadlist.org", descriptor.get("homepage").asText());
+    assertEquals("cycads", descriptor.get("keywords").get(0).asText());
+    assertEquals("https://cycadlist.org/logo.png", descriptor.get("image").asText());
+
+    JsonNode contributors = descriptor.get("contributors");
+    assertEquals(2, contributors.size());
+    assertEquals("Michael Calonje", contributors.get(0).get("title").asText());
+    assertEquals("author", contributors.get(0).get("role").asText());
+    assertEquals("https://orcid.org/0000-0001-9650-3136", contributors.get(0).get("path").asText());
+    assertEquals("maintainer", contributors.get(1).get("role").asText());
+
+    JsonNode license = descriptor.get("licenses").get(0);
+    assertEquals("CC-BY-4.0", license.get("name").asText());
+    assertEquals("https://creativecommons.org/licenses/by/4.0/", license.get("path").asText());
+
+    assertEquals("custom", descriptor.get("customField").asText());
+    assertEquals(1, descriptor.get("resources").size());
+    assertEquals("deployments", descriptor.get("resources").get(0).get("name").asText());
   }
 
   @Test

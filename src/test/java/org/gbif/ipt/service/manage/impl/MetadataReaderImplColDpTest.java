@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -305,6 +306,26 @@ class MetadataReaderImplColDpTest {
 
     assertEquals("Flow", cm.getTitle());
     assertEquals("CC0", cm.getLicense());
+  }
+
+  /**
+   * The logo is written as logo only, not also as the image it is for data packages. An image the IPT wrote before
+   * isn't kept.
+   */
+  @Test
+  void testWriteLogoOnce(@TempDir Path tempDir) throws Exception {
+    File metadataYaml = Files.writeString(tempDir.resolve("old.yaml"),
+        "title: Logo\nlogo: https://example.org/logo.png\nimage: https://example.org/logo.png\n").toFile();
+    ColMetadata cm = reader.readValue(metadataYaml, ColMetadata.class);
+    assertEquals(URI.create("https://example.org/logo.png"), cm.getLogo());
+    assertTrue(cm.getAdditionalProperties().isEmpty(), cm.getAdditionalProperties().toString());
+
+    File written = tempDir.resolve("metadata.yaml").toFile();
+    reader.writeValue(written, cm);
+    String yaml = Files.readString(written.toPath());
+
+    assertTrue(yaml.contains("logo:"), yaml);
+    assertFalse(yaml.contains("image:"), yaml);
   }
 
   /**
