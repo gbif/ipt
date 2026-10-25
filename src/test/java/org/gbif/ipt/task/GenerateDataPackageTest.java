@@ -23,6 +23,7 @@ import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -32,7 +33,10 @@ import org.gbif.ipt.service.manage.impl.YamlServiceImpl;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,9 +54,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class GenerateDataPackageTest {
@@ -207,6 +217,66 @@ public class GenerateDataPackageTest {
     assertEquals("custom", descriptor.get("customField").asText());
     assertEquals(1, descriptor.get("resources").size());
     assertEquals("deployments", descriptor.get("resources").get(0).get("name").asText());
+  }
+
+  /**
+   * A ColDP's archive has its metadata.yaml.
+   */
+  @Test
+  public void testColDpArchiveHasMetadataYaml() throws Exception {
+    File published = new File(tmpDir, "datapackage-1.zip");
+    GenerateDataPackage colDpGenerator = colDpGeneratorWithTable(
+        new MetadataReaderImpl(new JsonServiceImpl(), new YamlServiceImpl()), published);
+
+    colDpGenerator.bundleArchive();
+
+    try (ZipFile zipFile = new ZipFile(published)) {
+      String metadataYaml = new String(zipFile.getInputStream(zipFile.getEntry("metadata.yaml")).readAllBytes(),
+          StandardCharsets.UTF_8);
+      assertTrue(metadataYaml.contains("title: \"Cycads\""), metadataYaml);
+    }
+  }
+
+  /**
+   * A ColDP's archive isn't published without its metadata.yaml.
+   */
+  @Test
+  public void testColDpArchiveNotPublishedWithoutMetadataYaml() throws Exception {
+    MetadataReader failingWriter = spy(new MetadataReaderImpl(new JsonServiceImpl(), new YamlServiceImpl()));
+    doThrow(new IOException("No space left on device")).when(failingWriter).writeValue(any(Writer.class), any());
+    File published = new File(tmpDir, "datapackage-1.zip");
+    GenerateDataPackage colDpGenerator = colDpGeneratorWithTable(failingWriter, published);
+
+    assertThrows(GeneratorException.class, colDpGenerator::bundleArchive);
+    assertFalse(published.exists());
+  }
+
+  /**
+   * A ColDP generator with its descriptor and a table, ready to bundle into the published file.
+   */
+  private GenerateDataPackage colDpGeneratorWithTable(MetadataReader metadataReader, File published)
+      throws Exception {
+    File metadataYaml = new File(tmpDir, "metadata.yaml");
+    Files.writeString(metadataYaml.toPath(), "title: Cycads\nlicense: CC0\n");
+
+    Resource resource = new Resource();
+    resource.setShortname(RESOURCE_SHORTNAME);
+    resource.setCoreType(COL_DP);
+    resource.setDataPackageMetadata(metadataReader.readValue(metadataYaml, ColMetadata.class));
+    DataDir dataDir = mock(DataDir.class);
+    when(dataDir.resourcePublicationLogFile(RESOURCE_SHORTNAME)).thenReturn(new File(tmpDir, "publication.log"));
+    when(dataDir.resourceDatapackageMetadataFile(RESOURCE_SHORTNAME, COL_DP)).thenReturn(metadataYaml);
+    when(dataDir.tmpFile(anyString(), anyString())).thenReturn(new File(tmpDir, "tmp-datapackage.zip"));
+    when(dataDir.resourceDataPackageFile(eq(RESOURCE_SHORTNAME), any())).thenReturn(published);
+
+    GenerateDataPackage colDpGenerator = new GenerateDataPackage(resource, mock(ReportHandler.class), dataDir,
+        sourceManager, schemaManager, mock(AppConfig.class), metadataReader);
+    File dataPackageFolder = new File(tmpDir, "coldp");
+    dataPackageFolder.mkdir();
+    colDpGenerator.setDataPackageFolder(dataPackageFolder);
+    colDpGenerator.addColMetadata();
+    colDpGenerator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
+    return colDpGenerator;
   }
 
   @Test

@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -233,7 +234,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @throws GeneratorException   if data package could not be zipped or moved
    * @throws InterruptedException if executing thread was interrupted
    */
-  private void bundleArchive() throws Exception {
+  void bundleArchive() throws Exception {
     checkForInterruption();
     setState(STATE.BUNDLING);
     File zip = null;
@@ -262,6 +263,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       }
     } catch (IOException e) {
       throw new GeneratorException("Problem occurred while bundling data package", e);
+    } catch (UncheckedIOException e) {
+      // e.g. writing a ColDP's metadata.yaml failed
+      throw new GeneratorException("Problem occurred while bundling data package", e.getCause());
     } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
       throw new GeneratorException(e.getMessage());
     } finally {
@@ -276,15 +280,19 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Apart from standard frictionless metadata ColDP archive must contain specific metadata.yaml file.
+   * Apart from standard frictionless metadata ColDP archive must contain specific metadata.yaml file. The archive can't
+   * be published without it: the archive is written with it, which can't throw an IOException, so it's unchecked.
+   *
+   * @throws UncheckedIOException if it can't be written
    */
   private void writeCustomColDPMetadata(Path outputDir) {
     Path target = outputDir.getFileSystem().getPath("metadata.yaml");
-    try (Writer writer = Files.newBufferedWriter(target, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
+    try (Writer writer = Files.newBufferedWriter(target, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW)) {
       metadataReader.writeValue(writer, resource.getDataPackageMetadata());
     } catch (IOException e) {
       log.error("Failed to write metadata.yaml", e);
-      addMessage(Level.ERROR, "Failed to write metadata.yaml");
+      addMessage(Level.ERROR, "Failed to write metadata.yaml: " + e.getMessage());
+      throw new UncheckedIOException(e);
     }
   }
 
