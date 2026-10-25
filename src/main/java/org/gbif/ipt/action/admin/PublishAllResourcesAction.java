@@ -127,9 +127,9 @@ public class PublishAllResourcesAction extends BaseAction {
       return SUCCESS;
     }
 
-    // kick off publishing for all resources, unless
-    // a) the resource has exceeded the maximum number of failed publications
-    // b) the mandatory metadata has not been provided for the resource
+    // kick off publishing for all resources like on the resource overview, unless
+    // a) the mandatory metadata has not been provided for the resource
+    // b) the data package resource doesn't have any mappings
     for (Resource resource : resources) {
       // next version number - the version of newly published eml/rtf/archive
       BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
@@ -138,14 +138,23 @@ public class PublishAllResourcesAction extends BaseAction {
         // max failures limit for auto-publishing; give them a fresh start instead
         resourcePublicationManager.getProcessFailures().remove(resource.getShortname());
 
-        boolean isValidMetadata = resource.isDataPackage()
+        // DwC-DP metadata is EML, like for DwC-A
+        boolean isValidMetadata = resource.isDataPackage() && !resource.isDwcDp()
             ? dpMetadataValidator.isValid(resource)
             : emlValidator.isValid(resource, null);
 
         if (!isValidMetadata) {
-          addActionWarning(getText("publishing.failed",
+          addActionError(getText("publishing.failed",
               new String[]{nextVersion.toPlainString(), resource.getShortname(),
                   getText("manage.overview.published.missing.metadata")}));
+          continue;
+        }
+
+        if (resource.isDataPackage() && resource.getDataPackageMappings().isEmpty()) {
+          addActionError(getText("publishing.failed",
+              new String[]{nextVersion.toPlainString(), resource.getShortname(),
+                  getText("manage.overview.published.missing.mappings")}));
+          continue;
         }
 
         // publish a new version of the resource - dwca gets published asynchronously

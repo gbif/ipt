@@ -32,6 +32,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
@@ -106,11 +107,14 @@ import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PublishAllResourcesActionTest extends IptBaseTest {
@@ -119,6 +123,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
   private static final String RESOURCE_SHORTNAME = "res2";
 
   private PublishAllResourcesAction action;
+  private final DataPackageMetadataValidator mockDataPackageMetadataValidator = mock(DataPackageMetadataValidator.class);
 
   private final AppConfig mockAppConfig = MockAppConfig.buildMock();
   private final VocabulariesManager mockVocabulariesManager = mock(VocabulariesManager.class);
@@ -182,7 +187,7 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
         mockResourceManager,
         mockResourcePublicationManager,
         mock(RegistryManager.class),
-        mock(DataPackageMetadataValidator.class));
+        mockDataPackageMetadataValidator);
   }
 
   @Test
@@ -241,6 +246,53 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     action.execute();
     assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
     assertEquals(1, action.resourcePublicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
+  }
+
+  /**
+   * Like on the resource overview, a resource without its mandatory metadata isn't published.
+   */
+  @Test
+  public void testExecuteSkipsResourceWithInvalidMetadata() throws Exception {
+    Resource resource = action.resourceManager.get(RESOURCE_SHORTNAME);
+    resource.setEml(new Eml());
+
+    action.execute();
+
+    assertEquals(1, action.getActionErrors().size());
+    assertNull(resource.getLastPublished());
+    assertTrue(action.resourcePublicationManager.getProcessFailures().isEmpty());
+  }
+
+  /**
+   * Like on the resource overview, a data package without mappings isn't published, even with valid metadata.
+   */
+  @Test
+  public void testExecuteSkipsDataPackageWithoutMappings() throws Exception {
+    Resource resource = action.resourceManager.get(RESOURCE_SHORTNAME);
+    resource.setCoreType(Constants.COL_DP);
+    resource.setDataPackageIdentifier("http://rs.gbif.org/data-packages/coldp");
+    resource.setDataPackageMetadata(new ColMetadata());
+    when(mockDataPackageMetadataValidator.isValid(resource)).thenReturn(true);
+
+    action.execute();
+
+    assertEquals(1, action.getActionErrors().size());
+    assertNull(resource.getLastPublished());
+    assertTrue(action.resourcePublicationManager.getProcessFailures().isEmpty());
+  }
+
+  /**
+   * Like on the resource overview, a DwC-DP's metadata is its EML.
+   */
+  @Test
+  public void testExecuteValidatesDwcDpMetadataAsEml() throws Exception {
+    Resource resource = action.resourceManager.get(RESOURCE_SHORTNAME);
+    resource.setCoreType(Constants.DWC_DP);
+    resource.setDataPackageIdentifier("http://rs.gbif.org/data-packages/dwc-dp");
+
+    action.execute();
+
+    verify(mockDataPackageMetadataValidator, never()).isValid(any(Resource.class));
   }
 
   public ResourceManagerImpl getResourceManagerImpl() throws Exception {
