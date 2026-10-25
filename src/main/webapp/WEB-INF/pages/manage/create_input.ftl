@@ -207,18 +207,28 @@
             validate();
         });
 
+        // the last shortname taken from a filename, so a name the user typed isn't overwritten or cleared
+        let derivedShortname = null;
+
         function deriveShortname(filename) {
             const lower = filename.toLowerCase();
-            const shortnameMatch = lower.match(/^(dwca|datapackage|eml)-([a-z0-9_-]+)-[^\/\\]+$/i);
+            // the user's own name stays, whatever file is picked
+            if ($shortname.val() && $shortname.val() !== derivedShortname) return;
 
+            // a name the IPT gave on export (dwca-birds-v1.zip, eml-birds-v1.xml -> birds)
+            const shortnameMatch = lower.match(/^(dwca|datapackage|eml)-([a-z0-9_-]+)-[^\/\\]+$/i);
+            let name = '';
             if (shortnameMatch && shortnameMatch[2]) {
-                $shortname.val(shortnameMatch[2]);
-            } else {
-                // the name without its extensions (occurrence.txt.gz -> occurrence), anything a shortname can't
-                // have as - (my data.zip -> my-data)
-                const name = lower.replace(/\.(gz|zip|tgz|bz2)$/, '').replace(/\.tar$/, '').replace(/\.[^/.]+$/, '');
-                $shortname.val(name.replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, ''));
+                name = shortnameMatch[2];
+            } else if (/\.(zip|gz|tgz|bz2|tar)$/.test(lower)) {
+                // an archive: the name without its extensions (occurrence.txt.gz -> occurrence), anything a
+                // shortname can't have as - (my data.zip -> my-data). A single file (metadata.yaml, eml.xml) says
+                // nothing about the resource, the user gives the name
+                name = lower.replace(/\.(gz|zip|tgz|bz2)$/, '').replace(/\.tar$/, '').replace(/\.[^/.]+$/, '')
+                    .replace(/[^a-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
             }
+            $shortname.val(name);
+            derivedShortname = name || null;
         }
 
         async function detectDatasetType(file) {
