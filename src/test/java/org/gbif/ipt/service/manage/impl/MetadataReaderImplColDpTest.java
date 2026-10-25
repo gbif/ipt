@@ -14,6 +14,7 @@
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.Citation;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.JsonService;
 import org.gbif.ipt.service.manage.MetadataReader;
@@ -304,6 +305,26 @@ class MetadataReaderImplColDpTest {
 
     assertEquals("Flow", cm.getTitle());
     assertEquals("CC0", cm.getLicense());
+  }
+
+  /**
+   * Source types written as ChecklistBank's enum names (e.g. WEBPAGE) are read, and written as CSL types.
+   */
+  @Test
+  void testReadSourceTypeIgnoringCase(@TempDir Path tempDir) throws Exception {
+    File metadataYaml = Files.writeString(tempDir.resolve("metadata.yaml"),
+        "title: Types\nsource:\n  - type: WEBPAGE\n  - type: ARTICLE_JOURNAL\n  - type: personal-communication\n")
+        .toFile();
+    ColMetadata cm = reader.readValue(metadataYaml, ColMetadata.class);
+
+    assertEquals(List.of(Citation.Type.WEBPAGE, Citation.Type.ARTICLE_JOURNAL, Citation.Type.PERSONAL_COMMUNICATION),
+        cm.getSource().stream().map(Citation::getType).toList());
+
+    File written = tempDir.resolve("written.yaml").toFile();
+    reader.writeValue(written, cm);
+    String yaml = Files.readString(written.toPath());
+    assertTrue(yaml.contains("webpage") && yaml.contains("article-journal") && yaml.contains("personal_communication"),
+        yaml);
   }
 
 }

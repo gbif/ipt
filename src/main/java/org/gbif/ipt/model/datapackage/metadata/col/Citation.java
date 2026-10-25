@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -487,8 +488,16 @@ public class Citation {
 
     static {
       for (Citation.Type c : values()) {
-        CONSTANTS.put(c.value, c);
+        CONSTANTS.put(normalize(c.value), c);
       }
+    }
+
+    /**
+     * Types are matched ignoring case, hyphens and underscores: ChecklistBank writes them as its enum names, e.g.
+     * WEBPAGE or ARTICLE_JOURNAL.
+     */
+    private static String normalize(String value) {
+      return value.replaceAll("[-_]", "").toLowerCase(Locale.ENGLISH);
     }
 
     Type(String value) {
@@ -507,7 +516,7 @@ public class Citation {
 
     @JsonCreator
     public static Citation.Type fromValue(String value) {
-      Citation.Type constant = CONSTANTS.get(value);
+      Citation.Type constant = value != null ? CONSTANTS.get(normalize(value)) : null;
       if (constant == null) {
         throw new IllegalArgumentException(value);
       } else {
