@@ -16,7 +16,7 @@
             });
 
             $('select#organisation\\.key').select2({
-                placeholder: '${action.getText("admin.organisation.name.select")}',
+                placeholder: '${action.getText("admin.organisation.name.select")?js_string?no_esc}',
                 language: {
                     noResults: function () {
                         return '${selectNoResultsFound}';

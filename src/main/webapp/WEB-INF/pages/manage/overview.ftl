@@ -332,7 +332,7 @@
                 sendButton.hide();
                 $(".progress-bar-container").show();
                 clearButton.hide();
-                addButton.attr("value", '<@s.text name="button.add"/>');
+                addButton.attr("value", '<@s.text name="button.add" escapeJavaScript="true"/>');
                 addButton.hide();
                 urlSourceInfoBlock.hide();
 
@@ -349,7 +349,7 @@
                 $(".progress-bar-container").hide();
                 fileInput.prop("value", "");
                 clearButton.show();
-                addButton.attr("value", '<@s.text name="button.add"/>');
+                addButton.attr("value", '<@s.text name="button.add" escapeJavaScript="true"/>');
                 addButton.show();
 
                 // display "Check URL"
@@ -428,7 +428,7 @@
                 urlInput.hide();
                 urlInput.prop("value", "");
                 clearButton.hide();
-                addButton.attr("value", '<@s.text name="button.connect"/>');
+                addButton.attr("value", '<@s.text name="button.connect" escapeJavaScript="true"/>');
                 addButton.show();
 
                 fileItems.forEach(function(item) {
