@@ -142,7 +142,7 @@
             });
 
             $("#idColumn").select2({
-                placeholder: '<@s.text name="manage.mapping.noid"/>',
+                placeholder: '${action.getText("manage.mapping.noid")?js_string}',
                 language: {
                     noResults: function () {
                         return '${selectNoResultsFound}';
