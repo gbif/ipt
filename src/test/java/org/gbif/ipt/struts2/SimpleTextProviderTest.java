@@ -13,11 +13,16 @@
  */
 package org.gbif.ipt.struts2;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SimpleTextProviderTest {
 
@@ -39,6 +44,47 @@ public class SimpleTextProviderTest {
   public void testEscapedApostropheInTranslation() {
     assertEquals("Méthodes d'échantillonnage",
         textProvider.getText(Locale.FRENCH, "submenu.methods", null, new String[0]));
+  }
+
+  @Test
+  public void testPlaceholdersAreFilled() {
+    assertEquals("Failed to validate Description. Please see logs for more details.",
+        textProvider.getText(Locale.ENGLISH, "validation.failed.see.logs", null, new String[]{"Description"}));
+    assertEquals("Failed to analyze the source: No such file",
+        textProvider.getText(Locale.ENGLISH, "manage.source.analyzed.problem", null, new String[]{"No such file"}));
+  }
+
+  /**
+   * Every English message must be a valid {@link MessageFormat} pattern, e.g. use {0} and not {}, otherwise its
+   * arguments are never filled in.
+   */
+  @Test
+  public void testEnglishMessagesAreValidPatterns() {
+    ResourceBundle bundle = textProvider.getTexts(Locale.ENGLISH);
+    List<String> invalid = new ArrayList<>();
+    for (String key : bundle.keySet()) {
+      try {
+        new MessageFormat(bundle.getString(key));
+      } catch (IllegalArgumentException e) {
+        invalid.add(key);
+      }
+    }
+    assertTrue(invalid.isEmpty(), "Invalid message patterns: " + invalid);
+  }
+
+  /**
+   * Apostrophes in English messages must be escaped as '', a single ' is dropped by {@link MessageFormat}.
+   */
+  @Test
+  public void testEnglishApostrophesAreEscaped() {
+    ResourceBundle bundle = textProvider.getTexts(Locale.ENGLISH);
+    List<String> unescaped = new ArrayList<>();
+    for (String key : bundle.keySet()) {
+      if (bundle.getString(key).replace("''", "").contains("'")) {
+        unescaped.add(key);
+      }
+    }
+    assertTrue(unescaped.isEmpty(), "Unescaped apostrophes: " + unescaped);
   }
 
   @Test
