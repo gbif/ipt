@@ -437,7 +437,7 @@ public class ResourceManagerImplCrudTest {
   }
 
   @Test
-  public void testSaveInferredMetadata() throws Exception {
+  public void testSaveInferredMetadata() {
     Resource resource = resource(SHORTNAME);
     InferredEmlMetadata inferred = new InferredEmlMetadata();
     resource.setInferredMetadata(inferred);
@@ -517,11 +517,11 @@ public class ResourceManagerImplCrudTest {
 
   @Test
   public void testCreateFromFileWithUnsupportedExtension() throws Exception {
-    File file = Files.writeString(tempDir.resolve("metadata.txt"), "text").toFile();
+    File file = Files.writeString(tempDir.resolve("metadata.pdf"), "text").toFile();
 
     ImportException e = assertThrows(ImportException.class,
         () -> manager.create(SHORTNAME, null, file, new User(), action));
-    assertTrue(e.getMessage().contains("txt"), e.getMessage());
+    assertTrue(e.getMessage().contains("pdf"), e.getMessage());
   }
 
   @Test
