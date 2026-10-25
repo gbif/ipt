@@ -26,6 +26,7 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -215,6 +216,28 @@ public class OverviewActionTest extends IptBaseTest {
     VersionHistory vh = new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PRIVATE);
     r.addVersionHistory(vh);
     assertTrue(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
+  }
+
+  /**
+   * A ColDP license can be written in many ways, e.g. Plazi's CC0.
+   */
+  @Test
+  public void testIsLastPublishedVersionAssignedGBIFSupportedLicenseColDp() {
+    Resource r = new Resource();
+    r.setCoreType(Constants.COL_DP);
+    r.setDataPackageIdentifier(Constants.DATA_PACKAGE_COLDP_IDENTIFIER);
+    ColMetadata metadata = new ColMetadata();
+    r.setDataPackageMetadata(metadata);
+    r.addVersionHistory(new VersionHistory(new BigDecimal("1"), new Date(), PublicationStatus.PRIVATE));
+
+    for (String license : List.of("CC0", "cc0", "CC0-1.0", "CC BY 4.0", "CC-BY-NC-4.0")) {
+      metadata.setLicense(license);
+      assertTrue(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r), license);
+    }
+    metadata.setLicense("CC BY-SA 4.0");
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
+    metadata.setLicense(null);
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
   }
 
   @Test

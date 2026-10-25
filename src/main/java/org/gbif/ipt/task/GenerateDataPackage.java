@@ -932,13 +932,23 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
   }
 
+  /**
+   * Checks the keys of each table, reading its values: a value its field doesn't allow fails too. The table is named
+   * in the message, which otherwise only names the field.
+   */
   private void checkRelationsAndPrimaryKeys() throws Exception {
     boolean isFkValidationEnabled = cfg.isDatapackageForeignKeysValidationEnabled();
     for (io.frictionlessdata.datapackage.resource.Resource<?> dataPackageResource : dataPackage.getResources()) {
-      if (isFkValidationEnabled) {
-        dataPackageResource.checkRelations(dataPackage);
+      try {
+        if (isFkValidationEnabled) {
+          dataPackageResource.checkRelations(dataPackage);
+        }
+        dataPackageResource.checkPrimaryKeys();
+      } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
+        String message = "Table " + dataPackageResource.getName() + ": " + e.getMessage();
+        addMessage(Level.ERROR, message);
+        throw new GeneratorException(message, e);
       }
-      dataPackageResource.checkPrimaryKeys();
     }
   }
 }

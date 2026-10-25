@@ -15,6 +15,7 @@ package org.gbif.ipt.utils;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MetadataUtilsTest {
 
@@ -91,6 +93,25 @@ public class MetadataUtilsTest {
       }
     } finally {
       pool.shutdownNow();
+    }
+  }
+
+  /**
+   * ColDPs write licenses in many ways, e.g. Plazi's CC0 and ChecklistBank's cc0.
+   */
+  @Test
+  public void testColDpLicenseToGbifCode() {
+    for (String license : List.of("CC0", "cc0", "CC0-1.0", "CC0 1.0", "cc0_1.0")) {
+      assertEquals("CC0-1.0", MetadataUtils.colDpLicenseToGbifCode(license), license);
+    }
+    for (String license : List.of("CC BY", "CC-BY", "cc by 4.0", "CC-BY-4.0")) {
+      assertEquals("CC-BY-4.0", MetadataUtils.colDpLicenseToGbifCode(license), license);
+    }
+    for (String license : List.of("CC BY NC", "CC BY-NC", "cc by nc 4.0", "CC-BY-NC-4.0")) {
+      assertEquals("CC-BY-NC-4.0", MetadataUtils.colDpLicenseToGbifCode(license), license);
+    }
+    for (String license : Arrays.asList("CC BY 3.0", "CC BY-SA", "CC-BY-ND-4.0", "other", "", null)) {
+      assertNull(MetadataUtils.colDpLicenseToGbifCode(license), license);
     }
   }
 }

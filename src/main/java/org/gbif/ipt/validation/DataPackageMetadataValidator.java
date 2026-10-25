@@ -26,11 +26,11 @@ import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
 import org.gbif.ipt.service.InvalidMetadataException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import jakarta.validation.ConstraintViolation;
@@ -296,15 +296,29 @@ public class DataPackageMetadataValidator {
   }
 
   /**
-   * Validate ColMetadata.
+   * Validate ColMetadata. Each problem is an action error naming its field, as the metadata comes from a file there
+   * are no form fields to show them on.
    *
    * @param action   BaseAction
    * @param metadata col metadata
+   * @throws InvalidMetadataException if the metadata isn't valid
    */
-  public void validateColMetadata(BaseAction action, ColMetadata metadata) {
-    Set<ConstraintViolation<ColMetadata>> violations = validator.validate(metadata);
-    String violationsSquashed = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("\n", "-", ""));
-    action.addActionError("Validation failed:\n" + violationsSquashed);
+  public void validateColMetadata(BaseAction action, ColMetadata metadata) throws InvalidMetadataException {
+    List<ConstraintViolation<ColMetadata>> violations = validator.validate(metadata).stream()
+        .sorted(Comparator.comparing(v -> v.getPropertyPath().toString()))
+        .toList();
+    if (violations.isEmpty()) {
+      return;
+    }
+
+    for (ConstraintViolation<ColMetadata> violation : violations) {
+      String message = isValidationProperty(violation.getMessage())
+          ? action.getText(violation.getMessage(), new String[]{violation.getPropertyPath().toString()})
+          : violation.getMessage();
+      action.addActionError(action.getText("validation.datapackage.metadata.coldp.invalid",
+          new String[]{violation.getPropertyPath().toString(), message}));
+    }
+    throw new InvalidMetadataException("Validation failed");
   }
 
   private boolean isValidationProperty(String message) {

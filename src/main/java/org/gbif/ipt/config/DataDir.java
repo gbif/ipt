@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -57,6 +58,8 @@ public class DataDir {
   public static final String EML_XML_FILENAME = "eml.xml";
   public static final String FRICTIONLESS_METADATA_FILENAME = "datapackage.json";
   public static final String COL_DP_METADATA_FILENAME = "metadata.yaml";
+  // the names ColDP metadata can have in an archive, in order of preference: metadata.yaml is the standard one
+  public static final List<String> COL_DP_METADATA_FILENAMES = List.of(COL_DP_METADATA_FILENAME, "metadata.yml", "metadata.json");
   public static final String DWCA_FILENAME = "dwca.zip";
   public static final String PUBLICATION_LOG_FILENAME = "publication.log";
   private static final Random RANDOM = new Random();

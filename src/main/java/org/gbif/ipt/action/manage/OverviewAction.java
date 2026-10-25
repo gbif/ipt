@@ -72,6 +72,7 @@ import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.ipt.validation.ActionValidationResult;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
@@ -133,7 +134,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
-import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.GBIF_SUPPORTED_LICENSES_CODES;
 import static org.gbif.ipt.service.UndeletNotAllowedException.Reason.DOI_NOT_DELETED;
@@ -1620,7 +1620,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
             Optional<String> license = Optional.ofNullable(metadata.getLicense());
 
             return license
-                .map(COLDP_LICENSES_CODES_TO_GBIF::get)
+                .map(MetadataUtils::colDpLicenseToGbifCode)
                 .map(GBIF_SUPPORTED_LICENSES_CODES::contains)
                 .orElse(false);
           } else {

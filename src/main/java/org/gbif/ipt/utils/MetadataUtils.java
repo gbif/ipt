@@ -23,10 +23,12 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.commons.lang3.Strings;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DWC_DP;
 
@@ -45,6 +47,21 @@ public final class MetadataUtils {
     } else {
       return FrictionlessMetadata.class;
     }
+  }
+
+  /**
+   * The GBIF-supported license code (e.g. CC-BY-4.0) of a ColDP license, null if it isn't one of them. ColDPs write
+   * licenses in many ways (CC0, CC0-1.0, cc0, CC BY 4.0, CC-BY-NC-4.0), they're compared in upper case without
+   * spaces, hyphens and underscores.
+   *
+   * @param license ColDP license
+   * @return GBIF-supported license code, or null
+   */
+  public static String colDpLicenseToGbifCode(String license) {
+    if (license == null) {
+      return null;
+    }
+    return COLDP_LICENSES_CODES_TO_GBIF.get(license.replaceAll("[\\s_-]", "").toUpperCase(Locale.ENGLISH));
   }
 
   public static boolean isDataPackageType(String type) {

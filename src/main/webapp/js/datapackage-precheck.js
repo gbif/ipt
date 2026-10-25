@@ -40,6 +40,8 @@
  *   // result.files[].resources[].unmappedColumns -> columns of the file the installed table doesn't have
  *   // result.versionRelation -> 'newer' | 'older' | 'different' than the installed version (declaredVersion,
  *   //   installedVersion), null when the same or not known
+ *   // result.colDp -> true for a ColDP, checked as a data package without datapackage.json, see checkColDp()
+ *   // result.metadataFiles -> its metadata file (ColDP only, otherwise taken from result.files)
  */
 (function (global) {
     'use strict';
@@ -722,6 +724,88 @@
         return finish();
     }
 
+    // ---- ColDP ----
+
+    // ColDP metadata in an archive, as the server names it, in its order of preference
+    // (DataDir.COL_DP_METADATA_FILENAMES)
+    const COL_DP_METADATA_FILES = ['metadata.yaml', 'metadata.yml', 'metadata.json'];
+    // ColDP data files, as the server takes them (ResourceImportServiceImpl.COL_DP_DATA_FILE_EXTENSIONS)
+    const COL_DP_DATA_FILE_EXTENSIONS = ['csv', 'tsv', 'txt', 'tab'];
+
+    // A ColDP table or file name, lower case without separators: NameUsage, name-usage and name_usage are the same
+    // (ResourceImportServiceImpl.normalizeColDpName)
+    function normalizeColDpName(name) {
+        return name.replace(/[-_\s]/g, '').toLowerCase();
+    }
+
+    // A ColDP's metadata doesn't list its files: a data file in the root of the archive is the table it's named after,
+    // its columns are the fields named the same, ignoring a col: prefix and case
+    // (ResourceImportServiceImpl.colDpTableForFile, colDpField). The result is the one of a data package.
+    async function checkColDp(file, rootFiles, schema) {
+        const metadataKey = COL_DP_METADATA_FILES.find((f) => rootFiles.has(f));
+        const metadataPath = rootFiles.get(metadataKey).path;
+        const tables = new Map((schema.tableSchemas ?? []).map((t) => [normalizeColDpName(t.name), t]));
+
+        const files = [];
+        for (const [key, f] of rootFiles) {
+            if (key === metadataKey) continue;
+            const dot = key.lastIndexOf('.');
+            const extension = dot > 0 ? key.slice(dot + 1) : '';
+            const table = !key.includes('/') && COL_DP_DATA_FILE_EXTENSIONS.includes(extension)
+                ? tables.get(normalizeColDpName(f.path.slice(0, f.path.lastIndexOf('.'))))
+                : null;
+            const resource = table ? { name: table.name, inSchema: true } : null;
+            if (resource) {
+                const fields = new Set((table.fields ?? []).map((field) => field.name.toLowerCase()));
+                try {
+                    const columns = headerColumns(await extractEntryHead(file, f.entry)).filter(Boolean);
+                    resource.unmappedColumns = columns
+                        .filter((c) => !fields.has(c.replace(/^col:/i, '').toLowerCase()));
+                } catch (err) {
+                    // not known, nothing said about it
+                }
+            }
+            files.push({ path: f.path, size: f.entry.size, resources: resource ? [resource] : [] });
+        }
+
+        // the server can't create the resource without its metadata. YAML isn't read here, the server checks it.
+        let reason = null;
+        let unverified = false;
+        if (metadataKey === 'metadata.json') {
+            try {
+                JSON.parse(new TextDecoder('utf-8').decode(await extractEntry(file, rootFiles.get(metadataKey).entry)));
+            } catch (err) {
+                unverified = err instanceof ReadError;
+                reason = metadataPath + ' could not be read: ' + err.message;
+            }
+        }
+        const imported = files.filter((f) => f.resources.length);
+        if (!reason && !imported.length) {
+            reason = 'None of the files is a ColDP table, they must be named after their tables, e.g. NameUsage.tsv.';
+        }
+
+        return {
+            type: 'data-package',
+            colDp: true,
+            actualType: { value: schema.name, comment: 'ColDP metadata' },
+            version: { value: schema.version, comment: 'Installed version' },
+            datasetType: schema.name,
+            typeFromTables: false,
+            profile: null,
+            declaredVersion: null,
+            installedVersion: schema.version ?? null,
+            versionRelation: null,
+            ready: !reason,
+            unverified,
+            reason,
+            files,
+            metadataFiles: [metadataPath],
+            unmappedFiles: files.filter((f) => !f.resources.length),
+            skippedResources: [],
+            unresolvedPaths: [],
+        };
+    }
+
     // ---- IPT resource folder (a resource directory copied from another IPT's data directory) ----
 
     // as the server names them (DataDir: EML_XML_FILENAME, FRICTIONLESS_METADATA_FILENAME, COL_DP_METADATA_FILENAME)
@@ -896,23 +980,31 @@
 
         const manifestCandidate = manifestCandidates[0];
 
-        // ColDP's own metadata without a datapackage.json isn't checked here, it isn't a DwC-A either
-        const colDpMetadata = ['metadata.yml', 'metadata.yaml'].some((f) => rootFiles.has(f));
-
         // The server imports a data package only with a data package type selected, anything else as a DwC-A.
         // Nothing selected yet: guessed from the archive, the page then selects the type found.
         const dataPackageTypes = new Set(availableDataPackages.map((s) => s.name));
+
+        // A ColDP has its own metadata. With ColDP selected, the server takes it over a datapackage.json (a ColDP
+        // exported by the IPT has both, ResourceImportServiceImpl.findMetadataFile). Nothing selected yet: a ColDP if it
+        // has no datapackage.json (otherwise the type comes from that), the page then selects ColDP. With another type
+        // selected, it's checked as that type.
+        const colDpSchema = availableDataPackages.find((s) => s.name === 'coldp');
+        const colDp = colDpSchema && !rootFiles.has('meta.xml')
+            && COL_DP_METADATA_FILES.some((f) => rootFiles.has(f))
+            && (selectedType ? selectedType === colDpSchema.name : !manifestCandidate);
+        if (colDp) {
+            return withTotalSize(await checkColDp(file, rootFiles, colDpSchema));
+        }
+
         const asDataPackage = selectedType ? dataPackageTypes.has(selectedType) : !!manifestCandidate;
 
         if (!asDataPackage) {
-            if (colDpMetadata && !manifestCandidate && !rootFiles.has('meta.xml')) return { type: 'unknown', ready: false };
             return withTotalSize(rootFiles.has('meta.xml')
                 ? await checkMetaXml(file, rootFiles, installedByRowType)
                 : await checkSingleDataFile(file, rootFiles, installedByRowType));
         }
 
         if (!manifestCandidate) {
-            if (colDpMetadata) return { type: 'unknown', ready: false };
             return withTotalSize({ type: 'data-package', ready: false, noManifest: true, datasetType: selectedType });
         }
 

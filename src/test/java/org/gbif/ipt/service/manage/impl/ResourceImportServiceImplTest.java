@@ -16,6 +16,11 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.DataPackageField;
+import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageSchema;
+import org.gbif.ipt.model.DataPackageTableSchema;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -44,6 +49,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.inject.Provider;
 
@@ -51,6 +62,7 @@ import org.apache.logging.log4j.LogManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.ArgumentCaptor;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -66,6 +78,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -76,6 +89,7 @@ import static org.mockito.Mockito.when;
 public class ResourceImportServiceImplTest {
 
   private static final String SHORTNAME = "bees";
+  private static final String COL_DP_IDENTIFIER = "http://rs.gbif.org/data-packages/coldp";
 
   @TempDir
   Path tempDir;
@@ -83,6 +97,7 @@ public class ResourceImportServiceImplTest {
   private File resourceDir;
   private DataDir dataDir;
   private DataPackageSchemaManager schemaManager;
+  private SourceManager sourceManager;
   private MetadataReader metadataReader;
   private ResourceManager resourceManager;
   private Provider<ResourceManager> resourceManagerProvider;
@@ -109,7 +124,8 @@ public class ResourceImportServiceImplTest {
     action = mock(BaseAction.class);
     alog = new ActionLogger(LogManager.getLogger(ResourceImportServiceImplTest.class), action);
 
-    service = new ResourceImportServiceImpl(dataDir, mock(SourceManager.class), mock(ExtensionManager.class),
+    sourceManager = mock(SourceManager.class);
+    service = new ResourceImportServiceImpl(dataDir, sourceManager, mock(ExtensionManager.class),
         schemaManager, metadataReader, resourceManagerProvider);
 
     creator = new User();
@@ -280,6 +296,166 @@ public class ResourceImportServiceImplTest {
     verify(metadataReader).readValue(any(File.class), any());
   }
 
+  /**
+   * A ColDP's metadata can be metadata.json (e.g. from Plazi), it takes precedence over a datapackage.json.
+   */
+  @Test
+  public void testCreateFromColDpArchiveWithMetadataJson() throws Exception {
+    File archiveDir = Files.createDirectory(tempDir.resolve("archive")).toFile();
+    File metadataJson = Files.writeString(archiveDir.toPath().resolve("Metadata.json"), "{\"title\": \"coldp\"}").toFile();
+    File datapackageJson = Files.writeString(archiveDir.toPath().resolve("datapackage.json"), "{}").toFile();
+    File dataDirMetadata = new File(resourceDir, "datapackage.json");
+    ColMetadata metadata = new ColMetadata();
+    when(metadataReader.readValue(dataDirMetadata, ColMetadata.class)).thenReturn(metadata);
+
+    Resource resource = service.createFromFrictionlessDataPackage(
+        SHORTNAME, archiveDir, COL_DP, List.of(datapackageJson, metadataJson), creator, alog);
+
+    assertSame(metadata, resource.getDataPackageMetadata());
+    assertEquals("{\"title\": \"coldp\"}", Files.readString(dataDirMetadata.toPath()));
+  }
+
+  /**
+   * ColDP metadata file names aren't looked for in other data packages.
+   */
+  @Test
+  public void testCreateFromCamtrapArchiveIgnoresColDpMetadata() throws Exception {
+    File archiveDir = Files.createDirectory(tempDir.resolve("archive")).toFile();
+    File metadataJson = Files.writeString(archiveDir.toPath().resolve("metadata.json"), "{\"title\": \"coldp\"}").toFile();
+    File datapackageJson = Files.writeString(archiveDir.toPath().resolve("datapackage.json"), "{}").toFile();
+    File dataDirMetadata = new File(resourceDir, "datapackage.json");
+    CamtrapMetadata metadata = new CamtrapMetadata();
+    when(metadataReader.readValue(dataDirMetadata, CamtrapMetadata.class)).thenReturn(metadata);
+
+    service.createFromFrictionlessDataPackage(
+        SHORTNAME, archiveDir, CAMTRAP_DP, List.of(metadataJson, datapackageJson), creator, alog);
+
+    assertEquals("{}", Files.readString(dataDirMetadata.toPath()));
+  }
+
+  /**
+   * ColDP data files are matched to tables by name in any case and with or without separators, columns ignoring a
+   * col: prefix and case. Files in folders and that aren't tables are skipped (like Plazi's).
+   */
+  @Test
+  public void testCreateFromColDpArchiveMatchesFilesAndColumnsByName() throws Exception {
+    when(schemaManager.get(COL_DP)).thenReturn(colDpSchema());
+    when(schemaManager.getSchemaIdentifier(COL_DP)).thenReturn(COL_DP_IDENTIFIER);
+    when(sourceManager.add(any(Resource.class), any(File.class), anyString())).thenAnswer(invocation -> {
+      TextFileSource source = new TextFileSource();
+      source.setName(invocation.getArgument(2, String.class));
+      source.setFile(invocation.getArgument(1, File.class));
+      source.setIgnoreHeaderLines(1);
+      return source;
+    });
+    when(metadataReader.readValue(any(File.class), any())).thenReturn(new ColMetadata());
+
+    Path archive = Files.createDirectory(tempDir.resolve("archive"));
+    File metadataJson = Files.writeString(archive.resolve("metadata.json"), "{}").toFile();
+    File nameUsage = Files.writeString(archive.resolve("name-usage.tsv"),
+        "col:ID\tcol:scientificName\tcol_kingdom\nt1\tAus bus\tAnimalia\n").toFile();
+    File reference = Files.writeString(archive.resolve("Reference.TSV"), "ID\tCITATION\nr1\tA ref\n").toFile();
+    File notATable = Files.writeString(archive.resolve("notes.tsv"), "ID\nn1\n").toFile();
+    File treatments = Files.createDirectory(archive.resolve("treatments")).toFile();
+    Files.writeString(treatments.toPath().resolve("t1.taxon.html"), "<html/>");
+
+    Resource resource = service.createFromFrictionlessDataPackage(SHORTNAME, archive.toFile(), COL_DP,
+        List.of(metadataJson, nameUsage, reference, notATable, treatments), creator, alog);
+
+    Map<String, DataPackageMapping> mappings = resource.getDataPackageMappings().stream()
+        .collect(Collectors.toMap(m -> m.getDataPackageTableSchemaName().getName(), m -> m));
+    assertEquals(Set.of("name-usage", "reference"), mappings.keySet());
+
+    List<String> nameUsageFields = mappings.get("name-usage").getFields().stream()
+        .map(f -> f.getIndex() + ":" + f.getField().getName())
+        .toList();
+    assertEquals(List.of("0:ID", "1:scientificName"), nameUsageFields);
+
+    List<String> referenceFields = mappings.get("reference").getFields().stream()
+        .map(f -> f.getIndex() + ":" + f.getField().getName())
+        .toList();
+    assertEquals(List.of("0:ID", "1:citation"), referenceFields);
+
+    // tab separated without quoting, as its extension says, whatever its content looks like
+    TextFileSource nameUsageSource = (TextFileSource) mappings.get("name-usage").getSource();
+    assertEquals("\t", nameUsageSource.getFieldsTerminatedBy());
+    assertNull(nameUsageSource.getFieldsEnclosedBy());
+    verify(sourceManager).analyze(nameUsageSource);
+  }
+
+  @Test
+  public void testColDpCsvIsCommaSeparatedAndQuoted() throws Exception {
+    when(schemaManager.get(COL_DP)).thenReturn(colDpSchema());
+    when(schemaManager.getSchemaIdentifier(COL_DP)).thenReturn(COL_DP_IDENTIFIER);
+    when(sourceManager.add(any(Resource.class), any(File.class), anyString())).thenAnswer(invocation -> {
+      TextFileSource source = new TextFileSource();
+      source.setName(invocation.getArgument(2, String.class));
+      source.setFile(invocation.getArgument(1, File.class));
+      source.setIgnoreHeaderLines(1);
+      return source;
+    });
+    when(metadataReader.readValue(any(File.class), any())).thenReturn(new ColMetadata());
+
+    Path archive = Files.createDirectory(tempDir.resolve("archive"));
+    File metadataYaml = Files.writeString(archive.resolve("metadata.yaml"), "title: x").toFile();
+    File reference = Files.writeString(archive.resolve("reference.csv"), "ID,citation\nr1,\"A, ref\"\n").toFile();
+
+    Resource resource = service.createFromFrictionlessDataPackage(SHORTNAME, archive.toFile(), COL_DP,
+        List.of(metadataYaml, reference), creator, alog);
+
+    TextFileSource source = (TextFileSource) resource.getDataPackageMappings().get(0).getSource();
+    assertEquals(",", source.getFieldsTerminatedBy());
+    assertEquals("\"", source.getFieldsEnclosedBy());
+  }
+
+  /**
+   * A ColDP's own version (e.g. a Plazi timestamp) isn't taken for the resource's version.
+   */
+  @Test
+  public void testCopyColDpMetadataClearsItsVersion() throws Exception {
+    File metadataFile = Files.writeString(tempDir.resolve("metadata.json"), "{}").toFile();
+    ColMetadata metadata = new ColMetadata();
+    metadata.setVersion("1792812013496");
+    when(metadataReader.readValue(any(File.class), any())).thenReturn(metadata);
+
+    ColMetadata copied = (ColMetadata) service.copyDatapackageMetadata(SHORTNAME, metadataFile, COL_DP);
+
+    assertNull(copied.getVersion());
+    // written back, so it isn't read again when the resource is loaded
+    verify(metadataReader).writeValue(new File(resourceDir, "datapackage.json"), copied);
+  }
+
+  @Test
+  public void testNormalizeColDpName() {
+    assertEquals("nameusage", ResourceImportServiceImpl.normalizeColDpName("NameUsage"));
+    assertEquals("nameusage", ResourceImportServiceImpl.normalizeColDpName("name-usage"));
+    assertEquals("nameusage", ResourceImportServiceImpl.normalizeColDpName("name_usage"));
+  }
+
+  private static DataPackageSchema colDpSchema() {
+    return DataPackageSchema.builder()
+        .identifier(COL_DP_IDENTIFIER)
+        .name(COL_DP)
+        .version("1.1")
+        .tableSchemas(new LinkedHashSet<>(List.of(
+            table("name-usage", "ID", "scientificName", "kingdom"),
+            table("reference", "ID", "citation"))))
+        .build();
+  }
+
+  private static DataPackageTableSchema table(String name, String... fieldNames) {
+    DataPackageTableSchema table = new DataPackageTableSchema();
+    table.setName(name);
+    List<DataPackageField> fields = new ArrayList<>();
+    for (String fieldName : fieldNames) {
+      DataPackageField field = new DataPackageField();
+      field.setName(fieldName);
+      fields.add(field);
+    }
+    table.setFields(fields);
+    return table;
+  }
+
   @Test
   public void testCopyDatapackageMetadataWithInvalidContent() throws Exception {
     File metadataFile = Files.writeString(tempDir.resolve("datapackage.json"), "{}").toFile();
@@ -341,15 +517,38 @@ public class ResourceImportServiceImplTest {
     verify(metadataReader, never()).readValue(metadataFile, ColMetadata.class);
   }
 
+  /**
+   * ColDP metadata is validated against its own constraints, e.g. a title is required.
+   */
   @Test
-  public void testValidateFrictionlessColDpMetadataFileAlsoValidatesColMetadata() throws Exception {
-    File metadataFile = Files.writeString(tempDir.resolve("metadata.yaml"), "title: x").toFile();
-    when(metadataReader.readValue(metadataFile, FrictionlessColMetadata.class)).thenReturn(new FrictionlessColMetadata());
+  public void testValidateInvalidColDpMetadataFile() throws Exception {
+    File metadataFile = Files.writeString(tempDir.resolve("metadata.yaml"), "alias: x").toFile();
     when(metadataReader.readValue(metadataFile, ColMetadata.class)).thenReturn(new ColMetadata());
+    when(action.getText(eq("validation.datapackage.metadata.coldp.invalid"), any(String[].class)))
+        .thenAnswer(invocation -> String.join(": ", invocation.getArgument(1, String[].class)));
 
-    service.validateDatapackageMetadataFile(action, metadataFile, FrictionlessColMetadata.class);
+    assertThrows(InvalidMetadataException.class,
+        () -> service.validateDatapackageMetadataFile(action, metadataFile, ColMetadata.class));
 
-    verify(metadataReader).readValue(metadataFile, ColMetadata.class);
+    ArgumentCaptor<String> errors = ArgumentCaptor.forClass(String.class);
+    verify(action, atLeastOnce()).addActionError(errors.capture());
+    assertTrue(errors.getAllValues().stream().anyMatch(e -> e.startsWith("title: ")), errors.getAllValues().toString());
+    assertTrue(errors.getAllValues().stream().anyMatch(e -> e.startsWith("license: ")), errors.getAllValues().toString());
+  }
+
+  /**
+   * Valid ColDP metadata (Plazi's) passes, with no errors.
+   */
+  @Test
+  public void testValidateValidColDpMetadataFile() throws Exception {
+    File metadataFile = FileUtils.getClasspathFile("frictionless/coldp/plazi/metadata.json");
+    ColMetadata metadata = new MetadataReaderImpl(new JsonServiceImpl(), new YamlServiceImpl())
+        .readValue(metadataFile, ColMetadata.class);
+    when(metadataReader.readValue(metadataFile, ColMetadata.class)).thenReturn(metadata);
+
+    service.validateDatapackageMetadataFile(action, metadataFile, ColMetadata.class);
+
+    verify(action, never()).addActionError(anyString());
   }
 
   @Test

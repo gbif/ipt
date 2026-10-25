@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -272,6 +273,37 @@ class MetadataReaderImplColDpTest {
     assertEquals("Eschmeyer", source.getEditor().get(2).getFamily());
 
     assertEquals("Remarks, comments and usage notes about this dataset", cm.getNotes());
+  }
+
+  /**
+   * Plazi writes ColDP metadata as metadata.json, indented with tabs.
+   */
+  @Test
+  void testReadPlaziMetadataJson() throws Exception {
+    File metadataJson = FileUtils.getClasspathFile("frictionless/coldp/plazi/metadata.json");
+    ColMetadata cm = reader.readValue(metadataJson, ColMetadata.class);
+
+    assertEquals(List.of("plazi:7A7AFFDCD4595F60FFB6FF9EFF92FFBD"), cm.getIdentifier());
+    assertTrue(cm.getTitle().startsWith("Nemipterid fishes"));
+    assertEquals("2026-10-24", cm.getIssued().toString());
+    assertEquals("CC0", cm.getLicense());
+    assertEquals(5, cm.getCreator().size());
+    assertEquals("Matiku", cm.getCreator().get(0).getFamily());
+    assertEquals("MagnoliaPress via Plazi", cm.getPublisher().getOrganisation());
+    assertEquals(1, cm.getSource().size());
+    assertEquals(5, cm.getSource().get(0).getAuthor().size());
+  }
+
+  /**
+   * YAML in flow style starts with '{' like JSON, but isn't always JSON.
+   */
+  @Test
+  void testReadFlowStyleYaml(@TempDir Path tempDir) throws Exception {
+    File metadataYaml = Files.writeString(tempDir.resolve("metadata.yaml"), "{title: Flow, license: CC0}").toFile();
+    ColMetadata cm = reader.readValue(metadataYaml, ColMetadata.class);
+
+    assertEquals("Flow", cm.getTitle());
+    assertEquals("CC0", cm.getLicense());
   }
 
 }

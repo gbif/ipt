@@ -112,7 +112,7 @@ import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.EML_2_1_1_SCHEMA;
 import static org.gbif.ipt.config.Constants.EML_2_2_0_SCHEMA;
-import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
+import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAMES;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
@@ -128,6 +128,10 @@ public class ResourceImportServiceImpl implements ResourceImportService {
 
   private static final Logger LOG = LogManager.getLogger(ResourceImportServiceImpl.class);
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
+  // ColDP data files are CSV or TSV, as the IPT takes data files
+  private static final Set<String> COL_DP_DATA_FILE_EXTENSIONS = Set.of("csv", "tsv", "txt", "tab");
+  // ColDP columns can be prefixed, e.g. col:ID
+  private static final String COL_DP_TERM_PREFIX = "col:";
 
   private final DataDir dataDir;
   private final SourceManager sourceManager;
@@ -428,7 +432,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       Date lastModifiedDate = new Date();
 
       // Step 1: locate the metadata file (COL DP takes precedence over Frictionless)
-      File metadataFile = findMetadataFile(packageFiles);
+      File metadataFile = findMetadataFile(packageFiles, packageType);
 
       // Parse metadata up front so we know which files are declared as data sources,
       // rather than guessing from filenames
@@ -446,7 +450,9 @@ public class ResourceImportServiceImpl implements ResourceImportService {
         throw new ImportException("No metadata file found in Frictionless package");
       }
 
-      // Step 2: import data sources, driven by the metadata where available
+      // Step 2: import data sources, driven by the metadata where available. A ColDP's metadata doesn't declare its
+      // files, they're named after their tables.
+      Map<String, String> colDpTables = COL_DP.equals(packageType) ? colDpTablesByNormalizedName() : null;
       for (File packageFile : packageFiles) {
         Collection<File> filesToProcess = packageFile.isDirectory()
             ? FileUtils.listFiles(packageFile, null, false)
@@ -456,13 +462,22 @@ public class ResourceImportServiceImpl implements ResourceImportService {
           if (file.equals(metadataFile) || EML_XML_FILENAME.equals(file.getName())) {
             continue;
           }
-          if (isTabularSource(file, archiveDir, declaredResources.keySet())) {
+          String tableName = colDpTables != null
+              ? colDpTableForFile(file, archiveDir, colDpTables)
+              : isTabularSource(file, archiveDir, declaredResources.keySet())
+                  ? getDeclaredResourceForFile(declaredResources, archiveDir, file)
+                  : null;
+          if (tableName != null) {
             TextFileSource s = importSource(resource, file);
-            s.setFieldsEnclosedBy("\"");
+            if (colDpTables != null) {
+              setColDpFormat(s, file);
+            } else {
+              s.setFieldsEnclosedBy("\"");
+            }
             String filenameWithoutExtension = FilenameUtils.removeExtension(file.getName());
             sources.put(filenameWithoutExtension, s);
 
-            DataPackageMapping map = importDataPackageMappings(alog, packageType, file, getDeclaredResourceForFile(declaredResources, archiveDir, file), s);
+            DataPackageMapping map = importDataPackageMappings(alog, packageType, file, tableName, s);
             map.setLastModified(lastModifiedDate);
             resource.addDataPackageMapping(map);
           }
@@ -572,12 +587,12 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       throws IOException, InvalidMetadataException {
     DataPackageMetadataValidator validator = new DataPackageMetadataValidator();
     DataPackageMetadata metadata = metadataReader.readValue(metadataFile, metadataClass);
-    validator.validate(action, metadata);
 
-    // additional ColDP metadata validation
-    if (FrictionlessColMetadata.class.equals(metadataClass)) {
-      ColMetadata colMetadata = metadataReader.readValue(metadataFile, ColMetadata.class);
+    // ColDP metadata has its own constraints, the frictionless ones don't apply to it
+    if (metadata instanceof ColMetadata colMetadata) {
       validator.validateColMetadata(action, colMetadata);
+    } else {
+      validator.validate(action, metadata);
     }
   }
 
@@ -621,6 +636,20 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       LOG.error("Unable to read datapackage metadata file", e);
       IptFileUtils.deleteDirectoryContainingSingleFile(dataDirMetadataFile);
       throw new ImportException("Unable to read metadata document.");
+    }
+
+    // a ColDP's version is the publisher's own (e.g. Plazi's timestamps), not a resource version: it would be taken
+    // for the resource's first version. It's set to the resource version when published. Written back, so it isn't
+    // read again when the resource is loaded, and JSON metadata (metadata.json) is stored as YAML.
+    if (metadata instanceof ColMetadata colMetadata) {
+      colMetadata.setVersion(null);
+      try {
+        metadataReader.writeValue(dataDirMetadataFile, colMetadata);
+      } catch (IOException e) {
+        LOG.error("Unable to write datapackage metadata file", e);
+        IptFileUtils.deleteDirectoryContainingSingleFile(dataDirMetadataFile);
+        throw new ImportException("Unable to write metadata document.");
+      }
     }
 
     return metadata;
@@ -788,30 +817,95 @@ public class ResourceImportServiceImpl implements ResourceImportService {
   /**
    * Locates the data package metadata file among a resource's package files, if any.
    * <p>
-   * A package may contain a COL DP metadata file, a Frictionless metadata file, or (in principle)
-   * both. COL DP takes precedence: if both are present, the COL DP file is returned and the
-   * Frictionless file is ignored. This mirrors the priority used elsewhere when interpreting a
-   * package's format.
-   * <p>
-   * If multiple files match the Frictionless metadata filename, only the first one encountered is
-   * kept (later matches are ignored); this cannot happen for COL DP, where the last match wins,
-   * since duplicates would be unexpected in practice and are not otherwise validated here.
+   * A ColDP has its own metadata file: metadata.yaml, or metadata.yml or metadata.json (e.g. from Plazi), see
+   * {@link DataDir#COL_DP_METADATA_FILENAMES}. It takes precedence over a datapackage.json, which ColDPs exported by
+   * the IPT have too. Other packages have datapackage.json only. File names are matched ignoring case.
    *
    * @param packageFiles all files found in the package
-   * @return the metadata {@link File} to parse, or {@code null} if the package contains neither a
-   * COL DP nor a Frictionless metadata file
+   * @param packageType  data package type
+   * @return the metadata {@link File} to parse, or {@code null} if the package has none
    */
-  private File findMetadataFile(List<File> packageFiles) {
-    File frictionless = null;
-    File colDp = null;
-    for (File f : packageFiles) {
-      if (FRICTIONLESS_METADATA_FILENAME.equals(f.getName()) && frictionless == null) {
-        frictionless = f;
-      } else if (COL_DP_METADATA_FILENAME.equals(f.getName())) {
-        colDp = f;
+  private File findMetadataFile(List<File> packageFiles, String packageType) {
+    List<String> names = new ArrayList<>();
+    if (COL_DP.equals(packageType)) {
+      names.addAll(COL_DP_METADATA_FILENAMES);
+    }
+    names.add(FRICTIONLESS_METADATA_FILENAME);
+
+    for (String name : names) {
+      for (File f : packageFiles) {
+        if (f.isFile() && name.equalsIgnoreCase(f.getName())) {
+          return f;
+        }
       }
     }
-    return colDp != null ? colDp : frictionless;
+    return null;
+  }
+
+  /**
+   * The tables of the installed ColDP schema by their normalized name, see {@link #normalizeColDpName(String)}.
+   *
+   * @return normalized name -> table name, empty if ColDP isn't installed
+   */
+  private Map<String, String> colDpTablesByNormalizedName() {
+    DataPackageSchema schema = schemaManager.get(COL_DP);
+    if (schema == null) {
+      return Collections.emptyMap();
+    }
+    return schema.getTableSchemas().stream()
+        .map(DataPackageTableSchema::getName)
+        .collect(Collectors.toMap(ResourceImportServiceImpl::normalizeColDpName, name -> name, (a, b) -> a));
+  }
+
+  /**
+   * The ColDP table a package file is for: a data file in the root of the package named after the table, in any
+   * case and with or without separators, e.g. NameUsage.tsv, name-usage.tsv or name_usage.csv for the table
+   * name-usage. Other files (e.g. Plazi's treatments folder) are skipped.
+   *
+   * @return the table name, null if the file isn't a ColDP table
+   */
+  private String colDpTableForFile(File file, File packageRoot, Map<String, String> colDpTables) {
+    String extension = FilenameUtils.getExtension(file.getName()).toLowerCase(Locale.ENGLISH);
+    String tableName = packageRoot.equals(file.getParentFile()) && COL_DP_DATA_FILE_EXTENSIONS.contains(extension)
+        ? colDpTables.get(normalizeColDpName(FilenameUtils.removeExtension(file.getName())))
+        : null;
+    if (tableName == null) {
+      LOG.warn("File {} is not a ColDP table", packageRoot.toPath().relativize(file.toPath()));
+    }
+    return tableName;
+  }
+
+  /**
+   * A ColDP data file's format comes from its extension: csv is comma separated and optionally quoted, tsv, tab and
+   * txt are tab separated without quoting. Guessed from the content instead, a TSV with commas in its values
+   * (e.g. titles) is taken for a CSV. The source is analyzed again with it.
+   */
+  private void setColDpFormat(TextFileSource source, File file) {
+    boolean csv = "csv".equalsIgnoreCase(FilenameUtils.getExtension(file.getName()));
+    source.setFieldsTerminatedBy(csv ? "," : "\t");
+    source.setFieldsEnclosedBy(csv ? "\"" : null);
+    String problem = sourceManager.analyze(source);
+    if (problem != null) {
+      LOG.warn("Problem analyzing ColDP source {}: {}", source.getName(), problem);
+    }
+  }
+
+  /**
+   * A ColDP table or file name, lower case without separators: NameUsage, name-usage and name_usage are the same.
+   */
+  static String normalizeColDpName(String name) {
+    return name.replaceAll("[-_\\s]", "").toLowerCase(Locale.ENGLISH);
+  }
+
+  /**
+   * The field a ColDP column is for: a column can have the col: prefix (e.g. col:ID), ColDP terms are matched
+   * ignoring case.
+   *
+   * @return the field, null if the table doesn't have it
+   */
+  static DataPackageField colDpField(String columnName, Map<String, DataPackageField> fieldsByLowerCaseName) {
+    String name = StringUtils.removeStartIgnoreCase(columnName, COL_DP_TERM_PREFIX);
+    return fieldsByLowerCaseName.get(name.toLowerCase(Locale.ENGLISH));
   }
 
   /**
@@ -975,10 +1069,17 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     Map<String, DataPackageField> schemaFieldsMap = tableSchema.getFields().stream()
         .collect(Collectors.toMap(DataPackageField::getName, p -> p));
 
+    Map<String, DataPackageField> colDpFieldsMap = COL_DP.equals(packageType)
+        ? tableSchema.getFields().stream()
+            .collect(Collectors.toMap(f -> f.getName().toLowerCase(Locale.ENGLISH), f -> f, (a, b) -> a))
+        : null;
+
     // iterate over each field to make sure its part of the extension we know
     for (int i = 0; i < columnNames.length; i++) {
       String unwrappedColumnName = StringUtils.unwrap(columnNames[i], '"');
-      DataPackageField dataPackageField = schemaFieldsMap.get(unwrappedColumnName);
+      DataPackageField dataPackageField = colDpFieldsMap != null
+          ? colDpField(unwrappedColumnName, colDpFieldsMap)
+          : schemaFieldsMap.get(unwrappedColumnName);
       if (dataPackageField != null) {
         fields.add(new DataPackageFieldMapping(i, dataPackageField));
       } else {

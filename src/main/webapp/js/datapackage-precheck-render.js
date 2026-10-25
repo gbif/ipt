@@ -272,6 +272,8 @@
         }
 
         const allFiles = result.files || [];
+        // a ColDP names its metadata file, which isn't in result.files
+        const metadataFiles = result.metadataFiles ?? allFiles.filter((f) => isMetadataFile(f.path)).map((f) => f.path);
         const dataFiles = allFiles.filter((f) => !isMetadataFile(f.path));
         const typeValue = result.actualType?.value !== 'unknown' ? result.actualType?.value : null;
         const typeName = typeLabel(typeValue) ?? typeValue;
@@ -423,7 +425,7 @@
             problems,
             rows,
             count: msg('contents.tables', tables.size),
-            metadata: allFiles.filter((f) => isMetadataFile(f.path)).map((f) => f.path),
+            metadata: metadataFiles,
         };
     }
 

@@ -160,9 +160,14 @@ public final class Constants {
     licenseCodesInternal.add("CC-BY-NC-4.0");
     GBIF_SUPPORTED_LICENSES_CODES = Collections.unmodifiableSet(licenseCodesInternal);
 
-    COLDP_LICENSES_CODES_TO_GBIF.put("cc by nc", "CC-BY-NC-4.0");
-    COLDP_LICENSES_CODES_TO_GBIF.put("cc by", "CC-BY-4.0");
-    COLDP_LICENSES_CODES_TO_GBIF.put("cc0", "CC0-1.0");
+    // ColDP licenses as MetadataUtils.colDpLicenseToGbifCode compares them: upper case, without spaces, hyphens and
+    // underscores, with or without the version (CC0, CC0-1.0, CC BY 4.0, CC-BY-NC-4.0, ...)
+    COLDP_LICENSES_CODES_TO_GBIF.put("CC0", "CC0-1.0");
+    COLDP_LICENSES_CODES_TO_GBIF.put("CC01.0", "CC0-1.0");
+    COLDP_LICENSES_CODES_TO_GBIF.put("CCBY", "CC-BY-4.0");
+    COLDP_LICENSES_CODES_TO_GBIF.put("CCBY4.0", "CC-BY-4.0");
+    COLDP_LICENSES_CODES_TO_GBIF.put("CCBYNC", "CC-BY-NC-4.0");
+    COLDP_LICENSES_CODES_TO_GBIF.put("CCBYNC4.0", "CC-BY-NC-4.0");
   }
 
   private Constants() {

@@ -1,0 +1,104 @@
+{
+	"identifier": {
+		"plazi": "7A7AFFDCD4595F60FFB6FF9EFF92FFBD"
+	},
+	"title": "Nemipterid fishes (Spariformes, Nemipteridae) of Tanzania, with description of a new species of Parascolopsis and new records of Nemipterus elaine and Parascolopsis akatamae",
+	"version": "1792812013496",
+	"issued": "2026-10-24",
+	"creator": [
+		{
+			"organisation": "Tanzania Fisheries Research Institute (TAFIRI), Box 9750 Dar Es Salaam, Tanzania.",
+			"given": "Patroba",
+			"family": "Matiku"
+		},
+		{
+			"organisation": "National Research Foundation-South African Institute for Aquatic Biodiversity, Makhanda 6140, South Africa.",
+			"given": "Sergey V.",
+			"family": "Bogorodsky"
+		},
+		{
+			"organisation": "Oceanographic Institute of Moçambique (INOM), 389. Box 4603 Maputo-Moçambique.",
+			"given": "Kelvin E.",
+			"family": "Samucidine"
+		},
+		{
+			"organisation": "National Research Foundation-South African Institute for Aquatic Biodiversity, Makhanda 6140, South Africa.",
+			"given": "Gwynneth",
+			"family": "Matcher"
+		},
+		{
+			"organisation": "National Research Foundation-South African Institute for Aquatic Biodiversity, Makhanda 6140, South Africa.",
+			"given": "Roger",
+			"family": "Bills"
+		}
+	],
+	"editor": [
+	],
+	"publisher": {
+		"organisation": "MagnoliaPress via Plazi",
+		"city": "Bern",
+		"country": "CH",
+		"email": "info@plazi.org",
+		"url": "http://plazi.org/"
+	},
+	"contact": {
+		"family": "Sautter",
+		"given": "Guido",
+		"organisation": "Plazi",
+		"email": "contact@example.org",
+		"url": "http://plazi.org"
+	},
+	"description": "This dataset contains the digitized treatments in Plazi based on the original journal article.\r\n\r\nAbstract\r\n\r\nEight species of nemipterid fishes.",
+	"url": "https://tb.plazi.org/GgServer/summary/7A7AFFDCD4595F60FFB6FF9EFF92FFBD",
+	"keyword": [
+		"Scolopsis",
+		"Mozambique",
+		"Western Indian Ocean",
+		"phylogenetic analysis",
+		"R",
+		"V Dr",
+		"Fridtjof Nansen",
+		"trawl surveys"
+	],
+	"license": "CC0",
+	"source": [
+		{
+			"author": [
+				{
+					"organisation": "Tanzania Fisheries Research Institute (TAFIRI), Box 9750 Dar Es Salaam, Tanzania.",
+					"given": "Patroba",
+					"family": "Matiku"
+				},
+				{
+					"organisation": "National Research Foundation-South African Institute for Aquatic Biodiversity, Makhanda 6140, South Africa.",
+					"given": "Sergey V.",
+					"family": "Bogorodsky"
+				},
+				{
+					"organisation": "Oceanographic Institute of Moçambique (INOM), 389. Box 4603 Maputo-Moçambique.",
+					"given": "Kelvin E.",
+					"family": "Samucidine"
+				},
+				{
+					"organisation": "National Research Foundation-South African Institute for Aquatic Biodiversity, Makhanda 6140, South Africa.",
+					"given": "Gwynneth",
+					"family": "Matcher"
+				},
+				{
+					"organisation": "National Research Foundation-South African Institute for Aquatic Biodiversity, Makhanda 6140, South Africa.",
+					"given": "Roger",
+					"family": "Bills"
+				}
+			],
+			"type": "article-journal",
+			"containerTitle": "Zootaxa",
+			"volume": "5785",
+			"issue": "1",
+			"page": "103-133",
+			"issued": "2026-03-27",
+			"doi": "10.11646/zootaxa.5785.1.4",
+			"id": "10.11646/zootaxa.5785.1.4",
+			"title": "Nemipterid fishes (Spariformes, Nemipteridae) of Tanzania, with description of a new species of Parascolopsis and new records of Nemipterus elaine and Parascolopsis akatamae"
+		}
+	]
+}

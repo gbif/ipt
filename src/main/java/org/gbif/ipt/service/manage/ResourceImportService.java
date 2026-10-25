@@ -162,7 +162,7 @@ public interface ResourceImportService {
   Eml copyMetadata(String shortname, File emlFile) throws ImportException;
 
   /**
-   * Validates a data package metadata file (and, for ColDP, its accompanying ColDP-specific validation).
+   * Validates a data package metadata file: ColDP metadata against its own constraints, other metadata as frictionless.
    *
    * @param action        current action, used for error reporting
    * @param metadataFile  metadata file
