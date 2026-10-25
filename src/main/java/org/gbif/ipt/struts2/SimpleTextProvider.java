@@ -61,22 +61,28 @@ public class SimpleTextProvider {
     }
   }
 
+  /**
+   * Finds the message for the given key and formats it with {@link MessageFormat} exactly once, which also unescapes
+   * doubled apostrophes. Formatting it again would drop single apostrophes, both from the message and from the args.
+   */
   public String findText(ResourceBundle bundle, String aTextName, String defaultMessage, Object[] args) {
+    String message;
     try {
-      String message = bundle.getString(aTextName);
-      String text;
-      try {
-        text = MessageFormat.format(message, args);
-      } catch (IllegalArgumentException e) {
-        // message and arguments dont match?
-        LOG.debug(e);
-        text = message;
-      }
-      return text;
+      message = bundle.getString(aTextName);
     } catch (MissingResourceException e) {
-      // return default message
+      if (defaultMessage == null) {
+        return aTextName;
+      }
+      message = defaultMessage;
     }
-    return defaultMessage != null ? defaultMessage : aTextName;
+
+    try {
+      return MessageFormat.format(message, args != null ? args : new Object[]{});
+    } catch (IllegalArgumentException e) {
+      // message and arguments dont match?
+      LOG.debug(e);
+      return message;
+    }
   }
 
   /**
@@ -106,15 +112,6 @@ public class SimpleTextProvider {
       text = findText(bundle, key, defaultValue, args);
       if (text != null) {
         break;
-      }
-    }
-
-    if (text != null) {
-      // Always run MessageFormat to unescape apostrophes
-      try {
-        text = MessageFormat.format(text, args != null ? args : new Object[]{});
-      } catch (IllegalArgumentException e) {
-        // If text has no placeholders, format may throw; ignore
       }
     }
 
