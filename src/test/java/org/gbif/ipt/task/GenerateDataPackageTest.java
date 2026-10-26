@@ -16,6 +16,7 @@ package org.gbif.ipt.task;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
+import org.gbif.ipt.model.DataPackageFieldConstraints;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipFile;
 
@@ -53,6 +55,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -325,6 +328,127 @@ public class GenerateDataPackageTest {
     field.setName(name);
     field.setType("string");
     return field;
+  }
+
+  private static DataPackageField enumField(String name, String... values) {
+    DataPackageField field = field(name);
+    field.setConstraints(DataPackageFieldConstraints.builder().vocabulary(List.of(values)).build());
+    return field;
+  }
+
+  /**
+   * Enum values in another case or with other separators are written as the schema has them; values matching none,
+   * of fields without an enum, and that are already as in the enum are left as they are.
+   */
+  @Test
+  public void testEnumValuesNormalised() {
+    GenerateDataPackage.EnumValues enumValues = new GenerateDataPackage.EnumValues(List.of(
+        enumField("status", "accepted", "provisionally accepted", "ambiguous synonym"),
+        enumField("captureMethod", "activityDetection", "timeLapse"),
+        field("remarks")));
+
+    String[][] rows = {
+        {"ACCEPTED", "TIME_LAPSE", "NATIVE"},
+        {"PROVISIONALLY_ACCEPTED", "activity-detection", null},
+        {"Ambiguous Synonym", "timeLapse", "x"},
+        {"provisionally accepted", "timelapse", null},
+        {"acepted", null, null},
+    };
+    for (String[] row : rows) {
+      enumValues.normalise(row);
+    }
+
+    assertArrayEquals(new String[] {"accepted", "timeLapse", "NATIVE"}, rows[0]);
+    assertArrayEquals(new String[] {"provisionally accepted", "activityDetection", null}, rows[1]);
+    assertArrayEquals(new String[] {"ambiguous synonym", "timeLapse", "x"}, rows[2]);
+    assertArrayEquals(new String[] {"provisionally accepted", "timeLapse", null}, rows[3]);
+    assertArrayEquals(new String[] {"acepted", null, null}, rows[4]);
+    assertEquals(List.of(
+        "3 value(s) of status written as in its enum, ignoring case and separators (e.g. ACCEPTED → accepted)",
+        "3 value(s) of captureMethod written as in its enum, ignoring case and separators (e.g. TIME_LAPSE → timeLapse)"),
+        enumValues.report());
+  }
+
+  /**
+   * Values of fields of other types than string are left as they are, even if they'd match an enum value ignoring
+   * case and separators: there a - can be a minus sign or part of a date. A field without a type is a string field.
+   */
+  @Test
+  public void testEnumValuesOfOtherTypesNotNormalised() {
+    DataPackageField number = enumField("count", "1", "2");
+    number.setType("number");
+    DataPackageField integer = enumField("level", "1", "2");
+    integer.setType("integer");
+    DataPackageField date = enumField("eventDate", "2020-01-01", "2021-01-01");
+    date.setType("date");
+    DataPackageField untyped = enumField("status", "native", "alien");
+    untyped.setType(null);
+    GenerateDataPackage.EnumValues enumValues = new GenerateDataPackage.EnumValues(
+        List.of(number, integer, date, untyped));
+    String[] row = {"-1", "-2", "20200101", "NATIVE"};
+
+    enumValues.normalise(row);
+
+    assertArrayEquals(new String[] {"-1", "-2", "20200101", "native"}, row);
+    assertEquals(List.of(
+        "1 value(s) of status written as in its enum, ignoring case and separators (e.g. NATIVE → native)"),
+        enumValues.report());
+  }
+
+  /**
+   * The example in the report has the value trimmed, as it's written.
+   */
+  @Test
+  public void testEnumValuesReportedTrimmed() {
+    GenerateDataPackage.EnumValues enumValues = new GenerateDataPackage.EnumValues(
+        List.of(enumField("status", "native", "alien")));
+    String[] untrimmed = {" native "};
+    String[] row = {"NATIVE "};
+
+    enumValues.normalise(untrimmed);
+    enumValues.normalise(row);
+
+    assertArrayEquals(new String[] {" native "}, untrimmed);
+    assertArrayEquals(new String[] {"native"}, row);
+    assertEquals(List.of(
+        "1 value(s) of status written as in its enum, ignoring case and separators (e.g. NATIVE → native)"),
+        enumValues.report());
+  }
+
+  /**
+   * Enum values that can't be told apart ignoring case and separators are left as they are.
+   */
+  @Test
+  public void testAmbiguousEnumValuesNotNormalised() {
+    GenerateDataPackage.EnumValues enumValues = new GenerateDataPackage.EnumValues(
+        List.of(enumField("type", "sp-nov", "sp_nov", "other")));
+    String[] row = {"SP NOV"};
+
+    enumValues.normalise(row);
+
+    assertArrayEquals(new String[] {"SP NOV"}, row);
+    assertTrue(enumValues.report().isEmpty());
+  }
+
+  /**
+   * Enum values are written to the data resource as the schema has them, after translation, and reported.
+   */
+  @Test
+  public void testEnumValuesWrittenAsInSchema() throws Exception {
+    DataPackageField status = enumField("status", "native", "alien");
+    tableSchema.setFields(List.of(tableSchema.getFields().get(0), status));
+    DataPackageFieldMapping statusMapping = new DataPackageFieldMapping(1, status);
+    statusMapping.setTranslation(Map.of("introduced", "ALIEN"));
+    mapping.getFields().add(statusMapping);
+    when(sourceManager.rowIterator(mapping.getSource())).thenReturn(new RowIterator(List.of(
+        new String[] {"d1", "NATIVE"}, new String[] {"d2", "introduced"}, new String[] {"d3", "native"})));
+
+    generator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
+
+    List<String> lines = Files.readAllLines(new File(tmpDir, "dp/deployments.csv").toPath());
+    assertEquals(List.of("deploymentID,status", "d1,native", "d2,alien", "d3,native"), lines);
+    assertTrue(generator.report().getMessages().stream()
+        .anyMatch(m -> m.getMessage().startsWith("2 value(s) of status written as in its enum")));
   }
 
   /**

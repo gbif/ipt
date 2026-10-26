@@ -44,13 +44,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -485,7 +488,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             headerWritten = true;
           }
 
-          dumpData(writer, dataPackageMapping, fieldMappingsInSchemaOrder(fields, dataPackageMapping), totalColumns);
+          dumpData(writer, dataPackageMapping, fieldMappingsInSchemaOrder(fields, dataPackageMapping), fields);
 
           // store record number by extension rowType
           recordsByTableSchema.put(tableSchema.getName(), currRecords);
@@ -581,13 +584,15 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param writer                   file writer for single data resource
    * @param schemaMapping            schema mapping
    * @param tableSchemaFieldMappings field mappings
-   * @param dataFileRowSize          number of columns in data resource
+   * @param fields                   table schema fields, one column each in data resource
    * @throws GeneratorException   if there was an error writing data resource for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
   private void dumpData(Writer writer, DataPackageMapping schemaMapping,
-                        List<DataPackageFieldMapping> tableSchemaFieldMappings, int dataFileRowSize)
+                        List<DataPackageFieldMapping> tableSchemaFieldMappings, List<DataPackageField> fields)
       throws GeneratorException, InterruptedException {
+    int dataFileRowSize = fields.size();
+    EnumValues enumValues = new EnumValues(fields);
     RecordFilter filter = schemaMapping.getFilter();
     int recordsWithError = 0;
     int linesWithWrongColumnNumber = 0;
@@ -670,6 +675,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
             applyTranslations(tableSchemaFieldMappings, in, translated);
           }
 
+          // enum values as the schema has them
+          enumValues.normalise(translated);
+
           // concatenate values
           String newRow = commaRow(translated);
 
@@ -735,6 +743,101 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         + " line(s) did not match the filter criteria and got skipped " + mp);
     } else {
       writePublicationLogMessage("All lines match the filter criteria" + mp);
+    }
+
+    // add an "enum values" message per field
+    for (String normalised : enumValues.report()) {
+      addMessage(Level.INFO, normalised + mp);
+    }
+  }
+
+  /**
+   * Writes values of string fields with an enum as the schema has them, when they match one ignoring case, whitespace,
+   * - and _: NATIVE as native, PROVISIONALLY_ACCEPTED as provisionally accepted, TIME_LAPSE as timeLapse. ChecklistBank
+   * exports often have them like that. Values matching none are left as they are, for validation to reject. Fields of
+   * other types are left as they are too: there a - can be a minus sign or part of a date.
+   */
+  static class EnumValues {
+
+    private static final Pattern SEPARATORS = Pattern.compile("[\\s_-]");
+
+    private final List<DataPackageField> fields;
+    // per field, its enum, null if it isn't a string field with an enum
+    private final List<FieldEnum> enums;
+    private final int[] normalised;
+    private final String[] examples;
+
+    /**
+     * A field's enum values, and the same by key, leaving out keys of more than one value: those can't be told apart.
+     */
+    private record FieldEnum(Set<String> values, Map<String, String> valuesByKey) {
+    }
+
+    EnumValues(List<DataPackageField> fields) {
+      this.fields = fields;
+      this.enums = fields.stream().map(EnumValues::fieldEnum).toList();
+      this.normalised = new int[fields.size()];
+      this.examples = new String[fields.size()];
+    }
+
+    static String key(String value) {
+      return SEPARATORS.matcher(value).replaceAll("").toLowerCase(Locale.ROOT);
+    }
+
+    private static FieldEnum fieldEnum(DataPackageField field) {
+      // a field without a type is a string field
+      if (field.getType() != null && !"string".equals(field.getType())) {
+        return null;
+      }
+      List<String> vocabulary = field.getConstraints() != null ? field.getConstraints().getVocabulary() : null;
+      if (vocabulary == null || vocabulary.isEmpty()) {
+        return null;
+      }
+      Map<String, String> byKey = new HashMap<>();
+      Set<String> ambiguous = new HashSet<>();
+      for (String value : vocabulary) {
+        String other = byKey.putIfAbsent(key(value), value);
+        if (other != null && !other.equals(value)) {
+          ambiguous.add(key(value));
+        }
+      }
+      byKey.keySet().removeAll(ambiguous);
+      return new FieldEnum(new HashSet<>(vocabulary), byKey);
+    }
+
+    /**
+     * @param values values of a row, one per field
+     */
+    void normalise(String[] values) {
+      for (int i = 0; i < values.length && i < enums.size(); i++) {
+        FieldEnum fieldEnum = enums.get(i);
+        // most values are as in the enum already
+        if (fieldEnum != null && values[i] != null && !fieldEnum.values().contains(values[i])) {
+          String value = fieldEnum.valuesByKey().get(key(values[i]));
+          String trimmed = values[i].trim();
+          // surrounding whitespace is trimmed when written anyway
+          if (value != null && !value.equals(trimmed)) {
+            if (normalised[i]++ == 0) {
+              examples[i] = trimmed + " → " + value;
+            }
+            values[i] = value;
+          }
+        }
+      }
+    }
+
+    /**
+     * @return a message per field with values written as in its enum
+     */
+    List<String> report() {
+      List<String> messages = new ArrayList<>();
+      for (int i = 0; i < normalised.length; i++) {
+        if (normalised[i] > 0) {
+          messages.add(normalised[i] + " value(s) of " + fields.get(i).getName()
+              + " written as in its enum, ignoring case and separators (e.g. " + examples[i] + ")");
+        }
+      }
+      return messages;
     }
   }
 
