@@ -364,8 +364,8 @@ public class GenerateDataPackageTest {
     assertArrayEquals(new String[] {"provisionally accepted", "timeLapse", null}, rows[3]);
     assertArrayEquals(new String[] {"acepted", null, null}, rows[4]);
     assertEquals(List.of(
-        "3 value(s) of status written as in its enum, ignoring case and separators (e.g. ACCEPTED → accepted)",
-        "3 value(s) of captureMethod written as in its enum, ignoring case and separators (e.g. TIME_LAPSE → timeLapse)"),
+        "3 value(s) of status written as in its enum, ignoring case and separators",
+        "3 value(s) of captureMethod written as in its enum, ignoring case and separators"),
         enumValues.report());
   }
 
@@ -391,15 +391,15 @@ public class GenerateDataPackageTest {
 
     assertArrayEquals(new String[] {"-1", "-2", "20200101", "native"}, row);
     assertEquals(List.of(
-        "1 value(s) of status written as in its enum, ignoring case and separators (e.g. NATIVE → native)"),
+        "1 value(s) of status written as in its enum, ignoring case and separators"),
         enumValues.report());
   }
 
   /**
-   * The example in the report has the value trimmed, as it's written.
+   * A value only differing from the enum by surrounding whitespace isn't counted: it's trimmed when written anyway.
    */
   @Test
-  public void testEnumValuesReportedTrimmed() {
+  public void testEnumValuesOnlyUntrimmedNotCounted() {
     GenerateDataPackage.EnumValues enumValues = new GenerateDataPackage.EnumValues(
         List.of(enumField("status", "native", "alien")));
     String[] untrimmed = {" native "};
@@ -411,7 +411,7 @@ public class GenerateDataPackageTest {
     assertArrayEquals(new String[] {" native "}, untrimmed);
     assertArrayEquals(new String[] {"native"}, row);
     assertEquals(List.of(
-        "1 value(s) of status written as in its enum, ignoring case and separators (e.g. NATIVE → native)"),
+        "1 value(s) of status written as in its enum, ignoring case and separators"),
         enumValues.report());
   }
 
@@ -503,6 +503,29 @@ public class GenerateDataPackageTest {
     assertThrows(GeneratorException.class, failing::call);
 
     List<TaskMessage> messages = failing.report().getMessages();
+    assertEquals("Data Package generation failed: Data package identifier or mappings are not set",
+        messages.get(messages.size() - 1).getMessage());
+  }
+
+  /**
+   * A data package with no mappings (e.g. created from an archive, or with its mappings deleted, then auto-published)
+   * fails with a clear message, not an index error.
+   */
+  @Test
+  public void testNoMappingsFails() {
+    Resource resource = new Resource();
+    resource.setShortname(RESOURCE_SHORTNAME);
+    // no metadata type, so no metadata file is needed to reach the data
+    resource.setDataPackageIdentifier(COL_DP);
+    DataDir dataDir = mock(DataDir.class);
+    when(dataDir.resourcePublicationLogFile(RESOURCE_SHORTNAME)).thenReturn(new File(tmpDir, "publication.log"));
+    when(dataDir.tmpDir()).thenReturn(new File(tmpDir, "nomappings"));
+    GenerateDataPackage generator = new GenerateDataPackage(resource, mock(ReportHandler.class), dataDir,
+        sourceManager, schemaManager, mock(AppConfig.class), mock(MetadataReader.class));
+
+    assertThrows(GeneratorException.class, generator::call);
+
+    List<TaskMessage> messages = generator.report().getMessages();
     assertEquals("Data Package generation failed: Data package identifier or mappings are not set",
         messages.get(messages.size() - 1).getMessage());
   }

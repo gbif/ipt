@@ -369,7 +369,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private void createDataResources() throws GeneratorException, InterruptedException {
     checkForInterruption();
     setState(STATE.DATARESOURCES);
-    if (resource.getDataPackageIdentifier() == null && CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
+    if (resource.getDataPackageIdentifier() == null || CollectionUtils.isEmpty(resource.getDataPackageMappings())) {
       throw new GeneratorException("Data package identifier or mappings are not set");
     }
 
@@ -725,7 +725,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     }
 
     // common message part used in constructing all reporting messages below
-    String mp = " for mapping " + schemaMapping.getDataPackageSchema().getTitle() + " in source " + schemaMapping.getSource().getName();
+    String mp = " for mapping " + schemaMapping.getLabel();
 
     // add a "lines incomplete" message
     if (recordsWithError > 0) {
@@ -776,7 +776,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     // per field, its enum, null if it isn't a string field with an enum
     private final List<FieldEnum> enums;
     private final int[] normalised;
-    private final String[] examples;
 
     /**
      * A field's enum values, and the same by key, leaving out keys of more than one value: those can't be told apart.
@@ -788,7 +787,6 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       this.fields = fields;
       this.enums = fields.stream().map(EnumValues::fieldEnum).toList();
       this.normalised = new int[fields.size()];
-      this.examples = new String[fields.size()];
     }
 
     static String key(String value) {
@@ -825,12 +823,9 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
         // most values are as in the enum already
         if (fieldEnum != null && values[i] != null && !fieldEnum.values().contains(values[i])) {
           String value = fieldEnum.valuesByKey().get(key(values[i]));
-          String trimmed = values[i].trim();
           // surrounding whitespace is trimmed when written anyway
-          if (value != null && !value.equals(trimmed)) {
-            if (normalised[i]++ == 0) {
-              examples[i] = trimmed + " → " + value;
-            }
+          if (value != null && !value.equals(values[i].trim())) {
+            normalised[i]++;
             values[i] = value;
           }
         }
@@ -845,7 +840,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       for (int i = 0; i < normalised.length; i++) {
         if (normalised[i] > 0) {
           messages.add(normalised[i] + " value(s) of " + fields.get(i).getName()
-              + " written as in its enum, ignoring case and separators (e.g. " + examples[i] + ")");
+              + " written as in its enum, ignoring case and separators");
         }
       }
       return messages;
