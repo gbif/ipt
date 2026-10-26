@@ -236,6 +236,26 @@ public class OverviewActionTest extends IptBaseTest {
   }
 
   /**
+   * A license GBIF doesn't support, e.g. CC BY-SA, in the last published version prevents registration. A supported
+   * one without legalcode doesn't.
+   */
+  @Test
+  public void testIsLastPublishedVersionAssignedGBIFSupportedLicenseUnsupported() throws IOException, TemplateException {
+    Resource r = new Resource();
+    r.addVersionHistory(new VersionHistory(new BigDecimal("1.0"), new Date(), PublicationStatus.PRIVATE));
+
+    r.getEml().setIntellectualRights(
+      "This work is licensed under a <a href=\"http://creativecommons.org/licenses/by-sa/4.0/legalcode\">Creative Commons Attribution-ShareAlike (CC-BY-SA) 4.0 License</a>.");
+    IptEmlWriter.writeEmlFile(emlFile, r.getEml());
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
+
+    r.getEml().setIntellectualRights(
+      "This work is licensed under a <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution (CC-BY) 4.0 License</a>.");
+    IptEmlWriter.writeEmlFile(emlFile, r.getEml());
+    assertTrue(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
+  }
+
+  /**
    * A ColDP license can be written in many ways, e.g. Plazi's CC0.
    */
   @Test

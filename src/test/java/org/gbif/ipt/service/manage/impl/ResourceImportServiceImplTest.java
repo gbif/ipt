@@ -532,6 +532,55 @@ public class ResourceImportServiceImplTest {
     verify(action, never()).addActionError(anyString());
   }
 
+  /**
+   * A ColDP's license GBIF doesn't support is reported when its metadata is copied.
+   */
+  @Test
+  public void testCopyColDpMetadataWarnsOfUnsupportedLicense() throws Exception {
+    File metadataFile = Files.writeString(tempDir.resolve("metadata.yaml"), "title: x").toFile();
+    ColMetadata metadata = new ColMetadata();
+    metadata.setLicense("CC BY-SA 4.0");
+    when(metadataReader.readValue(any(File.class), any())).thenReturn(metadata);
+
+    service.copyDatapackageMetadata(SHORTNAME, metadataFile, COL_DP, alog);
+
+    verify(action).getText("manage.resource.dp.coldp.license.unsupported", new String[] {"CC BY-SA 4.0"});
+  }
+
+  /**
+   * An imported EML's license GBIF doesn't support is reported, a supported one isn't.
+   */
+  @Test
+  public void testCreateFromEmlWarnsOfUnsupportedLicense() throws Exception {
+    File bySa = Files.writeString(tempDir.resolve("by-sa.xml"), emlWithRights(
+        "This work is licensed under a <ulink url=\"http://creativecommons.org/licenses/by-sa/4.0/legalcode\">"
+            + "<citetitle>Creative Commons Attribution-ShareAlike (CC-BY-SA) 4.0 License</citetitle></ulink>.")).toFile();
+
+    service.createFromEml(SHORTNAME, bySa, creator, alog);
+
+    verify(action).getText("manage.resource.license.unsupported",
+        new String[] {"Creative Commons Attribution-ShareAlike (CC-BY-SA) 4.0 License"});
+  }
+
+  @Test
+  public void testCreateFromEmlWithSupportedLicense() throws Exception {
+    File by = Files.writeString(tempDir.resolve("by.xml"), emlWithRights(
+        "This work is licensed under a <ulink url=\"http://creativecommons.org/licenses/by/4.0/legalcode\">"
+            + "<citetitle>Creative Commons Attribution (CC-BY) 4.0 License</citetitle></ulink>.")).toFile();
+
+    service.createFromEml(SHORTNAME, by, creator, alog);
+
+    verify(action, never()).getText(eq("manage.resource.license.unsupported"), any(String[].class));
+  }
+
+  private static String emlWithRights(String intellectualRights) {
+    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        + "<eml:eml xmlns:eml=\"https://eml.ecoinformatics.org/eml-2.2.0\" packageId=\"x\" system=\"http://gbif.org\">"
+        + "<dataset><title>Licence test</title>"
+        + "<intellectualRights><para>" + intellectualRights + "</para></intellectualRights>"
+        + "</dataset></eml:eml>";
+  }
+
   @Test
   public void testNormalizeColDpName() {
     assertEquals("nameusage", ResourceImportServiceImpl.normalizeColDpName("NameUsage"));

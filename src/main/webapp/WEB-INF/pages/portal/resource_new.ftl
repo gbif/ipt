@@ -321,12 +321,15 @@
                                 <div>
                                     <dt><@s.text name='portal.resource.license'/>:</dt>
                                     <dd>
-                                        <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                        <#assign gbifLicense = action.getGbifLicense(eml)!""/>
+                                        <#if gbifLicense == "CC_BY_NC_4_0">
                                             <a href="http://creativecommons.org/licenses/by-nc/4.0/legalcode" target="_blank">CC-BY-NC 4.0</a>
-                                        <#elseif eml.intellectualRights.contains("CC-BY")>
+                                        <#elseif gbifLicense == "CC_BY_4_0">
                                             <a href="http://creativecommons.org/licenses/by/4.0/legalcode" target="_blank">CC-BY 4.0</a>
-                                        <#elseif eml.intellectualRights.contains("CC0")>
+                                        <#elseif gbifLicense == "CC0_1_0">
                                             <a href="http://creativecommons.org/publicdomain/zero/1.0/legalcode" target="_blank">CC0 1.0</a>
+                                        <#else>
+                                            ${action.getLicenseLabel(eml)}
                                         </#if>
                                     </dd>
                                 </div>
@@ -616,19 +619,20 @@
                             </h4>
 
                             <p><@s.text name='portal.resource.rights.help'/>:</p>
-                            <@licenseLogoClass eml.intellectualRights!/>
+                            <#assign gbifLicense = action.getGbifLicense(eml)!""/>
+                            <@licenseLogoClass gbifLicense/>
                             <p property="dc:license">
                                 <#if resource.organisation?? && action.getDefaultOrganisation()?? && resource.organisation.key.toString() != action.getDefaultOrganisation().key.toString()>
                                     <@s.text name='portal.resource.rights.organisation'><@s.param>${resource.organisation.name}</@s.param></@s.text>
                                 </#if>
-                                <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                <#if gbifLicense == "CC_BY_NC_4_0">
                                     <@s.text name='eml.intellectualRights.licence.ccbync'/>
-                                <#elseif eml.intellectualRights.contains("CC-BY")>
+                                <#elseif gbifLicense == "CC_BY_4_0">
                                     <@s.text name='eml.intellectualRights.licence.ccby'/>
-                                <#elseif eml.intellectualRights.contains("CC0")>
+                                <#elseif gbifLicense == "CC0_1_0">
                                     <@s.text name='eml.intellectualRights.licence.cczero'/>
                                 <#else>
-                                    ${eml.intellectualRights!}
+                                    ${action.getLicenseLabel(eml)}
                                 </#if>
                             </p>
                         </div>

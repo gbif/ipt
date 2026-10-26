@@ -1043,8 +1043,7 @@ public class Resource implements Serializable, Comparable<Resource> {
         return false;
       }
     } else {
-      String license = eml.parseLicenseUrl();
-      return license != null && Constants.GBIF_SUPPORTED_LICENSES.contains(license);
+      return MetadataUtils.gbifLicense(eml) != null;
     }
   }
 

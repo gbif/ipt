@@ -13,6 +13,8 @@
  */
 package org.gbif.ipt.utils;
 
+import org.gbif.api.vocabulary.License;
+import org.gbif.common.parsers.LicenseParser;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessContributor;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
@@ -20,7 +22,10 @@ import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.Agent;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
+import org.gbif.metadata.eml.ipt.model.Eml;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -32,9 +37,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COLDP_LICENSES_CODES_TO_GBIF;
@@ -44,6 +56,17 @@ import static org.gbif.ipt.config.Constants.DWC_DP;
 public final class MetadataUtils {
 
   private static final DateTimeFormatter CAMTRAP_TEMPORAL_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private static final Logger LOG = LogManager.getLogger(MetadataUtils.class);
+  private static final LicenseParser LICENSE_PARSER = LicenseParser.getInstance();
+  // as MetadataAction loads them for the basic metadata page
+  private static final String LICENSES_PROPFILE_PATH = "/org/gbif/metadata/eml/licenses.properties";
+  private static final List<String> IPT_LICENSE_NAMES = iptLicenseNames();
+  private static final Pattern URL = Pattern.compile("https?://[^\\s\"'<>)]+");
+  // the sites of the licenses GBIF parses
+  private static final List<String> LICENSE_HOSTS = List.of("creativecommons.org", "opendatacommons.org");
+  // a Creative Commons license and version, e.g. creativecommons.org/licenses/by/4.0
+  private static final Pattern CREATIVE_COMMONS_LICENSE =
+      Pattern.compile("^(.*creativecommons\\.org/(?:licenses/[a-z-]+|publicdomain/zero)/\\d\\.\\d)(?:/.*)?$");
   // the URLs of the GBIF-supported licenses a ColDP can have, see colDpLicenseToGbifCode
   private static final Map<String, String> COLDP_LICENSE_URLS = Map.of(
       "CC0-1.0", "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -76,6 +99,121 @@ public final class MetadataUtils {
       return null;
     }
     return COLDP_LICENSES_CODES_TO_GBIF.get(license.replaceAll("[\\s_-]", "").toUpperCase(Locale.ENGLISH));
+  }
+
+  /**
+   * The GBIF-supported license of a resource's intellectual rights, recognised as the basic metadata page does: from
+   * its license URL or, without one, from the name of a license the IPT offers, e.g. Public Domain (CC0 1.0).
+   *
+   * @param eml the resource's metadata
+   * @return CC0 1.0, CC BY 4.0 or CC BY-NC 4.0, null if the license isn't one GBIF supports or there's none
+   */
+  @Nullable
+  public static License gbifLicense(@Nullable Eml eml) {
+    if (eml == null || StringUtils.isBlank(eml.getIntellectualRights())) {
+      return null;
+    }
+    String url = licenseUrl(eml.getIntellectualRights());
+    if (url != null) {
+      return gbifLicenseOfUrl(url);
+    }
+    // can be old-fashioned, with the version outside the parenthesis
+    String rights = eml.getIntellectualRights().replace(") 4.0", " 4.0)");
+    return IPT_LICENSE_NAMES.stream()
+        .filter(rights::contains)
+        .findFirst()
+        .map(name -> LICENSE_PARSER.parseUriThenTitle(null, name))
+        .filter(License::isConcrete)
+        .orElse(null);
+  }
+
+  /**
+   * The GBIF-supported license of a license URL, as GBIF parses it: with or without legalcode, http or https, and
+   * ODC-PDDL and ODC-BY as CC0 and CC BY.
+   *
+   * @param url license URL, e.g. parsed from the EML's intellectual rights
+   * @return CC0 1.0, CC BY 4.0 or CC BY-NC 4.0, null if the license isn't one GBIF supports or there's no URL
+   */
+  @Nullable
+  static License gbifLicenseOfUrl(@Nullable String url) {
+    if (StringUtils.isBlank(url)) {
+      return null;
+    }
+    // GBIF doesn't parse a Creative Commons deed, e.g. .../by/4.0/deed.en, as its license
+    String licenseUrl = CREATIVE_COMMONS_LICENSE.matcher(url.trim()).replaceFirst("$1/");
+    try {
+      License license = LICENSE_PARSER.parseUriThenTitle(URI.create(licenseUrl), null);
+      return license.isConcrete() ? license : null;
+    } catch (IllegalArgumentException e) {
+      // not a URL
+      return null;
+    }
+  }
+
+  /**
+   * Warns that the license of uploaded or imported metadata isn't one GBIF supports: the resource can't be published
+   * until one is chosen. Metadata without a license is reported as incomplete anyway.
+   */
+  public static void warnIfLicenseUnsupported(Eml eml, ActionLogger alog) {
+    if (StringUtils.isNotBlank(eml.getIntellectualRights()) && gbifLicense(eml) == null) {
+      alog.warn("manage.resource.license.unsupported", new String[] {licenseLabel(eml)});
+    }
+  }
+
+  /**
+   * A resource's license as a user would recognise it in its intellectual rights: its title, else its URL, else the
+   * start of the text.
+   */
+  public static String licenseLabel(Eml eml) {
+    String url = licenseUrl(StringUtils.defaultString(eml.getIntellectualRights()));
+    // the title of the first link, which may not be the license
+    String title = url != null && url.equals(eml.parseLicenseUrl()) ? StringUtils.trimToNull(eml.parseLicenseTitle()) : null;
+    if (title != null) {
+      return title;
+    }
+    if (url != null) {
+      return url;
+    }
+    return StringUtils.abbreviate(StringUtils.normalizeSpace(eml.getIntellectualRights()), 100);
+  }
+
+  /**
+   * The first license URL in intellectual rights: other links are e.g. the publisher's, as a link or written out.
+   *
+   * @return the URL, null if there's none
+   */
+  @Nullable
+  private static String licenseUrl(String intellectualRights) {
+    Matcher matcher = URL.matcher(intellectualRights);
+    while (matcher.find()) {
+      // a written out URL can end a sentence
+      String url = StringUtils.stripEnd(matcher.group(), ".,;:");
+      if (LICENSE_HOSTS.stream().anyMatch(url::contains)) {
+        return url;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * The names of the licenses the IPT offers on the basic metadata page, e.g. Public Domain (CC0 1.0).
+   */
+  private static List<String> iptLicenseNames() {
+    Properties properties = new Properties();
+    try (InputStream in = MetadataUtils.class.getResourceAsStream(LICENSES_PROPFILE_PATH)) {
+      if (in == null) {
+        LOG.error("Licenses file {} not found", LICENSES_PROPFILE_PATH);
+        return List.of();
+      }
+      properties.load(in);
+    } catch (IOException e) {
+      LOG.error("Failed to load licenses from {}", LICENSES_PROPFILE_PATH, e);
+    }
+    return properties.stringPropertyNames().stream()
+        .filter(key -> key.startsWith("license.name."))
+        .map(key -> StringUtils.trimToNull(properties.getProperty(key)))
+        .filter(Objects::nonNull)
+        .toList();
   }
 
   /**

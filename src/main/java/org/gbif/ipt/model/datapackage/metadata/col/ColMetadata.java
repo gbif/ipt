@@ -14,6 +14,7 @@
 package org.gbif.ipt.model.datapackage.metadata.col;
 
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
+import org.gbif.ipt.validation.GbifSupportedColDpLicense;
 
 import java.io.IOException;
 import java.net.URI;
@@ -234,6 +235,7 @@ public class ColMetadata implements DataPackageMetadata {
    */
   @JsonProperty("license")
   @NotNull
+  @GbifSupportedColDpLicense
   private String license;
 
   /**

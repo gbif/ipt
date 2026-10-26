@@ -70,6 +70,7 @@ import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.task.StatusReport;
 import org.gbif.ipt.task.TaskMessage;
+import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.DOIUtils;
 import org.gbif.ipt.utils.DataCiteMetadataBuilder;
 import org.gbif.ipt.utils.IptFileUtils;
@@ -1690,23 +1691,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private boolean isLastPublishedVersionAssignedGBIFSupportedLicenseEML(Resource resource, BigDecimal latestVersion) {
     File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
     if (emlFile.exists()) {
-      try {
-        LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
-        InputStream in = new FileInputStream(emlFile);
+      LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
+      try (InputStream in = new FileInputStream(emlFile)) {
         Eml eml = EmlFactory.build(in);
-        String licenseUrlString = eml.parseLicenseUrl();
-        if (licenseUrlString != null) {
-          LOG.debug("Checking if license (URL={}) is supported by GBIF..", licenseUrlString);
-          boolean isSupported = Constants.GBIF_SUPPORTED_LICENSES.stream()
-              .anyMatch(supportedLicense -> supportedLicense.contains(licenseUrlString));
-          if (isSupported) {
-            LOG.debug("License URL {} is supported", licenseUrlString);
-          } else {
-            LOG.debug("License URL {} is not supported", licenseUrlString);
-          }
-
-          return true;
-        }
+        boolean isSupported = MetadataUtils.gbifLicense(eml) != null;
+        LOG.debug("License {} supported by GBIF: {}", MetadataUtils.licenseLabel(eml), isSupported);
+        return isSupported;
       } catch (Exception e) {
         LOG.error("Failed to check if last published version of resource has been assigned a GBIF-supported license: {}", e
             .getMessage(), e);
@@ -1869,6 +1859,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
       resourceManager.replaceEml(resource, uploadedTempFile, validateEml);
       addActionMessage(getText("manage.overview.success.replace.eml"));
+      MetadataUtils.warnIfLicenseUnsupported(resource.getEml(), new ActionLogger(LOG, this));
       return SUCCESS;
     } catch (ImportException e) {
       LOG.error("Failed to replace EML", e);

@@ -890,6 +890,12 @@ public class ResourceTest extends IptBaseTest {
     r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0/\">Open Data Commons Attribution License</a>.");
     assertEquals("http://www.opendatacommons.org/licenses/by/1.0/", r.getEml().parseLicenseUrl());
     assertTrue(r.isAssignedGBIFSupportedLicense());
+    // CC-BY, without legalcode
+    r.getEml().setIntellectualRights("This work is licensed under a <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons Attribution (CC-BY) 4.0 License</a>.");
+    assertTrue(r.isAssignedGBIFSupportedLicense());
+    // CC-BY-SA isn't supported
+    r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://creativecommons.org/licenses/by-sa/4.0/legalcode\">Creative Commons Attribution-ShareAlike (CC-BY-SA) 4.0 License</a>.");
+    assertFalse(r.isAssignedGBIFSupportedLicense());
   }
 
   /**

@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action;
 
+import org.gbif.api.vocabulary.License;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Ipt;
@@ -20,7 +21,9 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.XSSUtils;
+import org.gbif.metadata.eml.ipt.model.Eml;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -148,6 +151,24 @@ public class BaseAction extends ActionSupport
 
   public String getBaseURL() {
     return cfg.getBaseUrl();
+  }
+
+  /**
+   * For templates: the GBIF-supported license of metadata, see {@link MetadataUtils#gbifLicense(Eml)}.
+   *
+   * @return CC0_1_0, CC_BY_4_0 or CC_BY_NC_4_0, null if the license isn't one GBIF supports or there's none
+   */
+  @Nullable
+  public String getGbifLicense(@Nullable Eml eml) {
+    License license = MetadataUtils.gbifLicense(eml);
+    return license != null ? license.name() : null;
+  }
+
+  /**
+   * For templates: metadata's license as a user would recognise it, see {@link MetadataUtils#licenseLabel(Eml)}.
+   */
+  public String getLicenseLabel(Eml eml) {
+    return MetadataUtils.licenseLabel(eml);
   }
 
   public String getLogoRedirectURL() {

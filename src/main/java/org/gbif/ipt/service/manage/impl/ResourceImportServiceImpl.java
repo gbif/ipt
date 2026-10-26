@@ -64,6 +64,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.ActionLogger;
 import org.gbif.ipt.utils.IptFileUtils;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.EmlValidator;
@@ -229,6 +230,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       alog.error("manage.resource.create.failed");
       throw e;
     }
+    MetadataUtils.warnIfLicenseUnsupported(eml, alog);
     // create resource of type metadata, with Eml instance
     Resource resource = createNew(shortname, Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
     resource.setMetadataModified(new Date());
@@ -662,6 +664,10 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       for (String[] countryAsCode : countriesAsCodes(colMetadata)) {
         alog.warn("manage.resource.dp.coldp.country.code", countryAsCode);
       }
+      // a missing license is reported as invalid metadata anyway
+      if (colMetadata.getLicense() != null && MetadataUtils.colDpLicenseToGbifCode(colMetadata.getLicense()) == null) {
+        alog.warn("manage.resource.dp.coldp.license.unsupported", new String[] {colMetadata.getLicense()});
+      }
       try {
         metadataReader.writeValue(dataDirMetadataFile, colMetadata);
       } catch (IOException e) {
@@ -757,6 +763,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
         // read metadata and populate Eml instance
         eml = copyMetadata(shortname, emlFile);
         alog.info("manage.resource.read.eml.metadata");
+        MetadataUtils.warnIfLicenseUnsupported(eml, alog);
         return eml;
       } else {
         LOG.warn("Cant find any eml metadata to import");

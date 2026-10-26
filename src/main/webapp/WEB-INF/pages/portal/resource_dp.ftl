@@ -221,15 +221,17 @@
                                 <div>
                                     <dt><@s.text name='portal.resource.license'/>:</dt>
                                     <dd>
-                                        <#if license.contains("CC-BY-NC")>
+                                        <#if license == "CC-BY-NC-4.0">
                                             <a href="http://creativecommons.org/licenses/by-nc/4.0/legalcode"
                                                target="_blank">CC-BY-NC 4.0</a>
-                                        <#elseif license.contains("CC-BY")>
+                                        <#elseif license == "CC-BY-4.0">
                                             <a href="http://creativecommons.org/licenses/by/4.0/legalcode"
                                                target="_blank">CC-BY 4.0</a>
-                                        <#elseif license.contains("CC0")>
+                                        <#elseif license == "CC0-1.0">
                                             <a href="http://creativecommons.org/publicdomain/zero/1.0/legalcode"
                                                target="_blank">CC0 1.0</a>
+                                        <#else>
+                                            ${license}
                                         </#if>
                                     </dd>
                                 </div>

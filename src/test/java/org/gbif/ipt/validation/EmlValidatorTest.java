@@ -195,13 +195,30 @@ public class EmlValidatorTest extends IptBaseTest {
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
+  /**
+   * The license is one GBIF supports, as the license dropdown only offers those: an uploaded or imported EML can have
+   * another one. A license without a URL is recognised by the name of a license the IPT offers.
+   */
+  @Test
+  public void testBasicPartIntellectualRightsNotGbifSupported() {
+    eml.setIntellectualRights(
+      "This work is licensed under a <a href=\"http://creativecommons.org/licenses/by-sa/4.0/legalcode\">Creative Commons Attribution-ShareAlike (CC-BY-SA) 4.0 License</a>.");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    eml.setIntellectualRights("All rights reserved.");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // without a URL, an IPT license name
+    eml.setIntellectualRights(
+      "To the extent possible under law, the publisher has waived all rights to these data and has dedicated them to the Public Domain (CC0 1.0).");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
+
   @Test
   public void testBasicPartIntellectualRightsMissing() {
     // invalid
     eml.setIntellectualRights("");
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     // valid
-    eml.setIntellectualRights("CC-BY");
+    eml.setIntellectualRights("This work is licensed under a <a href=\"http://creativecommons.org/licenses/by/4.0/legalcode\">Creative Commons Attribution (CC-BY 4.0) License</a>.");
     assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
     eml.setIntellectualRights(
       "This work is licensed under a <a href=\"http://creativecommons.org/licenses/by/4.0/legalcode\">Creative Commons Attribution (CC-BY) 4.0 License</a>.");
@@ -735,7 +752,7 @@ public class EmlValidatorTest extends IptBaseTest {
     empty.setDescription("Description");
     empty.setMetadataLanguage(Language.FRENCH.getIso3LetterCode());
     empty.setLanguage(Language.SPANISH.getIso3LetterCode());
-    empty.setIntellectualRights("CC-BY");
+    empty.setIntellectualRights("This work is licensed under a <a href=\"http://creativecommons.org/licenses/by/4.0/legalcode\">Creative Commons Attribution (CC-BY 4.0) License</a>.");
 
     Agent agent = new Agent();
     agent.setLastName("Smith");

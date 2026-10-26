@@ -133,7 +133,6 @@ public final class Constants {
   public static final String DATA_PACKAGE_VALIDATION_REPORT = "datapackage-validation-report.json";
 
   // Set of GBIF supported licenses
-  public static final Set<String> GBIF_SUPPORTED_LICENSES;
   public static final Set<String> GBIF_SUPPORTED_LICENSES_CODES;
   public static final Map<String, String> COLDP_LICENSES_CODES_TO_GBIF = new HashMap<>();
 
@@ -141,19 +140,6 @@ public final class Constants {
   public static final String EML_2_2_0_SCHEMA = "https://eml.ecoinformatics.org/eml-2.2.0";
 
   static {
-    Set<String> licencesInternal = new HashSet<>();
-    licencesInternal.add("http://creativecommons.org/publicdomain/zero/1.0/legalcode");
-    licencesInternal.add("https://creativecommons.org/publicdomain/zero/1.0/legalcode");
-    licencesInternal.add("http://creativecommons.org/licenses/by/4.0/legalcode");
-    licencesInternal.add("https://creativecommons.org/licenses/by/4.0/legalcode");
-    licencesInternal.add("http://creativecommons.org/licenses/by-nc/4.0/legalcode");
-    licencesInternal.add("https://creativecommons.org/licenses/by-nc/4.0/legalcode");
-    licencesInternal.add("http://www.opendatacommons.org/licenses/by/1.0/");
-    licencesInternal.add("https://www.opendatacommons.org/licenses/by/1.0/");
-    licencesInternal.add("http://www.opendatacommons.org/licenses/pddl/1.0/");
-    licencesInternal.add("https://www.opendatacommons.org/licenses/pddl/1.0/");
-    GBIF_SUPPORTED_LICENSES = Collections.unmodifiableSet(licencesInternal);
-
     Set<String> licenseCodesInternal = new HashSet<>();
     licenseCodesInternal.add("CC0-1.0");
     licenseCodesInternal.add("CC-BY-4.0");

@@ -429,21 +429,23 @@
                             <div class="col-12">
                                 <@select name="eml.intellectualRights.license" i18nkey="eml.intellectualRights.license" help="i18n" options=licenses value="${licenseKeySelected!}" requiredField=true/>
 
+                                <#assign gbifLicense = action.getGbifLicense(eml)!""/>
                                 <div id="intellectualRightsDiv" class="mt-3 p-3 fs-smaller cc_main_container">
                                     <div class="cc_logo">
-                                        <@licenseLogoClass eml.intellectualRights!/>
+                                        <@licenseLogoClass gbifLicense/>
                                     </div>
 
                                     <div class="cc_text">
                                         <#if eml.intellectualRights?has_content>
-                                            <#if eml.intellectualRights.contains("CC-BY-NC")>
+                                            <#if gbifLicense == "CC_BY_NC_4_0">
                                                 <@s.text name='eml.intellectualRights.licence.ccbync'/>
-                                            <#elseif eml.intellectualRights.contains("CC-BY")>
+                                            <#elseif gbifLicense == "CC_BY_4_0">
                                                 <@s.text name='eml.intellectualRights.licence.ccby'/>
-                                            <#elseif eml.intellectualRights.contains("CC0")>
+                                            <#elseif gbifLicense == "CC0_1_0">
                                                 <@s.text name='eml.intellectualRights.licence.cczero'/>
                                             <#else>
-                                                ${eml.intellectualRights!}
+                                                <!-- e.g. from an uploaded EML: the dropdown only offers the licenses GBIF supports -->
+                                                <span class="text-gbif-danger"><@s.text name="validation.license.gbif.unsupported"><@s.param>${action.getLicenseLabel(eml)}</@s.param></@s.text></span>
                                             </#if>
                                         </#if>
                                     </div>

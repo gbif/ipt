@@ -72,6 +72,30 @@ public class DataPackageMetadataValidatorTest {
         "validation.datapackage.metadata.coldp.invalid issued | must not be null"), errors);
   }
 
+  /**
+   * A ColDP's license is one GBIF supports, however it's written.
+   */
+  @Test
+  public void testColDpLicenseNotGbifSupported() {
+    BaseAction action = mock(BaseAction.class);
+    when(action.getText(anyString(), any(String[].class)))
+        .thenAnswer(invocation -> invocation.getArgument(0) + " "
+            + String.join(" | ", invocation.getArgument(1, String[].class)));
+    ColMetadata metadata = new ColMetadata();
+    metadata.setTitle("Gracillariidae");
+
+    metadata.setLicense("CC BY-SA 4.0");
+    assertTrue(validator.colMetadataErrors(action, metadata).contains(
+        "validation.datapackage.metadata.coldp.invalid.value license | "
+            + "validation.datapackage.metadata.coldp.license.gbif.unsupported license | CC BY-SA 4.0"));
+
+    for (String license : List.of("CC0", "CC BY 4.0", "CC-BY-NC-4.0")) {
+      metadata.setLicense(license);
+      assertTrue(validator.colMetadataErrors(action, metadata).stream().noneMatch(e -> e.contains(" license ")),
+          license);
+    }
+  }
+
   @Test
   public void testColDpMetadataIsValid() throws Exception {
     Resource resource = new Resource();

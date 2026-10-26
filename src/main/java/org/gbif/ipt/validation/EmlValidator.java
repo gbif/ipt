@@ -22,6 +22,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.IptEmlWriter;
@@ -286,10 +287,14 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
-          // intellectual rights - mandatory
+          // intellectual rights - mandatory, a license GBIF supports, as the license dropdown only offers those. An
+          // uploaded or imported EML can have another one.
           if (StringUtils.isBlank(eml.getIntellectualRights())) {
             ec.addFieldError("eml.intellectualRights.license",
                 i18n.getText("validation.required", i18n.getText("eml.intellectualRights.license")));
+          } else if (MetadataUtils.gbifLicense(eml) == null) {
+            ec.addFieldError("eml.intellectualRights.license",
+                i18n.getText("validation.license.gbif.unsupported", MetadataUtils.licenseLabel(eml)));
           }
 
           // type - mandatory
