@@ -969,6 +969,17 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: rgb(var(--alert-danger-icon-color));
 }
 
+/* the other alerts of one kind, collapsed under the first, see action_alerts_list.ftl */
+.alert-more > summary {
+    cursor: pointer;
+    font-weight: 400;
+    width: fit-content;
+}
+
+.alert-more li + li {
+    margin-top: .25rem;
+}
+
 .alert-danger {
     color: rgb(var(--alert-danger-text-color));
     background-color: rgb(var(--alert-danger-background-color));
