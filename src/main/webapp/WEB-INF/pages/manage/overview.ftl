@@ -1466,6 +1466,7 @@
 <#include "/WEB-INF/pages/macros/dwc_dp_types.ftl"/>
 <#assign metadataType = "metadata"/>
 <#assign isDataPackage = resource.isDataPackage()/>
+<#assign isColDp = resource.coreType?has_content && resource.coreType == "coldp"/>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -2953,7 +2954,7 @@
                             <@s.text name="manage.overview.published.metadata.invalid"/>
                         </p>
 
-                        <#if !isDataPackage>
+                        <#if !isDataPackage || isColDp>
                         <p class="mb-0">
                             <@s.text name="manage.overview.published.metadata.validation.report"/>
                         </p>
@@ -3401,11 +3402,15 @@
         </div>
     </div>
 
-    <#if !isDataPackage || isDwcDp>
+    <#if !isDataPackage || isDwcDp || isColDp>
     <div id="metadata-validation-result-modal" class="modal fade" tabindex="-1" aria-labelledby="metadata-validation-result-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
-                <#assign isMetadataValid=!errorCollector.hasErrors() />
+                <#if isColDp>
+                    <#assign isMetadataValid=!colMetadataErrors?has_content />
+                <#else>
+                    <#assign isMetadataValid=!errorCollector.hasErrors() />
+                </#if>
 
                 <div class="modal-header flex-column">
                     <#if isMetadataValid>
@@ -3442,7 +3447,13 @@
                     }/>
 
 
-                    <#if !isMetadataValid>
+                    <#if !isMetadataValid && isColDp>
+                        <ul class="mt-2">
+                            <#list colMetadataErrors as error>
+                                <li>${error}</li>
+                            </#list>
+                        </ul>
+                    <#elseif !isMetadataValid>
                         <div class="mt-2">
                             <#list errorCollector.result?keys as key>
                                 <#if errorCollector.result[key].hasErrors()>

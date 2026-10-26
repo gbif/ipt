@@ -569,7 +569,8 @@ public class ResourceManagerImplCrudTest {
     replacement.setId("id");
     replacement.setVersion("1");
     replacement.getAdditionalProperties().put("custom", "value");
-    when(importService.copyDatapackageMetadata(SHORTNAME, metadataFile, "dwc-dp")).thenReturn(replacement);
+    when(importService.copyDatapackageMetadata(eq(SHORTNAME), eq(metadataFile), eq("dwc-dp"), any(ActionLogger.class)))
+        .thenReturn(replacement);
 
     manager.replaceDatapackageMetadata(action, resource, metadataFile, true);
 

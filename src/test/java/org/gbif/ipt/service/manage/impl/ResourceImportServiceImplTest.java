@@ -28,6 +28,7 @@ import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.Agent;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
@@ -457,11 +458,78 @@ public class ResourceImportServiceImplTest {
     metadata.setVersion("1792812013496");
     when(metadataReader.readValue(any(File.class), any())).thenReturn(metadata);
 
-    ColMetadata copied = (ColMetadata) service.copyDatapackageMetadata(SHORTNAME, metadataFile, COL_DP);
+    ColMetadata copied = (ColMetadata) service.copyDatapackageMetadata(SHORTNAME, metadataFile, COL_DP, alog);
 
     assertNull(copied.getVersion());
     // written back, so it isn't read again when the resource is loaded
     verify(metadataReader).writeValue(new File(resourceDir, "datapackage.json"), copied);
+  }
+
+  private static Agent agent(String country) {
+    Agent agent = new Agent();
+    agent.setCountry(country);
+    return agent;
+  }
+
+  /**
+   * Country names of a ColDP's agents, as ChecklistBank exports can have them, are written as their codes. Codes,
+   * countries that can't be parsed or aren't a country (the parser takes Europe and Unknown for ZZ, International
+   * waters for XZ) and agents without a country are left as they are.
+   */
+  @Test
+  public void testColDpCountriesAsCodes() {
+    ColMetadata metadata = new ColMetadata();
+    metadata.setCreator(List.of(agent("BE"), agent("Germany")));
+    metadata.setPublisher(agent("Belgium"));
+    metadata.setContact(agent(null));
+    metadata.setEditor(List.of(agent("Europe"), agent("Unknown"), agent("International waters")));
+    metadata.setContributor(List.of(agent("Belgium "), agent("Atlantis")));
+
+    List<String[]> countriesAsCodes = ResourceImportServiceImpl.countriesAsCodes(metadata);
+
+    assertEquals("BE", metadata.getCreator().get(0).getCountry());
+    assertEquals("DE", metadata.getCreator().get(1).getCountry());
+    assertEquals("BE", metadata.getPublisher().getCountry());
+    assertEquals(List.of("Europe", "Unknown", "International waters"),
+        metadata.getEditor().stream().map(Agent::getCountry).toList());
+    assertNull(metadata.getContact().getCountry());
+    assertEquals("BE", metadata.getContributor().get(0).getCountry());
+    assertEquals("Atlantis", metadata.getContributor().get(1).getCountry());
+    assertEquals(List.of("Germany → DE", "Belgium → BE", "Belgium → BE"),
+        countriesAsCodes.stream().map(c -> c[0] + " → " + c[1]).toList());
+  }
+
+  /**
+   * A ColDP's metadata is written back with its country names as their codes, each reported.
+   */
+  @Test
+  public void testCopyColDpMetadataWritesCountriesAsCodes() throws Exception {
+    File metadataFile = Files.writeString(tempDir.resolve("metadata.yaml"), "title: x").toFile();
+    ColMetadata metadata = new ColMetadata();
+    metadata.setContributor(List.of(agent("Belgium")));
+    when(metadataReader.readValue(any(File.class), any())).thenReturn(metadata);
+
+    ColMetadata copied = (ColMetadata) service.copyDatapackageMetadata(SHORTNAME, metadataFile, COL_DP, alog);
+
+    assertEquals("BE", copied.getContributor().get(0).getCountry());
+    verify(metadataReader).writeValue(new File(resourceDir, "datapackage.json"), copied);
+    verify(action).getText("manage.resource.dp.coldp.country.code", new String[] {"Belgium", "BE"});
+  }
+
+  /**
+   * An uploaded ColDP metadata file with a country name isn't rejected: it's written as its code when copied.
+   */
+  @Test
+  public void testValidateColDpMetadataFileWithCountryName() throws Exception {
+    File metadataFile = FileUtils.getClasspathFile("frictionless/coldp/plazi/metadata.json");
+    ColMetadata metadata = new MetadataReaderImpl(new JsonServiceImpl(), new YamlServiceImpl())
+        .readValue(metadataFile, ColMetadata.class);
+    metadata.setContributor(List.of(agent("Belgium")));
+    when(metadataReader.readValue(metadataFile, ColMetadata.class)).thenReturn(metadata);
+
+    service.validateDatapackageMetadataFile(action, metadataFile, ColMetadata.class);
+
+    verify(action, never()).addActionError(anyString());
   }
 
   @Test
@@ -516,7 +584,7 @@ public class ResourceImportServiceImplTest {
         .thenThrow(JsonMappingException.fromUnexpectedIOE(new IOException("unexpected")));
 
     ImportException e = assertThrows(ImportException.class,
-        () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP));
+        () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog));
     assertTrue(e.getMessage().startsWith("Invalid metadata document"), e.getMessage());
   }
 
@@ -525,7 +593,7 @@ public class ResourceImportServiceImplTest {
     File metadataFile = Files.writeString(tempDir.resolve("datapackage.json"), "{").toFile();
     when(metadataReader.readValue(any(File.class), any())).thenThrow(new IOException("broken"));
 
-    assertThrows(ImportException.class, () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP));
+    assertThrows(ImportException.class, () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog));
     assertFalse(resourceDir.exists());
   }
 
@@ -535,7 +603,7 @@ public class ResourceImportServiceImplTest {
     CamtrapMetadata metadata = new CamtrapMetadata();
     when(metadataReader.readValue(new File(resourceDir, "datapackage.json"), CamtrapMetadata.class)).thenReturn(metadata);
 
-    DataPackageMetadata copied = service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP);
+    DataPackageMetadata copied = service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog);
 
     assertSame(metadata, copied);
   }

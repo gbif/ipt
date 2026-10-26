@@ -172,6 +172,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private boolean validMetadata;
   @Getter
   private SectionErrorCollector errorCollector;
+  // ColDP metadata errors, one message each
+  @Getter
+  private List<String> colMetadataErrors = Collections.emptyList();
   private boolean missingRegistrationMetadata;
 
   // true if resource is missing valid publishing organisation, false otherwise.
@@ -1294,6 +1297,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
         missingBasicMetadata = basicMetadataValidationResult.hasErrors()
             || contactsValidationResult.hasErrors();
+      } else if (resource.getDataPackageMetadata() instanceof ColMetadata colMetadata) {
+        // shown in the validation report, ColDP metadata isn't edited in the IPT
+        colMetadataErrors = dataPackageMetadataValidator.colMetadataErrors(this, colMetadata);
+        validMetadata = colMetadataErrors.isEmpty();
       } else {
         validMetadata = dataPackageMetadataValidator.isValid(resource);
       }

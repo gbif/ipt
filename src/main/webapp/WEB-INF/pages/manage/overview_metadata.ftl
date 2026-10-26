@@ -93,7 +93,7 @@
 
                     <#assign isDataPackage = resource.isDataPackage() />
                     <#assign isDwcDp = resource.isDwcDp() />
-                    <#if !isDataPackage || isDwcDp>
+                    <#if !isDataPackage || isDwcDp || (resource.coreType?has_content && resource.coreType == "coldp")>
                         <li>
                             <a class="show-metadata-validation-result btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" href="#">
                                 <@s.text name="manage.overview.metadata.modal.validation.report"/>

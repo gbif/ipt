@@ -491,7 +491,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     if (validate) {
       resourceImportService.validateDatapackageMetadataFile(action, metadataFile, metadataClassForType(resource.getCoreType()));
     }
-    DataPackageMetadata metadata = resourceImportService.copyDatapackageMetadata(resource.getShortname(), metadataFile, resource.getCoreType());
+    DataPackageMetadata metadata = resourceImportService.copyDatapackageMetadata(resource.getShortname(), metadataFile,
+        resource.getCoreType(), new ActionLogger(this.LOG, action));
 
     if (metadata instanceof ColMetadata colMetadata) {
       colMetadata.setVersion(resource.getDataPackageMetadata().getVersion());

@@ -309,21 +309,34 @@ public class DataPackageMetadataValidator {
    * @throws InvalidMetadataException if the metadata isn't valid
    */
   public void validateColMetadata(BaseAction action, ColMetadata metadata) throws InvalidMetadataException {
-    List<ConstraintViolation<ColMetadata>> violations = validator.validate(metadata).stream()
-        .sorted(Comparator.comparing(v -> v.getPropertyPath().toString()))
-        .toList();
-    if (violations.isEmpty()) {
+    List<String> errors = colMetadataErrors(action, metadata);
+    if (errors.isEmpty()) {
       return;
     }
 
-    for (ConstraintViolation<ColMetadata> violation : violations) {
-      String message = isValidationProperty(violation.getMessage())
-          ? action.getText(violation.getMessage(), new String[]{violation.getPropertyPath().toString()})
-          : violation.getMessage();
-      action.addActionError(action.getText("validation.datapackage.metadata.coldp.invalid",
-          new String[]{violation.getPropertyPath().toString(), message}));
-    }
+    errors.forEach(action::addActionError);
     throw new InvalidMetadataException("Validation failed");
+  }
+
+  /**
+   * @return a message per ColDP metadata field that is invalid, naming the field and its value, ordered by field
+   */
+  public List<String> colMetadataErrors(BaseAction action, ColMetadata metadata) {
+    return validator.validate(metadata).stream()
+        .sorted(Comparator.comparing(v -> v.getPropertyPath().toString()))
+        .map(violation -> {
+          String message = isValidationProperty(violation.getMessage())
+              ? action.getText(violation.getMessage(), new String[]{violation.getPropertyPath().toString()})
+              : violation.getMessage();
+          // a value is named if it's a single one, e.g. not a list of creators
+          Object value = violation.getInvalidValue();
+          return value instanceof String || value instanceof Number
+              ? action.getText("validation.datapackage.metadata.coldp.invalid.value",
+                  new String[]{violation.getPropertyPath().toString(), message, value.toString()})
+              : action.getText("validation.datapackage.metadata.coldp.invalid",
+                  new String[]{violation.getPropertyPath().toString(), message});
+        })
+        .toList();
   }
 
   private boolean isValidationProperty(String message) {

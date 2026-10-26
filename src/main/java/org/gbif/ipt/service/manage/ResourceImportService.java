@@ -181,10 +181,12 @@ public interface ResourceImportService {
    * @param shortname       resource shortname
    * @param metadataFile    metadata file
    * @param datapackageType resource (core) type, used to determine the on-disk filename/metadata class
+   * @param alog            action logger, e.g. for country names of ColDP metadata written as their codes
    * @return populated metadata instance
    * @throws ImportException if the metadata file could not be read/parsed
    */
-  DataPackageMetadata copyDatapackageMetadata(String shortname, File metadataFile, String datapackageType)
+  DataPackageMetadata copyDatapackageMetadata(String shortname, File metadataFile, String datapackageType,
+                                              ActionLogger alog)
       throws ImportException;
 
   /**

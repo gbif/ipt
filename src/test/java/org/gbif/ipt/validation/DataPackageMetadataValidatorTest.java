@@ -13,17 +13,26 @@
  */
 package org.gbif.ipt.validation;
 
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.datapackage.metadata.col.Agent;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.manage.impl.JsonServiceImpl;
 import org.gbif.ipt.service.manage.impl.MetadataReaderImpl;
 import org.gbif.ipt.service.manage.impl.YamlServiceImpl;
 import org.gbif.utils.file.FileUtils;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class DataPackageMetadataValidatorTest {
 
@@ -38,6 +47,29 @@ public class DataPackageMetadataValidatorTest {
     resource.setDataPackageMetadata(new ColMetadata());
 
     assertFalse(validator.isValid(resource));
+  }
+
+  /**
+   * ColDP metadata errors name the field, and its value if it's a single one.
+   */
+  @Test
+  public void testColDpMetadataErrors() {
+    BaseAction action = mock(BaseAction.class);
+    when(action.getText(anyString(), any(String[].class)))
+        .thenAnswer(invocation -> invocation.getArgument(0) + " "
+            + String.join(" | ", invocation.getArgument(1, String[].class)));
+    ColMetadata metadata = new ColMetadata();
+    metadata.setTitle("Gracillariidae");
+    metadata.setLicense("CC-BY");
+    Agent contributor = new Agent();
+    contributor.setCountry("Belgium");
+    metadata.setContributor(List.of(contributor));
+
+    List<String> errors = validator.colMetadataErrors(action, metadata);
+
+    assertEquals(List.of(
+        "validation.datapackage.metadata.coldp.invalid.value contributor[0].country | size must be between 2 and 2 | Belgium",
+        "validation.datapackage.metadata.coldp.invalid issued | must not be null"), errors);
   }
 
   @Test

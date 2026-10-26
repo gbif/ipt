@@ -14,6 +14,9 @@
 package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.api.model.registry.Dataset;
+import org.gbif.api.vocabulary.Country;
+import org.gbif.common.parsers.CountryParser;
+import org.gbif.common.parsers.core.ParseResult;
 import org.gbif.dwc.Archive;
 import org.gbif.dwc.ArchiveField;
 import org.gbif.dwc.ArchiveFile;
@@ -45,6 +48,7 @@ import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.Agent;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
@@ -86,6 +90,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -126,6 +131,7 @@ import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 public class ResourceImportServiceImpl implements ResourceImportService {
 
   private static final Logger LOG = LogManager.getLogger(ResourceImportServiceImpl.class);
+  private static final CountryParser COUNTRY_PARSER = CountryParser.getInstance();
   private static final TermFactory TERM_FACTORY = TermFactory.instance();
   // ColDP data files are CSV or TSV, as the IPT takes data files
   private static final Set<String> COL_DP_DATA_FILE_EXTENSIONS = Set.of("csv", "tsv", "txt", "tab");
@@ -242,7 +248,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
 
     try {
       // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
-      metadata = copyDatapackageMetadata(shortname, metadataFile, type);
+      metadata = copyDatapackageMetadata(shortname, metadataFile, type, alog);
 
       if (metadata instanceof FrictionlessMetadata frictionlessMetadata) {
         // set name, erase some internal fields
@@ -274,7 +280,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
 
     try {
       // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
-      metadata = copyDatapackageMetadata(shortname, metadataFile, COL_DP);
+      metadata = copyDatapackageMetadata(shortname, metadataFile, COL_DP, alog);
     } catch (ImportException e) {
       alog.error("manage.resource.create.failed");
       throw e;
@@ -594,8 +600,10 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     DataPackageMetadataValidator validator = new DataPackageMetadataValidator();
     DataPackageMetadata metadata = metadataReader.readValue(metadataFile, metadataClass);
 
-    // ColDP metadata has its own constraints, the frictionless ones don't apply to it
+    // ColDP metadata has its own constraints, the frictionless ones don't apply to it. Country names are written as
+    // their codes when it's copied, so they don't fail it.
     if (metadata instanceof ColMetadata colMetadata) {
+      countriesAsCodes(colMetadata);
       validator.validateColMetadata(action, colMetadata);
     } else {
       validator.validate(action, metadata);
@@ -623,7 +631,8 @@ public class ResourceImportServiceImpl implements ResourceImportService {
   }
 
   @Override
-  public DataPackageMetadata copyDatapackageMetadata(String shortname, File metadataFile, String datapackageType) throws ImportException {
+  public DataPackageMetadata copyDatapackageMetadata(String shortname, File metadataFile, String datapackageType,
+                                                     ActionLogger alog) throws ImportException {
     File dataDirMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, datapackageType);
     try {
       FileUtils.copyFile(metadataFile, dataDirMetadataFile);
@@ -645,10 +654,14 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     }
 
     // a ColDP's version is the publisher's own (e.g. Plazi's timestamps), not a resource version: it would be taken
-    // for the resource's first version. It's set to the resource version when published. Written back, so it isn't
-    // read again when the resource is loaded, and JSON metadata (metadata.json) is stored as YAML.
+    // for the resource's first version. It's set to the resource version when published. Country names are written
+    // as their codes. Written back, so it isn't read again when the resource is loaded, and JSON metadata
+    // (metadata.json) is stored as YAML.
     if (metadata instanceof ColMetadata colMetadata) {
       colMetadata.setVersion(null);
+      for (String[] countryAsCode : countriesAsCodes(colMetadata)) {
+        alog.warn("manage.resource.dp.coldp.country.code", countryAsCode);
+      }
       try {
         metadataReader.writeValue(dataDirMetadataFile, colMetadata);
       } catch (IOException e) {
@@ -659,6 +672,36 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     }
 
     return metadata;
+  }
+
+  /**
+   * Writes the country names of a ColDP's agents as their 2-letter codes, as ColDP metadata has them: ChecklistBank
+   * exports can have a name, e.g. Belgium. Countries that can't be parsed, or that aren't a country, e.g. Europe or
+   * Unknown, which the parser takes for the user-assigned code ZZ, are left as they are, for validation to reject.
+   *
+   * @return the countries written as their codes, each the name and code
+   */
+  static List<String[]> countriesAsCodes(ColMetadata metadata) {
+    List<Agent> agents = new ArrayList<>();
+    agents.addAll(Optional.ofNullable(metadata.getCreator()).orElse(List.of()));
+    agents.addAll(Optional.ofNullable(metadata.getEditor()).orElse(List.of()));
+    agents.add(metadata.getPublisher());
+    agents.add(metadata.getContact());
+    agents.addAll(Optional.ofNullable(metadata.getContributor()).orElse(List.of()));
+
+    List<String[]> countriesAsCodes = new ArrayList<>();
+    for (Agent agent : agents) {
+      String country = agent != null ? StringUtils.trimToNull(agent.getCountry()) : null;
+      if (country != null && country.length() != 2) {
+        ParseResult<Country> parsed = COUNTRY_PARSER.parse(country);
+        if (parsed.isSuccessful() && parsed.getPayload().isOfficial()) {
+          String code = parsed.getPayload().getIso2LetterCode();
+          agent.setCountry(code);
+          countriesAsCodes.add(new String[] {country, code});
+        }
+      }
+    }
+    return countriesAsCodes;
   }
 
   /**
@@ -744,7 +787,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     DataPackageMetadata metadata;
 
     try {
-      metadata = copyDatapackageMetadata(shortname, file, dataPackageType);
+      metadata = copyDatapackageMetadata(shortname, file, dataPackageType, alog);
       alog.info("manage.resource.read.datapackage.metadata");
       return metadata;
     } catch (ImportException e) {
