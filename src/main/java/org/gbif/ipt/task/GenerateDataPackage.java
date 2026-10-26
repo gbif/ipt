@@ -32,6 +32,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.utils.file.ClosableReportingIterator;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -51,7 +52,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -69,15 +72,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.code.externalsorting.ExternalSort;
 
 import io.frictionlessdata.datapackage.exceptions.DataPackageValidationException;
 import io.frictionlessdata.datapackage.JSONBase;
 import io.frictionlessdata.datapackage.Package;
 import io.frictionlessdata.datapackage.Profile;
 import io.frictionlessdata.datapackage.resource.FilebasedResource;
+import io.frictionlessdata.tableschema.Table;
+import io.frictionlessdata.tableschema.exception.ConstraintsException;
 import io.frictionlessdata.tableschema.exception.ForeignKeyException;
-import io.frictionlessdata.tableschema.exception.PrimaryKeyException;
+import io.frictionlessdata.tableschema.exception.InvalidCastException;
 import io.frictionlessdata.tableschema.exception.ValidationException;
+import io.frictionlessdata.tableschema.field.Field;
 import io.frictionlessdata.tableschema.schema.Schema;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -171,6 +178,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
 
       return recordsByTableSchema;
     } catch (GeneratorException e) {
+      addMessage(Level.ERROR, "Data Package generation failed: " + e.getMessage());
       // set the last error report!
       setState(e);
 
@@ -190,6 +198,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       writeFailureToPublicationLog(e);
       throw e;
     } catch (Exception e) {
+      addMessage(Level.ERROR, "Data Package generation failed: "
+          + GenerateDarwinCoreDataPackage.rootCauseMessage(e));
       setState(e);
       writeFailureToPublicationLog(e);
       throw new GeneratorException(e);
@@ -222,8 +232,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
       case METADATA -> "Creating metadata files";
       case BUNDLING -> "Compressing Data Package (archive)";
       case COMPLETED -> "Data Package generated!";
-      case VALIDATING ->
-          "Validating Data Package, " + currRecords + " for Data Resource <em>" + currTableSchema + "</em>";
+      case VALIDATING -> "Validating record " + currRecords + " of Data Resource <em>" + currTableSchema + "</em>";
       case ARCHIVING -> "Archiving version of data package";
       case CANCELLED -> "Data Package generation cancelled";
       case FAILED -> "Data Package generation failed";
@@ -243,8 +252,10 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     File zip = null;
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
-      // check keys first
-      checkRelationsAndPrimaryKeys();
+      // check values and keys first
+      checkValues();
+      setState(STATE.BUNDLING);
+      checkRelations();
 
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
@@ -269,7 +280,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     } catch (UncheckedIOException e) {
       // e.g. writing a ColDP's metadata.yaml failed
       throw new GeneratorException("Problem occurred while bundling data package", e.getCause());
-    } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
+    } catch (DataPackageValidationException | ForeignKeyException e) {
       throw new GeneratorException(e.getMessage());
     } finally {
       // cleanup zip directory, if compression was incomplete for example due to Exception
@@ -1056,18 +1067,249 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   /**
-   * Checks the keys of each table, reading its values: a value its field doesn't allow fails too. The table is named
-   * in the message, which otherwise only names the field.
+   * Checks every value of each table against its field, and that its primary key is unique, reporting all problems at
+   * once: a message per table and field with the invalid values and how many rows have each, and the fields with any
+   * in the failure. It's in place of the library's key check, which stops at the first invalid value and holds the
+   * whole table in memory.
+   *
+   * @throws GeneratorException if any value is invalid, or any primary key not unique
    */
-  private void checkRelationsAndPrimaryKeys() throws Exception {
-    boolean isFkValidationEnabled = cfg.isDatapackageForeignKeysValidationEnabled();
+  void checkValues() throws Exception {
+    // table.field of fields with invalid values
+    Set<String> invalidFields = new LinkedHashSet<>();
+    Set<String> invalidTables = new HashSet<>();
+    for (io.frictionlessdata.datapackage.resource.Resource<?> dataPackageResource : dataPackage.getResources()) {
+      currTableSchema = dataPackageResource.getName();
+      currRecords = 0;
+      setState(STATE.VALIDATING);
+      List<Field<?>> fields = dataPackageResource.getSchema().getFields();
+      List<String> fieldNames = fields.stream().map(Field::getName).toList();
+      // a key field not in the schema has no values to check
+      List<String> primaryKey = primaryKey(dataPackageResource.getSchema()).stream()
+          .filter(fieldNames::contains)
+          .toList();
+      int[] primaryKeyFields = primaryKey.stream().mapToInt(fieldNames::indexOf).toArray();
+      Map<String, InvalidValues> invalidValues = new LinkedHashMap<>();
+      Path primaryKeys = primaryKey.isEmpty() ? null : Files.createTempFile("pk-check", ".txt");
+      try {
+        try (Writer primaryKeyWriter = primaryKeys == null ? null : Files.newBufferedWriter(primaryKeys)) {
+          for (Table table : dataPackageResource.getTables()) {
+            // each field's column, by its header
+            List<String> headers = Arrays.asList(table.getHeaders());
+            int[] columns = fieldNames.stream().mapToInt(headers::indexOf).toArray();
+            Iterator<String[]> rows = table.getTableDataSource().iterator();
+            while (rows.hasNext()) {
+              String[] row = rows.next();
+              currRecords++;
+              if (currRecords % 1000 == 0) {
+                checkForInterruption(currRecords);
+                reportIfNeeded();
+              }
+              Object[] cast = new Object[fields.size()];
+              boolean primaryKeyValid = true;
+              for (int i = 0; i < fields.size(); i++) {
+                Field<?> field = fields.get(i);
+                int column = columns[i];
+                String value = column >= 0 && column < row.length ? row[column] : null;
+                try {
+                  cast[i] = field.castValue(value);
+                } catch (InvalidCastException | ConstraintsException e) {
+                  String problem = valueProblem(field, value, e);
+                  invalidValues.computeIfAbsent(field.getName() + " " + problem,
+                      k -> new InvalidValues(field.getName(), problem)).add(value);
+                  primaryKeyValid &= !primaryKey.contains(field.getName());
+                }
+              }
+              // a key with an invalid value is reported as such already
+              if (primaryKeyWriter != null && primaryKeyValid) {
+                // values have no line breaks or tabs, they're removed when written
+                primaryKeyWriter.write(Arrays.stream(primaryKeyFields)
+                    .mapToObj(i -> cast[i] == null ? "" : cast[i].toString())
+                    .collect(Collectors.joining("\t")));
+                primaryKeyWriter.write("\n");
+              }
+            }
+          }
+        }
+        if (primaryKeys != null) {
+          InvalidValues duplicates = duplicatePrimaryKeys(primaryKeys.toFile(), String.join(", ", primaryKey));
+          if (duplicates != null) {
+            invalidValues.put(duplicates.fieldName + " " + duplicates.problem, duplicates);
+          }
+        }
+      } finally {
+        if (primaryKeys != null) {
+          Files.deleteIfExists(primaryKeys);
+        }
+      }
+      // in schema order, a primary key of more than one field last
+      List<InvalidValues> invalidInSchemaOrder = invalidValues.values().stream()
+          .sorted(Comparator.comparingInt(invalid -> fieldNames.contains(invalid.fieldName)
+              ? fieldNames.indexOf(invalid.fieldName) : fieldNames.size()))
+          .toList();
+      for (InvalidValues invalid : invalidInSchemaOrder) {
+        addMessage(Level.ERROR, "Table " + dataPackageResource.getName() + ", " + invalid);
+        invalidFields.add(dataPackageResource.getName() + "." + invalid.fieldName);
+        invalidTables.add(dataPackageResource.getName());
+      }
+    }
+    if (!invalidFields.isEmpty()) {
+      throw new GeneratorException("Invalid values in " + invalidFields.size() + " field(s) of "
+          + invalidTables.size() + " table(s): " + String.join(", ", invalidFields)
+          + ". Each field's invalid values are listed in the log.");
+    }
+  }
+
+  /**
+   * @return the fields of a table's primary key, empty if it has none
+   */
+  private static List<String> primaryKey(Schema schema) {
+    Object primaryKey = schema.getPrimaryKey();
+    if (primaryKey instanceof String key) {
+      return List.of(key);
+    } else if (primaryKey instanceof String[] keys) {
+      return List.of(keys);
+    } else if (primaryKey instanceof Collection<?> keys) {
+      return keys.stream().map(String::valueOf).toList();
+    }
+    return List.of();
+  }
+
+  /**
+   * Finds the primary keys more than one row has, sorting them on disk: a table can have more than fit in memory.
+   *
+   * @param primaryKeys file with a row's primary key per line, its values tab separated
+   * @param fieldName the primary key's field(s)
+   * @return the duplicate keys, null if there are none
+   */
+  private static InvalidValues duplicatePrimaryKeys(File primaryKeys, String fieldName) throws IOException {
+    File sorted = Files.createTempFile("pk-check-sorted", ".txt").toFile();
+    try {
+      // as written and read, not the platform's encoding: keys outside it would be read as the same
+      List<File> batches = ExternalSort.sortInBatch(primaryKeys, ExternalSort.defaultcomparator,
+          ExternalSort.DEFAULTMAXTEMPFILES, StandardCharsets.UTF_8, null, false);
+      ExternalSort.mergeSortedFiles(batches, sorted, ExternalSort.defaultcomparator, StandardCharsets.UTF_8);
+      InvalidValues duplicates = new InvalidValues(fieldName, InvalidValues.NOT_UNIQUE);
+      try (BufferedReader reader = Files.newBufferedReader(sorted.toPath())) {
+        String previous = null;
+        int rows = 0;
+        for (String key = reader.readLine(); ; key = reader.readLine()) {
+          if (key != null && key.equals(previous)) {
+            rows++;
+            continue;
+          }
+          // the previous key's rows, if more than one
+          for (int i = 0; rows > 1 && i < rows; i++) {
+            duplicates.add(previous.replace("\t", ", "));
+          }
+          if (key == null) {
+            break;
+          }
+          previous = key;
+          rows = 1;
+        }
+      }
+      return duplicates.rows > 0 ? duplicates : null;
+    } finally {
+      Files.deleteIfExists(sorted.toPath());
+    }
+  }
+
+  /**
+   * What's wrong with a value the field doesn't read.
+   *
+   * @param e why the field didn't read it
+   * @return the problem
+   */
+  private static String valueProblem(Field<?> field, String value, Exception e) {
+    if (e instanceof ConstraintsException) {
+      try {
+        Object cast = field.castValue(value, false, field.getOptions());
+        Set<String> constraints = field.checkConstraintViolations(cast).keySet();
+        if (constraints.equals(Set.of(Field.CONSTRAINT_KEY_REQUIRED))) {
+          return InvalidValues.REQUIRED;
+        }
+        return "not allowed by its " + String.join(", ", constraints) + " constraint";
+      } catch (InvalidCastException | ConstraintsException e2) {
+        return e.getMessage();
+      }
+    }
+    String format = field.getFormat();
+    return "not of type " + field.getType()
+        + (format != null && !Field.FIELD_FORMAT_DEFAULT.equals(format) ? " (format " + format + ")" : "");
+  }
+
+  /**
+   * Invalid values of a field with the same problem, and how many rows have each. Only the values with the most rows
+   * are shown, of the first thousand counted.
+   */
+  static class InvalidValues {
+
+    private static final int MAX_VALUES_COUNTED = 1000;
+    private static final int MAX_VALUES_SHOWN = 5;
+    // the problem of empty values of a required field
+    static final String REQUIRED = "required";
+    // the problem of primary keys more than one row has
+    static final String NOT_UNIQUE = "not unique, but it's the primary key,";
+
+    private final String fieldName;
+    private final String problem;
+    private final Map<String, Integer> rowsByValue = new LinkedHashMap<>();
+    private int rows = 0;
+
+    InvalidValues(String fieldName, String problem) {
+      this.fieldName = fieldName;
+      this.problem = problem;
+    }
+
+    void add(String value) {
+      rows++;
+      String shown = StringUtils.isEmpty(value) ? "(empty)" : "'" + value + "'";
+      if (rowsByValue.containsKey(shown) || rowsByValue.size() < MAX_VALUES_COUNTED) {
+        rowsByValue.merge(shown, 1, Integer::sum);
+      }
+    }
+
+    private static String rows(int count) {
+      return count == 1 ? "1 row" : count + " rows";
+    }
+
+    /**
+     * E.g. field type: values not allowed by its enum constraint in 7021 rows: 'image/jpeg' (7021 rows), the values
+     * with the most rows first.
+     */
+    @Override
+    public String toString() {
+      if (REQUIRED.equals(problem)) {
+        return "field " + fieldName + ": empty in " + rows(rows) + ", but it's required";
+      }
+      List<Map.Entry<String, Integer>> shown = rowsByValue.entrySet().stream()
+          .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+          .limit(MAX_VALUES_SHOWN)
+          .toList();
+      String values = shown.stream()
+          .map(e -> e.getKey() + " (" + rows(e.getValue()) + ")")
+          .collect(Collectors.joining(", "));
+      int otherRows = rows - shown.stream().mapToInt(Map.Entry::getValue).sum();
+      if (otherRows > 0) {
+        values = "e.g. " + values + " and other values (" + rows(otherRows) + ")";
+      }
+      return "field " + fieldName + ": values " + problem + " in " + rows(rows) + ": " + values;
+    }
+  }
+
+  /**
+   * Checks the foreign keys of each table, if enabled. The table is named in the message, which otherwise only names
+   * the field.
+   */
+  private void checkRelations() throws Exception {
+    if (!cfg.isDatapackageForeignKeysValidationEnabled()) {
+      return;
+    }
     for (io.frictionlessdata.datapackage.resource.Resource<?> dataPackageResource : dataPackage.getResources()) {
       try {
-        if (isFkValidationEnabled) {
-          dataPackageResource.checkRelations(dataPackage);
-        }
-        dataPackageResource.checkPrimaryKeys();
-      } catch (DataPackageValidationException | PrimaryKeyException | ForeignKeyException e) {
+        dataPackageResource.checkRelations(dataPackage);
+      } catch (DataPackageValidationException | ForeignKeyException e) {
         String message = "Table " + dataPackageResource.getName() + ": " + e.getMessage();
         addMessage(Level.ERROR, message);
         throw new GeneratorException(message, e);

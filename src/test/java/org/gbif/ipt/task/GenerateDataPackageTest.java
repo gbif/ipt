@@ -452,6 +452,132 @@ public class GenerateDataPackageTest {
   }
 
   /**
+   * All invalid values are reported at once, per field, with how many rows have each, not just the first.
+   */
+  @Test
+  public void testAllInvalidValuesReported() throws Exception {
+    Files.writeString(schemaFile.toPath(), "{"
+        + "\"fields\": ["
+        + "{\"name\": \"deploymentID\", \"type\": \"string\", \"constraints\": {\"required\": true}},"
+        + "{\"name\": \"status\", \"type\": \"string\", \"constraints\": {\"enum\": [\"native\", \"alien\"]}},"
+        + "{\"name\": \"count\", \"type\": \"integer\"}],"
+        + "\"primaryKey\": \"deploymentID\""
+        + "}");
+    DataPackageField status = field("status");
+    DataPackageField count = field("count");
+    count.setType("integer");
+    tableSchema.setFields(List.of(tableSchema.getFields().get(0), status, count));
+    mapping.getFields().add(new DataPackageFieldMapping(1, status));
+    mapping.getFields().add(new DataPackageFieldMapping(2, count));
+    when(sourceManager.rowIterator(mapping.getSource())).thenReturn(new RowIterator(List.of(
+        new String[] {"d1", "sp. nov.", "1"}, new String[] {"d2", "native", "many"},
+        new String[] {"d3", "sp. nov.", "2"}, new String[] {null, "nom. nud.", "3"})));
+    generator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
+
+    GeneratorException e = assertThrows(GeneratorException.class, generator::checkValues);
+
+    assertEquals("Invalid values in 3 field(s) of 1 table(s): deployments.deploymentID, deployments.status, "
+        + "deployments.count. Each field's invalid values are listed in the log.", e.getMessage());
+    List<String> messages = generator.report().getMessages().stream().map(TaskMessage::getMessage).toList();
+    assertTrue(messages.contains("Table deployments, field deploymentID: empty in 1 row, but it's required"),
+        messages.toString());
+    assertTrue(messages.contains("Table deployments, field status: values not allowed by its enum constraint in 3 rows: "
+        + "'sp. nov.' (2 rows), 'nom. nud.' (1 row)"), messages.toString());
+    assertTrue(messages.contains("Table deployments, field count: values not of type integer in 1 row: 'many' (1 row)"),
+        messages.toString());
+  }
+
+  /**
+   * A failure is in the messages, so the publication log says why publishing failed, also outside debug mode.
+   */
+  @Test
+  public void testFailureInMessages() {
+    Resource resource = new Resource();
+    resource.setShortname(RESOURCE_SHORTNAME);
+    DataDir dataDir = mock(DataDir.class);
+    when(dataDir.resourcePublicationLogFile(RESOURCE_SHORTNAME)).thenReturn(new File(tmpDir, "publication.log"));
+    when(dataDir.tmpDir()).thenReturn(new File(tmpDir, "failing"));
+    GenerateDataPackage failing = new GenerateDataPackage(resource, mock(ReportHandler.class), dataDir,
+        sourceManager, schemaManager, mock(AppConfig.class), mock(MetadataReader.class));
+
+    assertThrows(GeneratorException.class, failing::call);
+
+    List<TaskMessage> messages = failing.report().getMessages();
+    assertEquals("Data Package generation failed: Data package identifier or mappings are not set",
+        messages.get(messages.size() - 1).getMessage());
+  }
+
+  /**
+   * Primary keys more than one row has are all reported, with how many rows have each, with invalid values.
+   */
+  @Test
+  public void testDuplicatePrimaryKeysReported() throws Exception {
+    DataPackageField count = field("count");
+    count.setType("integer");
+    Files.writeString(schemaFile.toPath(), "{"
+        + "\"fields\": [{\"name\": \"deploymentID\", \"type\": \"string\"}, {\"name\": \"count\", \"type\": \"integer\"}],"
+        + "\"primaryKey\": \"deploymentID\""
+        + "}");
+    tableSchema.setFields(List.of(tableSchema.getFields().get(0), count));
+    mapping.getFields().add(new DataPackageFieldMapping(1, count));
+    when(sourceManager.rowIterator(mapping.getSource())).thenReturn(new RowIterator(List.of(
+        new String[] {"d2", "1"}, new String[] {"d1", "1"}, new String[] {"d2", "1"}, new String[] {"d3", "many"},
+        new String[] {"d1", "1"}, new String[] {"d2", "1"})));
+    generator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
+
+    GeneratorException e = assertThrows(GeneratorException.class, generator::checkValues);
+
+    assertTrue(e.getMessage().startsWith("Invalid values in 2 field(s) of 1 table(s): deployments.deploymentID, "
+        + "deployments.count."), e.getMessage());
+    List<String> messages = generator.report().getMessages().stream().map(TaskMessage::getMessage).toList();
+    assertTrue(messages.contains("Table deployments, field deploymentID: values not unique, but it's the primary key, "
+        + "in 5 rows: 'd2' (3 rows), 'd1' (2 rows)"), messages.toString());
+    assertTrue(messages.contains("Table deployments, field count: values not of type integer in 1 row: 'many' (1 row)"),
+        messages.toString());
+  }
+
+  /**
+   * A table with a primary key but no rows passes.
+   */
+  @Test
+  public void testTableWithoutRowsPasses() throws Exception {
+    when(sourceManager.rowIterator(mapping.getSource())).thenReturn(new RowIterator(List.of()));
+    generator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
+
+    generator.checkValues();
+  }
+
+  /**
+   * Valid values pass.
+   */
+  @Test
+  public void testValidValuesPass() throws Exception {
+    generator.addDataResource("camtrap-dp", tableSchema, List.of(mapping));
+
+    generator.checkValues();
+  }
+
+  /**
+   * Only the values of a field with the most rows are listed, the rows of others are counted together.
+   */
+  @Test
+  public void testInvalidValuesWithMostRowsListed() {
+    GenerateDataPackage.InvalidValues invalidValues =
+        new GenerateDataPackage.InvalidValues("status", "not allowed by its enum constraint");
+    for (int i = 0; i < 8; i++) {
+      invalidValues.add("v" + i);
+    }
+    for (int i = 0; i < 3; i++) {
+      invalidValues.add("v7");
+      invalidValues.add("v6");
+    }
+
+    assertEquals("field status: values not allowed by its enum constraint in 14 rows: e.g. 'v6' (4 rows), "
+        + "'v7' (4 rows), 'v0' (1 row), 'v1' (1 row), 'v2' (1 row) and other values (3 rows)",
+        invalidValues.toString());
+  }
+
+  /**
    * A mapping to a table not in the installed schema prevents publication, its data would be left out.
    */
   @Test
