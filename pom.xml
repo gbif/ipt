@@ -49,7 +49,7 @@
 
     <!-- Third party dependencies -->
     <angus-mail.version>2.0.5</angus-mail.version>
-    <apache-poi.version>5.5.1</apache-poi.version>
+    <apache-poi.version>6.0.0</apache-poi.version>
     <bcrypt.version>0.10.2</bcrypt.version>
     <commons-digester.version>3.2</commons-digester.version>
     <commons-io.version>2.22.0</commons-io.version>
