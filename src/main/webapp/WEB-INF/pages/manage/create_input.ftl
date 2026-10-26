@@ -551,13 +551,14 @@
             };
             xhr.onload = function () {
                 window.removeEventListener('beforeunload', stayOnPage);
+                // The request followed the redirect to the created resource: its page is shown as it came, as the
+                // import's messages are in it, not on the page loaded again. Otherwise, it's this page with errors.
                 if (xhr.responseURL && xhr.responseURL.indexOf('/manage/create.do') === -1) {
-                    window.location.href = xhr.responseURL;
-                } else {
-                    document.open();
-                    document.write(xhr.responseText);
-                    document.close();
+                    history.replaceState(null, '', xhr.responseURL);
                 }
+                document.open();
+                document.write(xhr.responseText);
+                document.close();
             };
             xhr.onerror = function () {
                 window.removeEventListener('beforeunload', stayOnPage);
