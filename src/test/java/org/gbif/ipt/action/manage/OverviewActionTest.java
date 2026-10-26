@@ -26,6 +26,8 @@ import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.model.voc.IdentifierStatus;
@@ -37,8 +39,12 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
+import org.gbif.ipt.service.manage.impl.JsonServiceImpl;
+import org.gbif.ipt.service.manage.impl.MetadataReaderImpl;
+import org.gbif.ipt.service.manage.impl.YamlServiceImpl;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
@@ -51,6 +57,7 @@ import org.gbif.metadata.eml.ipt.model.Eml;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +69,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.xml.sax.SAXException;
 
 import freemarker.template.TemplateException;
@@ -78,7 +86,10 @@ public class OverviewActionTest extends IptBaseTest {
 
   private OverviewAction action;
   private File emlFile;
+  @TempDir
+  private File publishedMetadataDir;
   private DataPackageSchemaManager mockSchemaManager;
+  private final MetadataReader metadataReader = new MetadataReaderImpl(new JsonServiceImpl(), new YamlServiceImpl());
 
   @BeforeEach
   public void setup()
@@ -99,6 +110,11 @@ public class OverviewActionTest extends IptBaseTest {
     AppConfig mockCfg = mock(AppConfig.class);
     DataDir mockDataDir = mock(DataDir.class);
     when(mockDataDir.resourceEmlFile(any(), any(BigDecimal.class))).thenReturn(emlFile);
+    // the metadata a data package was published with
+    when(mockDataDir.resourceDatapackageMetadataFile(any(), any(), any(BigDecimal.class))).thenAnswer(invocation ->
+        new File(publishedMetadataDir, Constants.COL_DP.equals(invocation.getArgument(1))
+            ? "metadata-" + invocation.getArgument(2, BigDecimal.class).toPlainString() + ".yaml"
+            : "datapackage-" + invocation.getArgument(2, BigDecimal.class).toPlainString() + ".json"));
     when(mockCfg.getDataDir()).thenReturn(mockDataDir);
 
     mockSchemaManager = mock(DataPackageSchemaManager.class);
@@ -117,7 +133,8 @@ public class OverviewActionTest extends IptBaseTest {
           mock(VocabulariesManager.class),
           mock(RegistryManager.class),
           mockSchemaManager,
-          mockResourcePublicationManager);
+          mockResourcePublicationManager,
+          metadataReader);
   }
 
   @Test
@@ -222,22 +239,93 @@ public class OverviewActionTest extends IptBaseTest {
    * A ColDP license can be written in many ways, e.g. Plazi's CC0.
    */
   @Test
-  public void testIsLastPublishedVersionAssignedGBIFSupportedLicenseColDp() {
+  public void testIsLastPublishedVersionAssignedGBIFSupportedLicenseColDp() throws IOException {
+    Resource r = colDpResource(null);
+
+    for (String license : List.of("CC0", "cc0", "CC0-1.0", "CC BY 4.0", "CC-BY-NC-4.0")) {
+      publishColDp(license);
+      assertTrue(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r), license);
+    }
+    publishColDp("CC BY-SA 4.0");
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
+    publishColDp(null);
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
+  }
+
+  /**
+   * A ColDP's last published version is registered, so its license is checked, not the one it has been edited to
+   * since.
+   */
+  @Test
+  public void testIsLastPublishedVersionAssignedGBIFSupportedLicenseColDpNotEdited() throws IOException {
+    publishColDp("CC0");
+    assertTrue(action.isLastPublishedVersionAssignedGBIFSupportedLicense(colDpResource("CC BY-SA 4.0")));
+
+    publishColDp("CC BY-SA 4.0");
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(colDpResource("CC0")));
+  }
+
+  /**
+   * A Camtrap DP's last published version is registered, so its data license is checked, not the one it has been
+   * edited to since.
+   */
+  @Test
+  public void testIsLastPublishedVersionAssignedGBIFSupportedLicenseCamtrapDpNotEdited() throws IOException {
+    metadataReader.writeValue(new File(publishedMetadataDir, "datapackage-1.json"), camtrapMetadata("CC0-1.0"));
+    assertTrue(action.isLastPublishedVersionAssignedGBIFSupportedLicense(camtrapDpResource("CC-BY-SA-4.0")));
+
+    metadataReader.writeValue(new File(publishedMetadataDir, "datapackage-1.json"), camtrapMetadata("CC-BY-SA-4.0"));
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(camtrapDpResource("CC0-1.0")));
+  }
+
+  /**
+   * Without the metadata it was published with, a data package's license can't be checked.
+   */
+  @Test
+  public void testIsLastPublishedVersionAssignedGBIFSupportedLicenseWithoutPublishedMetadata() {
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(colDpResource("CC0")));
+    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(camtrapDpResource("CC0-1.0")));
+  }
+
+  /**
+   * A ColDP resource published as version 1, with its current license.
+   */
+  private static Resource colDpResource(String license) {
     Resource r = new Resource();
     r.setCoreType(Constants.COL_DP);
     r.setDataPackageIdentifier(Constants.DATA_PACKAGE_COLDP_IDENTIFIER);
     ColMetadata metadata = new ColMetadata();
+    metadata.setLicense(license);
     r.setDataPackageMetadata(metadata);
     r.addVersionHistory(new VersionHistory(new BigDecimal("1"), new Date(), PublicationStatus.PRIVATE));
+    return r;
+  }
 
-    for (String license : List.of("CC0", "cc0", "CC0-1.0", "CC BY 4.0", "CC-BY-NC-4.0")) {
-      metadata.setLicense(license);
-      assertTrue(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r), license);
-    }
-    metadata.setLicense("CC BY-SA 4.0");
-    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
-    metadata.setLicense(null);
-    assertFalse(action.isLastPublishedVersionAssignedGBIFSupportedLicense(r));
+  private void publishColDp(String license) throws IOException {
+    ColMetadata published = new ColMetadata();
+    published.setLicense(license);
+    metadataReader.writeValue(new File(publishedMetadataDir, "metadata-1.yaml"), published);
+  }
+
+  /**
+   * A Camtrap DP resource published as version 1, with its current data license.
+   */
+  private static Resource camtrapDpResource(String dataLicense) {
+    Resource r = new Resource();
+    r.setCoreType(Constants.CAMTRAP_DP);
+    r.setDataPackageIdentifier(Constants.DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER);
+    r.setDataPackageMetadata(camtrapMetadata(dataLicense));
+    r.addVersionHistory(new VersionHistory(new BigDecimal("1"), new Date(), PublicationStatus.PRIVATE));
+    return r;
+  }
+
+  private static CamtrapMetadata camtrapMetadata(String dataLicense) {
+    CamtrapLicense license = new CamtrapLicense();
+    license.setName(dataLicense);
+    license.setScope(CamtrapLicense.Scope.DATA);
+    CamtrapMetadata metadata = new CamtrapMetadata();
+    metadata.setLicenses(new ArrayList<>(List.of(license)));
+    return metadata;
   }
 
   @Test
@@ -431,7 +519,8 @@ public class OverviewActionTest extends IptBaseTest {
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataPackageSchemaManager.class),
-        mock(ResourcePublicationManager.class));
+        mock(ResourcePublicationManager.class),
+        metadataReader);
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());
@@ -481,7 +570,8 @@ public class OverviewActionTest extends IptBaseTest {
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataPackageSchemaManager.class),
-        mock(ResourcePublicationManager.class));
+        mock(ResourcePublicationManager.class),
+        metadataReader);
     action.setResource(r);
     action.setUndelete("true");
     assertEquals("input", action.undelete());

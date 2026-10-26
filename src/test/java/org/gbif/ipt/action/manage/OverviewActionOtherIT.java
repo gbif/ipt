@@ -33,6 +33,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -177,7 +178,8 @@ public class OverviewActionOtherIT extends IptBaseTest {
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataPackageSchemaManager.class),
-        mock(ResourcePublicationManager.class));
+        mock(ResourcePublicationManager.class),
+        mock(MetadataReader.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -252,7 +254,8 @@ public class OverviewActionOtherIT extends IptBaseTest {
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataPackageSchemaManager.class),
-        mock(ResourcePublicationManager.class));
+        mock(ResourcePublicationManager.class),
+        mock(MetadataReader.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -326,7 +329,8 @@ public class OverviewActionOtherIT extends IptBaseTest {
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataPackageSchemaManager.class),
-        mock(ResourcePublicationManager.class));
+        mock(ResourcePublicationManager.class),
+        mock(MetadataReader.class));
 
     LOG.info("Testing DataCite with GBIF test Prefix...");
     action.setReserveDoi("true");
@@ -397,7 +401,8 @@ public class OverviewActionOtherIT extends IptBaseTest {
         mock(VocabulariesManager.class),
         mock(RegistryManager.class),
         mock(DataPackageSchemaManager.class),
-        mock(ResourcePublicationManager.class));
+        mock(ResourcePublicationManager.class),
+        mock(MetadataReader.class));
 
     LOG.info("Testing DataCite with test Prefix...");
     action.setDeleteDoi("true");

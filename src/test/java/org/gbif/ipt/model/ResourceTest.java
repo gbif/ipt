@@ -16,6 +16,7 @@ package org.gbif.ipt.model;
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -889,6 +890,27 @@ public class ResourceTest extends IptBaseTest {
     r.getEml().setIntellectualRights("This work is licensed under a <a href=\"http://www.opendatacommons.org/licenses/by/1.0/\">Open Data Commons Attribution License</a>.");
     assertEquals("http://www.opendatacommons.org/licenses/by/1.0/", r.getEml().parseLicenseUrl());
     assertTrue(r.isAssignedGBIFSupportedLicense());
+  }
+
+  /**
+   * A ColDP's license is checked before publishing, written as ColDP has it, e.g. CC0 or CC BY 4.0.
+   */
+  @Test
+  public void testIsAssignedGBIFSupportedLicenseColDp() {
+    Resource r = new Resource();
+    r.setCoreType(Constants.COL_DP);
+    r.setDataPackageIdentifier(Constants.DATA_PACKAGE_COLDP_IDENTIFIER);
+    ColMetadata metadata = new ColMetadata();
+    r.setDataPackageMetadata(metadata);
+
+    for (String license : List.of("CC0", "CC0-1.0", "CC BY 4.0", "CC-BY-NC-4.0")) {
+      metadata.setLicense(license);
+      assertTrue(r.isAssignedGBIFSupportedLicense(), license);
+    }
+    metadata.setLicense("CC BY-SA 4.0");
+    assertFalse(r.isAssignedGBIFSupportedLicense());
+    metadata.setLicense(null);
+    assertFalse(r.isAssignedGBIFSupportedLicense());
   }
 
   @Test

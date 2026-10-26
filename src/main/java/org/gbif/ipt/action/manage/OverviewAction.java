@@ -40,6 +40,7 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
@@ -58,6 +59,7 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
+import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
@@ -259,6 +261,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private final ExtensionManager extensionManager;
   private final DataPackageSchemaManager schemaManager;
   private final ResourcePublicationManager resourcePublicationManager;
+  private final MetadataReader metadataReader;
 
   @Inject
   public OverviewAction(
@@ -273,7 +276,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       VocabulariesManager vocabManager,
       RegistryManager registryManager,
       DataPackageSchemaManager schemaManager,
-      ResourcePublicationManager resourcePublicationManager) {
+      ResourcePublicationManager resourcePublicationManager,
+      MetadataReader metadataReader) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.userManager = userAccountManager;
     this.extensionManager = extensionManager;
@@ -286,6 +290,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     this.registryManager = registryManager;
     this.schemaManager = schemaManager;
     this.resourcePublicationManager = resourcePublicationManager;
+    this.metadataReader = metadataReader;
   }
 
   /**
@@ -1610,7 +1615,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
       if (resource.isDataPackage()) {
         if (CAMTRAP_DP.equals(resource.getCoreType())) {
-          if (resource.getDataPackageMetadata() instanceof CamtrapMetadata metadata) {
+          DataPackageMetadata published = loadPublishedDataPackageMetadata(resource, latestVersion);
+          if (published == null) {
+            return false;
+          } else if (published instanceof CamtrapMetadata metadata) {
             Optional<CamtrapLicense> dataLicenceWrapped = metadata.getLicenses().stream()
                 .filter(camtrapLicense -> camtrapLicense.getScope() == CamtrapLicense.Scope.DATA)
                 .findFirst();
@@ -1622,11 +1630,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           } else {
             LOG.error("Wrong metadata type for Camtrap DP resource {}: {}",
                 resource.getShortname(),
-                resource.getDataPackageMetadata().getClass().getSimpleName());
+                published.getClass().getSimpleName());
             return false;
           }
         } else if (COL_DP.equals(resource.getCoreType())) {
-          if (resource.getDataPackageMetadata() instanceof ColMetadata metadata) {
+          DataPackageMetadata published = loadPublishedDataPackageMetadata(resource, latestVersion);
+          if (published == null) {
+            return false;
+          } else if (published instanceof ColMetadata metadata) {
             Optional<String> license = Optional.ofNullable(metadata.getLicense());
 
             return license
@@ -1636,7 +1647,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           } else {
             LOG.error("Wrong metadata type for ColDP resource {}: {}",
                 resource.getShortname(),
-                resource.getDataPackageMetadata().getClass().getSimpleName());
+                published.getClass().getSimpleName());
             return false;
           }
         } else if (resource.isDwcDp()) {
@@ -1649,6 +1660,31 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       }
     }
     return false;
+  }
+
+  /**
+   * The metadata a data package was published with in a version, not its current metadata: that may have been edited
+   * since.
+   *
+   * @return the metadata, null if it can't be read
+   */
+  private DataPackageMetadata loadPublishedDataPackageMetadata(Resource resource, BigDecimal version) {
+    File metadataFile = cfg.getDataDir()
+        .resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
+    // checked on each overview, a missing file is logged without the stack trace
+    if (!metadataFile.exists()) {
+      LOG.error("Metadata file of resource {} version {} does not exist", resource.getShortname(),
+          version.toPlainString());
+      return null;
+    }
+    try {
+      LOG.debug("Loading metadata from file: {}", metadataFile.getAbsolutePath());
+      return metadataReader.readValue(metadataFile, MetadataUtils.metadataClassForType(resource.getCoreType()));
+    } catch (IOException e) {
+      LOG.error("Failed to read metadata of resource {} version {}: {}", resource.getShortname(),
+          version.toPlainString(), e.getMessage(), e);
+      return null;
+    }
   }
 
   private boolean isLastPublishedVersionAssignedGBIFSupportedLicenseEML(Resource resource, BigDecimal latestVersion) {

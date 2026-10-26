@@ -23,10 +23,12 @@ import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.AlreadyExistingException;
+import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.ResourceUtils;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Citation;
@@ -68,6 +70,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
+import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DWC_DP;
 
 /**
@@ -1030,6 +1033,12 @@ public class Resource implements Serializable, Comparable<Resource> {
             .findFirst();
 
         return dataLicenseWrapped.isPresent() && Constants.GBIF_SUPPORTED_LICENSES_CODES.contains(dataLicenseWrapped.get().getName());
+      } else if (COL_DP.equals(coreType)) {
+        // a ColDP license can be written in many ways, e.g. CC0 or CC BY 4.0
+        String license = dataPackageMetadata instanceof ColMetadata colMetadata
+            ? MetadataUtils.colDpLicenseToGbifCode(colMetadata.getLicense())
+            : null;
+        return license != null && Constants.GBIF_SUPPORTED_LICENSES_CODES.contains(license);
       } else {
         return false;
       }
