@@ -827,17 +827,30 @@
                 return;
             }
 
-            warnings.forEach(function (text) {
-                var alertDiv = document.createElement("div");
-                alertDiv.className = "alert alert-warning alert-dismissible fade show d-flex";
-                alertDiv.setAttribute("role", "alert");
-                alertDiv.innerHTML =
-                    '<div class="me-3"><i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i></div>' +
-                    '<div class="overflow-x-hidden pt-1"><span></span></div>' +
-                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-                alertDiv.querySelector("span").textContent = text;
-                container.appendChild(alertDiv);
-            });
+            // one alert, the other warnings collapsed under the first, like action_alerts_list.ftl
+            var alertDiv = document.createElement("div");
+            alertDiv.className = "alert alert-warning alert-dismissible fade show d-flex";
+            alertDiv.setAttribute("role", "alert");
+            alertDiv.innerHTML =
+                '<div class="me-3"><i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i></div>' +
+                '<div class="overflow-x-hidden pt-1"><span></span></div>' +
+                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            alertDiv.querySelector("span").textContent = warnings[0];
+            if (warnings.length > 1) {
+                var more = document.createElement("details");
+                more.className = "alert-more mt-1";
+                more.innerHTML =
+                    '<summary class="fs-smaller"></summary>' +
+                    '<ul class="mt-1 mb-0 ps-3"></ul>';
+                more.querySelector("summary").append(`<@s.text name="alerts.more.warnings"/>`.replace("{0}", warnings.length - 1));
+                warnings.slice(1).forEach(function (text) {
+                    var item = document.createElement("li");
+                    item.textContent = text;
+                    more.querySelector("ul").appendChild(item);
+                });
+                alertDiv.querySelector(".overflow-x-hidden").appendChild(more);
+            }
+            container.appendChild(alertDiv);
 
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
@@ -1145,7 +1158,9 @@
                         try {
                             var finalDoc = xhr.response;
                             if (finalDoc && typeof finalDoc.querySelectorAll === "function") {
-                                finalDoc.querySelectorAll("#action-alerts .alert-warning .overflow-x-hidden").forEach(function (el) {
+                                // each warning: the first of the alert, and the others collapsed under it
+                                finalDoc.querySelectorAll("#action-alerts .alert-warning .overflow-x-hidden > span, "
+                                    + "#action-alerts .alert-warning .alert-more li").forEach(function (el) {
                                     var text = el.textContent.trim();
                                     if (text) {
                                         fileWarnings.push(text);
