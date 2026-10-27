@@ -44,10 +44,17 @@ import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.csv.UnknownDelimitersException;
 import org.gbif.utils.file.tabular.TabularFileNormalizer;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -55,6 +62,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -362,6 +370,21 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return matches;
   }
 
+  private static String describeDelimiter(char delimiter) {
+    switch (delimiter) {
+      case '\t':
+        return "tab";
+      case ',':
+        return "comma";
+      case ';':
+        return "semicolon";
+      case '|':
+        return "pipe (|)";
+      default:
+        return "'" + delimiter + "'";
+    }
+  }
+
   private ExcelFileSource addExcelFile() throws ImportException {
     ExcelFileSource src = new ExcelFileSource();
     // TODO: encoding, header rows, date format?
@@ -404,6 +427,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (along with other control characters), and rewrites the file with exactly one record per line. The
    * resulting file is what gets stored as the source and is what every later step (preview, mapping,
    * DwC-A generation) reads from.
+   * <p>
+   * The rewritten file is only kept if embedded line breaks were removed. Otherwise, the file is stored exactly as
+   * uploaded, since the delimiter and quote are detected and a wrong guess would make the rewrite change values
+   * (e.g. strip the tabs between columns when a comma is taken for the delimiter).
+   * <p>
+   * The file is also stored as uploaded if it can't be checked: if it has characters that aren't valid in the
+   * encoding, or quoted values that can't be read with the delimiter and quote. Those are set on the source for
+   * SourceAction to warn about, so the publisher can correct the source's settings or upload a fixed file.
    *
    * @param uploadedFile file as uploaded by the publisher, untouched
    * @param destination  final location of the source file inside the resource's data directory
@@ -426,23 +457,96 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       return;
     }
 
-    long physicalLinesBefore = countPhysicalLines(uploadedFile, charset);
-    int recordsWritten = TabularFileNormalizer.normalizeFile(
-      uploadedFile.toPath(), destination.toPath(), charset, delimiter, "\n", quoteChar);
+    long physicalLinesBefore;
+    try {
+      physicalLinesBefore = countPhysicalLines(uploadedFile, charset);
+    } catch (CharacterCodingException e) {
+      long line = lineOfFirstUndecodableBytes(uploadedFile, charset);
+      LOG.warn("Line {} of source file {} has characters that are not valid {}, storing it as uploaded", line,
+               src.getName(), charset.name());
+      src.setFirstLineWithInvalidCharacters(line);
+      FileUtils.copyFile(uploadedFile, destination);
+      return;
+    }
+
+    File normalized = new File(destination.getParentFile(), destination.getName() + ".normalized");
+    int recordsWritten;
+    try {
+      recordsWritten = TabularFileNormalizer.normalizeFile(
+        uploadedFile.toPath(), normalized.toPath(), charset, delimiter, "\n", quoteChar);
+    } catch (RuntimeException e) {
+      LOG.warn("Source file {} can't be read with columns separated by {} and values quoted with {}, storing it as "
+               + "uploaded", src.getName(), describeDelimiter(delimiter), quoteChar, e);
+      FileUtils.deleteQuietly(normalized);
+      src.setQuotedValuesUnreadable(true);
+      FileUtils.copyFile(uploadedFile, destination);
+      return;
+    }
 
     // approximate: every embedded line break collapses two physical lines into one logical record,
     // so any shortfall between physical lines and records written is (at least) that many line breaks
     int linesRemoved = (int) Math.max(0, physicalLinesBefore - recordsWritten);
     src.setLinesWithEmbeddedBreaksRemoved(linesRemoved);
     if (linesRemoved > 0) {
+      Files.move(normalized.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
       LOG.warn("Removed {} embedded line break(s) from quoted field(s) in source file {} while normalizing it "
                 + "for upload", linesRemoved, src.getName());
+    } else {
+      FileUtils.deleteQuietly(normalized);
+      FileUtils.copyFile(uploadedFile, destination);
     }
   }
 
+  /**
+   * Counts the lines of the file, and in doing so checks the whole file decodes in the given charset. The charset is
+   * detected from the start of the file only, so a file can be mostly ASCII and still have bytes that aren't valid
+   * in it further on (e.g. a value saved in another encoding by a manual edit).
+   *
+   * @throws CharacterCodingException if the file doesn't decode in the charset
+   */
   private long countPhysicalLines(File file, Charset charset) throws IOException {
-    try (Stream<String> lines = Files.lines(file.toPath(), charset)) {
-      return lines.count();
+    long count = 0;
+    try (BufferedReader reader = Files.newBufferedReader(file.toPath(), charset)) {
+      while (reader.readLine() != null) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  /**
+   * Finds the line the first bytes that don't decode in the given charset are on. BufferedReader decodes ahead of the
+   * line it returns, so the line it fails on isn't the line the bytes are on. Lines end at \n, \r or \r\n, as they do
+   * for BufferedReader.
+   */
+  static long lineOfFirstUndecodableBytes(File file, Charset charset) throws IOException {
+    CharsetDecoder decoder = charset.newDecoder();
+    ByteBuffer bytes = ByteBuffer.allocate(8192);
+    CharBuffer chars = CharBuffer.allocate(8192);
+    long line = 1;
+    char previous = 0;
+    boolean endOfInput = false;
+    try (ReadableByteChannel channel = Files.newByteChannel(file.toPath())) {
+      while (true) {
+        if (!endOfInput && channel.read(bytes) == -1) {
+          endOfInput = true;
+        }
+        bytes.flip();
+        CoderResult result = decoder.decode(bytes, chars, endOfInput);
+        chars.flip();
+        while (chars.hasRemaining()) {
+          char c = chars.get();
+          if (c == '\r' || (c == '\n' && previous != '\r')) {
+            line++;
+          }
+          previous = c;
+        }
+        chars.clear();
+        bytes.compact();
+        if (result.isError() || (endOfInput && result.isUnderflow())) {
+          return line;
+        }
+      }
     }
   }
 
@@ -478,7 +582,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
             FileUtils.copyFile(file, ddFile);
           }
         } catch (IOException e1) {
-          throw new ImportException(e1);
+          throw new ImportException(StringUtils.defaultIfEmpty(e1.getMessage(), e1.toString()), e1);
         }
         src.setFile(ddFile);
         src.setLastModified(new Date());

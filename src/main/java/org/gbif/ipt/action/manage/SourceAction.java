@@ -239,7 +239,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
           addActionError(getText("manage.source.invalidFileName.archive"));
           return ERROR;
         } catch (Exception e) {
-          LOG.error(e);
+          LOG.error("Unexpected exception while uploading {}", originalName, e);
           addErrorHeader("manage.source.upload.unexpectedException");
           addActionError(getText("manage.source.upload.unexpectedException"));
           return ERROR;
@@ -257,7 +257,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
           addActionError(getText("manage.source.invalidFileName"));
           return ERROR;
         } catch (Exception e) {
-          LOG.error(e);
+          LOG.error("Unexpected exception while uploading {}", originalName, e);
           addErrorHeader("manage.source.upload.unexpectedException");
           addActionError(getText("manage.source.upload.unexpectedException"));
           return ERROR;
@@ -266,8 +266,11 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     }
 
     if (createdSourceNames.isEmpty()) {
-      addErrorHeader("manage.source.upload.unexpectedException");
-      addActionError(getText("manage.source.upload.unexpectedException"));
+      // a file that couldn't be added has already said why
+      if (!hasActionErrors()) {
+        addErrorHeader("manage.source.upload.unexpectedException");
+        addActionError(getText("manage.source.upload.unexpectedException"));
+      }
       return ERROR;
     }
 
@@ -340,19 +343,26 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
       }
       alertEmbeddedLineBreaksRemoved(source);
+      alertFileNotChecked(source);
 
       return source.getName();
 
     } catch (ImportException e) {
       LOG.error("Cannot add source {}: {}", filename, e.getMessage(), e);
-      addActionError(getText("manage.source.cannot.add", new String[]{filename, e.getMessage()}));
+      String message = getText("manage.source.cannot.add", new String[]{filename, e.getMessage()});
+      setErrorHeaderMessage(message);
+      addActionError(message);
       return null;
     }
   }
 
   private void addErrorHeader(String value) {
+    setErrorHeaderMessage(getText(value));
+  }
+
+  private void setErrorHeaderMessage(String message) {
     HttpServletResponse response = ServletActionContext.getResponse();
-    response.setHeader("X-Error-Message", getText(value));
+    response.setHeader("X-Error-Message", message);
   }
 
   private String addSqlSource() {
@@ -426,6 +436,30 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
       if (removed > 0) {
         String msg = getText("manage.source.lineBreaksRemoved",
           new String[] {source.getName(), String.valueOf(removed)});
+        addActionWarning(msg);
+        response.setHeader("X-Warning-Message", msg);
+      }
+    }
+  }
+
+  /**
+   * Alert the publisher if their file was stored as uploaded without being checked for embedded line breaks, because
+   * it has characters that aren't valid in its encoding or quoted values that can't be read. Sent the same ways as
+   * {@link #alertEmbeddedLineBreaksRemoved(Source)}.
+   *
+   * @param source the just-added/replaced source
+   */
+  protected void alertFileNotChecked(Source source) {
+    if (source instanceof TextFileSource) {
+      TextFileSource textSource = (TextFileSource) source;
+      if (textSource.getFirstLineWithInvalidCharacters() > 0) {
+        String msg = getText("manage.source.invalidCharacters", new String[] {source.getName(),
+            source.getEncoding(), String.valueOf(textSource.getFirstLineWithInvalidCharacters())});
+        addActionWarning(msg);
+        response.setHeader("X-Warning-Message", msg);
+      }
+      if (textSource.isQuotedValuesUnreadable()) {
+        String msg = getText("manage.source.quotedValuesUnreadable", new String[] {source.getName()});
         addActionWarning(msg);
         response.setHeader("X-Warning-Message", msg);
       }

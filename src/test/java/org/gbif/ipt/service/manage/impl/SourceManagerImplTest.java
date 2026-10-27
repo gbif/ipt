@@ -28,11 +28,21 @@ import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -144,6 +154,88 @@ public class SourceManagerImplTest extends IptBaseTest {
     File srcFile = FileUtils.getClasspathFile("data/image_empty.txt");
     // add source file to test Resource
     assertThrows(ImportException.class, () -> manager.add(resource, srcFile, srcFile.getName()));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"\n", "\r\n", "\r"})
+  public void testAddFileWithInvalidBytesAfterDetectedEncoding(String lineEnding, @TempDir File tmpDir)
+    throws Exception {
+    // ~5MB of plain ASCII, more than encoding detection reads, so the encoding is detected as UTF-8, then a byte
+    // that isn't valid UTF-8 on line 300002
+    StringBuilder sb = new StringBuilder("id\tname").append(lineEnding);
+    for (int i = 1; i <= 300000; i++) {
+      sb.append(i).append("\tname ").append(i).append(lineEnding);
+    }
+    sb.append("x\tSkakbr?");
+    File srcFile = new File(tmpDir, "invalidBytes.txt");
+    try (FileOutputStream out = new FileOutputStream(srcFile)) {
+      out.write(sb.toString().getBytes(StandardCharsets.US_ASCII));
+      out.write(0xAC);
+      out.write(("t" + lineEnding).getBytes(StandardCharsets.US_ASCII));
+    }
+
+    // added as uploaded, with the line to warn about
+    TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
+    assertEquals(300002, src.getFirstLineWithInvalidCharacters());
+    assertTrue(src.isReadable());
+    assertEquals(300001, src.getRows());
+    assertArrayEquals(java.nio.file.Files.readAllBytes(srcFile.toPath()),
+                      java.nio.file.Files.readAllBytes(src.getFile().toPath()));
+  }
+
+  @Test
+  public void testAddFileWithEmbeddedLineBreakIsNormalized(@TempDir File tmpDir) throws Exception {
+    File srcFile = new File(tmpDir, "remarks.txt");
+    java.nio.file.Files.write(srcFile.toPath(),
+      "id\tremarks\n1\t\"first\nsecond\"\n2\tthird\n3\tfourth\n".getBytes(StandardCharsets.UTF_8));
+
+    TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
+    assertEquals(1, src.getLinesWithEmbeddedBreaksRemoved());
+    assertFalse(src.isQuotedValuesUnreadable());
+    assertEquals(3, src.getRows());
+    assertEquals(4, java.nio.file.Files.readAllLines(src.getFile().toPath()).size());
+  }
+
+  @Test
+  public void testAddFileWithUnreadableQuotedValue(@TempDir File tmpDir) throws Exception {
+    // a closing quote followed by more text in the same value
+    File srcFile = new File(tmpDir, "quotes.txt");
+    java.nio.file.Files.write(srcFile.toPath(),
+      "id\tremarks\n1\t\"first\" and more\n2\tsecond\n3\tthird\n".getBytes(StandardCharsets.UTF_8));
+
+    // added as uploaded, to warn about
+    TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
+    assertTrue(src.isQuotedValuesUnreadable());
+    assertEquals(0, src.getFirstLineWithInvalidCharacters());
+    assertTrue(src.isReadable());
+    assertEquals(2, src.getColumns());
+    assertArrayEquals(java.nio.file.Files.readAllBytes(srcFile.toPath()),
+                      java.nio.file.Files.readAllBytes(src.getFile().toPath()));
+  }
+
+  @ParameterizedTest
+  @MethodSource("undecodableLineCases")
+  public void testLineOfFirstUndecodableBytes(byte[] content, Charset charset, long expectedLine, @TempDir File tmpDir)
+    throws IOException {
+    File file = new File(tmpDir, "file.txt");
+    java.nio.file.Files.write(file.toPath(), content);
+    assertEquals(expectedLine, SourceManagerImpl.lineOfFirstUndecodableBytes(file, charset));
+  }
+
+  static Stream<Arguments> undecodableLineCases() {
+    return Stream.of(
+      // invalid byte on the first line
+      Arguments.of(new byte[]{'a', (byte) 0xAC, '\n', 'b', '\n'}, StandardCharsets.UTF_8, 1L),
+      // \r\n, \n and \r line endings
+      Arguments.of(new byte[]{'a', '\r', '\n', 'b', '\r', '\n', (byte) 0xAC}, StandardCharsets.UTF_8, 3L),
+      Arguments.of(new byte[]{'a', '\n', 'b', '\n', (byte) 0xAC}, StandardCharsets.UTF_8, 3L),
+      Arguments.of(new byte[]{'a', '\r', 'b', '\r', (byte) 0xAC}, StandardCharsets.UTF_8, 3L),
+      // a multi-byte sequence cut off at the end of the file
+      Arguments.of(new byte[]{'a', '\n', 'b', '\n', 'c', (byte) 0xC3}, StandardCharsets.UTF_8, 3L),
+      // a lone surrogate in UTF-16LE on the second line
+      Arguments.of(new byte[]{'a', 0, '\n', 0, 'b', 0, 0, (byte) 0xD8, 'c', 0}, StandardCharsets.UTF_16LE, 2L),
+      // a byte windows-1252 doesn't define
+      Arguments.of(new byte[]{'a', '\n', (byte) 0x81}, Charset.forName("windows-1252"), 2L));
   }
 
   @Test

@@ -46,6 +46,11 @@ public class TextFileSource extends SourceBase implements FileSource {
   protected Date lastModified;
   // not persisted: set once per upload so SourceAction can warn the publisher. See SourceManagerImpl#add
   private transient int linesWithEmbeddedBreaksRemoved;
+  // not persisted: problems that kept the upload from being checked for embedded line breaks, so it was stored
+  // as uploaded. The first line with characters that aren't valid in the encoding (0 if none), and whether quoted
+  // values couldn't be read with the delimiter and quote
+  private transient long firstLineWithInvalidCharacters;
+  private transient boolean quotedValuesUnreadable;
 
   public Character getFieldQuoteChar() {
     if (fieldsEnclosedBy == null || fieldsEnclosedBy.length() == 0) {
@@ -186,6 +191,22 @@ public class TextFileSource extends SourceBase implements FileSource {
 
   public void setLinesWithEmbeddedBreaksRemoved(int linesWithEmbeddedBreaksRemoved) {
     this.linesWithEmbeddedBreaksRemoved = linesWithEmbeddedBreaksRemoved;
+  }
+
+  public long getFirstLineWithInvalidCharacters() {
+    return firstLineWithInvalidCharacters;
+  }
+
+  public void setFirstLineWithInvalidCharacters(long firstLineWithInvalidCharacters) {
+    this.firstLineWithInvalidCharacters = firstLineWithInvalidCharacters;
+  }
+
+  public boolean isQuotedValuesUnreadable() {
+    return quotedValuesUnreadable;
+  }
+
+  public void setQuotedValuesUnreadable(boolean quotedValuesUnreadable) {
+    this.quotedValuesUnreadable = quotedValuesUnreadable;
   }
 
   @Override

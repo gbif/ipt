@@ -25,13 +25,22 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
+import java.util.Arrays;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class SourceActionTest extends IptBaseTest {
 
@@ -55,5 +64,33 @@ public class SourceActionTest extends IptBaseTest {
     assertFalse(action.alertColumnNumberChange(true, 10, 10));
     assertTrue(action.alertColumnNumberChange(true, 1, 2));
     assertTrue(action.alertColumnNumberChange(true, 2, 1));
+  }
+
+  @Test
+  public void testAlertFileNotChecked() {
+    // the text provider returns the key and its arguments, to see what was reported
+    SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
+    when(textProvider.getText(any(), anyString(), any(), any(Object[].class)))
+      .thenAnswer(i -> i.getArgument(1) + " " + Arrays.toString((Object[]) i.getArgument(3)));
+    action = new SourceAction(textProvider, mock(AppConfig.class), mock(RegistrationManager.class),
+      mock(ResourceManager.class), mock(SourceManager.class), mock(JdbcSupport.class), mock(DataDir.class));
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    action.withServletResponse(response);
+
+    TextFileSource src = new TextFileSource();
+    src.setName("occurrence");
+    src.setEncoding("UTF-8");
+
+    // checked without problems
+    action.alertFileNotChecked(src);
+    assertTrue(action.getActionWarnings().isEmpty());
+    verify(response, never()).setHeader(anyString(), anyString());
+
+    src.setFirstLineWithInvalidCharacters(188715);
+    src.setQuotedValuesUnreadable(true);
+    action.alertFileNotChecked(src);
+    assertEquals(Arrays.asList("manage.source.invalidCharacters [occurrence, UTF-8, 188715]",
+                               "manage.source.quotedValuesUnreadable [occurrence]"), action.getActionWarnings());
+    verify(response).setHeader("X-Warning-Message", "manage.source.quotedValuesUnreadable [occurrence]");
   }
 }
