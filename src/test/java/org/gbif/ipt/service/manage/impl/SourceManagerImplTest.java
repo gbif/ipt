@@ -160,4 +160,29 @@ public class SourceManagerImplTest extends IptBaseTest {
     assertFalse(manager.acceptableFileName("taxoñ.txt"));
     assertFalse(manager.acceptableFileName("taxon & aves.txt"));
   }
+
+  @Test
+  public void testAddFileWithCommasInValuesKeepsTabDelimiter(@TempDir File tmpDir) throws Exception {
+    // tabs split every line evenly, but the WKT values make commas more frequent
+    StringBuilder sb = new StringBuilder("id\tlocality\tfootprintWKT\n");
+    for (int i = 1; i <= 20; i++) {
+      sb.append(i).append("\tDrag\u00f8r\t\"POLYGON ((");
+      for (int j = 0; j < i % 5 + 3; j++) {
+        sb.append(j).append(' ').append(j).append(", ");
+      }
+      sb.append("0 0))\"\n");
+    }
+    File srcFile = new File(tmpDir, "event.txt");
+    java.nio.file.Files.write(srcFile.toPath(), sb.toString().getBytes(StandardCharsets.UTF_8));
+
+    TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
+    assertEquals("\t", src.getFieldsTerminatedBy());
+    assertEquals(3, src.getColumns());
+    assertEquals(0, src.getLinesWithEmbeddedBreaksRemoved());
+    assertEquals(0, src.getFirstLineWithInvalidCharacters());
+    assertFalse(src.isQuotedValuesUnreadable());
+    // stored exactly as uploaded
+    assertArrayEquals(java.nio.file.Files.readAllBytes(srcFile.toPath()),
+        java.nio.file.Files.readAllBytes(src.getFile().toPath()));
+  }
 }
