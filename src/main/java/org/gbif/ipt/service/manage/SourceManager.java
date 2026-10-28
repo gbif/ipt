@@ -16,6 +16,7 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SourceLog;
 import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
@@ -75,6 +76,14 @@ public interface SourceManager {
    * @return problem message if source is not readable
    */
   String analyze(Source source);
+
+  /**
+   * @param source a file or URL source
+   *
+   * @return what was found when the source was last analysed, or null if it hasn't been since the log was kept as
+   *         JSON. Its log may then only be in the text file, see DataDir#sourceLogFile
+   */
+  SourceLog readLog(Source source);
 
   /**
    * Return list of source's column names.

@@ -36,6 +36,7 @@ import org.gbif.ipt.model.InferredEmlTaxonomicCoverage;
 import org.gbif.ipt.model.InferredEmlTemporalCoverage;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.SourceFileProblem;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlSource;
@@ -75,6 +76,7 @@ public class ResourceXStreamFactory {
     xstream.alias("excelsource", ExcelFileSource.class);
     xstream.alias("sqlsource", SqlSource.class);
     xstream.alias("urlsource", UrlSource.class);
+    xstream.alias("sourceFileProblem", SourceFileProblem.class);
     xstream.alias("mapping", ExtensionMapping.class);
     xstream.alias("field", PropertyMapping.class);
     xstream.alias("dataPackageMapping", DataPackageMapping.class);

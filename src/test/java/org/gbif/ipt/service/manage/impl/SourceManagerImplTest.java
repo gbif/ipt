@@ -19,6 +19,9 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SourceFileProblem;
+import org.gbif.ipt.model.SourceFileProblem.Type;
+import org.gbif.ipt.model.SourceLog;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.AlreadyExistingException;
@@ -30,21 +33,18 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -59,14 +59,18 @@ public class SourceManagerImplTest extends IptBaseTest {
   private Resource resource;
   private TextFileSource src1;
   private SqlSource src2;
+  private File logFile;
+  private File logJsonFile;
 
   @BeforeEach
   public void setup() throws IOException {
     File ddFile = File.createTempFile("distribution", ".txt");
-    File logFile = File.createTempFile("distribution", "log");
+    logFile = File.createTempFile("distribution", "log");
     DataDir mockDataDir = mock(DataDir.class);
     when(mockDataDir.sourceFile(any(Resource.class), any(FileSource.class))).thenReturn(ddFile);
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(logFile);
+    logJsonFile = File.createTempFile("distribution", "log.json");
+    when(mockDataDir.sourceLogJsonFile(anyString(), anyString())).thenReturn(logJsonFile);
     // create instance of SourceManager, using mocked AppConfig and DataDir
     manager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir, mock(FileStoreManager.class));
     // create test Resource
@@ -102,6 +106,9 @@ public class SourceManagerImplTest extends IptBaseTest {
     // perform deletion of TextFileSource
     manager.delete(resource, src1);
     assertEquals(1, resource.getSources().size());
+    // with its logs
+    assertFalse(logFile.exists());
+    assertFalse(logJsonFile.exists());
   }
 
   @Test
@@ -176,7 +183,7 @@ public class SourceManagerImplTest extends IptBaseTest {
 
     // added as uploaded, with the line to warn about
     TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
-    assertEquals(300002, src.getFirstLineWithInvalidCharacters());
+    assertProblems(src, new SourceFileProblem(Type.INVALID_CHARACTERS, 1, 300002));
     assertTrue(src.isReadable());
     assertEquals(300001, src.getRows());
     assertArrayEquals(java.nio.file.Files.readAllBytes(srcFile.toPath()),
@@ -191,7 +198,9 @@ public class SourceManagerImplTest extends IptBaseTest {
 
     TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
     assertEquals(1, src.getLinesWithEmbeddedBreaksRemoved());
-    assertFalse(src.isQuotedValuesUnreadable());
+    assertProblems(src);
+    assertTrue(readLog().contains(
+      "Fixed when the file was uploaded: 1 line break(s) inside quoted values were removed"));
     assertEquals(3, src.getRows());
     assertEquals(4, java.nio.file.Files.readAllLines(src.getFile().toPath()).size());
   }
@@ -205,37 +214,56 @@ public class SourceManagerImplTest extends IptBaseTest {
 
     // added as uploaded, to warn about
     TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
-    assertTrue(src.isQuotedValuesUnreadable());
-    assertEquals(0, src.getFirstLineWithInvalidCharacters());
+    assertProblems(src, new SourceFileProblem(Type.UNREADABLE_QUOTES, 1, 2));
+    // the page reads the same from the JSON log
+    SourceLog log = manager.readLog(src);
+    assertEquals("UTF-8", log.getEncoding());
+    assertEquals("tab", log.getDelimiter());
+    assertEquals("\"", log.getQuote());
+    assertEquals(3, log.getRows());
+    SourceLog.Example example = log.getProblems().get(0).getExamples().get(0);
+    assertEquals(2, example.getLine());
+    assertEquals(2, example.getColumnNumber());
+    assertEquals("remarks", example.getColumn());
+    assertEquals("\"first\" and more", example.getValue());
+    assertEquals(SourceLog.Reason.TEXT_AFTER_QUOTE, example.getReason());
+    assertTrue(readLog().contains("Line 2, column remarks: text after the closing quote: \"first\" and more"));
     assertTrue(src.isReadable());
     assertEquals(2, src.getColumns());
     assertArrayEquals(java.nio.file.Files.readAllBytes(srcFile.toPath()),
                       java.nio.file.Files.readAllBytes(src.getFile().toPath()));
   }
 
-  @ParameterizedTest
-  @MethodSource("undecodableLineCases")
-  public void testLineOfFirstUndecodableBytes(byte[] content, Charset charset, long expectedLine, @TempDir File tmpDir)
-    throws IOException {
-    File file = new File(tmpDir, "file.txt");
-    java.nio.file.Files.write(file.toPath(), content);
-    assertEquals(expectedLine, SourceManagerImpl.lineOfFirstUndecodableBytes(file, charset));
+  @Test
+  public void testFailedAnalysisLeavesNoLog(@TempDir File tmpDir) throws Exception {
+    File srcFile = new File(tmpDir, "quotes.txt");
+    java.nio.file.Files.write(srcFile.toPath(),
+      "id\tremarks\n1\t\"first\" and more\n".getBytes(StandardCharsets.UTF_8));
+    TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
+    assertTrue(logFile.exists());
+    assertTrue(logJsonFile.exists());
+
+    // the file can't be read anymore: what was found in it before no longer holds
+    assertTrue(src.getFile().delete());
+    assertNotNull(manager.analyze(src));
+    assertNull(src.getProblems());
+    assertFalse(logFile.exists());
+    assertFalse(logJsonFile.exists());
+    assertNull(manager.readLog(src));
   }
 
-  static Stream<Arguments> undecodableLineCases() {
-    return Stream.of(
-      // invalid byte on the first line
-      Arguments.of(new byte[]{'a', (byte) 0xAC, '\n', 'b', '\n'}, StandardCharsets.UTF_8, 1L),
-      // \r\n, \n and \r line endings
-      Arguments.of(new byte[]{'a', '\r', '\n', 'b', '\r', '\n', (byte) 0xAC}, StandardCharsets.UTF_8, 3L),
-      Arguments.of(new byte[]{'a', '\n', 'b', '\n', (byte) 0xAC}, StandardCharsets.UTF_8, 3L),
-      Arguments.of(new byte[]{'a', '\r', 'b', '\r', (byte) 0xAC}, StandardCharsets.UTF_8, 3L),
-      // a multi-byte sequence cut off at the end of the file
-      Arguments.of(new byte[]{'a', '\n', 'b', '\n', 'c', (byte) 0xC3}, StandardCharsets.UTF_8, 3L),
-      // a lone surrogate in UTF-16LE on the second line
-      Arguments.of(new byte[]{'a', 0, '\n', 0, 'b', 0, 0, (byte) 0xD8, 'c', 0}, StandardCharsets.UTF_16LE, 2L),
-      // a byte windows-1252 doesn't define
-      Arguments.of(new byte[]{'a', '\n', (byte) 0x81}, Charset.forName("windows-1252"), 2L));
+  private void assertProblems(TextFileSource src, SourceFileProblem... expected) {
+    assertEquals(expected.length, src.getProblems().size());
+    for (int i = 0; i < expected.length; i++) {
+      SourceFileProblem actual = src.getProblems().get(i);
+      assertEquals(expected[i].getType(), actual.getType());
+      assertEquals(expected[i].getLines(), actual.getLines());
+      assertEquals(expected[i].getFirstLine(), actual.getFirstLine());
+    }
+  }
+
+  private String readLog() throws IOException {
+    return new String(java.nio.file.Files.readAllBytes(logFile.toPath()), StandardCharsets.UTF_8);
   }
 
   @Test
@@ -271,8 +299,7 @@ public class SourceManagerImplTest extends IptBaseTest {
     assertEquals("\t", src.getFieldsTerminatedBy());
     assertEquals(3, src.getColumns());
     assertEquals(0, src.getLinesWithEmbeddedBreaksRemoved());
-    assertEquals(0, src.getFirstLineWithInvalidCharacters());
-    assertFalse(src.isQuotedValuesUnreadable());
+    assertProblems(src);
     // stored exactly as uploaded
     assertArrayEquals(java.nio.file.Files.readAllBytes(srcFile.toPath()),
         java.nio.file.Files.readAllBytes(src.getFile().toPath()));

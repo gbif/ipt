@@ -374,6 +374,7 @@ public class GenerateDwcaIT extends IptBaseTest {
     when(mockDataDir.resourcePublicationLogFile(RESOURCE_SHORTNAME)).thenReturn(publicationLogFile);
     // mock log file
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(new File(resourceDir, "log.txt"));
+    when(mockDataDir.sourceLogJsonFile(anyString(), anyString())).thenReturn(new File(resourceDir, "log.json"));
     // add SourceBase.TextFileSource fileSource to test Resource
     FileSource fileSource = mockSourceManager.add(resource, sourceFile, "occurrence.txt");
     resource.getMappings().get(0).setSource(fileSource);

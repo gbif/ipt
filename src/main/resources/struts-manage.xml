@@ -202,6 +202,21 @@
       </result>
     </action>
 
+    <action name="sourcelog" class="org.gbif.ipt.action.manage.SourceLogAction">
+      <result>/WEB-INF/pages/manage/source_log.ftl</result>
+    </action>
+
+    <!-- under manage, since the log has values from the source's file -->
+    <action name="sourcelog-download" class="org.gbif.ipt.action.portal.ResourceFileAction" method="sourceLog">
+      <result name="success" type="stream">
+        <param name="contentType">${mimeType}</param>
+        <param name="contentCharSet">UTF-8</param>
+        <param name="inputName">inputStream</param>
+        <param name="contentDisposition">attachment; filename="${filename}"</param>
+        <param name="bufferSize">1024</param>
+      </result>
+    </action>
+
     <action name="delete-source" class="org.gbif.ipt.action.manage.SourceAction" method="delete">
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{parameters.r}</result>

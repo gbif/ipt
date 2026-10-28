@@ -119,9 +119,6 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 <#assign currentLocale = .vars["locale"]/>
-<#if source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE' || source.sourceType == 'URL'>
-    <#assign formattedFileSize><@source.formattedFileSize(currentLocale)?interpret /></#assign>
-</#if>
 
     <form class="topForm needs-validation" action="source.do" method="post" novalidate>
         <div class="container px-0">
@@ -150,6 +147,48 @@
                             </#if>
                         </h5>
 
+                        <#if id?has_content>
+                            <#-- type and whether the source can be read, shown as in the overview's list of sources -->
+                            <#if source.processing>
+                                <#assign readableClass = "text-discreet"/>
+                            <#elseif source.readable>
+                                <#assign readableClass = "text-gbif-primary"/>
+                            <#else>
+                                <#assign readableClass = "text-gbif-danger"/>
+                            </#if>
+                            <div class="text-smaller mb-2">
+                                <#if source.sourceType == 'EXCEL_FILE'>
+                                    <i class="bi bi-file-excel ${readableClass}"></i> <@s.text name="manage.overview.source.excel"/>
+                                <#elseif source.sourceType == 'TEXT_FILE'>
+                                    <i class="bi bi-file-text ${readableClass}"></i> <@s.text name="manage.overview.source.file"/>
+                                <#elseif source.sourceType == 'URL'>
+                                    <i class="bi bi-link ${readableClass}"></i> <@s.text name="manage.overview.source.url"/>
+                                <#else>
+                                    <i class="bi bi-database ${readableClass}"></i> <@s.text name="manage.overview.source.sql"/>
+                                </#if>
+                                <#if source.processing>
+                                    &middot;
+                                    <span class="${readableClass}"><@s.text name="manage.source.processing.info"/></span>
+                                </#if>
+                            </div>
+
+                            <#-- what's in the file -->
+                            <#if source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE' || source.sourceType == 'URL'>
+                                <#if source.sourceType != 'URL' || source.readable>
+                                    <div class="text-smaller mb-1">
+                                        <span class="text-muted"><@s.text name="manage.source.rows"/></span> ${source.rows?string.number}
+                                        &middot;
+                                        <span class="text-muted"><@s.text name="manage.source.columns"/></span> ${source.getColumns()?string.number}
+                                        &middot;
+                                        <span class="text-muted"><@s.text name="manage.source.size"/></span>
+                                        <#attempt><@source.formattedFileSize(currentLocale)?interpret /><#recover>-</#attempt>
+                                        &middot;
+                                        <span class="text-muted"><@s.text name="manage.source.modified"/></span> ${(source.lastModified?datetime?string.medium_short)!"-"}
+                                    </div>
+                                </#if>
+                            </#if>
+                        </#if>
+
                         <div class="text-smaller">
                             <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                         </div>
@@ -171,6 +210,13 @@
                                             <@s.text name="button.preview"/>
                                         </a>
                                       </li>
+                                        <#if logExists>
+                                      <li>
+                                        <a href="${baseURL}/manage/sourcelog.do?r=${resource.shortname}&s=${source.name?url}" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
+                                            <@s.text name="manage.source.source.log"/>
+                                        </a>
+                                      </li>
+                                        </#if>
                                         <#if id?has_content>
                                       <li>
                                           <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
@@ -197,119 +243,39 @@
                         <input type="hidden" name="id" value="${id!}" />
 
                         <#if source??>
-                            <div class="col-12 border rounded px-lg-5 px-md-4 px-3 py-lg-4 py-3 mb-3">
-                                <div class="table-responsive">
-                                    <table id="source-properties" class="table table-sm text-smaller">
-                                        <tr>
-                                            <th class="col-lg-2 col-md-3"><@s.text name="manage.overview.source.sourceType"/></th>
-                                            <td>
-                                                <#if source.sourceType == 'EXCEL_FILE'>
-                                                    <@s.text name="manage.overview.source.excel"/>
-                                                <#elseif source.sourceType == 'TEXT_FILE'>
-                                                    <@s.text name="manage.overview.source.file"/>
-                                                <#elseif source.sourceType == 'URL'>
-                                                    <@s.text name="manage.overview.source.url"/>
-                                                <#elseif source.sourceType == 'SQL'>
-                                                    <@s.text name="manage.overview.source.sql"/>
-                                                </#if>
-                                          </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th class="col-lg-2 col-md-3"><@s.text name='manage.source.readable'/></th>
-                                            <td>
-                                                <div>
-                                                    <#if source.processing>
-                                                        <span class="text-gbif-primary"><@s.text name="manage.source.processing.info"/></span>
-                                                    <#elseif source.readable>
-                                                        <i class="bi bi-circle-fill text-gbif-primary"></i>
-                                                        <span class="text-gbif-primary"><@s.text name="basic.yes"/></span>
-                                                    <#else>
-                                                        <i class="bi bi-circle-fill text-gbif-danger"></i>
-                                                        <span class="text-gbif-danger"><@s.text name="basic.no"/></span>
-                                                    </#if>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <#if source.sourceType == 'URL'>
-                                            <tr>
-                                                <th><@s.text name='manage.source.url'/></th>
-                                                <td><a href="${(source.url)!}">${(source.url)!}</a></td>
-                                            </tr>
-                                            <#if source.readable>
-                                                <tr>
-                                                    <th><@s.text name='manage.source.columns'/></th>
-                                                    <td>${source.getColumns()}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th><@s.text name='manage.source.rows'/></th>
-                                                    <td>${source.rows!"-"}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th><@s.text name='manage.source.size'/></th>
-                                                    <td>
-                                                        <#attempt>
-                                                            <@source.formattedFileSize(currentLocale)?interpret />
-                                                        <#recover>
-                                                            -
-                                                        </#attempt>
-                                                    </td>
-                                                </tr>
-                                            </#if>
-                                            <#if source.lastModified?has_content>
-                                                <tr>
-                                                    <th><@s.text name='manage.source.modified'/></th>
-                                                    <td>${(source.lastModified?datetime?string.long_medium)!}</td>
-                                                </tr>
-                                            </#if>
-                                            <#if (logExists)>
-                                                <tr>
-                                                    <th><@s.text name='manage.source.source.log'/></th>
-                                                    <td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.view'/></a></td>
-                                                </tr>
-                                            </#if>
-                                        <#elseif source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE'>
-                                            <tr>
-                                                <th><@s.text name='manage.source.file'/></th>
-                                                <td>${(source.file.getAbsolutePath())!}</td>
-                                            </tr>
-                                            <tr>
-                                                <th><@s.text name='manage.source.columns'/></th>
-                                                <td>${source.getColumns()}</td>
-                                            </tr>
-                                            <tr>
-                                                <th><@s.text name='manage.source.rows'/></th>
-                                                <td>${source.rows!"-"}</td>
-                                            </tr>
-                                            <tr>
-                                                <th><@s.text name='manage.source.size'/></th>
-                                                <td>
-                                                    <#attempt>
-                                                        <@source.formattedFileSize(currentLocale)?interpret />
-                                                    <#recover>
-                                                        -
-                                                    </#attempt>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th><@s.text name='manage.source.modified'/></th>
-                                                <td>${(source.lastModified?datetime?string.long_medium)!}</td>
-                                            </tr>
-                                            <#if (logExists)>
-                                                <tr>
-                                                    <th><@s.text name='manage.source.source.log'/></th>
-                                                    <td><a href="${baseURL}/sourcelog.do?r=${resource.shortname}&s=${source.name}"><@s.text name='manage.source.view'/></a></td>
-                                                </tr>
-                                            </#if>
-                                        </#if>
-                                    </table>
+                            <#-- problems found when the source was last analysed -->
+                            <#if problem??>
+                                <div class="col-12">
+                                    <div class="callout callout-danger text-smaller my-0">${problem}</div>
                                 </div>
-                            </div>
-
-                            <div class="text-smaller mt-0">
-                                <#if problem??><div class="callout callout-danger my-0">${problem!}</div></#if>
-                            </div>
+                            <#elseif source.sourceType == 'TEXT_FILE' && id?has_content>
+                                <div class="col-12">
+                                    <#if !problemMessages??>
+                                        <div class="callout callout-info text-smaller my-0"><@s.text name="manage.source.problems.notChecked"/></div>
+                                    <#elseif problemMessages?has_content>
+                                        <div class="callout callout-warning text-smaller my-0">
+                                            <strong><@s.text name="manage.source.problems.found.title"/></strong>
+                                            <ul class="mb-1 mt-1">
+                                                <#list problemMessages as message>
+                                                    <li>${message}</li>
+                                                </#list>
+                                            </ul>
+                                            <#if source.linesWithEmbeddedBreaksRemoved gt 0>
+                                                <div class="mb-1"><@s.text name="manage.source.fixed.lineBreaksRemoved"><@s.param>${source.linesWithEmbeddedBreaksRemoved?c}</@s.param></@s.text></div>
+                                            </#if>
+                                            <a href="${baseURL}/manage/sourcelog.do?r=${resource.shortname}&s=${source.name?url}"><@s.text name="manage.source.problems.seeLog"/></a>
+                                        </div>
+                                    <#else>
+                                        <div class="text-smaller text-muted">
+                                            <i class="bi bi-check2 text-gbif-primary"></i>
+                                            <@s.text name="manage.source.problems.none"/>
+                                            <#if source.linesWithEmbeddedBreaksRemoved gt 0>
+                                                <@s.text name="manage.source.fixed.lineBreaksRemoved"><@s.param>${source.linesWithEmbeddedBreaksRemoved?c}</@s.param></@s.text>
+                                            </#if>
+                                        </div>
+                                    </#if>
+                                </div>
+                            </#if>
 
                             <#if !id?has_content>
                                 <div class="col-lg-6">
@@ -377,10 +343,10 @@
                             <#-- excel source -->
                             <#elseif source.isExcelSource()>
                                 <div class="col-lg-6">
-                                    <@headerLines/>
+                                    <@select name="source.sheetIdx" options=source.sheets() value="${source.sheetIdx}" i18nkey="excelSource.sheets" />
                                 </div>
                                 <div class="col-lg-6">
-                                    <@select name="source.sheetIdx" options=source.sheets() value="${source.sheetIdx}" i18nkey="excelSource.sheets" />
+                                    <@headerLines/>
                                 </div>
                                 <div class="col-lg-6">
                                     <@multivalue/>
@@ -388,6 +354,9 @@
 
                             <#-- file source -->
                             <#elseif source.isFileSource()>
+                                <div class="col-lg-6">
+                                    <@encoding/>
+                                </div>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>
@@ -398,15 +367,15 @@
                                     <@input name="fileSource.fieldsEnclosedByEscaped" value=fileSource.fieldsEnclosedByEscaped! help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
                                 </div>
                                 <div class="col-lg-6">
+                                    <@dateFormat/>
+                                </div>
+                                <div class="col-lg-6">
                                     <@multivalue/>
                                 </div>
+                            <#else>
                                 <div class="col-lg-6">
                                     <@encoding/>
                                 </div>
-                                <div class="col-lg-6">
-                                    <@dateFormat/>
-                                </div>
-                            <#else>
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>
@@ -417,13 +386,10 @@
                                     <@input name="source.fieldsEnclosedByEscaped" value=source.fieldsEnclosedByEscaped! i18nkey="fileSource.fieldsEnclosedByEscaped" help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
                                 </div>
                                 <div class="col-lg-6">
-                                    <@multivalue/>
-                                </div>
-                                <div class="col-lg-6">
-                                    <@encoding/>
-                                </div>
-                                <div class="col-lg-6">
                                     <@dateFormat/>
+                                </div>
+                                <div class="col-lg-6">
+                                    <@multivalue/>
                                 </div>
                             </#if>
                         </#if>

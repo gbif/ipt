@@ -18,6 +18,8 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SourceFileProblem;
+import org.gbif.ipt.model.SourceFileProblem.Type;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -25,9 +27,9 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,8 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class SourceActionTest extends IptBaseTest {
@@ -67,30 +67,48 @@ public class SourceActionTest extends IptBaseTest {
   }
 
   @Test
-  public void testAlertFileNotChecked() {
+  public void testAlertProblems() {
     // the text provider returns the key and its arguments, to see what was reported
     SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
     when(textProvider.getText(any(), anyString(), any(), any(Object[].class)))
       .thenAnswer(i -> i.getArgument(1) + " " + Arrays.toString((Object[]) i.getArgument(3)));
     action = new SourceAction(textProvider, mock(AppConfig.class), mock(RegistrationManager.class),
       mock(ResourceManager.class), mock(SourceManager.class), mock(JdbcSupport.class), mock(DataDir.class));
-    HttpServletResponse response = mock(HttpServletResponse.class);
-    action.withServletResponse(response);
 
     TextFileSource src = new TextFileSource();
     src.setName("occurrence");
     src.setEncoding("UTF-8");
 
-    // checked without problems
-    action.alertFileNotChecked(src);
+    // not analysed since problems were checked for
+    action.alertProblems(src);
     assertTrue(action.getActionWarnings().isEmpty());
-    verify(response, never()).setHeader(anyString(), anyString());
 
-    src.setFirstLineWithInvalidCharacters(188715);
-    src.setQuotedValuesUnreadable(true);
-    action.alertFileNotChecked(src);
-    assertEquals(Arrays.asList("manage.source.invalidCharacters [occurrence, UTF-8, 188715]",
-                               "manage.source.quotedValuesUnreadable [occurrence]"), action.getActionWarnings());
-    verify(response).setHeader("X-Warning-Message", "manage.source.quotedValuesUnreadable [occurrence]");
+    // only empty lines, which are skipped
+    src.setProblems(Collections.singletonList(new SourceFileProblem(Type.EMPTY_LINES, 2, 5)));
+    action.alertProblems(src);
+    assertTrue(action.getActionWarnings().isEmpty());
+
+    // one problem, with how to fix it
+    src.setProblems(Arrays.asList(new SourceFileProblem(Type.INVALID_CHARACTERS, 3, 188715),
+                                  new SourceFileProblem(Type.EMPTY_LINES, 2, 5)));
+    action.alertProblems(src);
+    assertEquals(Collections.singletonList("manage.source.problem.found [occurrence, "
+                   + "manage.source.problem.invalidCharacters [3, 188715, UTF-8]]"),
+                 new ArrayList<>(action.getActionWarnings()));
+    action.getActionWarnings().clear();
+
+    // more than one: they're listed on the source page
+    src.setProblems(Arrays.asList(new SourceFileProblem(Type.INVALID_CHARACTERS, 3, 188715),
+                                  new SourceFileProblem(Type.UNREADABLE_QUOTES, 1, 12),
+                                  new SourceFileProblem(Type.EMPTY_LINES, 2, 5)));
+    action.alertProblems(src);
+    assertEquals(Collections.singletonList("manage.source.problems.found [occurrence]"),
+                 new ArrayList<>(action.getActionWarnings()));
+
+    // all of them on the source page, in short
+    action.setSource(src);
+    assertEquals(Arrays.asList("manage.source.problem.invalidCharacters.short [3, 188715, UTF-8]",
+                               "manage.source.problem.unreadableQuotes.short [1, 12, UTF-8]",
+                               "manage.source.problem.emptyLines.short [2, 5, UTF-8]"), action.getProblemMessages());
   }
 }

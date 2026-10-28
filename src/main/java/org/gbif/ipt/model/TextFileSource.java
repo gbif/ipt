@@ -44,13 +44,10 @@ public class TextFileSource extends SourceBase implements FileSource {
   private long fileSize;
   private int rows;
   protected Date lastModified;
-  // not persisted: set once per upload so SourceAction can warn the publisher. See SourceManagerImpl#add
-  private transient int linesWithEmbeddedBreaksRemoved;
-  // not persisted: problems that kept the upload from being checked for embedded line breaks, so it was stored
-  // as uploaded. The first line with characters that aren't valid in the encoding (0 if none), and whether quoted
-  // values couldn't be read with the delimiter and quote
-  private transient long firstLineWithInvalidCharacters;
-  private transient boolean quotedValuesUnreadable;
+  // set at upload, and kept so the source page and log can say what was fixed. See SourceManagerImpl#add
+  private int linesWithEmbeddedBreaksRemoved;
+  // problems found when the source was last analysed, null if it hasn't been since they were checked for
+  private List<SourceFileProblem> problems;
 
   public Character getFieldQuoteChar() {
     if (fieldsEnclosedBy == null || fieldsEnclosedBy.length() == 0) {
@@ -183,7 +180,7 @@ public class TextFileSource extends SourceBase implements FileSource {
 
   /**
    * @return number of embedded line breaks (inside quoted fields) that were stripped out when this
-   *         file was last uploaded, or 0 if none were found. Not persisted between requests.
+   *         file was last uploaded, or 0 if none were found
    */
   public int getLinesWithEmbeddedBreaksRemoved() {
     return linesWithEmbeddedBreaksRemoved;
@@ -193,20 +190,16 @@ public class TextFileSource extends SourceBase implements FileSource {
     this.linesWithEmbeddedBreaksRemoved = linesWithEmbeddedBreaksRemoved;
   }
 
-  public long getFirstLineWithInvalidCharacters() {
-    return firstLineWithInvalidCharacters;
+  /**
+   * @return problems found in the file when the source was last analysed, empty if none, or null if it hasn't been
+   *         analysed since the IPT started checking for them
+   */
+  public List<SourceFileProblem> getProblems() {
+    return problems;
   }
 
-  public void setFirstLineWithInvalidCharacters(long firstLineWithInvalidCharacters) {
-    this.firstLineWithInvalidCharacters = firstLineWithInvalidCharacters;
-  }
-
-  public boolean isQuotedValuesUnreadable() {
-    return quotedValuesUnreadable;
-  }
-
-  public void setQuotedValuesUnreadable(boolean quotedValuesUnreadable) {
-    this.quotedValuesUnreadable = quotedValuesUnreadable;
+  public void setProblems(List<SourceFileProblem> problems) {
+    this.problems = problems;
   }
 
   @Override

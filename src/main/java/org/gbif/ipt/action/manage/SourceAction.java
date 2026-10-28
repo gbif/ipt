@@ -19,6 +19,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SourceFileProblem;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlSource;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -343,7 +345,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
       }
       alertEmbeddedLineBreaksRemoved(source);
-      alertFileNotChecked(source);
+      alertProblems(source);
 
       return source.getName();
 
@@ -443,27 +445,45 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   /**
-   * Alert the publisher if their file was stored as uploaded without being checked for embedded line breaks, because
-   * it has characters that aren't valid in its encoding or quoted values that can't be read. Sent the same ways as
-   * {@link #alertEmbeddedLineBreaksRemoved(Source)}.
+   * Alert the publisher if problems were found in their file when it was analysed after the upload, other than empty
+   * lines, which are skipped. Not sent as a response header like {@link #alertEmbeddedLineBreaksRemoved(Source)},
+   * since the messages can have characters a header can't (e.g. the replacement character).
    *
    * @param source the just-added/replaced source
    */
-  protected void alertFileNotChecked(Source source) {
-    if (source instanceof TextFileSource) {
-      TextFileSource textSource = (TextFileSource) source;
-      if (textSource.getFirstLineWithInvalidCharacters() > 0) {
-        String msg = getText("manage.source.invalidCharacters", new String[] {source.getName(),
-            source.getEncoding(), String.valueOf(textSource.getFirstLineWithInvalidCharacters())});
-        addActionWarning(msg);
-        response.setHeader("X-Warning-Message", msg);
-      }
-      if (textSource.isQuotedValuesUnreadable()) {
-        String msg = getText("manage.source.quotedValuesUnreadable", new String[] {source.getName()});
-        addActionWarning(msg);
-        response.setHeader("X-Warning-Message", msg);
+  protected void alertProblems(Source source) {
+    if (source instanceof TextFileSource textSource && textSource.getProblems() != null) {
+      List<SourceFileProblem> problems = textSource.getProblems().stream()
+        .filter(p -> p.getType() != SourceFileProblem.Type.EMPTY_LINES)
+        .collect(Collectors.toList());
+      // one problem fits in the warning with how to fix it, more are listed on the source page
+      if (problems.size() == 1) {
+        addActionWarning(getText("manage.source.problem.found",
+          new String[] {source.getName(), problemMessage(textSource, problems.get(0), "")}));
+      } else if (problems.size() > 1) {
+        addActionWarning(getText("manage.source.problems.found", new String[] {source.getName()}));
       }
     }
+  }
+
+  /**
+   * @param suffix the message's variant: empty for the problem and how to fix it, ".short" for the problem alone
+   */
+  private String problemMessage(TextFileSource source, SourceFileProblem problem, String suffix) {
+    return getText("manage.source.problem." + problem.getType().getKey() + suffix, new String[] {
+      String.valueOf(problem.getLines()), String.valueOf(problem.getFirstLine()), source.getEncoding()});
+  }
+
+  /**
+   * @return the problems found in the source's file when it was last analysed, in short, or null if it isn't a text
+   *         file or hasn't been analysed since the IPT started checking for them
+   */
+  public List<String> getProblemMessages() {
+    if (source instanceof TextFileSource textSource && textSource.getProblems() != null) {
+      return textSource.getProblems().stream().map(p -> problemMessage(textSource, p, ".short"))
+        .collect(Collectors.toList());
+    }
+    return null;
   }
 
   /**
@@ -512,7 +532,8 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   public boolean getLogExists() {
-    return dataDir.sourceLogFile(resource.getShortname(), source.getName()).exists();
+    return dataDir.sourceLogJsonFile(resource.getShortname(), source.getName()).exists()
+           || dataDir.sourceLogFile(resource.getShortname(), source.getName()).exists();
   }
 
   public int getPreviewSize() {
@@ -605,6 +626,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     return result;
   }
 
+  @StrutsParameter
   public void setAnalyze(String analyze) {
     if (StringUtils.trimToNull(analyze) != null) {
       this.analyze = true;

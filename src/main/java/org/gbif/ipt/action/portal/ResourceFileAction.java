@@ -275,7 +275,7 @@ public class ResourceFileAction extends PortalBaseAction {
   }
 
   public String sourceLog() {
-    if (resource == null) {
+    if (resource == null || source == null) {
       return NOT_FOUND;
     }
     data = dataDir.sourceLogFile(resource.getShortname(), source.getName());

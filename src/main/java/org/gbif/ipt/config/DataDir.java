@@ -512,6 +512,13 @@ public class DataDir {
   }
 
   /**
+   * @return the source log as JSON, shown on the source log page. The .log file has the same as text, to download
+   */
+  public File sourceLogJsonFile(String resourceName, String sourceName) {
+    return dataFile(RESOURCES_DIR + "/" + resourceName + "/sources/" + sourceName + ".log.json");
+  }
+
+  /**
    * Return a temporary directory with randomly-generated number added to name to uniquely identifier it.
    *
    * @return temporary directory

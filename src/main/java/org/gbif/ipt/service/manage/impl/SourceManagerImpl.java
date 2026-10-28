@@ -24,6 +24,8 @@ import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.RowIterable;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SourceFileProblem;
+import org.gbif.ipt.model.SourceLog;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlMetadata;
@@ -44,21 +46,14 @@ import org.gbif.utils.file.ClosableReportingIterator;
 import org.gbif.utils.file.csv.UnknownDelimitersException;
 import org.gbif.utils.file.tabular.TabularFileNormalizer;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.URI;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -86,7 +81,16 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class SourceManagerImpl extends BaseManager implements SourceManager {
+
+  private static final ObjectMapper SOURCE_LOG_MAPPER =
+    new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
+      // logs written by a later version can still be read
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
   private static class ColumnIterator implements ClosableIterator<Object> {
 
@@ -433,8 +437,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * (e.g. strip the tabs between columns when a comma is taken for the delimiter).
    * <p>
    * The file is also stored as uploaded if it can't be checked: if it has characters that aren't valid in the
-   * encoding, or quoted values that can't be read with the delimiter and quote. Those are set on the source for
-   * SourceAction to warn about, so the publisher can correct the source's settings or upload a fixed file.
+   * encoding, or quoted values that can't be read with the delimiter and quote. Analysing the source reports those
+   * (see {@link TextFileChecker}), for SourceAction to warn about, so the publisher can correct the source's settings
+   * or upload a fixed file.
    *
    * @param uploadedFile file as uploaded by the publisher, untouched
    * @param destination  final location of the source file inside the resource's data directory
@@ -461,10 +466,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     try {
       physicalLinesBefore = countPhysicalLines(uploadedFile, charset);
     } catch (CharacterCodingException e) {
-      long line = lineOfFirstUndecodableBytes(uploadedFile, charset);
-      LOG.warn("Line {} of source file {} has characters that are not valid {}, storing it as uploaded", line,
-               src.getName(), charset.name());
-      src.setFirstLineWithInvalidCharacters(line);
+      // analysing the source reports the lines
+      LOG.warn("Source file {} has characters that are not valid {}, storing it as uploaded", src.getName(),
+               charset.name());
       FileUtils.copyFile(uploadedFile, destination);
       return;
     }
@@ -478,7 +482,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       LOG.warn("Source file {} can't be read with columns separated by {} and values quoted with {}, storing it as "
                + "uploaded", src.getName(), describeDelimiter(delimiter), quoteChar, e);
       FileUtils.deleteQuietly(normalized);
-      src.setQuotedValuesUnreadable(true);
       FileUtils.copyFile(uploadedFile, destination);
       return;
     }
@@ -512,42 +515,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       }
     }
     return count;
-  }
-
-  /**
-   * Finds the line the first bytes that don't decode in the given charset are on. BufferedReader decodes ahead of the
-   * line it returns, so the line it fails on isn't the line the bytes are on. Lines end at \n, \r or \r\n, as they do
-   * for BufferedReader.
-   */
-  static long lineOfFirstUndecodableBytes(File file, Charset charset) throws IOException {
-    CharsetDecoder decoder = charset.newDecoder();
-    ByteBuffer bytes = ByteBuffer.allocate(8192);
-    CharBuffer chars = CharBuffer.allocate(8192);
-    long line = 1;
-    char previous = 0;
-    boolean endOfInput = false;
-    try (ReadableByteChannel channel = Files.newByteChannel(file.toPath())) {
-      while (true) {
-        if (!endOfInput && channel.read(bytes) == -1) {
-          endOfInput = true;
-        }
-        bytes.flip();
-        CoderResult result = decoder.decode(bytes, chars, endOfInput);
-        chars.flip();
-        while (chars.hasRemaining()) {
-          char c = chars.get();
-          if (c == '\r' || (c == '\n' && previous != '\r')) {
-            line++;
-          }
-          previous = c;
-        }
-        chars.clear();
-        bytes.compact();
-        if (result.isError() || (endOfInput && result.isUnderflow())) {
-          return line;
-        }
-      }
-    }
   }
 
   @Override
@@ -801,34 +768,20 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private String analyze(UrlSource src) {
-    File logFile = dataDir.sourceLogFile(src.getResource().getShortname(), src.getName());
+    Set<Integer> emptyLines;
     try {
-      FileUtils.deleteQuietly(logFile);
-
-      Set<Integer> emptyLines;
-      try {
-        emptyLines = src.analyze();
-      } catch (IOException e) {
-        return e.getMessage();
-      }
-
-      try (BufferedWriter logWriter = Files.newBufferedWriter(logFile.toPath(), StandardCharsets.UTF_8)) {
-        logWriter.write(
-            "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
-        if (!emptyLines.isEmpty()) {
-          for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
-            logWriter.write("Line: " + i + " [EMPTY LINE]\n");
-          }
-        } else {
-          logWriter.write("No rows were skipped in this source");
-        }
-
-        logWriter.flush();
-      }
+      emptyLines = src.analyze();
     } catch (IOException e) {
-      LOG.warn("Can't write source log file {}", logFile.getAbsolutePath(), e);
+      return e.getMessage();
     }
 
+    SourceLog log = newLog(src, src.getRows());
+    log.getProblems().addAll(emptyLinesProblems(emptyLines));
+    try {
+      writeLog(src, log);
+    } catch (IOException e) {
+      LOG.warn("Can't write the log of source {}", src.getName(), e);
+    }
     return null;
   }
 
@@ -884,37 +837,177 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   private String analyze(FileSource src) {
-    String problem = null;
-    File logFile = dataDir.sourceLogFile(src.getResource().getShortname(), src.getName());
-    try {
-      FileUtils.deleteQuietly(logFile);
-
-      Set<Integer> emptyLines;
-      try {
-        emptyLines = src.analyze();
-      } catch (IOException e) {
-        return e.getMessage();
-      }
-
-      try (BufferedWriter logWriter = Files.newBufferedWriter(logFile.toPath(), StandardCharsets.UTF_8)) {
-        logWriter.write(
-            "Log for source name:" + src.getName() + " from resource: " + src.getResource().getShortname() + "\n");
-        if (!emptyLines.isEmpty()) {
-          for (Integer i : emptyLines.stream().sorted().collect(Collectors.toList())) {
-            logWriter.write("Line: " + i + " [EMPTY LINE]\n");
-          }
-        } else {
-          logWriter.write("No rows were skipped in this source");
-        }
-
-        logWriter.flush();
-      }
-    } catch (IOException e) {
-      LOG.warn("Can't write source log file {}", logFile.getAbsolutePath(), e);
-      problem = e.getMessage();
+    // what was found before doesn't hold for the file as it's read now
+    deleteLog(src.getResource().getShortname(), src.getName());
+    if (src instanceof TextFileSource textSource) {
+      textSource.setProblems(null);
     }
 
-    return problem;
+    Set<Integer> emptyLines;
+    try {
+      emptyLines = src.analyze();
+    } catch (IOException e) {
+      return e.getMessage();
+    }
+
+    SourceLog log = newLog(src, src.getRows());
+    if (src instanceof TextFileSource textSource) {
+      TextFileChecker.Result result;
+      try {
+        result = check(textSource);
+      } catch (IOException e) {
+        LOG.warn("Can't check source file {}", src.getName(), e);
+        return e.getMessage();
+      }
+      textSource.setProblems(result.getSummary());
+      String delimiter = StringUtils.defaultString(textSource.getFieldsTerminatedBy());
+      log.setEncoding(textSource.getEncoding());
+      log.setDelimiter(delimiter.length() == 1 ? describeDelimiter(delimiter.charAt(0)) : "'" + delimiter + "'");
+      log.setQuote(textSource.getFieldsEnclosedBy());
+      log.setLinesWithEmbeddedBreaksRemoved(textSource.getLinesWithEmbeddedBreaksRemoved());
+      log.getProblems().addAll(result.getProblems());
+    } else {
+      log.getProblems().addAll(emptyLinesProblems(emptyLines));
+    }
+
+    try {
+      writeLog(src, log);
+    } catch (IOException e) {
+      LOG.warn("Can't write the log of source {}", src.getName(), e);
+      return e.getMessage();
+    }
+    return null;
+  }
+
+  private TextFileChecker.Result check(TextFileSource src) throws IOException {
+    Charset charset = StringUtils.isNotBlank(src.getEncoding())
+      ? Charset.forName(src.getEncoding()) : StandardCharsets.UTF_8;
+    return new TextFileChecker(src.getFieldsTerminatedBy(), src.getFieldQuoteChar(), src.getIgnoreHeaderLines())
+      .check(src.getFile(), charset);
+  }
+
+  private static SourceLog newLog(Source src, int rows) {
+    SourceLog log = new SourceLog();
+    log.setSource(src.getName());
+    log.setAnalysed(new Date());
+    log.setRows(rows);
+    log.setColumns(src.getColumns());
+    return log;
+  }
+
+  /**
+   * @param emptyLines the empty lines found by the source's own reader, for sources that aren't checked line by line
+   */
+  private static List<SourceLog.Problem> emptyLinesProblems(Set<Integer> emptyLines) {
+    List<SourceLog.Problem> problems = new ArrayList<>();
+    if (!emptyLines.isEmpty()) {
+      List<Integer> sorted = emptyLines.stream().sorted().collect(Collectors.toList());
+      List<SourceLog.Example> examples = sorted.stream().limit(TextFileChecker.MAX_EXAMPLES)
+        .map(line -> new SourceLog.Example(line, null, null, null, null, null))
+        .collect(Collectors.toList());
+      problems.add(new SourceLog.Problem(SourceFileProblem.Type.EMPTY_LINES, sorted.size(), sorted.get(0), examples));
+    }
+    return problems;
+  }
+
+  /**
+   * Writes the source's log as JSON for the source log page, and as text to download.
+   */
+  private void writeLog(Source src, SourceLog log) throws IOException {
+    String resourceName = src.getResource().getShortname();
+    deleteLog(resourceName, src.getName());
+    SOURCE_LOG_MAPPER.writeValue(dataDir.sourceLogJsonFile(resourceName, src.getName()), log);
+    File textFile = dataDir.sourceLogFile(resourceName, src.getName());
+    try (BufferedWriter writer = Files.newBufferedWriter(textFile.toPath(), StandardCharsets.UTF_8)) {
+      writeLogText(src, log, writer);
+    }
+  }
+
+  private void deleteLog(String resourceName, String sourceName) {
+    FileUtils.deleteQuietly(dataDir.sourceLogJsonFile(resourceName, sourceName));
+    FileUtils.deleteQuietly(dataDir.sourceLogFile(resourceName, sourceName));
+  }
+
+  static void writeLogText(Source src, SourceLog log, Writer writer) throws IOException {
+    writer.write("Log for source " + src.getName() + " of resource " + src.getResource().getShortname() + "\n");
+    if (log.getEncoding() != null) {
+      writer.write("Read as " + log.getEncoding() + ", with columns separated by " + log.getDelimiter()
+                   + (log.getQuote() == null ? " and values not quoted" : " and values quoted with " + log.getQuote())
+                   + "\n");
+    }
+    writer.write(log.getRows() + " rows, " + log.getColumns() + " columns\n");
+
+    if (log.getLinesWithEmbeddedBreaksRemoved() > 0) {
+      writer.write("\nFixed when the file was uploaded: " + log.getLinesWithEmbeddedBreaksRemoved()
+                   + " line break(s) inside quoted values were removed\n");
+    }
+
+    if (log.getProblems().isEmpty()) {
+      writer.write("\nNo problems found\n");
+    }
+    for (SourceLog.Problem problem : log.getProblems()) {
+      writer.write("\n" + describeProblem(problem.getType(), log) + ": " + problem.getLines() + " line(s)\n");
+      for (SourceLog.Example example : problem.getExamples()) {
+        writer.write("  " + describeExample(example, log) + "\n");
+      }
+      if (problem.getLines() > problem.getExamples().size()) {
+        writer.write("  ... and " + (problem.getLines() - problem.getExamples().size()) + " more\n");
+      }
+    }
+  }
+
+  private static String describeProblem(SourceFileProblem.Type type, SourceLog log) {
+    switch (type) {
+      case INVALID_CHARACTERS:
+        return "Characters that aren't valid " + log.getEncoding() + ", shown as \uFFFD";
+      case COLUMN_COUNT:
+        return "Rows with a different number of columns than the first line";
+      case UNREADABLE_QUOTES:
+        return "Quoted values that can't be read";
+      case DAMAGED_VALUES:
+        return "Values that look damaged by an encoding problem (such as \u00C3\u00B8 for \u00F8, or ? or \uFFFD for "
+               + "a letter)";
+      case EMPTY_LINES:
+        return "Empty lines, which are skipped";
+      default:
+        return type.name();
+    }
+  }
+
+  /**
+   * @return the example as a line of the text log, e.g. "Line 12, column locality: Ã¸stfold"
+   */
+  static String describeExample(SourceLog.Example example, SourceLog log) {
+    StringBuilder sb = new StringBuilder("Line ").append(example.getLine());
+    if (example.getLineColumns() != null) {
+      return sb.append(": ").append(example.getLineColumns()).append(" columns, the first line has ")
+        .append(log.getColumns()).toString();
+    }
+    if (example.getColumnNumber() != null) {
+      sb.append(", column ")
+        .append(example.getColumn() != null ? example.getColumn() : "#" + example.getColumnNumber()).append(": ");
+      if (example.getReason() == SourceLog.Reason.QUOTE_NOT_CLOSED) {
+        sb.append("the quoted value isn't closed on the line: ");
+      } else if (example.getReason() == SourceLog.Reason.TEXT_AFTER_QUOTE) {
+        sb.append("text after the closing quote: ");
+      }
+      sb.append(example.getValue());
+    }
+    return sb.toString();
+  }
+
+  @Override
+  public SourceLog readLog(Source source) {
+    File jsonFile = dataDir.sourceLogJsonFile(source.getResource().getShortname(), source.getName());
+    if (jsonFile == null || !jsonFile.exists()) {
+      return null;
+    }
+    try {
+      return SOURCE_LOG_MAPPER.readValue(jsonFile, SourceLog.class);
+    } catch (IOException e) {
+      LOG.warn("Can't read the log of source {}", source.getName(), e);
+      return null;
+    }
   }
 
   /**
@@ -1004,6 +1097,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
 
     resource.deleteSource(source);
+    deleteLog(resource.getShortname(), source.getName());
 
     if (source instanceof UrlSource us) {
       // also delete the local data file

@@ -487,6 +487,7 @@ public class GenerateDwcaEventTest extends IptBaseTest {
     when(mockDataDir.sourceFile(any(Resource.class), any(FileSource.class))).thenReturn(copiedEvent);
     // mock log file
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(new File(resourceDir, "log.txt"));
+    when(mockDataDir.sourceLogJsonFile(anyString(), anyString())).thenReturn(new File(resourceDir, "log.json"));
     // add event fileSource to test Resource
     FileSource eventFileSource = mockSourceManager.add(resource, eventSourceFile, "event.txt");
     resource.getMappings().get(0).setSource(eventFileSource);
