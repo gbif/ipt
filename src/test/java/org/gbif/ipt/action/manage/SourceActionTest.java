@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -105,10 +106,20 @@ public class SourceActionTest extends IptBaseTest {
     assertEquals(Collections.singletonList("manage.source.problems.found [occurrence]"),
                  new ArrayList<>(action.getActionWarnings()));
 
-    // all of them on the source page, in short
+    // on the source page in short, with the empty lines as a note
     action.setSource(src);
     assertEquals(Arrays.asList("manage.source.problem.invalidCharacters.short [3, 188715, UTF-8]",
-                               "manage.source.problem.unreadableQuotes.short [1, 12, UTF-8]",
-                               "manage.source.problem.emptyLines.short [2, 5, UTF-8]"), action.getProblemMessages());
+                               "manage.source.problem.unreadableQuotes.short [1, 12, UTF-8]"),
+                 action.getProblemMessages());
+    assertEquals("manage.source.problem.emptyLines [2, 5, UTF-8]", action.getEmptyLinesMessage());
+
+    // only empty lines: no problems
+    src.setProblems(Collections.singletonList(new SourceFileProblem(Type.EMPTY_LINES, 2, 5)));
+    assertTrue(action.getProblemMessages().isEmpty());
+    assertEquals("manage.source.problem.emptyLines [2, 5, UTF-8]", action.getEmptyLinesMessage());
+
+    // none
+    src.setProblems(new ArrayList<>());
+    assertNull(action.getEmptyLinesMessage());
   }
 }

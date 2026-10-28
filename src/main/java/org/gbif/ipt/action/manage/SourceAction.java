@@ -475,13 +475,30 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   /**
-   * @return the problems found in the source's file when it was last analysed, in short, or null if it isn't a text
-   *         file or hasn't been analysed since the IPT started checking for them
+   * @return the problems found in the source's file when it was last analysed, in short, other than empty lines (see
+   *         {@link #getEmptyLinesMessage()}), or null if it isn't a text file or hasn't been analysed since the IPT
+   *         started checking for them
    */
   public List<String> getProblemMessages() {
     if (source instanceof TextFileSource textSource && textSource.getProblems() != null) {
-      return textSource.getProblems().stream().map(p -> problemMessage(textSource, p, ".short"))
+      return textSource.getProblems().stream()
+        .filter(p -> p.getType() != SourceFileProblem.Type.EMPTY_LINES)
+        .map(p -> problemMessage(textSource, p, ".short"))
         .collect(Collectors.toList());
+    }
+    return null;
+  }
+
+  /**
+   * @return the empty lines found in the source's file when it was last analysed, or null if none. They're skipped,
+   *         so they're shown as a note rather than a problem
+   */
+  public String getEmptyLinesMessage() {
+    if (source instanceof TextFileSource textSource && textSource.getProblems() != null) {
+      return textSource.getProblems().stream()
+        .filter(p -> p.getType() == SourceFileProblem.Type.EMPTY_LINES)
+        .map(p -> problemMessage(textSource, p, ""))
+        .findFirst().orElse(null);
     }
     return null;
   }

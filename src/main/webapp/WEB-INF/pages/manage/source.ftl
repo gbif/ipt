@@ -263,6 +263,9 @@
                                             <#if source.linesWithEmbeddedBreaksRemoved gt 0>
                                                 <div class="mb-1"><@s.text name="manage.source.fixed.lineBreaksRemoved"><@s.param>${source.linesWithEmbeddedBreaksRemoved?c}</@s.param></@s.text></div>
                                             </#if>
+                                            <#if emptyLinesMessage??>
+                                                <div class="mb-1">${emptyLinesMessage}</div>
+                                            </#if>
                                             <a href="${baseURL}/manage/sourcelog.do?r=${resource.shortname}&s=${source.name?url}"><@s.text name="manage.source.problems.seeLog"/></a>
                                         </div>
                                     <#else>
@@ -272,6 +275,7 @@
                                             <#if source.linesWithEmbeddedBreaksRemoved gt 0>
                                                 <@s.text name="manage.source.fixed.lineBreaksRemoved"><@s.param>${source.linesWithEmbeddedBreaksRemoved?c}</@s.param></@s.text>
                                             </#if>
+                                            ${emptyLinesMessage!}
                                         </div>
                                     </#if>
                                 </div>
