@@ -20,6 +20,7 @@ import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceFileProblem;
 import org.gbif.ipt.model.SourceFileProblem.Type;
+import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -30,11 +31,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -121,5 +124,36 @@ public class SourceActionTest extends IptBaseTest {
     // none
     src.setProblems(new ArrayList<>());
     assertNull(action.getEmptyLinesMessage());
+  }
+
+  @Test
+  public void testReadingSettings() {
+    TextFileSource src = new TextFileSource();
+    src.setEncoding("UTF-8");
+    src.setIgnoreHeaderLines(1);
+    src.setFieldsTerminatedBy("\t");
+    src.setFieldsEnclosedBy(null);
+    List<Object> original = SourceAction.readingSettings(src);
+
+    // no quote sent back by the form as an empty value
+    src.setFieldsEnclosedByEscaped("");
+    assertEquals(original, SourceAction.readingSettings(src));
+    // nor do settings that don't decide how the file is read
+    src.setMultiValueFieldsDelimitedBy("|");
+    assertEquals(original, SourceAction.readingSettings(src));
+
+    src.setEncoding("windows-1252");
+    assertNotEquals(original, SourceAction.readingSettings(src));
+    src.setEncoding("UTF-8");
+    src.setIgnoreHeaderLines(0);
+    assertNotEquals(original, SourceAction.readingSettings(src));
+    src.setIgnoreHeaderLines(1);
+    src.setFieldsTerminatedByEscaped(",");
+    assertNotEquals(original, SourceAction.readingSettings(src));
+    src.setFieldsTerminatedByEscaped("\\t");
+    src.setFieldsEnclosedByEscaped("\"");
+    assertNotEquals(original, SourceAction.readingSettings(src));
+
+    assertNull(SourceAction.readingSettings(new SqlSource()));
   }
 }

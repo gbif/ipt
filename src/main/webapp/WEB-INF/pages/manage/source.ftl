@@ -67,7 +67,20 @@
                 }
             }
 
-            $('#' + inputName).val(inputValue)
+            $('#' + inputName).val(inputValue).trigger('change');
+        });
+
+        // changing how a text file is read analyses it again on save, which reads the whole file
+        var readingSettings = $("#source\\.encoding, #source\\.ignoreHeaderLines, "
+            + "#fileSource\\.fieldsTerminatedByEscaped, #fileSource\\.fieldsEnclosedByEscaped");
+        readingSettings.each(function () {
+            $(this).data("saved", $(this).val());
+        });
+        readingSettings.on("input change", function () {
+            var changed = readingSettings.filter(function () {
+                return $(this).val() !== $(this).data("saved");
+            }).length > 0;
+            $("#readingSettingsChanged").toggle(changed);
         });
 
         $("#rdbms").select2({
@@ -370,6 +383,13 @@
                                 <div class="col-lg-6">
                                     <@input name="fileSource.fieldsEnclosedByEscaped" value=fileSource.fieldsEnclosedByEscaped! help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
                                 </div>
+                                <#if id?has_content>
+                                    <div class="col-12" id="readingSettingsChanged" style="display: none;">
+                                        <div class="callout callout-info text-smaller my-0">
+                                            <@s.text name="manage.source.readingSettings.help"/>
+                                        </div>
+                                    </div>
+                                </#if>
                                 <div class="col-lg-6">
                                     <@dateFormat/>
                                 </div>

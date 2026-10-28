@@ -43,6 +43,7 @@ import java.io.Serial;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +89,8 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   // file upload
   private List<UploadedFile> uploadedFiles = new ArrayList<>();
   private boolean analyze = false;
+  // how a text file source was read before the form changed it, see #readingSettings
+  private List<Object> originalReadingSettings;
   // preview
   @Getter
   private List<String> columns;
@@ -586,6 +589,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
       } else {
         // store the original number of columns, in case they change, the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
+        originalReadingSettings = readingSettings(source);
       }
 
       // we don't display password after saving, store password internally
@@ -620,12 +624,15 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
 
     String result = INPUT;
     if (id != null && source != null) {
-      if (this.analyze || !source.isReadable()) {
+      boolean readingSettingsChanged = readingSettingsChanged();
+      if (this.analyze || !source.isReadable() || readingSettingsChanged) {
         problem = sourceManager.analyze(source);
         result = "analyze";
         if (problem == null) {
           if (source instanceof UrlSource) {
             addActionMessage(getText("manage.source.analyze.inProcess"));
+          } else if (readingSettingsChanged && !this.analyze) {
+            addActionMessage(getText("manage.source.analyzed.settingsChanged"));
           } else {
             addActionMessage(getText("manage.source.analyzed"));
           }
@@ -641,6 +648,28 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     saveResource();
 
     return result;
+  }
+
+  /**
+   * @return the settings that decide how a text file source is read into rows and columns, or null for other sources.
+   *         Empty values are null, as the form sends no quote as an empty value
+   */
+  static List<Object> readingSettings(Source source) {
+    if (source instanceof TextFileSource textSource) {
+      return Arrays.asList(StringUtils.defaultIfEmpty(textSource.getEncoding(), null),
+                           textSource.getIgnoreHeaderLines(),
+                           StringUtils.defaultIfEmpty(textSource.getFieldsTerminatedBy(), null),
+                           StringUtils.defaultIfEmpty(textSource.getFieldsEnclosedBy(), null));
+    }
+    return null;
+  }
+
+  /**
+   * @return true if the form changed how a text file source is read, so what was found when it was last analysed no
+   *         longer holds
+   */
+  protected boolean readingSettingsChanged() {
+    return originalReadingSettings != null && !originalReadingSettings.equals(readingSettings(source));
   }
 
   @StrutsParameter
