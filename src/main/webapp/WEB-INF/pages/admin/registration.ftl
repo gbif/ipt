@@ -92,9 +92,9 @@
 
                     var installationsUrl = "https://api.gbif.org/v1/organization/" + organisationKey + "/installation";
 
-                    // for test env (UAT)
-                    if ("${cfg.registryUrl!}".indexOf("gbif-uat") !== -1) {
-                        installationsUrl = "https://api.gbif-uat.org/v1/organization/" + organisationKey + "/installation";
+                    // for test env
+                    if ("${cfg.registryUrl!}".indexOf("gbif-test") !== -1) {
+                        installationsUrl = "https://api.gbif-test.org/v1/organization/" + organisationKey + "/installation";
                     }
 
                     $.getJSON(installationsUrl, function (data) {
