@@ -21,6 +21,7 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -48,6 +49,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -343,6 +345,32 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     when(appConfig.getDataDir()).thenReturn(dataDir);
     existingDOI = manager.getLastPublishedVersionExistingDoi(p);
     assertNull(existingDOI);
+  }
+
+  @Test
+  public void testDwcDpRegistryParametersUseEmlDescription() throws ParserConfigurationException, SAXException {
+    // DwC-DP resource created in the IPT: description only in the EML, none in the data package metadata
+    Resource resource = new Resource();
+    resource.setShortname("dwc-dp-res");
+    resource.setCoreType(Constants.DWC_DP);
+    resource.setDataPackageIdentifier("http://rs.gbif.org/data-packages/dwc-dp");
+    resource.getEml().setDescription("Description from the EML");
+    User creator = new User();
+    creator.setEmail("creator@gbif.org");
+    creator.setFirstname("Creator");
+    resource.setCreator(creator);
+
+    RegistryManagerImpl manager =
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider);
+
+    List<NameValuePair> params = manager.buildRegistryParametersForDataPackage(resource);
+    String description = params.stream()
+      .filter(p -> "description".equals(p.getName()))
+      .map(NameValuePair::getValue)
+      .findFirst()
+      .orElse(null);
+    assertEquals("Description from the EML", description);
   }
 
   @Test

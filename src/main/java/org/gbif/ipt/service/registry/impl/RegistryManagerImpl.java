@@ -201,7 +201,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     return data;
   }
 
-  private List<NameValuePair> buildRegistryParametersForDataPackage(Resource resource) {
+  protected List<NameValuePair> buildRegistryParametersForDataPackage(Resource resource) {
     if (COL_DP.equals(resource.getCoreType())) {
       return buildRegistryParametersForColDP(resource);
     } else if (CAMTRAP_DP.equals(resource.getCoreType())) {
@@ -275,12 +275,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   private List<NameValuePair> buildRegistryParametersForDwcDP(Resource resource) {
     List<NameValuePair> data = new ArrayList<>();
 
-    DataPackageMetadata metadata = resource.getDataPackageMetadata();
-
     data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
         : StringUtils.trimToEmpty(resource.getShortname())));
 
-    data.add(new BasicNameValuePair("description", metadata.getDescription()));
+    // DwC-DP metadata lives in EML, the data package metadata has no description
+    data.add(new BasicNameValuePair("description", String.join(System.lineSeparator(), resource.getEml().getDescription())));
 
     // Use resource creator as a primary contact. May use one of the contributors in the future.
     data.add(new BasicNameValuePair("primaryContactType", CONTACT_TYPE_TECHNICAL));
