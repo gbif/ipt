@@ -22,6 +22,7 @@ import org.gbif.ipt.model.SourceFileProblem;
 import org.gbif.ipt.model.SourceFileProblem.Type;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
@@ -124,6 +125,32 @@ public class SourceActionTest extends IptBaseTest {
     // none
     src.setProblems(new ArrayList<>());
     assertNull(action.getEmptyLinesMessage());
+  }
+
+  @Test
+  public void testUrlSourceProblemMessages() {
+    SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
+    when(textProvider.getText(any(), anyString(), any(), any(Object[].class)))
+      .thenAnswer(i -> i.getArgument(1) + " " + Arrays.toString((Object[]) i.getArgument(3)));
+    action = new SourceAction(textProvider, mock(AppConfig.class), mock(RegistrationManager.class),
+      mock(ResourceManager.class), mock(SourceManager.class), mock(JdbcSupport.class), mock(DataDir.class));
+
+    UrlSource src = new UrlSource();
+    src.setEncoding("UTF-8");
+    action.setSource(src);
+    // not downloaded and checked yet
+    assertNull(action.getProblemMessages());
+
+    src.setProblems(Arrays.asList(new SourceFileProblem(Type.COLUMN_COUNT, 2, 7),
+                                  new SourceFileProblem(Type.EMPTY_LINES, 1, 9)));
+    assertEquals(Collections.singletonList("manage.source.problem.columnCount.short [2, 7, UTF-8]"),
+                 action.getProblemMessages());
+    // fixed in the file at the URL, but empty lines need no fixing
+    action.alertProblems(src);
+    assertEquals(Collections.singletonList("manage.source.problem.found [null, "
+                   + "manage.source.problem.url.columnCount [2, 7, UTF-8]]"),
+                 new ArrayList<>(action.getActionWarnings()));
+    assertEquals("manage.source.problem.emptyLines [1, 9, UTF-8]", action.getEmptyLinesMessage());
   }
 
   @Test

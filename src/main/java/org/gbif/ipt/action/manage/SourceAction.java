@@ -455,14 +455,15 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
    * @param source the just-added/replaced source
    */
   protected void alertProblems(Source source) {
-    if (source instanceof TextFileSource textSource && textSource.getProblems() != null) {
-      List<SourceFileProblem> problems = textSource.getProblems().stream()
+    List<SourceFileProblem> found = problems(source);
+    if (found != null) {
+      List<SourceFileProblem> problems = found.stream()
         .filter(p -> p.getType() != SourceFileProblem.Type.EMPTY_LINES)
         .collect(Collectors.toList());
       // one problem fits in the warning with how to fix it, more are listed on the source page
       if (problems.size() == 1) {
         addActionWarning(getText("manage.source.problem.found",
-          new String[] {source.getName(), problemMessage(textSource, problems.get(0), "")}));
+          new String[] {source.getName(), problemMessage(source, problems.get(0), false)}));
       } else if (problems.size() > 1) {
         addActionWarning(getText("manage.source.problems.found", new String[] {source.getName()}));
       }
@@ -470,23 +471,40 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   /**
-   * @param suffix the message's variant: empty for the problem and how to fix it, ".short" for the problem alone
+   * @return the problems found in a text file or URL source's file when it was last analysed, or null if it's another
+   *         kind of source or hasn't been analysed since the IPT started checking for them
    */
-  private String problemMessage(TextFileSource source, SourceFileProblem problem, String suffix) {
-    return getText("manage.source.problem." + problem.getType().getKey() + suffix, new String[] {
+  static List<SourceFileProblem> problems(Source source) {
+    if (source instanceof TextFileSource textSource) {
+      return textSource.getProblems();
+    } else if (source instanceof UrlSource urlSource) {
+      return urlSource.getProblems();
+    }
+    return null;
+  }
+
+  /**
+   * @param brief true for the problem alone, false for the problem and how to fix it
+   */
+  private String problemMessage(Source source, SourceFileProblem problem, boolean brief) {
+    String key = brief
+      ? "manage.source.problem." + problem.getType().getKey() + ".short"
+      : SourceFileProblem.messageKey(problem.getType(), source);
+    return getText(key, new String[] {
       String.valueOf(problem.getLines()), String.valueOf(problem.getFirstLine()), source.getEncoding()});
   }
 
   /**
    * @return the problems found in the source's file when it was last analysed, in short, other than empty lines (see
-   *         {@link #getEmptyLinesMessage()}), or null if it isn't a text file or hasn't been analysed since the IPT
-   *         started checking for them
+   *         {@link #getEmptyLinesMessage()}), or null if it isn't a text file or URL source or hasn't been analysed
+   *         since the IPT started checking for them
    */
   public List<String> getProblemMessages() {
-    if (source instanceof TextFileSource textSource && textSource.getProblems() != null) {
-      return textSource.getProblems().stream()
+    List<SourceFileProblem> found = problems(source);
+    if (found != null) {
+      return found.stream()
         .filter(p -> p.getType() != SourceFileProblem.Type.EMPTY_LINES)
-        .map(p -> problemMessage(textSource, p, ".short"))
+        .map(p -> problemMessage(source, p, true))
         .collect(Collectors.toList());
     }
     return null;
@@ -497,10 +515,11 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
    *         so they're shown as a note rather than a problem
    */
   public String getEmptyLinesMessage() {
-    if (source instanceof TextFileSource textSource && textSource.getProblems() != null) {
-      return textSource.getProblems().stream()
+    List<SourceFileProblem> found = problems(source);
+    if (found != null) {
+      return found.stream()
         .filter(p -> p.getType() == SourceFileProblem.Type.EMPTY_LINES)
-        .map(p -> problemMessage(textSource, p, ""))
+        .map(p -> problemMessage(source, p, false))
         .findFirst().orElse(null);
     }
     return null;
@@ -631,6 +650,10 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         if (problem == null) {
           if (source instanceof UrlSource) {
             addActionMessage(getText("manage.source.analyze.inProcess"));
+          } else if (source instanceof SqlSource) {
+            // only the statement is tried, so there's no source log
+            addActionMessage(getText("manage.source.analyzed.sql",
+              new String[] {String.valueOf(source.getColumns())}));
           } else if (readingSettingsChanged && !this.analyze) {
             addActionMessage(getText("manage.source.analyzed.settingsChanged"));
           } else {

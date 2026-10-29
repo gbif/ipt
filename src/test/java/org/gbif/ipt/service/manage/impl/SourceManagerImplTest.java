@@ -24,16 +24,23 @@ import org.gbif.ipt.model.SourceFileProblem.Type;
 import org.gbif.ipt.model.SourceLog;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
+import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.ImportException;
 import org.gbif.ipt.service.InvalidFilenameException;
+import org.gbif.ipt.service.file.DataFile;
 import org.gbif.ipt.service.file.FileStoreManager;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.function.Consumer;
+
+import com.sun.net.httpserver.HttpServer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -61,18 +69,21 @@ public class SourceManagerImplTest extends IptBaseTest {
   private SqlSource src2;
   private File logFile;
   private File logJsonFile;
+  private DataDir mockDataDir;
+  private FileStoreManager mockFileStoreManager;
 
   @BeforeEach
   public void setup() throws IOException {
     File ddFile = File.createTempFile("distribution", ".txt");
     logFile = File.createTempFile("distribution", "log");
-    DataDir mockDataDir = mock(DataDir.class);
+    mockDataDir = mock(DataDir.class);
     when(mockDataDir.sourceFile(any(Resource.class), any(FileSource.class))).thenReturn(ddFile);
     when(mockDataDir.sourceLogFile(anyString(), anyString())).thenReturn(logFile);
     logJsonFile = File.createTempFile("distribution", "log.json");
     when(mockDataDir.sourceLogJsonFile(anyString(), anyString())).thenReturn(logJsonFile);
     // create instance of SourceManager, using mocked AppConfig and DataDir
-    manager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir, mock(FileStoreManager.class));
+    mockFileStoreManager = mock(FileStoreManager.class);
+    manager = new SourceManagerImpl(mock(AppConfig.class), mockDataDir, mockFileStoreManager);
     // create test Resource
     resource = new Resource();
     resource.setShortname("testResource");
@@ -250,6 +261,140 @@ public class SourceManagerImplTest extends IptBaseTest {
     assertFalse(logFile.exists());
     assertFalse(logJsonFile.exists());
     assertNull(manager.readLog(src));
+  }
+
+  @Test
+  public void testUrlSourceIsCheckedWhenDownloaded(@TempDir File tmpDir) throws Exception {
+    File downloadDir = downloadsOnce(tmpDir,
+      "id\tlocality\tremarks\n1\tOslo\t\"near the road, in grass\"\n2\tDragÃ¸r\tin grass\n"
+      + "3\tMalmö\t\"first\" and more\n");
+    HttpServer server = startServer();
+    try {
+      UrlSource src = manager.add(resource, url(server), null);
+
+      assertEquals("occurrence", src.getName());
+      assertFalse(src.isProcessing());
+      assertTrue(src.isReadable());
+      assertEquals(3, src.getRows());
+      assertEquals(2, src.getProblems().size());
+      assertEquals(Type.UNREADABLE_QUOTES, src.getProblems().get(0).getType());
+      assertEquals(4, src.getProblems().get(0).getFirstLine());
+      assertEquals(Type.DAMAGED_VALUES, src.getProblems().get(1).getType());
+      assertEquals(3, src.getProblems().get(1).getFirstLine());
+
+      SourceLog log = manager.readLog(src);
+      assertEquals("tab", log.getDelimiter());
+      assertEquals("\"", log.getQuote());
+      assertEquals("DragÃ¸r", log.getProblems().get(1).getExamples().get(0).getValue());
+      assertTrue(readLog().contains("Line 3, column locality: DragÃ¸r"));
+
+      // analysed where it was downloaded, and not kept: the source is read from the URL
+      assertNull(src.getFile());
+      assertFalse(downloadDir.exists());
+    } finally {
+      server.stop(0);
+    }
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void testUrlSourceDownloadFails(@TempDir File tmpDir) throws Exception {
+    downloadsOnce(tmpDir, "id\tlocality\n1\tDragÃ¸r\n");
+    HttpServer server = startServer();
+    try {
+      UrlSource src = manager.add(resource, url(server), null);
+      assertEquals(1, src.getProblems().size());
+      assertTrue(logJsonFile.exists());
+
+      doAnswer(i -> {
+        ((Consumer<Throwable>) i.getArgument(3)).accept(new IOException("Not found"));
+        return null;
+      }).when(mockFileStoreManager).downloadDataFile(anyString(), anyString(), any(), any());
+      manager.analyze(src);
+      // what was found in the earlier download doesn't hold anymore
+      assertFalse(src.isProcessing());
+      assertFalse(src.isReadable());
+      assertNull(src.getProblems());
+      assertFalse(logJsonFile.exists());
+    } finally {
+      server.stop(0);
+    }
+  }
+
+  @Test
+  public void testOldCopiesOfUrlSourcesAreDeleted(@TempDir File tmpDir) throws Exception {
+    File sources = new File(tmpDir, "sources");
+    assertTrue(sources.mkdir());
+    when(mockDataDir.sourceFile(any(Resource.class), anyString()))
+      .thenAnswer(i -> new File(sources, (String) i.getArgument(1)));
+    // copies kept by earlier versions, with the paths of wherever the data directory was then
+    File copy = new File(sources, "occurrence.txt");
+    java.nio.file.Files.write(copy.toPath(), "id\n1\n".getBytes(StandardCharsets.UTF_8));
+    File taxon = new File(sources, "taxon.txt");
+    java.nio.file.Files.write(taxon.toPath(), "id\n1\n".getBytes(StandardCharsets.UTF_8));
+    src1.setFile(taxon);
+    resource.addSource(src1, false);
+
+    downloadsOnce(tmpDir, "id\tlocality\n1\tOslo\n");
+    HttpServer server = startServer();
+    try {
+      UrlSource occurrence = new UrlSource();
+      occurrence.setName("occurrence");
+      occurrence.setUrl(url(server));
+      occurrence.setFile(new File("/var/lib/elsewhere/sources/occurrence.txt"));
+      resource.addSource(occurrence, false);
+      // analysed again
+      manager.analyze(occurrence);
+      assertNull(occurrence.getFile());
+      assertFalse(copy.exists());
+
+      // the same name as an uploaded source's file, which could have overwritten it
+      UrlSource sameName = new UrlSource();
+      sameName.setName("taxa");
+      sameName.setUrl(url(server));
+      sameName.setFile(new File("/var/lib/elsewhere/sources/taxon.txt"));
+      resource.addSource(sameName, false);
+      manager.delete(resource, sameName);
+      assertTrue(taxon.exists());
+    } finally {
+      server.stop(0);
+    }
+  }
+
+  /**
+   * Makes the file store download the content at once, as occurrence.txt in a download directory.
+   *
+   * @return the download directory
+   */
+  @SuppressWarnings("unchecked")
+  private File downloadsOnce(File tmpDir, String content) throws IOException {
+    File downloadDir = new File(tmpDir, "download");
+    assertTrue(downloadDir.mkdir());
+    java.nio.file.Files.write(new File(downloadDir, "occurrence.txt").toPath(),
+      content.getBytes(StandardCharsets.UTF_8));
+    when(mockDataDir.tmpFile(anyString())).thenReturn(downloadDir);
+    when(mockFileStoreManager.downloadDataFile(anyString(), anyString(), any(), any())).thenAnswer(i -> {
+      ((Consumer<DataFile>) i.getArgument(2)).accept(null);
+      return null;
+    });
+    return downloadDir;
+  }
+
+  /**
+   * @return a server to ask whether a URL redirects, which is done before it's downloaded
+   */
+  private static HttpServer startServer() throws IOException {
+    HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
+    server.createContext("/", exchange -> {
+      exchange.sendResponseHeaders(200, -1);
+      exchange.close();
+    });
+    server.start();
+    return server;
+  }
+
+  private static URI url(HttpServer server) {
+    return URI.create("http://localhost:" + server.getAddress().getPort() + "/occurrence.txt");
   }
 
   private void assertProblems(TextFileSource src, SourceFileProblem... expected) {

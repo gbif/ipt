@@ -574,9 +574,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     LOG.debug("ADDING URL SOURCE {}", url);
 
     UrlSource src;
-    String filename = FilenameUtils.getName(url.toString());
-    LOG.debug("File name: {}", filename);
-
     String finalSourceName;
     if (StringUtils.isEmpty(sourceName)) {
       finalSourceName = FilenameUtils.getBaseName(url.toString());
@@ -586,11 +583,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
 
     src = new UrlSource();
-    File file = dataDir.sourceFile(resource, filename);
-    src.setFile(file);
     src.setProcessing(true);
-
-    downloadDataFromUrlAsync(resource, url, sourceName);
 
     src.setName(finalSourceName);
     src.setUrl(url);
@@ -610,6 +603,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     } catch (AlreadyExistingException e) {
       throw new ImportException(e);
     }
+
+    // once the source is in the resource, so it's found when the download is done
+    downloadDataFromUrlAsync(resource, url, finalSourceName);
 
     return src;
   }
@@ -651,8 +647,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     LOG.info("Data file: {}", dataFile);
 
     UrlSource src = (UrlSource) resource.getSource(sourceName);
-
     File downloadDir = dataDir.tmpFile(key.toString());
+    if (src == null) {
+      // deleted while it was downloaded
+      LOG.warn("Source {} of resource {} not found for download {}", sourceName, resource.getShortname(), key);
+      FileUtils.deleteQuietly(downloadDir);
+      return;
+    }
+
     try (Stream<Path> paths = Files.list(downloadDir.toPath()).filter(Files::isRegularFile)) {
       List<Path> files = paths.collect(Collectors.toList());
 
@@ -705,39 +707,80 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       FileUtils.deleteDirectory(downloadDir);
 
       notifyListeners(resource);
-    } catch (IOException e) {
+    } catch (Exception e) {
+      // IOException, or a file that can't be read as a delimited text file
       LOG.error("Failed to process downloaded file(s) {}", key, e);
+      processFailedDownload(key, resource, sourceName, e.getMessage());
     } finally {
       src.setProcessing(false);
     }
   }
 
+  /**
+   * Analyses the file downloaded for a URL source where it was downloaded: it's only read for the analysis, as the
+   * source is read from the URL when it's previewed, mapped or published.
+   */
   private void processFile(Resource resource, Path targetFile, UrlSource src) throws IOException {
-    // Process the target file
     LOG.info("Processing: {}", targetFile.getFileName());
-    File sourceFile = dataDir.sourceFile(resource, targetFile.getFileName().toString());
-
-    sourceFile.createNewFile();
-
-    FileUtils.copyFile(targetFile.toFile(), sourceFile);
-    LOG.info("Filed {} copied to resource {} sources",  targetFile.getFileName(), resource.getShortname());
-
-    src.setFile(sourceFile);
+    File file = targetFile.toFile();
     // analyze individual files using the dwca reader
-    Archive arch = DwcFiles.fromLocation(sourceFile.toPath());
+    Archive arch = DwcFiles.fromLocation(targetFile);
     copyArchiveFileProperties(arch.getCore(), src);
 
-    LOG.info("Start analyzing source file {}", sourceFile);
-    src.analyze();
+    LOG.info("Start analyzing source file {}", file);
+    // what was found before doesn't hold for the file as it's downloaded now
+    deleteLog(resource.getShortname(), src.getName());
+    src.setProblems(null);
+    src.analyze(file);
+
+    SourceLog log = newLog(src, src.getRows());
+    src.setProblems(checkTextFile(file, src.getEncoding(), src.getFieldsTerminatedBy(), src.getFieldQuoteChar(),
+                                  src.getIgnoreHeaderLines(), log));
+    try {
+      writeLog(src, log);
+    } catch (IOException e) {
+      LOG.warn("Can't write the log of source {}", src.getName(), e);
+    }
+    deleteOldCopy(resource, src);
+  }
+
+  /**
+   * Deletes the copy of a URL source's downloaded file that earlier IPT versions kept in the resource's sources. It's
+   * looked up by name there, since the path kept is from wherever the data directory was then. Not deleted if another
+   * source's file has the same name, as one could have overwritten the other.
+   */
+  private void deleteOldCopy(Resource resource, UrlSource src) {
+    File kept = src.getFile();
+    if (kept == null) {
+      return;
+    }
+    src.setFile(null);
+    File copy = dataDir.sourceFile(resource, kept.getName());
+    if (copy == null) {
+      return;
+    }
+    boolean usedByAnother = resource.getSources().stream()
+      .anyMatch(other -> other instanceof FileSource fs && copy.equals(fs.getFile()));
+    if (!usedByAnother) {
+      LOG.info("Deleting the copy {} of the URL source {} of the resource {}, not used anymore", copy, src.getName(),
+               resource.getShortname());
+      FileUtils.deleteQuietly(copy);
+    }
   }
 
   private void processFailedDownload(UUID key, Resource resource, String sourceName, String errorMessage) {
     LOG.error("Error processing source {} with key {} for resource {}: {}",
         sourceName, key, resource.getShortname(), errorMessage);
+    FileUtils.deleteQuietly(dataDir.tmpFile(key.toString()));
     Source source = resource.getSource(sourceName);
     if (source != null) {
       source.setProcessing(false);
       source.setReadable(false);
+      // what was found in an earlier download doesn't hold anymore
+      if (source instanceof UrlSource us) {
+        us.setProblems(null);
+        deleteLog(resource.getShortname(), sourceName);
+      }
     }
     notifyListeners(resource);
   }
@@ -764,24 +807,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     // download data from the URL and analyze it
     downloadDataFromUrlAsync(src.getResource(), src.getUrl(), src.getName());
-    return null;
-  }
-
-  private String analyze(UrlSource src) {
-    Set<Integer> emptyLines;
-    try {
-      emptyLines = src.analyze();
-    } catch (IOException e) {
-      return e.getMessage();
-    }
-
-    SourceLog log = newLog(src, src.getRows());
-    log.getProblems().addAll(emptyLinesProblems(emptyLines));
-    try {
-      writeLog(src, log);
-    } catch (IOException e) {
-      LOG.warn("Can't write the log of source {}", src.getName(), e);
-    }
     return null;
   }
 
@@ -852,20 +877,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
 
     SourceLog log = newLog(src, src.getRows());
     if (src instanceof TextFileSource textSource) {
-      TextFileChecker.Result result;
       try {
-        result = check(textSource);
+        textSource.setProblems(checkTextFile(textSource.getFile(), textSource.getEncoding(),
+          textSource.getFieldsTerminatedBy(), textSource.getFieldQuoteChar(), textSource.getIgnoreHeaderLines(), log));
       } catch (IOException e) {
         LOG.warn("Can't check source file {}", src.getName(), e);
         return e.getMessage();
       }
-      textSource.setProblems(result.getSummary());
-      String delimiter = StringUtils.defaultString(textSource.getFieldsTerminatedBy());
-      log.setEncoding(textSource.getEncoding());
-      log.setDelimiter(delimiter.length() == 1 ? describeDelimiter(delimiter.charAt(0)) : "'" + delimiter + "'");
-      log.setQuote(textSource.getFieldsEnclosedBy());
       log.setLinesWithEmbeddedBreaksRemoved(textSource.getLinesWithEmbeddedBreaksRemoved());
-      log.getProblems().addAll(result.getProblems());
     } else {
       log.getProblems().addAll(emptyLinesProblems(emptyLines));
     }
@@ -879,11 +898,22 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return null;
   }
 
-  private TextFileChecker.Result check(TextFileSource src) throws IOException {
-    Charset charset = StringUtils.isNotBlank(src.getEncoding())
-      ? Charset.forName(src.getEncoding()) : StandardCharsets.UTF_8;
-    return new TextFileChecker(src.getFieldsTerminatedBy(), src.getFieldQuoteChar(), src.getIgnoreHeaderLines())
-      .check(src.getFile(), charset);
+  /**
+   * Checks a delimited text file line by line (see {@link TextFileChecker}), and adds how it was read and the problems
+   * found to the source's log.
+   *
+   * @return the problems found, without their examples, to keep on the source
+   */
+  private static List<SourceFileProblem> checkTextFile(File file, String encoding, String delimiter, Character quote,
+                                                       int headerLines, SourceLog log) throws IOException {
+    Charset charset = StringUtils.isNotBlank(encoding) ? Charset.forName(encoding) : StandardCharsets.UTF_8;
+    TextFileChecker.Result result = new TextFileChecker(delimiter, quote, headerLines).check(file, charset);
+    String d = StringUtils.defaultString(delimiter);
+    log.setEncoding(encoding);
+    log.setDelimiter(d.length() == 1 ? describeDelimiter(d.charAt(0)) : "'" + d + "'");
+    log.setQuote(quote == null ? null : quote.toString());
+    log.getProblems().addAll(result.getProblems());
+    return result.getSummary();
   }
 
   private static SourceLog newLog(Source src, int rows) {
@@ -1100,13 +1130,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     deleteLog(resource.getShortname(), source.getName());
 
     if (source instanceof UrlSource us) {
-      // also delete the local data file
-      boolean delete = us.getFile().delete();
-
-      if (!delete) {
-        LOG.error("Failed to delete the local file {} for the URL source {} of the resource {}",
-            us.getFile().getAbsolutePath(), source.getName(), resource.getShortname());
-      }
+      deleteOldCopy(resource, us);
     }
 
     if (source instanceof TextFileSource fs) {

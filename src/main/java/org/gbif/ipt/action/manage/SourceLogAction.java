@@ -17,6 +17,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SourceFileProblem;
 import org.gbif.ipt.model.SourceLog;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -103,7 +104,7 @@ public class SourceLogAction extends ManagerBaseAction {
    * @return the problem's summary, as on the source page
    */
   public String problemMessage(SourceLog.Problem problem) {
-    return getText("manage.source.problem." + problem.getType().getKey(), new String[] {
+    return getText(SourceFileProblem.messageKey(problem.getType(), source), new String[] {
       String.valueOf(problem.getLines()), String.valueOf(problem.getFirstLine()), StringUtils.defaultString(
         log.getEncoding())});
   }

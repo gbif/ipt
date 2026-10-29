@@ -261,7 +261,11 @@
                                 <div class="col-12">
                                     <div class="callout callout-danger text-smaller my-0">${problem}</div>
                                 </div>
-                            <#elseif source.sourceType == 'TEXT_FILE' && id?has_content>
+                            <#elseif id?has_content && source.sourceType == 'URL' && !source.processing && !source.readable>
+                                <div class="col-12">
+                                    <div class="callout callout-danger text-smaller my-0"><@s.text name="manage.source.url.notDownloaded"/></div>
+                                </div>
+                            <#elseif id?has_content && (source.sourceType == 'TEXT_FILE' || (source.sourceType == 'URL' && !source.processing))>
                                 <div class="col-12">
                                     <#if !problemMessages??>
                                         <div class="callout callout-info text-smaller my-0"><@s.text name="manage.source.problems.notChecked"/></div>
@@ -273,7 +277,7 @@
                                                     <li>${message}</li>
                                                 </#list>
                                             </ul>
-                                            <#if source.linesWithEmbeddedBreaksRemoved gt 0>
+                                            <#if (source.linesWithEmbeddedBreaksRemoved!0) gt 0>
                                                 <div class="mb-1"><@s.text name="manage.source.fixed.lineBreaksRemoved"><@s.param>${source.linesWithEmbeddedBreaksRemoved?c}</@s.param></@s.text></div>
                                             </#if>
                                             <#if emptyLinesMessage??>
@@ -285,7 +289,7 @@
                                         <div class="text-smaller text-muted">
                                             <i class="bi bi-check2 text-gbif-primary"></i>
                                             <@s.text name="manage.source.problems.none"/>
-                                            <#if source.linesWithEmbeddedBreaksRemoved gt 0>
+                                            <#if (source.linesWithEmbeddedBreaksRemoved!0) gt 0>
                                                 <@s.text name="manage.source.fixed.lineBreaksRemoved"><@s.param>${source.linesWithEmbeddedBreaksRemoved?c}</@s.param></@s.text>
                                             </#if>
                                             ${emptyLinesMessage!}

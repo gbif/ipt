@@ -28,7 +28,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -56,9 +55,11 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
   @Getter
   private String fieldsEnclosedBy;
   private int ignoreHeaderLines = 0;
+  // the copy of the downloaded file that earlier IPT versions kept in the resource's sources, null if none. Deleted
+  // when the source is analysed again or deleted, as the file is now analysed where it's downloaded
   @Setter
   @Getter
-  private File file; // only for analyzing
+  private File file;
   @Setter
   @Getter
   private long fileSize;
@@ -67,6 +68,11 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
   private int rows;
   @Getter
   protected Date lastModified;
+  // problems found in the downloaded file when the source was last analysed, null if it hasn't been since they were
+  // checked for
+  @Setter
+  @Getter
+  private List<SourceFileProblem> problems;
 
   public String getFieldsEnclosedByEscaped() {
     return escape(fieldsEnclosedBy);
@@ -194,48 +200,15 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     return columns;
   }
 
-  public Set<Integer> analyze() throws IOException {
+  /**
+   * Reads the downloaded file to count its rows and columns.
+   *
+   * @param file the file downloaded from the URL
+   *
+   * @return the empty lines, which are skipped
+   */
+  public Set<Integer> analyze(File file) throws IOException {
     LOG.debug("Analyzing URL source {}", url);
-    Set<Integer> emptyLines = new HashSet<>();
-
-    if (!file.exists()) {
-      boolean newFileCreated = file.createNewFile();
-
-      if (!newFileCreated) {
-        LOG.error("Failed to create new file {}", file);
-        setReadable(false);
-        return emptyLines;
-      }
-    }
-
-//    try {
-//      InputStream in = url.toURL().openStream();
-//      if (url.toString().endsWith("zip")) {
-//        File decompressedFile = new File(file.getParentFile(), name + ".txt");
-//        if (!decompressedFile.exists()) {
-//          boolean decompressedFileCreated = decompressedFile.createNewFile();
-//
-//          if (!decompressedFileCreated) {
-//            LOG.error("Failed to create decompressed file {}", decompressedFile);
-//            setReadable(false);
-//            return emptyLines;
-//          }
-//        }
-//
-//        Files.copy(decompressInputStream(in), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//        setFile(decompressedFile);
-//      } else {
-//        Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//        setFile(file);
-//      }
-//    } catch (IOException e) {
-//      LOG.error("URL not readable {}. Error: {}", url, e.getMessage());
-//      setReadable(false);
-//      return emptyLines;
-//    }
-
-    setFile(file);
-
     setFileSize(file.length());
 
     CSVReader reader = CSVReaderFactory.build(file, getEncoding(), getFieldsTerminatedBy(), getFieldQuoteChar(), getIgnoreHeaderLines());
@@ -246,7 +219,7 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     setColumns(reader.header == null ? 0 : reader.header.length);
     setRows(reader.getReadRows());
     setReadable(true);
-    emptyLines = reader.getEmptyLines();
+    Set<Integer> emptyLines = reader.getEmptyLines();
     reader.close();
     return emptyLines;
   }

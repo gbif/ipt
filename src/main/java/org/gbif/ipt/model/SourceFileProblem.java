@@ -51,6 +51,15 @@ public class SourceFileProblem implements Serializable {
     }
   }
 
+  /**
+   * @return the key of the message saying what the problem is and how to fix it. A URL source's is fixed in the file at
+   *         the URL, since its settings are taken from the file each time it's downloaded. Empty lines need no fixing
+   */
+  public static String messageKey(Type type, Source source) {
+    boolean url = source instanceof UrlSource && type != Type.EMPTY_LINES;
+    return "manage.source.problem." + (url ? "url." : "") + type.getKey();
+  }
+
   private Type type;
   private long lines;
   private long firstLine;
