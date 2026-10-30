@@ -202,6 +202,29 @@ public class SourceManagerImplTest extends IptBaseTest {
   }
 
   @Test
+  public void testByteOrderMarkIsNotRead(@TempDir File tmpDir) throws Exception {
+    // as Excel saves a "CSV UTF-8" file
+    File srcFile = new File(tmpDir, "occurrence.txt");
+    java.nio.file.Files.write(srcFile.toPath(),
+      "\uFEFFid\tlocality\n1\tDrag\u00F8r\n".getBytes(StandardCharsets.UTF_8));
+
+    TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
+
+    assertEquals("UTF-8", src.getEncoding());
+    assertEquals(java.util.List.of("id", "locality"), src.columns());
+    assertProblems(src);
+    try (org.gbif.utils.file.ClosableReportingIterator<String[]> rows = src.rowIterator()) {
+      assertArrayEquals(new String[] {"1", "Drag\u00F8r"}, rows.next());
+    }
+
+    // without a header line, the first value is read without it too
+    src.setIgnoreHeaderLines(0);
+    try (org.gbif.utils.file.ClosableReportingIterator<String[]> rows = src.rowIterator()) {
+      assertEquals("id", rows.next()[0]);
+    }
+  }
+
+  @Test
   public void testAddFileWithEmbeddedLineBreakIsNormalized(@TempDir File tmpDir) throws Exception {
     File srcFile = new File(tmpDir, "remarks.txt");
     java.nio.file.Files.write(srcFile.toPath(),

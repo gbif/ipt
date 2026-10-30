@@ -176,7 +176,8 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     } else {
       input = url.toURL().openStream();
     }
-    return CSVReaderFactory.build(input, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
+    return CSVReaderFactory.build(IptFileUtils.withoutByteOrderMark(input, encoding), encoding, fieldsTerminatedBy,
+                                  getFieldQuoteChar(), ignoreHeaderLines);
   }
 
   public List<String> columns() {

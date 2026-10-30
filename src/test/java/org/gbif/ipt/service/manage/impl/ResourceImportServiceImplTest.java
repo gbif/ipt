@@ -334,6 +334,46 @@ public class ResourceImportServiceImplTest {
   }
 
   /**
+   * A byte order mark at the start of a data file isn't read as part of its first column's name, so the column is
+   * mapped (#2303: the observations.csv of the Camtrap DP 1.0 example starts with one).
+   */
+  @Test
+  public void testCreateFromCamtrapArchiveMapsFirstColumnAfterByteOrderMark() throws Exception {
+    when(schemaManager.get(CAMTRAP_DP)).thenReturn(DataPackageSchema.builder()
+        .identifier("https://rs.gbif.org/sandbox/data-packages/camtrap-dp")
+        .name(CAMTRAP_DP)
+        .version("1.0")
+        .tableSchemas(new LinkedHashSet<>(List.of(table("observations", "observationID", "deploymentID"))))
+        .build());
+    when(schemaManager.getSchemaIdentifier(CAMTRAP_DP)).thenReturn("https://rs.gbif.org/sandbox/data-packages/camtrap-dp");
+    when(sourceManager.add(any(Resource.class), any(File.class), anyString())).thenAnswer(invocation -> {
+      TextFileSource source = new TextFileSource();
+      source.setName(invocation.getArgument(2, String.class));
+      source.setFile(invocation.getArgument(1, File.class));
+      source.setFieldsTerminatedBy(",");
+      source.setIgnoreHeaderLines(1);
+      return source;
+    });
+    CamtrapMetadata metadata = new CamtrapMetadata();
+    metadata.getAdditionalProperties().put("resources",
+        List.of(Map.of("name", "observations", "path", "observations.csv")));
+    when(metadataReader.readValue(any(File.class), eq(CamtrapMetadata.class))).thenReturn(metadata);
+
+    Path archive = Files.createDirectory(tempDir.resolve("archive"));
+    File datapackageJson = Files.writeString(archive.resolve("datapackage.json"), "{}").toFile();
+    File observations = Files.write(archive.resolve("observations.csv"),
+        "\uFEFFobservationID,deploymentID\no1,d1\n".getBytes(StandardCharsets.UTF_8)).toFile();
+
+    Resource resource = service.createFromFrictionlessDataPackage(SHORTNAME, archive.toFile(), CAMTRAP_DP,
+        List.of(datapackageJson, observations), creator, alog);
+
+    List<String> fields = resource.getDataPackageMappings().get(0).getFields().stream()
+        .map(f -> f.getIndex() + ":" + f.getField().getName())
+        .toList();
+    assertEquals(List.of("0:observationID", "1:deploymentID"), fields);
+  }
+
+  /**
    * ColDP data files are matched to tables by name in any case and with or without separators, columns ignoring a
    * col: prefix and case. Files in folders and that aren't tables are skipped (like Plazi's).
    */

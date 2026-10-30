@@ -19,6 +19,7 @@ import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,7 +97,8 @@ public class TextFileSource extends SourceBase implements FileSource {
   }
 
   private CSVReader getReader() throws IOException {
-    return CSVReaderFactory.build(file, encoding, fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
+    return CSVReaderFactory.build(IptFileUtils.withoutByteOrderMark(new FileInputStream(file), encoding), encoding,
+                                  fieldsTerminatedBy, getFieldQuoteChar(), ignoreHeaderLines);
   }
 
   @Override

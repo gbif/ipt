@@ -30,12 +30,15 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,6 +58,44 @@ public class IptFileUtils {
   public static final String UTF8 = "UTF8";
   private static final int BUFFER_SIZE = 8192;
   private static final int TEMP_DIR_ATTEMPTS = 10000;
+
+  // the byte order marks Java's decoders read as U+FEFF. The UTF-16 and UTF-32 decoders remove their own
+  private static final ByteOrderMark[] BYTE_ORDER_MARKS = {
+    ByteOrderMark.UTF_8, ByteOrderMark.UTF_16LE, ByteOrderMark.UTF_16BE, ByteOrderMark.UTF_32LE,
+    ByteOrderMark.UTF_32BE};
+
+  /**
+   * The byte order mark a text file in the charset can start with. It says how the file is encoded and isn't part of
+   * the data, but it's read as U+FEFF at the start of the first value, e.g. of a file Excel saved as "CSV UTF-8".
+   *
+   * @return the mark, or null if the charset has none that's read as data
+   */
+  public static ByteOrderMark byteOrderMark(Charset charset) {
+    for (ByteOrderMark bom : BYTE_ORDER_MARKS) {
+      if (bom.getCharsetName().equals(charset.name())) {
+        return bom;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @return the stream without the byte order mark of the encoding at its start (see {@link #byteOrderMark}), or the
+   *         stream as it is if the encoding has none or isn't known
+   */
+  public static InputStream withoutByteOrderMark(InputStream in, String encoding) throws IOException {
+    ByteOrderMark bom;
+    try {
+      bom = byteOrderMark(Charset.forName(encoding));
+    } catch (IllegalArgumentException e) {
+      // reading the stream reports the encoding
+      return in;
+    }
+    if (bom == null) {
+      return in;
+    }
+    return BOMInputStream.builder().setInputStream(in).setByteOrderMarks(bom).get();
+  }
 
   public static void copyStreams(InputStream in, OutputStream out) throws IOException {
     // write the file to the file specified

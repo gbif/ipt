@@ -1124,7 +1124,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     // extract column names from file's first row
     String[] columnNames;
     try (CSVReader csvReader = CSVReaderFactory.build(
-        file,
+        IptFileUtils.withoutByteOrderMark(new FileInputStream(file), source.getEncoding()),
         source.getEncoding(),
         source.getFieldsTerminatedBy(),
         source.getFieldQuoteChar(),

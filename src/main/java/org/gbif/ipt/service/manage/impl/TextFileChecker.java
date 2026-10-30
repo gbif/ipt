@@ -16,6 +16,7 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.model.SourceFileProblem;
 import org.gbif.ipt.model.SourceLog;
 import org.gbif.ipt.utils.EncodingDamage;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.model.SourceFileProblem.Type;
 
 import java.io.File;
@@ -51,6 +52,7 @@ class TextFileChecker {
   static final int MAX_EXAMPLES = SourceLog.MAX_EXAMPLES;
   private static final int MAX_VALUE_LENGTH = SourceLog.MAX_VALUE_LENGTH;
   private static final char REPLACEMENT = EncodingDamage.REPLACEMENT;
+  private static final char BYTE_ORDER_MARK = '\uFEFF';
 
   private final String delimiter;
   private final Character quote;
@@ -120,7 +122,8 @@ class TextFileChecker {
   }
 
   /**
-   * Checks the file. Bytes that aren't valid in the charset are read as U+FFFD, as the IPT reads them.
+   * Checks the file. Bytes that aren't valid in the charset are read as U+FFFD, and a byte order mark at the start is
+   * skipped, as the IPT reads them.
    */
   Result check(File file, Charset charset) throws IOException {
     CharsetDecoder decoder = charset.newDecoder()
@@ -132,6 +135,9 @@ class TextFileChecker {
     boolean invalid = false;
     boolean previousCr = false;
     boolean endOfInput = false;
+    // the byte order mark the IPT skips (see IptFileUtils#withoutByteOrderMark) is decoded as U+FEFF
+    boolean skipByteOrderMark = IptFileUtils.byteOrderMark(charset) != null;
+    boolean start = true;
     line = 1;
     rows = 0;
     header = null;
@@ -148,6 +154,12 @@ class TextFileChecker {
           chars.flip();
           while (chars.hasRemaining()) {
             char c = chars.get();
+            if (start) {
+              start = false;
+              if (c == BYTE_ORDER_MARK && skipByteOrderMark) {
+                continue;
+              }
+            }
             if (c == '\r' || (c == '\n' && !previousCr)) {
               checkLine(current.toString(), invalid);
               current.setLength(0);
@@ -163,6 +175,7 @@ class TextFileChecker {
             current.append(REPLACEMENT);
             invalid = true;
             previousCr = false;
+            start = false;
             bytes.position(bytes.position() + result.length());
           } else if (result.isUnderflow()) {
             break;

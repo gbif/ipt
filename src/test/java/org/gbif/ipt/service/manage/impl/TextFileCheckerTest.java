@@ -167,6 +167,18 @@ public class TextFileCheckerTest {
   }
 
   @Test
+  public void testByteOrderMarkIsSkipped() throws IOException {
+    // the first column is named without it
+    TextFileChecker.Result result = check("\uFEFFid\tname\n\u00C3\u00B8\ta\n", 1);
+    assertEquals(Arrays.asList("Line 2, column id: \u00C3\u00B8"), examples(result, Type.DAMAGED_VALUES));
+    assertEquals(2, result.getColumns());
+
+    // only at the start of the file
+    result = check("id\tname\n\uFEFF\u00C3\u00B8\ta\n", 1);
+    assertEquals(Arrays.asList("Line 2, column id: \uFEFF\u00C3\u00B8"), examples(result, Type.DAMAGED_VALUES));
+  }
+
+  @Test
   public void testRowsAndColumns() throws IOException {
     TextFileChecker.Result result = check("id\tname\n1\ta\n\n2\tb\n", 1);
     assertEquals(2, result.getColumns());
