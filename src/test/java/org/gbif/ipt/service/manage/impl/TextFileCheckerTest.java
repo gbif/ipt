@@ -16,12 +16,16 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.model.SourceFileProblem;
 import org.gbif.ipt.model.SourceFileProblem.Type;
 import org.gbif.ipt.model.SourceLog;
+import org.gbif.utils.file.csv.CSVReader;
+import org.gbif.utils.file.csv.CSVReaderFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -160,6 +164,91 @@ public class TextFileCheckerTest {
     assertEquals(2, problem.getFirstLine());
     assertEquals(Arrays.asList("Line 2", "Line 4", "Line 5"), examples(result, Type.EMPTY_LINES));
     assertNull(problem(result, Type.COLUMN_COUNT));
+  }
+
+  @Test
+  public void testRowsAndColumns() throws IOException {
+    TextFileChecker.Result result = check("id\tname\n1\ta\n\n2\tb\n", 1);
+    assertEquals(2, result.getColumns());
+    assertEquals(2, result.getRows());
+
+    // the first line gives the columns, even when it's empty
+    result = check("\nid\tname\n1\ta\n", 1);
+    assertEquals(0, result.getColumns());
+    assertEquals(2, result.getRows());
+    assertEquals(2, problem(result, Type.COLUMN_COUNT).getLines());
+    assertNull(problem(result, Type.EMPTY_LINES));
+
+    // the first line after the header lines is a row even when it's empty, and isn't skipped
+    result = check("id\tname\n\n1\ta\n\n", 1);
+    assertEquals(2, result.getRows());
+    assertEquals(Arrays.asList("Line 2: 0 columns, the first line has 2"), examples(result, Type.COLUMN_COUNT));
+    assertEquals(Arrays.asList("Line 4"), examples(result, Type.EMPTY_LINES));
+
+    result = check("", 1);
+    assertEquals(0, result.getColumns());
+    assertEquals(0, result.getRows());
+  }
+
+  /**
+   * The rows, columns and empty lines are those the IPT reads (see CSVReader).
+   */
+  @ParameterizedTest
+  @MethodSource("countCases")
+  public void testCountsMatchTheReader(String content) throws IOException {
+    File file = new File(tmpDir, "file.txt");
+    Files.write(file.toPath(), content.getBytes(StandardCharsets.ISO_8859_1));
+    for (int headerLines = 0; headerLines <= 3; headerLines++) {
+      assertCountsMatch(file, StandardCharsets.UTF_8, "\t", headerLines);
+    }
+  }
+
+  static Stream<String> countCases() {
+    String longLine = "x".repeat(8191);
+    // ISO-8859-1, to write the bytes as they are
+    return Stream.of("", "\n", "\n\n\n", "id", "id\tname", "id\tname\n", "id\tname\n1\ta\n2\tb",
+                     "id\tname\r\n1\ta\r\n\r\n2\tb\r\n", "id\tname\r1\ta\r\r2\tb", "\nid\tname\n1\ta",
+                     "id\tname\n\n1\ta\n\n", "id\tname\n\n\n\n1\ta", "h1\nh2\n\n\n1\ta\n\n2\tb",
+                     "id\tname\n1\n1\ta\tb\n", "id\t\"a\tb\"\n1\t\"x\ty\"\n\"z\"q\t1\n\"open\n",
+                     "id\tname\n1\t\u00ff\n\n2\t\u00c3\n\u00c3\n", longLine + "\r\n1\n\n" + longLine + "\r\n2");
+  }
+
+  @Test
+  public void testCountsMatchTheReaderForTestFiles() throws IOException {
+    List<Path> files;
+    try (Stream<Path> paths = Files.walk(Paths.get("src/test/resources"))) {
+      files = paths.filter(Files::isRegularFile)
+        .filter(f -> f.toString().matches(".*\\.(txt|csv|tsv|tab)$"))
+        .collect(Collectors.toList());
+    }
+    assertTrue(files.size() > 10);
+    for (Path f : files) {
+      for (String delimiter : Arrays.asList("\t", ",")) {
+        for (int headerLines = 0; headerLines <= 1; headerLines++) {
+          assertCountsMatch(f.toFile(), StandardCharsets.UTF_8, delimiter, headerLines);
+        }
+      }
+    }
+  }
+
+  private static void assertCountsMatch(File file, Charset charset, String delimiter, int headerLines)
+    throws IOException {
+    TextFileChecker.Result result = new TextFileChecker(delimiter, '"', headerLines).check(file, charset);
+    CSVReader reader = CSVReaderFactory.build(file, charset.name(), delimiter, '"', headerLines);
+    try {
+      while (reader.hasNext()) {
+        reader.next();
+      }
+    } finally {
+      reader.close();
+    }
+    String what = file + " with " + headerLines + " header line(s), delimiter '" + delimiter + "'";
+    assertEquals(reader.header == null ? 0 : reader.header.length, result.getColumns(), what);
+    assertEquals(reader.getReadRows(), result.getRows(), what);
+    List<Long> emptyLines = reader.getEmptyLines().stream().sorted().limit(TextFileChecker.MAX_EXAMPLES)
+      .map(Integer::longValue).collect(Collectors.toList());
+    assertEquals(emptyLines, result.getExamples(Type.EMPTY_LINES).stream().map(SourceLog.Example::getLine)
+      .collect(Collectors.toList()), what);
   }
 
   @Test

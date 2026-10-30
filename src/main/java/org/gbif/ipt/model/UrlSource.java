@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -198,29 +197,5 @@ public class UrlSource extends SourceBase implements RowIterable, SourceWithHead
     }
 
     return columns;
-  }
-
-  /**
-   * Reads the downloaded file to count its rows and columns.
-   *
-   * @param file the file downloaded from the URL
-   *
-   * @return the empty lines, which are skipped
-   */
-  public Set<Integer> analyze(File file) throws IOException {
-    LOG.debug("Analyzing URL source {}", url);
-    setFileSize(file.length());
-
-    CSVReader reader = CSVReaderFactory.build(file, getEncoding(), getFieldsTerminatedBy(), getFieldQuoteChar(), getIgnoreHeaderLines());
-
-    while (reader.hasNext()) {
-      reader.next();
-    }
-    setColumns(reader.header == null ? 0 : reader.header.length);
-    setRows(reader.getReadRows());
-    setReadable(true);
-    Set<Integer> emptyLines = reader.getEmptyLines();
-    reader.close();
-    return emptyLines;
   }
 }

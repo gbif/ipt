@@ -90,7 +90,10 @@
     }
 </style>
 
-<#-- the column of an example: its name from the header, or its number -->
+<#-- an Excel sheet has rows rather than lines -->
+<#assign excel = source?? && source.sourceType == 'EXCEL_FILE'>
+<#assign lineKey = excel?then("manage.source.log.row", "manage.source.log.line")>
+<#-- the column of an example: its name from the header or its letter in an Excel sheet, or its number -->
 <#macro column example>
     <#if example.column??><code>${example.column}</code><#elseif example.columnNumber??>#${example.columnNumber?c}</#if>
 </#macro>
@@ -178,8 +181,8 @@
                             <h2 class="accordion-header" id="heading-${panelId}">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#${panelId}" aria-expanded="true" aria-controls="${panelId}">
-                                    <span class="me-2 fw-500"><@s.text name="manage.source.log.problem.${problem.type.key}"/></span>
-                                    <span class="badge rounded-pill text-bg-warning"><@s.text name="manage.source.log.lines"><@s.param>${problem.lines?string.number}</@s.param></@s.text></span>
+                                    <span class="me-2 fw-500"><@s.text name="manage.source.log.problem.${(excel && problem.type == 'EMPTY_LINES')?then('excel.', '')}${problem.type.key}"/></span>
+                                    <span class="badge rounded-pill text-bg-warning"><@s.text name="${excel?then('manage.source.log.rows', 'manage.source.log.lines')}"><@s.param>${problem.lines?string.number}</@s.param></@s.text></span>
                                 </button>
                             </h2>
                             <div id="${panelId}" class="accordion-collapse collapse show" aria-labelledby="heading-${panelId}">
@@ -188,7 +191,7 @@
 
                                     <#if problem.type == 'EMPTY_LINES'>
                                         <p class="text-smaller mb-0">
-                                            <@s.text name="manage.source.log.line"/>:
+                                            <@s.text name="${lineKey}"/>:
                                             <#list problem.examples as example>${example.line?c}<#sep>, </#sep></#list>
                                         </p>
                                     <#else>
@@ -196,7 +199,7 @@
                                             <table class="table table-sm table-hover align-middle mb-0 text-smaller">
                                                 <thead>
                                                 <tr>
-                                                    <th style="width: 90px;"><@s.text name="manage.source.log.line"/></th>
+                                                    <th style="width: 90px;"><@s.text name="${lineKey}"/></th>
                                                     <#if problem.type == 'COLUMN_COUNT'>
                                                         <th><@s.text name="manage.source.columns"/></th>
                                                     <#else>
@@ -217,7 +220,7 @@
                                                                 <#if example.reason??>
                                                                     <div class="text-muted"><@s.text name="manage.source.log.reason.${example.reason.key}"/></div>
                                                                 </#if>
-                                                                <code class="source-log-value">${action.markValue(example.value!)?no_esc}</code>
+                                                                <code class="source-log-value">${action.markValue(problem, example.value!)?no_esc}</code>
                                                             </td>
                                                         </#if>
                                                     </tr>

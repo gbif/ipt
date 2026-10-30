@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -110,9 +111,14 @@ public class SourceLogAction extends ManagerBaseAction {
   }
 
   /**
-   * @return the value escaped for HTML, with the characters that look damaged marked
+   * @return the value escaped for HTML, with the characters that look damaged marked if the problem is with the
+   *         encoding. Other problems' values aren't marked, as an Excel value like Ã© isn't damage
    */
-  public String markValue(String value) {
-    return EncodingDamage.markHtml(value);
+  public String markValue(SourceLog.Problem problem, String value) {
+    if (problem.getType() == SourceFileProblem.Type.INVALID_CHARACTERS
+        || problem.getType() == SourceFileProblem.Type.DAMAGED_VALUES) {
+      return EncodingDamage.markHtml(value);
+    }
+    return StringEscapeUtils.escapeHtml4(StringUtils.defaultString(value));
   }
 }

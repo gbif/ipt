@@ -29,6 +29,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SourceLog {
 
+  // the most examples kept of each problem
+  public static final int MAX_EXAMPLES = 100;
+  // longest value shown in an example
+  public static final int MAX_VALUE_LENGTH = 80;
+
   private String source;
   private Date analysed;
   // how a text file was read, null for other sources
@@ -62,7 +67,8 @@ public class SourceLog {
   @AllArgsConstructor
   public static class Example {
     private long line;
-    // the column's number from 1, and its name if the source has a header. Null if the problem is with the whole line
+    // the column's number from 1, and its name if the source has a header, or its letter in an Excel sheet. Null if the
+    // problem is with the whole line
     private Integer columnNumber;
     private String column;
     // the value with the problem, null if the problem is with the whole line

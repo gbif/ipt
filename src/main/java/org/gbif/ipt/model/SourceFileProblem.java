@@ -17,7 +17,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * A kind of problem found in a text file source when it was last analysed: how many lines have it, and the first of
+ * A kind of problem found in a file source when it was last analysed: how many lines have it, and the first of
  * them. The details, with examples, are in the source log.
  */
 public class SourceFileProblem implements Serializable {
@@ -34,7 +34,9 @@ public class SourceFileProblem implements Serializable {
     UNREADABLE_QUOTES("unreadableQuotes"),
     // values that look damaged by encoding problems, like Ã¸ for ø
     DAMAGED_VALUES("damagedValues"),
-    // empty lines, which are skipped
+    // values in an Excel sheet to the right of the first row's last column, which aren't read
+    CELLS_BEYOND_COLUMNS("cellsBeyondColumns"),
+    // empty lines, or empty rows in an Excel sheet, which are skipped
     EMPTY_LINES("emptyLines");
 
     private final String key;
@@ -53,11 +55,17 @@ public class SourceFileProblem implements Serializable {
 
   /**
    * @return the key of the message saying what the problem is and how to fix it. A URL source's is fixed in the file at
-   *         the URL, since its settings are taken from the file each time it's downloaded. Empty lines need no fixing
+   *         the URL, since its settings are taken from the file each time it's downloaded. Empty lines need no fixing.
+   *         An Excel sheet's empty lines are rows
    */
   public static String messageKey(Type type, Source source) {
-    boolean url = source instanceof UrlSource && type != Type.EMPTY_LINES;
-    return "manage.source.problem." + (url ? "url." : "") + type.getKey();
+    String prefix = "";
+    if (source instanceof UrlSource && type != Type.EMPTY_LINES) {
+      prefix = "url.";
+    } else if (source instanceof ExcelFileSource && type == Type.EMPTY_LINES) {
+      prefix = "excel.";
+    }
+    return "manage.source.problem." + prefix + type.getKey();
   }
 
   private Type type;

@@ -70,8 +70,8 @@
             $('#' + inputName).val(inputValue).trigger('change');
         });
 
-        // changing how a text file is read analyses it again on save, which reads the whole file
-        var readingSettings = $("#source\\.encoding, #source\\.ignoreHeaderLines, "
+        // changing how a text file or Excel sheet is read analyses it again on save, which reads the whole file
+        var readingSettings = $("#source\\.encoding, #source\\.ignoreHeaderLines, #source\\.sheetIdx, "
             + "#fileSource\\.fieldsTerminatedByEscaped, #fileSource\\.fieldsEnclosedByEscaped");
         readingSettings.each(function () {
             $(this).data("saved", $(this).val());
@@ -265,7 +265,7 @@
                                 <div class="col-12">
                                     <div class="callout callout-danger text-smaller my-0"><@s.text name="manage.source.url.notDownloaded"/></div>
                                 </div>
-                            <#elseif id?has_content && (source.sourceType == 'TEXT_FILE' || (source.sourceType == 'URL' && !source.processing))>
+                            <#elseif id?has_content && (source.sourceType == 'TEXT_FILE' || source.sourceType == 'EXCEL_FILE' || (source.sourceType == 'URL' && !source.processing))>
                                 <div class="col-12">
                                     <#if !problemMessages??>
                                         <div class="callout callout-info text-smaller my-0"><@s.text name="manage.source.problems.notChecked"/></div>
@@ -316,6 +316,16 @@
                             </#macro>
                             <#macro headerLines>
                                 <@input name="source.ignoreHeaderLines" value=(source.ignoreHeaderLines)! help="i18n" helpOptions={"0":"None","1":"Single Header row"}/>
+                            </#macro>
+                            <#-- shown when a setting that decides how the source is read changes -->
+                            <#macro readingSettingsChanged>
+                                <#if id?has_content>
+                                    <div class="col-12" id="readingSettingsChanged" style="display: none;">
+                                        <div class="callout callout-info text-smaller my-0">
+                                            <@s.text name="manage.source.readingSettings.help"/>
+                                        </div>
+                                    </div>
+                                </#if>
                             </#macro>
 
                             <#-- only for sql sources -->
@@ -369,6 +379,7 @@
                                 <div class="col-lg-6">
                                     <@headerLines/>
                                 </div>
+                                <@readingSettingsChanged/>
                                 <div class="col-lg-6">
                                     <@multivalue/>
                                 </div>
@@ -387,13 +398,7 @@
                                 <div class="col-lg-6">
                                     <@input name="fileSource.fieldsEnclosedByEscaped" value=fileSource.fieldsEnclosedByEscaped! help="i18n" helpOptions={"":"None","&quot;":"Double Quote","&apos;":"Single Quote"}/>
                                 </div>
-                                <#if id?has_content>
-                                    <div class="col-12" id="readingSettingsChanged" style="display: none;">
-                                        <div class="callout callout-info text-smaller my-0">
-                                            <@s.text name="manage.source.readingSettings.help"/>
-                                        </div>
-                                    </div>
-                                </#if>
+                                <@readingSettingsChanged/>
                                 <div class="col-lg-6">
                                     <@dateFormat/>
                                 </div>

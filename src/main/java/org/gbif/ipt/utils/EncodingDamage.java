@@ -60,6 +60,17 @@ public final class EncodingDamage {
    * @return false if none of the values can look damaged, true if one may
    */
   public static boolean mayLookDamaged(String[] values) {
+    // all damage has one of these characters, so most values are ruled out without the patterns, which are slower
+    boolean candidate = false;
+    for (String value : values) {
+      for (int i = 0; i < value.length() && !candidate; i++) {
+        char c = value.charAt(i);
+        candidate = c == REPLACEMENT || c == 'Â' || c == 'Ã' || c == 'â' || c == '?';
+      }
+    }
+    if (!candidate) {
+      return false;
+    }
     // joined with a character that's neither a letter nor part of a damaged character, so no match spans two values
     String text = String.join("\n", values);
     return text.indexOf(REPLACEMENT) >= 0 || MOJIBAKE.matcher(text).find()

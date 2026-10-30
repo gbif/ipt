@@ -23,12 +23,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -36,6 +35,7 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellReference;
 
 import com.github.pjfanning.xlsx.SharedStringsImplementationType;
 import com.github.pjfanning.xlsx.StreamingReader;
@@ -69,6 +69,10 @@ public class ExcelFileSource extends SourceBase implements FileSource {
   @Setter
   private int rows;
   protected Date lastModified;
+  // problems found when the source was last analysed, null if it hasn't been since they were checked for
+  @Getter
+  @Setter
+  private List<SourceFileProblem> problems;
 
   public String formattedFileSize(String locale) {
     return IptFileUtils.formatSize(fileSize, 1, locale, false);
@@ -135,7 +139,6 @@ public class ExcelFileSource extends SourceBase implements FileSource {
 
     @Override
     public String[] next() {
-      //TODO: log empty or irregular rows, setting rowError to true and populating errorMessage
       String[] val = new String[rowSize];
       if (hasNext()) {
         resetReportingIterator();
@@ -234,34 +237,93 @@ public class ExcelFileSource extends SourceBase implements FileSource {
     return new ArrayList<>();
   }
 
-  @Override
-  public Set<Integer> analyze() throws IOException {
+  /**
+   * Reads the sheet once to count its rows and columns, and checks the rows after the header lines for problems:
+   * values to the right of the first row's last column, which aren't read, and empty rows, which are skipped. Empty
+   * rows are rows with no values in the columns, and rows missing from the sheet between two rows. Rows are numbered
+   * as in Excel.
+   *
+   * @return the problems found, with up to {@value SourceLog#MAX_EXAMPLES} examples of each
+   */
+  public List<SourceLog.Problem> analyze() throws IOException {
     setFileSize(getFile().length());
-    // find row size
+    SourceLog.Problem cellsBeyondColumns =
+      new SourceLog.Problem(SourceFileProblem.Type.CELLS_BEYOND_COLUMNS, 0, 0, new ArrayList<>());
+    SourceLog.Problem emptyRows = new SourceLog.Problem(SourceFileProblem.Type.EMPTY_LINES, 0, 0, new ArrayList<>());
+    DataFormatter dataFormatter = new DataFormatter();
+    dataFormatter.setUseCachedValuesForFormulaCells(true);
+
     try (Workbook book = openBook()) {
-      Sheet sheet = getSheet(book);
+      Iterator<Row> iter = getSheet(book).rowIterator();
       int physicalNumberOfRows = 0;
-
-      Iterator<Row> iter = sheet.rowIterator();
-      if (iter.hasNext()) {
-        physicalNumberOfRows++;
-        setColumns(iter.next().getLastCellNum());
-        setReadable(true);
-      } else {
-        setColumns(0);
-        setReadable(false);
-      }
-
+      int lastRowNum = -1;
       while (iter.hasNext()) {
+        Row row = iter.next();
         physicalNumberOfRows++;
-        iter.next();
+        if (physicalNumberOfRows == 1) {
+          // a row without cells has -1
+          setColumns(Math.max(0, row.getLastCellNum()));
+        }
+
+        if (physicalNumberOfRows > ignoreHeaderLines) {
+          if (physicalNumberOfRows > 1) {
+            for (int missing = lastRowNum + 1; missing < row.getRowNum(); missing++) {
+              found(emptyRows, missing + 1, null, null);
+            }
+          }
+          // checks the columns RowIterator reads only until one isn't blank, and stops at the first value beyond them
+          // that isn't blank
+          boolean empty = true;
+          for (Cell cell : row) {
+            if (cell.getColumnIndex() < columns) {
+              if (empty && StringUtils.isNotBlank(dataFormatter.formatCellValue(cell))) {
+                empty = false;
+              }
+            } else {
+              String value = dataFormatter.formatCellValue(cell);
+              if (StringUtils.isNotBlank(value)) {
+                found(cellsBeyondColumns, row.getRowNum() + 1, cell.getColumnIndex(), value);
+                break;
+              }
+            }
+          }
+          if (empty) {
+            found(emptyRows, row.getRowNum() + 1, null, null);
+          }
+        }
+        lastRowNum = row.getRowNum();
       }
 
+      if (physicalNumberOfRows == 0) {
+        setColumns(0);
+      }
       setRows(physicalNumberOfRows);
+      setReadable(physicalNumberOfRows > 0);
     }
 
-    //TODO: report empty or irregular rows
-    return new HashSet<>();
+    List<SourceLog.Problem> problems = new ArrayList<>();
+    for (SourceLog.Problem problem : Arrays.asList(cellsBeyondColumns, emptyRows)) {
+      if (problem.getLines() > 0) {
+        problems.add(problem);
+      }
+    }
+    return problems;
+  }
+
+  /**
+   * @param columnIndex the cell's column from 0, or null if the problem is with the whole row
+   */
+  private static void found(SourceLog.Problem problem, long rowNumber, Integer columnIndex, String value) {
+    if (problem.getLines() == 0) {
+      problem.setFirstLine(rowNumber);
+    }
+    problem.setLines(problem.getLines() + 1);
+    if (problem.getExamples().size() < SourceLog.MAX_EXAMPLES) {
+      problem.getExamples().add(columnIndex == null
+        ? new SourceLog.Example(rowNumber, null, null, null, null, null)
+        : new SourceLog.Example(rowNumber, columnIndex + 1, CellReference.convertNumToColString(columnIndex),
+                                StringUtils.abbreviate(value, SourceLog.MAX_VALUE_LENGTH), null, null));
+    }
   }
 
   @Override

@@ -39,16 +39,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrTokenizer;
 
 /**
- * Checks a delimited text file line by line for problems that make it read differently than the publisher expects.
- * Lines are split and values tokenized the way the IPT reads the file (see org.gbif.utils.file.csv.CSVReader): lines
- * end at \n, \r or \r\n, and the values of a line are split on the delimiter, honouring the quote.
+ * Checks a delimited text file line by line for problems that make it read differently than the publisher expects, and
+ * counts its rows and columns. Lines are split, values tokenized and rows counted the way the IPT reads the file (see
+ * org.gbif.utils.file.csv.CSVReader): lines end at \n, \r or \r\n, and the values of a line are split on the
+ * delimiter, honouring the quote. The first line gives the columns. The first line after the header lines is always a
+ * row, and empty lines after it are skipped.
  */
 class TextFileChecker {
 
   // examples kept per kind of problem, for the source log
-  static final int MAX_EXAMPLES = 100;
-  // longest value shown in an example
-  private static final int MAX_VALUE_LENGTH = 80;
+  static final int MAX_EXAMPLES = SourceLog.MAX_EXAMPLES;
+  private static final int MAX_VALUE_LENGTH = SourceLog.MAX_VALUE_LENGTH;
   private static final char REPLACEMENT = EncodingDamage.REPLACEMENT;
 
   private final String delimiter;
@@ -59,15 +60,29 @@ class TextFileChecker {
 
   private String[] header;
   private long line;
+  private int rows;
 
   /**
-   * The problems found, in the order of {@link Type}, with up to {@link #MAX_EXAMPLES} examples of each.
+   * The columns and rows of the file as the IPT reads it, and the problems found, in the order of {@link Type}, with up
+   * to {@link #MAX_EXAMPLES} examples of each.
    */
   static class Result {
+    private final int columns;
+    private final int rows;
     private final List<SourceLog.Problem> problems;
 
-    Result(List<SourceLog.Problem> problems) {
+    Result(int columns, int rows, List<SourceLog.Problem> problems) {
+      this.columns = columns;
+      this.rows = rows;
       this.problems = problems;
+    }
+
+    int getColumns() {
+      return columns;
+    }
+
+    int getRows() {
+      return rows;
     }
 
     List<SourceLog.Problem> getProblems() {
@@ -95,7 +110,7 @@ class TextFileChecker {
   TextFileChecker(String delimiter, Character quote, int headerLines) {
     this.delimiter = StringUtils.defaultString(delimiter);
     this.quote = quote;
-    this.headerLines = headerLines;
+    this.headerLines = Math.max(0, headerLines);
     tokenizer = new StrTokenizer();
     tokenizer.setDelimiterString(this.delimiter);
     if (quote != null) {
@@ -118,6 +133,9 @@ class TextFileChecker {
     boolean previousCr = false;
     boolean endOfInput = false;
     line = 1;
+    rows = 0;
+    header = null;
+    found.clear();
 
     try (ReadableByteChannel channel = Files.newByteChannel(file.toPath())) {
       while (true) {
@@ -161,7 +179,7 @@ class TextFileChecker {
       checkLine(current.toString(), invalid);
     }
 
-    return new Result(new ArrayList<>(found.values()));
+    return new Result(header == null ? 0 : header.length, rows, new ArrayList<>(found.values()));
   }
 
   /**
@@ -170,14 +188,19 @@ class TextFileChecker {
    */
   private void checkLine(String text, boolean invalid) {
     try {
-      if (text.isEmpty()) {
+      long firstRow = headerLines + 1L;
+      if (text.isEmpty() && line > firstRow) {
         add(Type.EMPTY_LINES, new SourceLog.Example(line, null, null, null, null, null));
         return;
+      }
+      boolean row = line >= firstRow;
+      if (row) {
+        rows++;
       }
 
       tokenizer.reset(text);
       String[] values = tokenizer.getTokenArray();
-      if (header == null) {
+      if (line == 1) {
         header = values;
       }
 
@@ -185,9 +208,8 @@ class TextFileChecker {
         add(Type.INVALID_CHARACTERS, example(values, v -> v.indexOf(REPLACEMENT) >= 0));
       }
 
-      // the first line sets the number of columns, as it does for the source
-      boolean headerLine = line <= Math.max(1, headerLines);
-      if (!headerLine && values.length != header.length) {
+      // rows have as many values as the first line, which sets the number of columns of the source
+      if (row && line > 1 && values.length != header.length) {
         add(Type.COLUMN_COUNT, new SourceLog.Example(line, null, null, null, null, values.length));
       }
 

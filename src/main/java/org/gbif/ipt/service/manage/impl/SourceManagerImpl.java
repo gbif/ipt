@@ -50,6 +50,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URI;
 import java.nio.charset.CharacterCodingException;
@@ -731,11 +732,15 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     // what was found before doesn't hold for the file as it's downloaded now
     deleteLog(resource.getShortname(), src.getName());
     src.setProblems(null);
-    src.analyze(file);
+    TextFileChecker.Result result = checkTextFile(file, src.getEncoding(), src.getFieldsTerminatedBy(),
+                                                  src.getFieldQuoteChar(), src.getIgnoreHeaderLines());
+    src.setFileSize(file.length());
+    src.setColumns(result.getColumns());
+    src.setRows(result.getRows());
+    src.setReadable(true);
+    src.setProblems(result.getSummary());
 
-    SourceLog log = newLog(src, src.getRows());
-    src.setProblems(checkTextFile(file, src.getEncoding(), src.getFieldsTerminatedBy(), src.getFieldQuoteChar(),
-                                  src.getIgnoreHeaderLines(), log));
+    SourceLog log = newLog(src, result, src.getFieldsTerminatedBy(), src.getFieldQuoteChar());
     try {
       writeLog(src, log);
     } catch (IOException e) {
@@ -865,30 +870,50 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     // what was found before doesn't hold for the file as it's read now
     deleteLog(src.getResource().getShortname(), src.getName());
     if (src instanceof TextFileSource textSource) {
-      textSource.setProblems(null);
+      return analyze(textSource);
     }
 
-    Set<Integer> emptyLines;
+    ExcelFileSource excelSource = (ExcelFileSource) src;
+    excelSource.setProblems(null);
+    List<SourceLog.Problem> problems;
     try {
-      emptyLines = src.analyze();
+      problems = excelSource.analyze();
     } catch (IOException e) {
       return e.getMessage();
     }
+    excelSource.setProblems(problems.stream()
+      .map(p -> new SourceFileProblem(p.getType(), p.getLines(), p.getFirstLine()))
+      .collect(Collectors.toList()));
 
     SourceLog log = newLog(src, src.getRows());
-    if (src instanceof TextFileSource textSource) {
-      try {
-        textSource.setProblems(checkTextFile(textSource.getFile(), textSource.getEncoding(),
-          textSource.getFieldsTerminatedBy(), textSource.getFieldQuoteChar(), textSource.getIgnoreHeaderLines(), log));
-      } catch (IOException e) {
-        LOG.warn("Can't check source file {}", src.getName(), e);
-        return e.getMessage();
-      }
-      log.setLinesWithEmbeddedBreaksRemoved(textSource.getLinesWithEmbeddedBreaksRemoved());
-    } else {
-      log.getProblems().addAll(emptyLinesProblems(emptyLines));
+    log.getProblems().addAll(problems);
+    try {
+      writeLog(src, log);
+    } catch (IOException e) {
+      LOG.warn("Can't write the log of source {}", src.getName(), e);
+      return e.getMessage();
     }
+    return null;
+  }
 
+  private String analyze(TextFileSource src) {
+    src.setProblems(null);
+    TextFileChecker.Result result;
+    try {
+      result = checkTextFile(src.getFile(), src.getEncoding(), src.getFieldsTerminatedBy(), src.getFieldQuoteChar(),
+                             src.getIgnoreHeaderLines());
+    } catch (IOException e) {
+      LOG.warn("Can't read source file {}", src.getName(), e);
+      return e.getMessage();
+    }
+    src.setFileSize(src.getFile().length());
+    src.setColumns(result.getColumns());
+    src.setRows(result.getRows());
+    src.setReadable(true);
+    src.setProblems(result.getSummary());
+
+    SourceLog log = newLog(src, result, src.getFieldsTerminatedBy(), src.getFieldQuoteChar());
+    log.setLinesWithEmbeddedBreaksRemoved(src.getLinesWithEmbeddedBreaksRemoved());
     try {
       writeLog(src, log);
     } catch (IOException e) {
@@ -899,21 +924,31 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   /**
-   * Checks a delimited text file line by line (see {@link TextFileChecker}), and adds how it was read and the problems
-   * found to the source's log.
-   *
-   * @return the problems found, without their examples, to keep on the source
+   * Reads a delimited text file once to count its rows and columns and check it for problems (see
+   * {@link TextFileChecker}).
    */
-  private static List<SourceFileProblem> checkTextFile(File file, String encoding, String delimiter, Character quote,
-                                                       int headerLines, SourceLog log) throws IOException {
-    Charset charset = StringUtils.isNotBlank(encoding) ? Charset.forName(encoding) : StandardCharsets.UTF_8;
-    TextFileChecker.Result result = new TextFileChecker(delimiter, quote, headerLines).check(file, charset);
+  private static TextFileChecker.Result checkTextFile(File file, String encoding, String delimiter, Character quote,
+                                                      int headerLines) throws IOException {
+    Charset charset;
+    try {
+      charset = StringUtils.isNotBlank(encoding) ? Charset.forName(encoding) : StandardCharsets.UTF_8;
+    } catch (IllegalArgumentException e) {
+      throw new UnsupportedEncodingException(encoding);
+    }
+    return new TextFileChecker(delimiter, quote, headerLines).check(file, charset);
+  }
+
+  /**
+   * @return the log of a text file's analysis, with how it was read and the problems found
+   */
+  private static SourceLog newLog(Source src, TextFileChecker.Result result, String delimiter, Character quote) {
+    SourceLog log = newLog(src, result.getRows());
     String d = StringUtils.defaultString(delimiter);
-    log.setEncoding(encoding);
+    log.setEncoding(src.getEncoding());
     log.setDelimiter(d.length() == 1 ? describeDelimiter(d.charAt(0)) : "'" + d + "'");
     log.setQuote(quote == null ? null : quote.toString());
     log.getProblems().addAll(result.getProblems());
-    return result.getSummary();
+    return log;
   }
 
   private static SourceLog newLog(Source src, int rows) {
@@ -923,21 +958,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     log.setRows(rows);
     log.setColumns(src.getColumns());
     return log;
-  }
-
-  /**
-   * @param emptyLines the empty lines found by the source's own reader, for sources that aren't checked line by line
-   */
-  private static List<SourceLog.Problem> emptyLinesProblems(Set<Integer> emptyLines) {
-    List<SourceLog.Problem> problems = new ArrayList<>();
-    if (!emptyLines.isEmpty()) {
-      List<Integer> sorted = emptyLines.stream().sorted().collect(Collectors.toList());
-      List<SourceLog.Example> examples = sorted.stream().limit(TextFileChecker.MAX_EXAMPLES)
-        .map(line -> new SourceLog.Example(line, null, null, null, null, null))
-        .collect(Collectors.toList());
-      problems.add(new SourceLog.Problem(SourceFileProblem.Type.EMPTY_LINES, sorted.size(), sorted.get(0), examples));
-    }
-    return problems;
   }
 
   /**
@@ -975,10 +995,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     if (log.getProblems().isEmpty()) {
       writer.write("\nNo problems found\n");
     }
+    // an Excel sheet has rows rather than lines
+    boolean excel = src instanceof ExcelFileSource;
     for (SourceLog.Problem problem : log.getProblems()) {
-      writer.write("\n" + describeProblem(problem.getType(), log) + ": " + problem.getLines() + " line(s)\n");
+      writer.write("\n" + describeProblem(problem.getType(), log, excel) + ": " + problem.getLines()
+                   + (excel ? " row(s)\n" : " line(s)\n"));
       for (SourceLog.Example example : problem.getExamples()) {
-        writer.write("  " + describeExample(example, log) + "\n");
+        writer.write("  " + describeExample(example, log, excel ? "Row " : "Line ") + "\n");
       }
       if (problem.getLines() > problem.getExamples().size()) {
         writer.write("  ... and " + (problem.getLines() - problem.getExamples().size()) + " more\n");
@@ -986,7 +1009,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
-  private static String describeProblem(SourceFileProblem.Type type, SourceLog log) {
+  private static String describeProblem(SourceFileProblem.Type type, SourceLog log, boolean excel) {
     switch (type) {
       case INVALID_CHARACTERS:
         return "Characters that aren't valid " + log.getEncoding() + ", shown as \uFFFD";
@@ -997,8 +1020,10 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       case DAMAGED_VALUES:
         return "Values that look damaged by an encoding problem (such as \u00C3\u00B8 for \u00F8, or ? or \uFFFD for "
                + "a letter)";
+      case CELLS_BEYOND_COLUMNS:
+        return "Values to the right of the first row's last column, which aren't read";
       case EMPTY_LINES:
-        return "Empty lines, which are skipped";
+        return excel ? "Empty rows, which are skipped" : "Empty lines, which are skipped";
       default:
         return type.name();
     }
@@ -1008,7 +1033,14 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * @return the example as a line of the text log, e.g. "Line 12, column locality: Ã¸stfold"
    */
   static String describeExample(SourceLog.Example example, SourceLog log) {
-    StringBuilder sb = new StringBuilder("Line ").append(example.getLine());
+    return describeExample(example, log, "Line ");
+  }
+
+  /**
+   * @param prefix what the example's line is called, e.g. "Row " in an Excel sheet
+   */
+  private static String describeExample(SourceLog.Example example, SourceLog log, String prefix) {
+    StringBuilder sb = new StringBuilder(prefix).append(example.getLine());
     if (example.getLineColumns() != null) {
       return sb.append(": ").append(example.getLineColumns()).append(" columns, the first line has ")
         .append(log.getColumns()).toString();

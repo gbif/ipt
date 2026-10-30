@@ -18,6 +18,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
+import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SourceFileProblem;
 import org.gbif.ipt.model.SqlSource;
@@ -471,12 +472,14 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   /**
-   * @return the problems found in a text file or URL source's file when it was last analysed, or null if it's another
-   *         kind of source or hasn't been analysed since the IPT started checking for them
+   * @return the problems found in a text file, Excel or URL source's file when it was last analysed, or null if it's
+   *         an SQL source or hasn't been analysed since the IPT started checking for them
    */
   static List<SourceFileProblem> problems(Source source) {
     if (source instanceof TextFileSource textSource) {
       return textSource.getProblems();
+    } else if (source instanceof ExcelFileSource excelSource) {
+      return excelSource.getProblems();
     } else if (source instanceof UrlSource urlSource) {
       return urlSource.getProblems();
     }
@@ -496,7 +499,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
 
   /**
    * @return the problems found in the source's file when it was last analysed, in short, other than empty lines (see
-   *         {@link #getEmptyLinesMessage()}), or null if it isn't a text file or URL source or hasn't been analysed
+   *         {@link #getEmptyLinesMessage()}), or null if it's an SQL source or hasn't been analysed
    *         since the IPT started checking for them
    */
   public List<String> getProblemMessages() {
@@ -674,8 +677,8 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   /**
-   * @return the settings that decide how a text file source is read into rows and columns, or null for other sources.
-   *         Empty values are null, as the form sends no quote as an empty value
+   * @return the settings that decide how a text file or Excel source is read into rows and columns, or null for other
+   *         sources. Empty values are null, as the form sends no quote as an empty value
    */
   static List<Object> readingSettings(Source source) {
     if (source instanceof TextFileSource textSource) {
@@ -683,13 +686,15 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
                            textSource.getIgnoreHeaderLines(),
                            StringUtils.defaultIfEmpty(textSource.getFieldsTerminatedBy(), null),
                            StringUtils.defaultIfEmpty(textSource.getFieldsEnclosedBy(), null));
+    } else if (source instanceof ExcelFileSource excelSource) {
+      return Arrays.asList(excelSource.getSheetIdx(), excelSource.getIgnoreHeaderLines());
     }
     return null;
   }
 
   /**
-   * @return true if the form changed how a text file source is read, so what was found when it was last analysed no
-   *         longer holds
+   * @return true if the form changed how a text file or Excel source is read, so what was found when it was last
+   *         analysed no longer holds
    */
   protected boolean readingSettingsChanged() {
     return originalReadingSettings != null && !originalReadingSettings.equals(readingSettings(source));
