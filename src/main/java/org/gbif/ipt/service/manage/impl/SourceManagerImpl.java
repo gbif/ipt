@@ -47,9 +47,9 @@ import org.gbif.utils.file.csv.UnknownDelimitersException;
 import org.gbif.utils.file.tabular.TabularFileNormalizer;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URI;
@@ -961,18 +961,18 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   /**
-   * Writes the source's log as JSON for the source log page, and as text to download.
+   * Writes the source's log as JSON, for the source log page and its download (see {@link #logText}). The text log of
+   * an earlier analysis is deleted.
    */
   private void writeLog(Source src, SourceLog log) throws IOException {
     String resourceName = src.getResource().getShortname();
     deleteLog(resourceName, src.getName());
     SOURCE_LOG_MAPPER.writeValue(dataDir.sourceLogJsonFile(resourceName, src.getName()), log);
-    File textFile = dataDir.sourceLogFile(resourceName, src.getName());
-    try (BufferedWriter writer = Files.newBufferedWriter(textFile.toPath(), StandardCharsets.UTF_8)) {
-      writeLogText(src, log, writer);
-    }
   }
 
+  /**
+   * Deletes the source's log, and its text log if it was analysed before the log was kept as JSON only.
+   */
   private void deleteLog(String resourceName, String sourceName) {
     FileUtils.deleteQuietly(dataDir.sourceLogJsonFile(resourceName, sourceName));
     FileUtils.deleteQuietly(dataDir.sourceLogFile(resourceName, sourceName));
@@ -1056,6 +1056,18 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       sb.append(example.getValue());
     }
     return sb.toString();
+  }
+
+  @Override
+  public String logText(Source source, SourceLog log) {
+    StringWriter writer = new StringWriter();
+    try {
+      writeLogText(source, log, writer);
+    } catch (IOException e) {
+      // a StringWriter doesn't throw
+      throw new IllegalStateException(e);
+    }
+    return writer.toString();
   }
 
   @Override

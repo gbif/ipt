@@ -25,8 +25,10 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.EncodingDamage;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serial;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -41,8 +43,8 @@ import jakarta.inject.Inject;
 import lombok.Getter;
 
 /**
- * Shows what was found when a source was last analysed: how it was read, and the problems found with examples.
- * Sources last analysed before the log was kept as JSON show their text log instead.
+ * Shows what was found when a source was last analysed: how it was read, and the problems found with examples, and
+ * downloads it as text. Sources last analysed before the log was kept as JSON show their text log instead.
  */
 public class SourceLogAction extends ManagerBaseAction {
 
@@ -61,6 +63,11 @@ public class SourceLogAction extends ManagerBaseAction {
   // the text log of a source not analysed since the log was kept as JSON
   @Getter
   private String textLog;
+  // the log as text, to download
+  @Getter
+  private InputStream inputStream;
+  @Getter
+  private String filename;
 
   @Inject
   public SourceLogAction(SimpleTextProvider textProvider, AppConfig cfg, RegistrationManager registrationManager,
@@ -98,6 +105,23 @@ public class SourceLogAction extends ManagerBaseAction {
         }
       }
     }
+    return SUCCESS;
+  }
+
+  /**
+   * Downloads the log as text, generated from the JSON log, or the text log of a source not analysed since the log was
+   * kept as JSON.
+   */
+  public String download() {
+    if (!SUCCESS.equals(execute())) {
+      return NOT_FOUND;
+    }
+    String text = log != null ? sourceManager.logText(source, log) : textLog;
+    if (text == null) {
+      return NOT_FOUND;
+    }
+    inputStream = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+    filename = source.getName() + ".log";
     return SUCCESS;
   }
 

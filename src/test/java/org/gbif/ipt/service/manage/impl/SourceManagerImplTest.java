@@ -210,7 +210,7 @@ public class SourceManagerImplTest extends IptBaseTest {
     TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
     assertEquals(1, src.getLinesWithEmbeddedBreaksRemoved());
     assertProblems(src);
-    assertTrue(readLog().contains(
+    assertTrue(logText(src).contains(
       "Fixed when the file was uploaded: 1 line break(s) inside quoted values were removed"));
     assertEquals(3, src.getRows());
     assertEquals(4, java.nio.file.Files.readAllLines(src.getFile().toPath()).size());
@@ -238,7 +238,7 @@ public class SourceManagerImplTest extends IptBaseTest {
     assertEquals("remarks", example.getColumn());
     assertEquals("\"first\" and more", example.getValue());
     assertEquals(SourceLog.Reason.TEXT_AFTER_QUOTE, example.getReason());
-    assertTrue(readLog().contains("Line 2, column remarks: text after the closing quote: \"first\" and more"));
+    assertTrue(logText(src).contains("Line 2, column remarks: text after the closing quote: \"first\" and more"));
     assertTrue(src.isReadable());
     assertEquals(2, src.getColumns());
     assertArrayEquals(java.nio.file.Files.readAllBytes(srcFile.toPath()),
@@ -251,8 +251,11 @@ public class SourceManagerImplTest extends IptBaseTest {
     java.nio.file.Files.write(srcFile.toPath(),
       "id\tremarks\n1\t\"first\" and more\n".getBytes(StandardCharsets.UTF_8));
     TextFileSource src = (TextFileSource) manager.add(resource, srcFile, srcFile.getName());
-    assertTrue(logFile.exists());
+    // the log is kept as JSON only
+    assertFalse(logFile.exists());
     assertTrue(logJsonFile.exists());
+    // the text log of a source analysed before that
+    java.nio.file.Files.write(logFile.toPath(), "old".getBytes(StandardCharsets.UTF_8));
 
     // the file can't be read anymore: what was found in it before no longer holds
     assertTrue(src.getFile().delete());
@@ -286,7 +289,7 @@ public class SourceManagerImplTest extends IptBaseTest {
       assertEquals("tab", log.getDelimiter());
       assertEquals("\"", log.getQuote());
       assertEquals("DragÃ¸r", log.getProblems().get(1).getExamples().get(0).getValue());
-      assertTrue(readLog().contains("Line 3, column locality: DragÃ¸r"));
+      assertTrue(logText(src).contains("Line 3, column locality: DragÃ¸r"));
 
       // analysed where it was downloaded, and not kept: the source is read from the URL
       assertNull(src.getFile());
@@ -407,8 +410,9 @@ public class SourceManagerImplTest extends IptBaseTest {
     }
   }
 
-  private String readLog() throws IOException {
-    return new String(java.nio.file.Files.readAllBytes(logFile.toPath()), StandardCharsets.UTF_8);
+  // the log as it's downloaded
+  private String logText(Source src) {
+    return manager.logText(src, manager.readLog(src));
   }
 
   @Test

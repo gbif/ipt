@@ -507,12 +507,16 @@ public class DataDir {
     return resourceFile(resource.getShortname(), "sources/" + filename);
   }
 
+  /**
+   * @return the source log as text, as it was written before the log was kept as JSON only. Shown and downloaded for a
+   *         source not analysed since, and deleted when it is
+   */
   public File sourceLogFile(String resourceName, String sourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/sources/" + sourceName + ".log");
   }
 
   /**
-   * @return the source log as JSON, shown on the source log page. The .log file has the same as text, to download
+   * @return the source log as JSON, shown on the source log page and downloaded as text
    */
   public File sourceLogJsonFile(String resourceName, String sourceName) {
     return dataFile(RESOURCES_DIR + "/" + resourceName + "/sources/" + sourceName + ".log.json");

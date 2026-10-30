@@ -207,9 +207,9 @@
     </action>
 
     <!-- under manage, since the log has values from the source's file -->
-    <action name="sourcelog-download" class="org.gbif.ipt.action.portal.ResourceFileAction" method="sourceLog">
+    <action name="sourcelog-download" class="org.gbif.ipt.action.manage.SourceLogAction" method="download">
       <result name="success" type="stream">
-        <param name="contentType">${mimeType}</param>
+        <param name="contentType">text/plain</param>
         <param name="contentCharSet">UTF-8</param>
         <param name="inputName">inputStream</param>
         <param name="contentDisposition">attachment; filename="${filename}"</param>

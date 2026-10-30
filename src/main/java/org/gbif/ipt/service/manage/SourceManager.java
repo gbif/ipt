@@ -86,6 +86,14 @@ public interface SourceManager {
   SourceLog readLog(Source source);
 
   /**
+   * @param source the source the log is of
+   * @param log    the source's log, see {@link #readLog(Source)}
+   *
+   * @return the log as text, to download
+   */
+  String logText(Source source, SourceLog log);
+
+  /**
    * Return list of source's column names.
    *
    * @param source source

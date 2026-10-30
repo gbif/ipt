@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.io.Serial;
 import java.math.BigDecimal;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,7 +47,6 @@ public class ResourceFileAction extends PortalBaseAction {
   private static final Logger LOG = LogManager.getLogger(ResourceFileAction.class);
 
   private final DataDir dataDir;
-  protected Source source;
   @Getter
   private InputStream inputStream;
   @Getter
@@ -272,30 +270,6 @@ public class ResourceFileAction extends PortalBaseAction {
       return NOT_FOUND;
     }
     return execute();
-  }
-
-  public String sourceLog() {
-    if (resource == null || source == null) {
-      return NOT_FOUND;
-    }
-    data = dataDir.sourceLogFile(resource.getShortname(), source.getName());
-    if (data.exists()) {
-      mimeType = "text/log";
-      filename = source.getName() + ".log";
-    } else {
-      return NOT_FOUND;
-    }
-    return execute();
-  }
-
-  @Override
-  public void prepare() {
-    super.prepare();
-    // look for source parameter
-    String src = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_SOURCE));
-    if (StringUtils.isNotBlank(src)) {
-      source = resource.getSource(src);
-    }
   }
 
   /**
