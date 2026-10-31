@@ -25,6 +25,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.PasswordUtils;
 import org.gbif.ipt.validation.UserValidator;
 
 import jakarta.inject.Inject;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.RandomStringGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -56,12 +56,6 @@ public class UserAccountsAction extends POSTAction {
 
   private static final Logger LOG = LogManager.getLogger(UserAccountsAction.class);
 
-  private static final int PASSWORD_LENGTH = 8;
-  private static final String PASSWORD_ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-  private static final RandomStringGenerator PASSWORD_GENERATOR =
-      new RandomStringGenerator.Builder()
-          .selectFrom(PASSWORD_ALLOWED_CHARS.toCharArray())
-          .build();
   private static final String EMAIL_NEW_ACCOUNT = "<a href=\"mailto:%s" +
       "?subject=IPT account" +
       "&amp;body=Dear %s," +
@@ -271,7 +265,7 @@ public class UserAccountsAction extends POSTAction {
         LOG.info("User {} has been created by {}", id, currentUser.getEmail());
         addActionMessage(getText("admin.user.added", new String[]{emailLink}));
       } else if (resetPassword) {
-        String newPassword = PASSWORD_GENERATOR.generate(PASSWORD_LENGTH);
+        String newPassword = PasswordUtils.generatePassword();
         String newPasswordEncoded = URLEncoder.encode(newPassword, StandardCharsets.UTF_8);
         String hash = BCrypt.withDefaults().hashToString(12, newPassword.toCharArray());
         user.setPassword(hash);
