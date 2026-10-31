@@ -54,8 +54,8 @@ import lombok.Getter;
  * description, which is later converted to DocBook in the EML). For those parameters,
  * the safe subset of tags is preserved instead of being stripped to plain text.
  * <p>
- * Some of these fields (see {@link #DOCBOOK_PARAMETERS}) are edited as HTML but converted to
- * DocBook in the browser before submission (see {@code js/docbook/docbook-v2.js}), so they are
+ * Some of these fields (see {@link #DOCBOOK_PARAMETERS}) are edited in a rich text editor that
+ * submits DocBook (see {@code js/docbook/docbook-editor.js}), so they are
  * sanitized against a DocBook safelist instead of an HTML one (see {@link XSSUtils#stripDocBookXSS}).
  * <p>
  * Rather than hard-rejecting the whole request with a generic HTTP 400 when something

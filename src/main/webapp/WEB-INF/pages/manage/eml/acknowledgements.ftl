@@ -2,70 +2,11 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
+    <#include "/WEB-INF/pages/macros/docbook_editor.ftl"/>
+    <@docBookEditorAssets/>
     <title><@s.text name='manage.metadata.acknowledgements.title'/></title>
-    <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <script>
         $(document).ready(function() {
-            var docBookAcknowledgements = "${eml.acknowledgements!?js_string}";
-            var htmlAcknowledgements = convertToHtml(docBookAcknowledgements);
-
-            const acknowledgementsEditor = $('#acknowledgements-editor');
-            acknowledgementsEditor.summernote({
-                height: 200,
-                minHeight: null,
-                maxHeight: null,
-                focus: true,
-                toolbar: [
-                    ['insert', ['codeview']]
-                ],
-                // clean up HTML and styles when copy/paste
-                callbacks: {
-                    onPaste: function (e) {
-                        e.preventDefault();
-                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
-                        const text = clipboardData.getData('text/plain');
-                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
-
-                        acknowledgementsEditor.summernote('focus');
-                        acknowledgementsEditor.summernote('pasteHTML', cleaned);
-                    }
-                }
-            });
-
-            acknowledgementsEditor.summernote('code', htmlAcknowledgements);
-
-            // Form submission event
-            $('#acknowledgements-form').submit(function(event) {
-                // Prevent the default form submission
-                event.preventDefault();
-
-                // Extract HTML content from Summernote editor
-                var htmlContent = $('#acknowledgements-editor').summernote('code');
-
-                const acknowledgementsValidation = validateHTML(htmlContent);
-                if (!acknowledgementsValidation.isValid) {
-                    $("#html-validation-error-block").show();
-                    var errorMessage =
-                        '${action.getText("manage.metadata.acknowledgements.unsupportedHtmlInput1")?js_string}'
-                        + " " +  acknowledgementsValidation.tag + ". "
-                        + '${action.getText("manage.metadata.acknowledgements.unsupportedHtmlInput2")?js_string}';
-                    $("#html-validation-error-message").text(errorMessage);
-                    $('body, html').animate({scrollTop: 0});
-                    return;
-                }
-
-                // Convert HTML to DocBook
-                var docbookContent = convertToDocBook(htmlContent);
-
-                // Assign DocBook content to a hidden input field
-                $('#acknowledgements').val(docbookContent);
-
-                // Submit the form
-                this.submit();
-            });
-
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
@@ -76,16 +17,6 @@
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-        <div id="html-validation-error-block" class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
-            <div class="me-3">
-                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-            </div>
-            <div class="overflow-x-hidden pt-1">
-                <span id="html-validation-error-message"></span>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
     </div>
 
     <form id="acknowledgements-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
@@ -159,8 +90,7 @@
                                 <@s.text name='manage.metadata.acknowledgements.description'/>
                             </p>
 
-                            <textarea id="acknowledgements-editor" name="acknowledgements"></textarea>
-                            <input id="acknowledgements" type="hidden" name="eml.acknowledgements">
+                            <@docBookEditor name="eml.acknowledgements" id="acknowledgements" value=eml.acknowledgements! label=action.getText("manage.metadata.acknowledgements")/>
                         </div>
                     </div>
                 </main>

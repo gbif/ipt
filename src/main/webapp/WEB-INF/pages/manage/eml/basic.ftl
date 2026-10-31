@@ -4,13 +4,12 @@
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
+    <#include "/WEB-INF/pages/macros/docbook_editor.ftl"/>
+    <@docBookEditorAssets/>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script>
         $(document).ready(function(){
@@ -206,64 +205,6 @@
                 theme: 'bootstrap4'
             });
 
-            var docBookDescription = "${eml.description!?js_string}";
-            var htmlDescription = convertToHtml(docBookDescription);
-
-            const descriptionEditor = $('#description-editor');
-            descriptionEditor.summernote({
-                height: 200,
-                minHeight: null,
-                maxHeight: null,
-                focus: false,
-                toolbar: [
-                    ['insert', ['codeview']]
-                ],
-                // clean up HTML and styles when copy/paste
-                callbacks: {
-                    onPaste: function (e) {
-                        e.preventDefault();
-                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
-                        const text = clipboardData.getData('text/plain');
-                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
-
-                        descriptionEditor.summernote('focus');
-                        descriptionEditor.summernote('pasteHTML', cleaned);
-                    }
-                }
-            });
-
-            $('#description-editor').summernote('code', htmlDescription);
-
-            // Form submission events
-            $('#basic-metadata-form').submit(function(event) {
-                // Prevent the default form submission
-                event.preventDefault();
-
-                // Extract HTML content from Summernote editor
-                var htmlContentDescription = $('#description-editor').summernote('code');
-
-                const descriptionValidation = validateHTML(htmlContentDescription);
-                if (!descriptionValidation.isValid) {
-                    $("#html-validation-error-block").show();
-                    var errorMessage =
-                        '${action.getText("eml.description.unsupportedHtmlInput1")?js_string}'
-                        + " " + descriptionValidation.tag + ". "
-                        + '${action.getText("eml.description.unsupportedHtmlInput2")?js_string}';
-                    $("#html-validation-error-message").text(errorMessage);
-                    $('body, html').animate({scrollTop: 0});
-                    return;
-                }
-
-                // Convert HTML to DocBook
-                var docbookContentDescription = convertToDocBook(htmlContentDescription);
-
-                // Assign DocBook content to a hidden input field
-                $('#description').val(docbookContentDescription);
-
-                // Submit the form
-                this.submit();
-            });
-
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
@@ -303,16 +244,6 @@
 
 <div class="container px-0">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-    <div id="html-validation-error-block" class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
-        <div class="me-3">
-            <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-        </div>
-        <div class="overflow-x-hidden pt-1">
-            <span id="html-validation-error-message"></span>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
 </div>
 
 <form id="basic-metadata-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
@@ -472,8 +403,7 @@
                         <@textinline name="eml.description" help="i18n" i18nkey="" requiredField=true/>
 
                         <div class="mt-3">
-                            <textarea id="description-editor" name="description"></textarea>
-                            <input id="description" type="hidden" name="eml.description">
+                            <@docBookEditor name="eml.description" id="description" value=eml.description! label=action.getText("eml.description")/>
                         </div>
                     </div>
 

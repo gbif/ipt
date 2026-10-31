@@ -46,7 +46,7 @@ public final class XSSUtils {
       .addEnforcedAttribute("a", "target", "_blank");
 
   /**
-   * DocBook elements produced by {@code convertToDocBook} in {@code js/docbook/docbook-v2.js}, used by the
+   * DocBook elements produced by the editor in {@code js/docbook/docbook-editor.js}, used by the
    * description, acknowledgements, purpose, introduction and getting started fields.
    */
   private static final Safelist DOCBOOK_SAFELIST = Safelist.none()

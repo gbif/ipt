@@ -3,10 +3,9 @@
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <title><@s.text name='manage.metadata.additionalDescription.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script src="${baseURL}/js/docbook/docbook-v2.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
+    <#include "/WEB-INF/pages/macros/docbook_editor.ftl"/>
+    <@docBookEditorAssets/>
     <script>
         $(document).ready(function(){
             // scroll to the error if present
@@ -19,150 +18,6 @@
                 $('body, html').animate({scrollTop: pos});
             }
 
-            var docBookPurpose = "${eml.purpose!?js_string}";
-            var htmlPurpose = convertToHtml(docBookPurpose);
-
-            var docBookGettingStarted = "${eml.gettingStarted!?js_string}";
-            var htmlGettingStarted = convertToHtml(docBookGettingStarted);
-
-            var docBookIntroduction = "${eml.introduction!?js_string}";
-            var htmlIntroduction = convertToHtml(docBookIntroduction);
-
-            const purposeEditor = $('#purpose-editor');
-            purposeEditor.summernote({
-                height: 200,
-                minHeight: null,
-                maxHeight: null,
-                focus: false,
-                toolbar: [
-                    ['insert', ['codeview']]
-                ],
-                // clean up HTML and styles when copy/paste
-                callbacks: {
-                    onPaste: function (e) {
-                        e.preventDefault();
-                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
-                        const text = clipboardData.getData('text/plain');
-                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
-
-                        purposeEditor.summernote('focus');
-                        purposeEditor.summernote('pasteHTML', cleaned);
-                    }
-                }
-            });
-
-            purposeEditor.summernote('code', htmlPurpose);
-
-            const gettingStartedEditor = $('#gettingStarted-editor');
-            gettingStartedEditor.summernote({
-                height: 200,
-                minHeight: null,
-                maxHeight: null,
-                focus: false,
-                toolbar: [
-                    ['insert', ['codeview']]
-                ],
-                // clean up HTML and styles when copy/paste
-                callbacks: {
-                    onPaste: function (e) {
-                        e.preventDefault();
-                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
-                        const text = clipboardData.getData('text/plain');
-                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
-
-                        gettingStartedEditor.summernote('focus');
-                        gettingStartedEditor.summernote('pasteHTML', cleaned);
-                    }
-                }
-            });
-
-            gettingStartedEditor.summernote('code', htmlGettingStarted);
-
-            const introductionEditor = $('#introduction-editor');
-            introductionEditor.summernote({
-                height: 200,
-                minHeight: null,
-                maxHeight: null,
-                focus: false,
-                toolbar: [
-                    ['insert', ['codeview']]
-                ],
-                // clean up HTML and styles when copy/paste
-                callbacks: {
-                    onPaste: function (e) {
-                        e.preventDefault();
-                        const clipboardData = (e.originalEvent || e).clipboardData || window.clipboardData;
-                        const text = clipboardData.getData('text/plain');
-                        const cleaned = text.replace(/\r?\n/g, '<br>'); // keep newlines
-
-                        introductionEditor.summernote('focus');
-                        introductionEditor.summernote('pasteHTML', cleaned);
-                    }
-                }
-            });
-
-            introductionEditor.summernote('code', htmlIntroduction);
-
-            // Form submission events
-            $('#additional-description-form').submit(function(event) {
-                // Prevent the default form submission
-                event.preventDefault();
-
-                // Extract HTML content from Summernote editor
-                var htmlContentPurpose = $('#purpose-editor').summernote('code');
-                var htmlContentGettingStarted = $('#gettingStarted-editor').summernote('code');
-                var htmlContentIntroduction = $('#introduction-editor').summernote('code');
-
-                const purposeValidation = validateHTML(htmlContentPurpose);
-                if (!purposeValidation.isValid) {
-                    $("#html-validation-error-block").show();
-                    var errorMessagePurpose =
-                        '${action.getText("eml.purpose.unsupportedHtmlInput1")?js_string}'
-                        + " " + purposeValidation.tag + ". "
-                        + '${action.getText("eml.purpose.unsupportedHtmlInput2")?js_string}';
-                    $("#html-validation-error-message").text(errorMessagePurpose);
-                    $('body, html').animate({scrollTop: 0});
-                    return;
-                }
-
-                const introductionValidation = validateHTML(htmlContentIntroduction);
-                if (!introductionValidation.isValid) {
-                    $("#html-validation-error-block").show();
-                    var errorMessageIntroduction =
-                        '${action.getText("manage.metadata.introduction.unsupportedHtmlInput1")?js_string}'
-                        + " " + introductionValidation.tag + ". "
-                        + '${action.getText("manage.metadata.introduction.unsupportedHtmlInput2")?js_string}';
-                    $("#html-validation-error-message").text(errorMessageIntroduction);
-                    $('body, html').animate({scrollTop: 0});
-                    return;
-                }
-
-                const gettingStartedValidation = validateHTML(htmlContentGettingStarted);
-                if (!gettingStartedValidation.isValid) {
-                    $("#html-validation-error-block").show();
-                    var errorMessageGettingStarted =
-                        '${action.getText("manage.metadata.gettingStarted.unsupportedHtmlInput1")?js_string}'
-                        + " " + gettingStartedValidation.tag + ". "
-                        + '${action.getText("manage.metadata.gettingStarted.unsupportedHtmlInput2")?js_string}';
-                    $("#html-validation-error-message").text(errorMessageGettingStarted);
-                    $('body, html').animate({scrollTop: 0});
-                    return;
-                }
-
-                // Convert HTML to DocBook
-                var docbookContentPurpose = convertToDocBook(htmlContentPurpose);
-                var docbookContentGettingStarted = convertToDocBook(htmlContentGettingStarted);
-                var docbookContentIntroduction = convertToDocBook(htmlContentIntroduction);
-
-                // Assign DocBook content to a hidden input field
-                $('#purpose').val(docbookContentPurpose);
-                $('#gettingStarted').val(docbookContentGettingStarted);
-                $('#introduction').val(docbookContentIntroduction);
-
-                // Submit the form
-                this.submit();
-            });
-
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
@@ -173,16 +28,6 @@
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-        <div id="html-validation-error-block" class="alert alert-danger alert-dismissible fade show d-flex metadata-error-alert" role="alert" style="display: none !important;">
-            <div class="me-3">
-                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-            </div>
-            <div class="overflow-x-hidden pt-1">
-                <span id="html-validation-error-message"></span>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
     </div>
 
     <form id="additional-description-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
@@ -250,8 +95,7 @@
                             </div>
 
                             <div class="mt-3">
-                                <textarea id="purpose-editor" name="purpose"></textarea>
-                                <input id="purpose" type="hidden" name="eml.purpose">
+                                <@docBookEditor name="eml.purpose" id="purpose" value=eml.purpose! label=action.getText("eml.purpose")/>
                             </div>
                         </div>
 
@@ -266,8 +110,7 @@
                             </div>
 
                             <div class="mt-3">
-                                <textarea id="introduction-editor" name="introduction"></textarea>
-                                <input id="introduction" type="hidden" name="eml.introduction">
+                                <@docBookEditor name="eml.introduction" id="introduction" value=eml.introduction! label=action.getText("manage.metadata.introduction")/>
                             </div>
                         </div>
 
@@ -282,8 +125,7 @@
                             </div>
 
                             <div class="mt-3">
-                                <textarea id="gettingStarted-editor" name="gettingStarted"></textarea>
-                                <input id="gettingStarted" type="hidden" name="eml.gettingStarted">
+                                <@docBookEditor name="eml.gettingStarted" id="gettingStarted" value=eml.gettingStarted! label=action.getText("manage.metadata.gettingStarted")/>
                             </div>
                         </div>
                     </div>
