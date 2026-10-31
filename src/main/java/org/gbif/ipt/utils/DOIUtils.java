@@ -33,7 +33,7 @@ public class DOIUtils {
   private static final RandomStringGenerator DOI_SUFFIX_GENERATOR =
       new RandomStringGenerator.Builder()
           .selectFrom(DOI_ALLOWED_CHARS.toCharArray())
-          .build();
+          .get();
 
   /*
    * Empty constructor.
