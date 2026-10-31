@@ -83,6 +83,9 @@ public class SanitizeHtmlFilter implements Filter {
   private static final String RICH_TEXT_FLAG_MESSAGE =
       "Some HTML in this field was not in the list of allowed tags and was removed.";
 
+  private static final String DOCBOOK_FLAG_MESSAGE =
+      "Some formatting or a link address in this field is not supported and was removed. Please review your input.";
+
   /**
    * Names of request parameters that are allowed to contain a limited set of HTML tags,
    * matching what the corresponding form field's editor exposes to the user.
@@ -278,9 +281,17 @@ public class SanitizeHtmlFilter implements Filter {
      * the plain-text case) if anything was actually removed.
      */
     private String sanitizeRichText(String parameter, String value) {
-      String cleanedForOutput = DOCBOOK_PARAMETERS.contains(parameter)
-          ? XSSUtils.stripDocBookXSS(value)
-          : RICH_TEXT_POLICY.sanitize(value);
+      if (DOCBOOK_PARAMETERS.contains(parameter)) {
+        String cleaned = XSSUtils.stripDocBookXSS(value);
+        // compared on the parsed nodes: the serialized forms can differ without anything being removed
+        if (!XSSUtils.isDocBookSafe(value)) {
+          LOG.warn("Parameter sanitization (DocBook). {} modified: {}  ==>  {}", parameter, value, cleaned);
+          flaggedFields.put(parameter, DOCBOOK_FLAG_MESSAGE);
+        }
+        return cleaned;
+      }
+
+      String cleanedForOutput = RICH_TEXT_POLICY.sanitize(value);
 
       String normalizedValue = StringEscapeUtils.unescapeHtml4(value);
       String normalizedOutput = StringEscapeUtils.unescapeHtml4(cleanedForOutput);

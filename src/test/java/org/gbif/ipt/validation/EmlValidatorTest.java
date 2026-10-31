@@ -762,4 +762,28 @@ public class EmlValidatorTest extends IptBaseTest {
 
     assertTrue(validator.areAllSectionsValid(resource, new SectionErrorCollector(), new StrutsI18n(action)));
   }
+
+  @Test
+  public void testDocBookPurposeIsValidated() {
+    eml.setPurpose("<para>Purpose</para>");
+    assertTrue(validator.isValid(resource, MetadataSection.ADDITIONAL_DESCRIPTION_SECTION));
+
+    // a section needs at least one paragraph
+    eml.setPurpose("<section><title>Title</title></section>");
+    assertFalse(validator.isValid(resource, MetadataSection.ADDITIONAL_DESCRIPTION_SECTION));
+  }
+
+  @Test
+  public void testDescriptionOfNoBreakSpacesIsMissing() {
+    eml.setDescription("<para>\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0</para>");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
+
+  @Test
+  public void testSimplifyDocBookValidationErrorMessageKeepsElementNames() {
+    String message = "org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 297; cvc-complex-type.2.4.a: "
+        + "Invalid content was found starting with element 'citetitle'. One of '{para, section}' is expected.";
+    assertEquals("Invalid content was found starting with element 'citetitle'. One of '{para, section}' is expected.",
+        EmlValidator.simplifyDocBookValidationErrorMessage(message));
+  }
 }

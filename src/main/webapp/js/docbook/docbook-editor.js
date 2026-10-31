@@ -768,8 +768,33 @@
         };
     }
 
+    /**
+     * Renders a DocBook value read-only into an element, through the editor schema: only the elements the schema
+     * knows are created (with DOM methods, never innerHTML), and links keep http, https, ftp and mailto addresses
+     * only. Leaves the element as it is if the value is empty.
+     */
+    function render(element, value) {
+        if (!element || typeof value !== 'string' || !value.trim()) return;
+        const doc = docFromDocBook(value);
+        const fragment = PM.model.DOMSerializer.fromSchema(schema).serializeFragment(doc.content);
+        element.replaceChildren(fragment);
+        element.classList.add('ipt-docbook');
+    }
+
+    /**
+     * Renders every element with a data-docbook attribute (the DocBook value, HTML-escaped by the template).
+     */
+    function renderAll(root) {
+        (root || document).querySelectorAll('[data-docbook]').forEach(element => {
+            render(element, element.getAttribute('data-docbook'));
+            element.removeAttribute('data-docbook');
+        });
+    }
+
     global.IptDocBookEditor = {
         create,
+        render,
+        renderAll,
         setLabels: custom => {
             labels = Object.assign({}, labels, custom);
         },

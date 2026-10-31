@@ -249,4 +249,16 @@ public class XSSUtilsTest extends IptBaseTest {
   void docBookNullIsHandled() {
     assertNull(XSSUtils.stripDocBookXSS(null));
   }
+
+  @Test
+  void docBookSafeChecksNodesNotStrings() {
+    assertTrue(XSSUtils.isDocBookSafe(null));
+    assertTrue(XSSUtils.isDocBookSafe("<para>p &lt; 0.05 &amp; \u00A0</para>"));
+    assertTrue(XSSUtils.isDocBookSafe("<para><emphasis/></para>"));
+    assertTrue(XSSUtils.isDocBookSafe("<para><![CDATA[x < y]]></para>"));
+    assertTrue(XSSUtils.isDocBookSafe("<?xml version=\"1.0\"?><para>a<!-- c -->b</para>"));
+    assertFalse(XSSUtils.isDocBookSafe("<para>x<b>y</b></para>"));
+    assertFalse(XSSUtils.isDocBookSafe("<para onclick=\"x\">a</para>"));
+    assertFalse(XSSUtils.isDocBookSafe("<ulink url=\"javascript:alert(1)\"><citetitle>x</citetitle></ulink>"));
+  }
 }

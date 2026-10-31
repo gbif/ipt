@@ -14,7 +14,10 @@
 package org.gbif.ipt.utils;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.XmlDeclaration;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Safelist;
@@ -97,10 +100,36 @@ public final class XSSUtils {
     if (value == null) {
       return null;
     }
-    Document dirty = Document.createShell("");
-    dirty.body().insertChildren(0, Parser.xmlParser().parseFragmentInput(value, null, ""));
-    Document clean = new Cleaner(DOCBOOK_SAFELIST).clean(dirty);
+    Document clean = new Cleaner(DOCBOOK_SAFELIST).clean(parseDocBook(value));
     clean.outputSettings(DOCBOOK_OUTPUT_SETTINGS);
     return clean.body().html();
+  }
+
+  /**
+   * Tests whether {@link #stripDocBookXSS} would remove any element or attribute from a DocBook fragment.
+   * <p>
+   * The check is on the parsed nodes rather than on the serialized strings, so differences in serialization alone
+   * (e.g. {@code <emphasis/>} written back as {@code <emphasis />}, CDATA written back as escaped text) are not
+   * reported. Comments and XML declarations are dropped without being reported, as they carry no content.
+   *
+   * @param value DocBook fragment
+   * @return true if nothing would be removed
+   */
+  public static boolean isDocBookSafe(String value) {
+    if (value == null) {
+      return true;
+    }
+    Document dirty = parseDocBook(value);
+    dirty.body().nodeStream()
+        .filter(node -> node instanceof Comment || node instanceof XmlDeclaration)
+        .toList()
+        .forEach(Node::remove);
+    return new Cleaner(DOCBOOK_SAFELIST).isValid(dirty);
+  }
+
+  private static Document parseDocBook(String value) {
+    Document document = Document.createShell("");
+    document.body().insertChildren(0, Parser.xmlParser().parseFragmentInput(value, null, ""));
+    return document;
   }
 }

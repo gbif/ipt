@@ -279,4 +279,29 @@ class SanitizeHtmlFilterTest {
     assertFalse(sanitized.contains("javascript:"), "javascript: URL must be stripped, but was: " + sanitized);
     assertTrue(sanitized.contains("<para>Hello</para>"));
   }
+
+  @Test
+  void docBookFieldIsNotFlaggedForSerializationDifferences() throws Exception {
+    // written back as <emphasis />, escaped text and without the comment, but nothing is removed
+    Map<String, String[]> params = new HashMap<>();
+    params.put(DOCBOOK_PARAM, new String[]{"<para>a<emphasis/>b<!-- note --><![CDATA[x < y]]></para>"});
+    givenParams(params);
+
+    SanitizeHtmlFilter.XssRequestWrapper wrapped = runFilterAndCaptureWrappedRequest();
+
+    assertTrue(wrapped.getFlaggedFields().isEmpty(), wrapped.getFlaggedFields().toString());
+    assertEquals("<para>a<emphasis />bx &lt; y</para>", wrapped.getParameter(DOCBOOK_PARAM));
+  }
+
+  @Test
+  void docBookFieldIsFlaggedWhenLinkAddressIsRemoved() throws Exception {
+    Map<String, String[]> params = new HashMap<>();
+    params.put(DOCBOOK_PARAM, new String[]{"<para><ulink url=\"www.gbif.org\"><citetitle>GBIF</citetitle></ulink></para>"});
+    givenParams(params);
+
+    SanitizeHtmlFilter.XssRequestWrapper wrapped = runFilterAndCaptureWrappedRequest();
+
+    assertTrue(wrapped.getFlaggedFields().containsKey(DOCBOOK_PARAM));
+    assertEquals("<para><ulink><citetitle>GBIF</citetitle></ulink></para>", wrapped.getParameter(DOCBOOK_PARAM));
+  }
 }

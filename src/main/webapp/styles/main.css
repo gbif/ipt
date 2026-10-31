@@ -3249,3 +3249,25 @@ span.contact-citation-banner {
     background: #f1f1f1;
     color: #767676;
 }
+/* EML text (DocBook) rendered read-only, see IptDocBookEditor.render in js/docbook/docbook-editor.js */
+.ipt-docbook > :last-child,
+.ipt-docbook li > :last-child {
+    margin-bottom: 0;
+}
+
+.ipt-docbook .ipt-dbe-heading {
+    font-weight: 600;
+    margin: .75rem 0 .5rem;
+}
+
+.ipt-docbook .ipt-dbe-heading:first-child {
+    margin-top: 0;
+}
+
+.ipt-docbook pre {
+    padding: .5rem .75rem;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: .25rem;
+    white-space: pre-wrap;
+}

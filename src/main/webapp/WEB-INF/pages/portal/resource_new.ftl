@@ -3,6 +3,7 @@
 <title>${eml.title!"IPT"}</title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
+<#include "/WEB-INF/pages/macros/docbook_editor.ftl"/>
 <#include "/WEB-INF/pages/macros/versionsTable.ftl"/>
 
 <#--Construct a Contact. Parameters are the actual contact object, the contact type, and the Dublin Core Property Type -->
@@ -172,26 +173,12 @@
 </style>
 
 <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
-<script src="${baseURL}/js/docbook/docbook-v2.js"></script>
+<@docBookViewerAssets/>
 <script src="${baseURL}/js/scrollspy.js"></script>
 <script>
     $(document).ready(function() {
-        function renderDocBook(fieldValue, elementId) {
-            if (!fieldValue || fieldValue.trim().length === 0) return;
-
-            const el = document.getElementById(elementId);
-            if (el) el.innerHTML = convertToHtml(fieldValue);
-        }
-
-        const fields = [
-            { value: '${eml.description!}',      id: 'description-container' },
-            { value: '${eml.introduction!}',     id: 'introduction-container' },
-            { value: '${eml.purpose!}',          id: 'purpose-container' },
-            { value: '${eml.acknowledgements!}', id: 'acknowledgements-container' },
-            { value: '${eml.gettingStarted!}',   id: 'gettingStarted-container' }
-        ];
-
-        fields.forEach(f => renderDocBook(f.value, f.id));
+        // Render content FIRST, before anything measures the page.
+        IptDocBookEditor.renderAll();
 
         // Then initialize scrollspy, now that real content/heights exist.
         IptScrollSpy.init({ tocSelector: '.bd-toc nav a' });
@@ -498,10 +485,8 @@
                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name='portal.resource.description'/>
                     </h4>
-                    <div id="description-container" property="dc:abstract" class="mt-3 overflow-x-auto">
-                        <#if (eml.description??)>
-                            ${eml.description}
-                        <#else>
+                    <div id="description-container" property="dc:abstract" class="mt-3 overflow-x-auto"<#if eml.description?has_content> data-docbook="${eml.description}"</#if>>
+                        <#if !eml.description?has_content>
                             <p><@s.text name='portal.resource.no.description'/></p>
                         </#if>
                     </div>
@@ -1090,7 +1075,7 @@
                                         <tr>
                                             <th class="col-4"><@s.text name='manage.metadata.acknowledgements'/></th>
                                             <td>
-                                                <div id="acknowledgements-container"></div>
+                                                <div id="acknowledgements-container" data-docbook="${eml.acknowledgements}"></div>
                                             </td>
                                         </tr>
                                     </#if>
@@ -1098,7 +1083,7 @@
                                         <tr>
                                             <th class="col-4"><@s.text name='manage.metadata.introduction'/></th>
                                             <td>
-                                                <div id="introduction-container"></div>
+                                                <div id="introduction-container" data-docbook="${eml.introduction}"></div>
                                             </td>
                                         </tr>
                                     </#if>
@@ -1106,7 +1091,7 @@
                                         <tr>
                                             <th class="col-4"><@s.text name='manage.metadata.gettingStarted'/></th>
                                             <td>
-                                                <div id="gettingStarted-container"></div>
+                                                <div id="gettingStarted-container" data-docbook="${eml.gettingStarted}"></div>
                                             </td>
                                         </tr>
                                     </#if>
@@ -1114,7 +1099,7 @@
                                         <tr>
                                             <th class="col-4"><@s.text name='eml.purpose'/></th>
                                             <td>
-                                                <div id="purpose-container"></div>
+                                                <div id="purpose-container" data-docbook="${eml.purpose}"></div>
                                             </td>
                                         </tr>
                                     </#if>
