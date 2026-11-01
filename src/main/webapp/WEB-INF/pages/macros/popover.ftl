@@ -27,7 +27,7 @@
        data-bs-toggle="popover"
        data-bs-trigger="focus"
        data-bs-html="true"
-       data-bs-content="${text}">
+       data-bs-content="${text?markup_string}">
         <i class="bi bi-exclamation-triangle-fill text-warning"></i>
     </a>
 </#macro>
@@ -38,7 +38,7 @@
        data-bs-toggle="popover"
        data-bs-trigger="focus"
        data-bs-html="true"
-       data-bs-content='${text}'>
+       data-bs-content="${text?markup_string}">
         <i class="bi bi-info-circle text-gbif-primary"></i>
     </a>
 </#macro>
