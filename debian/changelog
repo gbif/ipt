@@ -1,3 +1,11 @@
+ipt (3.3.7) bookworm; urgency=medium
+
+  * Update to IPT 3.3.7
+  * Remove obsolete conffile /etc/tomcat9/Catalina/localhost/ipt.xml left behind
+    by upgrades from the tomcat9-era packages
+
+ -- GBIF Development Team <helpdesk@gbif.org>  Sun, 01 Nov 2026 13:02:57 +0100
+
 ipt (3.3.0) bookworm; urgency=medium
 
   * Update to IPT 3.3.0
