@@ -116,15 +116,11 @@ public class SanitizeHtmlFilter implements Filter {
       )));
 
   /**
-   * Tags allowed in rich-text parameters, matching the "Allowed HTML tags" list shown to users
-   * in the form help text: div, p, ul, ol, li, h1, pre, a, b, em, sup, sub.
+   * Tags allowed in the rich-text parameters that are not DocBook (see {@link #DOCBOOK_PARAMETERS}).
    * <p>
-   * Removed {@code requireRelNofollowOnLinks()} because it causes issues with {@code eml.intellectualRights} and
-   * {@code eml.description},
-   * which are later converted into EML/DocBook {@code <ulink>} elements - an element whose
-   * schema only permits a {@code url} attribute. Injecting {@code rel="nofollow"} here would
-   * end up on the {@code <ulink>} and fail EML schema validation at publish time
-   * (cvc-complex-type.3.2.2).
+   * No {@code requireRelNofollowOnLinks()}: links in {@code eml.intellectualRights} become EML {@code <ulink>}
+   * elements, whose schema only permits a {@code url} attribute, so a {@code rel} attribute would fail EML schema
+   * validation at publish time (cvc-complex-type.3.2.2).
    */
   private static final PolicyFactory RICH_TEXT_POLICY = new HtmlPolicyBuilder()
       .allowElements("div", "p", "ul", "ol", "li", "h1", "pre", "a", "b", "em", "sup", "sub")

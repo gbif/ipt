@@ -153,6 +153,9 @@
 
     <!-- EML metadata actions dynamically invoked. This is the *only* action needed for all forms -->
     <action name="metadata-*" class="org.gbif.ipt.action.manage.MetadataAction">
+      <!-- wraps the whole stack, so it runs after the form has been rendered -->
+      <interceptor-ref name="discardFailedMetadataEdits"/>
+      <interceptor-ref name="managerStack"/>
       <!-- use the template matching the dynamic method invocation, e.g. metadata-parties.do will use parties.ftl-->
       <result name="input">/WEB-INF/pages/manage/eml/{1}.ftl</result>
       <!-- on success redirect to the next metadata form page -->
@@ -160,11 +163,15 @@
     </action>
 
     <action name="camtrap-metadata-*" class="org.gbif.ipt.action.manage.CamtrapMetadataAction">
+      <interceptor-ref name="discardFailedMetadataEdits"/>
+      <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/dp-metadata/camtrap/{1}.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/camtrap-metadata-${next}.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="datapackage-metadata-*" class="org.gbif.ipt.action.manage.DataPackageMetadataAction">
+      <interceptor-ref name="discardFailedMetadataEdits"/>
+      <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/dp-metadata/frictionless/{1}.ftl</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>

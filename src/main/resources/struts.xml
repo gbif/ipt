@@ -76,6 +76,9 @@
       <!-- Adds validation errors to fields if there is potential XSS input -->
       <interceptor name="xssFieldError" class="org.gbif.ipt.struts2.XssFieldErrorInterceptor"/>
 
+      <!-- Reloads the metadata from disk after a metadata form failed to save, so its values are not saved later -->
+      <interceptor name="discardFailedMetadataEdits" class="org.gbif.ipt.struts2.DiscardFailedMetadataEditsInterceptor"/>
+
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">
         <interceptor-ref name="keepRedirectMessages"/>

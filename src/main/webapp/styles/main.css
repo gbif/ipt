@@ -3249,6 +3249,7 @@ span.contact-citation-banner {
     background: #f1f1f1;
     color: #767676;
 }
+
 /* EML text (DocBook) rendered read-only, see IptDocBookEditor.render in js/docbook/docbook-editor.js */
 .ipt-docbook > :last-child,
 .ipt-docbook li > :last-child {
