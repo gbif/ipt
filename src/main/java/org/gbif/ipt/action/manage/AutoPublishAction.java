@@ -39,10 +39,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,8 +58,8 @@ public class AutoPublishAction extends ManagerBaseAction {
   private static final String DEFAULT_TIME = "12:00";
   private static final String DEFAULT_THRESHOLD = "10";
   private static final String EMAIL_SEPARATOR = ",";
-  private static final Pattern EMAIL_PATTERN =
-      Pattern.compile("^[\\w.+-]+@[\\w-]+\\.[a-zA-Z]{2,}$");
+  // Same validator as BaseValidator/the registry; accepts multi-label domains such as mail.huji.ac.il
+  private static final EmailValidator EMAIL_VALIDATOR = EmailValidator.getInstance();
 
   private final VocabulariesManager vocabManager;
   private final ResourcePublicationManager resourcePublicationManager;
@@ -174,9 +174,7 @@ public class AutoPublishAction extends ManagerBaseAction {
       return INPUT;
     }
 
-    List<String> invalidEmails = failureEmails.stream()
-        .filter(email -> !EMAIL_PATTERN.matcher(email).matches())
-        .collect(Collectors.toList());
+    List<String> invalidEmails = findInvalidEmails(failureEmails);
     if (notifyFailure && !invalidEmails.isEmpty()) {
       addActionError(getText("manage.autopublish.options.notifyFailure.emails.invalid",
           new String[]{String.join(", ", invalidEmails)}));
@@ -274,7 +272,7 @@ public class AutoPublishAction extends ManagerBaseAction {
   /**
    * Parses a raw comma-separated string of email addresses into a trimmed, de-duplicated, non-blank list.
    */
-  private List<String> parseFailureEmails(String raw) {
+  static List<String> parseFailureEmails(String raw) {
     if (StringUtils.isBlank(raw)) {
       return Collections.emptyList();
     }
@@ -282,6 +280,15 @@ public class AutoPublishAction extends ManagerBaseAction {
         .map(StringUtils::trimToNull)
         .filter(StringUtils::isNotBlank)
         .distinct()
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Returns the addresses that are not valid emails, in their original order.
+   */
+  static List<String> findInvalidEmails(List<String> emails) {
+    return emails.stream()
+        .filter(email -> !EMAIL_VALIDATOR.isValid(email))
         .collect(Collectors.toList());
   }
 
