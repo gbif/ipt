@@ -20,6 +20,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
+import org.gbif.ipt.i18n.I18n;
 import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -29,12 +30,14 @@ import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.Collection;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.ipt.model.Party;
 import org.gbif.metadata.eml.ipt.model.UserId;
 import org.gbif.utils.file.FileUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -800,5 +803,65 @@ public class EmlValidatorTest extends IptBaseTest {
     eml.setDescription("<section xml:lang=\"en\"><para>shrt</para></section>"
         + "<section xml:lang=\"es\"><para>bastante largo</para></section>");
     assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
+
+  /**
+   * Several parties with the same problem give one action error each, not one per party; the field errors still mark
+   * every party.
+   */
+  @Test
+  public void testContactsActionErrorsReportedOnce() {
+    // two parties without a role, both also without last name, organisation and position
+    for (int i = 0; i < 2; i++) {
+      Agent agent = new Agent();
+      agent.setFirstName("Nameless " + i);
+      eml.getParties().add(new Party(agent));
+    }
+    int firstIndex = eml.getParties().size() - 2;
+
+    List<String> actionErrors = new ArrayList<>();
+    List<String> fieldErrors = new ArrayList<>();
+    ErrorCollector ec = new ErrorCollector() {
+      public void addFieldError(String field, String msg) {
+        fieldErrors.add(field);
+      }
+
+      public void addActionError(String msg) {
+        actionErrors.add(msg);
+      }
+
+      public void addActionWarning(String msg) {
+      }
+
+      public boolean hasActionErrors() {
+        return !actionErrors.isEmpty();
+      }
+
+      public boolean hasFieldErrors() {
+        return !fieldErrors.isEmpty();
+      }
+
+      public boolean hasErrors() {
+        return hasActionErrors() || hasFieldErrors();
+      }
+    };
+    I18n keys = new I18n() {
+      public String getText(String key) {
+        return key;
+      }
+
+      public String getText(String key, String... args) {
+        return key;
+      }
+    };
+
+    validator.validate(resource, MetadataSection.CONTACTS_SECTION, ec, keys);
+
+    assertEquals(1, actionErrors.stream().filter("eml.party.role.required"::equals).count());
+    assertEquals(1, actionErrors.stream().filter("validation.lastname.organisation.position"::equals).count());
+    for (int index = firstIndex; index < firstIndex + 2; index++) {
+      assertTrue(fieldErrors.contains("eml.parties[" + index + "].associatedPartyRoles"));
+      assertTrue(fieldErrors.contains("eml.parties[" + index + "].agent.lastName"));
+    }
   }
 }

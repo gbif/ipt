@@ -38,6 +38,7 @@ import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnit;
 import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.ipt.model.KeywordSet;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
+import org.gbif.metadata.eml.ipt.model.Party;
 import org.gbif.metadata.eml.ipt.model.PhysicalData;
 import org.gbif.metadata.eml.ipt.model.Point;
 import org.gbif.metadata.eml.ipt.model.Project;
@@ -299,542 +300,34 @@ public class EmlValidator extends BaseValidator {
           break;
 
         case CONTACTS_SECTION:
-          // Contacts list: at least one field has to have had data entered into it to qualify for validation
+          // contacts, creators, metadata providers and associated parties are one list of parties, each with roles
           if (isAgentsListEmpty(eml.getContacts())) {
             ec.addActionError(i18n.getText("eml.contact.required"));
-          } else {
-            for (int index = 0; index < eml.getContacts().size(); index++) {
-              Agent c = eml.getContacts().get(index);
-
-              // firstName - optional. But if firstName exists, lastName have to exist
-              if (exists(c.getFirstName()) && !exists(c.getLastName())) {
-                ec.addFieldError("eml.contacts[" + index + "].lastName",
-                    i18n.getText("validation.firstname.lastname"));
-              }
-
-              // directory and personnel id both required (if either is supplied)
-              if (!c.getUserIds().isEmpty()) {
-                for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
-                  if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    ec.addFieldError(
-                        "eml.contacts[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        i18n.getText("validation.personnel"));
-                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    ec.addFieldError(
-                        "eml.contacts[" + index + "].userIds[" + identifierIndex + "].directory",
-                        i18n.getText("validation.directory"));
-                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    ec.addFieldError(
-                        "eml.contacts[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.contact.identifier")));
-                    ec.addFieldError("eml.contacts[" + index + "].userIds[" + identifierIndex + "].directory",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.contact.directory")));
-                  }
-                }
-              }
-
-              // At least one of organisation, position, or a lastName have to exist
-              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
-                ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
-                ec.addFieldError(
-                    "eml.contacts[" + index + "].organisation",
-                    i18n.getText("validation.required", i18n.getText("eml.contact.organisation")));
-                ec.addFieldError(
-                    "eml.contacts[" + index + "].lastName",
-                    i18n.getText("validation.required", i18n.getText("eml.contact.lastName")));
-                ec.addFieldError(
-                    "eml.contacts[" + index + "].position",
-                    i18n.getText("validation.required", i18n.getText("eml.contact.position")));
-              }
-
-              if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
-                ec.addFieldError("eml.contacts[" + index + "].organisation",
-                    i18n.getText("validation.short", i18n.getText("eml.contact.organisation"), "2"));
-              }
-
-              /* address(es) are optional. But if they exist, they should not be empty */
-              if (c.getAddress() != null
-                  && c.getAddress().getAddress() != null
-                  && !c.getAddress().getAddress().isEmpty()) {
-                for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
-                  if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
-                    ec.addFieldError(
-                        "eml.contacts[" + index + "].address.address[" + addressIndex + "]",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.contact.address.address")));
-                  }
-                }
-              }
-
-              /* position(s) are optional. But if they exist, they should not be empty */
-              if (!c.getPosition().isEmpty()) {
-                for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
-                  if (StringUtils.isBlank(c.getPosition().get(positionIndex))) {
-                    ec.addFieldError("eml.contacts[" + index + "].position[" + positionIndex + "]",
-                        i18n.getText("validation.invalid", i18n.getText("eml.contact.position")));
-                  }
-                }
-              }
-
-              /* email(s) are optional. But if they exist, they should be valid email addresses */
-              ValidationResult emailValidationResult;
-              if (!c.getEmail().isEmpty()) {
-                for (int emailIndex = 0; emailIndex < c.getEmail().size(); emailIndex++) {
-                  emailValidationResult = checkEmailValid(c.getEmail().get(emailIndex));
-                  if (!emailValidationResult.isValid()) {
-                    ec.addFieldError(
-                        "eml.contacts[" + index + "].email[" + emailIndex + "]",
-                        i18n.getText(
-                            EMAIL_ERROR_TRANSLATIONS.getOrDefault(
-                                emailValidationResult.getMessage(),
-                                "validation.email.invalid"))
-                    );
-                  }
-                }
-              }
-
-              /* phone(s) are optional. But if they exist, should match the pattern */
-              if (!c.getPhone().isEmpty()) {
-                for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
-                  if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
-                    ec.addFieldError("eml.contacts[" + index + "].phone[" + phoneIndex + "]",
-                        i18n.getText("validation.invalid", i18n.getText("eml.contact.phone")));
-                  }
-                }
-              }
-
-              /* Validate the homepage URL from each contact */
-              if (!c.getHomepage().isEmpty()) {
-                for (int homepageIndex = 0; homepageIndex < c.getHomepage().size(); homepageIndex++) {
-                  if (formatURL(c.getHomepage().get(homepageIndex)) == null) {
-                    ec.addFieldError(
-                        "eml.contacts[" + index + "].homepage[" + homepageIndex + "]",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.contact.homepage")));
-                  } else {
-                    c.getHomepage().set(homepageIndex, formatURL(c.getHomepage().get(homepageIndex)));
-                  }
-                }
-              }
-            }
           }
-
-          // Creators' list: at least one contact is required, and
-          // at least one field has to have had data entered into it to qualify for validation
           if (isAgentsListEmpty(eml.getCreators())) {
             ec.addActionError(i18n.getText("eml.resourceCreator.required"));
-          } else {
-            for (int index = 0; index < eml.getCreators().size(); index++) {
-              Agent c = eml.getCreators().get(index);
-
-              // firstName - optional. But if firstName exists, lastName have to exist
-              if (exists(c.getFirstName()) && !exists(c.getLastName())) {
-                ec.addFieldError("eml.creators[" + index + "].lastName",
-                    i18n.getText("validation.firstname.lastname"));
-              }
-
-              // directory and personnel id both required (if either is supplied)
-              if (!c.getUserIds().isEmpty()) {
-                for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
-                  if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        i18n.getText("validation.personnel"));
-                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].userIds[" + identifierIndex + "].directory",
-                        i18n.getText("validation.directory"));
-                  } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].userIds[" + identifierIndex + "].identifier",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.contact.identifier")));
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].userIds[" + identifierIndex + "].directory",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.contact.directory")));
-                  }
-                }
-              }
-
-              // At least one of organisation, position, or a lastName have to exist
-              if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
-                ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
-                ec.addFieldError(
-                    "eml.creators[" + index + "].organisation",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.resourceCreator.organisation")));
-                ec.addFieldError(
-                    "eml.creators[" + index + "].lastName",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.resourceCreator.lastName")));
-                ec.addFieldError(
-                    "eml.creators[" + index + "].position",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.resourceCreator.position")));
-              }
-
-              if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
-                ec.addFieldError("eml.creators[" + index + "].organisation",
-                    i18n.getText("validation.short", i18n.getText("eml.resourceCreator.organisation"), "2"));
-              }
-
-              /* address(es) are optional. But if they exist, they should not be empty */
-              if (c.getAddress() != null
-                  && c.getAddress().getAddress() != null
-                  && !c.getAddress().getAddress().isEmpty()) {
-                for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
-                  if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].address.address[" + addressIndex + "]",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.contact.address.address")));
-                  }
-                }
-              }
-
-              /* position(s) are optional. But if they exist, they should not be empty */
-              if (!c.getPosition().isEmpty()) {
-                for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
-                  if (StringUtils.isBlank(c.getPosition().get(positionIndex))) {
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].position[" + positionIndex + "]",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.contact.position")));
-                  }
-                }
-              }
-
-              /* email(s) are optional. But if they exist, they should be valid email addresses */
-              ValidationResult emailValidationResult;
-              if (!c.getEmail().isEmpty()) {
-                for (int emailIndex = 0; emailIndex < c.getEmail().size(); emailIndex++) {
-                  emailValidationResult = checkEmailValid(c.getEmail().get(emailIndex));
-                  if (!emailValidationResult.isValid()) {
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].email[" + emailIndex + "]",
-                        i18n.getText(
-                            EMAIL_ERROR_TRANSLATIONS.getOrDefault(
-                                emailValidationResult.getMessage(),
-                                "validation.email.invalid"))
-                    );
-                  }
-                }
-              }
-
-              /* phone(s) are optional. But if they exist, should match the pattern */
-              if (!c.getPhone().isEmpty()) {
-                for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
-                  if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].phone[" + phoneIndex + "]",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.resourceCreator.phone")));
-                  }
-                }
-              }
-
-              /* Validate the homepage URL from each creator */
-              if (!c.getHomepage().isEmpty()) {
-                for (int homepageIndex = 0; homepageIndex < c.getHomepage().size(); homepageIndex++) {
-                  if (formatURL(c.getHomepage().get(homepageIndex)) == null) {
-                    ec.addFieldError(
-                        "eml.creators[" + index + "].homepage[" + homepageIndex + "]",
-                        i18n.getText(
-                            "validation.invalid",
-                            i18n.getText("eml.resourceCreator.homepage")));
-                  } else {
-                    c.getHomepage().set(homepageIndex, formatURL(c.getHomepage().get(homepageIndex)));
-                  }
-                }
-              }
-            }
           }
 
-          // MetadataProviders list: at least one field has to have had data entered into it to qualify for validation
-          for (int index = 0; index < eml.getMetadataProviders().size(); index++) {
-            Agent c = eml.getMetadataProviders().get(index);
+          // the action errors below are shown once, however many parties have the problem; the field errors mark each
+          boolean anyPartyWithoutRole = false;
+          boolean anyAgentWithoutName = false;
+          for (int index = 0; index < eml.getParties().size(); index++) {
+            Party party = eml.getParties().get(index);
+            String path = "eml.parties[" + index + "]";
 
-            // firstName - optional. But if firstName exists, lastName have to exist
-            if (exists(c.getFirstName()) && !exists(c.getLastName())) {
-              ec.addFieldError(
-                  "eml.metadataProviders[" + index + "].lastName",
-                  i18n.getText("validation.firstname.lastname"));
+            // a party without a role is not written to the EML, so it would silently disappear
+            if (party.hasNoRole()) {
+              anyPartyWithoutRole = true;
+              ec.addFieldError(path + ".associatedPartyRoles", i18n.getText("eml.party.role.required"));
             }
 
-            // directory and personnel id both required (if either is supplied)
-            if (!c.getUserIds().isEmpty()) {
-              for (int identifierIndex = 0; identifierIndex < c.getUserIds().size(); identifierIndex++) {
-                if (exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].identifier",
-                      i18n.getText("validation.personnel"));
-                } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].directory",
-                      i18n.getText("validation.directory"));
-                } else if (!exists(c.getUserIds().get(identifierIndex).getDirectory()) && !exists(c.getUserIds().get(identifierIndex).getIdentifier())) {
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].identifier",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.contact.identifier")));
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].userIds[" + identifierIndex + "].directory",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.contact.directory")));
-                }
-              }
-            }
-
-            // At least one of organisation, position, or a lastName have to exist
-            if (!exists(c.getOrganisation()) && !exists(c.getLastName()) && (c.getPosition().isEmpty() || !exists(c.getPosition().get(0)))) {
-              ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
-              ec.addFieldError(
-                  "eml.metadataProviders[" + index + "].organisation",
-                  i18n.getText(
-                      "validation.required",
-                      i18n.getText("eml.metadataProvider.organisation")));
-              ec.addFieldError(
-                  "eml.metadataProviders[" + index + "].lastName",
-                  i18n.getText(
-                      "validation.required",
-                      i18n.getText("eml.metadataProvider.lastName")));
-              ec.addFieldError(
-                  "eml.metadataProviders[" + index + "].position",
-                  i18n.getText(
-                      "validation.required",
-                      i18n.getText("eml.metadataProvider.position")));
-            }
-
-            if (StringUtils.isNotEmpty(c.getOrganisation()) && c.getOrganisation().length() < 2) {
-              ec.addFieldError("eml.metadataProviders[" + index + "].organisation",
-                  i18n.getText("validation.short", i18n.getText("eml.metadataProvider.organisation"), "2"));
-            }
-
-            /* address(es) are optional. But if they exist, they should not be empty */
-            if (c.getAddress() != null
-                && c.getAddress().getAddress() != null
-                && !c.getAddress().getAddress().isEmpty()) {
-              for (int addressIndex = 0; addressIndex < c.getAddress().getAddress().size(); addressIndex++) {
-                if (StringUtils.isBlank(c.getAddress().getAddress().get(addressIndex))) {
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].address.address[" + addressIndex + "]",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.contact.address.address")));
-                }
-              }
-            }
-
-            /* position(s) are optional. But if they exist, they should not be empty */
-            if (!c.getPosition().isEmpty()) {
-              for (int positionIndex = 0; positionIndex < c.getPosition().size(); positionIndex++) {
-                if (StringUtils.isBlank(c.getPosition().get(positionIndex))) {
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].position[" + positionIndex + "]",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.contact.position")));
-                }
-              }
-            }
-
-            /* email(s) are optional. But if they exist, they should be valid email addresses */
-            ValidationResult emailValidationResult;
-            if (!c.getEmail().isEmpty()) {
-              for (int emailIndex = 0; emailIndex < c.getEmail().size(); emailIndex++) {
-                emailValidationResult = checkEmailValid(c.getEmail().get(emailIndex));
-                if (!emailValidationResult.isValid()) {
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].email[" + emailIndex + "]",
-                      i18n.getText(
-                          EMAIL_ERROR_TRANSLATIONS.getOrDefault(
-                              emailValidationResult.getMessage(),
-                              "validation.email.invalid"))
-                  );
-                }
-              }
-            }
-
-            /* phone(s) are optional. But if they exist, should match the pattern */
-            if (!c.getPhone().isEmpty()) {
-              for (int phoneIndex = 0; phoneIndex < c.getPhone().size(); phoneIndex++) {
-                if (!isValidPhoneNumber(c.getPhone().get(phoneIndex))) {
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].phone[" + phoneIndex + "]",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.metadataProvider.phone")));
-                }
-              }
-            }
-
-            /* Validate the homepage URL from each contact */
-            if (!c.getHomepage().isEmpty()) {
-              for (int homepageIndex = 0; homepageIndex < c.getHomepage().size(); homepageIndex++) {
-                if (formatURL(c.getHomepage().get(homepageIndex)) == null) {
-                  ec.addFieldError(
-                      "eml.metadataProviders[" + index + "].homepage[" + homepageIndex + "]",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.metadataProvider.homepage")));
-                } else {
-                  c.getHomepage().set(homepageIndex, formatURL(c.getHomepage().get(homepageIndex)));
-                }
-              }
-            }
+            anyAgentWithoutName |= !validateAgent(party.getAgent(), path + ".agent", ec, i18n);
           }
-
-          // Associated parties list: at least one field has to have had data entered into it to qualify for validation
-          for (int index = 0; index < eml.getAssociatedParties().size(); index++) {
-            Agent ap = eml.getAssociatedParties().get(index);
-
-            // firstName - optional. But if firstName exists, lastName have to exist
-            if (exists(ap.getFirstName()) && !exists(ap.getLastName())) {
-              ec.addFieldError(
-                  "eml.associatedParties[" + index + "].lastName",
-                  i18n.getText("validation.firstname.lastname"));
-            }
-
-            // directory and personnel id both required (if either is supplied)
-            if (!ap.getUserIds().isEmpty()) {
-              for (int identifierIndex = 0; identifierIndex < ap.getUserIds().size(); identifierIndex++) {
-                if (exists(ap.getUserIds().get(identifierIndex).getDirectory()) && !exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].identifier",
-                      i18n.getText("validation.personnel"));
-                } else if (!exists(ap.getUserIds().get(identifierIndex).getDirectory()) && exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].directory",
-                      i18n.getText("validation.directory"));
-                } else if (!exists(ap.getUserIds().get(identifierIndex).getDirectory()) && !exists(ap.getUserIds().get(identifierIndex).getIdentifier())) {
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].identifier",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.associatedParties.identifier")));
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].userIds[" + identifierIndex + "].directory",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.associatedParties.directory")));
-                }
-              }
-            }
-
-            // At least one of organisation, position, or a lastName have to exist
-            if (!exists(ap.getOrganisation()) && !exists(ap.getLastName()) && (ap.getPosition().isEmpty() || !exists(ap.getPosition().get(0)))) {
-              ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
-              ec.addFieldError(
-                  "eml.associatedParties[" + index + "].organisation",
-                  i18n.getText(
-                      "validation.required",
-                      i18n.getText("eml.associatedParties.organisation")));
-              ec.addFieldError(
-                  "eml.associatedParties[" + index + "].lastName",
-                  i18n.getText(
-                      "validation.required",
-                      i18n.getText("eml.associatedParties.lastName")));
-              ec.addFieldError(
-                  "eml.associatedParties[" + index + "].position",
-                  i18n.getText(
-                      "validation.required",
-                      i18n.getText("eml.associatedParties.position")));
-            }
-
-            if (StringUtils.isNotEmpty(ap.getOrganisation()) && ap.getOrganisation().length() < 2) {
-              ec.addFieldError("eml.associatedParties[" + index + "].organisation",
-                  i18n.getText("validation.short", i18n.getText("eml.associatedParties.organisation"), "2"));
-            }
-
-            /* address(es) are optional. But if they exist, they should not be empty */
-            if (ap.getAddress() != null
-                && ap.getAddress().getAddress() != null
-                && !ap.getAddress().getAddress().isEmpty()) {
-              for (int addressIndex = 0; addressIndex < ap.getAddress().getAddress().size(); addressIndex++) {
-                if (StringUtils.isBlank(ap.getAddress().getAddress().get(addressIndex))) {
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].address.address[" + addressIndex + "]",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.contact.address.address")));
-                }
-              }
-            }
-
-            /* position(s) are optional. But if they exist, they should not be empty */
-            if (!ap.getPosition().isEmpty()) {
-              for (int positionIndex = 0; positionIndex < ap.getPosition().size(); positionIndex++) {
-                if (StringUtils.isBlank(ap.getPosition().get(positionIndex))) {
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].position[" + positionIndex + "]",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.contact.position")));
-                }
-              }
-            }
-
-            /* email(s) are optional. But if they exist, they should be valid email addresses */
-            ValidationResult emailValidationResult;
-            if (!ap.getEmail().isEmpty()) {
-              for (int emailIndex = 0; emailIndex < ap.getEmail().size(); emailIndex++) {
-                emailValidationResult = checkEmailValid(ap.getEmail().get(emailIndex));
-                if (!emailValidationResult.isValid()) {
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].email[" + emailIndex + "]",
-                      i18n.getText(
-                          EMAIL_ERROR_TRANSLATIONS.getOrDefault(
-                              emailValidationResult.getMessage(),
-                              "validation.email.invalid"))
-                  );
-                }
-              }
-            }
-
-            /* phone(s) are optional. But if they exist, should match the pattern */
-            if (!ap.getPhone().isEmpty()) {
-              for (int phoneIndex = 0; phoneIndex < ap.getPhone().size(); phoneIndex++) {
-                if (!isValidPhoneNumber(ap.getPhone().get(phoneIndex))) {
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].phone[" + phoneIndex + "]",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.associatedParties.phone")));
-                }
-              }
-            }
-
-            /* Validate the homepage URL from each contact */
-            if (!ap.getHomepage().isEmpty()) {
-              for (int homepageIndex = 0; homepageIndex < ap.getHomepage().size(); homepageIndex++) {
-                if (formatURL(ap.getHomepage().get(homepageIndex)) == null) {
-                  ec.addFieldError(
-                      "eml.associatedParties[" + index + "].homepage[" + homepageIndex + "]",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.associatedParties.homepage")));
-                } else {
-                  ap.getHomepage().set(homepageIndex, formatURL(ap.getHomepage().get(homepageIndex)));
-                }
-              }
-            }
+          if (anyPartyWithoutRole) {
+            ec.addActionError(i18n.getText("eml.party.role.required"));
+          }
+          if (anyAgentWithoutName) {
+            ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
           }
 
           break;
@@ -1885,6 +1378,107 @@ public class EmlValidator extends BaseValidator {
           CollectionUtils.isEmpty(identifiers));
     }
     return true;
+  }
+
+  /**
+   * Validates one agent of the contacts form: name, identifiers, organisation/position/last name, addresses,
+   * positions, emails, phones and homepages. Homepages are normalised in place. Only field errors are added; the
+   * caller adds the action error for a missing last name, organisation and position once for all agents.
+   *
+   * @param agent agent to validate
+   * @param path  form path of the agent, e.g. eml.parties[0].agent, used for the field errors
+   * @return false if the agent has none of last name, organisation and position, true otherwise
+   */
+  private boolean validateAgent(Agent agent, String path, ErrorCollector ec, I18n i18n) {
+    boolean hasNameOrganisationOrPosition = true;
+
+    // firstName - optional. But if firstName exists, lastName have to exist
+    if (exists(agent.getFirstName()) && !exists(agent.getLastName())) {
+      ec.addFieldError(path + ".lastName", i18n.getText("validation.firstname.lastname"));
+    }
+
+    // directory and personnel id both required (if either is supplied)
+    for (int identifierIndex = 0; identifierIndex < agent.getUserIds().size(); identifierIndex++) {
+      UserId userId = agent.getUserIds().get(identifierIndex);
+      String userIdPath = path + ".userIds[" + identifierIndex + "]";
+      if (exists(userId.getDirectory()) && !exists(userId.getIdentifier())) {
+        ec.addFieldError(userIdPath + ".identifier", i18n.getText("validation.personnel"));
+      } else if (!exists(userId.getDirectory()) && exists(userId.getIdentifier())) {
+        ec.addFieldError(userIdPath + ".directory", i18n.getText("validation.directory"));
+      } else if (!exists(userId.getDirectory()) && !exists(userId.getIdentifier())) {
+        ec.addFieldError(userIdPath + ".identifier",
+            i18n.getText("validation.invalid", i18n.getText("eml.contact.identifier")));
+        ec.addFieldError(userIdPath + ".directory",
+            i18n.getText("validation.invalid", i18n.getText("eml.contact.directory")));
+      }
+    }
+
+    // At least one of organisation, position, or a lastName have to exist
+    if (!exists(agent.getOrganisation())
+        && !exists(agent.getLastName())
+        && (agent.getPosition().isEmpty() || !exists(agent.getPosition().get(0)))) {
+      hasNameOrganisationOrPosition = false;
+      ec.addFieldError(path + ".organisation",
+          i18n.getText("validation.required", i18n.getText("eml.contact.organisation")));
+      ec.addFieldError(path + ".lastName",
+          i18n.getText("validation.required", i18n.getText("eml.contact.lastName")));
+      ec.addFieldError(path + ".position",
+          i18n.getText("validation.required", i18n.getText("eml.contact.position")));
+    }
+
+    if (StringUtils.isNotEmpty(agent.getOrganisation()) && agent.getOrganisation().length() < 2) {
+      ec.addFieldError(path + ".organisation",
+          i18n.getText("validation.short", i18n.getText("eml.contact.organisation"), "2"));
+    }
+
+    /* address(es) are optional. But if they exist, they should not be empty */
+    if (agent.getAddress() != null && agent.getAddress().getAddress() != null) {
+      for (int addressIndex = 0; addressIndex < agent.getAddress().getAddress().size(); addressIndex++) {
+        if (StringUtils.isBlank(agent.getAddress().getAddress().get(addressIndex))) {
+          ec.addFieldError(path + ".address.address[" + addressIndex + "]",
+              i18n.getText("validation.invalid", i18n.getText("eml.contact.address.address")));
+        }
+      }
+    }
+
+    /* position(s) are optional. But if they exist, they should not be empty */
+    for (int positionIndex = 0; positionIndex < agent.getPosition().size(); positionIndex++) {
+      if (StringUtils.isBlank(agent.getPosition().get(positionIndex))) {
+        ec.addFieldError(path + ".position[" + positionIndex + "]",
+            i18n.getText("validation.invalid", i18n.getText("eml.contact.position")));
+      }
+    }
+
+    /* email(s) are optional. But if they exist, they should be valid email addresses */
+    for (int emailIndex = 0; emailIndex < agent.getEmail().size(); emailIndex++) {
+      ValidationResult emailValidationResult = checkEmailValid(agent.getEmail().get(emailIndex));
+      if (!emailValidationResult.isValid()) {
+        ec.addFieldError(path + ".email[" + emailIndex + "]",
+            i18n.getText(
+                EMAIL_ERROR_TRANSLATIONS.getOrDefault(emailValidationResult.getMessage(), "validation.email.invalid")));
+      }
+    }
+
+    /* phone(s) are optional. But if they exist, should match the pattern */
+    for (int phoneIndex = 0; phoneIndex < agent.getPhone().size(); phoneIndex++) {
+      if (!isValidPhoneNumber(agent.getPhone().get(phoneIndex))) {
+        ec.addFieldError(path + ".phone[" + phoneIndex + "]",
+            i18n.getText("validation.invalid", i18n.getText("eml.contact.phone")));
+      }
+    }
+
+    /* homepage(s) are optional. But if they exist, they should be valid URLs */
+    for (int homepageIndex = 0; homepageIndex < agent.getHomepage().size(); homepageIndex++) {
+      String homepage = formatURL(agent.getHomepage().get(homepageIndex));
+      if (homepage == null) {
+        ec.addFieldError(path + ".homepage[" + homepageIndex + "]",
+            i18n.getText("validation.invalid", i18n.getText("eml.contact.homepage")));
+      } else {
+        agent.getHomepage().set(homepageIndex, homepage);
+      }
+    }
+
+    return hasNameOrganisationOrPosition;
   }
 
   /**

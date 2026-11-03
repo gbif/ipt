@@ -468,11 +468,8 @@ public class ResourceTest extends IptBaseTest {
     creator2.setFirstName("Paul");
     creator2.setLastName("Weir");
 
-    List<Agent> creators = new ArrayList<>();
-    creators.add(creator1);
-    creators.add(creator2);
-
-    resource.getEml().setCreators(creators);
+    resource.getEml().addCreator(creator1);
+    resource.getEml().addCreator(creator2);
 
     Organisation publisher = new Organisation();
     publisher.setName("NHM");

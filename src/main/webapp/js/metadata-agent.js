@@ -4,12 +4,12 @@ function setAgentRegularInput(inputName, params) {
         ? "address." + inputName : inputName;
 
     $(`#${params.itemId} [id$='${inputName}']`)
-        .attr("id", `eml.${params.entity.pluralName}[${params.index}].${inputNameInId}`)
+        .attr("id", `${agentInputPath(params)}.${inputNameInId}`)
         .attr("name", function () {
             return $(this).attr("id");
         });
     $(`#${params.itemId} [for$='${inputName}']`)
-        .attr("for", `eml.${params.entity.pluralName}[${params.index}].${inputNameInId}`);
+        .attr("for", `${agentInputPath(params)}.${inputNameInId}`);
 }
 
 function setAgentRepeatableInput(inputName, params) {
@@ -48,7 +48,7 @@ function setAgentRepeatableInputItem($item, inputName, inputIndex, params) {
 
     // input's id and name
     $(`#${repeatableItemId} input`)
-        .attr("id", `eml.${params.entity.pluralName}[${params.index}].${params.ext.inputNameInId}[${inputIndex}]`)
+        .attr("id", `${agentInputPath(params)}.${params.ext.inputNameInId}[${inputIndex}]`)
         .attr("name", function () {return $(this).attr("id");});
 
     // remove link
@@ -61,52 +61,11 @@ function setAgentRegularDropdown(dropdownName, params) {
     let $dropdown = $(`#${params.itemId} [id$='${dropdownName}']`);
 
     $dropdown
-        .attr("id", `eml.${params.entity.pluralName}[${params.index}].${dropdownNameInId}`)
+        .attr("id", `${agentInputPath(params)}.${dropdownNameInId}`)
         .attr("name", function () {return $(this).attr("id");});
     $(`#${params.itemId} [for$='${dropdownName}']`)
-        .attr("for", `eml.${params.entity.pluralName}[${params.index}.${dropdownNameInId}`);
+        .attr("for", `${agentInputPath(params)}.${dropdownNameInId}`);
 
-    if (params.isNew) {
-        if (dropdownName === "role") {
-            initializeDropdownComponentForRole(dropdownName, params);
-        } else if (dropdownName === "country") {
-            initializeDropdownComponentForCountry(dropdownName, params)
-        }
-    }
-}
-
-function initializeDropdownComponentForRole(dropdownName, params) {
-    let $dropdown = $(`#${params.itemId} [id$='${dropdownName}']`);
-
-    $dropdown
-        .select2({
-            placeholder: `${params.translations.role}`,
-            language: {
-                noResults: function () {
-                    return `${params.translations.notFound}`;
-                }
-            },
-            width: "100%",
-            allowClear: true,
-            theme: 'bootstrap4'
-        });
-}
-
-function initializeDropdownComponentForCountry(dropdownName, params) {
-    let $dropdown = $(`#${params.itemId} [id$='${dropdownName}']`);
-
-    $dropdown
-        .select2({
-            placeholder: `${params.translations.country}`,
-            language: {
-                noResults: function () {
-                    return `${params.translations.notFound}`;
-                }
-            },
-            width: "100%",
-            allowClear: true,
-            theme: 'bootstrap4'
-        });
 }
 
 function setAgentIdentifier(params) {
@@ -127,33 +86,15 @@ function setAgentIdentifier(params) {
             // identifier directory dropdown element id/name
             $(this)
                 .find("select")
-                .attr("id", `eml.${params.entity.pluralName}[${params.index}].userIds[${identifierIndex}].directory`)
+                .attr("id", `${agentInputPath(params)}.userIds[${identifierIndex}].directory`)
                 .attr("name", function () {
                     return $(this).attr("id");
                 });
 
-            // select2 initialization
-            if (params.isNew) {
-                $(this)
-                    .find("select")
-                    .select2({
-                        placeholder: `${params.translations.directory}`,
-                        language: {
-                            noResults: function () {
-                                return `${params.translations.notFound}`;
-                            }
-                        },
-                        width: "100%",
-                        minimumResultsForSearch: 'Infinity',
-                        allowClear: true,
-                        theme: 'bootstrap4'
-                    });
-            }
-
             // identifier input element id/name
             $(this)
                 .find("input")
-                .attr("id", `eml.${params.entity.pluralName}[${params.index}].userIds[${identifierIndex}].identifier`)
+                .attr("id", `${agentInputPath(params)}.userIds[${identifierIndex}].identifier`)
                 .attr("name", function () {
                     return $(this).attr("id");
                 });
@@ -162,4 +103,42 @@ function setAgentIdentifier(params) {
             $(`#${params.entity.name}-${params.index}-identifier-${identifierIndex} .removeIdentifier`)
                 .attr("id", `${params.entity.name}-identifier-remove-${params.index}-${identifierIndex}`);
         });
+}
+
+/**
+ * Form path of the agent of a party item (people and organisations on the contacts page): eml.parties[0].agent.
+ */
+function agentInputPath(params) {
+    return `eml.parties[${params.index}].agent`;
+}
+
+/**
+ * Sets the ids and names of a party's role inputs (creator, contact, metadataProvider checkboxes and the
+ * associatedPartyRoles multi-select) for its index, and initialises the multi-select of a new party.
+ */
+function setPartyRoleInputs(params) {
+    const $item = $(`#${params.itemId}`);
+
+    $item.find("[data-party-field]").each(function () {
+        const field = $(this).attr("data-party-field");
+        $(this)
+            .attr("id", `eml.parties[${params.index}].${field}`)
+            .attr("name", `eml.parties[${params.index}].${field}`);
+    });
+    $item.find("[data-party-for]").each(function () {
+        $(this).attr("for", `eml.parties[${params.index}].${$(this).attr("data-party-for")}`);
+    });
+
+    if (params.isNew) {
+        $item.find(".party-associated-roles").select2({
+            placeholder: `${params.translations.associatedPartyRoles}`,
+            language: {
+                noResults: function () {
+                    return `${params.translations.notFound}`;
+                }
+            },
+            width: "100%",
+            theme: 'bootstrap4'
+        });
+    }
 }

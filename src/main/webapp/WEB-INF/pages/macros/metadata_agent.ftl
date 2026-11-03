@@ -1,36 +1,29 @@
 <script>
     $(document).ready(function(){
 
-        var contactItems = -1;
-        var creatorItems = -1;
-        var metadataProviderItems = -1;
-        var associatedPartyItemsCount = -1;
+        // index of the last item of each agent list (-1 when empty), used to index a new item
+        var lastAgentItemIndex = {};
 
-        calcNumberOfAgentItems("contact");
-        calcNumberOfAgentItems("creator");
-        calcNumberOfAgentItems("metadataProvider");
-        calcNumberOfAgentItems("associatedParty");
+        calcNumberOfAgentItems("party");
+
+        // form path of the agent of a party item (people and organisations on the contacts page)
+        function agentPath(index) {
+            return "eml.parties[" + index + "].agent";
+        }
 
         function calcNumberOfAgentItems(entityName) {
             var lastItem = $("#" + entityName + "-items .item:last-child").attr("id");
             var result = lastItem !== undefined ? parseInt(lastItem.split("-")[2]) : -1;
 
-            if (entityName === "contact") {
-                contactItems = result;
-            } else if (entityName === "creator") {
-                creatorItems = result;
-            } else if (entityName === "metadataProvider") {
-                metadataProviderItems = result;
-            } else if (entityName === "associatedParty") {
-                associatedPartyItemsCount = result;
-            }
+            lastAgentItemIndex[entityName] = result;
         }
 
         function initializeSortableComponent(componentId) {
             sortable('#' + componentId, {
                 forcePlaceholderSize: true,
                 placeholderClass: 'border',
-                exclude: 'input'
+                // same options as the page's initialisation, so re-initialising after an add keeps drag on the handle
+                handle: '.handle'
             });
         }
 
@@ -95,13 +88,13 @@
             createNewIdentifierForAgent(event);
         });
 
-        // remove phone/email/homepage/position/address from contact/creator/metadataProvider/associatedParty
+        // remove phone/email/homepage/position/address from a party
         $(".removeSubEntity").click(function (event) {
             event.preventDefault();
             removeSubEntityFromAgent(event);
         });
 
-        // remove identifier from contact/creator/metadataProvider
+        // remove identifier from a party
         $(".removeIdentifier").click(function (event) {
             event.preventDefault();
             removeIdentifierFromAgent(event);
@@ -129,11 +122,9 @@
             newItem.attr("id", entityName + "-" + entityIndex + "-" + subEntityName + "-" + subEntityIndex);
             var $input = newItem.find("#baseItem-" + subEntityName + "-input");
             var $deleteLink = newItem.find("#baseItem-" + subEntityName + "-remove");
-
-            var entityNameInId = entityName === 'associatedParty' ? 'associatedPartie' : entityName;
             var subEntityNameInId = subEntityName === 'address' ? 'address.address' : subEntityName;
 
-            $input.attr("id", "eml." + entityNameInId + "s[" + entityIndex + "]." + subEntityNameInId + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
+            $input.attr("id", agentPath(entityIndex) + "." + subEntityNameInId + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
 
             $deleteLink.attr("id", entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex);
             $("#" + entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
@@ -158,11 +149,9 @@
             newItem.attr("id", entityName + "-" + entityIndex + "-" + subEntityName + "-" + subEntityIndex);
             var $input = newItem.find("#baseItem-" + subEntityName + "-input");
             var $deleteLink = newItem.find("#baseItem-" + subEntityName + "-remove");
-
-            var entityNameInId = entityName === 'associatedParty' ? 'associatedPartie' : entityName;
             var subEntityNameInId = subEntityName === 'address' ? 'address.address' : subEntityName;
 
-            $input.attr("id", "eml." + entityNameInId + "s[" + entityIndex + "]." + subEntityNameInId + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
+            $input.attr("id", agentPath(entityIndex) + "." + subEntityNameInId + "[" + subEntityIndex + "]").attr("name", function () {return $(this).attr("id");});
 
             $deleteLink.attr("id", entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex);
             $("#" + entityName + "-" + subEntityName + "-remove-" + entityIndex + "-" + subEntityIndex).click(function (event) {
@@ -195,7 +184,7 @@
             var $deleteLink = newItem.find("#baseItem-identifier-remove");
 
             $select.select2({
-                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string?no_esc}',
                 language: {
                     noResults: function () {
                         return '${selectNoResultsFound}';
@@ -206,11 +195,8 @@
                 allowClear: true,
                 theme: 'bootstrap4'
             });
-
-            var entityNameInId = entityName === 'associatedParty' ? 'associatedPartie' : entityName;
-
-            $input.attr("id", "eml." + entityNameInId + "s[" + entityIndex + "].userIds[" + identifierIndex + "].identifier").attr("name", function () {return $(this).attr("id");});
-            $select.attr("id", "eml." + entityNameInId + "s[" + entityIndex + "].userIds[" + identifierIndex + "].directory").attr("name", function () {return $(this).attr("id");});
+            $input.attr("id", agentPath(entityIndex) + ".userIds[" + identifierIndex + "].identifier").attr("name", function () {return $(this).attr("id");});
+            $select.attr("id", agentPath(entityIndex) + ".userIds[" + identifierIndex + "].directory").attr("name", function () {return $(this).attr("id");});
             $deleteLink.attr("id", entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex);
             $("#" + entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex).click(function (event) {
                 removeIdentifierFromAgent(event);
@@ -231,48 +217,60 @@
             var $select = newItem.find("#baseItem-directory-select")
             var $input = newItem.find("#baseItem-identifier-input");
             var $deleteLink = newItem.find("#baseItem-identifier-remove");
-
-            var entityNameInId = entityName === 'associatedParty' ? 'associatedPartie' : entityName;
-
-            $input.attr("id", "eml." + entityNameInId + "s[" + entityIndex + "].userIds[" + identifierIndex + "].identifier").attr("name", function () {return $(this).attr("id");});
-            $select.attr("id", "eml." + entityNameInId + "s[" + entityIndex + "].userIds[" + identifierIndex + "].directory").attr("name", function () {return $(this).attr("id");});
+            $input.attr("id", agentPath(entityIndex) + ".userIds[" + identifierIndex + "].identifier").attr("name", function () {return $(this).attr("id");});
+            $select.attr("id", agentPath(entityIndex) + ".userIds[" + identifierIndex + "].directory").attr("name", function () {return $(this).attr("id");});
             $deleteLink.attr("id", entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex);
             $("#" + entityName + "-identifier-remove-" + entityIndex + "-" + identifierIndex).click(function (event) {
                 removeIdentifierFromAgent(event);
             });
 
-            if (directoryValue && identifierValue) {
-                $select.val(directoryValue);
+            $select.select2({
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string?no_esc}',
+                language: {
+                    noResults: function () {
+                        return '${selectNoResultsFound}';
+                    }
+                },
+                width: "100%",
+                minimumResultsForSearch: 'Infinity',
+                allowClear: true,
+                theme: 'bootstrap4'
+            });
+            // copy what is there; the validator reports a directory without an identifier or the other way round
+            if (directoryValue) {
+                $select.val(directoryValue).trigger('change');
+            }
+            if (identifierValue) {
                 $input.val(identifierValue);
             }
         }
 
-        // example ID expected: creator-phone-remove-0-0
+        // example ID expected: party-phone-remove-0-0
         function getEntityNameFromRemoveLinkId(id) {
             return id.split("-")[0];
         }
 
-        // example ID expected: plus-creator-phone-0
+        // example ID expected: plus-party-phone-0
         function getEntityNameFromAddNewLinkId(id) {
             return id.split("-")[1];
         }
 
-        // example ID expected: creator-item-0
+        // example ID expected: party-item-0
         function getEntityNameFromItemId(id) {
             return id.split("-")[0];
         }
 
-        // example ID expected: creator-phone-remove-0-0
+        // example ID expected: party-phone-remove-0-0
         function getSubEntityNameFromRemoveLinkId(id) {
             return id.split("-")[1];
         }
 
-        // example ID expected: plus-creator-phone-0
+        // example ID expected: plus-party-phone-0
         function getSubEntityNameFromAddNewLinkId(id) {
             return id.split("-")[2];
         }
 
-        // example ID expected: creator-item-0
+        // example ID expected: party-item-0
         function getEntityIndexFromItemId(id) {
             if (id.includes("relatedProject") && id.includes("personnel")) {
                 return id.split("-")[3];
@@ -281,12 +279,12 @@
             }
         }
 
-        // example ID expected: creator-phone-remove-0-0
+        // example ID expected: party-phone-remove-0-0
         function getEntityIndexFromRemoveLinkId(id) {
             return id.split("-")[3];
         }
 
-        // example ID expected: creator-phone-remove-0-0
+        // example ID expected: party-phone-remove-0-0
         function getSubEntityIndexFromRemoveLinkId(id) {
             return id.split("-")[4];
         }
@@ -310,7 +308,8 @@
 
             $('#' + entityName + '-' + entityIndex + '-' + subEntityName + '-' + subEntityIndex).slideUp('slow', function () {
                 $(this).remove();
-                $("#" + entityName + "-" + entityIndex + "-" + subEntityName + "s ." + subEntityName + "-item").each(function (index) {
+                var subEntityNamePlural = subEntityName === "address" ? subEntityName : subEntityName + "s";
+                $("#" + entityName + "-" + entityIndex + "-" + subEntityNamePlural + " ." + subEntityName + "-item").each(function (index) {
                     setSubEntityIndexes($(this), entityName, subEntityName, entityIndex, index);
                 });
             });
@@ -341,11 +340,8 @@
             item.attr("id", entityName + "-" + entityIndex + "-" + subEntityName + "-" + subEntityIndex);
             var $input = item.find("input");
             var $deleteLink = item.find("a");
-
-            var entityNameInId = entityName === 'associatedParty' ? 'associatedPartie' : entityName;
-
             $input
-                .attr("id", "eml." + entityNameInId + "s[" + entityIndex + "]." + subEntityName + "[" + subEntityIndex + "]")
+                .attr("id", agentPath(entityIndex) + "." + (subEntityName === "address" ? "address.address" : subEntityName) + "[" + subEntityIndex + "]")
                 .attr("name", function () {
                     return $(this).attr("id");
                 });
@@ -357,16 +353,13 @@
             var $input = item.find("input");
             var $select = item.find("select");
             var $deleteLink = item.find("a");
-
-            var entityNameInId = entityName === 'associatedParty' ? 'associatedPartie' : entityName;
-
             $input
-                .attr("id", "eml." + entityNameInId + "s[" + entityIndex + "].userIds[" + identifierIndex + "].identifier")
+                .attr("id", agentPath(entityIndex) + ".userIds[" + identifierIndex + "].identifier")
                 .attr("name", function () {
                     return $(this).attr("id");
                 });
             $select
-                .attr("id", "eml." + entityNameInId + "s[" + entityIndex + "].userIds[" + identifierIndex + "].directory")
+                .attr("id", agentPath(entityIndex) + ".userIds[" + identifierIndex + "].directory")
                 .attr("name", function () {
                     return $(this).attr("id");
                 });
@@ -389,15 +382,10 @@
         }
 
         function getEntityIndex(entityName) {
-            if (entityName === "contact") {
-                return ++contactItems;
-            } else if (entityName === "creator") {
-                return ++creatorItems;
-            } else if (entityName === "metadataProvider") {
-                return ++metadataProviderItems;
-            } else if (entityName === "associatedParty") {
-                return ++associatedPartyItemsCount;
+            if (lastAgentItemIndex[entityName] === undefined) {
+                lastAgentItemIndex[entityName] = -1;
             }
+            return ++lastAgentItemIndex[entityName];
         }
 
         function addNewPersonnelItem(effects) {
@@ -447,26 +435,34 @@
 
         function setAgentItemIndex(item, index, isNew) {
             const entityName = getEntityNameFromId(item.attr("id"));
-            const entityNamePlural = getEntityNamePlural(entityName);
 
             setAgentMainBlockId(item, entityName, index);
             setAgentRemoveLink(entityName, index);
             setAgentCopyLink(entityName, index);
-            setAgentRegularInput("firstName", entityName, entityNamePlural, index);
-            setAgentRegularInput("lastName", entityName, entityNamePlural, index);
-            setAgentRegularInput("salutation", entityName, entityNamePlural, index);
-            setAgentRegularInput("organisation", entityName, entityNamePlural, index);
-            setAgentRegularDropdown("role", entityName, entityNamePlural, index);
-            setAgentRepeatableInput("position", entityName, entityNamePlural, index, isNew);
-            setAgentRepeatableInput("address", entityName, entityNamePlural, index, isNew);
-            setAgentRegularInput("city", entityName, entityNamePlural, index);
-            setAgentRegularInput("province", entityName, entityNamePlural, index);
-            setAgentRegularDropdown("country", entityName, entityNamePlural, index);
-            setAgentRegularInput("postalCode", entityName, entityNamePlural, index);
-            setAgentRepeatableInput("phone", entityName, entityNamePlural, index, isNew);
-            setAgentRepeatableInput("email", entityName, entityNamePlural, index, isNew);
-            setAgentRepeatableInput("homepage", entityName, entityNamePlural, index, isNew);
-            setAgentIdentifier(entityName, entityNamePlural, index, isNew);
+            setAgentRegularInput("firstName", entityName, index);
+            setAgentRegularInput("lastName", entityName, index);
+            setAgentRegularInput("salutation", entityName, index);
+            setAgentRegularInput("organisation", entityName, index);
+            setAgentRepeatableInput("position", entityName, index, isNew);
+            setAgentRepeatableInput("address", entityName, index, isNew);
+            setAgentRegularInput("city", entityName, index);
+            setAgentRegularInput("province", entityName, index);
+            setAgentCountryDropdown(entityName, index);
+            setAgentRegularInput("postalCode", entityName, index);
+            setAgentRepeatableInput("phone", entityName, index, isNew);
+            setAgentRepeatableInput("email", entityName, index, isNew);
+            setAgentRepeatableInput("homepage", entityName, index, isNew);
+            setAgentIdentifier(entityName, index, isNew);
+            setPartyRoleInputs({
+                entity: {name: entityName},
+                itemId: entityName + "-item-" + index,
+                index: index,
+                isNew: isNew,
+                translations: {
+                    associatedPartyRoles: '${action.getText("eml.party.associatedPartyRoles.selection")?js_string?no_esc}',
+                    notFound: '${selectNoResultsFound}'
+                }
+            });
         }
 
         function setAgentMainBlockId(item, entityName, index) {
@@ -476,8 +472,10 @@
         function setAgentRemoveLink(entityName, index) {
             $("#" + entityName + "-item-" + index + " [id^='" + entityName + "-removeLink']")
                 .attr("id", entityName + "-removeLink-" + index);
+            // replace the handler: the item is re-indexed after every removal
             $("#" + entityName + "-removeLink-" + index)
-                .click(function (event) {
+                .off("click")
+                .on("click", function (event) {
                     removeAgentItem(event);
                 });
         }
@@ -485,81 +483,57 @@
         function setAgentCopyLink(entityName, index) {
             $("#" + entityName + "-item-" + index + " [id^='" + entityName + "-copy']")
                 .attr("id", entityName + "-copy-" + index);
+            // replace the handler: the item is re-indexed after every removal
             $("#" + entityName + "-copy-" + index)
-                .click(function (event) {
+                .off("click")
+                .on("click", function (event) {
                     event.preventDefault();
                     targetItemId = entityName + "-item-" + index;
                     showCopyAgentModal();
                 });
-
-            if (entityName !== "contact") {
-                $("#" + entityName + "-item-" + index + " [id^='" + entityName + "-from-contact']")
-                    .attr("id", entityName + "-from-contact-" + index);
-                $("#" + entityName + "-from-contact-" + index)
-                    .click(function (event) {
-                        event.preventDefault();
-                        copyDetails(event, entityName + "-item-");
-                    });
-            }
         }
 
-        function setAgentRegularInput(inputName, entityName, entityNamePlural, index) {
+        function setAgentRegularInput(inputName, entityName, index) {
             const inputNameInId = (inputName === "city" || inputName === "province" || inputName === "postalCode") ? "address." + inputName : inputName;
 
             $("#" + entityName + "-item-" + index + " [id$='" + inputName + "']")
-                .attr("id", "eml." + entityNamePlural + "[" + index + "]." + inputNameInId)
+                .attr("id", agentPath(index) + "." + inputNameInId)
                 .attr("name", function () {
                     return $(this).attr("id");
                 });
             $("#" + entityName + "-item-" + index + " [for$='" + inputName + "']")
-                .attr("for", "eml." + entityNamePlural + "[" + index + "]." + inputNameInId);
+                .attr("for", agentPath(index) + "." + inputNameInId);
         }
 
-        function setAgentRegularDropdown(dropdownName, entityName, entityNamePlural, index) {
-            const dropdownNameInId = (dropdownName === "country") ? "address.country" : dropdownName;
-            var $dropdown = $("#" + entityName + "-item-" + index + " [id$='" + dropdownName + "']");
+        function setAgentCountryDropdown(entityName, index) {
+            var $dropdown = $("#" + entityName + "-item-" + index + " [id$='country']");
 
             $dropdown
-                .attr("id", "eml." + entityNamePlural + "[" + index + "]." + dropdownNameInId)
+                .attr("id", agentPath(index) + ".address.country")
                 .attr("name", function () {return $(this).attr("id");});
-            $("#" + entityName + "-item-" + index + " [for$='" + dropdownName + "']")
-                .attr("for", "eml." + entityNamePlural + "[" + index + "]." + dropdownNameInId);
+            $("#" + entityName + "-item-" + index + " [for$='country']")
+                .attr("for", agentPath(index) + ".address.country");
 
-            if (dropdownName === "role") {
-                $dropdown
-                    .select2({
-                        placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
-                        language: {
-                            noResults: function () {
-                                return '${selectNoResultsFound}';
-                            }
-                        },
-                        width: "100%",
-                        allowClear: true,
-                        theme: 'bootstrap4'
-                    });
-            } else if (dropdownName === "country") {
-                $dropdown
-                    .select2({
-                        placeholder: '${action.getText("eml.country.selection")?js_string}',
-                        language: {
-                            noResults: function () {
-                                return '${selectNoResultsFound}';
-                            }
-                        },
-                        width: "100%",
-                        allowClear: true,
-                        theme: 'bootstrap4'
-                    });
-            }
+            $dropdown
+                .select2({
+                    placeholder: '${action.getText("eml.country.selection")?js_string?no_esc}',
+                    language: {
+                        noResults: function () {
+                            return '${selectNoResultsFound}';
+                        }
+                    },
+                    width: "100%",
+                    allowClear: true,
+                    theme: 'bootstrap4'
+                });
         }
 
-        function setAgentRepeatableInput(inputName, entityName, entityNamePlural, index, isNew) {
+        function setAgentRepeatableInput(inputName, entityName, index, isNew) {
             const inputNamePlural = (inputName === "address") ? inputName : inputName + 's';
 
             setAgentRepeatableInputMainId(inputNamePlural, entityName, index);
             setAgentRepeatableInputAddNewLink(inputName, entityName, index, isNew);
-            setAgentRepeatableInputItems(inputName, inputNamePlural, entityName, entityNamePlural, index)
+            setAgentRepeatableInputItems(inputName, inputNamePlural, entityName, index)
         }
 
         function setAgentRepeatableInputMainId(inputNamePlural, entityName, index) {
@@ -578,22 +552,22 @@
             }
         }
 
-        function setAgentRepeatableInputItems(inputName, inputNamePlural, entityName, entityNamePlural, index) {
+        function setAgentRepeatableInputItems(inputName, inputNamePlural, entityName, index) {
             const inputNameInId = (inputName === "address") ? "address.address" : inputName;
 
             $("#" + entityName + "-item-" + index + " ." + entityName + "-" + inputNamePlural + " ." + inputName + "-item")
                 .each(function (inputIndex) {
-                    setAgentRepeatableInputItem($(this), inputName, inputNameInId, inputIndex, entityName, entityNamePlural, index);
+                    setAgentRepeatableInputItem($(this), inputName, inputNameInId, inputIndex, entityName, index);
                 });
         }
 
-        function setAgentRepeatableInputItem($item, inputName, inputNameInId, inputIndex, entityName, entityNamePlural, index) {
+        function setAgentRepeatableInputItem($item, inputName, inputNameInId, inputIndex, entityName, index) {
             // item's id
             $item.attr("id", entityName + "-" + index + "-" + inputName + "-" + inputIndex);
 
             // input's id and name
             $("#" + entityName + "-" + index + "-" + inputName + "-" + inputIndex + " input")
-                .attr("id", "eml." + entityNamePlural + "[" + index + "]." + inputNameInId + "[" + inputIndex + "]")
+                .attr("id", agentPath(index) + "." + inputNameInId + "[" + inputIndex + "]")
                 .attr("name", function () {return $(this).attr("id");});
 
             // remove link
@@ -601,7 +575,7 @@
                 .attr("id", entityName + "-" + inputName + "-remove-" + index + "-" + inputIndex);
         }
 
-        function setAgentIdentifier(entityName, entityNamePlural, index, isNew) {
+        function setAgentIdentifier(entityName, index, isNew) {
             // identifiers block id
             $("#" + entityName + "-item-" + index + " ." + entityName + "-identifiers")
                 .attr("id", entityName + "-" + index + "-identifiers");
@@ -619,12 +593,12 @@
                     // identifier directory dropdown element id/name (and select2 initialization)
                     $(this)
                         .find("select")
-                        .attr("id", "eml." + entityNamePlural + "[" + index + "].userIds[" + identifierIndex + "].directory")
+                        .attr("id", agentPath(index) + ".userIds[" + identifierIndex + "].directory")
                         .attr("name", function () {
                             return $(this).attr("id");
                         })
                         .select2({
-                            placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                            placeholder: '${action.getText("eml.contact.noDirectory")?js_string?no_esc}',
                             language: {
                                 noResults: function () {
                                     return '${selectNoResultsFound}';
@@ -639,7 +613,7 @@
                     // identifier input element id/name
                     $(this)
                         .find("input")
-                        .attr("id", "eml." + entityNamePlural + "[" + index + "].userIds[" + identifierIndex + "].identifier")
+                        .attr("id", agentPath(index) + ".userIds[" + identifierIndex + "].identifier")
                         .attr("name", function () {
                             return $(this).attr("id");
                         });
@@ -664,10 +638,6 @@
             } else {
                 return id.split("-")[0];
             }
-        }
-
-        function getEntityNamePlural(entityName) {
-            return entityName === "associatedParty" ? "associatedParties" : entityName + 's';
         }
 
         function setPersonnelItemIndex(item, index) {
@@ -699,7 +669,7 @@
             $("#personnel-item-" + index + " [id$='role']").attr("id", "eml.project.personnel[" + index + "].role").attr("name", function () {return $(this).attr("id");});
             $("#personnel-item-" + index + " [for$='role']").attr("for", "eml.project.personnel[" + index + "].role");
             $("#personnel-item-" + index + " [id$='role']").select2({
-                placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+                placeholder: '${action.getText("eml.agent.role.selection")?js_string?no_esc}',
                 language: {
                     noResults: function () {
                         return '${selectNoResultsFound}';
@@ -713,7 +683,7 @@
             $("#personnel-item-" + index + " [id$='directory']").attr("id", "eml.project.personnel[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#personnel-item-" + index + " [for$='directory']").attr("for", "eml.project.personnel[" + index + "].userIds[0].directory");
             $("#personnel-item-" + index + " [id$='directory']").select2({
-                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string?no_esc}',
                 language: {
                     noResults: function () {
                         return '${selectNoResultsFound}';
@@ -745,10 +715,6 @@
                 targetItemId = itemId;
                 showCopyAgentModal();
             });
-            $("#personnel-" + relatedProjectId + "-personnel-from-contact-" + index).click(function (event) {
-                event.preventDefault();
-                copyPrimaryContactDetails(event, itemId);
-            });
 
             $("#" + itemId + " [id$='firstName']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].firstName").attr("name", function () {return $(this).attr("id");});
             $("#" + itemId + " [for$='firstName']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].firstName");
@@ -762,7 +728,7 @@
             $("#" + itemId + " [id$='role']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].role").attr("name", function () {return $(this).attr("id");});
             $("#" + itemId + " [for$='role']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].role");
             $("#" + itemId + " [id$='role']").select2({
-                placeholder: '${action.getText("eml.agent.role.selection")?js_string}',
+                placeholder: '${action.getText("eml.agent.role.selection")?js_string?no_esc}',
                 language: {
                     noResults: function () {
                         return '${selectNoResultsFound}';
@@ -776,7 +742,7 @@
             $("#" + itemId + " [id$='directory']").attr("id", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].directory").attr("name", function () {return $(this).attr("id");});
             $("#" + itemId + " [for$='directory']").attr("for", "eml.project.relatedProjects[" + relatedProjectId + "].personnel[" + index + "].userIds[0].directory");
             $("#" + itemId + " [id$='directory']").select2({
-                placeholder: '${action.getText("eml.contact.noDirectory")?js_string}',
+                placeholder: '${action.getText("eml.contact.noDirectory")?js_string?no_esc}',
                 language: {
                     noResults: function () {
                         return '${selectNoResultsFound}';
@@ -913,25 +879,7 @@
             dialogWindow.modal('show');
         }
 
-        $("[id^='contact-copy']").on('click', function (e) {
-            e.preventDefault();
-            targetItemId = this.id.replace('-copy-', '-item-');
-            showCopyAgentModal();
-        });
-
-        $("[id^='creator-copy']").on('click', function (e) {
-            e.preventDefault();
-            targetItemId = this.id.replace('-copy-', '-item-');
-            showCopyAgentModal();
-        });
-
-        $("[id^='metadataProvider-copy']").on('click', function (e) {
-            e.preventDefault();
-            targetItemId = this.id.replace('-copy-', '-item-');
-            showCopyAgentModal();
-        });
-
-        $("[id^='associatedParty-copy']").on('click', function (e) {
+        $("[id^='party-copy']").on('click', function (e) {
             e.preventDefault();
             targetItemId = this.id.replace('-copy-', '-item-');
             showCopyAgentModal();
@@ -992,21 +940,6 @@
             }
         }
 
-        function copyAllSubEntitiesFromFirstContact(entityName, subEntityName, entityIndex) {
-            // Take first contact
-            var $firstContactInputs;
-            if (subEntityName === "address") {
-                $firstContactInputs = $("[id^=eml\\.contacts\\[0\\]\\.address\\.address]");
-            } else {
-                $firstContactInputs = $("[id^=eml\\.contacts\\[0\\]\\." + subEntityName + "]");
-            }
-
-            // positions, email, homepages, phones, addresses
-            for (let i = 0; i < $firstContactInputs.length; i++) {
-                createNewSubEntityForAgentDirectly(entityName, subEntityName, entityIndex, $firstContactInputs[i].value)
-            }
-        }
-
         function copyAllIdentifiersFromAnother() {
             var selectedAgentUserIds = selectedAgent['userIds'];
             var entityName = getEntityNameFromItemId(targetItemId);
@@ -1056,33 +989,6 @@
             }
         }
 
-        function copyAllIdentifiersFromFirstContact(entityName, entityIndex) {
-            // Take first contact
-            var $firstContactDirectorySelects;
-            var $firstContactIdentifierInputs;
-            $firstContactDirectorySelects = $("select[id^=eml\\.contacts\\[0\\]\\.userIds]");
-            $firstContactIdentifierInputs = $("input[id^=eml\\.contacts\\[0\\]\\.userIds]");
-
-            for (let i = 0; i < $firstContactDirectorySelects.length; i++) {
-                createNewIdentifierForAgentDirectly(entityName, entityIndex, $firstContactDirectorySelects[i].value, $firstContactIdentifierInputs[i].value);
-            }
-        }
-
-        $("[id^='creator-from-contact']").click(function(event) {
-            event.preventDefault();
-            copyDetails(event, "creator-item-");
-        });
-
-        $("[id^='metadataProvider-from-contact']").click(function(event) {
-            event.preventDefault();
-            copyDetails(event, "metadataProvider-item-");
-        });
-
-        $("[id^='associatedParty-from-contact']").click(function(event) {
-            event.preventDefault();
-            copyPrimaryContactDetails(event, getItemId(event, "item"));
-        });
-
         $("[id^='personnel-from-contact']").click(function(event) {
             event.preventDefault();
             copyPrimaryContactDetails(event, getItemId(event, "item"));
@@ -1105,52 +1011,16 @@
             return $parentItem.attr("id");
         }
 
-        function copyDetails(event, idPrefix) {
-            event.preventDefault();
-            var $target = $(event.target);
-            if (!$target.is('a')) {
-                $target = $(event.target).closest('a');
-            }
-
-            var index = $target.attr("id").split("-")[3];
-            var entityName = getEntityNameFromItemId($target.attr("id"));
-
-            $("#" + idPrefix + index + " [id$='firstName']").val($("#eml\\.contacts\\[0\\]\\.firstName").val());
-            $("#" + idPrefix + index + " [id$='lastName']").val($("#eml\\.contacts\\[0\\]\\.lastName").val());
-            $("#" + idPrefix + index + " [id$='salutation']").val($("#eml\\.contacts\\[0\\]\\.salutation").val());
-            copyAllSubEntitiesFromFirstContact(entityName, "position", index);
-            $("#" + idPrefix + index + " [id$='organisation']").val($("#eml\\.contacts\\[0\\]\\.organisation").val());
-            copyAllSubEntitiesFromFirstContact(entityName, "address", index);
-            $("#" + idPrefix + index + " [id$='city']").val($("#eml\\.contacts\\[0\\]\\.address\\.city").val());
-            $("#" + idPrefix + index + " [id$='province']").val($("#eml\\.contacts\\[0\\]\\.address\\.province").val());
-            $("#" + idPrefix + index + " [id$='postalCode']").val($("#eml\\.contacts\\[0\\]\\.address\\.postalCode").val());
-            $("#" + idPrefix + index + " [id$='country']").val($("#eml\\.contacts\\[0\\]\\.address\\.country").val());
-            copyAllSubEntitiesFromFirstContact(entityName, "phone", index);
-            copyAllSubEntitiesFromFirstContact(entityName, "email", index);
-            copyAllSubEntitiesFromFirstContact(entityName, "homepage", index);
-            copyAllIdentifiersFromFirstContact(entityName, index);
-        }
-
         function copyPrimaryContactDetails(event, itemId) {
             event.preventDefault();
 
-            // replace " with &quot; to prevent JS from failing
-            $("#" + itemId + " [id$='firstName']").val("${primaryContact.firstName!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='lastName']").val("${primaryContact.lastName!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='salutation']").val("${primaryContact.salutation!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='position']").val("${primaryContact.position!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='organisation']").val("${primaryContact.organisation!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='address']").val("${primaryContact.address.address!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='city']").val("${primaryContact.address.city!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='province']").val("${primaryContact.address.province!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='postalCode']").val("${primaryContact.address.postalCode!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='country']").val("${primaryContact.address.country!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='phone']").val("${primaryContact.phone!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='email']").val("${primaryContact.email!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='homepage']").val("${primaryContact.homepage!?replace("\"", "&quot;")}");
-            $("#" + itemId + " [id$='directory']").val("${(primaryContact.userIds[0].directory)!?replace("\"", "&quot;")}");
+            // project personnel only have names and one identifier
+            $("#" + itemId + " [id$='firstName']").val("${(primaryContact.firstName)!?js_string?no_esc}");
+            $("#" + itemId + " [id$='lastName']").val("${(primaryContact.lastName)!?js_string?no_esc}");
+            $("#" + itemId + " [id$='salutation']").val("${(primaryContact.salutation)!?js_string?no_esc}");
+            $("#" + itemId + " [id$='directory']").val("${(primaryContact.userIds[0].directory)!?js_string?no_esc}");
             $("#" + itemId + " [id$='directory']").trigger('change');
-            $("#" + itemId + " [id$='identifier']").val("${(primaryContact.userIds[0].identifier)!?replace("\"", "&quot;")}");
+            $("#" + itemId + " [id$='identifier']").val("${(primaryContact.userIds[0].identifier)!?js_string?no_esc}");
         }
 
 });

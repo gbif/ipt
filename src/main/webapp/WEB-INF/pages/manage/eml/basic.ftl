@@ -11,7 +11,6 @@
     <#include "/WEB-INF/pages/macros/docbook_editor.ftl"/>
     <@docBookEditorAssets/>
     <@translationAssets loadSelect2=false/>
-    <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script>
         $(document).ready(function(){
             // Ensure core type cannot be changed once set (e.g., after core mapping is done)

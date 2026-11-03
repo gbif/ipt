@@ -45,6 +45,7 @@ import org.gbif.metadata.eml.ipt.model.Address;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
+import org.gbif.metadata.eml.ipt.model.Party;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
 import org.gbif.metadata.eml.ipt.model.UserId;
 
@@ -392,10 +393,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
         // populate agent vocabularies
         loadAgentVocabularies();
         if (isHttpPost()) {
-          resource.getEml().getContacts().clear();
-          resource.getEml().getCreators().clear();
-          resource.getEml().getMetadataProviders().clear();
-          resource.getEml().getAssociatedParties().clear();
+          // the form posts the full list of parties (contacts, creators, metadata providers, associated parties)
+          resource.getEml().getParties().clear();
         }
         break;
 
@@ -628,6 +627,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   public void validateHttpPostOnly() {
     if (section == MetadataSection.BASIC_SECTION) {
       readTitleTranslations();
+    } else if (section == MetadataSection.CONTACTS_SECTION) {
+      tidyPostedParties();
     }
     validatorRes.validate(this, resource);
     emlValidator.validate(resource, section, new ActionErrorCollector(this), new StrutsI18n(this));
@@ -885,70 +886,44 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
     roles.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_ROLES, getLocaleLanguage(), false));
 
     if (resource != null && resource.getEml() != null) {
-      // contacts list
-      Agent firstContact = null;
-      if (!resource.getEml().getContacts().isEmpty()) {
-        for (Agent contact : resource.getEml().getContacts()) {
-          // capture first contact, used as primary contact to copy in contact form details
-          if (firstContact == null) {
-            firstContact = contact;
-          }
-          String countryValue = contact.getAddress().getCountry();
-          if (countryValue != null) {
-            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
-            if (result.isSuccessful()) {
-              contact.getAddress().setCountry(result.getPayload().getIso2LetterCode());
-            }
+      // convert every party's country into a 2-letter iso code for proper display; creators, contacts and metadata
+      // providers are views of the parties, so this covers all of them
+      for (Party party : resource.getEml().getParties()) {
+        String countryValue = Optional.ofNullable(party)
+            .map(Party::getAgent)
+            .map(Agent::getAddress)
+            .map(Address::getCountry)
+            .orElse(null);
+        if (countryValue != null) {
+          ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
+          if (result.isSuccessful()) {
+            party.getAgent().getAddress().setCountry(result.getPayload().getIso2LetterCode());
           }
         }
       }
 
-      // always populate the primary contact, used to autofill parties and project personnel
-      if (firstContact == null) {
-        firstContact = new Agent();
-      }
+      // always populate the primary contact, used to autofill project personnel
+      List<Agent> contacts = resource.getEml().getContacts();
+      Agent firstContact = contacts.isEmpty() ? new Agent() : contacts.get(0);
       if (firstContact.getUserIds().isEmpty()) {
         List<UserId> userIds = new ArrayList<>();
         firstContact.setUserIds(userIds);
       }
       setPrimaryContact(firstContact);
+    }
+  }
 
-      // creator list
-      if (!resource.getEml().getCreators().isEmpty()) {
-        for (Agent creator : resource.getEml().getCreators()) {
-          String countryValue = creator.getAddress().getCountry();
-          if (countryValue != null) {
-            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
-            creator.getAddress().setCountry(result.getPayload().getIso2LetterCode());
-          }
-        }
-      }
-      // metadata provider list
-      if (!resource.getEml().getMetadataProviders().isEmpty()) {
-        for (Agent metadataProvider : resource.getEml().getMetadataProviders()) {
-          String countryValue = metadataProvider.getAddress().getCountry();
-          if (countryValue != null) {
-            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
-            metadataProvider.getAddress().setCountry(result.getPayload().getIso2LetterCode());
-          }
-        }
-      }
-
-      // otherwise, ensure associated parties' country value get converted into 2-letter iso code for proper display
-      else if (!resource.getEml().getAssociatedParties().isEmpty()) {
-        for (Agent party : resource.getEml().getAssociatedParties()) {
-          String countryValue = Optional.ofNullable(party)
-              .map(Agent::getAddress)
-              .map(Address::getCountry)
-              .orElse(null);
-          if (countryValue != null) {
-            ParseResult<Country> result = COUNTRY_PARSER.parse(countryValue);
-            if (result.isSuccessful()) {
-              party.getAddress().setCountry(result.getPayload().getIso2LetterCode());
-            }
-          }
-        }
-      }
+  /**
+   * Tidies the parties posted from the contacts form: drops gaps left by removed items (null), parties without an
+   * agent, and blank or repeated associated party roles (the role multi-select can post the empty option).
+   */
+  private void tidyPostedParties() {
+    List<Party> parties = resource.getEml().getParties();
+    parties.removeIf(party -> party == null || party.getAgent() == null);
+    for (Party party : parties) {
+      List<String> roles = new ArrayList<>(party.getAssociatedPartyRoles());
+      party.setAssociatedPartyRoles(new ArrayList<>());
+      roles.forEach(party::addAssociatedPartyRole);
     }
   }
 
