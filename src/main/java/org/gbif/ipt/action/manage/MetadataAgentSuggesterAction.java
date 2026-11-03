@@ -19,6 +19,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.Party;
 
 import jakarta.inject.Inject;
 import java.io.Serial;
@@ -39,6 +40,7 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
 
   public Map<String, String> suggestedResources = new HashMap<>();
   public Map<String, Agent> suggestedAgents = new HashMap<>();
+  public List<SuggestedPerson> suggestedPeople = new ArrayList<>();
 
   @Inject
   public MetadataAgentSuggesterAction(
@@ -79,6 +81,60 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
     return SUCCESS;
   }
 
+  /**
+   * Lists the people and organisations of the other resources the user can manage, for the contacts page's "Copy
+   * from another resource" search: the parties and project personnel of each resource. The same contact information
+   * in several places is listed once, with every place it is used.
+   * The resource given by the r parameter (the one being edited) is left out.
+   */
+  public String people() {
+    String currentResource = req.getParameter("r");
+
+    for (Resource res : resourceManager.list(getCurrentUser())) {
+      if (res.getEml() == null || res.getShortname().equals(currentResource)) {
+        continue;
+      }
+      String title = StringUtils.defaultIfEmpty(res.getTitle(), res.getShortname());
+
+      for (Party party : res.getEml().getParties()) {
+        Usage usage = new Usage(title);
+        usage.creator = party.isCreator();
+        usage.contact = party.isContact();
+        usage.metadataProvider = party.isMetadataProvider();
+        usage.associatedPartyRoles = new ArrayList<>(party.getAssociatedPartyRoles());
+        addSuggestedPerson(party.getAgent(), usage);
+      }
+
+      if (res.getEml().getProject() != null) {
+        for (Agent personnel : res.getEml().getProject().getPersonnel()) {
+          Usage usage = new Usage(title);
+          usage.projectPersonnel = true;
+          addSuggestedPerson(personnel, usage);
+        }
+      }
+    }
+
+    return SUCCESS;
+  }
+
+  private void addSuggestedPerson(Agent agent, Usage usage) {
+    if (agent == null
+        || (agent.getFullName() == null
+            && StringUtils.isBlank(agent.getOrganisation())
+            && agent.getPosition().stream().allMatch(StringUtils::isBlank))) {
+      return;
+    }
+    for (SuggestedPerson person : suggestedPeople) {
+      if (person.agent.isSameParty(agent)) {
+        person.usedIn.add(usage);
+        return;
+      }
+    }
+    SuggestedPerson person = new SuggestedPerson(agent);
+    person.usedIn.add(usage);
+    suggestedPeople.add(person);
+  }
+
   private List<Agent> getMetadataAgentsByType(Resource resource, String type) {
     if (resource.getEml() == null) {
       return new ArrayList<>();
@@ -105,5 +161,66 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
   @JSON
   public Map<String, Agent> getSuggestedAgents() {
     return suggestedAgents;
+  }
+
+  @JSON
+  public List<SuggestedPerson> getSuggestedPeople() {
+    return suggestedPeople;
+  }
+
+  /** A person or organisation of another resource, with the places it is used. */
+  public static class SuggestedPerson {
+    private final Agent agent;
+    private final List<Usage> usedIn = new ArrayList<>();
+
+    SuggestedPerson(Agent agent) {
+      this.agent = agent;
+    }
+
+    public Agent getAgent() {
+      return agent;
+    }
+
+    public List<Usage> getUsedIn() {
+      return usedIn;
+    }
+  }
+
+  /** Where a person or organisation is used: the resource's title and the roles held there. */
+  public static class Usage {
+    private final String resource;
+    private boolean creator;
+    private boolean contact;
+    private boolean metadataProvider;
+    private List<String> associatedPartyRoles = new ArrayList<>();
+    private boolean projectPersonnel;
+
+    Usage(String resource) {
+      this.resource = resource;
+    }
+
+    public String getResource() {
+      return resource;
+    }
+
+    public boolean isCreator() {
+      return creator;
+    }
+
+    public boolean isContact() {
+      return contact;
+    }
+
+    public boolean isMetadataProvider() {
+      return metadataProvider;
+    }
+
+    public List<String> getAssociatedPartyRoles() {
+      return associatedPartyRoles;
+    }
+
+    public boolean isProjectPersonnel() {
+      return projectPersonnel;
+    }
   }
 }

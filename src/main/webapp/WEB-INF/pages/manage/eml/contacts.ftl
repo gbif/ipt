@@ -3,9 +3,11 @@
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
+    <link rel="stylesheet" href="${baseURL}/styles/contacts.css?v=${cfg.version!}">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
+    <#-- runs on DOMContentLoaded, after Bootstrap and html5sortable from the footer -->
+    <script src="${baseURL}/js/contacts.js?v=${cfg.version!}"></script>
     <title><@s.text name='manage.metadata.contacts.title'/></title>
-    <script src="${baseURL}/js/metadata-agent.js"></script>
     <script>
         $(document).ready(function () {
             $('#metadata-section').change(function () {
@@ -13,190 +15,301 @@
                 $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
             });
 
-            // scroll to the error if present
-            var invalidElements = $(".is-invalid");
-
-            if (invalidElements !== undefined && invalidElements.length > 0) {
-                var invalidElement = invalidElements.first();
-                var pos = invalidElement.offset().top - 100;
-                // scroll to the element
-                $('body, html').animate({scrollTop: pos});
-            }
-
-            // reordering
-            function initAndGetSortable(selector) {
-                return sortable(selector, {
-                    forcePlaceholderSize: true,
-                    placeholderClass: 'border',
-                    handle: '.handle'
-                });
-            }
-
-            // party order matters: it is the creator (author) order and decides the primary contact
-            const sortableParties = initAndGetSortable('#party-items');
-
-            sortableParties[0].addEventListener('sortupdate', () => changeInputNamesAfterDragging("party"));
-            sortableParties[0].addEventListener('drag', dragScroll);
-
-            function dragScroll(e) {
-                var cursor = e.pageY;
-                var parentWindow = parent.window;
-                var pixelsToTop = $(parentWindow).scrollTop();
-                var screenHeight = $(parentWindow).height();
-
-                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
-                    parentWindow.scrollBy(0, (screenHeight / 30));
-                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
-                    parentWindow.scrollBy(0, -(screenHeight / 30));
-                }
-            }
-
-            function changeInputNamesAfterDragging(entityName) {
-                displayProcessing();
-                var agentItems = $("#" + entityName + "-items div.item");
-
-                agentItems.each(function (index) {
-                    // previously elementId
-                    var itemId = $(this)[0].id;
-                    var params = {
-                        entity : {
-                            name: entityName
-                        },
-                        itemId: itemId,
-                        index: index,
-                        isNew: false
-                    }
-                    setAgentRegularInput("firstName", params);
-                    setAgentRegularInput("lastName", params);
-                    setAgentRegularInput("salutation", params);
-                    setAgentRegularInput("organisation", params);
-                    setAgentRepeatableInput("position", params);
-                    setAgentRepeatableInput("address", params);
-                    setAgentRegularInput("city", params);
-                    setAgentRegularInput("province", params);
-                    setAgentRegularDropdown("country", params);
-                    setAgentRegularInput("postalCode", params);
-                    setAgentRepeatableInput("phone", params);
-                    setAgentRepeatableInput("email", params);
-                    setAgentRepeatableInput("homepage", params);
-                    setAgentIdentifier(params);
-                    setPartyRoleInputs(params);
-                });
-
-                hideProcessing();
-            }
-
-            var copyAgentModal = $('#copy-agent-modal');
-            $('#resource').select2({
-                placeholder: '${action.getText("eml.metadataAgent.copy.resource.select")?js_string?no_esc}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                dropdownParent: copyAgentModal,
-                minimumResultsForSearch: 10,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('#agentType').select2({
-                placeholder: '${action.getText("eml.metadataAgent.copy.agentType.select")?js_string?no_esc}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                dropdownParent: copyAgentModal,
-                minimumResultsForSearch: 10,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('#agent').select2({
-                placeholder: '${action.getText("eml.metadataAgent.copy.agent.select")?js_string?no_esc}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                dropdownParent: copyAgentModal,
-                minimumResultsForSearch: 10,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-
-            $('[id^="eml."][id$=".address.country"]').select2({
-                placeholder: '${action.getText("eml.country.selection")?js_string?no_esc}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-
-            $('[id^="eml."][id$=".directory"]').select2({
-                placeholder: '${action.getText("eml.contact.noDirectory")?js_string?no_esc}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                minimumResultsForSearch: 'Infinity',
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            // other (associated party) roles of the existing parties; new parties get it when added
-            $('#party-items .party-associated-roles').select2({
-                placeholder: '${action.getText("eml.party.associatedPartyRoles.selection")?js_string?no_esc}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                theme: 'bootstrap4'
-            });
-
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
-    <style>
-        .popover {
-            width: 50%;
-            max-width: 600px;
-        }
-    </style>
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
-    <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
 
     <#assign currentMetadataPage = "contacts"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
+    <#-- the dataset roles, in the order of the role chips -->
+    <#assign partyFlags = ["contact", "creator", "metadataProvider"]/>
+
+    <#function t key>
+        <#return action.getText(key)/>
+    </#function>
+
+    <#-- errors posted back for one field, shown under it; form-validation.js marks the field with the same id -->
+    <#--
+      The validator's "a last name, organisation or position is required" rule also puts "<field> is required" under
+      each of the three fields; the card says it once (data-name-error), so those messages are left out here.
+    -->
+    <#assign nameRuleMessages = ["eml.contact.lastName", "eml.contact.organisation", "eml.contact.position"]
+        ?map(labelKey -> action.getText("validation.required", [action.getText(labelKey)]))/>
+
+    <#--
+      Errors posted back for one field, shown under it. The list is written even when every message was left out, so
+      form-validation.js still finds it by id and marks the field (field-error-<name> marks the element with id <name>).
+    -->
+    <#macro ferr name tpl>
+        <#if !tpl>
+            <#local posted = (action.fieldErrors[name])![]/>
+            <#if posted?has_content>
+                <ul id="field-error-${name}" class="invalid-feedback list-unstyled field-error d-block"><#list posted?filter(m -> !nameRuleMessages?seq_contains(m)) as message><li>${message}</li></#list></ul>
+            </#if>
+        </#if>
+    </#macro>
+
+    <#-- has any field error under a form path, e.g. eml.parties[2]. -->
+    <#function hasErrorsUnder prefix>
+        <#list (action.fieldErrors!{})?keys as key>
+            <#if key?starts_with(prefix)>
+                <#return true/>
+            </#if>
+        </#list>
+        <#return false/>
+    </#function>
+
+    <#-- full identifier as shown to the user: the directory URL followed by the identifier -->
+    <#function fullIdentifier userId>
+        <#local identifier = (userId.identifier)!""/>
+        <#local directory = userIdDirecotriesExtended[(userId.directory)!""]!((userId.directory)!"")/>
+        <#if identifier?matches("^https?://.*", "i") || directory == "">
+            <#return identifier/>
+        </#if>
+        <#return directory + identifier/>
+    </#function>
+
+    <#-- remove button of a repeatable value -->
+    <#macro removeValueButton>
+        <button type="button" class="party-icon-btn party-icon-danger" data-act="rm-rep" aria-label="${t('eml.party.removeValue')}" title="${t('eml.party.removeValue')}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </button>
+    </#macro>
+
+    <#-- a list of plain text values of an agent: position, email, home page, phone, address lines -->
+    <#macro repeatable base field path labelKey addKey values tpl type="text" placeholder="" startWithOne=false>
+        <#local rows = values/>
+        <#if startWithOne && !rows?has_content>
+            <#local rows = [""]/>
+        </#if>
+        <div class="col-md-6" data-rep="${field}">
+            <label class="form-label" data-rep-label><@s.text name=labelKey/></label>
+            <div data-rep-rows>
+                <#list rows as value>
+                    <#local name = base + path + "[" + value?index + "]"/>
+                    <div class="party-rep-row-wrap" data-rep-row>
+                        <div class="party-rep-row">
+                            <input class="form-control" type="${type}" id="${name}" name="${name}" data-name="${path}[]" value="${value!}" placeholder="${placeholder}"/>
+                            <@removeValueButton/>
+                        </div>
+                        <@ferr name=name tpl=tpl/>
+                    </div>
+                </#list>
+            </div>
+            <button type="button" class="party-add-link" data-act="add-rep">+ <@s.text name=addKey/></button>
+            <template data-rep-template>
+                <div class="party-rep-row-wrap" data-rep-row>
+                    <div class="party-rep-row">
+                        <input class="form-control" type="${type}" data-name="${path}[]" value="" placeholder="${placeholder}"/>
+                        <@removeValueButton/>
+                    </div>
+                </div>
+            </template>
+            <#if !tpl>
+                <#-- e.g. "a last name, organisation or position is required", posted for the position list -->
+                <@ferr name="${base}${path}" tpl=tpl/>
+            </#if>
+        </div>
+    </#macro>
+
+    <#macro identifierRow base index userId tpl>
+        <#local dirName = base + "agent.userIds[" + index + "].directory"/>
+        <#local idName = base + "agent.userIds[" + index + "].identifier"/>
+        <#local directory = userIdDirecotriesExtended[(userId.directory)!""]!((userId.directory)!"")/>
+        <div class="party-rep-row-wrap" data-rep-row data-id-row>
+            <div class="party-rep-row">
+                <input class="form-control" type="text" data-id-full value="${fullIdentifier(userId)}" placeholder="${t('eml.party.identifier.placeholder')}" aria-label="${t('eml.party.identifier.label')}"/>
+                <input type="hidden" id="${idName}" name="${idName}" data-name="agent.userIds[].identifier" value="${(userId.identifier)!}"/>
+                <@removeValueButton/>
+            </div>
+            <div class="party-id-detect" data-id-detect aria-live="polite"></div>
+            <select class="form-select party-id-directory d-none" id="${dirName}" name="${dirName}" data-name="agent.userIds[].directory" aria-label="${t('eml.contact.directory')}">
+                <#list userIdDirectories?keys as key>
+                    <option value="${key}" <#if key == directory>selected</#if>>${userIdDirectories.get(key)}</option>
+                </#list>
+                <#-- a directory from the EML that the IPT doesn't list is kept, so saving doesn't drop it -->
+                <#if directory?has_content && !userIdDirectories?keys?seq_contains(directory)>
+                    <option value="${directory}" selected>${directory}</option>
+                </#if>
+            </select>
+            <@ferr name=idName tpl=tpl/>
+            <@ferr name=dirName tpl=tpl/>
+        </div>
+    </#macro>
+
+    <#--
+      One card per person or organisation. All inputs carry data-name, their path inside the party; contacts.js turns
+      it into the form name eml.parties[i].<path> after every add, remove and move. The template card (tpl) has no
+      posted errors and is indexed when added.
+    -->
+    <#macro partyCard index party tpl=false>
+        <#local base = "eml.parties[" + index + "]."/>
+        <#local agent = (party.agent)!{}/>
+        <#local hasErrors = !tpl && hasErrorsUnder(base)/>
+        <div class="party-card<#if hasErrors> open has-errors</#if>" data-party>
+            <#list partyFlags as flag>
+                <input type="hidden" id="${base}${flag}" name="${base}${flag}" data-name="${flag}" data-flag="${flag}" value="${((party[flag])!false)?c}"/>
+            </#list>
+            <span data-other-roles>
+                <#list (party.associatedPartyRoles)![] as role>
+                    <input type="hidden" name="${base}associatedPartyRoles" data-name="associatedPartyRoles" value="${role}"/>
+                </#list>
+            </span>
+
+            <div class="party-summary" data-act="toggle" tabindex="0" role="button" aria-expanded="${hasErrors?c}">
+                <span class="party-grip" title="${t('eml.party.dragToReorder')}" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M9 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm6 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM9 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm6 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm-6 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm6 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg>
+                </span>
+                <span class="party-who">
+                    <span class="party-name" data-summary-name></span>
+                    <span class="party-sub" data-summary-sub></span>
+                </span>
+                <span class="party-chips" data-summary-chips></span>
+                <span class="party-roles" role="group" aria-label="${t('eml.party.roles')}">
+                    <#list partyFlags as flag>
+                        <button type="button" class="party-role" data-act="role" data-flag="${flag}" aria-pressed="false"><@s.text name="eml.party.chip.${flag}"/></button>
+                    </#list>
+                    <span data-other-role-chips></span>
+                    <span class="dropdown">
+                        <button type="button" class="party-role party-role-add" data-act="other-roles-menu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true"></button>
+                        <div class="dropdown-menu dropdown-menu-end party-menu party-menu-scroll" data-other-roles-menu></div>
+                    </span>
+                </span>
+                <span class="party-order">
+                    <button type="button" class="party-icon-btn" data-act="up" aria-label="${t('eml.party.moveUp')}" title="${t('eml.party.moveUp')}">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+                    </button>
+                    <button type="button" class="party-icon-btn" data-act="down" aria-label="${t('eml.party.moveDown')}" title="${t('eml.party.moveDown')}">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                    </button>
+                </span>
+                <span class="dropdown">
+                    <button type="button" class="party-icon-btn" data-act="copy-menu" data-bs-toggle="dropdown" aria-expanded="false" aria-label="${t('eml.party.copyFrom.title')}" title="${t('eml.party.copyFrom')}">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end party-menu" data-copy-menu></div>
+                </span>
+                <button type="button" class="party-icon-btn party-icon-danger" data-act="remove" aria-label="${t('eml.party.remove')}" title="${t('eml.party.remove')}">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                </button>
+                <span class="party-icon-btn party-chev" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </span>
+            </div>
+
+            <div class="party-body">
+                <#-- the name rule, above the fields it is about; contacts.js shows it only while none of them is filled in -->
+                <div class="party-alert party-alert-danger" data-name-error hidden><@s.text name="eml.party.nameRule"/></div>
+                <#-- shown live by contacts.js; it replaces the validator's eml.parties[i].associatedPartyRoles field error -->
+                <div class="party-alert party-alert-danger" data-role-error hidden><@s.text name="eml.party.role.required"/></div>
+
+                <div class="row g-2">
+                    <div class="col-md-3">
+                        <label class="form-label" data-for="agent.firstName" for="${base}agent.firstName"><@s.text name="eml.contact.firstName"/></label>
+                        <input class="form-control" type="text" id="${base}agent.firstName" name="${base}agent.firstName" data-name="agent.firstName" value="${(agent.firstName)!}"/>
+                        <@ferr name="${base}agent.firstName" tpl=tpl/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label" data-for="agent.lastName" for="${base}agent.lastName"><@s.text name="eml.contact.lastName"/></label>
+                        <input class="form-control" type="text" id="${base}agent.lastName" name="${base}agent.lastName" data-name="agent.lastName" data-name-field value="${(agent.lastName)!}"/>
+                        <@ferr name="${base}agent.lastName" tpl=tpl/>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" data-for="agent.organisation" for="${base}agent.organisation"><@s.text name="eml.contact.organisation"/></label>
+                        <input class="form-control" type="text" id="${base}agent.organisation" name="${base}agent.organisation" data-name="agent.organisation" data-name-field value="${(agent.organisation)!}"/>
+                        <@ferr name="${base}agent.organisation" tpl=tpl/>
+                    </div>
+                    <@repeatable base=base field="position" path="agent.position" labelKey="eml.contact.position" addKey="eml.party.add.position" values=(agent.position)![] tpl=tpl/>
+                </div>
+
+                <fieldset class="party-fieldset">
+                    <legend><@s.text name="eml.party.contactDetails"/></legend>
+                    <div class="row g-2">
+                        <@repeatable base=base field="email" path="agent.email" labelKey="eml.contact.email" addKey="eml.party.add.email" values=(agent.email)![] tpl=tpl type="email" placeholder="name@example.org" startWithOne=true/>
+                        <@repeatable base=base field="homepage" path="agent.homepage" labelKey="eml.contact.homepage" addKey="eml.party.add.homepage" values=(agent.homepage)![] tpl=tpl type="url" placeholder="https://"/>
+                        <@repeatable base=base field="phone" path="agent.phone" labelKey="eml.contact.phone" addKey="eml.party.add.phone" values=(agent.phone)![] tpl=tpl/>
+                    </div>
+                </fieldset>
+
+                <fieldset class="party-fieldset">
+                    <legend>
+                        <@s.text name="eml.party.identifiers"/>
+                        <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
+                           data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
+                            <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                        </a>
+                    </legend>
+                    <div class="row g-2">
+                        <div class="col-md-6" data-rep="identifier">
+                            <label class="form-label" data-rep-label><@s.text name="eml.party.identifier.label"/></label>
+                            <div data-rep-rows>
+                                <#list (agent.userIds)![] as userId>
+                                    <@identifierRow base=base index=userId?index userId=userId tpl=tpl/>
+                                </#list>
+                            </div>
+                            <button type="button" class="party-add-link" data-act="add-rep">+ <@s.text name="eml.party.add.identifier"/></button>
+                            <template data-rep-template>
+                                <@identifierRow base="" index=0 userId={} tpl=true/>
+                            </template>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <details class="party-more" data-address>
+                    <summary><@s.text name="eml.party.address"/><span data-address-summary></span></summary>
+                    <div class="row g-2 mt-1">
+                        <@repeatable base=base field="address" path="agent.address.address" labelKey="eml.contact.address.address" addKey="eml.party.add.address" values=(agent.address.address)![] tpl=tpl/>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-4">
+                            <label class="form-label" data-for="agent.address.city" for="${base}agent.address.city"><@s.text name="eml.contact.address.city"/></label>
+                            <input class="form-control" type="text" id="${base}agent.address.city" name="${base}agent.address.city" data-name="agent.address.city" value="${(agent.address.city)!}"/>
+                            <@ferr name="${base}agent.address.city" tpl=tpl/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" data-for="agent.address.province" for="${base}agent.address.province"><@s.text name="eml.contact.address.province"/></label>
+                            <input class="form-control" type="text" id="${base}agent.address.province" name="${base}agent.address.province" data-name="agent.address.province" value="${(agent.address.province)!}"/>
+                            <@ferr name="${base}agent.address.province" tpl=tpl/>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" data-for="agent.address.country" for="${base}agent.address.country"><@s.text name="eml.contact.address.country"/></label>
+                            <select class="form-select party-country" id="${base}agent.address.country" name="${base}agent.address.country" data-name="agent.address.country">
+                                <#list countries?keys as code>
+                                    <option value="${code}" <#if code == ((agent.address.country)!"")>selected</#if>>${countries.get(code)}</option>
+                                </#list>
+                            </select>
+                            <@ferr name="${base}agent.address.country" tpl=tpl/>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label" data-for="agent.address.postalCode" for="${base}agent.address.postalCode"><@s.text name="eml.contact.address.postalCode"/></label>
+                            <input class="form-control" type="text" id="${base}agent.address.postalCode" name="${base}agent.address.postalCode" data-name="agent.address.postalCode" value="${(agent.address.postalCode)!}"/>
+                            <@ferr name="${base}agent.address.postalCode" tpl=tpl/>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="party-more" data-more>
+                    <summary><@s.text name="eml.party.more"/> – <@s.text name="eml.contact.salutation"/><span data-more-summary></span></summary>
+                    <div class="row g-2 mt-1">
+                        <div class="col-md-3">
+                            <label class="form-label" data-for="agent.salutation" for="${base}agent.salutation"><@s.text name="eml.contact.salutation"/></label>
+                            <input class="form-control" type="text" id="${base}agent.salutation" name="${base}agent.salutation" data-name="agent.salutation" value="${(agent.salutation)!}"/>
+                            <@ferr name="${base}agent.salutation" tpl=tpl/>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </#macro>
+
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <#assign inputIdentifierPlaceholder><@s.text name="eml.contact.identifier"/></#assign>
-    <#assign copyLink><@s.text name="eml.metadataAgent.copyLink"/></#assign>
-    <#assign copyLink = copyLink?markup_string>
-    <#assign copyFromAnotherLink><@s.text name="eml.metadataAgent.copyFromAnother"/></#assign>
-    <#assign copyFromAnotherLink = copyFromAnotherLink?markup_string>
-    <#assign removePartyLink><@s.text name='manage.metadata.removethis'/> <@s.text name='eml.party.item'/></#assign>
-    <#assign removePartyLink = removePartyLink?markup_string>
-    <#assign addPartyLink><@s.text name='manage.metadata.addnew'/> <@s.text name='eml.party.item'/></#assign>
-    <#assign addPartyLink = addPartyLink?markup_string>
-    <#assign addNew><@s.text name='manage.metadata.addnew'/></#assign>
-    <#assign addNew = addNew?markup_string>
-
-    <form class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
+    <form id="contacts-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
                 <div class="container my-3 p-3">
@@ -232,6 +345,33 @@
 
         <#include "metadata_section_select.ftl"/>
 
+        <#-- rest of the auto-generated citation after the authors, see Resource.generateResourceCitation -->
+        <#assign citationTail = ""/>
+        <#if resource.isCitationAutoGenerated()>
+            <#attempt>
+                <#assign nextVersion = resource.getNextVersion().toPlainString()/>
+                <#if eml.pubDate??>
+                    <#assign citationYear = eml.pubDate?datetime?string("yyyy")/>
+                <#else>
+                    <#assign citationYear = .now?string("yyyy")/>
+                </#if>
+                <#assign citationTitle = (resource.title?has_content)?then(resource.title?trim, resource.shortname)/>
+                <#assign citationPublisher = (resource.organisation.name)!""/>
+                <#assign citationType = (resource.coreType?has_content)?then(resource.coreType?lower_case?cap_first + " dataset", "")/>
+                <#if resource.doi??>
+                    <#assign citationIdentifier = resource.doi.url.toString()/>
+                <#elseif (eml.citation.identifier)?has_content>
+                    <#assign citationIdentifier = eml.citation.identifier/>
+                <#else>
+                    <#assign citationIdentifier = cfg.getResourceVersionUri(resource.shortname, nextVersion)/>
+                </#if>
+                <#assign citationTail = " (" + citationYear + "). " + citationTitle + ". Version " + nextVersion + ". "
+                    + citationPublisher?has_content?then(citationPublisher?trim + ". ", "") + citationType + ". " + citationIdentifier/>
+            <#recover>
+                <#assign citationTail = ""/>
+            </#attempt>
+        </#if>
+
         <div class="container-fluid bg-body">
             <div class="container bd-layout main-content-container">
                 <main class="bd-main">
@@ -241,646 +381,131 @@
 
                     <div class="bd-content">
                         <div class="my-3 p-3">
-                            <!-- People and organisations: contacts, creators, metadata providers and associated parties -->
-                            <@textinline name="eml.party.plural" help="i18n" requiredField=true/>
-                            <div id="party-items">
-                                <#list eml.parties as party>
-                                    <div id="party-item-${party_index}" class="item row g-3 pb-4 border-bottom">
-                                        <div class="handle columnLinks mt-4 col-12 justify-content-end">
-                                            <div class="row g-1">
-                                                <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
-                                                    <a id="party-copy-${party_index}" href="" class="metadata-action-link custom-link">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${copyFromAnotherLink?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-6 d-flex justify-content-end">
-                                                    <a id="party-removeLink-${party_index}" class="removeAgentLink metadata-action-link custom-link" href="">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${removePartyLink?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <@input name="eml.parties[${party_index}].agent.firstName" value=(party.agent.firstName)! i18nkey="eml.contact.firstName"/>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <@input name="eml.parties[${party_index}].agent.lastName" value=(party.agent.lastName)! i18nkey="eml.contact.lastName" />
-                                        </div>
-                                        <div class="col-md-2">
-                                            <@input name="eml.parties[${party_index}].agent.salutation" value=(party.agent.salutation)! i18nkey="eml.contact.salutation"/>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <@input name="eml.parties[${party_index}].agent.organisation" value=(party.agent.organisation)! i18nkey="eml.contact.organisation"  />
-                                        </div>
-                                        <div class="col-12 party-roles">
-                                            <div class="d-flex text-smaller">
-                                                <label class="form-label mb-0"><@s.text name="eml.party.roles"/></label>
-                                            </div>
-                                            <div class="d-flex flex-wrap">
-                                                <#list ["creator", "contact", "metadataProvider"] as roleField>
-                                                <div class="form-check me-4">
-                                                    <input class="form-check-input party-role" type="checkbox" value="true" data-party-field="${roleField}" id="eml.parties[${party_index}].${roleField}" name="eml.parties[${party_index}].${roleField}" <#if party[roleField]>checked</#if>/>
-                                                    <label class="form-check-label" data-party-for="${roleField}" for="eml.parties[${party_index}].${roleField}"><@s.text name="eml.party.${roleField}"/></label>
-                                                </div>
-                                                </#list>
-                                            </div>
-                                            <div class="mt-2">
-                                                <div class="d-flex text-smaller">
-                                                    <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="<@s.text name='eml.associatedParties.role.help'/>">
-                                                        <i class="bi bi-info-circle text-gbif-primary px-1"></i>
-                                                    </a>
-                                                    <label class="form-label mb-0" data-party-for="associatedPartyRoles" for="eml.parties[${party_index}].associatedPartyRoles"><@s.text name="eml.party.associatedPartyRoles"/></label>
-                                                </div>
-                                                <select multiple class="form-select party-associated-roles" data-party-field="associatedPartyRoles" id="eml.parties[${party_index}].associatedPartyRoles" name="eml.parties[${party_index}].associatedPartyRoles">
-                                                    <#list roles?keys as roleValue>
-                                                        <#if roleValue?has_content>
-                                                    <option value="${roleValue}" <#if party.associatedPartyRoles?seq_contains(roleValue)>selected</#if>>${roles.get(roleValue)}</option>
-                                                        </#if>
-                                                    </#list>
-                                                    <#-- roles from EML that are not in the vocabulary are kept -->
-                                                    <#list party.associatedPartyRoles as roleValue>
-                                                        <#if !roles?keys?seq_contains(roleValue)>
-                                                    <option value="${roleValue}" selected>${roleValue}</option>
-                                                        </#if>
-                                                    </#list>
-                                                </select>
-                                                <@s.fielderror cssClass="invalid-feedback list-unstyled field-error my-1 d-block" fieldName="eml.parties[${party_index}].associatedPartyRoles"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="party-${party_index}-positions" class="party-positions">
-                                                <div class="d-flex text-smaller">
-                                                    <label for="eml.parties.position" class="form-label mb-0">
-                                                        <@s.text name="eml.contact.position"/>
-                                                    </label>
-                                                    <a id="plus-party-position-${party_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addNew?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                                <#list eml.parties[party_index].agent.position as position>
-                                                    <div id="party-${party_index}-position-${position_index}" class="position-item">
-                                                        <div class="row g-2 mt-0">
-                                                            <div class="col-md-6 d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <@input name="eml.parties[${party_index}].agent.position[${position_index}]" value=position! i18nkey="eml.contact.position" withLabel=false />
-                                                                </div>
-                                                                <div class="mb-auto py-1 ps-1">
-                                                                    <a id="party-position-remove-${party_index}-${position_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                        <span>
-                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </#list>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="party-${party_index}-address" class="party-address">
-                                                <div class="d-flex text-smaller">
-                                                    <label for="eml.parties.address" class="form-label mb-0">
-                                                        <@s.text name="eml.contact.address.address"/>
-                                                    </label>
-                                                    <a id="plus-party-address-${party_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addNew?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                                <#list eml.parties[party_index].agent.address.address as address>
-                                                    <div id="party-${party_index}-address-${address_index}" class="address-item">
-                                                        <div class="row g-2 mt-0">
-                                                            <div class="col-md-6 d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <@input name="eml.parties[${party_index}].agent.address.address[${address_index}]" value=address! i18nkey="eml.contact.address.address" withLabel=false />
-                                                                </div>
-                                                                <div class="mb-auto py-1 ps-1">
-                                                                    <a id="party-address-remove-${party_index}-${address_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                        <span>
-                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </#list>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-lg-4">
-                                            <@input name="eml.parties[${party_index}].agent.address.city" value=(party.agent.address.city)! i18nkey="eml.contact.address.city" />
-                                        </div>
-                                        <div class="col-md-6 col-lg-3">
-                                            <@input name="eml.parties[${party_index}].agent.address.province" value=(party.agent.address.province)! i18nkey="eml.contact.address.province" />
-                                        </div>
-                                        <div class="countryList col-md-6 col-lg-3">
-                                            <@select name="eml.parties[${party_index}].agent.address.country" help="i18n" options=countries i18nkey="eml.contact.address.country" value="${eml.parties[party_index].agent.address.country!}"/>
-                                        </div>
-                                        <div class="col-md-6 col-lg-2">
-                                            <@input name="eml.parties[${party_index}].agent.address.postalCode" value=(party.agent.address.postalCode)! i18nkey="eml.contact.address.postalCode" />
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="party-${party_index}-phones" class="party-phones">
-                                                <div class="d-flex text-smaller">
-                                                    <label for="eml.parties.phone" class="form-label mb-0">
-                                                        <@s.text name="eml.contact.phone"/>
-                                                    </label>
-                                                    <a id="plus-party-phone-${party_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addNew?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                                <#list eml.parties[party_index].agent.phone as phone>
-                                                    <div id="party-${party_index}-phone-${phone_index}" class="phone-item">
-                                                        <div class="row g-2 mt-0">
-                                                            <div class="col-md-6 d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <@input name="eml.parties[${party_index}].agent.phone[${phone_index}]" value=phone! i18nkey="eml.contact.phone" withLabel=false />
-                                                                </div>
-                                                                <div class="mb-auto py-1 ps-1">
-                                                                    <a id="party-phone-remove-${party_index}-${phone_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                        <span>
-                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </#list>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="party-${party_index}-emails" class="party-emails">
-                                                <div class="d-flex text-smaller">
-                                                    <label for="eml.parties.email" class="form-label mb-0">
-                                                        <@s.text name="eml.contact.email"/>
-                                                    </label>
-                                                    <a id="plus-party-email-${party_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addNew?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                                <#list eml.parties[party_index].agent.email as email>
-                                                    <div id="party-${party_index}-email-${email_index}" class="email-item">
-                                                        <div class="row g-2 mt-0">
-                                                            <div class="col-md-6 d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <@input name="eml.parties[${party_index}].agent.email[${email_index}]" value=email! i18nkey="eml.contact.email" withLabel=false />
-                                                                </div>
-                                                                <div class="mb-auto py-1 ps-1">
-                                                                    <a id="party-email-remove-${party_index}-${email_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                        <span>
-                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </#list>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="party-${party_index}-homepages" class="party-homepages">
-                                                <div class="d-flex text-smaller">
-                                                    <label for="eml.parties.homepage" class="form-label mb-0">
-                                                        <@s.text name="eml.contact.homepage"/>
-                                                    </label>
-                                                    <a id="plus-party-homepage-${party_index}" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addNew?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                                <#list eml.parties[party_index].agent.homepage as homepage>
-                                                    <div id="party-${party_index}-homepage-${homepage_index}" class="homepage-item">
-                                                        <div class="row g-2 mt-0">
-                                                            <div class="col-md-6 d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <@input name="eml.parties[${party_index}].agent.homepage[${homepage_index}]" value=homepage! i18nkey="eml.contact.homepage" type="url" withLabel=false />
-                                                                </div>
-                                                                <div class="mb-auto py-1 ps-1">
-                                                                    <a id="party-homepage-remove-${party_index}-${homepage_index}" class="removeSubEntity metadata-action-link" href="">
-                                                                        <span>
-                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </#list>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div id="party-${party_index}-identifiers" class="party-identifiers">
-                                                <div class="d-flex text-smaller">
-                                                    <a tabindex="0" role="button"
-                                                       class="popover-link"
-                                                       data-bs-toggle="popover"
-                                                       data-bs-trigger="focus"
-                                                       data-bs-html="true"
-                                                       data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
-                                                        <i class="bi bi-info-circle text-gbif-primary px-1"></i>
-                                                    </a>
-                                                    <label for="eml.parties.userIds" class="form-label mb-0">
-                                                        <@s.text name="eml.contact.identifier"/>
-                                                    </label>
-                                                    <a id="plus-party-identifier-${party_index}" href="" class="metadata-action-link custom-link add-identifier">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                            </svg>
-                                                        </span>
-                                                        <span>${addNew?lower_case?cap_first}</span>
-                                                    </a>
-                                                </div>
-                                                <#list party.agent.userIds as userId>
-                                                    <div id="party-${party_index}-identifier-${userId_index}" class="identifier-item">
-                                                        <div class="row g-2 mt-0">
-                                                            <div class="col-md-4">
-                                                                <@select name="eml.parties[${party_index}].agent.userIds[${userId_index}].directory" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" withLabel=false value="${userIdDirecotriesExtended[(userId.directory)!]!}"/>
-                                                            </div>
-                                                            <div class="col-md-4 d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <@input name="eml.parties[${party_index}].agent.userIds[${userId_index}].identifier" help="i18n" i18nkey="eml.contact.identifier" withLabel=false placeholder="${inputIdentifierPlaceholder}" value="${(userId.identifier)!}"/>
-                                                                </div>
-                                                                <div class="mb-auto py-1 ps-1">
-                                                                    <a id="party-identifier-remove-${party_index}-${userId_index}" class="removeIdentifier metadata-action-link" href="">
-                                                                        <span>
-                                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </#list>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </#list>
-                            </div>
+                            <section id="parties"
+                                     data-shortname="${resource.shortname}"
+                                     data-people-url="${baseURL}/manager-api/suggest-people?r=${resource.shortname?url}"
+                                     data-citation-tail="${citationTail}"
+                                     data-citation-auto="${resource.isCitationAutoGenerated()?c}">
+                                <#-- the page title says what this is; no section heading for the only section -->
+                                <p class="party-intro">
+                                    <@s.text name="eml.party.description"/>
+                                    <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
+                                       data-bs-content="<@s.text name='eml.party.plural.help'/>" aria-label="${t('eml.party.plural')}">
+                                        <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                    </a>
+                                </p>
 
-                            <div class="addNew my-2">
-                                <a id="plus-party" href="" class="plus-agent metadata-action-link custom-link">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                        </svg>
-                                    </span>
-                                    <span>${addPartyLink?lower_case?cap_first}</span>
-                                </a>
-                            </div>
-
-                            <div id="baseItem-party" class="item row g-3 pb-4 border-bottom" style="display:none;">
-                                <div class="handle columnLinks mt-4 col-12 justify-content-end">
-                                    <div class="row g-1">
-                                        <div class="col-md-6 d-flex justify-content-end justify-content-md-start">
-                                            <a id="party-copy" href="" class="metadata-action-link custom-link">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${copyFromAnotherLink?lower_case?cap_first}</span>
-                                            </a>
-                                        </div>
-                                        <div class="col-md-6 d-flex justify-content-end">
-                                            <a id="party-removeLink" class="removeAgentLink metadata-action-link custom-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${removePartyLink?lower_case?cap_first}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <@input name="party.agent.firstName" i18nkey="eml.contact.firstName"/>
-                                </div>
-                                <div class="col-md-5">
-                                    <@input name="party.agent.lastName" i18nkey="eml.contact.lastName"/>
-                                </div>
-                                <div class="col-md-2">
-                                    <@input name="party.agent.salutation" i18nkey="eml.contact.salutation"/>
-                                </div>
-                                <div class="col-md-6">
-                                    <@input name="party.agent.organisation" i18nkey="eml.contact.organisation"/>
-                                </div>
-                                <div class="col-12 party-roles">
-                                    <div class="d-flex text-smaller">
-                                        <label class="form-label mb-0"><@s.text name="eml.party.roles"/></label>
-                                    </div>
-                                    <div class="d-flex flex-wrap">
-                                        <#list ["creator", "contact", "metadataProvider"] as roleField>
-                                        <div class="form-check me-4">
-                                            <input class="form-check-input party-role" type="checkbox" value="true" data-party-field="${roleField}" id="party.${roleField}" name="party.${roleField}"/>
-                                            <label class="form-check-label" data-party-for="${roleField}" for="party.${roleField}"><@s.text name="eml.party.${roleField}"/></label>
-                                        </div>
+                                <div class="party-toolbar">
+                                    <div class="party-filters" role="group" aria-label="${t('eml.party.filter.label')}">
+                                        <button type="button" class="party-ftab active" data-act="filter" data-filter="all" aria-pressed="true">
+                                            <@s.text name="eml.party.filter.all"/> <span class="party-count" data-count="all"></span>
+                                        </button>
+                                        <#list partyFlags as flag>
+                                            <button type="button" class="party-ftab" data-act="filter" data-filter="${flag}" data-required="${(flag != 'metadataProvider')?c}" aria-pressed="false">
+                                                <@s.text name="eml.party.filter.${flag}"/> <span class="party-count" data-count="${flag}"></span><span class="party-ftab-state" data-state="${flag}"></span>
+                                            </button>
                                         </#list>
                                     </div>
-                                    <div class="mt-2">
-                                        <div class="d-flex text-smaller">
-                                            <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-content="<@s.text name='eml.associatedParties.role.help'/>">
-                                                <i class="bi bi-info-circle text-gbif-primary px-1"></i>
-                                            </a>
-                                            <label class="form-label mb-0" data-party-for="associatedPartyRoles" for="party.associatedPartyRoles"><@s.text name="eml.party.associatedPartyRoles"/></label>
-                                        </div>
-                                        <select multiple class="form-select party-associated-roles" data-party-field="associatedPartyRoles" id="party.associatedPartyRoles" name="party.associatedPartyRoles">
-                                            <#list roles?keys as roleValue>
-                                                <#if roleValue?has_content>
-                                            <option value="${roleValue}">${roles.get(roleValue)}</option>
-                                                </#if>
-                                            </#list>
-                                        </select>
-                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary party-toggle-all" data-act="toggle-all"></button>
                                 </div>
-                                <div class="col-12">
-                                    <div id="party-positions" class="party-positions">
-                                        <div class="d-flex text-smaller">
-                                            <label for="eml.parties.position" class="form-label mb-0">
-                                                <@s.text name="eml.contact.position"/>
-                                            </label>
-                                            <a id="plus-party-position" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${addNew?lower_case?cap_first}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div id="party-address" class="party-address">
-                                        <div class="d-flex text-smaller">
-                                            <label for="eml.parties.address" class="form-label mb-0">
-                                                <@s.text name="eml.contact.address.address"/>
-                                            </label>
-                                            <a id="plus-party-address" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${addNew?lower_case?cap_first}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4">
-                                    <@input name="party.agent.address.city" i18nkey="eml.contact.address.city" />
-                                </div>
-                                <div class="col-md-6 col-lg-3">
-                                    <@input name="party.agent.address.province" i18nkey="eml.contact.address.province" />
-                                </div>
-                                <div class="countryList col-md-6 col-lg-3">
-                                    <@select name="country" options=countries help="i18n" i18nkey="eml.contact.address.country" />
-                                </div>
-                                <div class="col-md-6 col-lg-2">
-                                    <@input name="party.agent.address.postalCode" i18nkey="eml.contact.address.postalCode" />
-                                </div>
-                                <div class="col-12">
-                                    <div id="party-phones" class="party-phones">
-                                        <div class="d-flex text-smaller">
-                                            <label for="eml.parties.phone" class="form-label mb-0">
-                                                <@s.text name="eml.contact.phone"/>
-                                            </label>
-                                            <a id="plus-party-phone" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${addNew?lower_case?cap_first}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div id="party-emails" class="party-emails">
-                                        <div class="d-flex text-smaller">
-                                            <label for="eml.parties.email" class="form-label mb-0">
-                                                <@s.text name="eml.contact.email"/>
-                                            </label>
-                                            <a id="plus-party-email" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${addNew?lower_case?cap_first}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div id="party-homepages" class="party-homepages">
-                                        <div class="d-flex text-smaller">
-                                            <label for="eml.parties.homepage" class="form-label mb-0">
-                                                <@s.text name="eml.contact.homepage"/>
-                                            </label>
-                                            <a id="plus-party-homepage" href="" class="metadata-action-link custom-link add-agent-contact-info">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${addNew?lower_case?cap_first}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div id="party-identifiers" class="party-identifiers">
-                                        <div class="d-flex text-smaller">
-                                            <a tabindex="0" role="button"
-                                               class="popover-link"
-                                               data-bs-toggle="popover"
-                                               data-bs-trigger="focus"
-                                               data-bs-html="true"
-                                               data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
-                                                <i class="bi bi-info-circle text-gbif-primary px-1"></i>
-                                            </a>
-                                            <label for="eml.parties.userIds" class="form-label mb-0">
-                                                <@s.text name="eml.contact.identifier"/>
-                                            </label>
-                                            <a id="plus-party-identifier" href="" class="metadata-action-link custom-link add-identifier">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>${addNew?lower_case?cap_first}</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div id="baseItem-address" class="address-item" style="display: none;">
-                                <div class="row g-2 mt-0">
-                                    <div class="col-md-6 d-flex">
-                                        <div class="flex-grow-1">
-                                            <@input name="baseItem-address-input" i18nkey="eml.contact.address.address" value="" withLabel=false />
-                                        </div>
-                                        <div class="mb-auto py-1 ps-1">
-                                            <a id="baseItem-address-remove" class="removeSubEntity metadata-action-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </span>
-                                            </a>
-                                        </div>
+                                <div class="party-citation" data-citation aria-live="polite">
+                                    <div class="party-citation-lbl">
+                                        <span><@s.text name="eml.party.citation.preview"/></span>
+                                        <#if resource.isCitationAutoGenerated() && citationTail?has_content>
+                                            <span class="party-citation-order"><@s.text name="eml.party.citation.order"/></span>
+                                        </#if>
                                     </div>
+                                    <#if resource.isCitationAutoGenerated() && citationTail?has_content>
+                                        <div class="party-citation-txt" data-citation-text></div>
+                                    <#else>
+                                        <div class="party-citation-manual"><@s.text name="eml.party.citation.manual"/></div>
+                                    </#if>
                                 </div>
-                            </div>
 
-                            <div id="baseItem-position" class="position-item" style="display: none;">
-                                <div class="row g-2 mt-0">
-                                    <div class="col-md-6 d-flex">
-                                        <div class="flex-grow-1">
-                                            <@input name="baseItem-position-input" i18nkey="eml.contact.position" value="" withLabel=false />
-                                        </div>
-                                        <div class="mb-auto py-1 ps-1">
-                                            <a id="baseItem-position-remove" class="removeSubEntity metadata-action-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div id="party-items">
+                                    <#list eml.parties as party>
+                                        <@partyCard index=party?index party=party/>
+                                    </#list>
                                 </div>
-                            </div>
+                                <div class="party-empty" data-empty hidden></div>
 
-                            <div id="baseItem-phone" class="phone-item" style="display: none;">
-                                <div class="row g-2 mt-0">
-                                    <div class="col-md-6 d-flex">
-                                        <div class="flex-grow-1">
-                                            <@input name="baseItem-phone-input" i18nkey="eml.contact.phone" value="" withLabel=false />
-                                        </div>
-                                        <div class="mb-auto py-1 ps-1">
-                                            <a id="baseItem-phone-remove" class="removeSubEntity metadata-action-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="party-add-bar">
+                                    <#-- link-style actions, as on the other metadata pages -->
+                                    <button type="button" class="metadata-action-link custom-link" data-act="add">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                        </span>
+                                        <span data-add-label><@s.text name="eml.party.add"/></span>
+                                    </button>
+                                    <span class="dropdown">
+                                        <button type="button" class="metadata-action-link custom-link" data-act="copy-menu" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                                            </span>
+                                            <span><@s.text name="eml.party.copyFrom"/></span>
+                                        </button>
+                                        <div class="dropdown-menu party-menu" data-copy-menu></div>
+                                    </span>
                                 </div>
-                            </div>
 
-                            <div id="baseItem-email" class="email-item" style="display: none;">
-                                <div class="row g-2 mt-0">
-                                    <div class="col-md-6 d-flex">
-                                        <div class="flex-grow-1">
-                                            <@input name="baseItem-email-input" i18nkey="eml.contact.email" value="" withLabel=false />
-                                        </div>
-                                        <div class="mb-auto py-1 ps-1">
-                                            <a id="baseItem-email-remove" class="removeSubEntity metadata-action-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <template id="party-template">
+                                    <@partyCard index=0 party={} tpl=true/>
+                                </template>
+                            </section>
 
-                            <div id="baseItem-homepage" class="homepage-item" style="display: none;">
-                                <div class="row g-2 mt-0">
-                                    <div class="col-md-6 d-flex">
-                                        <div class="flex-grow-1">
-                                            <@input name="baseItem-homepage-input" i18nkey="eml.contact.homepage" value="" withLabel=false />
-                                        </div>
-                                        <div class="mb-auto py-1 ps-1">
-                                            <a id="baseItem-homepage-remove" class="removeSubEntity metadata-action-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="baseItem-identifier" class="identifier-item" style="display: none;">
-                                <div class="row g-2 mt-0">
-                                    <div class="col-md-4">
-                                        <@select name="baseItem-directory-select" help="i18n" options=userIdDirectories i18nkey="eml.contact.directory" value="" withLabel=false/>
-                                    </div>
-                                    <div class="col-md-4 d-flex">
-                                        <div class="flex-grow-1">
-                                            <@input name="baseItem-identifier-input" help="i18n" i18nkey="eml.contact.identifier" value="" withLabel=false placeholder="${inputIdentifierPlaceholder}"/>
-                                        </div>
-                                        <div class="mb-auto py-1 ps-1">
-                                            <a id="baseItem-identifier-remove" class="removeIdentifier metadata-action-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                    </svg>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                            <#-- texts and role names for contacts.js -->
+                            <div id="party-i18n" hidden
+                                 data-new="${t('eml.party.new')}"
+                                 data-add="${t('eml.party.add')}"
+                                 data-add-contact="${t('eml.party.add.contact')}"
+                                 data-add-creator="${t('eml.party.add.creator')}"
+                                 data-add-metadata-provider="${t('eml.party.add.metadataProvider')}"
+                                 data-chip-contact="${t('eml.party.chip.contact')}"
+                                 data-chip-creator="${t('eml.party.chip.creator')}"
+                                 data-chip-metadata-provider="${t('eml.party.chip.metadataProvider')}"
+                                 data-filter-required="${t('eml.party.filter.required')}"
+                                 data-filter-empty="${t('eml.party.filter.empty')}"
+                                 data-empty="${t('eml.party.empty')}"
+                                 data-expand-all="${t('eml.party.expandAll')}"
+                                 data-collapse-all="${t('eml.party.collapseAll')}"
+                                 data-removed="${t('eml.party.removed')}"
+                                 data-moved="${t('eml.party.moved')}"
+                                 data-role-add="${t('eml.party.role.add')}"
+                                 data-role-remove="${t('eml.party.role.remove')}"
+                                 data-author-position="${t('eml.party.authorPosition')}"
+                                 data-other-roles-add="${t('eml.party.otherRoles.add')}"
+                                 data-other-roles-add-first="${t('eml.party.otherRoles.addFirst')}"
+                                 data-other-roles-menu="${t('eml.party.otherRoles.menu')}"
+                                 data-other-roles-cited="${t('eml.party.otherRoles.cited')}"
+                                 data-other-roles-cited-title="${t('eml.party.otherRoles.citedTitle')}"
+                                 data-needs-name="${t('eml.party.needsName')}"
+                                 data-needs-role="${t('eml.party.needsRole')}"
+                                 data-has-errors="${t('eml.party.hasErrors')}"
+                                 data-identifier-recognised="${t('eml.party.identifier.recognised')}"
+                                 data-identifier-orcid-format="${t('eml.party.identifier.orcidFormat')}"
+                                 data-identifier-unknown="${t('eml.party.identifier.unknown')}"
+                                 data-copy-this-page="${t('eml.party.copyFrom.thisPage')}"
+                                 data-copy-replace="${t('eml.party.copyFrom.replace')}"
+                                 data-copy-nobody="${t('eml.party.copyFrom.nobody')}"
+                                 data-copy-no-role="${t('eml.party.copyFrom.noRole')}"
+                                 data-copy-another="${t('eml.party.copyFrom.anotherResource')}"
+                                 data-copied="${t('eml.party.copied')}"
+                                 data-copied-pick-role="${t('eml.party.copied.pickRole')}"
+                                 data-picker-loading="${t('eml.party.picker.loading')}"
+                                 data-picker-no-match="${t('eml.party.picker.noMatch')}"
+                                 data-picker-none="${t('eml.party.picker.none')}"
+                                 data-picker-failed="${t('eml.party.picker.failed')}"
+                                 data-picker-used-in="${t('eml.party.picker.usedIn')}"
+                                 data-picker-personnel="${t('eml.party.picker.personnel')}"
+                                 data-citation-no-creators="${t('eml.party.citation.noCreators')}"
+                                 data-country-placeholder="${t('eml.country.selection')}"
+                                 data-no-results="${selectNoResultsFound}">
+                                <#list roles?keys as role>
+                                    <#if role?has_content>
+                                        <span data-role="${role}" data-description="${action.getText('eml.party.otherRoles.description.' + role, '')}">${roles.get(role)}</span>
+                                    </#if>
+                                </#list>
                             </div>
 
                             <!-- internal parameter -->
@@ -894,56 +519,25 @@
 
     <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
-    <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
+    <div id="party-picker" class="modal fade" tabindex="-1" aria-labelledby="party-picker-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
+                <div class="modal-header">
+                    <h5 class="modal-title fs-6" id="party-picker-title"><@s.text name="eml.party.picker.title"/></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="${t('button.cancel')}"></button>
                 </div>
-                <div class="modal-body" style="text-align: left !important;">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label for="resource" class="form-label">
-                                <@s.text name="eml.metadataAgent.copy.resource"/>
-                            </label>
-                            <select name="resource" id="resource" size="1" class="form-select">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label for="agentType" class="form-label">
-                                <@s.text name="eml.metadataAgent.copy.agentType"/>
-                            </label>
-                            <select name="agentType" id="agentType" size="1" class="form-select">
-                                <option value=""></option>
-                                <option value="creators"><@s.text name="eml.metadataAgent.copy.agentType.creator"/></option>
-                                <option value="contacts"><@s.text name="eml.metadataAgent.copy.agentType.contact"/></option>
-                                <option value="metadataProviders"><@s.text name="eml.metadataAgent.copy.agentType.metadataProvider"/></option>
-                                <option value="associatedParties"><@s.text name="eml.metadataAgent.copy.agentType.associatedParty"/></option>
-                                <option value="projectPersonnel"><@s.text name="eml.metadataAgent.copy.agentType.projectPersonnel"/></option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label for="agent" class="form-label">
-                                <@s.text name="eml.metadataAgent.copy.agent"/>
-                            </label>
-                            <select name="agent" id="agent" size="1" class="form-select">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="modal-body">
+                    <input type="search" class="form-control mb-2" id="party-picker-search" placeholder="${t('eml.party.picker.search')}" aria-label="${t('eml.party.picker.search')}"/>
+                    <div class="party-picker-results" id="party-picker-results" role="listbox" aria-labelledby="party-picker-title"></div>
                 </div>
-                <div class="modal-footer justify-content-center">
-                    <button id="copy-agent-button" type="button" class="btn btn-sm btn-outline-gbif-primary" style="display: none;">
-                        <@s.text name="button.copy"/>
-                    </button>
-                    <button id="copy-agent-cancel" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                    <button type="button" class="btn btn-sm btn-outline-gbif-primary" id="party-picker-ok" disabled><@s.text name="button.copy"/></button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="party-toast" id="party-toast" role="status" aria-live="polite"></div>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

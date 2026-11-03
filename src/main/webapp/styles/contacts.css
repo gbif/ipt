@@ -1,0 +1,127 @@
+/* Contacts page: one list of people and organisations, each a folding card with its roles */
+
+#parties [hidden] { display: none !important; }
+
+.party-intro { color: #6c757d; font-size: .85rem; margin-bottom: 10px; }
+.party-toolbar { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; }
+.party-toolbar .party-filters { margin-bottom: 0; }
+.party-toggle-all { font-size: .8rem; padding: 2px 10px; }
+
+/* role filter tabs */
+.party-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.party-ftab { border: 1px solid #dee2e6; background: #fff; border-radius: 16px; padding: 2px 12px; font-size: .8rem; cursor: pointer; color: #495057; display: inline-flex; gap: 6px; align-items: center; }
+.party-ftab:hover { border-color: #adb5bd; }
+.party-ftab.active { border-color: rgb(var(--color-gbif-primary)); background: rgba(var(--color-gbif-primary), .08); color: #212529; }
+.party-ftab.missing { border-color: rgba(var(--color-gbif-danger), .7); color: rgb(var(--color-gbif-danger)); }
+.party-ftab-state { font-size: .7rem; }
+.party-ftab-state.ok { color: rgb(var(--color-gbif-primary)); }
+.party-ftab.missing .party-ftab-state { font-weight: 600; }
+.party-count { background: #f1f3f5; border-radius: 10px; padding: 0 7px; font-size: .7rem; color: #6c757d; }
+
+/* citation preview */
+.party-citation { border: 1px solid #dee2e6; background: #fff; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; }
+.party-citation-lbl { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #6c757d; margin-bottom: 4px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.party-citation-order { font-weight: 400; text-transform: none; letter-spacing: 0; color: #6c757d; }
+.party-citation-txt { font-size: .85rem; overflow-wrap: anywhere; }
+.party-citation-txt mark { background: none; color: inherit; padding: 0; font-weight: 500; }
+.party-citation-rest { color: #6c757d; }
+.party-citation-txt .party-citation-none { color: rgb(var(--color-gbif-danger)); font-style: italic; }
+.party-citation-manual { color: #6c757d; font-size: .8rem; }
+
+/* cards */
+.party-card { border: 1px solid #dee2e6; border-radius: 6px; margin-bottom: 8px; background: #fff; transition: box-shadow .15s; }
+.party-card:hover { box-shadow: 0 1px 4px rgba(0, 0, 0, .06); }
+.party-card.invalid { border-color: rgba(var(--color-gbif-danger), .6); }
+.party-card.sortable-placeholder, #party-items .border { min-height: 48px; border-radius: 6px; }
+.party-summary { display: flex; align-items: center; gap: 8px; padding: 6px 8px; cursor: pointer; min-height: 48px; }
+.party-summary:focus-visible { outline: 2px solid rgba(var(--color-gbif-primary), .6); outline-offset: -2px; border-radius: 6px; }
+.party-grip { cursor: grab; color: #adb5bd; display: flex; padding: 4px 0; }
+.party-grip:hover { color: #6c757d; }
+/* the name keeps room for itself; many roles wrap onto more lines instead of squeezing it */
+.party-who { flex: 1 1 12rem; min-width: 12rem; display: flex; flex-direction: column; }
+.party-name { font-weight: 600; }
+.party-name.placeholder { color: #6c757d; font-weight: 400; font-style: italic; }
+.party-sub { color: #6c757d; font-size: .75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.party-sub .err { color: rgb(var(--color-gbif-danger)); }
+.party-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.party-chip { font-size: .7rem; border-radius: 3px; padding: 1px 6px; background: #f1f3f5; color: #6c757d; white-space: nowrap; }
+.party-chip.ok { background: rgba(var(--color-gbif-primary), .12); color: rgb(70, 130, 70); }
+.party-chip.err { background: rgba(var(--color-gbif-danger), .1); color: rgb(var(--color-gbif-danger)); }
+
+/* role chips: dataset roles switch on and off, other roles are removed with × */
+.party-roles { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; align-items: center; flex: 0 1 auto; max-width: 60%; }
+.party-roles > span[data-other-role-chips] { display: contents; }
+/* menus in the card header line up with the pills and icons next to them */
+.party-summary .dropdown { display: inline-flex; }
+.party-role { font-size: .7rem; border-radius: 12px; padding: 1px 9px; cursor: pointer; white-space: nowrap; line-height: 1.5;
+    border: 1px dashed #c3c9cf; background: #fff; color: #8a939b; }
+.party-role:hover { border-color: rgb(var(--color-gbif-primary)); color: rgb(var(--color-gbif-primary)); }
+.party-role.on { border: 1px solid rgb(var(--color-gbif-primary)); background: rgb(var(--color-gbif-primary)); color: #fff; font-weight: 600; }
+.party-role.on:hover { filter: brightness(.92); color: #fff; }
+.party-role.other.on { background: #eef2f7; border-color: #c9d4e3; color: #3d5a80; }
+.party-role.other.on:hover { filter: none; border-color: rgb(var(--color-gbif-danger)); color: rgb(var(--color-gbif-danger)); }
+.party-role .n { opacity: .85; font-weight: 400; margin-left: 3px; }
+
+.party-icon-btn { border: 0; background: none; padding: 4px; border-radius: 4px; cursor: pointer; color: #6c757d; display: inline-flex; }
+.party-icon-btn:hover { background: #f1f3f5; color: #212529; }
+.party-icon-danger:hover { color: rgb(var(--color-gbif-danger)); background: rgba(var(--color-gbif-danger), .08); }
+.party-icon-btn:disabled { opacity: .3; cursor: default; background: none; }
+.party-icon-btn svg, .party-grip svg { width: 18px; height: 18px; fill: currentColor; }
+.party-order { display: flex; flex-direction: column; }
+.party-order .party-icon-btn { padding: 0 2px; }
+.party-order svg { width: 16px; height: 16px; }
+.party-chev { pointer-events: none; }
+.party-chev svg { transition: transform .15s; }
+.party-card.open .party-chev svg { transform: rotate(180deg); }
+.party-menu { font-size: .85rem; min-width: 260px; }
+.party-menu .dropdown-header { font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; }
+.party-menu .dropdown-item { white-space: normal; font-size: .8125rem; padding-top: .3rem; padding-bottom: .3rem; }
+.party-menu .dropdown-item small { color: #6c757d; display: block; font-size: .6875rem; line-height: 1.3; }
+.party-menu-scroll { max-height: 340px; overflow-y: auto; width: 22rem; max-width: 90vw; }
+.party-menu .dropdown-item small.party-cited-note { color: rgb(var(--color-gbif-primary)); }
+
+/* card body */
+.party-body { display: none; border-top: 1px solid #dee2e6; padding: 12px 14px 14px; background: #fcfcfd; border-radius: 0 0 6px 6px; }
+.party-card.open .party-body { display: block; }
+.party-body .form-label { font-size: .75rem; color: #495057; margin-bottom: 2px; }
+.party-alert { border-radius: 4px; padding: 6px 10px; margin-bottom: 10px; font-size: .8rem; }
+.party-alert-danger { background: rgba(var(--color-gbif-danger), .07); color: rgb(var(--color-gbif-danger)); }
+.party-fieldset { margin-top: 14px; }
+.party-fieldset legend { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #6c757d; margin-bottom: 6px; float: none; }
+.party-rep-row { display: flex; gap: 4px; align-items: center; }
+.party-rep-row-wrap { margin-bottom: 6px; }
+.party-rep-row .form-control { flex: 1; }
+.party-add-link { background: none; border: 0; color: rgb(var(--color-gbif-primary)); cursor: pointer; font-size: .75rem; padding: 0; }
+.party-add-link:hover { text-decoration: underline; }
+.party-id-detect { font-size: .7rem; min-height: 0; margin-top: 2px; }
+.party-id-detect.ok { color: rgb(70, 130, 70); }
+.party-id-detect.warn { color: #b07d00; }
+.party-id-directory { margin-top: 4px; max-width: 320px; }
+.party-more { margin-top: 14px; }
+.party-more summary { cursor: pointer; color: #6c757d; font-size: .8rem; }
+
+.party-empty { color: #6c757d; padding: 10px 2px; }
+.party-add-bar { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+/* buttons that look like the IPT's metadata action links */
+.party-add-bar button.metadata-action-link { background: none; border: 0; display: inline-flex; align-items: center; gap: 4px; margin-left: 0; }
+.party-add-bar .dropdown { display: inline-flex; }
+
+/* copy from another resource */
+.party-picker-results { max-height: 50vh; overflow: auto; border: 1px solid #dee2e6; border-radius: 6px; }
+.party-picker-result { display: flex; gap: 10px; align-items: center; padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #f1f3f5; }
+.party-picker-result:last-child { border-bottom: 0; }
+.party-picker-result:hover, .party-picker-result.sel { background: rgba(var(--color-gbif-primary), .08); }
+.party-picker-result .party-sub { white-space: normal; }
+.party-picker-msg { padding: 14px; color: #6c757d; }
+
+.party-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: .85rem; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 1090; }
+.party-toast.show { opacity: 1; }
+
+/* errors posted back by the validator: same size as the card's hints, no icon in the field */
+#parties .field-error { font-size: .75rem; margin: 2px 0 0; padding: 0; }
+#parties .field-error:empty { display: none !important; }
+#parties .field-error li { margin: 0; }
+#parties .form-control.is-invalid, #parties .form-select.is-invalid { background-image: none; padding-right: .75rem; }
+
+/* narrow screens: the roles take their own line; the name gives up width so the icons stay on the first line (after the rules above, so it wins) */
+@media (max-width: 767.98px) { .party-summary { flex-wrap: wrap; } .party-who { flex: 1 1 0; min-width: 0; } .party-roles { order: 10; flex-basis: 100%; max-width: none; justify-content: flex-start; } }
