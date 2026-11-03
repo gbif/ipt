@@ -62,6 +62,13 @@ public class MetadataLanguageTagsTest {
     assertNull(MetadataLanguageTags.toTag(vocabulary, "\"><script>"));
     assertNull(MetadataLanguageTags.toTag(vocabulary, " "));
     assertEquals("en", MetadataLanguageTags.toTag(null, "en"));
+    // without the vocabulary: the two-letter code Java knows, ISO 639-2/B codes too
+    assertEquals("en", MetadataLanguageTags.toTag(null, "eng"));
+    assertEquals("fr", MetadataLanguageTags.toTag(null, "fre"));
+    assertEquals("haw", MetadataLanguageTags.toTag(null, "haw"));
+    // Java also knows the old codes "ji" and "iw"
+    assertEquals("yi", MetadataLanguageTags.toTag(null, "yid"));
+    assertEquals("he", MetadataLanguageTags.toTag(null, "heb"));
   }
 
   @Test

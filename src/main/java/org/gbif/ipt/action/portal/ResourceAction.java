@@ -32,6 +32,7 @@ import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.DocBookLanguages;
 import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.MetadataLanguageTags;
@@ -63,8 +64,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -1054,8 +1055,9 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * The languages of a translated resource, for the language switch of the resource page, as JSON; "null" if the
-   * metadata is not translated. Language names are in the language itself (e.g. "español").
+   * The languages of a translated resource, for the note on the other languages of the title and description on the
+   * resource page (see js/docbook/multilingual-fields.js), as JSON; "null" if the metadata is not translated. Language
+   * names are in the language itself (e.g. "español").
    */
   public String getTranslationsJson() {
     if (eml == null) {
@@ -1083,11 +1085,21 @@ public class ResourceAction extends PortalBaseAction {
       }
     });
 
+    // languages of the description sections as written (e.g. "spa" in imported EML) to the tags above
+    Map<String, String> codes = new LinkedHashMap<>();
+    DocBookLanguages.split(eml.getDescription()).keySet().forEach(code -> {
+      String tag = MetadataLanguageTags.toTag(languageVocabulary, code);
+      if (tag != null) {
+        codes.put(code, tag);
+      }
+    });
+
     Map<String, Object> settings = new LinkedHashMap<>();
     settings.put("defaultLanguage", defaultLanguage);
     settings.put("languages", languages);
     settings.put("names", names);
     settings.put("titles", titles);
+    settings.put("codes", codes);
     settings.put("preferred", MetadataLanguageTags.toTag(languageVocabulary, getLocaleLanguage()));
     // Gson escapes <, >, & and ', so the JSON can be put in a script element as it is
     return new Gson().toJson(settings);

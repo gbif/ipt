@@ -105,6 +105,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   private Map<String, String> translationLanguageOptions = new LinkedHashMap<>();
   public static final String TITLE_TRANSLATION_LANGUAGE_PARAM = "titleTranslationLanguage";
   public static final String TITLE_TRANSLATION_VALUE_PARAM = "titleTranslationValue";
+  // sent by js/docbook/multilingual-fields.js along with the translations
+  public static final String TITLE_TRANSLATIONS_POSTED_PARAM = "titleTranslationsPosted";
   // A map of countries
   @Getter
   private Map<String, String> countries;
@@ -490,9 +492,13 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
   /**
    * Translations of the title, posted as pairs of titleTranslationLanguage and titleTranslationValue parameters.
-   * Empty translations, and translations in the metadata language, are dropped.
+   * Empty translations, and translations in the metadata language, are dropped. The translations are kept as they are
+   * if the form did not post them (the script that adds them to the form did not run).
    */
   private void readTitleTranslations() {
+    if (req.getParameter(TITLE_TRANSLATIONS_POSTED_PARAM) == null) {
+      return;
+    }
     String[] languageParams = Optional.ofNullable(req.getParameterValues(TITLE_TRANSLATION_LANGUAGE_PARAM))
         .orElse(new String[0]);
     String[] valueParams = Optional.ofNullable(req.getParameterValues(TITLE_TRANSLATION_VALUE_PARAM))

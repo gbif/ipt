@@ -16,12 +16,12 @@ package org.gbif.ipt.utils;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.metadata.datacite.ContributorType;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
-import org.gbif.doi.metadata.datacite.TitleType;
 import org.gbif.doi.metadata.datacite.DateType;
 import org.gbif.doi.metadata.datacite.DescriptionType;
 import org.gbif.doi.metadata.datacite.NameIdentifier;
 import org.gbif.doi.metadata.datacite.RelatedIdentifierType;
 import org.gbif.doi.metadata.datacite.RelationType;
+import org.gbif.doi.metadata.datacite.TitleType;
 import org.gbif.doi.service.InvalidMetadataException;
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.Constants;
@@ -218,7 +218,7 @@ public class DataCiteMetadataBuilderTest extends IptBaseTest {
     assertEquals("Ants of New York State", dataCiteMetadata.getTitles().getTitle().get(0).getValue());
     assertEquals("Natural History Museum", dataCiteMetadata.getPublisher().getValue());
     assertEquals("2013", dataCiteMetadata.getPublicationYear());
-    assertEquals("eng", dataCiteMetadata.getTitles().getTitle().get(0).getLang());
+    assertEquals("en", dataCiteMetadata.getTitles().getTitle().get(0).getLang());
     assertNull(dataCiteMetadata.getTitles().getTitle().get(0).getTitleType());
 
     // creator1
@@ -256,14 +256,14 @@ public class DataCiteMetadataBuilderTest extends IptBaseTest {
 
     // subjects
     assertEquals("ants", dataCiteMetadata.getSubjects().getSubject().get(0).getValue());
-    assertEquals("eng", dataCiteMetadata.getSubjects().getSubject().get(0).getLang());
+    assertEquals("en", dataCiteMetadata.getSubjects().getSubject().get(0).getLang());
     assertEquals("http://www.vocab.com/collections", dataCiteMetadata.getSubjects().getSubject().get(0).getSchemeURI());
     assertEquals("insects", dataCiteMetadata.getSubjects().getSubject().get(1).getValue());
     assertEquals("http://www.vocab.com/collections", dataCiteMetadata.getSubjects().getSubject().get(1).getSchemeURI());
-    assertEquals("eng", dataCiteMetadata.getSubjects().getSubject().get(1).getLang());
+    assertEquals("en", dataCiteMetadata.getSubjects().getSubject().get(1).getLang());
     assertEquals("New York", dataCiteMetadata.getSubjects().getSubject().get(2).getValue());
     assertEquals("Locations on earth", dataCiteMetadata.getSubjects().getSubject().get(2).getSubjectScheme());
-    assertEquals("eng", dataCiteMetadata.getSubjects().getSubject().get(2).getLang());
+    assertEquals("en", dataCiteMetadata.getSubjects().getSubject().get(2).getLang());
 
     // dates: created, updated, then ones converted from temporal coverage
     assertNotNull(dataCiteMetadata.getDates().getDate().get(0).getValue());
@@ -340,7 +340,7 @@ public class DataCiteMetadataBuilderTest extends IptBaseTest {
       dataCiteMetadata.getDescriptions().getDescription().get(0).getContent().get(0));
     assertEquals(DescriptionType.ABSTRACT,
       dataCiteMetadata.getDescriptions().getDescription().get(0).getDescriptionType());
-    assertEquals("eng", dataCiteMetadata.getDescriptions().getDescription().get(0).getLang());
+    assertEquals("en", dataCiteMetadata.getDescriptions().getDescription().get(0).getLang());
 
     // GeoLocation
     assertEquals("Box[westBoundLongitude=-115.46875, eastBoundLongitude=-112.6535, southBoundLatitude=51.8533, northBoundLatitude=51.973587]",

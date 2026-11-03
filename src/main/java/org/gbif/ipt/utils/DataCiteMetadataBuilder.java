@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -118,7 +119,8 @@ public class DataCiteMetadataBuilder {
     dataCiteMetadata.setContributors(contributors);
 
     // add list of subjects (recommended)
-    DataCiteMetadata.Subjects subjects = convertEmlKeywords(eml.getKeywords(), eml.getMetadataLanguage());
+    DataCiteMetadata.Subjects subjects =
+        convertEmlKeywords(eml.getKeywords(), dataCiteLanguage(eml.getMetadataLanguage()));
     dataCiteMetadata.setSubjects(subjects);
 
     // add list of Dates (recommended)
@@ -219,7 +221,7 @@ public class DataCiteMetadataBuilder {
     if (defaultDescription != null) {
       DataCiteMetadata.Descriptions.Description description = FACTORY.createDataCiteMetadataDescriptionsDescription();
       description.setDescriptionType(DescriptionType.ABSTRACT);
-      description.setLang(eml.getMetadataLanguage());
+      description.setLang(dataCiteLanguage(eml.getMetadataLanguage()));
       description.getContent().add(defaultDescription);
       descriptions.getDescription().add(description);
     }
@@ -227,7 +229,7 @@ public class DataCiteMetadataBuilder {
     DocBookLanguages.translations(eml.getDescription(), eml.getMetadataLanguage()).forEach((language, text) -> {
       DataCiteMetadata.Descriptions.Description description = FACTORY.createDataCiteMetadataDescriptionsDescription();
       description.setDescriptionType(DescriptionType.ABSTRACT);
-      description.setLang(language);
+      description.setLang(dataCiteLanguage(language));
       description.getContent().add(text);
       descriptions.getDescription().add(description);
     });
@@ -583,6 +585,14 @@ public class DataCiteMetadataBuilder {
   }
 
   /**
+   * The language of a title, description or subject, written the same way throughout the record: the two-letter code
+   * where the language has one (e.g. "en" for the metadata language "eng"), as the translations are written.
+   */
+  protected static String dataCiteLanguage(String language) {
+    return Optional.ofNullable(MetadataLanguageTags.toTag(null, language)).orElse(language);
+  }
+
+  /**
    * Convert list of EML titles into DataCite titles. Only the title is mandatory, the type is optional.
    * EML version 1.1 only contains a single title, with language derived from metadata language. DataCite metadata
    * schema (v4) requires at least one title.
@@ -596,13 +606,13 @@ public class DataCiteMetadataBuilder {
       DataCiteMetadata.Titles titles = FACTORY.createDataCiteMetadataTitles();
       DataCiteMetadata.Titles.Title primary = FACTORY.createDataCiteMetadataTitlesTitle();
       primary.setValue(eml.getTitle());
-      primary.setLang(eml.getMetadataLanguage());
+      primary.setLang(dataCiteLanguage(eml.getMetadataLanguage()));
       titles.getTitle().add(primary);
       eml.getTitleTranslations().forEach((language, text) -> {
         if (StringUtils.isNotBlank(language) && StringUtils.isNotBlank(text)) {
           DataCiteMetadata.Titles.Title translated = FACTORY.createDataCiteMetadataTitlesTitle();
           translated.setValue(text);
-          translated.setLang(language);
+          translated.setLang(dataCiteLanguage(language));
           translated.setTitleType(TitleType.TRANSLATED_TITLE);
           titles.getTitle().add(translated);
         }
@@ -618,7 +628,7 @@ public class DataCiteMetadataBuilder {
    * subjectScheme are optional.
    *
    * @param keywordSets Eml list of KeywordSet
-   * @param language    Eml metadata language (3-letter ISO country code)
+   * @param language    language of the keywords, e.g. "en"
    * @return DataCite subjects list
    * @throws org.gbif.doi.service.InvalidMetadataException if mandatory number of titles cannot be created/returned
    */

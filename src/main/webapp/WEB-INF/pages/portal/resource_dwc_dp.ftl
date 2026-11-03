@@ -227,7 +227,6 @@
                     ${eml.title!resource.shortname}
                 </h1>
 
-
                 <div class="text-center">
                     <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
                     <#if resourceSubtypeLowerCase?has_content>

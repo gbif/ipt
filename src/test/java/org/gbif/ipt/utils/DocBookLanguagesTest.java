@@ -34,7 +34,6 @@ public class DocBookLanguagesTest {
     assertEquals(2, sections.size());
     assertEquals("<para>English</para><section><title>Methods</title><para>How</para></section>", sections.get("en"));
     assertEquals("<para>Español &amp; más</para>", sections.get("es"));
-    assertTrue(DocBookLanguages.isMultilingual(TRANSLATED));
   }
 
   @Test

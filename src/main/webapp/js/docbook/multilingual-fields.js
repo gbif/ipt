@@ -7,7 +7,7 @@
  * field on the page.
  *
  *   title       -> the eml.title input (metadata language), plus a pair of titleTranslationLanguage and
- *                  titleTranslationValue parameters per translation
+ *                  titleTranslationValue parameters per translation, and titleTranslationsPosted
  *   DocBook     -> one editor per language, combined into the field's input: one <section xml:lang=".."> per
  *                  language, the metadata language first; no sections if there are no translations
  *
@@ -330,6 +330,8 @@
                 }
             };
             bar = tabBar(field);
+            // tells the server that the translations were posted, so that none means "all removed", not "not loaded"
+            container.appendChild(el('input', {type: 'hidden', name: 'titleTranslationsPosted', value: 'true'}));
             defaultInput.parentNode.insertBefore(bar, defaultInput);
             defaultInput.parentNode.insertBefore(hint, defaultInput);
             defaultInput.after(container);
@@ -467,7 +469,8 @@
  *
  *   IptMultilingualFields.translationNote(settings, {note, title, label});
  *
- * settings: {defaultLanguage, languages, names: {tag: name}, titles: {tag: title}, preferred}
+ * settings: {defaultLanguage, languages, names: {tag: name}, titles: {tag: title}, preferred,
+ *            codes: {language of a description section as written, e.g. "spa": tag, e.g. "es"}}
  */
 (function (global) {
     'use strict';
@@ -478,6 +481,8 @@
         const all = [settings.defaultLanguage].concat(settings.languages || []);
         const names = settings.names || {};
         const titles = settings.titles || {};
+        const codes = settings.codes || {};
+        const normalize = code => (Object.prototype.hasOwnProperty.call(codes, code) ? codes[code] : code);
 
         function show(lang) {
             const titleLang = titles[lang] ? lang : settings.defaultLanguage;
@@ -485,7 +490,7 @@
                 options.title.textContent = titles[titleLang];
                 options.title.setAttribute('lang', titleLang);
             }
-            global.IptDocBookEditor.renderAll(document, {lang, fallback: settings.defaultLanguage});
+            global.IptDocBookEditor.renderAll(document, {lang, fallback: settings.defaultLanguage, normalize});
             renderNote(lang);
         }
 

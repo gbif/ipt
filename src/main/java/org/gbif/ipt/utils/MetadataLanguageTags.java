@@ -44,8 +44,9 @@ public final class MetadataLanguageTags {
   }
 
   /**
-   * The language tag for a code from the ISO 639-2 vocabulary, or for a two-letter code. Codes the vocabulary does not
-   * know are returned as they are (lower case), if they look like a language tag; null otherwise.
+   * The language tag for a code from the ISO 639-2 vocabulary, or for a two-letter code. Without the vocabulary (or for
+   * a code it does not know), a three-letter code is turned into the two-letter code Java knows for it. Other codes are
+   * returned as they are (lower case), if they look like a language tag; null otherwise.
    */
   public static String toTag(Vocabulary languages, String code) {
     String value = StringUtils.trimToNull(code);
@@ -60,6 +61,14 @@ public final class MetadataLanguageTags {
         }
       }
       return concept.getIdentifier().toLowerCase(Locale.ROOT);
+    }
+    if (value.length() == 3) {
+      for (String twoLetter : Locale.getISOLanguages()) {
+        if (Eml.isSameLanguage(twoLetter, value)) {
+          // Java lists old codes too ("ji", "iw", "in"): the current one, e.g. "yi"
+          return Locale.forLanguageTag(twoLetter).getLanguage();
+        }
+      }
     }
     return value.toLowerCase(Locale.ROOT);
   }
@@ -109,15 +118,16 @@ public final class MetadataLanguageTags {
    * Adds the languages of the translations in a DocBook field to a list of language tags, skipping the metadata
    * language and languages already in the list.
    */
-  public static void addDocBookLanguages(List<String> tags, Vocabulary languages, String value, String metadataLanguage) {
+  private static void addDocBookLanguages(List<String> tags, Vocabulary languages, String value,
+                                          String metadataLanguage) {
     addLanguages(tags, languages, DocBookLanguages.translations(value, metadataLanguage).keySet(), metadataLanguage);
   }
 
   /**
    * Adds language codes to a list of language tags, skipping the metadata language and languages already in the list.
    */
-  public static void addLanguages(List<String> tags, Vocabulary languages, Collection<String> codes,
-                                  String metadataLanguage) {
+  private static void addLanguages(List<String> tags, Vocabulary languages, Collection<String> codes,
+                                   String metadataLanguage) {
     for (String code : new ArrayList<>(codes)) {
       String tag = toTag(languages, code);
       if (tag != null && !Eml.isSameLanguage(tag, metadataLanguage)

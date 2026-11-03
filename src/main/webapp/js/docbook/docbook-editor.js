@@ -810,11 +810,14 @@
     /**
      * The part of a translated value in a language, or else in the fallback language, or else the first one. The
      * value itself if it is not translated.
+     *
+     * @param normalize optional, turns the language of a part into the form of lang and fallback, e.g. "spa" -> "es"
      */
-    function pickLanguage(value, lang, fallback) {
+    function pickLanguage(value, lang, fallback, normalize) {
         const parts = splitLanguages(value);
         if (!parts) return value;
-        const find = code => code && parts.find(part => sameLanguage(part.lang, code));
+        const tagOf = code => (normalize ? normalize(code) : code);
+        const find = code => code && parts.find(part => sameLanguage(tagOf(part.lang), code));
         return (find(lang) || find(fallback) || parts[0]).value;
     }
 
@@ -830,12 +833,12 @@
      * Renders a DocBook value read-only into an element, through the editor schema: only the elements the schema
      * knows are created (with DOM methods, never innerHTML), and links keep http, https, ftp and mailto addresses
      * only. Leaves the element as it is if the value is empty. A translated value is shown in the given language
-     * (options.lang), or else in options.fallback.
+     * (options.lang), or else in options.fallback; options.normalize as in pickLanguage.
      */
     function render(element, value, options) {
         if (!element || typeof value !== 'string' || !value.trim()) return;
         const opts = options || {};
-        const doc = docFromDocBook(pickLanguage(value, opts.lang, opts.fallback));
+        const doc = docFromDocBook(pickLanguage(value, opts.lang, opts.fallback, opts.normalize));
         const fragment = PM.model.DOMSerializer.fromSchema(schema).serializeFragment(doc.content);
         element.replaceChildren(fragment);
         element.classList.add('ipt-docbook');

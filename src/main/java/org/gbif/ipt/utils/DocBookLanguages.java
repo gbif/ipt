@@ -81,10 +81,6 @@ public final class DocBookLanguages {
     return sections;
   }
 
-  public static boolean isMultilingual(String value) {
-    return !split(value).isEmpty();
-  }
-
   /**
    * The content in a language: the section in that language for a multilingual value (null if there is none), the
    * whole value otherwise.
