@@ -125,7 +125,7 @@
                         </#if>
                         <ul>
                             <#list c.preferredTerms as t>
-                                <li><em>${t.title} <span class="small">[${t.lang}]</span></em></li>
+                                <li><em>${t.title}<#if t.lang?has_content> <span class="small">[${t.lang}]</span></#if></em></li>
                             </#list>
                         </ul>
                         <#if c.alternativeTerms?has_content>
@@ -134,7 +134,7 @@
                             </p>
                             <ul class="fs-smaller-2">
                                 <#list c.alternativeTerms as t>
-                                    <li class="text-discreet"><em>${t.title} <span>[${t.lang}]</span></em></li>
+                                    <li class="text-discreet"><em>${t.title}<#if t.lang?has_content> <span>[${t.lang}]</span></#if></em></li>
                                 </#list>
                             </ul>
                         </#if>
