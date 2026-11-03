@@ -25,6 +25,7 @@ import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Resource.CoreRowType;
+import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.InvalidConfigException;
@@ -35,6 +36,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.MetadataLanguageTags;
 import org.gbif.ipt.validation.ActionErrorCollector;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
@@ -72,6 +74,7 @@ import org.apache.struts2.action.UploadedFilesAware;
 import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -96,6 +99,12 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   private MetadataSection next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
   @Getter
   private Map<String, String> languages;
+  // ISO 639-2 vocabulary, and the languages that can be added as translations (language tag to name)
+  private Vocabulary languageVocabulary;
+  @Getter
+  private Map<String, String> translationLanguageOptions = new LinkedHashMap<>();
+  public static final String TITLE_TRANSLATION_LANGUAGE_PARAM = "titleTranslationLanguage";
+  public static final String TITLE_TRANSLATION_VALUE_PARAM = "titleTranslationValue";
   // A map of countries
   @Getter
   private Map<String, String> countries;
@@ -470,6 +479,75 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
       default:
         break;
     }
+
+    // the page with fields that can be translated: title and description
+    if (section == MetadataSection.BASIC_SECTION) {
+      languageVocabulary = vocabManager.get(Constants.VOCAB_URI_LANGUAGE);
+      translationLanguageOptions = MetadataLanguageTags.options(languageVocabulary,
+          vocabManager.getI18nVocab(Constants.VOCAB_URI_LANGUAGE, getLocaleLanguage(), true));
+    }
+  }
+
+  /**
+   * Translations of the title, posted as pairs of titleTranslationLanguage and titleTranslationValue parameters.
+   * Empty translations, and translations in the metadata language, are dropped.
+   */
+  private void readTitleTranslations() {
+    String[] languageParams = Optional.ofNullable(req.getParameterValues(TITLE_TRANSLATION_LANGUAGE_PARAM))
+        .orElse(new String[0]);
+    String[] valueParams = Optional.ofNullable(req.getParameterValues(TITLE_TRANSLATION_VALUE_PARAM))
+        .orElse(new String[0]);
+    Eml eml = resource.getEml();
+    Map<String, String> translations = new LinkedHashMap<>();
+    for (int i = 0; i < Math.min(languageParams.length, valueParams.length); i++) {
+      String tag = MetadataLanguageTags.toTag(languageVocabulary, languageParams[i]);
+      String value = StringUtils.trimToNull(valueParams[i]);
+      if (tag != null && value != null && !Eml.isSameLanguage(tag, eml.getMetadataLanguage())) {
+        translations.putIfAbsent(tag, value);
+      }
+    }
+    eml.setTitleTranslations(translations);
+  }
+
+  /**
+   * The languages the metadata has been translated into (other than the metadata language), across the title and the
+   * description, so that both offer the same languages.
+   */
+  public List<String> getTranslationLanguages() {
+    return MetadataLanguageTags.translationLanguages(languageVocabulary, resource.getEml());
+  }
+
+  /**
+   * Language tag of the metadata language, e.g. "en", see {@link MetadataLanguageTags}.
+   */
+  public String getMetadataLanguageTag() {
+    return Optional.ofNullable(MetadataLanguageTags.toTag(languageVocabulary, resource.getEml().getMetadataLanguage()))
+        .orElse("en");
+  }
+
+  /**
+   * Translations of the title (language tag to title), as JSON for js/docbook/multilingual-fields.js.
+   */
+  public String getTitleTranslationsJson() {
+    return new Gson().toJson(resource.getEml().getTitleTranslations());
+  }
+
+  /**
+   * Settings of the translated fields on the page (see js/docbook/multilingual-fields.js), as JSON.
+   */
+  public String getTranslationSettingsJson() {
+    Map<String, Object> settings = new LinkedHashMap<>();
+    settings.put("defaultLanguage", getMetadataLanguageTag());
+    settings.put("languages", getTranslationLanguages());
+    settings.put("names", translationLanguageOptions);
+    // values of the metadata language dropdown (ISO 639-2) to language tags
+    Map<String, String> selectValues = new LinkedHashMap<>();
+    if (languages != null) {
+      languages.keySet().forEach(code -> selectValues.put(code, MetadataLanguageTags.toTag(languageVocabulary, code)));
+    }
+    settings.put("selectValues", selectValues);
+    // Gson escapes <, >, & and ', so the JSON can be put in a script element as it is
+    return new Gson().toJson(settings);
   }
 
   @Override
@@ -542,6 +620,9 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
   @Override
   public void validateHttpPostOnly() {
+    if (section == MetadataSection.BASIC_SECTION) {
+      readTitleTranslations();
+    }
     validatorRes.validate(this, resource);
     emlValidator.validate(resource, section, new ActionErrorCollector(this), new StrutsI18n(this));
   }

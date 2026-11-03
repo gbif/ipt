@@ -10,6 +10,7 @@
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <#include "/WEB-INF/pages/macros/docbook_editor.ftl"/>
     <@docBookEditorAssets/>
+    <@translationAssets loadSelect2=false/>
     <#include "/WEB-INF/pages/macros/metadata_agent.ftl"/>
     <script>
         $(document).ready(function(){
@@ -138,6 +139,11 @@
                 // scroll to the element
                 $('body, html').animate({scrollTop: pos});
             }
+
+            // the translated fields follow the metadata language
+            $('select#eml\\.metadataLanguage').on('change', function () {
+                window.iptTranslations.setDefault(this.value);
+            });
 
             $('select#eml\\.metadataLanguage').select2({
                 placeholder: '',
@@ -309,6 +315,15 @@
                         <div class="row g-3">
                             <div class="col-12">
                                 <@input name="eml.title" value=eml.title! help="i18n" requiredField=true />
+                                <script>
+                                    <#-- JSON from Gson, which escapes <, > and & -->
+                                    window.iptTranslations.titleField({
+                                        input: document.getElementById("eml.title"),
+                                        translations: ${action.titleTranslationsJson?no_esc},
+                                        label: "${action.getText('eml.title')?js_string?no_esc}",
+                                        hint: "${action.getText('manage.metadata.translations.hint.title')?js_string?no_esc}"
+                                    });
+                                </script>
                             </div>
                         </div>
 
@@ -403,7 +418,7 @@
                         <@textinline name="eml.description" help="i18n" i18nkey="" requiredField=true/>
 
                         <div class="mt-3">
-                            <@docBookEditor name="eml.description" id="description" value=eml.description! label=action.getText("eml.description")/>
+                            <@docBookEditor name="eml.description" id="description" value=eml.description! label=action.getText("eml.description") translatable=true translationHint=action.getText("manage.metadata.translations.hint.description")/>
                         </div>
                     </div>
 

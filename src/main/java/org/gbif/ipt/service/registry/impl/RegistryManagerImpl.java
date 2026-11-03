@@ -38,6 +38,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.RegistryEntryHandler;
 import org.gbif.ipt.validation.AgentValidator;
+import org.gbif.ipt.utils.DocBookLanguages;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
@@ -162,7 +163,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     data.add(new BasicNameValuePair("name", resource.getTitle() != null ? StringUtils.trimToEmpty(resource.getTitle())
       : StringUtils.trimToEmpty(resource.getShortname())));
 
-    data.add(new BasicNameValuePair("description", String.join(System.lineSeparator(), eml.getDescription())));
+    data.add(new BasicNameValuePair("description", String.join(System.lineSeparator(),
+        DocBookLanguages.defaultContent(eml.getDescription(), eml.getMetadataLanguage()))));
     data.add(new BasicNameValuePair("homepageURL", StringUtils.trimToEmpty(eml.getDistributionUrl())));
     data.add(new BasicNameValuePair("logoURL", StringUtils.trimToEmpty(eml.getLogoUrl())));
 
@@ -279,7 +281,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
         : StringUtils.trimToEmpty(resource.getShortname())));
 
     // DwC-DP metadata lives in EML, the data package metadata has no description
-    data.add(new BasicNameValuePair("description", String.join(System.lineSeparator(), resource.getEml().getDescription())));
+    data.add(new BasicNameValuePair("description", String.join(System.lineSeparator(),
+        DocBookLanguages.defaultContent(resource.getEml().getDescription(), resource.getEml().getMetadataLanguage()))));
 
     // Use resource creator as a primary contact. May use one of the contributors in the future.
     data.add(new BasicNameValuePair("primaryContactType", CONTACT_TYPE_TECHNICAL));

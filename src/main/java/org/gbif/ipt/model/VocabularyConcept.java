@@ -96,9 +96,9 @@ public class VocabularyConcept implements Comparable, Serializable {
     }
     VocabularyTerm tEN = null;
     for (VocabularyTerm t : preferredTerms) {
-      if (t.getLang().equalsIgnoreCase(lang)) {
+      if (lang.equalsIgnoreCase(t.getLang())) {
         return t;
-      } else if (t.getLang().equalsIgnoreCase("en")) {
+      } else if ("en".equalsIgnoreCase(t.getLang())) {
         tEN = t;
       }
     }

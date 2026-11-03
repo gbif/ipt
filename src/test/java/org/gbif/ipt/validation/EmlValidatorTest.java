@@ -786,4 +786,19 @@ public class EmlValidatorTest extends IptBaseTest {
     assertEquals("Invalid content was found starting with element 'citetitle'. One of '{para, section}' is expected.",
         EmlValidator.simplifyDocBookValidationErrorMessage(message));
   }
+
+  @Test
+  public void testTranslatedDescriptionNeedsTheMetadataLanguage() {
+    eml.setMetadataLanguage("eng");
+    // valid: one section per language, validated against the GBIF profile
+    eml.setDescription("<section xml:lang=\"en\"><para>long enough</para><section><title>Methods</title>"
+        + "<para>How</para></section></section><section xml:lang=\"es\"><para>bastante largo</para></section>");
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    // translations are optional, the metadata language is not
+    eml.setDescription("<section xml:lang=\"es\"><para>bastante largo</para></section>");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+    eml.setDescription("<section xml:lang=\"en\"><para>shrt</para></section>"
+        + "<section xml:lang=\"es\"><para>bastante largo</para></section>");
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
+  }
 }

@@ -34,6 +34,7 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.LicenseConverterUtils;
 import org.gbif.ipt.utils.MetadataUtils;
+import org.gbif.ipt.utils.DocBookLanguages;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.ClosableReportingIterator;
@@ -1009,7 +1010,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     setDataPackageProperty("name", resource.getShortname());
     setContributorsDataPackageProperty(eml);
     setDataPackageStringProperty("title", eml.getTitle());
-    setDataPackageStringProperty("description", eml.getDescription());
+    setDataPackageStringProperty("description",
+        DocBookLanguages.defaultContent(eml.getDescription(), eml.getMetadataLanguage()));
     setLicenseDataPackageProperty(eml);
   }
 

@@ -178,7 +178,18 @@
 <script>
     $(document).ready(function() {
         // Render content FIRST, before anything measures the page.
-        IptDocBookEditor.renderAll();
+        <#-- JSON from Gson, which escapes <, > and & -->
+        const translations = ${action.translationsJson?no_esc};
+        if (translations) {
+            // the title and description in the interface language if translated, and a note on the other languages
+            IptMultilingualFields.translationNote(translations, {
+                note: document.getElementById('metadata-translations'),
+                title: document.getElementById('resource-title'),
+                label: "${action.getText('portal.resource.translations.available')?js_string?no_esc}"
+            });
+        } else {
+            IptDocBookEditor.renderAll();
+        }
 
         // Then initialize scrollspy, now that real content/heights exist.
         IptScrollSpy.init({ tocSelector: '.bd-toc nav a' });
@@ -209,9 +220,10 @@
             </div>
 
             <div class="text-center">
-                <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 id="resource-title" property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
                     ${eml.title!resource.shortname}
                 </h1>
+
 
                 <div class="text-center">
                     <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
@@ -485,6 +497,8 @@
                     <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
                         <@s.text name='portal.resource.description'/>
                     </h4>
+                    <#-- filled for translated metadata, see IptMultilingualFields.translationNote -->
+                    <p id="metadata-translations" class="metadata-translations text-muted mb-0" hidden></p>
                     <div id="description-container" property="dc:abstract" class="mt-3 overflow-x-auto"<#if eml.description?has_content> data-docbook="${eml.description}"</#if>>
                         <#if !eml.description?has_content>
                             <p><@s.text name='portal.resource.no.description'/></p>

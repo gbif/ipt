@@ -56,7 +56,9 @@ public final class XSSUtils {
       .addTags("section", "title", "para", "itemizedlist", "orderedlist", "listitem", "emphasis", "subscript",
           "superscript", "literalLayout", "ulink", "citetitle")
       .addAttributes("ulink", "url")
-      .addProtocols("ulink", "url", "http", "https", "mailto", "ftp");
+      .addProtocols("ulink", "url", "http", "https", "mailto", "ftp")
+      // one top-level section per language when a field is translated, see DocBookLanguages
+      .addAttributes("section", DocBookLanguages.LANG_ATTRIBUTE);
 
   private static final Document.OutputSettings DOCBOOK_OUTPUT_SETTINGS = new Document.OutputSettings()
       .prettyPrint(false)

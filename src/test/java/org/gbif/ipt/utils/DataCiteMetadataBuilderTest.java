@@ -16,6 +16,7 @@ package org.gbif.ipt.utils;
 import org.gbif.api.model.common.DOI;
 import org.gbif.doi.metadata.datacite.ContributorType;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
+import org.gbif.doi.metadata.datacite.TitleType;
 import org.gbif.doi.metadata.datacite.DateType;
 import org.gbif.doi.metadata.datacite.DescriptionType;
 import org.gbif.doi.metadata.datacite.NameIdentifier;
@@ -492,5 +493,30 @@ public class DataCiteMetadataBuilderTest extends IptBaseTest {
     List<Agent> contributors = new ArrayList<>();
     contributors.add(contributor);
     assertThrows(InvalidMetadataException.class, () -> DataCiteMetadataBuilder.convertEmlContributors(contributors));
+  }
+
+  @Test
+  public void testTranslatedTitlesAndDescriptions() throws InvalidMetadataException {
+    Eml eml = new Eml();
+    eml.setMetadataLanguage("en");
+    eml.setTitle("Birds");
+    eml.getTitleTranslations().put("es", "Aves");
+    eml.setDescription("<section xml:lang=\"en\"><para>English</para></section>"
+        + "<section xml:lang=\"es\"><para>Español</para></section>");
+
+    DataCiteMetadata.Titles titles = DataCiteMetadataBuilder.convertEmlTitles(eml);
+    assertEquals(2, titles.getTitle().size());
+    assertEquals("Birds", titles.getTitle().get(0).getValue());
+    assertNull(titles.getTitle().get(0).getTitleType());
+    assertEquals("Aves", titles.getTitle().get(1).getValue());
+    assertEquals("es", titles.getTitle().get(1).getLang());
+    assertEquals(TitleType.TRANSLATED_TITLE, titles.getTitle().get(1).getTitleType());
+
+    DataCiteMetadata.Descriptions descriptions = DataCiteMetadataBuilder.getDescriptions(eml);
+    assertEquals(2, descriptions.getDescription().size());
+    assertEquals("<para>English</para>", descriptions.getDescription().get(0).getContent().get(0));
+    assertEquals("en", descriptions.getDescription().get(0).getLang());
+    assertEquals("<para>Español</para>", descriptions.getDescription().get(1).getContent().get(0));
+    assertEquals("es", descriptions.getDescription().get(1).getLang());
   }
 }

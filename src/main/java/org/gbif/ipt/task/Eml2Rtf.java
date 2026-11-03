@@ -21,6 +21,7 @@ import org.gbif.ipt.model.VocabularyConcept;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.utils.CoordinateUtils;
+import org.gbif.ipt.utils.DocBookLanguages;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.Citation;
@@ -93,14 +94,15 @@ public class Eml2Rtf {
    * @throws DocumentException if problem occurs during add
    */
   private void addAbstract(Document doc, Eml eml) throws DocumentException {
-    if (exists(eml.getDescription())) {
+    String description = DocBookLanguages.defaultContent(eml.getDescription(), eml.getMetadataLanguage());
+    if (exists(description)) {
       Paragraph p = new Paragraph();
       p.setAlignment(Element.ALIGN_JUSTIFIED);
       p.setFont(font);
       p.add(new Phrase(getText("rtf.abstract"), fontTitle));
       p.add(Chunk.NEWLINE);
       p.add(Chunk.NEWLINE);
-      p.add(eml.getDescription());
+      p.add(description);
       p.add(Chunk.NEWLINE);
       doc.add(p);
       p.clear();

@@ -25,6 +25,7 @@ import org.gbif.doi.metadata.datacite.ObjectFactory;
 import org.gbif.doi.metadata.datacite.RelatedIdentifierType;
 import org.gbif.doi.metadata.datacite.RelationType;
 import org.gbif.doi.metadata.datacite.ResourceType;
+import org.gbif.doi.metadata.datacite.TitleType;
 import org.gbif.doi.service.InvalidMetadataException;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
@@ -214,13 +215,22 @@ public class DataCiteMetadataBuilder {
    */
   protected static DataCiteMetadata.Descriptions getDescriptions(Eml eml) {
     DataCiteMetadata.Descriptions descriptions = FACTORY.createDataCiteMetadataDescriptions();
-    if (eml.getDescription() != null) {
+    String defaultDescription = DocBookLanguages.defaultContent(eml.getDescription(), eml.getMetadataLanguage());
+    if (defaultDescription != null) {
       DataCiteMetadata.Descriptions.Description description = FACTORY.createDataCiteMetadataDescriptionsDescription();
       description.setDescriptionType(DescriptionType.ABSTRACT);
       description.setLang(eml.getMetadataLanguage());
-      description.getContent().add(eml.getDescription());
+      description.getContent().add(defaultDescription);
       descriptions.getDescription().add(description);
     }
+    // translations, one description per language
+    DocBookLanguages.translations(eml.getDescription(), eml.getMetadataLanguage()).forEach((language, text) -> {
+      DataCiteMetadata.Descriptions.Description description = FACTORY.createDataCiteMetadataDescriptionsDescription();
+      description.setDescriptionType(DescriptionType.ABSTRACT);
+      description.setLang(language);
+      description.getContent().add(text);
+      descriptions.getDescription().add(description);
+    });
 
     return descriptions;
   }
@@ -588,6 +598,15 @@ public class DataCiteMetadataBuilder {
       primary.setValue(eml.getTitle());
       primary.setLang(eml.getMetadataLanguage());
       titles.getTitle().add(primary);
+      eml.getTitleTranslations().forEach((language, text) -> {
+        if (StringUtils.isNotBlank(language) && StringUtils.isNotBlank(text)) {
+          DataCiteMetadata.Titles.Title translated = FACTORY.createDataCiteMetadataTitlesTitle();
+          translated.setValue(text);
+          translated.setLang(language);
+          translated.setTitleType(TitleType.TRANSLATED_TITLE);
+          titles.getTitle().add(translated);
+        }
+      });
       return titles;
     } else {
       throw new InvalidMetadataException("DataCite schema (v4) requires at least one title");

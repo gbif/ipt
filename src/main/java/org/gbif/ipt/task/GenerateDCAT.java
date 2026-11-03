@@ -25,6 +25,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.utils.InputStreamUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.utils.DocBookLanguages;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.Eml;
@@ -530,9 +531,10 @@ public class GenerateDCAT {
     }
 
     //dct:description
-    if (eml.getDescription() != null) {
+    String description = DocBookLanguages.defaultContent(eml.getDescription(), eml.getMetadataLanguage());
+    if (description != null) {
       addPredicateToBuilder(datasetBuilder, "dct:description");
-      addObjectToBuilder(datasetBuilder, eml.getDescription(), ObjectTypes.LITERAL);
+      addObjectToBuilder(datasetBuilder, description, ObjectTypes.LITERAL);
     }
 
     //dcat:keyword

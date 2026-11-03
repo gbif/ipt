@@ -22,6 +22,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.voc.MetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.DocBookLanguages;
 import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.InvalidEmlException;
@@ -227,7 +228,9 @@ public class EmlValidator extends BaseValidator {
             ec.addActionWarning(i18n.getText("eml.title.shortname.match"));
           }
 
-          String strippedDescription = Optional.ofNullable(eml.getDescription())
+          // only the description in the metadata language is mandatory, translations are optional
+          String strippedDescription = Optional.ofNullable(
+                  DocBookLanguages.defaultContent(eml.getDescription(), eml.getMetadataLanguage()))
               .map(d -> d.replaceAll("<[^>]*>", "")) // get rid of tags
               // no-break spaces don't count as content (the character, or the entity from older HTML values)
               .map(d -> d.replace('\u00A0', ' ').replace("&nbsp;", " "))

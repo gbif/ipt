@@ -21,6 +21,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -33,6 +34,7 @@ import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.MapUtils;
+import org.gbif.ipt.utils.MetadataLanguageTags;
 import org.gbif.ipt.utils.XSSUtils;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Agent;
@@ -61,6 +63,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -74,6 +77,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -1047,6 +1051,46 @@ public class ResourceAction extends PortalBaseAction {
         .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
 
     return result;
+  }
+
+  /**
+   * The languages of a translated resource, for the language switch of the resource page, as JSON; "null" if the
+   * metadata is not translated. Language names are in the language itself (e.g. "español").
+   */
+  public String getTranslationsJson() {
+    if (eml == null) {
+      return "null";
+    }
+    Vocabulary languageVocabulary = vocabManager.get(Constants.VOCAB_URI_LANGUAGE);
+    List<String> languages = MetadataLanguageTags.translationLanguages(languageVocabulary, eml);
+    if (languages.isEmpty()) {
+      return "null";
+    }
+    String defaultLanguage = Optional.ofNullable(
+        MetadataLanguageTags.toTag(languageVocabulary, eml.getMetadataLanguage())).orElse("en");
+
+    Map<String, String> names = new LinkedHashMap<>();
+    Map<String, String> titles = new LinkedHashMap<>();
+    names.put(defaultLanguage, MetadataLanguageTags.endonym(defaultLanguage));
+    titles.put(defaultLanguage, eml.getTitle());
+    for (String language : languages) {
+      names.put(language, MetadataLanguageTags.endonym(language));
+    }
+    eml.getTitleTranslations().forEach((code, title) -> {
+      String tag = MetadataLanguageTags.toTag(languageVocabulary, code);
+      if (tag != null) {
+        titles.putIfAbsent(tag, title);
+      }
+    });
+
+    Map<String, Object> settings = new LinkedHashMap<>();
+    settings.put("defaultLanguage", defaultLanguage);
+    settings.put("languages", languages);
+    settings.put("names", names);
+    settings.put("titles", titles);
+    settings.put("preferred", MetadataLanguageTags.toTag(languageVocabulary, getLocaleLanguage()));
+    // Gson escapes <, >, & and ', so the JSON can be put in a script element as it is
+    return new Gson().toJson(settings);
   }
 
   public Eml stripXSS(Eml eml) {

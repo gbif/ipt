@@ -769,25 +769,90 @@
     }
 
     /**
+     * Splits a translated value into its languages. A field in more than one language holds one top-level
+     * <section xml:lang=".."> per language (sections with a heading never carry xml:lang):
+     *
+     *   <section xml:lang="en"><para>..</para></section><section xml:lang="es"><para>..</para></section>
+     *
+     * Returns [{lang, value}] in document order, or null if the value is not translated.
+     */
+    function splitLanguages(value) {
+        if (typeof value !== 'string' || !value.trim()) return null;
+        const xml = new global.DOMParser().parseFromString('<root>' + value + '</root>', 'application/xml');
+        if (xml.getElementsByTagName('parsererror').length) return null;
+        const serializer = new global.XMLSerializer();
+        const parts = [];
+        for (const child of Array.from(xml.documentElement.childNodes)) {
+            if (child.nodeType === 3 || child.nodeType === 4) {
+                if (child.nodeValue.trim()) return null;
+            } else if (child.nodeType === 1) {
+                const lang = (child.getAttribute('xml:lang') || '').trim();
+                if (localName(child) !== 'section' || !lang) return null;
+                parts.push({lang, value: Array.from(child.childNodes).map(n => serializer.serializeToString(n)).join('')});
+            }
+        }
+        return parts.length ? parts : null;
+    }
+
+    /**
+     * Combines the values of a field in several languages, the metadata language first. A field with content in the
+     * metadata language only is written as it is, without a language section.
+     *
+     * @param parts [{lang, value}], the metadata language first
+     */
+    function joinLanguages(parts) {
+        const filled = parts.filter(part => part.value && part.value.trim());
+        if (!filled.length) return '';
+        if (filled.length === 1 && filled[0] === parts[0]) return filled[0].value;
+        return filled.map(part => '<section xml:lang="' + escAttr(part.lang) + '">' + part.value + '</section>').join('');
+    }
+
+    /**
+     * The part of a translated value in a language, or else in the fallback language, or else the first one. The
+     * value itself if it is not translated.
+     */
+    function pickLanguage(value, lang, fallback) {
+        const parts = splitLanguages(value);
+        if (!parts) return value;
+        const find = code => code && parts.find(part => sameLanguage(part.lang, code));
+        return (find(lang) || find(fallback) || parts[0]).value;
+    }
+
+    /**
+     * Whether two language tags name the same language: "en" and "EN", or "pt-BR" and "pt-br". Codes of different
+     * lengths (e.g. "en" and "eng") are normalized by the caller.
+     */
+    function sameLanguage(a, b) {
+        return String(a).trim().toLowerCase().replace('_', '-') === String(b).trim().toLowerCase().replace('_', '-');
+    }
+
+    /**
      * Renders a DocBook value read-only into an element, through the editor schema: only the elements the schema
      * knows are created (with DOM methods, never innerHTML), and links keep http, https, ftp and mailto addresses
-     * only. Leaves the element as it is if the value is empty.
+     * only. Leaves the element as it is if the value is empty. A translated value is shown in the given language
+     * (options.lang), or else in options.fallback.
      */
-    function render(element, value) {
+    function render(element, value, options) {
         if (!element || typeof value !== 'string' || !value.trim()) return;
-        const doc = docFromDocBook(value);
+        const opts = options || {};
+        const doc = docFromDocBook(pickLanguage(value, opts.lang, opts.fallback));
         const fragment = PM.model.DOMSerializer.fromSchema(schema).serializeFragment(doc.content);
         element.replaceChildren(fragment);
         element.classList.add('ipt-docbook');
     }
 
     /**
-     * Renders every element with a data-docbook attribute (the DocBook value, HTML-escaped by the template).
+     * Renders every element with a data-docbook attribute (the DocBook value, HTML-escaped by the template). The
+     * value is kept on the element, so that it can be rendered again in another language.
      */
-    function renderAll(root) {
+    function renderAll(root, options) {
         (root || document).querySelectorAll('[data-docbook]').forEach(element => {
-            render(element, element.getAttribute('data-docbook'));
+            element.iptDocBook = element.getAttribute('data-docbook');
             element.removeAttribute('data-docbook');
+            element.classList.add('ipt-docbook-source');
+        });
+        (root || document).querySelectorAll('.ipt-docbook-source').forEach(element => {
+            render(element, element.iptDocBook, options);
         });
     }
 
@@ -795,6 +860,9 @@
         create,
         render,
         renderAll,
+        splitLanguages,
+        joinLanguages,
+        pickLanguage,
         setLabels: custom => {
             labels = Object.assign({}, labels, custom);
         },

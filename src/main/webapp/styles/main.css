@@ -3272,3 +3272,80 @@ span.contact-citation-banner {
     border-radius: .25rem;
     white-space: pre-wrap;
 }
+
+/* Language tabs of translated metadata fields, see js/docbook/multilingual-fields.js */
+.ipt-ml-tab,
+.ipt-ml-remove {
+    border: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+.ipt-ml-tab {
+    border-radius: .25rem;
+}
+
+.ipt-ml-tabgroup .ipt-ml-tab:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.ipt-ml-remove {
+    border-left: 0;
+    border-radius: 0 .25rem .25rem 0;
+    padding-left: .25rem;
+    padding-right: .25rem;
+}
+
+.ipt-ml-tab.active,
+.ipt-ml-remove.active {
+    border-color: rgb(var(--color-gbif-primary));
+    background-color: rgb(var(--color-gbif-primary));
+    color: #fff;
+}
+
+.ipt-ml-default {
+    font-size: .7em;
+    vertical-align: .1em;
+}
+
+.ipt-ml-add {
+    width: auto;
+    max-width: 14rem;
+}
+
+/* searchable "add translation" list (select2), sized like a small control on every page */
+.ipt-ml-add-select2 .select2-selection--single {
+    height: calc(1.5em + .5rem + 2px) !important;
+    font-size: .875rem !important;
+}
+
+.ipt-ml-add-select2 .select2-selection--single .select2-selection__rendered,
+.ipt-ml-add-select2 .select2-selection--single .select2-selection__placeholder {
+    line-height: calc(1.5em + .5rem) !important;
+}
+
+/* note on the translations of the title and description, resource page */
+.metadata-translations {
+    font-size: .875rem;
+}
+
+/* styled like the other IPT links (the link colour can be customised), although they are buttons */
+.metadata-translations-link {
+    font-size: inherit;
+    vertical-align: baseline;
+    color: rgb(var(--link-color));
+    text-decoration: none;
+    border: 0;
+}
+
+.metadata-translations-link:hover,
+.metadata-translations-link:focus-visible {
+    color: rgb(var(--link-color));
+    filter: brightness(0.85);
+    text-decoration: underline;
+}
+
+.ipt-ml-hint {
+    font-size: .8125rem;
+}

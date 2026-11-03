@@ -261,4 +261,15 @@ public class XSSUtilsTest extends IptBaseTest {
     assertFalse(XSSUtils.isDocBookSafe("<para onclick=\"x\">a</para>"));
     assertFalse(XSSUtils.isDocBookSafe("<ulink url=\"javascript:alert(1)\"><citetitle>x</citetitle></ulink>"));
   }
+
+  @Test
+  void docBookLanguageSectionsAreKept() {
+    String docBook = "<section xml:lang=\"en\"><para>English</para><section><title>Methods</title><para>How</para>"
+        + "</section></section><section xml:lang=\"es\"><para>Español</para></section>";
+    assertTrue(XSSUtils.isDocBookSafe(docBook));
+    assertEquals(docBook, XSSUtils.stripDocBookXSS(docBook));
+    // only on sections
+    assertFalse(XSSUtils.isDocBookSafe("<para xml:lang=\"en\">English</para>"));
+    assertFalse(XSSUtils.isDocBookSafe("<section xml:lang=\"en\" onclick=\"x\"><para>a</para></section>"));
+  }
 }
