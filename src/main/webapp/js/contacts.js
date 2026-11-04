@@ -128,7 +128,7 @@
         if (email) {
             parts.push(email);
         }
-        return parts.join(' · ');
+        return parts.join(' \u00B7 ');
     }
 
     // the validator's rule: at least one of last name, organisation and position
@@ -236,7 +236,7 @@
             const missing = count === 0 && tab.dataset.required === 'true';
             tab.querySelector('[data-count]').textContent = count;
             tab.classList.toggle('missing', missing);
-            state.textContent = missing ? text.filterRequired : (count ? '✓' : '');
+            state.textContent = missing ? text.filterRequired : (count ? '\u2713' : '');
             state.classList.toggle('ok', count > 0);
         });
         root.querySelectorAll('.party-ftab').forEach(tab => {
@@ -293,9 +293,9 @@
         if (!named) {
             sub.innerHTML = `<span class="err">${esc(text.needsName)}</span>`;
         } else if (!withRole) {
-            sub.innerHTML = `<span class="err">${esc(text.needsRole)}</span>` + (subline(card) ? ' · ' + esc(subline(card)) : '');
+            sub.innerHTML = `<span class="err">${esc(text.needsRole)}</span>` + (subline(card) ? ' \u00B7 ' + esc(subline(card)) : '');
         } else {
-            sub.textContent = subline(card) || ' ';
+            sub.textContent = subline(card) || '\u00A0';
         }
 
         const chips = [];
@@ -306,7 +306,7 @@
             .map(row => detect(row.querySelector('[data-id-full]').value, row.querySelector('select')))
             .find(Boolean);
         if (recognised) {
-            chips.push(`<span class="party-chip ok">${esc(recognised.directory.name)} ✓</span>`);
+            chips.push(`<span class="party-chip ok">${esc(recognised.directory.name)} \u2713</span>`);
         }
         card.querySelector('[data-summary-chips]').innerHTML = chips.join('');
 
@@ -333,8 +333,8 @@
             const cited = CITED_OTHER_ROLES.includes(role);
             return `<button type="button" class="party-role other on" data-act="rm-other-role" data-role="${esc(role)}"`
                 + ` title="${esc(text.roleRemove + ' ' + roleLabel(role) + (cited ? ' (' + text.otherRolesCitedTitle + ')' : ''))}">`
-                + esc(roleLabel(role)) + (cited ? ` <span class="n">· ${esc(text.otherRolesCited)}</span>` : '')
-                + ' <span class="n" aria-hidden="true">×</span></button>';
+                + esc(roleLabel(role)) + (cited ? ` <span class="n">\u00B7 ${esc(text.otherRolesCited)}</span>` : '')
+                + ' <span class="n" aria-hidden="true">\u00D7</span></button>';
         }).join('');
         card.querySelector('[data-act="other-roles-menu"]').textContent = '+ ' + (roles.length ? text.otherRolesAdd : text.otherRolesAddFirst);
 
@@ -343,7 +343,7 @@
         const countryLabel = country && country.value ? country.options[country.selectedIndex].text.trim() : '';
         const address = [field(card, 'agent.address.city'), countryLabel].filter(Boolean).join(', ')
             || (repValues(card, 'address').length ? repValues(card, 'address')[0] : '');
-        card.querySelector('[data-address-summary]').textContent = address ? ' – ' + address : '';
+        card.querySelector('[data-address-summary]').textContent = address ? ' \u2013 ' + address : '';
         const salutation = field(card, 'agent.salutation');
         card.querySelector('[data-more-summary]').textContent = salutation ? ': ' + salutation : '';
     }
@@ -651,7 +651,7 @@
         }
         addOtherRoles(card, roles || []);
         applyAgent(card, agent);
-        const pickRole = !hasRole(card) ? ' – ' + text.copiedPickRole : '';
+        const pickRole = !hasRole(card) ? ' \u2013 ' + text.copiedPickRole : '';
         toast(`${text.copied}: ${nameOfAgent(agent)}${pickRole}`);
         card.scrollIntoView({behavior: 'smooth', block: 'nearest'});
     }
@@ -975,7 +975,7 @@
             ? matches.map(({person, index}) => {
                 const agent = person.agent || {};
                 const details = [agent.organisation && [agent.firstName, agent.lastName].some(Boolean) ? agent.organisation : '',
-                    (agent.position || [])[0], (agent.email || [])[0]].filter(Boolean).join(' · ');
+                    (agent.position || [])[0], (agent.email || [])[0]].filter(Boolean).join(' \u00B7 ');
                 const selected = picker.selected === index;
                 return `<div class="party-picker-result${selected ? ' sel' : ''}" data-i="${index}" tabindex="0" role="option" aria-selected="${selected}">`
                     + `<span class="party-who"><span class="party-name">${esc(nameOfAgent(agent))}</span>`

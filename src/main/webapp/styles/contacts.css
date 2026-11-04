@@ -48,7 +48,7 @@
 .party-chip.ok { background: rgba(var(--color-gbif-primary), .12); color: rgb(70, 130, 70); }
 .party-chip.err { background: rgba(var(--color-gbif-danger), .1); color: rgb(var(--color-gbif-danger)); }
 
-/* role chips: dataset roles switch on and off, other roles are removed with × */
+/* role chips: dataset roles switch on and off, other roles are removed with x */
 .party-roles { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; align-items: center; flex: 0 1 auto; max-width: 60%; }
 .party-roles > span[data-other-role-chips] { display: contents; }
 /* menus in the card header line up with the pills and icons next to them */
