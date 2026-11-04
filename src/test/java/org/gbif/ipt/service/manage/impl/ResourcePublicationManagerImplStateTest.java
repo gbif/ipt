@@ -565,6 +565,95 @@ public class ResourcePublicationManagerImplStateTest {
     assertFalse(manager.isFileSourcesResourceUnchangedSinceLastPublication(resource));
   }
 
+  @Test
+  public void testPublishSkipsUnchangedResourceBeforeGenerating() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    BaseAction action = mock(BaseAction.class);
+    when(action.getText("publishing.notChanged")).thenReturn("Not changed");
+
+    assertFalse(manager.publish(resource, new BigDecimal("2.0"), action, true));
+
+    // no new version, nothing generated
+    assertNull(resource.findVersionHistory(new BigDecimal("2.0")));
+    assertTrue(manager.getProcessFutures().isEmpty());
+    StatusReport report = manager.status(SHORTNAME);
+    assertTrue(report.isCompleted());
+    assertFalse(report.hasException());
+    assertEquals("Not changed", report.getState());
+    // not a failure
+    assertFalse(manager.getProcessFailures().containsKey(SHORTNAME));
+  }
+
+  @Test
+  public void testPublishSkipsUnchangedMetadataOnlyResource() throws Exception {
+    Resource resource = resource();
+    resource.setCoreType(Resource.CoreRowType.METADATA.toString());
+    resource.setMetadataModified(BEFORE_PUBLICATION);
+    resource.setLastPublished(PUBLICATION);
+    BaseAction action = mock(BaseAction.class);
+    when(action.getText("publishing.metadataNotChanged")).thenReturn("Metadata not changed");
+
+    assertFalse(manager.publish(resource, new BigDecimal("2.0"), action, true));
+
+    assertNull(resource.findVersionHistory(new BigDecimal("2.0")));
+    assertEquals("Metadata not changed", manager.status(SHORTNAME).getState());
+  }
+
+  /**
+   * Auto-publishing with "skip if unchanged" moves on to the next date, instead of retrying on every monitor cycle.
+   */
+  @Test
+  public void testPublishSkipMovesAutoPublishingToNextDate() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    resource.setPublicationMode(PublicationMode.AUTO_PUBLISH_ON);
+    resource.setUpdateFrequency(MaintenanceUpdateFrequency.DAILY.getIdentifier());
+    resource.setNextPublished(BEFORE_PUBLICATION);
+
+    manager.publish(resource, new BigDecimal("2.0"), mock(BaseAction.class), true);
+
+    assertTrue(resource.getNextPublished().after(new Date()));
+    verify(resourceManager).save(resource);
+  }
+
+  @Test
+  public void testNeverPublishedResourceIsNotUnchanged() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    resource.setLastPublished(null);
+    assertFalse(manager.isUnchangedSinceLastPublication(resource));
+
+    Resource metadataOnly = resource();
+    metadataOnly.setCoreType(Resource.CoreRowType.METADATA.toString());
+    metadataOnly.setMetadataModified(BEFORE_PUBLICATION);
+    assertFalse(manager.isUnchangedSinceLastPublication(metadataOnly));
+  }
+
+  @Test
+  public void testResourceWithPendingVisibilityChangeIsNotUnchanged() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    resource.setPendingStatus(PublicationStatus.PUBLIC);
+
+    assertFalse(manager.isUnchangedSinceLastPublication(resource));
+  }
+
+  @Test
+  public void testMetadataOnlyResourceWithChangedMetadataIsNotUnchanged() {
+    Resource resource = resource();
+    resource.setCoreType(Resource.CoreRowType.METADATA.toString());
+    resource.setMetadataModified(AFTER_PUBLICATION);
+    resource.setLastPublished(PUBLICATION);
+
+    assertFalse(manager.isUnchangedSinceLastPublication(resource));
+  }
+
+  @Test
+  public void testChangedFileSourcesResourceIsNotUnchanged() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    assertTrue(manager.isUnchangedSinceLastPublication(resource));
+
+    resource.setMappingsModified(AFTER_PUBLICATION);
+    assertFalse(manager.isUnchangedSinceLastPublication(resource));
+  }
+
   private Resource publishedFileSourcesResource() throws Exception {
     Resource resource = resource();
     TextFileSource csv = new TextFileSource();

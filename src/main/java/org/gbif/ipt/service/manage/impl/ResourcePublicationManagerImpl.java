@@ -239,7 +239,9 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     boolean checksumMatches = false;
     boolean metadataChanged = isMetadataModifiedSinceLastPublication(resource);
     boolean dataOrMetadataChanged = true;
-    boolean skipIfNotChanged = resourcesToSkip.contains(shortname) || resource.isSkipPublicationIfNotChanged();
+    // only when this publication was started with "skip if not changed" (bulk "changed only" or auto-publishing),
+    // not because of the resource's auto-publishing setting: a manual publication always publishes
+    boolean skipIfNotChanged = resourcesToSkip.contains(shortname);
     boolean noSignificantRecordsDrop = true;
     double dropPercentage;
     String reasonFailed = null;
@@ -329,13 +331,6 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         boolean visibilityChanged = resource.getPendingStatus() != null;
         if (visibilityChanged) {
           getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Visibility changed to: " + resource.getPendingStatus()));
-        }
-
-        // If all sources are file (CSV, TSV, Excel) also check when they were changed
-        if (skipIfNotChanged && isFileSourcesResourceUnchangedSinceLastPublication(resource)) {
-          dataOrMetadataChanged = false;
-
-          getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Source files has not changed since last published"));
         }
 
         if (dataOrMetadataChanged || visibilityChanged) {
@@ -460,14 +455,21 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     if (action == null) {
       action = new BaseAction(textProvider, cfg, registrationManager);
     }
-    // add new version history
-    addOrUpdateVersionHistory(resource, version, false, action);
 
     // remove StatusReport from previous publishing round
     StatusReport report = status(shortname);
     if (report != null) {
       processReports.remove(shortname);
     }
+
+    // skip before anything is generated or a new version is added, if the dates show nothing has changed
+    if (options.isSkipPublicationIfNotChanged() && isUnchangedSinceLastPublication(resource)) {
+      skipUnchanged(resource, action);
+      return false;
+    }
+
+    // add new version history
+    addOrUpdateVersionHistory(resource, version, false, action);
 
     if (!options.isSkipPublicationIfNotChanged()) {
       resourcesToSkip.remove(shortname);
@@ -476,23 +478,6 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
       resourcesToNotifyPublicationFailure.add(shortname);
     } else {
       resourcesToNotifyPublicationFailure.remove(shortname);
-    }
-
-    // Abort further publication for Metadata Only - no changes (if skipIfNotChanged activated)
-    if (resource.isMetadataOnly() && options.isSkipPublicationIfNotChanged()) {
-      Date lastPublished = resource.getLastPublished();
-      Date metadataLastModified = resource.getMetadataModified();
-
-      boolean metadataChanged = metadataLastModified == null || metadataLastModified.after(lastPublished);
-
-      if (!metadataChanged) {
-        String metadataNotChangedStatus = action.getText("publishing.metadataNotChanged");
-        StatusReport updated = new StatusReport(true, metadataNotChangedStatus, getTaskMessages(shortname));
-        processReports.put(shortname, updated);
-        resourcesToNotifyPublicationFailure.remove(shortname);
-
-        return false;
-      }
     }
 
     try {
@@ -1337,6 +1322,43 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     return metadataModified == null
         || lastPublished == null
         || metadataModified.after(lastPublished);
+  }
+
+  /**
+   * Whether the modification dates show that a published resource has not changed since its last publication, so a
+   * new version doesn't need to be generated. Resources with database or URL sources can't be judged by dates.
+   */
+  boolean isUnchangedSinceLastPublication(@NotNull Resource resource) {
+    if (resource.getLastPublished() == null || resource.getPendingStatus() != null) {
+      return false;
+    }
+    if (resource.isMetadataOnly()) {
+      return !isMetadataModifiedSinceLastPublication(resource);
+    }
+    return isFileSourcesResourceUnchangedSinceLastPublication(resource);
+  }
+
+  /**
+   * Finish a skipped publication: report it as not changed, not as a failure, and move auto-publishing on to the next
+   * date so it isn't retried on every monitor cycle.
+   */
+  private void skipUnchanged(Resource resource, BaseAction action) {
+    String shortname = resource.getShortname();
+    LOG.info("Resource {} has not changed since the last publication, skipping", shortname);
+
+    String key = resource.isMetadataOnly() ? "publishing.metadataNotChanged" : "publishing.notChanged";
+    processReports.put(shortname, new StatusReport(true, action.getText(key), getTaskMessages(shortname)));
+    resourcesToSkip.remove(shortname);
+    resourcesToNotifyPublicationFailure.remove(shortname);
+
+    if (resource.usesAutoPublishing()) {
+      try {
+        updateNextPublishedDate(new Date(), resource);
+        resourceManager.save(resource);
+      } catch (PublicationException | InvalidConfigException e) {
+        LOG.error("Failed to update the next publication date of skipped resource {}", shortname, e);
+      }
+    }
   }
 
   /**
