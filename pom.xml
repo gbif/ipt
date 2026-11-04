@@ -158,6 +158,16 @@
       <url>https://repository.gbif.org/content/groups/gbif</url>
     </repository>
     <repository>
+      <id>gbif-snapshot</id>
+      <url>https://repository.gbif.org/repository/snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>gbif-thirdparty</id>
       <url>https://repository.gbif.org/content/repositories/thirdparty</url>
       <releases>
