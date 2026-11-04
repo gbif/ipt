@@ -33,6 +33,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceLoadFailure;
 import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
@@ -55,6 +56,7 @@ import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.ImportException;
+import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
@@ -87,6 +89,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -106,6 +109,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -1538,5 +1542,100 @@ public class ResourceManagerImplTest extends IptBaseTest {
     Set<String> mySet = new HashSet<>(Arrays.asList(fileNames));
     assertTrue(mySet.contains("res1"), "res1");
     assertTrue(mySet.contains("res5"), "res5");
+  }
+
+  /**
+   * A resource that fails to load is listed with the reason, and doesn't stop the others from loading.
+   */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  @Test
+  public void testLoadRecordsFailures() throws Exception {
+    ResourceManagerImpl manager = spy(getResourceManagerImpl());
+    File resourceDirectory = FileUtils.createTempDir();
+
+    // valid resource
+    File resourceXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    when(mockedDataDir.resourceFile(anyString())).thenReturn(resourceXML);
+    doReturn(new ResourceSummaryView()).when(manager).toResourceSummaryViewReconstructed(any());
+    File res1 = new File(resourceDirectory, "res1");
+    res1.mkdir();
+    new File(res1, "resource.xml").createNewFile();
+
+    // broken resource: its resource.xml can't be read
+    File broken = new File(resourceDirectory, "broken");
+    broken.mkdir();
+    new File(broken, "eml.xml").createNewFile();
+    File missingXML = new File(broken, "resource.xml");
+    when(mockedDataDir.resourceFile("broken")).thenReturn(missingXML);
+
+    assertEquals(1, manager.load(resourceDirectory, creator));
+    assertNotNull(manager.get("res1"));
+    assertNull(manager.get("broken"));
+
+    List<ResourceLoadFailure> failures = manager.listLoadFailures();
+    assertEquals(1, failures.size());
+    assertEquals("broken", failures.get(0).getShortname());
+    assertTrue(failures.get(0).getReason().contains("resource.xml"), failures.get(0).getReason());
+    assertNotNull(failures.get(0).getFailedAt());
+
+    // the next load starts over
+    org.apache.commons.io.FileUtils.deleteDirectory(broken);
+    manager.load(resourceDirectory, creator);
+    assertTrue(manager.listLoadFailures().isEmpty());
+  }
+
+  /**
+   * A resource that failed to load can be loaded again once it's fixed, other shortnames are refused.
+   */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  @Test
+  public void testRetryLoad() throws Exception {
+    ResourceManagerImpl manager = spy(getResourceManagerImpl());
+    File resourceDirectory = FileUtils.createTempDir();
+    when(mockedDataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourceDirectory);
+    doReturn(new ResourceSummaryView()).when(manager).toResourceSummaryViewReconstructed(any());
+    File validXML = FileUtils.getClasspathFile("resources/res1/resource.xml");
+    when(mockedDataDir.resourceFile(anyString())).thenReturn(validXML);
+
+    File res1 = new File(resourceDirectory, "res1");
+    res1.mkdir();
+    new File(res1, "resource.xml").createNewFile();
+    File broken = new File(resourceDirectory, "broken");
+    broken.mkdir();
+    File brokenXML = new File(broken, "resource.xml");
+    Files.writeString(brokenXML.toPath(), "<resource><broken");
+    when(mockedDataDir.resourceFile("broken")).thenReturn(brokenXML);
+
+    manager.load(resourceDirectory, creator);
+    assertEquals(1, manager.listLoadFailures().size());
+
+    // only resources that failed to load
+    assertThrows(IllegalArgumentException.class, () -> manager.retryLoad("res1", creator));
+    assertThrows(IllegalArgumentException.class, () -> manager.retryLoad("../res1", creator));
+    assertThrows(IllegalArgumentException.class, () -> manager.retryLoad(null, creator));
+
+    // still broken: stays in the list
+    assertThrows(InvalidConfigException.class, () -> manager.retryLoad("broken", creator));
+    assertEquals(1, manager.listLoadFailures().size());
+    assertNull(manager.get("broken"));
+
+    // fixed
+    when(mockedDataDir.resourceFile("broken")).thenReturn(validXML);
+    Resource loaded = manager.retryLoad("broken", creator);
+    assertEquals("broken", loaded.getShortname());
+    assertSame(loaded, manager.get("broken"));
+    assertTrue(manager.listLoadFailures().isEmpty());
+
+    org.apache.commons.io.FileUtils.deleteDirectory(resourceDirectory);
+  }
+
+  @Test
+  public void testFailureReason() {
+    Exception root = new IllegalStateException("first line\n---- Debugging information ----\nmore");
+    Exception wrapped = new InvalidConfigException(InvalidConfigException.TYPE.RESOURCE_CONFIG,
+        "Cannot read resource configuration for x: " + root.getMessage(), root);
+    assertEquals("first line", ResourceManagerImpl.failureReason(wrapped));
+    assertEquals("NullPointerException", ResourceManagerImpl.failureReason(new NullPointerException()));
+    assertEquals(500, ResourceManagerImpl.failureReason(new RuntimeException("a".repeat(600))).length());
   }
 }

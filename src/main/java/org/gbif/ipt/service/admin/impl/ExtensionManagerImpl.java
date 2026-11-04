@@ -464,6 +464,35 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     }
   }
 
+  @Override
+  public synchronized Extension installLatest(String rowType) throws InvalidConfigException {
+    Objects.requireNonNull(rowType);
+    Extension installed = get(rowType);
+    if (installed != null) {
+      return installed;
+    }
+
+    List<Extension> registered;
+    try {
+      registered = registryManager.getExtensions();
+    } catch (RegistryException e) {
+      throw new InvalidConfigException(TYPE.INVALID_EXTENSION,
+          "Can't get the extensions from the GBIF registry: " + e.getMessage(), e);
+    }
+
+    // match by rowType and isLatest, plus the URL cannot be null in order to be installed
+    Extension latest = registered.stream()
+        .filter(e -> rowType.equalsIgnoreCase(e.getRowType()) && e.isLatest() && e.getUrl() != null)
+        .findFirst()
+        .orElse(null);
+    if (latest == null) {
+      return null;
+    }
+
+    LOG.info("Installing extension {} from {}", rowType, latest.getUrl());
+    return install(latest.getUrl());
+  }
+
   /**
    * Move and rename a temporary file to the final version. Update extensions loaded into a local lookup.
    *

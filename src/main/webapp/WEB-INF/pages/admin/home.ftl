@@ -28,6 +28,23 @@
 </div>
 
 <main class="container mt-4">
+	<#if (failedResourcesCount > 0) || (resourcesWithNoticesCount > 0)>
+		<div class="px-2">
+			<div class="callout callout-warning text-smaller mt-0 mb-3" role="status">
+				<#if failedResourcesCount == 1>
+					<@s.text name="admin.failedResources.warning.one"/>
+				<#elseif (failedResourcesCount > 1)>
+					<@s.text name="admin.failedResources.warning.many"><@s.param>${failedResourcesCount}</@s.param></@s.text>
+				</#if>
+				<#if resourcesWithNoticesCount == 1>
+					<@s.text name="admin.failedResources.warning.notices.one"/>
+				<#elseif (resourcesWithNoticesCount > 1)>
+					<@s.text name="admin.failedResources.warning.notices.many"><@s.param>${resourcesWithNoticesCount}</@s.param></@s.text>
+				</#if>
+				<a href="${baseURL}/admin/failedResources.do"><@s.text name="admin.failedResources.view"/></a>
+			</div>
+		</div>
+	</#if>
 	<div class="flex-auto">
 		<div class="d-flex flex-items-stretch flex-wrap">
 			<div class="d-flex flex-column col-lg-3 col-md-4 col-sm-6 col-12 px-2">

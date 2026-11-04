@@ -45,9 +45,17 @@ public class ExtensionRowTypeConverter implements Converter {
     writer.setValue(e.getRowType());
   }
 
+  /**
+   * Key in the unmarshalling context for the row type as written in resource.xml, see ExtensionMappingConverter.
+   */
+  public static final String ROW_TYPE_VERBATIM = "extensionRowTypeVerbatim";
+
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-    Extension e = extensionsHolder.getExtensionsByRowtype().get(reader.getValue());
+    String rowType = reader.getValue();
+    // the extension is null if it isn't installed, keep the row type to say which one is missing
+    context.put(ROW_TYPE_VERBATIM, rowType);
+    Extension e = extensionsHolder.getExtensionsByRowtype().get(rowType);
     lastExtensionConverted = e;
     return e;
   }

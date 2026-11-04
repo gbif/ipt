@@ -16,6 +16,7 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
@@ -26,16 +27,34 @@ public class HomeAction extends BaseAction {
   @Serial
   private static final long serialVersionUID = 6041482193930893683L;
 
+  private final ResourceManager resourceManager;
+
   @Inject
   public HomeAction(
       SimpleTextProvider textProvider,
       AppConfig cfg,
-      RegistrationManager registrationManager) {
+      RegistrationManager registrationManager,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, registrationManager);
+    this.resourceManager = resourceManager;
   }
 
   @Override
   public String execute() {
     return SUCCESS;
+  }
+
+  /**
+   * @return number of resource folders that failed to load, shown as a warning linking to the list
+   */
+  public int getFailedResourcesCount() {
+    return resourceManager.listLoadFailures().size();
+  }
+
+  /**
+   * @return number of loaded resources the IPT worked around something for, e.g. unreadable metadata
+   */
+  public int getResourcesWithNoticesCount() {
+    return resourceManager.listWithLoadNotices().size();
   }
 }

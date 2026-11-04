@@ -67,6 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -209,6 +210,22 @@ public class ExtensionManagerImplTest extends IptBaseTest {
     assertEquals("dwc:Taxon dwc:Event", ext.getSubject());
     assertNull(ext.getUrl());
     assertFalse(ext.isLatest()); // this isn't persisted, only populated when deserialising JSON list from registry
+  }
+
+  /**
+   * An extension a resource maps to is installed in its latest version, e.g. when the resource came from another IPT.
+   */
+  @Test
+  public void testInstallLatest() {
+    Extension installed = extensionManager.installLatest("http://rs.tdwg.org/dwc/terms/Taxon");
+
+    assertNotNull(installed);
+    assertEquals("http://rs.tdwg.org/dwc/terms/Taxon", installed.getRowType());
+    assertSame(installed, extensionManager.get("http://rs.tdwg.org/dwc/terms/Taxon"));
+    // installed already: nothing downloaded again
+    assertSame(installed, extensionManager.installLatest("http://rs.tdwg.org/dwc/terms/Taxon"));
+    // not in the registry
+    assertNull(extensionManager.installLatest("http://example.org/terms/Custom"));
   }
 
   @Test

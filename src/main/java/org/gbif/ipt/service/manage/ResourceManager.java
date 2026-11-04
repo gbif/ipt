@@ -16,6 +16,7 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceLoadFailure;
 import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -186,6 +187,30 @@ public interface ResourceManager {
    * @return number of configured resources loaded into memory
    */
   int load(File resourcesDir, @Nullable User creator);
+
+  /**
+   * Resource folders that failed to load the last time {@link #load(File, User)} ran, e.g. because of a corrupt
+   * resource.xml or a missing extension. Their shortnames stay taken, see {@link #isShortnameTaken(String)}.
+   *
+   * @return failed loads sorted by shortname, empty if all resources loaded
+   */
+  List<ResourceLoadFailure> listLoadFailures();
+
+  /**
+   * Loads a resource that failed to load again, e.g. after its files were fixed, without restarting the IPT.
+   *
+   * @param shortname shortname of a resource in {@link #listLoadFailures()}
+   * @param creator   used as creator if the resource has none
+   * @return the loaded resource, which is no longer listed as failed
+   * @throws IllegalArgumentException if no resource with this shortname failed to load
+   * @throws InvalidConfigException   if it fails to load again, its failure gets the new reason
+   */
+  Resource retryLoad(String shortname, @Nullable User creator) throws InvalidConfigException;
+
+  /**
+   * @return loaded resources the IPT worked around something for, e.g. unreadable metadata, sorted by shortname
+   */
+  List<Resource> listWithLoadNotices();
 
   /**
    * Persists the whole resource configuration *but* not the EML file.

@@ -26,6 +26,7 @@ import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceLoadNotice;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
@@ -114,6 +115,11 @@ public class ResourceLoaderImplTest {
 
     extensionManager = mock(ExtensionManager.class);
     schemaManager = mock(DataPackageSchemaManager.class);
+    // the types the IPT installs on startup
+    when(schemaManager.get(DWC_DP_IDENTIFIER))
+        .thenReturn(DataPackageSchema.builder().identifier(DWC_DP_IDENTIFIER).build());
+    when(schemaManager.get(CAMTRAP_DP_IDENTIFIER))
+        .thenReturn(DataPackageSchema.builder().identifier(CAMTRAP_DP_IDENTIFIER).build());
     resourceTypeService = mock(ResourceTypeService.class);
     resourceVersioningService = mock(ResourceVersioningService.class);
     resourceMetadataLoader = mock(ResourceMetadataLoader.class);
@@ -216,6 +222,124 @@ public class ResourceLoaderImplTest {
 
     assertThrows(InvalidConfigException.class, () -> loader.load(resourceDir, null, alog, callbacks));
     verify(action).getText(eq("manage.resource.create.rowType.null"), any(String[].class));
+  }
+
+  @Test
+  public void testLoadInstallsMissingExtension() {
+    String rowType = "http://rs.gbif.org/terms/1.0/Reference";
+    // first read: the extension isn't installed
+    ExtensionMapping missing = new ExtensionMapping();
+    missing.setExtensionVerbatim(rowType);
+    Resource before = new Resource();
+    before.setMappings(new ArrayList<>(List.of(missing)));
+    // second read, after installing it
+    Extension extension = new Extension();
+    extension.setRowType(rowType);
+    ExtensionMapping mapping = new ExtensionMapping();
+    mapping.setExtension(extension);
+    Resource after = new Resource();
+    after.setMappings(new ArrayList<>(List.of(mapping)));
+    when(resourcePersister.load(any(InputStream.class))).thenReturn(before, after);
+    when(extensionManager.installLatest(rowType)).thenReturn(extension);
+    when(extensionManager.get(rowType)).thenReturn(extension);
+
+    Resource loaded = loader.load(resourceDir, null, alog, callbacks);
+
+    assertSame(after, loaded);
+    assertEquals(List.of(new ResourceLoadNotice(ResourceLoadNotice.Type.EXTENSION_INSTALLED, rowType)),
+        loaded.getLoadNotices());
+    // installing an extension isn't something a manager has to act on
+    assertFalse(loaded.isNeedsAttention());
+  }
+
+  @Test
+  public void testLoadFailsForExtensionNotInRegistry() {
+    String rowType = "http://example.org/terms/Custom";
+    ExtensionMapping missing = new ExtensionMapping();
+    missing.setExtensionVerbatim(rowType);
+    Resource stored = new Resource();
+    stored.setMappings(new ArrayList<>(List.of(missing)));
+    when(resourcePersister.load(any(InputStream.class))).thenReturn(stored);
+    when(extensionManager.installLatest(rowType)).thenReturn(null);
+
+    InvalidConfigException e =
+        assertThrows(InvalidConfigException.class, () -> loader.load(resourceDir, null, alog, callbacks));
+    assertEquals(InvalidConfigException.TYPE.INVALID_EXTENSION, e.getType());
+    assertEquals("Resource references extension " + rowType + ", which isn't installed and isn't in the GBIF registry",
+        ResourceManagerImpl.failureReason(e));
+  }
+
+  @Test
+  public void testLoadFailsIfExtensionCantBeInstalled() {
+    String rowType = "http://rs.gbif.org/terms/1.0/Reference";
+    ExtensionMapping missing = new ExtensionMapping();
+    missing.setExtensionVerbatim(rowType);
+    Resource stored = new Resource();
+    stored.setMappings(new ArrayList<>(List.of(missing)));
+    when(resourcePersister.load(any(InputStream.class))).thenReturn(stored);
+    when(extensionManager.installLatest(rowType)).thenThrow(
+        new InvalidConfigException(InvalidConfigException.TYPE.INVALID_EXTENSION, "registry unreachable"));
+
+    InvalidConfigException e =
+        assertThrows(InvalidConfigException.class, () -> loader.load(resourceDir, null, alog, callbacks));
+    // the reason listed for admins says which extension and why
+    assertEquals("Resource references extension " + rowType
+        + ", which isn't installed and couldn't be installed from the GBIF registry: registry unreachable",
+        ResourceManagerImpl.failureReason(e));
+  }
+
+  @Test
+  public void testLoadInstallsMissingDataPackageType() {
+    String identifier = "http://rs.gbif.org/data-packages/not-yet-installed";
+    Resource before = new Resource();
+    before.setDataPackageIdentifier(identifier);
+    Resource after = new Resource();
+    after.setDataPackageIdentifier(identifier);
+    when(resourcePersister.load(any(InputStream.class))).thenReturn(before, after);
+    DataPackageSchema schema = DataPackageSchema.builder().identifier(identifier).build();
+    when(schemaManager.installSupported(identifier)).thenReturn(schema);
+
+    Resource loaded = loader.load(resourceDir, null, alog, callbacks);
+
+    // read again, so the mappings get the type
+    assertSame(after, loaded);
+    assertEquals(List.of(new ResourceLoadNotice(ResourceLoadNotice.Type.DATA_PACKAGE_TYPE_INSTALLED, identifier)),
+        loaded.getLoadNotices());
+    assertFalse(loaded.isNeedsAttention());
+  }
+
+  @Test
+  public void testLoadFailsForUnsupportedDataPackageType() {
+    String identifier = "http://rs.example.org/data-packages/not-installed";
+    Resource stored = new Resource();
+    stored.setDataPackageIdentifier(identifier);
+    when(resourcePersister.load(any(InputStream.class))).thenReturn(stored);
+    when(schemaManager.installSupported(identifier)).thenReturn(null);
+
+    InvalidConfigException e =
+        assertThrows(InvalidConfigException.class, () -> loader.load(resourceDir, null, alog, callbacks));
+    assertEquals(InvalidConfigException.TYPE.INVALID_DATA_SCHEMA, e.getType());
+    assertEquals("Resource uses data package type " + identifier
+        + ", which isn't installed and isn't supported by the GBIF registry", ResourceManagerImpl.failureReason(e));
+    verify(action).getText(eq("manage.resource.create.dataPackageType.null"), any(String[].class));
+    // nothing written: a save would remove the type from the mappings
+    verify(callbacks, never()).save(any());
+  }
+
+  @Test
+  public void testLoadFailsIfDataPackageTypeCantBeInstalled() {
+    String identifier = "http://rs.gbif.org/data-packages/not-yet-installed";
+    Resource stored = new Resource();
+    stored.setDataPackageIdentifier(identifier);
+    when(resourcePersister.load(any(InputStream.class))).thenReturn(stored);
+    when(schemaManager.installSupported(identifier)).thenThrow(
+        new InvalidConfigException(InvalidConfigException.TYPE.INVALID_DATA_SCHEMA, "registry unreachable"));
+
+    InvalidConfigException e =
+        assertThrows(InvalidConfigException.class, () -> loader.load(resourceDir, null, alog, callbacks));
+    assertEquals("Resource uses data package type " + identifier
+        + ", which isn't installed and couldn't be installed from the GBIF registry: registry unreachable",
+        ResourceManagerImpl.failureReason(e));
   }
 
   @Test

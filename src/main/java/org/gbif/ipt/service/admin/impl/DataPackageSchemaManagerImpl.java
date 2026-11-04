@@ -615,6 +615,36 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   @Override
+  public synchronized DataPackageSchema installSupported(String identifier) throws InvalidConfigException {
+    Objects.requireNonNull(identifier);
+    DataPackageSchema installed = get(identifier);
+    if (installed != null) {
+      return installed;
+    }
+
+    List<DataPackageSchema> supported;
+    try {
+      supported = registryManager.getSupportedDataSchemas();
+    } catch (Exception e) {
+      throw new InvalidConfigException(INVALID_DATA_SCHEMA,
+          "Can't get the supported data package types from the GBIF registry: " + e.getMessage(), e);
+    }
+
+    DataPackageSchema match = supported.stream()
+        .filter(schema -> getAcceptedIdentifiers(schema).stream()
+            .anyMatch(accepted -> org.gbif.ipt.utils.StringUtils.equalsWithoutProtocol(accepted, identifier)))
+        .findFirst()
+        .orElse(null);
+    if (match == null) {
+      return null;
+    }
+
+    LOG.info("Installing data package type {} version {}", match.getIdentifier(), match.getVersion());
+    installOrUpdateDefault(match);
+    return get(identifier);
+  }
+
+  @Override
   public synchronized void installOrUpdateDefaults() {
     try {
       List<DataPackageSchema> supportedDataPackageSchemas = registryManager.getSupportedDataSchemas();

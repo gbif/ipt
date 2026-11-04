@@ -26,6 +26,7 @@ import org.gbif.ipt.model.FileSource;
 import org.gbif.ipt.model.InferredCamtrapMetadata;
 import org.gbif.ipt.model.InferredEmlMetadata;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceLoadNotice;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
@@ -49,9 +50,11 @@ import org.gbif.metadata.eml.ipt.model.Eml;
 import jakarta.inject.Inject;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -143,8 +146,27 @@ public class ResourceLoaderImpl implements ResourceLoader {
       String shortname = resourceDir.getName();
       try {
         File cfgFile = dataDir.resourceFile(shortname);
-        InputStream input = new FileInputStream(cfgFile);
-        Resource resource = resourcePersister.load(input);
+        Resource resource = readResourceConfig(cfgFile);
+
+        // a resource can't be used without the extensions it maps to: install missing ones from the registry, then
+        // read the configuration again so the mappings get them
+        List<String> installedRowTypes = installMissingExtensions(resource, shortname, alog);
+        if (!installedRowTypes.isEmpty()) {
+          resource = readResourceConfig(cfgFile);
+          for (String rowType : installedRowTypes) {
+            resource.addLoadNotice(new ResourceLoadNotice(ResourceLoadNotice.Type.EXTENSION_INSTALLED, rowType));
+          }
+        }
+
+        // same for the data package type: without it, the mappings lose their type, show nowhere, and the next save
+        // removes it from resource.xml for good
+        if (installMissingDataPackageType(resource, shortname, alog)) {
+          List<ResourceLoadNotice> notices = resource.getLoadNotices();
+          resource = readResourceConfig(cfgFile);
+          notices.forEach(resource::addLoadNotice);
+          resource.addLoadNotice(new ResourceLoadNotice(
+              ResourceLoadNotice.Type.DATA_PACKAGE_TYPE_INSTALLED, resource.getDataPackageIdentifier()));
+        }
 
         // populate a missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
@@ -164,10 +186,12 @@ public class ResourceLoaderImpl implements ResourceLoader {
           Extension x = ext.getExtension();
           if (x == null) {
             alog.warn("manage.resource.create.extension.null", new String[]{ext.getExtensionVerbatim()});
-            throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-existent extension");
+            throw new InvalidConfigException(TYPE.INVALID_EXTENSION,
+                "Resource references non-existent extension " + ext.getExtensionVerbatim());
           } else if (extensionManager.get(x.getRowType()) == null) {
             alog.warn("manage.resource.create.rowType.null", new String[]{x.getRowType()});
-            throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references non-installed extension");
+            throw new InvalidConfigException(TYPE.INVALID_EXTENSION,
+                "Resource references non-installed extension " + x.getRowType());
           }
           // is the ExtensionMapping of core type, not taxon core type, and uses a coreIdColumn mapping?
           if (ext.isCore() && !ext.isTaxonCore() && ext.getIdColumn() != null) {
@@ -263,11 +287,97 @@ public class ResourceLoaderImpl implements ResourceLoader {
         return resource;
       } catch (Exception e) {
         LOG.error("Cannot read resource configuration for {}", shortname, e);
-        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG,
-            "Cannot read resource configuration for " + shortname + ": " + e.getMessage());
+        // keep the type and the cause, ResourceManagerImpl lists the reason of a failed load for admins
+        TYPE type = e instanceof InvalidConfigException ice ? ice.getType() : TYPE.RESOURCE_CONFIG;
+        throw new InvalidConfigException(type,
+            "Cannot read resource configuration for " + shortname + ": " + e.getMessage(), e);
       }
     }
     return null;
+  }
+
+  private Resource readResourceConfig(File cfgFile) throws IOException {
+    try (InputStream input = new FileInputStream(cfgFile)) {
+      return resourcePersister.load(input);
+    }
+  }
+
+  /**
+   * Installs the latest version of each extension the resource maps to that isn't installed, e.g. when the resource
+   * was copied from another IPT.
+   *
+   * @return row types of the installed extensions
+   * @throws InvalidConfigException if an extension isn't in the registry or can't be installed
+   */
+  private List<String> installMissingExtensions(Resource resource, String shortname, ActionLogger alog)
+      throws InvalidConfigException {
+    List<String> installed = new ArrayList<>();
+    for (ExtensionMapping mapping : resource.getMappings()) {
+      if (mapping.getExtension() != null) {
+        continue;
+      }
+      String rowType = mapping.getExtensionVerbatim();
+      if (rowType == null) {
+        // no row type at all, nothing to install
+        alog.warn("manage.resource.create.extension.null", new String[]{null});
+        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource has a mapping without an extension");
+      }
+      if (installed.contains(rowType)) {
+        continue;
+      }
+
+      Extension extension;
+      try {
+        extension = extensionManager.installLatest(rowType);
+      } catch (RuntimeException e) {
+        // logged, not chained: the reason listed for admins is the root cause's message, which must name the extension
+        LOG.error("Can't install extension {}", rowType, e);
+        alog.warn("manage.resource.create.extension.null", new String[]{rowType});
+        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references extension " + rowType
+            + ", which isn't installed and couldn't be installed from the GBIF registry: " + e.getMessage());
+      }
+      if (extension == null) {
+        alog.warn("manage.resource.create.extension.null", new String[]{rowType});
+        throw new InvalidConfigException(TYPE.INVALID_EXTENSION, "Resource references extension " + rowType
+            + ", which isn't installed and isn't in the GBIF registry");
+      }
+      LOG.info("Installed extension {}, resource {} maps to it", rowType, shortname);
+      installed.add(rowType);
+    }
+    return installed;
+  }
+
+  /**
+   * Installs the data package type of the resource from the registry if it isn't installed, e.g. because the registry
+   * couldn't be reached on startup.
+   *
+   * @return true if the type was installed, false if it was already installed or the resource isn't a data package
+   * @throws InvalidConfigException if the type isn't supported by the registry or can't be installed
+   */
+  private boolean installMissingDataPackageType(Resource resource, String shortname, ActionLogger alog)
+      throws InvalidConfigException {
+    String identifier = resource.getDataPackageIdentifier();
+    if (identifier == null || schemaManager.get(identifier) != null) {
+      return false;
+    }
+
+    DataPackageSchema schema;
+    try {
+      schema = schemaManager.installSupported(identifier);
+    } catch (RuntimeException e) {
+      // logged, not chained: the reason listed for admins is the root cause's message, which must name the type
+      LOG.error("Can't install data package type {}", identifier, e);
+      alog.warn("manage.resource.create.dataPackageType.null", new String[]{identifier});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource uses data package type " + identifier
+          + ", which isn't installed and couldn't be installed from the GBIF registry: " + e.getMessage());
+    }
+    if (schema == null) {
+      alog.warn("manage.resource.create.dataPackageType.null", new String[]{identifier});
+      throw new InvalidConfigException(TYPE.INVALID_DATA_SCHEMA, "Resource uses data package type " + identifier
+          + ", which isn't installed and isn't supported by the GBIF registry");
+    }
+    LOG.info("Installed data package type {}, resource {} uses it", identifier, shortname);
+    return true;
   }
 
   @Override

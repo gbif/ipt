@@ -135,27 +135,38 @@ public class EmlUtils {
    * @return EML file read from file, or new EML instance if the file to load from did not exist, or could not be parsed
    */
   public static Eml loadWithLocale(File emlFile, Locale locale) {
-    Eml eml = null;
-    Locale currentLocale = Locale.getDefault();
     try {
-      InputStream in = new FileInputStream(emlFile);
-      synchronized (currentLocale) {
-        Locale.setDefault(locale);
-        eml = EmlFactory.build(in);
-        Locale.setDefault(currentLocale);
-      }
+      return readWithLocale(emlFile, locale);
     } catch (FileNotFoundException e) {
-      eml = new Eml();
-    } catch (IOException e) {
-      LOG.error(e);
+      return new Eml();
     } catch (SAXException e) {
       LOG.error("Invalid EML document", e);
-      eml = new Eml();
+      return new Eml();
     } catch (Exception e) {
-      eml = new Eml();
+      LOG.error("Can't read EML document {}", emlFile, e);
+      return new Eml();
+    }
+  }
+
+  /**
+   * Reads an EML file using a specific Locale, like {@link #loadWithLocale(File, Locale)}, but tells why it failed.
+   *
+   * @param emlFile EML file to read from
+   * @param locale  Locale to use when interpreting EML file
+   *
+   * @return EML read from file
+   * @throws FileNotFoundException if the file doesn't exist
+   * @throws Exception             if the file couldn't be read or parsed
+   */
+  public static Eml readWithLocale(File emlFile, Locale locale) throws Exception {
+    Locale currentLocale = Locale.getDefault();
+    try (InputStream in = new FileInputStream(emlFile)) {
+      synchronized (currentLocale) {
+        Locale.setDefault(locale);
+        return EmlFactory.build(in);
+      }
     } finally {
       Locale.setDefault(currentLocale);
     }
-    return eml;
   }
 }

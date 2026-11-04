@@ -1471,6 +1471,18 @@
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
+        <#-- problems the IPT worked around when loading the resource, e.g. unreadable metadata: they stay until fixed -->
+        <#list resource.loadNotices?filter(n -> n.needsAttention) as n>
+            <div class="alert alert-warning d-flex" role="status">
+                <div class="me-3">
+                    <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
+                </div>
+                <div class="overflow-x-hidden pt-1">
+                    <@s.text name=n.textKey><@s.param>${n.detail}</@s.param></@s.text>
+                </div>
+            </div>
+        </#list>
+
         <div id="sources-created-successfully-info" class="alert alert-success alert-dismissible fade show d-flex" role="alert" style="display: none !important;">
             <div class="me-3">
                 <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>

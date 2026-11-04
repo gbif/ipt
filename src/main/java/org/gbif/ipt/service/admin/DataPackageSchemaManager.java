@@ -84,6 +84,16 @@ public interface DataPackageSchemaManager {
   void install(DataPackageSchema schema) throws InvalidConfigException;
 
   /**
+   * Installs the data package type a resource uses from the GBIF registry, e.g. when installing it on startup failed.
+   * Only types the registry lists as supported, in their supported version.
+   *
+   * @param identifier identifier of the type, as stored in the resource; an earlier identifier or the name work too
+   * @return the installed type, or null if the registry doesn't support a type with this identifier
+   * @throws InvalidConfigException if the registry can't be reached or the type can't be installed
+   */
+  DataPackageSchema installSupported(String identifier) throws InvalidConfigException;
+
+  /**
    * List all installed data schemas.
    *
    * @return list of installed IPT data schemas

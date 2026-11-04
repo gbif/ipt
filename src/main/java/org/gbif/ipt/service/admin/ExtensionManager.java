@@ -65,6 +65,16 @@ public interface ExtensionManager {
   Extension install(URL url) throws InvalidConfigException;
 
   /**
+   * Installs the latest version of an extension from the GBIF registry, e.g. one that a resource maps to but this IPT
+   * doesn't have.
+   *
+   * @param rowType row type of the extension
+   * @return the installed extension, or null if the registry has no extension with this row type
+   * @throws InvalidConfigException if the registry can't be reached or the extension can't be installed
+   */
+  Extension installLatest(String rowType) throws InvalidConfigException;
+
+  /**
    * List all installed extensions.
    *
    * @return list of installed IPT extensions

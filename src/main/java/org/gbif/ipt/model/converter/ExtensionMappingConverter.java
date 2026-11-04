@@ -36,10 +36,15 @@ public class ExtensionMappingConverter extends ReflectionConverter {
 
   @Override
   public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
+    // don't take the row type of the previous mapping if this one has none
+    context.put(ExtensionRowTypeConverter.ROW_TYPE_VERBATIM, null);
     ExtensionMapping mapping = (ExtensionMapping) super.unmarshal(reader, context);
 
     if (mapping.getExtension() != null) {
       mapping.setExtensionVerbatim(mapping.getExtension().toString());
+    } else {
+      // not installed: the row type as written in resource.xml
+      mapping.setExtensionVerbatim((String) context.get(ExtensionRowTypeConverter.ROW_TYPE_VERBATIM));
     }
 
     return mapping;

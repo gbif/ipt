@@ -288,6 +288,33 @@ public class DataPackageSchemaManagerImplTest {
   }
 
   /**
+   * A type a resource uses is installed from the supported ones, e.g. when installing it on startup failed.
+   */
+  @Test
+  public void testInstallSupported() {
+    when(registryManager.getSupportedDataSchemas()).thenReturn(List.of(
+        schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"),
+        schema(OTHER_IDENTIFIER, "other-dp", "1.0", "2025-01-01", "taxon")));
+
+    // by name too, and only the type asked for
+    assertEquals(IDENTIFIER, manager.installSupported("dp").getIdentifier());
+    assertNotNull(manager.get(IDENTIFIER));
+    assertNull(manager.get(OTHER_IDENTIFIER));
+
+    // not supported
+    assertNull(manager.installSupported("http://rs.example.org/data-packages/unknown"));
+  }
+
+  @Test
+  public void testInstallSupportedFailsIfRegistryCantBeReached() {
+    when(registryManager.getSupportedDataSchemas()).thenThrow(new RuntimeException("registry unreachable"));
+
+    InvalidConfigException e =
+        assertThrows(InvalidConfigException.class, () -> manager.installSupported(IDENTIFIER));
+    assertTrue(e.getMessage().contains("registry unreachable"), e.getMessage());
+  }
+
+  /**
    * A default schema that can't be checked or installed doesn't stop the others, and keeps its installed version.
    */
   @Test

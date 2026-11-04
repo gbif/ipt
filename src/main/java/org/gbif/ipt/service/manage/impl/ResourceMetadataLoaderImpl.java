@@ -15,6 +15,8 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceLoadNotice;
+import org.gbif.ipt.model.ResourceLoadNotice.Type;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
@@ -26,7 +28,7 @@ import org.gbif.metadata.eml.ipt.model.Eml;
 
 import jakarta.inject.Inject;
 import java.io.File;
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
@@ -54,15 +56,44 @@ public class ResourceMetadataLoaderImpl implements ResourceMetadataLoader {
   /**
    * Loads a resource's metadata from its eml.xml file located inside its resource directory. If no eml.xml file was
    * found, the resource is loaded with an empty EML instance.
+   * If eml.xml can't be read, the last published EML is used, or an empty EML if there is none, and the resource gets
+   * a load notice. eml.xml isn't changed: saving the metadata replaces it.
    *
    * @param resource resource
    */
   @Override
   public void loadEml(Resource resource) {
     File emlFile = dataDir.resourceEmlFile(resource.getShortname());
-    // loads resource metadata, use US Locale to interpret it because uses '.' for decimal separator
-    Eml eml = EmlUtils.loadWithLocale(emlFile, Locale.US);
-    resource.setEml(eml);
+    if (emlFile == null || !emlFile.exists()) {
+      resource.setEml(new Eml());
+      return;
+    }
+
+    try {
+      // loads resource metadata, use US Locale to interpret it because uses '.' for decimal separator
+      resource.setEml(EmlUtils.readWithLocale(emlFile, Locale.US));
+      resource.removeEmlLoadNotices();
+      return;
+    } catch (Exception e) {
+      LOG.error("Can't read EML of resource {}", resource.getShortname(), e);
+    }
+
+    BigDecimal version = resource.getLastPublishedVersionsVersion();
+    if (version != null) {
+      File publishedEmlFile = dataDir.resourceEmlFile(resource.getShortname(), version);
+      try {
+        resource.setEml(EmlUtils.readWithLocale(publishedEmlFile, Locale.US));
+        resource.addLoadNotice(new ResourceLoadNotice(Type.EML_FROM_PUBLISHED, version.toPlainString()));
+        LOG.warn("Using the published EML version {} of resource {}", version.toPlainString(), resource.getShortname());
+        return;
+      } catch (Exception e) {
+        LOG.error("Can't read published EML version {} of resource {} either",
+            version.toPlainString(), resource.getShortname(), e);
+      }
+    }
+
+    resource.setEml(new Eml());
+    resource.addLoadNotice(new ResourceLoadNotice(Type.EML_UNREADABLE, null));
   }
 
   /**
@@ -85,20 +116,39 @@ public class ResourceMetadataLoaderImpl implements ResourceMetadataLoader {
     }
 
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
-    if (metadataFile.exists() && !metadataFile.isDirectory()) {
+    if (metadataFile != null && metadataFile.exists() && !metadataFile.isDirectory()) {
       try {
-        metadata = metadataReader.readValue(metadataFile, metadataClassForType(resource.getCoreType()));
-      } catch (IOException e) {
-        LOG.error("Failed to read resource metadata {}", resource.getShortname());
-        LOG.error(e);
-        throw new RuntimeException(e);
+        resource.setDataPackageMetadata(
+            metadataReader.readValue(metadataFile, metadataClassForType(resource.getCoreType())));
+        resource.removeDataPackageMetadataLoadNotices();
+        return;
+      } catch (Exception e) {
+        LOG.error("Can't read metadata of resource {}", resource.getShortname(), e);
       }
-    } else {
-      if (metadata instanceof FrictionlessMetadata) {
-        ((FrictionlessMetadata<?, ?, ?>) metadata).setName(resource.getShortname());
+
+      // fall back to the last published metadata, the file isn't changed: saving the metadata replaces it
+      BigDecimal version = resource.getLastPublishedVersionsVersion();
+      if (version != null) {
+        File publishedFile =
+            dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType(), version);
+        try {
+          resource.setDataPackageMetadata(
+              metadataReader.readValue(publishedFile, metadataClassForType(resource.getCoreType())));
+          resource.addLoadNotice(new ResourceLoadNotice(Type.METADATA_FROM_PUBLISHED, version.toPlainString()));
+          LOG.warn("Using the published metadata version {} of resource {}",
+              version.toPlainString(), resource.getShortname());
+          return;
+        } catch (Exception e) {
+          LOG.error("Can't read published metadata version {} of resource {} either",
+              version.toPlainString(), resource.getShortname(), e);
+        }
       }
+      resource.addLoadNotice(new ResourceLoadNotice(Type.METADATA_UNREADABLE, null));
     }
 
+    if (metadata instanceof FrictionlessMetadata) {
+      ((FrictionlessMetadata<?, ?, ?>) metadata).setName(resource.getShortname());
+    }
     resource.setDataPackageMetadata(metadata);
   }
 

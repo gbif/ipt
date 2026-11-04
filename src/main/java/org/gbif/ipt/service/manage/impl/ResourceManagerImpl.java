@@ -20,6 +20,7 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.MetadataFiles;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceLoadFailure;
 import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
@@ -66,13 +67,17 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -92,7 +97,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   // Files dwca-io takes as the data file of an archive without meta.xml
   private static final Set<String> DATA_FILE_EXTENSIONS = Set.of("csv", "txt", "tsv", "tab", "text", "data");
 
+  // longest reason kept for a failed load, the full stack trace is in the logs
+  private static final int MAX_FAILURE_REASON_LENGTH = 500;
+
   private final ResourceIndex resourceIndex = new ResourceIndex();
+
+  // resource folders that failed to load, by shortname
+  private final Map<String, ResourceLoadFailure> loadFailures = new ConcurrentSkipListMap<>();
 
   private final RegistryManager registryManager;
   private final MetadataReader metadataReader;
@@ -630,6 +641,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   @Override
   public int load(File resourcesDir, User creator) {
     resourceIndex.clear();
+    loadFailures.clear();
     int counter = 0;
     int counterDeleted = 0;
     File[] files = resourcesDir.listFiles();
@@ -641,6 +653,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
           if (resourceDirFiles == null) {
             LOG.error("Resource directory {} could not be read. Please verify its content", resourceDir.getName());
+            recordLoadFailure(resourceDir.getName(), "Resource directory could not be read");
           } else if (resourceDirFiles.length == 0) {
             LOG.warn("Cleaning up empty resource directory {}", resourceDir.getName());
             FileUtils.deleteQuietly(resourceDir);
@@ -650,8 +663,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
               LOG.debug("Loading resource from directory {}", resourceDir.getName());
               addResource(loadFromDir(resourceDir, creator));
               counter++;
-            } catch (InvalidConfigException e) {
+            } catch (Exception e) {
+              // any exception: one broken resource must not stop the others from loading
               LOG.error("Can't load resource {}", resourceDir.getName(), e);
+              recordLoadFailure(resourceDir.getName(), failureReason(e));
             }
           }
         }
@@ -662,6 +677,68 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       LOG.error("Data directory does not hold a resources directory: {}", dataDir.dataFile(""));
     }
     return counter;
+  }
+
+  @Override
+  public List<ResourceLoadFailure> listLoadFailures() {
+    return new ArrayList<>(loadFailures.values());
+  }
+
+  @Override
+  public synchronized Resource retryLoad(String shortname, @Nullable User creator) throws InvalidConfigException {
+    // only resources that failed to load: the shortname comes from the request
+    if (shortname == null || !loadFailures.containsKey(shortname)) {
+      throw new IllegalArgumentException("No resource failed to load with shortname " + shortname);
+    }
+    File resourceDir = new File(dataDir.dataFile(DataDir.RESOURCES_DIR), shortname);
+    try {
+      LOG.info("Loading resource {} again", shortname);
+      Resource resource = loadFromDir(resourceDir, creator);
+      if (resource == null) {
+        throw new InvalidConfigException(TYPE.RESOURCE_CONFIG, "Resource folder doesn't exist: " + shortname);
+      }
+      addResource(resource);
+      loadFailures.remove(shortname);
+      return resource;
+    } catch (Exception e) {
+      LOG.error("Can't load resource {}", shortname, e);
+      recordLoadFailure(shortname, failureReason(e));
+      throw e instanceof InvalidConfigException ice
+          ? ice
+          : new InvalidConfigException(TYPE.RESOURCE_CONFIG, failureReason(e), e);
+    }
+  }
+
+  @Override
+  public List<Resource> listWithLoadNotices() {
+    return resourceIndex.list().stream()
+        .filter(r -> !r.getLoadNotices().isEmpty())
+        .sorted(Comparator.comparing(Resource::getShortname))
+        .collect(Collectors.toList());
+  }
+
+  private void recordLoadFailure(String shortname, String reason) {
+    // e.g. addResource failed half-way: don't leave a resource in the index that is listed as failed
+    resourceIndex.remove(shortname);
+    resourceIndex.removePublishedPublicSummary(shortname);
+    loadFailures.put(shortname, new ResourceLoadFailure(shortname, reason, new Date()));
+  }
+
+  /**
+   * The message of the root cause, first line only: e.g. XStream adds lines of debugging information. The wrapping
+   * messages only repeat that the resource couldn't be read.
+   */
+  static String failureReason(Throwable e) {
+    Throwable root = e;
+    while (root.getCause() != null && root.getCause() != root) {
+      root = root.getCause();
+    }
+    String message = StringUtils.trimToNull(root.getMessage());
+    if (message == null) {
+      return root.getClass().getSimpleName();
+    }
+    String firstLine = message.lines().findFirst().orElse(message).trim();
+    return StringUtils.abbreviate(firstLine, MAX_FAILURE_REASON_LENGTH);
   }
 
   /**
@@ -771,6 +848,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     File emlFile = dataDir.resourceEmlFile(resource.getShortname());
     // Locale.US it's used because uses '.' as the decimal separator
     EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
+    // eml.xml is readable again, e.g. it replaced one that couldn't be read on load
+    resource.removeEmlLoadNotices();
     LOG.debug("Updated EML file for {}", resource);
   }
 
@@ -786,6 +865,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       LOG.error("Failed to save datapackage metadata!", e);
       throw new RuntimeException(e);
     }
+    // the metadata file is readable again, e.g. it replaced one that couldn't be read on load
+    resource.removeDataPackageMetadataLoadNotices();
 
     LOG.debug("Updated metadata file for {}", resource);
   }

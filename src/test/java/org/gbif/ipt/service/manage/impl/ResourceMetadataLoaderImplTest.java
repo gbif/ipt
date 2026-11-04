@@ -15,6 +15,8 @@ package org.gbif.ipt.service.manage.impl;
 
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.ResourceLoadNotice;
+import org.gbif.ipt.model.ResourceLoadNotice.Type;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
@@ -25,8 +27,10 @@ import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,11 +44,14 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -180,13 +187,79 @@ public class ResourceMetadataLoaderImplTest {
   }
 
   @Test
-  public void testLoadUnreadableDatapackageMetadataFails() throws Exception {
+  public void testLoadUnreadableDatapackageMetadataWithoutPublishedVersion() throws Exception {
     Files.createFile(datapackageFile.toPath());
     when(metadataReader.readValue(datapackageFile, CamtrapMetadata.class)).thenThrow(new IOException("broken"));
     Resource resource = resource(CAMTRAP_DP, "https://rs.gbif.org/sandbox/data-packages/camtrap-dp");
 
-    RuntimeException e = assertThrows(RuntimeException.class, () -> loader.loadDatapackageMetadata(resource));
-    assertInstanceOf(IOException.class, e.getCause());
+    loader.loadDatapackageMetadata(resource);
+
+    // empty metadata, and the resource needs attention
+    assertInstanceOf(CamtrapMetadata.class, resource.getDataPackageMetadata());
+    assertEquals(List.of(new ResourceLoadNotice(Type.METADATA_UNREADABLE, null)), resource.getLoadNotices());
+    assertTrue(resource.isNeedsAttention());
+  }
+
+  @Test
+  public void testLoadUnreadableDatapackageMetadataFallsBackToPublishedVersion() throws Exception {
+    Files.createFile(datapackageFile.toPath());
+    File publishedFile = tempDir.resolve("datapackage-2.json").toFile();
+    when(dataDir.resourceDatapackageMetadataFile(anyString(), any(), eq(new BigDecimal("2")))).thenReturn(publishedFile);
+    CamtrapMetadata published = new CamtrapMetadata();
+    when(metadataReader.readValue(datapackageFile, CamtrapMetadata.class)).thenThrow(new IOException("broken"));
+    when(metadataReader.readValue(publishedFile, CamtrapMetadata.class)).thenReturn(published);
+    Resource resource = spy(resource(CAMTRAP_DP, "https://rs.gbif.org/sandbox/data-packages/camtrap-dp"));
+    doReturn(new BigDecimal("2")).when(resource).getLastPublishedVersionsVersion();
+
+    loader.loadDatapackageMetadata(resource);
+
+    assertSame(published, resource.getDataPackageMetadata());
+    assertEquals(List.of(new ResourceLoadNotice(Type.METADATA_FROM_PUBLISHED, "2")), resource.getLoadNotices());
+    // the broken file is left alone, saving the metadata replaces it
+    assertTrue(datapackageFile.exists());
+  }
+
+  @Test
+  public void testLoadUnreadableEmlFallsBackToPublishedVersion() throws Exception {
+    Files.writeString(emlFile.toPath(), "<eml:eml><dataset><title>cut off");
+    File publishedEml = tempDir.resolve("eml-2.0.xml").toFile();
+    Files.copy(FileUtils.getClasspathFile("data/eml.xml").toPath(), publishedEml.toPath());
+    when(dataDir.resourceEmlFile(SHORTNAME, new BigDecimal("2.0"))).thenReturn(publishedEml);
+    Resource resource = spy(resource(null, null));
+    doReturn(new BigDecimal("2.0")).when(resource).getLastPublishedVersionsVersion();
+
+    loader.loadEml(resource);
+
+    assertEquals("WII Herbarium Dataset", resource.getEml().getTitle());
+    assertEquals(List.of(new ResourceLoadNotice(Type.EML_FROM_PUBLISHED, "2.0")), resource.getLoadNotices());
+    assertEquals("<eml:eml><dataset><title>cut off", Files.readString(emlFile.toPath()));
+  }
+
+  @Test
+  public void testLoadUnreadableEmlWithoutPublishedVersion() throws Exception {
+    Files.writeString(emlFile.toPath(), "<eml:eml><dataset><title>cut off");
+    Resource resource = resource(null, null);
+
+    loader.loadEml(resource);
+
+    assertNull(resource.getEml().getTitle());
+    assertEquals(List.of(new ResourceLoadNotice(Type.EML_UNREADABLE, null)), resource.getLoadNotices());
+  }
+
+  @Test
+  public void testLoadReadableEmlRemovesNotice() throws Exception {
+    Files.writeString(emlFile.toPath(), "<eml:eml><dataset><title>cut off");
+    Resource resource = resource(null, null);
+    loader.loadEml(resource);
+    assertTrue(resource.isNeedsAttention());
+
+    // fixed on disk, loaded again
+    Files.copy(FileUtils.getClasspathFile("data/eml.xml").toPath(), emlFile.toPath(),
+        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+    loader.loadEml(resource);
+
+    assertEquals("WII Herbarium Dataset", resource.getEml().getTitle());
+    assertTrue(resource.getLoadNotices().isEmpty());
   }
 
   private static Resource resource(String coreType, String dataPackageIdentifier) {

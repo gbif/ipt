@@ -187,6 +187,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Set<Source> sources = new HashSet<>();
   @Getter
   private List<ExtensionMapping> mappings = new ArrayList<>();
+  // what the IPT worked around on load, not persisted: XStream skips transient fields, so it's null after loading
+  private transient List<ResourceLoadNotice> loadNotices;
   private List<DataPackageMapping> dataPackageMappings = new ArrayList<>();
   @Setter
   private String dataPackageIdentifier;
@@ -1787,6 +1789,54 @@ public class Resource implements Serializable, Comparable<Resource> {
    *
    * @return true if a data package mapping has no schema, because its data package type isn't installed
    */
+  /**
+   * @return what the IPT worked around when loading this resource, e.g. unreadable metadata; empty if nothing
+   */
+  public List<ResourceLoadNotice> getLoadNotices() {
+    return loadNotices == null ? Collections.emptyList() : Collections.unmodifiableList(loadNotices);
+  }
+
+  /**
+   * Adds a load notice, replacing one of the same type: e.g. the metadata gets loaded again after a failed edit.
+   */
+  public synchronized void addLoadNotice(ResourceLoadNotice notice) {
+    if (loadNotices == null) {
+      loadNotices = new ArrayList<>();
+    }
+    // several extensions can be installed, the other types happen once per load
+    if (notice.getType() != ResourceLoadNotice.Type.EXTENSION_INSTALLED) {
+      loadNotices.removeIf(n -> n.getType() == notice.getType());
+    }
+    if (!loadNotices.contains(notice)) {
+      loadNotices.add(notice);
+    }
+  }
+
+  /**
+   * Removes the EML notices, e.g. once eml.xml was written again.
+   */
+  public synchronized void removeEmlLoadNotices() {
+    if (loadNotices != null) {
+      loadNotices.removeIf(n -> n.getType().isEml());
+    }
+  }
+
+  /**
+   * Removes the data package metadata notices, e.g. once the metadata file was written again.
+   */
+  public synchronized void removeDataPackageMetadataLoadNotices() {
+    if (loadNotices != null) {
+      loadNotices.removeIf(n -> n.getType().isDataPackageMetadata());
+    }
+  }
+
+  /**
+   * @return true if a manager has to do something about how the resource was loaded, e.g. check its metadata
+   */
+  public boolean isNeedsAttention() {
+    return getLoadNotices().stream().anyMatch(ResourceLoadNotice::isNeedsAttention);
+  }
+
   public boolean hasDataPackageMappingWithoutSchema() {
     return dataPackageMappings != null && dataPackageMappings.stream().anyMatch(m -> m.getDataPackageSchema() == null);
   }
