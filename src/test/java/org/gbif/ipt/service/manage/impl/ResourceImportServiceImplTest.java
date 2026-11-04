@@ -156,7 +156,7 @@ public class ResourceImportServiceImplTest {
 
   @Test
   public void testCreateNewWithExistingShortname() {
-    when(resourceManager.get(SHORTNAME)).thenReturn(new Resource());
+    when(resourceManager.isShortnameTaken(SHORTNAME)).thenReturn(true);
 
     assertThrows(AlreadyExistingException.class, () -> service.createNew(SHORTNAME, "occurrence", creator));
     verify(resourceManager, never()).save(any());
@@ -208,9 +208,23 @@ public class ResourceImportServiceImplTest {
     verify(resourceManager).save(resource);
   }
 
+  /**
+   * The shortname is checked once, before the EML is copied: after that the folder isn't empty, so it would look taken.
+   */
+  @Test
+  public void testCreateFromEmlChecksShortnameBeforeCopying() throws Exception {
+    when(resourceManager.isShortnameTaken(SHORTNAME)).thenReturn(false, true);
+    File emlFile = FileUtils.getClasspathFile("data/eml.xml");
+
+    Resource resource = service.createFromEml(SHORTNAME, emlFile, creator, alog);
+
+    assertNotNull(resource);
+    verify(resourceManager).isShortnameTaken(SHORTNAME);
+  }
+
   @Test
   public void testCreateFromEmlWithExistingShortname() throws Exception {
-    when(resourceManager.get(SHORTNAME)).thenReturn(new Resource());
+    when(resourceManager.isShortnameTaken(SHORTNAME)).thenReturn(true);
     File emlFile = FileUtils.getClasspathFile("data/eml.xml");
 
     assertThrows(AlreadyExistingException.class, () -> service.createFromEml(SHORTNAME, emlFile, creator, alog));
@@ -675,6 +689,20 @@ public class ResourceImportServiceImplTest {
     ImportException e = assertThrows(ImportException.class,
         () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog));
     assertTrue(e.getMessage().startsWith("Invalid metadata document"), e.getMessage());
+    // the new resource's folder isn't left behind, its shortname would look taken
+    assertFalse(resourceDir.exists());
+  }
+
+  @Test
+  public void testCopyDatapackageMetadataWithInvalidContentKeepsExistingResourceFolder() throws Exception {
+    File resourceFile = Files.writeString(resourceDir.toPath().resolve("resource.xml"), "<resource/>").toFile();
+    File metadataFile = Files.writeString(tempDir.resolve("datapackage.json"), "{}").toFile();
+    when(metadataReader.readValue(any(File.class), any()))
+        .thenThrow(JsonMappingException.fromUnexpectedIOE(new IOException("unexpected")));
+
+    assertThrows(ImportException.class,
+        () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog));
+    assertTrue(resourceFile.exists());
   }
 
   @Test

@@ -142,7 +142,7 @@ public class CreateResourceAction extends POSTAction implements UploadedFilesAwa
   @Override
   public String save() throws IOException {
     // validation already checked that shortname was not null and valid
-    if (resourceManager.get(shortname) != null) {
+    if (resourceManager.isShortnameTaken(shortname)) {
       addFieldError("resource.shortname", getText("validation.resource.shortname.exists", new String[] {shortname}));
       return INPUT;
     }

@@ -103,6 +103,7 @@ public class ResourceManagerImplCrudTest {
     cfg = mock(AppConfig.class);
     dataDir = mock(DataDir.class);
     when(cfg.getDataDir()).thenReturn(dataDir);
+    when(dataDir.resourcesDir()).thenReturn(resourcesDir);
     when(cfg.getResourceGuid(anyString())).thenAnswer(invocation ->
         "http://localhost:7001/ipt/resource?r=" + invocation.getArgument(0, String.class));
     when(dataDir.resourceFile(any(Resource.class))).thenAnswer(invocation ->
@@ -465,6 +466,51 @@ public class ResourceManagerImplCrudTest {
     assertThrows(AlreadyExistingException.class,
         () -> manager.create(SHORTNAME, null, emlFile, new User(), action));
     verify(importService, never()).createFromEml(any(), any(), any(), any());
+  }
+
+  @Test
+  public void testIsShortnameTaken() throws Exception {
+    assertFalse(manager.isShortnameTaken(SHORTNAME));
+
+    manager.save(resource(SHORTNAME));
+
+    assertTrue(manager.isShortnameTaken(SHORTNAME));
+  }
+
+  /**
+   * A resource that failed to load isn't in the index, but a new resource with its shortname would overwrite it.
+   */
+  @Test
+  public void testIsShortnameTakenByFolderOfResourceThatFailedToLoad() throws Exception {
+    File folder = Files.createDirectory(resourcesDir.toPath().resolve(SHORTNAME)).toFile();
+    Files.writeString(folder.toPath().resolve("resource.xml"), "<resource>");
+
+    assertTrue(manager.isShortnameTaken(SHORTNAME));
+    // new resources get a lowercase shortname
+    assertTrue(manager.isShortnameTaken(SHORTNAME.toUpperCase()));
+  }
+
+  @Test
+  public void testIsShortnameNotTakenByEmptyFolder() throws Exception {
+    File folder = Files.createDirectory(resourcesDir.toPath().resolve(SHORTNAME)).toFile();
+
+    assertFalse(manager.isShortnameTaken(SHORTNAME));
+
+    Files.writeString(folder.toPath().resolve(".DS_Store"), "");
+
+    assertFalse(manager.isShortnameTaken(SHORTNAME));
+  }
+
+  @Test
+  public void testCreateFromFileWithShortnameOfResourceThatFailedToLoad() throws Exception {
+    File folder = Files.createDirectory(resourcesDir.toPath().resolve(SHORTNAME)).toFile();
+    Files.writeString(folder.toPath().resolve("resource.xml"), "<resource>");
+    File emlFile = FileUtils.getClasspathFile("data/eml.xml");
+
+    assertThrows(AlreadyExistingException.class,
+        () -> manager.create(SHORTNAME, null, emlFile, new User(), action));
+    verify(importService, never()).createFromEml(any(), any(), any(), any());
+    assertEquals("<resource>", Files.readString(folder.toPath().resolve("resource.xml")));
   }
 
   @Test

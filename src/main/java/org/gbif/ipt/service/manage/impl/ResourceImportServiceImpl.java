@@ -165,10 +165,24 @@ public class ResourceImportServiceImpl implements ResourceImportService {
   @Override
   public Resource createNew(String shortname, String type, User creator) throws AlreadyExistingException {
     Objects.requireNonNull(shortname);
-    // check if existing already
-    if (resourceManagerProvider.get().get(shortname) != null) {
+    checkShortnameAvailable(shortname);
+    return newResource(shortname, type, creator);
+  }
+
+  /**
+   * Throws if a new resource can't use the shortname, see {@link ResourceManager#isShortnameTaken(String)}.
+   */
+  private void checkShortnameAvailable(String shortname) throws AlreadyExistingException {
+    if (resourceManagerProvider.get().isShortnameTaken(shortname)) {
       throw new AlreadyExistingException();
     }
+  }
+
+  /**
+   * Creates and saves a new resource. Callers check the shortname is available before anything is written to its
+   * folder, as by now the folder may already hold the imported metadata.
+   */
+  private Resource newResource(String shortname, String type, User creator) {
     Resource res = new Resource();
     res.setShortname(shortname.toLowerCase());
     res.setCreated(new Date());
@@ -219,9 +233,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       throws AlreadyExistingException, ImportException {
     Objects.requireNonNull(shortname);
     // check if existing already
-    if (resourceManagerProvider.get().get(shortname) != null) {
-      throw new AlreadyExistingException();
-    }
+    checkShortnameAvailable(shortname);
     Eml eml;
     try {
       // copy eml file to data directory (with name eml.xml) and populate Eml instance
@@ -232,7 +244,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     }
     MetadataUtils.warnIfLicenseUnsupported(eml, alog);
     // create resource of type metadata, with Eml instance
-    Resource resource = createNew(shortname, Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
+    Resource resource = newResource(shortname, Constants.DATASET_TYPE_METADATA_IDENTIFIER, creator);
     resource.setMetadataModified(new Date());
     resource.setEml(eml);
     return resource;
@@ -243,9 +255,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       throws AlreadyExistingException, ImportException {
     Objects.requireNonNull(shortname);
     // check if existing already
-    if (resourceManagerProvider.get().get(shortname) != null) {
-      throw new AlreadyExistingException();
-    }
+    checkShortnameAvailable(shortname);
     DataPackageMetadata metadata;
 
     try {
@@ -264,7 +274,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       throw e;
     }
     // create resource of Frictionless type, with metadata instance
-    Resource resource = createNew(shortname, type, creator);
+    Resource resource = newResource(shortname, type, creator);
     resource.setMetadataModified(new Date());
     resource.setDataPackageMetadata(metadata);
     return resource;
@@ -275,9 +285,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       throws AlreadyExistingException, ImportException {
     Objects.requireNonNull(shortname);
     // check if existing already
-    if (resourceManagerProvider.get().get(shortname) != null) {
-      throw new AlreadyExistingException();
-    }
+    checkShortnameAvailable(shortname);
     DataPackageMetadata metadata;
 
     try {
@@ -288,7 +296,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       throw e;
     }
     // create resource of ColDP type, with metadata instance
-    Resource resource = createNew(shortname, COL_DP, creator);
+    Resource resource = newResource(shortname, COL_DP, creator);
     resource.setMetadataModified(new Date());
     resource.setDataPackageMetadata(metadata);
     return resource;
@@ -299,9 +307,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       throws AlreadyExistingException, ImportException, InvalidFilenameException {
     Objects.requireNonNull(shortname);
     // check if existing already
-    if (resourceManagerProvider.get().get(shortname) != null) {
-      throw new AlreadyExistingException();
-    }
+    checkShortnameAvailable(shortname);
     Resource resource;
     try {
       // try to read dwca
@@ -348,7 +354,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       }
 
       // create new resource
-      resource = createNew(shortname, resourceType.toString().toUpperCase(Locale.ENGLISH), creator);
+      resource = newResource(shortname, resourceType.toString().toUpperCase(Locale.ENGLISH), creator);
       Date lastModifiedDate = new Date();
 
       // read core source+mappings
@@ -428,14 +434,12 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     Objects.requireNonNull(shortname);
 
     // check if existing already
-    if (resourceManagerProvider.get().get(shortname) != null) {
-      throw new AlreadyExistingException();
-    }
+    checkShortnameAvailable(shortname);
 
     Resource resource;
     try {
       Map<String, TextFileSource> sources = new HashMap<>();
-      resource = createNew(shortname, packageType, creator);
+      resource = newResource(shortname, packageType, creator);
       Date lastModifiedDate = new Date();
 
       // Step 1: locate the metadata file (COL DP takes precedence over Frictionless)
@@ -648,6 +652,8 @@ public class ResourceImportServiceImpl implements ResourceImportService {
           dataDirMetadataFile,
           metadataClassForType(datapackageType));
     } catch (JsonMappingException e) {
+      // a new resource's folder would be left with just this file, and its shortname would look taken
+      IptFileUtils.deleteDirectoryContainingSingleFile(dataDirMetadataFile);
       throw new ImportException("Invalid metadata document: " + e.getOriginalMessage());
     } catch (IOException e) {
       LOG.error("Unable to read datapackage metadata file", e);

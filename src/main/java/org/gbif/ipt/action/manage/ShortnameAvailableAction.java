@@ -59,7 +59,7 @@ public class ShortnameAvailableAction extends BaseAction {
   @Override
   public String execute() {
     // the same check as on create (CreateResourceAction.save)
-    status.put("available", StringUtils.isNotBlank(shortname) && resourceManager.get(shortname) == null);
+    status.put("available", StringUtils.isNotBlank(shortname) && !resourceManager.isShortnameTaken(shortname));
     return SUCCESS;
   }
 

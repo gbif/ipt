@@ -103,7 +103,16 @@ public interface ResourceManager {
    */
   Resource get(String shortname);
 
-  // TODO: why is marked as never used
+  /**
+   * Whether a new resource can't use this shortname: a resource with it is loaded, or the data directory already has
+   * a folder for it, e.g. of a resource that failed to load, which a new resource would overwrite.
+   *
+   * @param shortname Resource shortName
+   *
+   * @return true if the shortname is taken, and false otherwise
+   */
+  boolean isShortnameTaken(String shortname);
+
   /**
    * Validate if the EML file exists for a specific resource in the data directory.
    *

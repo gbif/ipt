@@ -14,7 +14,6 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -33,7 +32,7 @@ public class ShortnameAvailableActionTest {
   @BeforeEach
   public void setUp() {
     ResourceManager resourceManager = mock(ResourceManager.class);
-    when(resourceManager.get("taken")).thenReturn(new Resource());
+    when(resourceManager.isShortnameTaken("taken")).thenReturn(true);
     action = new ShortnameAvailableAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
         mock(RegistrationManager.class), resourceManager);
   }
