@@ -250,19 +250,31 @@ public class ResourceImportServiceImplTest {
 
   @Test
   public void testCopyMissingMetadata() throws Exception {
-    Eml eml = service.copyMetadata(SHORTNAME, tempDir.resolve("missing.xml").toFile());
+    File existing = Files.writeString(resourceDir.toPath().resolve("eml.xml"), "<eml>existing</eml>").toFile();
 
-    assertNotNull(eml);
-    assertNull(eml.getTitle());
+    // empty metadata mustn't replace the resource's metadata
+    assertThrows(ImportException.class, () -> service.copyMetadata(SHORTNAME, tempDir.resolve("missing.xml").toFile()));
+    assertEquals("<eml>existing</eml>", Files.readString(existing.toPath()));
   }
 
   @Test
-  public void testCopyInvalidMetadataCleansUp() throws Exception {
+  public void testCopyInvalidMetadataDoesNotCopyIt() throws Exception {
     File emlFile = Files.writeString(tempDir.resolve("invalid.xml"), "<eml><not-closed>", StandardCharsets.UTF_8).toFile();
 
     assertThrows(ImportException.class, () -> service.copyMetadata(SHORTNAME, emlFile));
-    // the directory only contained the invalid EML file
-    assertFalse(resourceDir.exists());
+    assertFalse(new File(resourceDir, "eml.xml").exists());
+  }
+
+  /**
+   * Replacing a resource's metadata with a file that can't be read mustn't overwrite the existing metadata.
+   */
+  @Test
+  public void testCopyInvalidMetadataKeepsExistingMetadata() throws Exception {
+    File existing = Files.writeString(resourceDir.toPath().resolve("eml.xml"), "<eml>existing</eml>").toFile();
+    File emlFile = Files.writeString(tempDir.resolve("invalid.xml"), "<eml><not-closed>", StandardCharsets.UTF_8).toFile();
+
+    assertThrows(ImportException.class, () -> service.copyMetadata(SHORTNAME, emlFile));
+    assertEquals("<eml>existing</eml>", Files.readString(existing.toPath()));
   }
 
   @Test
@@ -320,13 +332,13 @@ public class ResourceImportServiceImplTest {
     File datapackageJson = Files.writeString(archiveDir.toPath().resolve("datapackage.json"), "{}").toFile();
     File dataDirMetadata = new File(resourceDir, "datapackage.json");
     ColMetadata metadata = new ColMetadata();
-    when(metadataReader.readValue(dataDirMetadata, ColMetadata.class)).thenReturn(metadata);
+    when(metadataReader.readValue(metadataJson, ColMetadata.class)).thenReturn(metadata);
 
     Resource resource = service.createFromFrictionlessDataPackage(
         SHORTNAME, archiveDir, COL_DP, List.of(datapackageJson, metadataJson), creator, alog);
 
     assertSame(metadata, resource.getDataPackageMetadata());
-    assertEquals("{\"title\": \"coldp\"}", Files.readString(dataDirMetadata.toPath()));
+    verify(metadataReader).writeValue(dataDirMetadata, metadata);
   }
 
   /**
@@ -339,7 +351,7 @@ public class ResourceImportServiceImplTest {
     File datapackageJson = Files.writeString(archiveDir.toPath().resolve("datapackage.json"), "{}").toFile();
     File dataDirMetadata = new File(resourceDir, "datapackage.json");
     CamtrapMetadata metadata = new CamtrapMetadata();
-    when(metadataReader.readValue(dataDirMetadata, CamtrapMetadata.class)).thenReturn(metadata);
+    when(metadataReader.readValue(datapackageJson, CamtrapMetadata.class)).thenReturn(metadata);
 
     service.createFromFrictionlessDataPackage(
         SHORTNAME, archiveDir, CAMTRAP_DP, List.of(metadataJson, datapackageJson), creator, alog);
@@ -519,6 +531,20 @@ public class ResourceImportServiceImplTest {
     verify(metadataReader).writeValue(new File(resourceDir, "datapackage.json"), copied);
   }
 
+  /**
+   * ColDP metadata is written, not copied, so the folder of a new resource has to be created first.
+   */
+  @Test
+  public void testCopyColDpMetadataOfNewResourceCreatesItsFolder() throws Exception {
+    Files.delete(resourceDir.toPath());
+    File metadataFile = Files.writeString(tempDir.resolve("metadata.json"), "{}").toFile();
+    when(metadataReader.readValue(any(File.class), any())).thenReturn(new ColMetadata());
+
+    service.copyDatapackageMetadata(SHORTNAME, metadataFile, COL_DP, alog);
+
+    assertTrue(resourceDir.isDirectory());
+  }
+
   private static Agent agent(String country) {
     Agent agent = new Agent();
     agent.setCountry(country);
@@ -689,40 +715,43 @@ public class ResourceImportServiceImplTest {
     ImportException e = assertThrows(ImportException.class,
         () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog));
     assertTrue(e.getMessage().startsWith("Invalid metadata document"), e.getMessage());
-    // the new resource's folder isn't left behind, its shortname would look taken
-    assertFalse(resourceDir.exists());
+    assertFalse(new File(resourceDir, "datapackage.json").exists());
   }
 
+  /**
+   * Replacing a resource's metadata with a file that can't be read mustn't overwrite the existing metadata.
+   */
   @Test
-  public void testCopyDatapackageMetadataWithInvalidContentKeepsExistingResourceFolder() throws Exception {
-    File resourceFile = Files.writeString(resourceDir.toPath().resolve("resource.xml"), "<resource/>").toFile();
-    File metadataFile = Files.writeString(tempDir.resolve("datapackage.json"), "{}").toFile();
+  public void testCopyDatapackageMetadataWithInvalidContentKeepsExistingMetadata() throws Exception {
+    File existing = Files.writeString(resourceDir.toPath().resolve("datapackage.json"), "{\"title\":\"existing\"}").toFile();
+    File metadataFile = Files.writeString(tempDir.resolve("upload.json"), "{").toFile();
     when(metadataReader.readValue(any(File.class), any()))
         .thenThrow(JsonMappingException.fromUnexpectedIOE(new IOException("unexpected")));
 
     assertThrows(ImportException.class,
         () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog));
-    assertTrue(resourceFile.exists());
+    assertEquals("{\"title\":\"existing\"}", Files.readString(existing.toPath()));
   }
 
   @Test
-  public void testCopyUnreadableDatapackageMetadataCleansUp() throws Exception {
+  public void testCopyUnreadableDatapackageMetadataDoesNotCopyIt() throws Exception {
     File metadataFile = Files.writeString(tempDir.resolve("datapackage.json"), "{").toFile();
     when(metadataReader.readValue(any(File.class), any())).thenThrow(new IOException("broken"));
 
     assertThrows(ImportException.class, () -> service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog));
-    assertFalse(resourceDir.exists());
+    assertFalse(new File(resourceDir, "datapackage.json").exists());
   }
 
   @Test
   public void testCopyDatapackageMetadataReadsClassForType() throws Exception {
     File metadataFile = Files.writeString(tempDir.resolve("datapackage.json"), "{}").toFile();
     CamtrapMetadata metadata = new CamtrapMetadata();
-    when(metadataReader.readValue(new File(resourceDir, "datapackage.json"), CamtrapMetadata.class)).thenReturn(metadata);
+    when(metadataReader.readValue(metadataFile, CamtrapMetadata.class)).thenReturn(metadata);
 
     DataPackageMetadata copied = service.copyDatapackageMetadata(SHORTNAME, metadataFile, CAMTRAP_DP, alog);
 
     assertSame(metadata, copied);
+    assertTrue(new File(resourceDir, "datapackage.json").exists());
   }
 
   @Test

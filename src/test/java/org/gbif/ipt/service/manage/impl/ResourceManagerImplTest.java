@@ -1233,7 +1233,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     ResourceManagerImpl resourceManager = getResourceManagerImpl();
 
     // create a new resource.
-    Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, copiedEmlXML, creator, baseAction);
+    Resource resource = resourceManager.create(RESOURCE_SHORTNAME, null, emlXML, creator, baseAction);
     resource.setMetadataVersion(BigDecimal.valueOf(3.0));
     return resource;
   }

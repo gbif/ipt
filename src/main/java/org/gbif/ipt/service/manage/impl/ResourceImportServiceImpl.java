@@ -618,20 +618,24 @@ public class ResourceImportServiceImpl implements ResourceImportService {
 
   @Override
   public Eml copyMetadata(String shortname, File emlFile) throws ImportException {
+    // read before copying: a file that can't be read mustn't replace the resource's metadata
+    Eml eml;
+    try (InputStream in = new FileInputStream(emlFile)) {
+      eml = EmlFactory.build(in);
+    } catch (FileNotFoundException e) {
+      // empty metadata would replace the resource's metadata
+      throw new ImportException("EML document not found", e);
+    } catch (Exception e) {
+      throw new ImportException("Invalid EML document", e);
+    }
+
     File emlFile2 = dataDir.resourceEmlFile(shortname);
     try {
       FileUtils.copyFile(emlFile, emlFile2);
-    } catch (Exception e1) {
-      LOG.error("Unable to copy EML File", e1);
-    }
-    Eml eml;
-    try (InputStream in = new FileInputStream(emlFile2)) {
-      eml = EmlFactory.build(in);
-    } catch (FileNotFoundException e) {
-      eml = new Eml();
-    } catch (Exception e) {
+    } catch (IOException e) {
+      LOG.error("Unable to copy EML File", e);
       IptFileUtils.deleteDirectoryContainingSingleFile(emlFile2);
-      throw new ImportException("Invalid EML document", e);
+      throw new ImportException("Unable to copy EML document", e);
     }
     return eml;
   }
@@ -639,31 +643,33 @@ public class ResourceImportServiceImpl implements ResourceImportService {
   @Override
   public DataPackageMetadata copyDatapackageMetadata(String shortname, File metadataFile, String datapackageType,
                                                      ActionLogger alog) throws ImportException {
-    File dataDirMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, datapackageType);
-    try {
-      FileUtils.copyFile(metadataFile, dataDirMetadataFile);
-    } catch (IOException e) {
-      LOG.error("Unable to copy datapackage metadata file {}", e.getMessage(), e);
-    }
-
+    // read before copying: a file that can't be read mustn't replace the resource's metadata
     DataPackageMetadata metadata;
     try {
-      metadata = metadataReader.readValue(
-          dataDirMetadataFile,
-          metadataClassForType(datapackageType));
+      metadata = metadataReader.readValue(metadataFile, metadataClassForType(datapackageType));
     } catch (JsonMappingException e) {
-      // a new resource's folder would be left with just this file, and its shortname would look taken
-      IptFileUtils.deleteDirectoryContainingSingleFile(dataDirMetadataFile);
       throw new ImportException("Invalid metadata document: " + e.getOriginalMessage());
     } catch (IOException e) {
       LOG.error("Unable to read datapackage metadata file", e);
-      IptFileUtils.deleteDirectoryContainingSingleFile(dataDirMetadataFile);
       throw new ImportException("Unable to read metadata document.");
+    }
+
+    File dataDirMetadataFile = dataDir.resourceDatapackageMetadataFile(shortname, datapackageType);
+    // ColDP metadata is written below instead
+    if (!(metadata instanceof ColMetadata)) {
+      try {
+        FileUtils.copyFile(metadataFile, dataDirMetadataFile);
+      } catch (IOException e) {
+        LOG.error("Unable to copy datapackage metadata file", e);
+        // a new resource's folder would be left with just this file, and its shortname would look taken
+        IptFileUtils.deleteDirectoryContainingSingleFile(dataDirMetadataFile);
+        throw new ImportException("Unable to copy metadata document.");
+      }
     }
 
     // a ColDP's version is the publisher's own (e.g. Plazi's timestamps), not a resource version: it would be taken
     // for the resource's first version. It's set to the resource version when published. Country names are written
-    // as their codes. Written back, so it isn't read again when the resource is loaded, and JSON metadata
+    // as their codes. Written instead of copied, so it isn't read again when the resource is loaded, and JSON metadata
     // (metadata.json) is stored as YAML.
     if (metadata instanceof ColMetadata colMetadata) {
       colMetadata.setVersion(null);
@@ -675,6 +681,8 @@ public class ResourceImportServiceImpl implements ResourceImportService {
         alog.warn("manage.resource.dp.coldp.license.unsupported", new String[] {colMetadata.getLicense()});
       }
       try {
+        // a new resource's folder may not exist yet
+        FileUtils.forceMkdirParent(dataDirMetadataFile);
         metadataReader.writeValue(dataDirMetadataFile, colMetadata);
       } catch (IOException e) {
         LOG.error("Unable to write datapackage metadata file", e);
