@@ -501,6 +501,22 @@ public class ResourceManagerImplCrudTest {
     assertFalse(manager.isShortnameTaken(SHORTNAME));
   }
 
+  /**
+   * The shortname can come from the request: it mustn't tell whether folders outside the resources folder exist.
+   */
+  @Test
+  public void testIsShortnameTakenOnlyLooksInResourcesFolder() throws Exception {
+    File outside = Files.createDirectory(tempDir.resolve("outside")).toFile();
+    Files.writeString(outside.toPath().resolve("file.txt"), "content");
+    // the resources folder's parent isn't empty either
+    assertTrue(tempDir.toFile().list().length > 0);
+
+    assertFalse(manager.isShortnameTaken("../outside"));
+    assertFalse(manager.isShortnameTaken(".."));
+    assertFalse(manager.isShortnameTaken("."));
+    assertFalse(manager.isShortnameTaken("outside/.."));
+  }
+
   @Test
   public void testCreateFromFileWithShortnameOfResourceThatFailedToLoad() throws Exception {
     File folder = Files.createDirectory(resourcesDir.toPath().resolve(SHORTNAME)).toFile();

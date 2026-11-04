@@ -564,14 +564,20 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     // a resource that failed to load isn't in the index, but its folder is still there
     // new resources get a lowercase shortname, so check that folder too
     File resourcesDir = dataDir.resourcesDir();
-    return hasFolderContent(new File(resourcesDir, shortname))
-        || hasFolderContent(new File(resourcesDir, shortname.toLowerCase(Locale.ENGLISH)));
+    return hasFolderContent(resourcesDir, shortname)
+        || hasFolderContent(resourcesDir, shortname.toLowerCase(Locale.ENGLISH));
   }
 
   /**
-   * Whether the folder exists and holds anything other than a .DS_Store file. Empty folders are cleaned up on load.
+   * Whether the resource folder exists and holds anything other than a .DS_Store file. Empty folders are cleaned up
+   * on load. Only folders directly in the resources folder are looked at: the shortname comes from the request (see
+   * ShortnameAvailableAction), so e.g. ../ mustn't tell whether a folder exists elsewhere.
    */
-  private static boolean hasFolderContent(File dir) {
+  private static boolean hasFolderContent(File resourcesDir, String shortname) {
+    File dir = new File(resourcesDir, shortname);
+    if (shortname.startsWith(".") || !resourcesDir.equals(dir.getParentFile())) {
+      return false;
+    }
     String[] content = dir.list((d, name) -> !name.equalsIgnoreCase(".DS_Store"));
     return content != null && content.length > 0;
   }
