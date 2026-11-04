@@ -332,10 +332,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         }
 
         // If all sources are file (CSV, TSV, Excel) also check when they were changed
-        boolean onlyFileSources = isOnlyFileSources(resource);
-        boolean sourcesModifiedSinceLastPublication = isSourcesModifiedSinceLastPublication(resource);
-
-        if (skipIfNotChanged && onlyFileSources && !sourcesModifiedSinceLastPublication) {
+        if (skipIfNotChanged && isFileSourcesResourceUnchangedSinceLastPublication(resource)) {
           dataOrMetadataChanged = false;
 
           getTaskMessages(shortname).add(new TaskMessage(Level.INFO, "Source files has not changed since last published"));
@@ -1340,6 +1337,25 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     return metadataModified == null
         || lastPublished == null
         || metadataModified.after(lastPublished);
+  }
+
+  /**
+   * A resource with only file sources (CSV, TSV, Excel) is unchanged if its source files, metadata and mappings were
+   * all last modified before the last publication. Unchanged source files alone are not enough.
+   */
+  boolean isFileSourcesResourceUnchangedSinceLastPublication(@NotNull Resource resource) {
+    return isOnlyFileSources(resource)
+        && !isSourcesModifiedSinceLastPublication(resource)
+        && !isMetadataModifiedSinceLastPublication(resource)
+        && !isMappingsModifiedSinceLastPublication(resource);
+  }
+
+  private boolean isMappingsModifiedSinceLastPublication(@NotNull Resource resource) {
+    Date lastPublished = resource.getLastPublished();
+    Date mappingsModified = resource.getMappingsModified();
+
+    return mappingsModified != null
+        && (lastPublished == null || mappingsModified.after(lastPublished));
   }
 
   private boolean isSourcesModifiedSinceLastPublication(@NotNull Resource resource) {

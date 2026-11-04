@@ -16,7 +16,10 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.ExcelFileSource;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.SqlSource;
+import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.voc.PublicationMode;
 import org.gbif.ipt.model.voc.PublicationStatus;
@@ -81,6 +84,9 @@ import static org.mockito.Mockito.when;
 public class ResourcePublicationManagerImplStateTest {
 
   private static final String SHORTNAME = "bees";
+  private static final Date BEFORE_PUBLICATION = new Date(1_000_000L);
+  private static final Date PUBLICATION = new Date(2_000_000L);
+  private static final Date AFTER_PUBLICATION = new Date(3_000_000L);
 
   @TempDir
   Path tempDir;
@@ -510,6 +516,68 @@ public class ResourcePublicationManagerImplStateTest {
     assertEquals(checksum, manager.calculateArchiveChecksum(changedEml));
     assertEquals(checksum, manager.calculateArchiveChecksum(changedDatapackage));
     assertNotEquals(checksum, manager.calculateArchiveChecksum(changedData));
+  }
+
+  @Test
+  public void testFileSourcesResourceUnchanged() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+
+    assertTrue(manager.isFileSourcesResourceUnchangedSinceLastPublication(resource));
+  }
+
+  @Test
+  public void testFileSourcesResourceWithChangedSources() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    resource.setSourcesModified(AFTER_PUBLICATION);
+
+    assertFalse(manager.isFileSourcesResourceUnchangedSinceLastPublication(resource));
+  }
+
+  /**
+   * Metadata edited, source files not re-uploaded: the resource must be published.
+   */
+  @Test
+  public void testFileSourcesResourceWithChangedMetadata() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    resource.setMetadataModified(AFTER_PUBLICATION);
+
+    assertFalse(manager.isFileSourcesResourceUnchangedSinceLastPublication(resource));
+  }
+
+  /**
+   * Mapping edited, source files not re-uploaded: the resource must be published.
+   */
+  @Test
+  public void testFileSourcesResourceWithChangedMappings() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    resource.setMappingsModified(AFTER_PUBLICATION);
+
+    assertFalse(manager.isFileSourcesResourceUnchangedSinceLastPublication(resource));
+  }
+
+  @Test
+  public void testResourceWithSqlSourceIsNotJudgedByDates() throws Exception {
+    Resource resource = publishedFileSourcesResource();
+    SqlSource sql = new SqlSource();
+    sql.setName("db");
+    resource.addSource(sql, false);
+
+    assertFalse(manager.isFileSourcesResourceUnchangedSinceLastPublication(resource));
+  }
+
+  private Resource publishedFileSourcesResource() throws Exception {
+    Resource resource = resource();
+    TextFileSource csv = new TextFileSource();
+    csv.setName("occurrence");
+    resource.addSource(csv, false);
+    ExcelFileSource excel = new ExcelFileSource();
+    excel.setName("events");
+    resource.addSource(excel, false);
+    resource.setSourcesModified(BEFORE_PUBLICATION);
+    resource.setMetadataModified(BEFORE_PUBLICATION);
+    resource.setMappingsModified(BEFORE_PUBLICATION);
+    resource.setLastPublished(PUBLICATION);
+    return resource;
   }
 
   private Resource resource() {
