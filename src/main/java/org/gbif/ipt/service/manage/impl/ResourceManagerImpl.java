@@ -563,7 +563,11 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     }
     // a resource that failed to load isn't in the index, but its folder is still there
     // new resources get a lowercase shortname, so check that folder too
-    File resourcesDir = dataDir.resourcesDir();
+    File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
+    if (resourcesDir == null) {
+      // never with a configured data dir, only with a mocked one in tests
+      return false;
+    }
     return hasFolderContent(resourcesDir, shortname)
         || hasFolderContent(resourcesDir, shortname.toLowerCase(Locale.ENGLISH));
   }

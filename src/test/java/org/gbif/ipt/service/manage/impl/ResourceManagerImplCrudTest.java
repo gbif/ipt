@@ -103,7 +103,7 @@ public class ResourceManagerImplCrudTest {
     cfg = mock(AppConfig.class);
     dataDir = mock(DataDir.class);
     when(cfg.getDataDir()).thenReturn(dataDir);
-    when(dataDir.resourcesDir()).thenReturn(resourcesDir);
+    when(dataDir.dataFile(DataDir.RESOURCES_DIR)).thenReturn(resourcesDir);
     when(cfg.getResourceGuid(anyString())).thenAnswer(invocation ->
         "http://localhost:7001/ipt/resource?r=" + invocation.getArgument(0, String.class));
     when(dataDir.resourceFile(any(Resource.class))).thenAnswer(invocation ->
