@@ -59,7 +59,7 @@
 <title><@s.text name="admin.scheduledPublications.title"/></title>
 <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
+<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.11.min.js"></script>
 
 <@scheduledPublicationsTable numResourcesShown=25 sEmptyTable="admin.scheduledPublications.empty" columnToSortOn=4 sortOrder="asc"/>
 

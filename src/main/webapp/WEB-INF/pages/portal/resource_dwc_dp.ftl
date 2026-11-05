@@ -175,7 +175,7 @@
     }
 </style>
 
-<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
+<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.11.min.js"></script>
 <@docBookViewerAssets/>
 <script src="${baseURL}/js/scrollspy.js"></script>
 <script>

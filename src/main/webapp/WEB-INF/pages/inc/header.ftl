@@ -11,7 +11,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap-borders.css" />
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/jquery.dataTables-1.13.6.min.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/jquery.dataTables-1.13.11.min.css" />
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dataTables/responsive.dataTables-2.5.0.min.css" />
 
     <!-- Bootstrap icons -->

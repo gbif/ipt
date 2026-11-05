@@ -4,7 +4,7 @@
     <title><@s.text name="admin.users.import.title"/></title>
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
-    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.6.min.js"></script>
+    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.11.min.js"></script>
 
     <#macro roleName row>
         <#if row.role??><span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill user-${row.role.name()?lower_case}"><@s.text name="user.roles.${row.role.name()?lower_case}"/></span><#else>${row.roleValue!}</#if>
