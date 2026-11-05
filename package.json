@@ -1,0 +1,38 @@
+{
+  "name": "ipt-ui-libraries",
+  "private": true,
+  "description": "Front-end libraries vendored into src/main/webapp. Not part of the Maven build, see scripts/vendor/README.md",
+  "license": "Apache-2.0",
+  "scripts": {
+    "vendor": "node scripts/vendor/vendor.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@ttskch/select2-bootstrap4-theme": "1.5.2",
+    "bootstrap": "5.0.1",
+    "bootstrap-icons": "1.10.3",
+    "datatables.net": "1.13.11",
+    "datatables.net-dt": "1.13.11",
+    "datatables.net-responsive": "2.5.0",
+    "datatables.net-responsive-dt": "2.5.0",
+    "html5sortable": "0.13.3",
+    "jquery": "3.7.1",
+    "jszip": "3.10.1",
+    "leaflet": "0.7.7",
+    "prosemirror-commands": "1.7.2",
+    "prosemirror-history": "1.5.1",
+    "prosemirror-inputrules": "1.5.1",
+    "prosemirror-keymap": "1.2.3",
+    "prosemirror-model": "1.25.12",
+    "prosemirror-schema-list": "1.6.0",
+    "prosemirror-state": "1.4.4",
+    "prosemirror-transform": "1.12.4",
+    "prosemirror-view": "1.42.9",
+    "select2": "4.0.13"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

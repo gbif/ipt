@@ -1,0 +1,217 @@
+#!/usr/bin/env node
+// Copies the front-end libraries listed in package.json from node_modules into src/main/webapp.
+// See README.md in this directory.
+//
+//   npm run vendor              copy files, remove superseded versioned files, update references in FTL pages
+//   npm run vendor -- --check   only compare; exit 1 if src/main/webapp doesn't match package.json
+
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {build} from 'esbuild';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const MODULES = path.join(ROOT, 'node_modules');
+const WEBAPP = path.join(ROOT, 'src/main/webapp');
+const PAGES = path.join(WEBAPP, 'WEB-INF');
+
+// package -> {source file in the package: destination in src/main/webapp}.
+// {version} is replaced with the installed version. Versioned file names are referenced from FTL pages,
+// which are updated when the version changes.
+const LIBRARIES = {
+  'jquery': {'dist/jquery.min.js': 'js/jquery/jquery-{version}.min.js'},
+  'bootstrap': {
+    'dist/js/bootstrap.bundle.min.js': 'js/bootstrap/bootstrap.bundle.min.js',
+    'dist/css/bootstrap.min.css': 'styles/bootstrap/bootstrap.min.css',
+  },
+  'bootstrap-icons': {
+    'font/bootstrap-icons.css': 'styles/bootstrap-icons/font/bootstrap-icons.css',
+    'font/fonts/bootstrap-icons.woff': 'styles/bootstrap-icons/font/fonts/bootstrap-icons.woff',
+    'font/fonts/bootstrap-icons.woff2': 'styles/bootstrap-icons/font/fonts/bootstrap-icons.woff2',
+  },
+  'datatables.net': {'js/jquery.dataTables.min.js': 'js/jquery/jquery.dataTables-{version}.min.js'},
+  'datatables.net-dt': {'css/jquery.dataTables.min.css': 'styles/dataTables/jquery.dataTables-{version}.min.css'},
+  'datatables.net-responsive': {'js/dataTables.responsive.min.js': 'js/jquery/dataTables.responsive-{version}.min.js'},
+  'datatables.net-responsive-dt': {'css/responsive.dataTables.min.css': 'styles/dataTables/responsive.dataTables-{version}.min.css'},
+  'select2': {
+    'dist/js/select2.min.js': 'js/select2/select2-{version}.min.js',
+    'dist/js/select2.full.min.js': 'js/select2/select2-{version}.full.min.js',
+    'dist/css/select2.min.css': 'styles/select2/select2-{version}.min.css',
+  },
+  '@ttskch/select2-bootstrap4-theme': {'dist/select2-bootstrap4.min.css': 'styles/select2/select2-bootstrap4.min.css'},
+  'leaflet': {
+    'dist/leaflet.js': 'js/leaflet/leaflet.js',
+    'dist/leaflet.css': 'styles/leaflet/leaflet.css',
+  },
+  'jszip': {'dist/jszip.min.js': 'js/jszip/jszip-{version}.min.js'},
+  'html5sortable': {
+    'dist/html5sortable.js': 'js/sortable/html5sortable-{version}.js',
+    'dist/html5sortable.min.js': 'js/sortable/html5sortable-{version}.min.js',
+  },
+};
+
+// Bundled into one file exposed as window.PM, used by js/docbook/docbook-editor.js
+const PROSEMIRROR = {
+  model: 'prosemirror-model',
+  state: 'prosemirror-state',
+  view: 'prosemirror-view',
+  transform: 'prosemirror-transform',
+  commands: 'prosemirror-commands',
+  keymap: 'prosemirror-keymap',
+  history: 'prosemirror-history',
+  schemaList: 'prosemirror-schema-list',
+  inputrules: 'prosemirror-inputrules',
+};
+
+const check = process.argv.includes('--check');
+
+function version(pkg) {
+  const file = path.join(MODULES, pkg, 'package.json');
+  if (!fs.existsSync(file)) {
+    throw new Error(`${pkg} is not installed, run npm ci first`);
+  }
+  return JSON.parse(fs.readFileSync(file, 'utf8')).version;
+}
+
+// Source map files aren't vendored, so drop the comments pointing to them
+function read(file) {
+  const data = fs.readFileSync(file);
+  if (!/\.(js|css)$/.test(file)) {
+    return data;
+  }
+  return Buffer.from(data.toString('utf8')
+    .replace(/\n?\/\/# sourceMappingURL=\S+\s*$/, '\n')
+    .replace(/\n?\/\*# sourceMappingURL=\S+ \*\/\s*$/, '\n'));
+}
+
+// Expected content of every vendored file, keyed by path relative to src/main/webapp
+async function expectedFiles() {
+  const files = new Map();
+  const versioned = [];
+  for (const [pkg, mapping] of Object.entries(LIBRARIES)) {
+    const v = version(pkg);
+    for (const [from, to] of Object.entries(mapping)) {
+      const dest = to.replace('{version}', v);
+      files.set(dest, read(path.join(MODULES, pkg, from)));
+      if (to.includes('{version}')) {
+        versioned.push({template: to, dest});
+      }
+    }
+  }
+
+  const pmVersions = Object.values(PROSEMIRROR).map(p => `${p}@${version(p)}`).join(' ');
+  const result = await build({
+    stdin: {
+      contents: Object.entries(PROSEMIRROR).map(([name, p]) => `export * as ${name} from "${p}";`).join('\n'),
+      resolveDir: ROOT,
+    },
+    bundle: true,
+    minify: true,
+    format: 'iife',
+    globalName: 'PM',
+    target: 'es2018',
+    legalComments: 'none',
+    write: false,
+    banner: {
+      js: `/*! ProseMirror bundle for IPT (window.PM). ${pmVersions}. MIT License, Copyright (C) 2015-2017 by Marijn Haverbeke <marijn@haverbeke.berlin> and others. See scripts/vendor/README.md */`,
+    },
+  });
+  files.set('js/prosemirror/prosemirror-bundle.min.js', Buffer.from(result.outputFiles[0].contents));
+  files.set('styles/prosemirror/prosemirror.css', Buffer.concat([
+    Buffer.from(`/* prosemirror-view@${version('prosemirror-view')} style/prosemirror.css, MIT License */\n`),
+    read(path.join(MODULES, 'prosemirror-view/style/prosemirror.css')),
+  ]));
+
+  for (const [dest, content] of files) {
+    files.set(dest, withBom(dest, content));
+  }
+  return {files, versioned};
+}
+
+// Static resources must be ASCII or start with a UTF-8 BOM, otherwise Tomcat may corrupt them on systems
+// whose default encoding isn't UTF-8. See StaticResourcesTest.
+const BOM = Buffer.from([0xEF, 0xBB, 0xBF]);
+function withBom(dest, content) {
+  if (!/\.(js|css)$/.test(dest) || content.subarray(0, 3).equals(BOM) || content.every(b => b < 0x80)) {
+    return content;
+  }
+  return Buffer.concat([BOM, content]);
+}
+
+function listFiles(dir, filter) {
+  return fs.readdirSync(dir, {withFileTypes: true}).flatMap(e => {
+    const abs = path.join(dir, e.name);
+    return e.isDirectory() ? listFiles(abs, filter) : (filter(e.name) ? [abs] : []);
+  });
+}
+
+const escape = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+// Files of other versions of a versioned destination, e.g. js/jquery/jquery-3.7.0.min.js for jquery-{version}.min.js
+// Relative paths use forward slashes on every OS, as in dest and in the FTL references.
+function supersededFiles({template, dest}) {
+  const dir = path.posix.dirname(template);
+  const pattern = new RegExp('^' + escape(path.basename(template)).replace(escape('{version}'), '\\d+\\.\\d+\\.\\d+') + '$');
+  const absDir = path.join(WEBAPP, dir);
+  if (!fs.existsSync(absDir)) {
+    return [];
+  }
+  return fs.readdirSync(absDir)
+    .filter(name => pattern.test(name) && path.posix.join(dir, name) !== dest)
+    .map(name => path.posix.join(dir, name));
+}
+
+const {files, versioned} = await expectedFiles();
+
+if (check) {
+  const problems = [];
+  for (const [dest, content] of files) {
+    const abs = path.join(WEBAPP, dest);
+    if (!fs.existsSync(abs)) {
+      problems.push(`missing: ${dest}`);
+    } else if (!fs.readFileSync(abs).equals(content)) {
+      problems.push(`differs: ${dest}`);
+    }
+  }
+  for (const v of versioned) {
+    supersededFiles(v).forEach(old => problems.push(`superseded: ${old}`));
+  }
+  if (problems.length) {
+    console.error(`Vendored libraries don't match package.json:\n  ${problems.join('\n  ')}\nRun npm run vendor and commit the result.`);
+    process.exit(1);
+  }
+  console.log(`${files.size} vendored files match package.json`);
+  process.exit(0);
+}
+
+let changed = 0;
+for (const [dest, content] of files) {
+  const abs = path.join(WEBAPP, dest);
+  if (fs.existsSync(abs) && fs.readFileSync(abs).equals(content)) {
+    continue;
+  }
+  fs.mkdirSync(path.dirname(abs), {recursive: true});
+  fs.writeFileSync(abs, content);
+  console.log(`updated ${dest}`);
+  changed++;
+}
+
+const pages = listFiles(PAGES, name => name.endsWith('.ftl'));
+for (const v of versioned) {
+  for (const old of supersededFiles(v)) {
+    fs.rmSync(path.join(WEBAPP, old));
+    console.log(`removed ${old}`);
+    changed++;
+    const oldName = path.basename(old);
+    const newName = path.basename(v.dest);
+    for (const page of pages) {
+      const text = fs.readFileSync(page, 'utf8');
+      if (text.includes(`/${old}`)) {
+        fs.writeFileSync(page, text.split(`/${old}`).join(`/${v.dest}`));
+        console.log(`  ${path.relative(ROOT, page)}: ${oldName} -> ${newName}`);
+      }
+    }
+  }
+}
+
+console.log(changed ? `${changed} file(s) changed` : 'Nothing to do, vendored files match package.json');

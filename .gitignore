@@ -24,3 +24,6 @@ package/rpm/RPMS/noarch/*
 /res1
 /resource.xml
 /rtf*.rtf
+
+# npm (front-end libraries, see scripts/vendor/README.md) #
+node_modules/

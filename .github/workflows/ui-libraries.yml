@@ -1,0 +1,49 @@
+name: UI libraries
+
+# Front-end libraries listed in package.json, see scripts/vendor/README.md
+on:
+  pull_request:
+    paths:
+      - package.json
+      - package-lock.json
+      - scripts/vendor/**
+      - src/main/webapp/js/**
+      - src/main/webapp/styles/**
+      - .github/workflows/ui-libraries.yml
+  push:
+    branches:
+      - dev
+      - master
+    paths:
+      - package.json
+      - package-lock.json
+      - scripts/vendor/**
+      - src/main/webapp/js/**
+      - src/main/webapp/styles/**
+      - .github/workflows/ui-libraries.yml
+  schedule:
+    # Weekly, for advisories published after the last change
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Known vulnerabilities
+        run: npm audit
+
+      - name: Vendored files match package.json
+        run: npm run vendor -- --check
