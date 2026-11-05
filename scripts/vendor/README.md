@@ -30,3 +30,5 @@ These aren't on npm in the form used, or have IPT changes:
 - `js/jconfirmation.jquery.js`: jQuery plugin, extended for the IPT
 - `styles/fonts/gbificons.*`: GBIF icon font
 - `styles/bootstrap/bootstrap-borders.css`: IPT additions to Bootstrap
+
+A file with a version in its name, such as `locationfilter-0.1-leaflet1.js`, is cached by browsers for a year. Rename it when you change it, and update the FTL pages.

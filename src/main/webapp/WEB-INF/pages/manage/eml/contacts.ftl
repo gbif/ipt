@@ -3,10 +3,10 @@
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
-    <link rel="stylesheet" href="${baseURL}/styles/contacts.css?v=${cfg.version!}">
+    <link rel="stylesheet" href="${baseURL}/styles/contacts.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <#-- runs on DOMContentLoaded, after Bootstrap and html5sortable from the footer -->
-    <script src="${baseURL}/js/contacts.js?v=${cfg.version!}"></script>
+    <script src="${baseURL}/js/contacts.js"></script>
     <title><@s.text name='manage.metadata.contacts.title'/></title>
     <script>
         $(document).ready(function () {

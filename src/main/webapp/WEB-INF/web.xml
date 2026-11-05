@@ -15,6 +15,18 @@
   </session-config>
 
   <filter>
+    <filter-name>staticResourceCacheFilter</filter-name>
+    <filter-class>org.gbif.ipt.struts2.StaticResourceCacheFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>staticResourceCacheFilter</filter-name>
+    <url-pattern>/js/*</url-pattern>
+    <url-pattern>/styles/*</url-pattern>
+    <url-pattern>/images/*</url-pattern>
+  </filter-mapping>
+
+  <filter>
     <filter-name>characterEncodingFilter</filter-name>
     <filter-class>org.gbif.ipt.struts2.CharacterEncodingFilter</filter-class>
   </filter>

@@ -17,8 +17,8 @@ const PAGES = path.join(WEBAPP, 'WEB-INF');
 
 // package -> {source file in the package: destination in src/main/webapp}.
 // {version} is replaced with the installed version. Versioned file names are referenced from FTL pages,
-// which are updated when the version changes. They make browsers load the new file after an upgrade:
-// static files are sent without Cache-Control, so browsers may keep an old copy for weeks.
+// which are updated when the version changes. Browsers cache these files for a year
+// (StaticResourceCacheFilter), so a new version needs a new file name.
 const LIBRARIES = {
   'jquery': {'dist/jquery.min.js': 'js/jquery/jquery-{version}.min.js'},
   'bootstrap': {
