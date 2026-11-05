@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.inject.Inject;
@@ -245,7 +246,10 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
 
     LOG.info("Loading resource configurations ...");
     // default creator used to populate missing resource creator when loading resources
-    User defaultCreator = userManager.list(Role.Admin).isEmpty() ? null : userManager.list(Role.Admin).get(0);
+    // preferably an active admin, deactivated admins are used only when there is no other
+    List<User> admins = userManager.list(Role.Admin);
+    User defaultCreator = admins.stream().filter(u -> !u.isDeactivated()).findFirst()
+        .orElse(admins.isEmpty() ? null : admins.get(0));
     File resourcesDir = dataDir.dataFile(DataDir.RESOURCES_DIR);
     checkResourcesDirAtStartup(resourcesDir);
     resourceManager.load(resourcesDir, defaultCreator);

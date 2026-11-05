@@ -1222,6 +1222,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       // get potential new managers
       potentialManagers = userManager.list(Role.Publisher);
       potentialManagers.addAll(userManager.list(Role.Manager));
+      potentialManagers.removeIf(User::isDeactivated);
       // remove already associated ones
       for (User u : resource.getManagers()) {
         potentialManagers.remove(u);

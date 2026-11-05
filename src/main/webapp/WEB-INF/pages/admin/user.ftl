@@ -25,6 +25,15 @@
                 baseUrl: "${baseURL}"
             });
 
+            $('.confirmDeactivation').jConfirmAction({
+                titleQuestion: "<@s.text name="basic.confirm"/>",
+                question: "<@s.text name="admin.user.deactivate.confirmation.message"/>",
+                yesAnswer: "<@s.text name="basic.yes"/>",
+                cancelAnswer: "<@s.text name="basic.no"/>",
+                buttonType: "danger",
+                baseUrl: "${baseURL}"
+            });
+
             $('.confirmPasswordReset').jConfirmAction({
                 titleQuestion: "<@s.text name="basic.confirm"/>",
                 question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
@@ -82,6 +91,11 @@
                         <div class="text-smaller">
                             <a href="mailto:${user.email!}">${user.email!}</a>
                         </div>
+                        <#if user.deactivated>
+                            <div class="mt-1">
+                                <span class="fs-smaller-2 text-nowrap dt-content-pill user-deactivated"><@s.text name="admin.user.status.deactivated"/></span>
+                            </div>
+                        </#if>
                     </#if>
 
                     <div class="mt-2">
@@ -94,6 +108,13 @@
                                 <ul class="dropdown-menu" aria-labelledby="btnGroup" style="">
                                     <li>
                                         <@s.submit cssClass="confirmPasswordReset button btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" form="newuser" name="resetPassword" key="button.resetPassword" />
+                                    </li>
+                                    <li>
+                                        <#if user.deactivated>
+                                            <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" form="newuser" name="activate" key="button.activate" />
+                                        <#else>
+                                            <@s.submit cssClass="confirmDeactivation button btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" form="newuser" name="deactivate" key="button.deactivate" />
+                                        </#if>
                                     </li>
                                     <li>
                                         <@s.submit cssClass="userConfirmDeletion btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" form="newuser" name="deleteFlag" key="button.delete"/>

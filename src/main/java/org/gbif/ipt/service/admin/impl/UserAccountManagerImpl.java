@@ -133,6 +133,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     xstream.useAttributeFor(User.class, "lastname");
     xstream.useAttributeFor(User.class, "role");
     xstream.useAttributeFor(User.class, "lastLogin");
+    xstream.useAttributeFor(User.class, "deactivated");
   }
 
   @Override

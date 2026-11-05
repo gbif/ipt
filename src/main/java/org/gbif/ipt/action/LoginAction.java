@@ -96,7 +96,8 @@ public class LoginAction extends POSTAction {
 
     adminEmail = userManager.getDefaultAdminEmail();
     if (StringUtils.isBlank(adminEmail)) {
-      List<User> users = userManager.list(User.Role.Admin);
+      // a deactivated admin cannot be reached
+      List<User> users = userManager.list(User.Role.Admin).stream().filter(u -> !u.isDeactivated()).toList();
 
       if (!users.isEmpty()) {
         adminEmail = users.get(0).getEmail();
@@ -124,6 +125,9 @@ public class LoginAction extends POSTAction {
         if (authUser == null) {
           addActionError(getText("admin.user.wrong.email.password.combination"));
           LOG.info("User {} failed to log in", email);
+        } else if (authUser.isDeactivated()) {
+          addActionError(getText("admin.user.login.deactivated"));
+          LOG.info("Deactivated user {} attempted to log in", email);
         } else {
           LOG.info("User {} logged in successfully", email);
           authUser.setLastLoginToNow();

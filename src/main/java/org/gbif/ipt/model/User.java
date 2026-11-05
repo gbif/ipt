@@ -49,6 +49,10 @@ public class User implements Serializable, Cloneable {
   @Setter
   @Getter
   private Date lastLogin;
+  // deactivated users keep their account and resource associations, but cannot log in
+  @Setter
+  @Getter
+  private boolean deactivated;
 
   @Override
   public Object clone() throws CloneNotSupportedException {

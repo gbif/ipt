@@ -33,6 +33,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -269,5 +270,22 @@ public class UserAccountManagerImplTest extends IptBaseTest {
     assertEquals(manager, userManager.get("manager@ipt.gbif.org"));
     assertEquals(publisher, userManager.get("publisher@ipt.gbif.org"));
     assertEquals(user, userManager.get("user@ipt.gbif.org"));
+  }
+
+  /**
+   * Test the deactivated status is saved and loaded again.
+   */
+  @Test
+  public void testLoadDeactivated() throws Exception {
+    UserAccountManager userManager = getUserAccountManager();
+    userManager.create(admin);
+    manager.setDeactivated(true);
+    userManager.create(manager);
+
+    userManager = getUserAccountManager();
+    userManager.load();
+
+    assertFalse(userManager.get("admin@ipt.gbif.org").isDeactivated());
+    assertTrue(userManager.get("manager@ipt.gbif.org").isDeactivated());
   }
 }

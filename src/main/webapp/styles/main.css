@@ -1329,6 +1329,12 @@ div.dt-container .dt-paging .dt-paging-button:active{
     color: #4C9C2E !important;
 }
 
+.user-deactivated {
+    background: white !important;
+    border: 1px solid;
+    color: #6c757d !important;
+}
+
 /* Extensions */
 .extension-action-button,
 .action-link-button,

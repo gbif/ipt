@@ -48,6 +48,7 @@
       <!-- interceptors enforcing user roles and login -->
       <interceptor name="requireAdmin" class="org.gbif.ipt.struts2.RequireAdminInterceptor"/>
       <interceptor name="requireManager" class="org.gbif.ipt.struts2.RequireManagerInterceptor"/>
+      <interceptor name="deactivatedUser" class="org.gbif.ipt.struts2.DeactivatedUserInterceptor"/>
       <interceptor name="protectPrivateResource" class="org.gbif.ipt.struts2.PrivateDeletedResourceInterceptor"/>
 
       <!-- interceptor changing the current resource in the session if a "r" parameter is supplied -->
@@ -95,6 +96,7 @@
 
       <!-- stack to be used as the default for the public portal package -->
       <interceptor-stack name="portalStack">
+        <interceptor-ref name="deactivatedUser"/>
         <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="protectPrivateResource"/>
@@ -103,6 +105,7 @@
 
       <!-- stack to be used as the default for the admin package -->
       <interceptor-stack name="adminStack">
+        <interceptor-ref name="deactivatedUser"/>
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
         <interceptor-ref name="requireAdmin"/>
@@ -110,6 +113,7 @@
 
       <!-- stack to be used as the default for the manage package -->
       <interceptor-stack name="managerStack">
+        <interceptor-ref name="deactivatedUser"/>
         <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="iptStackWithoutSetup"/>

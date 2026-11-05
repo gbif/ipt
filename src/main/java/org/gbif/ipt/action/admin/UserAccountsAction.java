@@ -91,6 +91,8 @@ public class UserAccountsAction extends POSTAction {
   @Getter
   private String password2;
   private boolean resetPassword;
+  private boolean deactivate;
+  private boolean activate;
   private boolean newUser;
   @Getter
   private List<User> users;
@@ -281,8 +283,29 @@ public class UserAccountsAction extends POSTAction {
 
         LOG.info("User {} password has been changed by {}", user.getEmail(), currentUser.getEmail());
         addActionMessage(getText("admin.user.passwordChanged", new String[]{user.getEmail(), newPassword, emailLink}));
+      } else if (deactivate || activate) {
+        // only the account status changes, any other submitted edits are ignored
+        if (deactivate && id.equalsIgnoreCase(currentUser.getEmail())) {
+          LOG.error("Cannot deactivate an account {} when logged in to it", id);
+          addActionError(getText("admin.user.deactivated.current"));
+          return INPUT;
+        }
+
+        User currentStateUser = userManager.get(id);
+        currentStateUser.setDeactivated(deactivate);
+        userManager.save();
+
+        if (deactivate) {
+          LOG.info("User {} has been deactivated by {}", id, currentUser.getEmail());
+          addActionMessage(getText("admin.user.deactivated", new String[]{id}));
+        } else {
+          LOG.info("User {} has been activated by {}", id, currentUser.getEmail());
+          addActionMessage(getText("admin.user.activated", new String[]{id}));
+        }
       } else {
         User currentStateUser = userManager.get(user.getEmail());
+        // the account status can only be changed with the deactivate/activate options
+        user.setDeactivated(currentStateUser.isDeactivated());
 
         if (currentStateUser.getRole() != user.getRole()) {
           LOG.info("User {} role has been changed from {} to {} by {}",
@@ -290,8 +313,9 @@ public class UserAccountsAction extends POSTAction {
         }
 
         if (currentStateUser.getRole() == Role.Admin
+            && !currentStateUser.isDeactivated()
             && user.getRole() != Role.Admin
-            && userManager.list(Role.Admin).size() < 2) {
+            && userManager.list(Role.Admin).stream().filter(u -> !u.isDeactivated()).count() < 2) {
           LOG.error("Cannot change the role of the last administrator");
           addActionError(getText("admin.user.changed.current"));
           return INPUT;
@@ -332,6 +356,16 @@ public class UserAccountsAction extends POSTAction {
   @StrutsParameter
   public void setResetPassword(String pass) {
     this.resetPassword = StringUtils.trimToNull(pass) != null;
+  }
+
+  @StrutsParameter
+  public void setDeactivate(String deactivate) {
+    this.deactivate = StringUtils.trimToNull(deactivate) != null;
+  }
+
+  @StrutsParameter
+  public void setActivate(String activate) {
+    this.activate = StringUtils.trimToNull(activate) != null;
   }
 
   @StrutsParameter(depth = 1)
