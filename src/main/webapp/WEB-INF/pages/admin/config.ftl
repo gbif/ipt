@@ -1,9 +1,8 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="title"/></title>
 
-<link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
-<link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
-<script src="${baseURL}/js/leaflet/leaflet.js"></script>
+<link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet-1.9.4.css" />
+<script src="${baseURL}/js/leaflet/leaflet-1.9.4.js"></script>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
@@ -18,6 +17,7 @@
 
         var map = L.map('locationMap', {zoomControl: false}).setView([${latitude}, ${longitude}], 5).setMaxBounds(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180)));
         L.control.zoom({position: 'topright'}).addTo(map);
+        map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
 
         L.tileLayer('https://tile.gbif.org/3857/omt/{z}/{x}/{y}@{r}x.png?style=osm-bright'.replace('{r}', pixel_ratio), {
             minZoom: 1,
@@ -26,7 +26,7 @@
             tileSize: tile_size
         }).addTo(map);
 
-        L.Icon.Default.imagePath = '${baseURL}/images/leaflet';
+        L.Icon.Default.imagePath = '${baseURL}/images/leaflet/';
         var marker = L.marker([${latitude}, ${longitude}], {iconUrl: 'marker-icon-2x.png'}).addTo(map);
         </#if>
 

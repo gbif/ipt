@@ -41,8 +41,8 @@ const LIBRARIES = {
   },
   '@ttskch/select2-bootstrap4-theme': {'dist/select2-bootstrap4.min.css': 'styles/select2/select2-bootstrap4.min.css'},
   'leaflet': {
-    'dist/leaflet.js': 'js/leaflet/leaflet.js',
-    'dist/leaflet.css': 'styles/leaflet/leaflet.css',
+    'dist/leaflet.js': 'js/leaflet/leaflet-{version}.js',
+    'dist/leaflet.css': 'styles/leaflet/leaflet-{version}.css',
   },
   'jszip': {'dist/jszip.min.js': 'js/jszip/jszip-{version}.min.js'},
   'html5sortable': {
@@ -74,13 +74,15 @@ function version(pkg) {
   return JSON.parse(fs.readFileSync(file, 'utf8')).version;
 }
 
-// Source map files aren't vendored, so drop the comments pointing to them
+// Line endings are normalized to LF, as git would on commit, so the --check result doesn't depend on core.autocrlf.
+// Source map files aren't vendored, so drop the comments pointing to them.
 function read(file) {
   const data = fs.readFileSync(file);
   if (!/\.(js|css)$/.test(file)) {
     return data;
   }
   return Buffer.from(data.toString('utf8')
+    .replace(/\r\n/g, '\n')
     .replace(/\n?\/\/# sourceMappingURL=\S+\s*$/, '\n')
     .replace(/\n?\/\*# sourceMappingURL=\S+ \*\/\s*$/, '\n'));
 }

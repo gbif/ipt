@@ -4,11 +4,11 @@
     <#assign currentMetadataPage = "geocoverage"/>
     <#assign currentMenu="manage"/>
 
-    <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet-1.9.4.css" />
     <link rel="stylesheet" href="${baseURL}/styles/leaflet/locationfilter.css" />
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
-    <script src="${baseURL}/js/leaflet/leaflet.js"></script>
-    <script src="${baseURL}/js/leaflet/locationfilter.js"></script>
+    <script src="${baseURL}/js/leaflet/leaflet-1.9.4.js"></script>
+    <script src="${baseURL}/js/leaflet/locationfilter-0.1-leaflet1.js"></script>
 
     <#assign currentLocale = .vars["locale"]/>
     <#if currentLocale == "es" || currentLocale == "fr" || currentLocale == "ru" || currentLocale == "pt" >
@@ -83,6 +83,7 @@
 
             var map = L.map('map', {zoomControl: false}).setView([0, 0], 1);
             L.control.zoom({position: 'topright'}).addTo(map);
+            map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
 
             L.tileLayer('https://tile.gbif.org/3857/omt/{z}/{x}/{y}@{r}x.png?style=osm-bright'.replace('{r}', pixel_ratio), {
                 minZoom: 1,

@@ -24,7 +24,7 @@ The `UI libraries` GitHub workflow runs `npm audit` and `npm run vendor -- --che
 
 These aren't on npm in the form used, or have IPT changes:
 
-- `js/leaflet/locationfilter.js`, `styles/leaflet/locationfilter.css`: Leaflet.locationfilter 0.1 (2012, unmaintained)
+- `js/leaflet/locationfilter-0.1-leaflet1.js`, `styles/leaflet/locationfilter.css`: Leaflet.locationfilter 0.1 (2012, unmaintained), updated for Leaflet 1.x
 - `images/leaflet/`: IPT marker and filter images
 - `js/ajaxfileupload.js`: old jQuery plugin, not on npm
 - `js/jconfirmation.jquery.js`: jQuery plugin, extended for the IPT
