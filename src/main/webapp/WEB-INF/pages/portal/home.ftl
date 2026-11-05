@@ -3,8 +3,8 @@
 <title><@s.text name="title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/resourcesTable.ftl"/>
-<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.11.min.js"></script>
-<script src="${baseURL}/js/jquery/dataTables.responsive-2.5.0.min.js"></script>
+<script src="${baseURL}/js/dataTables/dataTables-3.1.5.min.js"></script>
+<script src="${baseURL}/js/dataTables/dataTables.responsive-4.1.1.min.js"></script>
 
 <@resourcesTable resources=resources shownPublicly=true numResourcesShown=10 sEmptyTable="dataTables.sEmptyTable.resources" columnToSortOn=1 sortOrder="asc" />
 

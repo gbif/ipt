@@ -30,9 +30,9 @@ const LIBRARIES = {
     'font/fonts/bootstrap-icons.woff': 'styles/bootstrap-icons/font/fonts/bootstrap-icons.woff',
     'font/fonts/bootstrap-icons.woff2': 'styles/bootstrap-icons/font/fonts/bootstrap-icons.woff2',
   },
-  'datatables.net': {'js/jquery.dataTables.min.js': 'js/jquery/jquery.dataTables-{version}.min.js'},
-  'datatables.net-dt': {'css/jquery.dataTables.min.css': 'styles/dataTables/jquery.dataTables-{version}.min.css'},
-  'datatables.net-responsive': {'js/dataTables.responsive.min.js': 'js/jquery/dataTables.responsive-{version}.min.js'},
+  'datatables.net': {'js/dataTables.min.js': 'js/dataTables/dataTables-{version}.min.js'},
+  'datatables.net-dt': {'css/dataTables.dataTables.min.css': 'styles/dataTables/dataTables-{version}.min.css'},
+  'datatables.net-responsive': {'js/dataTables.responsive.min.js': 'js/dataTables/dataTables.responsive-{version}.min.js'},
   'datatables.net-responsive-dt': {'css/responsive.dataTables.min.css': 'styles/dataTables/responsive.dataTables-{version}.min.css'},
   'select2': {
     'dist/js/select2.min.js': 'js/select2/select2-{version}.min.js',

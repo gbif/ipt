@@ -1152,15 +1152,28 @@ td.left_padding {
     width: 100% !important;
 }
 
-div.dataTables_processing>div:last-child>div {
+div.dt-processing>div:last-child>div {
     background: rgb(var(--color-gbif-primary)) !important;
 }
 
+/* DataTables right-aligns columns it detects as numbers or dates. IPT tables set the alignment per column instead,
+   and the column title follows it, with the sort icon on the right */
+table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date,
+table.dataTable td.dt-type-numeric, table.dataTable td.dt-type-date {
+    text-align: start;
+}
+table.dataTable th.dt-type-numeric div.dt-column-header, table.dataTable th.dt-type-date div.dt-column-header {
+    flex-direction: row;
+}
+table.dataTable thead th div.dt-column-title {
+    flex-grow: 1;
+}
+
 /* DataTable pagination buttons styles */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current,
-.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
-.dataTables_wrapper .dataTables_paginate .paginate_button:active{
+div.dt-container .dt-paging .dt-paging-button.current,
+div.dt-container .dt-paging .dt-paging-button.current:hover,
+div.dt-container .dt-paging .dt-paging-button:hover,
+div.dt-container .dt-paging .dt-paging-button:active{
     color: #4e565f !important;
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 0.2rem;

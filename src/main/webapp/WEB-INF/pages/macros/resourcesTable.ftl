@@ -126,7 +126,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             });
 
             // display page parameter in the URL
-            $(document).on("click", "a.paginate_button", function (e) {
+            $(document).on("click", ".dt-paging-button", function (e) {
                 var page = dt.page() + 1;
                 var params = new URLSearchParams(window.location.search);
                 page !== 0 ? params.set(PAGE_PARAM, page) : params.delete(PAGE_PARAM);
@@ -135,7 +135,7 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             });
 
             // display search and sort parameters in the URL
-            dt.on('search.dt', function () {
+            dt.on('search.dt order.dt', function () {
                 if (history.pushState) {
                     var searchValue = dt.search();
                     var sortFieldIndex = dt.order()[0][0];

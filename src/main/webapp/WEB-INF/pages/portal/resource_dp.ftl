@@ -68,7 +68,7 @@
     }
 </style>
 
-<script src="${baseURL}/js/jquery/jquery.dataTables-1.13.11.min.js"></script>
+<script src="${baseURL}/js/dataTables/dataTables-3.1.5.min.js"></script>
 <script src="${baseURL}/js/scrollspy.js"></script>
 <script>
     $(document).ready(function () {

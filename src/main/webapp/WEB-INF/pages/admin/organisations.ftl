@@ -23,7 +23,7 @@
             setTimeout(initializeConfirmationWindows, 1000);
 
             function initializeConfirmationWindows() {
-                $(".paginate_button").click(function () {
+                $(".dt-paging-button").click(function () {
                     $('.organizationConfirmDeletion').jConfirmAction({
                         titleQuestion: "<@s.text name="basic.confirm"/>",
                         question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
@@ -52,7 +52,7 @@
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl">
     <#include "/WEB-INF/pages/macros/organisationsTable.ftl"/>
-    <script src="${baseURL}/js/jquery/jquery.dataTables-1.13.11.min.js"></script>
+    <script src="${baseURL}/js/dataTables/dataTables-3.1.5.min.js"></script>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">

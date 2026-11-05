@@ -22,7 +22,9 @@
     </div>
 </footer>
 
-<div class="dataTables_processing" style="display: none;">
+<#-- Loading spinner shown by displayProcessing() in global.js. dataTables_processing is the class global.js looks for,
+     dt-processing applies the DataTables spinner styles -->
+<div class="dataTables_processing dt-processing" style="display: none;">
     <div><div></div><div></div><div></div><div></div></div>
 </div>
 
