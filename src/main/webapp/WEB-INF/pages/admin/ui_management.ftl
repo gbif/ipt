@@ -1,6 +1,5 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.admin.UIManagementAction" -->
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <script src="${baseURL}/js/ajaxfileupload.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
@@ -276,41 +275,27 @@
                 });
             }
 
-            $("#buttonUpload").click(function (event) {
-                event.preventDefault()
-                return ajaxFileUpload();
+            // the logo is uploaded when the form is saved, show a preview of the chosen file until then
+            var logoPreviewUrl = null;
+            $("#file").on("change", function () {
+                if (logoPreviewUrl) {
+                    URL.revokeObjectURL(logoPreviewUrl);
+                    logoPreviewUrl = null;
+                }
+                var file = this.files[0];
+                if (file) {
+                    logoPreviewUrl = URL.createObjectURL(file);
+                    $("#applogo-image").attr("src", logoPreviewUrl).show();
+                    $("#removeLogo").val("false");
+                }
             });
 
-            $("#buttonRemove").click(function () {
-                $("#applogo").remove();
-                $("#file").val('');
-                $("#removeLogo").val('true');
+            $("#buttonRemove").click(function (event) {
+                event.preventDefault();
+                $("#applogo-image").hide().removeAttr("src");
+                $("#file").val("");
+                $("#removeLogo").val("true");
             });
-
-            function ajaxFileUpload() {
-                $.ajaxFileUpload
-                (
-                    {
-                        url: 'appLogoUpload.do',
-                        secureuri: false,
-                        fileElementId: 'file',
-                        dataType: 'json',
-                        done: function (data, status) {
-                            if (typeof (data.error) != 'undefined') {
-                                if (data.error !== '') {
-                                    alert(data.error);
-                                } else {
-                                    alert(data.msg);
-                                }
-                            }
-                        },
-                        fail: function (data, status, e) {
-                            alert(e);
-                        }
-                    }
-                )
-                return false;
-            }
 
             urlExists('${baseURL}/appLogo.do', function (status) {
                 if (status === 404) {
@@ -372,7 +357,7 @@
     <main class="container main-content-container">
         <div class="my-3 p-3">
             <div id="ui-management-form-wrapper" class="mt-4">
-                <form id="ui-management-form" class="needs-validation" action="uiManagement.do" method="post" novalidate>
+                <form id="ui-management-form" class="needs-validation" action="uiManagement.do" method="post" enctype="multipart/form-data" novalidate>
                     <@s.hidden name="removeLogo" id="removeLogo" value="false" required="true" />
 
                     <!-- App Logo -->
@@ -384,13 +369,8 @@
                             <label for="file" class="form-label">
                                 <@s.text name="admin.uiManagement.iptLogo"/>
                             </label>
-                            <@s.file cssClass="form-control my-1" name="file"/>
-                            <a href="#" class="action-link-button action-link-button-primary" id="buttonUpload">
-                                <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                    <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
-                                </svg>
-                                <@s.text name="button.upload"/>
-                            </a>
+                            <@s.file cssClass="form-control my-1" name="file" id="file" accept="image/jpeg,image/png,image/gif"/>
+                            <@s.fielderror cssClass="invalid-feedback d-block list-unstyled my-1" fieldName="file"/>
                             <a href="#" class="action-link-button action-link-button-danger" id="buttonRemove">
                                 <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>

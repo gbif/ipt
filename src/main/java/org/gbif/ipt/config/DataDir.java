@@ -388,6 +388,20 @@ public class DataDir {
   }
 
   /**
+   * Deletes the resource's uploaded logo files.
+   *
+   * @param keepSuffix the format to keep, e.g. a logo that was just saved, or null to delete all
+   */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  public void removeResourceLogoFiles(String resourceName, String keepSuffix) {
+    for (String suffix : Constants.IMAGE_TYPES) {
+      if (!suffix.equals(keepSuffix)) {
+        resourceLogoFile(resourceName, suffix).delete();
+      }
+    }
+  }
+
+  /**
    * @param suffix the logo file suffix, indicating the format. E.g. jpeg or gif
    */
   public File appLogoFile(String suffix) {
@@ -398,14 +412,24 @@ public class DataDir {
     return dataFile(CONFIG_DIR + "/.uiSettings/logos/logo." + suffix);
   }
 
-  @SuppressWarnings("ResultOfMethodCallIgnored")
   public void removeLogoFile() {
+    removeLogoFile(null);
+  }
+
+  /**
+   * Deletes the IPT logo files.
+   *
+   * @param keep a logo file to keep, e.g. one that was just saved, or null to delete all
+   */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  public void removeLogoFile(File keep) {
     File logosDirectory = new File(dataDir, CONFIG_DIR + "/.uiSettings/logos");
     File[] logoFiles = logosDirectory.listFiles();
     if (logoFiles != null) {
       Stream.of(logoFiles)
           .filter(file -> !file.isDirectory())
           .filter(file -> file.getName().startsWith("logo"))
+          .filter(file -> !file.equals(keep))
           .forEach(File::delete);
     }
   }

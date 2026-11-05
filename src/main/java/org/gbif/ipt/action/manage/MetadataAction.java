@@ -34,6 +34,7 @@ import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.LangUtils;
 import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.MetadataLanguageTags;
@@ -60,6 +61,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -69,8 +71,6 @@ import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts2.dispatcher.Parameter;
-import org.apache.struts2.ActionContext;
 import org.apache.struts2.action.UploadedFilesAware;
 import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -158,6 +158,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
   private final DataDir dataDir;
   private List<UploadedFile> uploadedFiles = new ArrayList<>();
+  private boolean removeLogo;
 
   @Inject
   public MetadataAction(
@@ -302,13 +303,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
     }
 
     // take the section parameter from the requested url
-    String requestURI = req.getRequestURI();
     section = MetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "metadata-", "."));
-
-    // uploadlogo - redirect to additional metadata section
-    if (requestURI.contains("uploadlogo")) {
-      section = MetadataSection.ADDITIONAL_SECTION;
-    }
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
@@ -557,9 +552,33 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
   @Override
   public String save() throws Exception {
+    // the logo is uploaded with the additional metadata form, and points the logo URL at the IPT's copy
+    File logo = section == MetadataSection.ADDITIONAL_SECTION ? uploadedLogo() : null;
+    String logoType = logo == null ? null : IptFileUtils.imageType(logo);
+    if (logo != null) {
+      if (logoType == null) {
+        addFieldError("file", getText("validation.logo.type"));
+        return INPUT;
+      }
+      resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
+    }
+
     // before saving, the minimum amount of mandatory metadata must have been provided, and the current metadata section
     // must be valid, otherwise an error is displayed
     if (emlValidator.isSectionValid(resource, section, new ActionErrorCollector(this), new StrutsI18n(this))) {
+      if (logo != null) {
+        // a failed copy leaves the previous logo in place
+        try {
+          FileUtils.copyFile(logo, dataDir.resourceLogoFile(resource.getShortname(), logoType));
+        } catch (IOException e) {
+          LOG.error("Failed to save the logo of resource {}", resource.getShortname(), e);
+          addFieldError("file", getText("validation.logo.failed"));
+          return INPUT;
+        }
+        dataDir.removeResourceLogoFiles(resource.getShortname(), logoType);
+      } else if (removeLogo && section == MetadataSection.ADDITIONAL_SECTION) {
+        dataDir.removeResourceLogoFiles(resource.getShortname(), null);
+      }
       // Save metadata information (eml.xml)
       resourceManager.saveEml(resource);
       // save date metadata was last modified
@@ -957,47 +976,24 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
     return s;
   }
 
-  public String uploadLogo() {
-    UploadedFile upload = requireSingleUpload();
-    File uploadedTempFile = (File) upload.getContent();
-
-    if (uploadedTempFile != null) {
-      // remove any previous logo file
-      for (String suffix : Constants.IMAGE_TYPES) {
-        FileUtils.deleteQuietly(dataDir.resourceLogoFile(resource.getShortname(), suffix));
-      }
-      // inspect file type
-      String type = "jpeg";
-      String fileContentType = Optional.ofNullable(ActionContext.getContext())
-          .map(ActionContext::getParameters)
-          .map(p -> p.get("fileContentType"))
-          .map(Parameter::getValue)
-          .orElse(null);
-
-      if (fileContentType != null) {
-        type = StringUtils.substringAfterLast(fileContentType, "/");
-      }
-      File logoFile = dataDir.resourceLogoFile(resource.getShortname(), type);
-      try {
-        FileUtils.copyFile(uploadedTempFile, logoFile);
-      } catch (IOException e) {
-        LOG.warn(e.getMessage());
-      }
-      // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
+  /**
+   * @return the uploaded logo, or null if no file was chosen
+   */
+  private File uploadedLogo() {
+    if (uploadedFiles == null) {
+      return null;
     }
-    return INPUT;
+    return uploadedFiles.stream()
+        .filter(Objects::nonNull)
+        .filter(f -> f.getContent() instanceof File file && file.length() > 0)
+        .map(f -> (File) f.getContent())
+        .findFirst()
+        .orElse(null);
   }
 
-  private UploadedFile requireSingleUpload() {
-    if (uploadedFiles == null || uploadedFiles.isEmpty()) {
-      throw new IllegalArgumentException("Failed to upload logo");
-    }
-
-    UploadedFile upload = uploadedFiles.get(0);
-    if (upload == null || upload.getContent() == null) {
-      throw new IllegalArgumentException("Logo upload: file was empty");
-    }
-    return upload;
+  @StrutsParameter
+  public void setRemoveLogo(boolean removeLogo) {
+    this.removeLogo = removeLogo;
   }
 
   @Override

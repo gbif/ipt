@@ -1,65 +1,34 @@
     <#setting number_format="#####.##">
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
-    <script src="${baseURL}/js/ajaxfileupload.js"></script>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script>
         $(document).ready(function () {
-            $("#buttonUpload").click(function (event) {
-                event.preventDefault()
-                return ajaxFileUpload();
-            });
-
-            $("#buttonRemove").click(function () {
-                $("#resourcelogo").remove();
-                $("#eml\\.logoUrl").val('');
-                $("#file").val('');
-            });
-
-            function ajaxFileUpload() {
-                var logourl = $("#resourcelogo img").attr("src");
-                $.ajaxFileUpload
-                (
-                    {
-                        url: 'uploadlogo.do?r=${resource.shortname}',
-                        secureuri: false,
-                        fileElementId: 'file',
-                        dataType: 'json',
-                        done: function (data, status) {
-                            if (typeof (data.error) != 'undefined') {
-                                if (data.error !== '') {
-                                    alert(data.error);
-                                } else {
-                                    alert(data.msg);
-                                }
-                            }
-                        },
-                        fail: function (data, status, e) {
-                            alert(e);
-                        }
-                    }
-                )
-                if (logourl === undefined) {
-                    var baseimg = $('#baseimg').clone();
-                    baseimg.appendTo('#resourcelogo');
-                    logourl = $("#resourcelogo img").attr("src");
-                    $("#resourcelogo img").hide('slow').removeAttr("src");
-                    $("#resourcelogo img").show('slow', function () {
-                        $("[id$='eml.logoUrl']").attr("value", logourl);
-                        $("#resourcelogo img").attr("src", logourl + "&t=" + (new Date()).getTime());
-                    });
-                } else {
-                    $("#resourcelogo img").hide('slow').removeAttr("src");
-                    logourl = $("#baseimg").attr("src");
-                    $("#resourcelogo img").show('slow', function () {
-                        $("#resourcelogo img").attr("src", logourl + "&t=" + (new Date()).getTime());
-                        $("#logofields input[name$='logoUrl']").val(logourl);
-                    });
+            // the logo is uploaded when the form is saved, show a preview of the chosen file until then
+            var logoPreviewUrl = null;
+            $("#file").on("change", function () {
+                if (logoPreviewUrl) {
+                    URL.revokeObjectURL(logoPreviewUrl);
+                    logoPreviewUrl = null;
                 }
-                return false;
-            }
+                var file = this.files[0];
+                if (file) {
+                    logoPreviewUrl = URL.createObjectURL(file);
+                    $("#resourcelogo").empty().append($("<img>").attr("src", logoPreviewUrl));
+                    $("#removeLogo").val("false");
+                }
+            });
+
+            $("#buttonRemove").click(function (event) {
+                event.preventDefault();
+                $("#resourcelogo").empty();
+                $("#eml\\.logoUrl").val("");
+                $("#file").val("");
+                $("#removeLogo").val("true");
+                this.dispatchEvent(new Event("input", {bubbles: true}));
+            });
 
             $('#metadata-section').change(function () {
                 var metadataSection = $('#metadata-section').find(':selected').val()
@@ -128,9 +97,8 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation track-unsaved" action="metadata-${section}.do?r=${resource.shortname}" method="post" novalidate>
-        <!-- internal parameters needed by ajaxFileUpload.js - do not remove -->
-        <input id="validate" name="validate" type="hidden" value="false" />
+    <form class="needs-validation track-unsaved" action="metadata-${section}.do?r=${resource.shortname}" method="post" enctype="multipart/form-data" novalidate>
+        <input id="removeLogo" name="removeLogo" type="hidden" value="false" />
 
         <div class="container-fluid bg-body border-bottom">
             <div class="container bg-body border rounded-2 mb-4">
@@ -191,14 +159,9 @@
                                 </div>
 
                                 <div class="col-lg-6">
-                                    <@input name="eml.logoUrl" i18nkey="eml.logoUrl" help="i18n" type="url" />
-                                    <@s.file cssClass="form-control my-1" name="file"/>
-                                    <a href="#" class="action-link-button action-link-button-primary" id="buttonUpload">
-                                        <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"></path>
-                                        </svg>
-                                        <@s.text name="button.upload"/>
-                                    </a>
+                                    <@input name="eml.logoUrl" value=eml.logoUrl! i18nkey="eml.logoUrl" help="i18n" type="url" />
+                                    <@s.file cssClass="form-control my-1" name="file" id="file" accept="image/jpeg,image/png,image/gif"/>
+                                    <@s.fielderror cssClass="invalid-feedback d-block list-unstyled my-1" fieldName="file"/>
                                     <a href="#" class="action-link-button action-link-button-danger" id="buttonRemove">
                                         <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
@@ -272,8 +235,6 @@
                                 </div>
                                 <@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
                             </div>
-
-                            <img id="baseimg" src="${baseURL}/logo.do?r=${resource.shortname}" style="display:none;"/>
                         </div>
                     </div>
                 </main>

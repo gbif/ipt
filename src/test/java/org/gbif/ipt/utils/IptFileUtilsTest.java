@@ -17,21 +17,28 @@ import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IptFileUtilsTest extends IptBaseTest {
@@ -111,4 +118,24 @@ public class IptFileUtilsTest extends IptBaseTest {
     assertTrue(metaFile.exists());
   }
 
+  @Test
+  void testImageType(@TempDir Path dir) throws IOException {
+    BufferedImage image = new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB);
+    // the format comes from the content, not the file name
+    for (String format : new String[] {"jpeg", "png", "gif"}) {
+      File file = dir.resolve("logo-" + format + ".txt").toFile();
+      assertTrue(ImageIO.write(image, format, file));
+      assertEquals(format, IptFileUtils.imageType(file));
+    }
+
+    File bmp = dir.resolve("logo.png").toFile();
+    assertTrue(ImageIO.write(image, "bmp", bmp));
+    assertNull(IptFileUtils.imageType(bmp));
+
+    File text = Files.writeString(dir.resolve("logo.jpeg"), "<svg/>").toFile();
+    assertNull(IptFileUtils.imageType(text));
+
+    assertNull(IptFileUtils.imageType(dir.resolve("missing.png").toFile()));
+    assertNull(IptFileUtils.imageType(null));
+  }
 }

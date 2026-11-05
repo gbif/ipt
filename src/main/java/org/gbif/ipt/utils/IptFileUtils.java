@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.utils;
 
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.UrlMetadata;
 
 import java.io.BufferedReader;
@@ -33,9 +34,14 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
@@ -274,5 +280,41 @@ public class IptFileUtils {
         LOG.error("Failed to delete directory {}: {}", parent.getAbsolutePath(), e.getMessage(), e);
       }
     }
+  }
+
+  /**
+   * Detects the format of an image file from its content, ignoring its name and any content type sent by the browser.
+   *
+   * @return the format as used in logo file names ("jpeg", "png" or "gif"), or null if the file isn't one of these
+   */
+  public static String imageType(File file) {
+    if (file == null || !file.isFile()) {
+      return null;
+    }
+    try (ImageInputStream in = ImageIO.createImageInputStream(file)) {
+      if (in == null) {
+        return null;
+      }
+      Iterator<ImageReader> readers = ImageIO.getImageReaders(in);
+      while (readers.hasNext()) {
+        ImageReader reader = readers.next();
+        try {
+          String format = reader.getFormatName().toLowerCase(Locale.ROOT);
+          if ("jpg".equals(format)) {
+            format = "jpeg";
+          }
+          for (String type : Constants.IMAGE_TYPES) {
+            if (type.equals(format)) {
+              return type;
+            }
+          }
+        } finally {
+          reader.dispose();
+        }
+      }
+    } catch (IOException e) {
+      LOG.debug("Failed to read image {}: {}", file, e.getMessage());
+    }
+    return null;
   }
 }

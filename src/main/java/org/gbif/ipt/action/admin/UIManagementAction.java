@@ -15,23 +15,21 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.IptColorScheme;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.IptFileUtils;
 
 import jakarta.inject.Inject;
 import java.io.File;
-import java.io.IOException;
 import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -72,10 +70,23 @@ public class UIManagementAction extends POSTAction implements UploadedFilesAware
 
   @Override
   public String save() {
+    File logo = uploadedLogo();
+    String logoType = logo == null ? null : IptFileUtils.imageType(logo);
+    if (logo != null && logoType == null) {
+      addFieldError("file", getText("validation.logo.type"));
+      return INPUT;
+    }
+
     try {
       getCfg().saveColorSchemeConfig(colorScheme);
 
-      if (removeLogo) {
+      if (logo != null) {
+        // a failed copy leaves the previous logo in place
+        File logoFile = dataDir.appLogoFile(logoType);
+        Files.createDirectories(logoFile.toPath().getParent());
+        Files.copy(logo.toPath(), logoFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        dataDir.removeLogoFile(logoFile);
+      } else if (removeLogo) {
         dataDir.removeLogoFile();
       }
     } catch (Exception e) {
@@ -88,37 +99,19 @@ public class UIManagementAction extends POSTAction implements UploadedFilesAware
     return SUCCESS;
   }
 
-  public String uploadLogo() {
-    UploadedFile file = uploadedFiles.get(0);
-
-    if (file != null) {
-      // remove any previous logo file
-      for (String suffix : Constants.IMAGE_TYPES) {
-        FileUtils.deleteQuietly(dataDir.appLogoFile(suffix));
-      }
-      // inspect file type
-      String type = "jpeg";
-      if (file.getContentType() != null) {
-        type = StringUtils.substringAfterLast(
-            file.getContentType(), "/");
-      }
-      File logoFile = dataDir.appLogoFile(type);
-
-      try {
-        File tempFile = (File) file.getContent();
-        Files.copy(
-            tempFile.toPath(),
-            logoFile.toPath(),
-            StandardCopyOption.REPLACE_EXISTING
-        );
-      } catch (IOException e) {
-        LOG.error("Failed to upload the IPT logo: {}", e.getMessage(), e);
-      }
-    } else {
-      LOG.debug("No uploaded file found");
+  /**
+   * @return the uploaded logo, or null if no file was chosen
+   */
+  private File uploadedLogo() {
+    if (uploadedFiles == null) {
+      return null;
     }
-
-    return INPUT;
+    return uploadedFiles.stream()
+        .filter(Objects::nonNull)
+        .filter(f -> f.getContent() instanceof File file && file.length() > 0)
+        .map(f -> (File) f.getContent())
+        .findFirst()
+        .orElse(null);
   }
 
   @StrutsParameter(depth = 1)
