@@ -7,7 +7,7 @@
     <title>[@s.text name="admin.config.setup.title"/]</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap/bootstrap-5.3.8.min.css">
 
     <!-- Bootstrap icons -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/bootstrap-icons/font/bootstrap-icons.css" />
