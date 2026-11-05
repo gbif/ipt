@@ -1,8 +1,6 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#setting number_format="#####.##">
 
-    <script src="${baseURL}/js/datepicker/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="${baseURL}/styles/datepicker/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
 
     <script xmlns="http://www.w3.org/1999/html">

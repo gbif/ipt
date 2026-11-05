@@ -783,7 +783,7 @@
 
     // show extension description in tooltip in data records section
     $(function () {
-        $('.ext-tooltip').tooltip({track: true});
+        $('.ext-tooltip').tooltip();
     });
 
 </script>

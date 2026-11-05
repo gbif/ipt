@@ -538,7 +538,7 @@
         });
 
         $(function() {
-            $('.icon-validate').tooltip({track: true});
+            $('.icon-validate').tooltip();
         });
 
         // load a preview of the mapping in the modal window
