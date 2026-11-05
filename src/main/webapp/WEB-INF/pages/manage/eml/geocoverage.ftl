@@ -81,7 +81,8 @@
             var max_zoom = 16;
             var tile_size = 512;
 
-            var map = L.map('map').setView([0, 0], 1);
+            var map = L.map('map', {zoomControl: false}).setView([0, 0], 1);
+            L.control.zoom({position: 'topright'}).addTo(map);
 
             L.tileLayer('https://tile.gbif.org/3857/omt/{z}/{x}/{y}@{r}x.png?style=osm-bright'.replace('{r}', pixel_ratio), {
                 minZoom: 1,
