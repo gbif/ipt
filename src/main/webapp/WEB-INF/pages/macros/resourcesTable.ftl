@@ -86,46 +86,43 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
                     type: 'POST'
                 },
                 responsive: true,
-                "bProcessing": true,
-                "bServerSide": true,
+                "processing": true,
+                "serverSide": true,
                 "displayStart": start,
-                "iDisplayLength": ${numResourcesShown},
-                "bLengthChange": false,
-                "oLanguage": {
-                    "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
-                    "sZeroRecords": "<@s.text name="dataTables.sZeroRecords.resources"/>",
-                    "sInfo": "<@s.text name="dataTables.sInfo"/>",
-                    "sInfoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
-                    "sInfoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
-                    "sSearch": "<@s.text name="manage.mapping.filter"/>:",
-                    "oPaginate": {
-                        "sNext": "<@s.text name="pager.next"/>",
-                        "sPrevious": "<@s.text name="pager.previous"/>"
+                "pageLength": ${numResourcesShown},
+                "lengthChange": false,
+                "language": {
+                    "emptyTable": "<@s.text name="${sEmptyTable}"/>",
+                    "zeroRecords": "<@s.text name="dataTables.sZeroRecords.resources"/>",
+                    "info": "<@s.text name="dataTables.sInfo"/>",
+                    "infoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
+                    "infoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
+                    "search": "<@s.text name="manage.mapping.filter"/>:",
+                    "paginate": {
+                        "next": "<@s.text name="pager.next"/>",
+                        "previous": "<@s.text name="pager.previous"/>"
                     }
                 },
-                "aoColumns": [
-                    {"sTitle": "<@s.text name="portal.home.logo"/>", "bSearchable": false, "bSortable": false, "sClass": "desktop", "bVisible": <#if shownPublicly>true<#else>false</#if>},
-                    {"sTitle": "<@s.text name="manage.home.name"/>", "sClass": "all text-break"},
-                    {"sTitle": "<@s.text name="manage.home.organisation"/>", "sClass": "desktop tablet-l"},
-                    {"sTitle": "<@s.text name="manage.home.type"/>", "sClass": "desktop tablet-l tablet-p"},
-                    {"sTitle": "<@s.text name="manage.home.subtype"/>", "sClass": "desktop"},
-                    {"sTitle": "<@s.text name="portal.home.records"/>", "bSearchable": false, "sType": "number", "sClass": "text-xl-end desktop"},
-                    {"sTitle": "<@s.text name="manage.home.last.modified"/>", "bSearchable": false, "sClass": "text-xl-end desktop"},
-                    {"sTitle": "<@s.text name="manage.home.last.publication" />", "bSearchable": false, orderSequence: ["desc", "asc"], "sClass": "text-xl-end desktop tablet-l tablet-p"},
-                    {"sTitle": "<@s.text name="manage.home.next.publication" />", "bSearchable": false, "sClass": "text-xl-end desktop"},
-                    {"sTitle": "<@s.text name="manage.home.visible"/>", "bSearchable": false, "sClass": "desktop tablet-l", "bVisible": <#if shownPublicly>false<#else>true</#if>},
-                    {"sTitle": "<@s.text name="portal.home.author"/>", "sClass": "desktop tablet-l", "bVisible": <#if shownPublicly>false<#else>true</#if>},
-                    {"sTitle": "<@s.text name="resource.shortname"/>", "bVisible": false},
-                    {"sTitle": "<@s.text name="portal.resource.summary.keywords"/>", "bVisible": false}
+                "columns": [
+                    {"title": "<@s.text name="portal.home.logo"/>", "searchable": false, "orderable": false, "className": "desktop", "visible": <#if shownPublicly>true<#else>false</#if>},
+                    {"title": "<@s.text name="manage.home.name"/>", "className": "all text-break"},
+                    {"title": "<@s.text name="manage.home.organisation"/>", "className": "desktop tablet-l"},
+                    {"title": "<@s.text name="manage.home.type"/>", "className": "desktop tablet-l tablet-p"},
+                    {"title": "<@s.text name="manage.home.subtype"/>", "className": "desktop"},
+                    {"title": "<@s.text name="portal.home.records"/>", "searchable": false, "className": "text-xl-end desktop"},
+                    {"title": "<@s.text name="manage.home.last.modified"/>", "searchable": false, "className": "text-xl-end desktop"},
+                    {"title": "<@s.text name="manage.home.last.publication" />", "searchable": false, orderSequence: ["desc", "asc"], "className": "text-xl-end desktop tablet-l tablet-p"},
+                    {"title": "<@s.text name="manage.home.next.publication" />", "searchable": false, "className": "text-xl-end desktop"},
+                    {"title": "<@s.text name="manage.home.visible"/>", "searchable": false, "className": "desktop tablet-l", "visible": <#if shownPublicly>false<#else>true</#if>},
+                    {"title": "<@s.text name="portal.home.author"/>", "className": "desktop tablet-l", "visible": <#if shownPublicly>false<#else>true</#if>},
+                    {"title": "<@s.text name="resource.shortname"/>", "visible": false},
+                    {"title": "<@s.text name="portal.resource.summary.keywords"/>", "visible": false}
                 ],
-                "aaSorting": [[sortParam, orderParam]],
-                "aoColumnDefs": [
-                    {'bSortable': false, 'aTargets': [0]}
+                "order": [[sortParam, orderParam]],
+                "columnDefs": [
+                    {'orderable': false, 'targets': [0]}
                 ],
-                "oSearch": {"sSearch": searchParam},
-                "fnInitComplete": function (oSettings) {
-                    /* Do nothing for now, may need in the future */
-                }
+                "search": {"search": searchParam}
             });
 
             // display page parameter in the URL

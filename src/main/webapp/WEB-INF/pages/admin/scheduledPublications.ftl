@@ -20,35 +20,35 @@
         $(document).ready(function() {
             $('#tableContainer').html( '<table class="display dataTable compact" id="rtable"></table>' );
             $('#rtable').dataTable( {
-                "aaData": aDataSet,
-                "iDisplayLength": ${numResourcesShown},
-                "bLengthChange": false,
-                "bAutoWidth": false,
-                "oLanguage": {
-                    "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
-                    "sZeroRecords": "<@s.text name="dataTables.sZeroRecords.resources"/>",
-                    "sInfo": "<@s.text name="dataTables.sInfo"/>",
-                    "sInfoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
-                    "sInfoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
-                    "sSearch": "<@s.text name="manage.mapping.filter"/>:",
-                    "oPaginate": {
-                        "sNext": "<@s.text name="pager.next"/>",
-                        "sPrevious": "<@s.text name="pager.previous"/>"
+                "data": aDataSet,
+                "pageLength": ${numResourcesShown},
+                "lengthChange": false,
+                "autoWidth": false,
+                "language": {
+                    "emptyTable": "<@s.text name="${sEmptyTable}"/>",
+                    "zeroRecords": "<@s.text name="dataTables.sZeroRecords.resources"/>",
+                    "info": "<@s.text name="dataTables.sInfo"/>",
+                    "infoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
+                    "infoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
+                    "search": "<@s.text name="manage.mapping.filter"/>:",
+                    "paginate": {
+                        "next": "<@s.text name="pager.next"/>",
+                        "previous": "<@s.text name="pager.previous"/>"
                     }
                 },
-                "aoColumns": [
-                    { "sTitle": "<@s.text name="admin.scheduledPublications.resource"/>", "bSearchable": true},
-                    { "sTitle": "<@s.text name="admin.scheduledPublications.managers"/>", "bSearchable": true},
-                    { "sTitle": "<@s.text name="admin.scheduledPublications.frequency"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="admin.scheduledPublications.lastPublished"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="admin.scheduledPublications.nextPublished"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="admin.scheduledPublications.records"/>", "bSearchable": false},
-                    <#--{ "sTitle": "<@s.text name="admin.scheduledPublications.status"/>", "bSearchable": false},-->
-                    <#--{ "sTitle": "<@s.text name="admin.scheduledPublications.failures"/>", "bSearchable": false}-->
+                "columns": [
+                    { "title": "<@s.text name="admin.scheduledPublications.resource"/>", "searchable": true},
+                    { "title": "<@s.text name="admin.scheduledPublications.managers"/>", "searchable": true},
+                    { "title": "<@s.text name="admin.scheduledPublications.frequency"/>", "searchable": false},
+                    { "title": "<@s.text name="admin.scheduledPublications.lastPublished"/>", "searchable": false},
+                    { "title": "<@s.text name="admin.scheduledPublications.nextPublished"/>", "searchable": false},
+                    { "title": "<@s.text name="admin.scheduledPublications.records"/>", "searchable": false},
+                    <#--{ "title": "<@s.text name="admin.scheduledPublications.status"/>", "searchable": false},-->
+                    <#--{ "title": "<@s.text name="admin.scheduledPublications.failures"/>", "searchable": false}-->
                 ],
-                "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
-                "aoColumnDefs": [
-                    { 'bSortable': true, 'aTargets': [ 0,1,2,3,4,5 ] }
+                "order": [[ ${columnToSortOn}, "${sortOrder}" ]],
+                "columnDefs": [
+                    { 'orderable': true, 'targets': [ 0,1,2,3,4,5 ] }
                 ]
             } );
         } );

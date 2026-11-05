@@ -41,34 +41,34 @@ organisationsTable macro: Generates a data table that has searching, pagination,
         $(document).ready(function() {
             $('#tableContainer').html( '<table class="display dataTable compact" id="rtable"></table>' );
             $('#rtable').dataTable( {
-                "aaData": aDataSet,
-                "iDisplayLength": ${numOrganisationsShown},
-                "bLengthChange": false,
-                "bAutoWidth": false,
-                "oLanguage": {
-                    "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
-                    "sZeroRecords": "<@s.text name="dataTables.sZeroRecords.organisations"/>",
-                    "sInfo": "<@s.text name="dataTables.sInfo"/>",
-                    "sInfoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
-                    "sInfoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
-                    "sSearch": "<@s.text name="manage.mapping.filter"/>:",
-                    "oPaginate": {
-                        "sNext": "<@s.text name="pager.next"/>",
-                        "sPrevious": "<@s.text name="pager.previous"/>"
+                "data": aDataSet,
+                "pageLength": ${numOrganisationsShown},
+                "lengthChange": false,
+                "autoWidth": false,
+                "language": {
+                    "emptyTable": "<@s.text name="${sEmptyTable}"/>",
+                    "zeroRecords": "<@s.text name="dataTables.sZeroRecords.organisations"/>",
+                    "info": "<@s.text name="dataTables.sInfo"/>",
+                    "infoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
+                    "infoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
+                    "search": "<@s.text name="manage.mapping.filter"/>:",
+                    "paginate": {
+                        "next": "<@s.text name="pager.next"/>",
+                        "previous": "<@s.text name="pager.previous"/>"
 
                     }
                 },
-                "aoColumns": [
-                    { "sTitle": "<@s.text name="admin.organisation.name"/>", "bSearchable": true},
-                    { "sTitle": "<@s.text name="admin.organisation.alias"/>", "bSearchable": true},
-                    { "sTitle": "<@s.text name="admin.organisation.canPublish"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="admin.organisation.doiRegistrationAgency"/>", "bSearchable": true},
-                    { "sTitle": "<@s.text name="admin.organisation.canRegisterDois"/>", "bSearchable": false},
-                    { "sTitle": "", "bSearchable": false, "bSortable": false}
+                "columns": [
+                    { "title": "<@s.text name="admin.organisation.name"/>", "searchable": true},
+                    { "title": "<@s.text name="admin.organisation.alias"/>", "searchable": true},
+                    { "title": "<@s.text name="admin.organisation.canPublish"/>", "searchable": false},
+                    { "title": "<@s.text name="admin.organisation.doiRegistrationAgency"/>", "searchable": true},
+                    { "title": "<@s.text name="admin.organisation.canRegisterDois"/>", "searchable": false},
+                    { "title": "", "searchable": false, "orderable": false}
                 ],
-                "aaSorting": [[ ${columnToSortOn}, "${sortOrder}" ]],
-                "aoColumnDefs": [
-                    { 'bSortable': true, 'aTargets': [ 0,1,2,3] }
+                "order": [[ ${columnToSortOn}, "${sortOrder}" ]],
+                "columnDefs": [
+                    { 'orderable': true, 'targets': [ 0,1,2,3] }
                 ],
                 "columnDefs": [
                     { "width": "100px", "targets": 5 }

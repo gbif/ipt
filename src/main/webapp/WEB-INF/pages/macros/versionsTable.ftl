@@ -30,34 +30,34 @@ versionsTable macro: Generates a data table that has pagination.
         $(document).ready(function() {
             $('#vtableContainer').html( '<table class="hover row-border dataTable compact" id="rtable"></table>' );
             $('#rtable').dataTable( {
-                "bFilter": false,
-                "aaData": aDataSet,
-                "iDisplayLength": ${numVersionsShown},
-                "bLengthChange": false,
-                "bAutoWidth": false,
-                "bSort": false,
-                "oLanguage": {
-                    "sEmptyTable": "<@s.text name="${sEmptyTable}"/>",
-                    "sZeroRecords": "<@s.text name="dataTables.sZeroRecords.versions"/>",
-                    "sInfo": "<@s.text name="dataTables.sInfo"/>",
-                    "sInfoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
-                    "sInfoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
-                    "oPaginate": {
-                        "sNext": "<@s.text name="pager.next"/>",
-                        "sPrevious": "<@s.text name="pager.previous"/>"
+                "searching": false,
+                "data": aDataSet,
+                "pageLength": ${numVersionsShown},
+                "lengthChange": false,
+                "autoWidth": false,
+                "ordering": false,
+                "language": {
+                    "emptyTable": "<@s.text name="${sEmptyTable}"/>",
+                    "zeroRecords": "<@s.text name="dataTables.sZeroRecords.versions"/>",
+                    "info": "<@s.text name="dataTables.sInfo"/>",
+                    "infoEmpty": "<@s.text name="dataTables.sInfoEmpty"/>",
+                    "infoFiltered": "<@s.text name="dataTables.sInfoFiltered"/>",
+                    "paginate": {
+                        "next": "<@s.text name="pager.next"/>",
+                        "previous": "<@s.text name="pager.previous"/>"
 
                     }
                 },
-                "aoColumns": [
-                    { "sTitle": "<@s.text name="manage.overview.published.version"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="manage.overview.published.released"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="portal.home.records"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="portal.home.summary"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="portal.home.doi"/>", "bSearchable": false},
-                    { "sTitle": "<@s.text name="portal.home.modifiedBy"/>", "bSearchable": false}
+                "columns": [
+                    { "title": "<@s.text name="manage.overview.published.version"/>", "searchable": false},
+                    { "title": "<@s.text name="manage.overview.published.released"/>", "searchable": false},
+                    { "title": "<@s.text name="portal.home.records"/>", "searchable": false},
+                    { "title": "<@s.text name="portal.home.summary"/>", "searchable": false},
+                    { "title": "<@s.text name="portal.home.doi"/>", "searchable": false},
+                    { "title": "<@s.text name="portal.home.modifiedBy"/>", "searchable": false}
                 ],
-                "aoColumnDefs": [
-                    { 'bSortable': false, 'aTargets': [ 0,1,2,3,4,5] }
+                "columnDefs": [
+                    { 'orderable': false, 'targets': [ 0,1,2,3,4,5] }
                 ]
             } );
         } );
