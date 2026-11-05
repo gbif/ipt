@@ -477,7 +477,7 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
     ORGANIZATION(2, Comparator.comparing(ResourceSummaryView::getOrganizationAliasOrName, nullSafeStringComparator)),
     CORE_TYPE(3, Comparator.comparing(ResourceSummaryView::getCoreType, nullSafeStringComparator)),
     SUBTYPE(4, Comparator.comparing(ResourceSummaryView::getSubtype, nullSafeStringComparator)),
-    RECORDS_PUBLISHED(5, Comparator.comparingInt(ResourceSummaryView::getRecordsPublished)
+    RECORDS_PUBLISHED(5, Comparator.comparingLong(ResourceSummaryView::getRecordsPublished)
         .thenComparing(ResourceSummaryView::getLastPublished, nullSafeDateComparator)),
     MODIFIED(6, Comparator.comparing(ResourceSummaryView::getModified, nullSafeDateComparator)),
     LAST_PUBLISHED(7, Comparator.comparing(ResourceSummaryView::getLastPublished, nullSafeDateComparator)),

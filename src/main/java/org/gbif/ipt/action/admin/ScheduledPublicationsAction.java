@@ -114,7 +114,7 @@ public class ScheduledPublicationsAction extends POSTAction {
     private String frequency;
     private Date lastPublished;
     private Date nextPublished;
-    private int recordsPublished;
+    private long recordsPublished;
 
     public String getShortname() { return shortname; }
     public void setShortname(String shortname) { this.shortname = shortname; }
@@ -134,7 +134,7 @@ public class ScheduledPublicationsAction extends POSTAction {
     public Date getNextPublished() { return nextPublished; }
     public void setNextPublished(Date nextPublished) { this.nextPublished = nextPublished; }
 
-    public int getRecordsPublished() { return recordsPublished; }
-    public void setRecordsPublished(int recordsPublished) { this.recordsPublished = recordsPublished; }
+    public long getRecordsPublished() { return recordsPublished; }
+    public void setRecordsPublished(long recordsPublished) { this.recordsPublished = recordsPublished; }
   }
 }

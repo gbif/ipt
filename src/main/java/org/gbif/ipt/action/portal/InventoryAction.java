@@ -106,7 +106,7 @@ public class InventoryAction extends ActionSupport {
      * @return the dataset record count
      */
     @Getter
-    private int records;
+    private long records;
     private Date lastPublished;
     /**
      * -- GETTER --
@@ -144,7 +144,7 @@ public class InventoryAction extends ActionSupport {
      * or an empty map
      */
     @Getter
-    private Map<String, Integer> recordsByExtension = new HashMap<>();
+    private Map<String, Long> recordsByExtension = new HashMap<>();
 
     public void setTitle(String title) {
       this.title = title;
@@ -154,7 +154,7 @@ public class InventoryAction extends ActionSupport {
       this.type = type;
     }
 
-    public void setRecords(int records) {
+    public void setRecords(long records) {
       this.records = records;
     }
 
@@ -185,7 +185,7 @@ public class InventoryAction extends ActionSupport {
     /**
      * @param recordsByExtension map of record counts (map value) by extension rowType (map key)
      */
-    public void setRecordsByExtension(Map<String, Integer> recordsByExtension) {
+    public void setRecordsByExtension(Map<String, Long> recordsByExtension) {
       if (recordsByExtension != null) {
         this.recordsByExtension = Collections.unmodifiableMap(recordsByExtension);
       }

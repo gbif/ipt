@@ -33,7 +33,7 @@ public class ResourceSummaryView {
   private String organisationName;
   private String coreType;
   private String subtype;
-  private int recordsPublished;
+  private long recordsPublished;
   private Date modified;
   private Date lastPublished;
   private Date nextPublished;

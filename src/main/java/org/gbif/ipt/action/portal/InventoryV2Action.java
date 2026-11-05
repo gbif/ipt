@@ -140,7 +140,7 @@ public class InventoryV2Action extends ActionSupport {
     private BigDecimal version;
     private Date lastPublished;
     @Getter
-    private int records;
+    private long records;
     @Getter
     private List<InventoryArchiveInfo> archive = new ArrayList<>();
     @Getter

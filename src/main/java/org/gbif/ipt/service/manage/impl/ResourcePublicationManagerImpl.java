@@ -142,7 +142,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   private final ResourceDoiService resourceDoiService;
 
   private final ThreadPoolExecutor executor;
-  private final Map<String, Future<Map<String, Integer>>> processFutures = new ConcurrentHashMap<>();
+  private final Map<String, Future<Map<String, Long>>> processFutures = new ConcurrentHashMap<>();
   private final Map<String, List<Date>> processFailures = new ConcurrentHashMap<>();
   private final Map<String, LocalDate> lastLoggedFailures = new ConcurrentHashMap<>();
   private final Map<String, StatusReport> processReports = new ConcurrentHashMap<>();
@@ -180,7 +180,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   public boolean cancelPublishing(String shortname) {
     boolean canceled = false;
     // get future
-    Future<Map<String, Integer>> f = processFutures.get(shortname);
+    Future<Map<String, Long>> f = processFutures.get(shortname);
     if (f != null) {
       // cancel job, even if it's running
       canceled = f.cancel(true);
@@ -206,7 +206,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   @Override
   public boolean isLocked(String shortname, BaseAction action) {
     // is listed as locked, but the task might be finished, check
-    Future<Map<String, Integer>> f = processFutures.get(shortname);
+    Future<Map<String, Long>> f = processFutures.get(shortname);
     if (f == null) {
       return false;
     }
@@ -249,11 +249,11 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     try {
       if (resource.isSkipPublicationIfRecordsDrop()) {
         // check the number of records after publishing
-        int newRecordCount = getResourceRecordsCount(resource, f.get());
-        int previousRecordCount = resource.getRecordsPublished();
+        long newRecordCount = getResourceRecordsCount(resource, f.get());
+        long previousRecordCount = resource.getRecordsPublished();
         int dropThreshold = resource.getRecordsDropThreshold();
 
-        int dropAmount = previousRecordCount - newRecordCount;
+        long dropAmount = previousRecordCount - newRecordCount;
         dropPercentage = previousRecordCount == 0 ? 0 : (dropAmount * 100.0) / previousRecordCount;
 
         if (dropPercentage > dropThreshold) {
@@ -278,7 +278,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         // store record counts by extension
         resource.setRecordsByExtension(f.get());
         // populate record count
-        Integer recordCount = getResourceRecordsCount(resource);
+        long recordCount = getResourceRecordsCount(resource);
         resource.setRecordsPublished(recordCount);
 
         if (skipIfNotChanged) {
@@ -527,7 +527,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   private void generateDwca(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDwca worker = dwcaFactory.create(resource, this);
-    Future<Map<String, Integer>> f = executor.submit(worker);
+    Future<Map<String, Long>> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
     // make sure we have at least a first report for this resource
     worker.report();
@@ -539,7 +539,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   private void generateDataPackage(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDataPackage worker = dataPackageFactory.create(resource, this);
-    Future<Map<String, Integer>> f = executor.submit(worker);
+    Future<Map<String, Long>> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
     // make sure we have at least a first report for this resource
     worker.report();
@@ -551,7 +551,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   private void generateDwcDP(Resource resource) {
     // use threads to run in the background as sql sources might take a long time
     GenerateDarwinCoreDataPackage worker = dwcDpFactory.create(resource, this);
-    Future<Map<String, Integer>> f = executor.submit(worker);
+    Future<Map<String, Long>> f = executor.submit(worker);
     processFutures.put(resource.getShortname(), f);
     // make sure we have at least a first report for this resource
     worker.report();
@@ -1109,7 +1109,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   }
 
   @Override
-  public Map<String, Future<Map<String, Integer>>> getProcessFutures() {
+  public Map<String, Future<Map<String, Long>>> getProcessFutures() {
     return processFutures;
   }
 
@@ -2004,8 +2004,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     }
   }
 
-  private Integer getResourceRecordsCount(Resource resource) {
-    Integer recordCount;
+  private long getResourceRecordsCount(Resource resource) {
+    Long recordCount;
     if (resource.isDataPackage()) {
       // take number of observations as number of records for Camtrap
       // for the rest data packages - total number of all records
@@ -2013,7 +2013,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         recordCount = resource.getRecordsByExtension().get(CAMTRAP_DP_OBSERVATIONS);
       } else {
         recordCount = resource.getRecordsByExtension().values().stream()
-            .mapToInt(Integer::intValue)
+            .mapToLong(Long::longValue)
             .sum();
       }
     } else {
@@ -2022,8 +2022,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     return recordCount != null ? recordCount : 0;
   }
 
-  private Integer getResourceRecordsCount(Resource resource, Map<String, Integer> publishedRecordsByExtension) {
-    Integer recordCount;
+  private long getResourceRecordsCount(Resource resource, Map<String, Long> publishedRecordsByExtension) {
+    Long recordCount;
     if (resource.isDataPackage()) {
       // take number of observations as number of records for Camtrap
       // for the rest data packages - total number of all records
@@ -2031,7 +2031,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         recordCount = publishedRecordsByExtension.get(CAMTRAP_DP_OBSERVATIONS);
       } else {
         recordCount = publishedRecordsByExtension.values().stream()
-            .mapToInt(Integer::intValue)
+            .mapToLong(Long::longValue)
             .sum();
       }
     } else {

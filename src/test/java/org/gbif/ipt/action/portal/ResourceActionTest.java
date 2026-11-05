@@ -286,23 +286,23 @@ public class ResourceActionTest extends IptBaseTest {
 
   @Test
   public void testGetRecordsByExtensionOrdered() {
-    Map<String, Integer> counts = new LinkedHashMap<>();
-    counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
-    counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
-    counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);
+    Map<String, Long> counts = new LinkedHashMap<>();
+    counts.put(Constants.DWC_ROWTYPE_TAXON, 55L);
+    counts.put(Constants.DWC_ROWTYPE_EVENT, 100L);
+    counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10L);
     action.setRecordsByExtensionForVersion(counts);
 
     // do ordering
-    LinkedHashMap<String, Integer> orderedCounts = action.getRecordsByExtensionOrdered();
+    LinkedHashMap<String, Long> orderedCounts = action.getRecordsByExtensionOrdered();
     assertEquals("[100, 55, 10]", orderedCounts.values().toString());
   }
 
   @Test
   public void testGetMaxRecordsInExtension() {
-    Map<String, Integer> counts = new LinkedHashMap<>();
-    counts.put(Constants.DWC_ROWTYPE_TAXON, 55);
-    counts.put(Constants.DWC_ROWTYPE_EVENT, 100);
-    counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10);
+    Map<String, Long> counts = new LinkedHashMap<>();
+    counts.put(Constants.DWC_ROWTYPE_TAXON, 55L);
+    counts.put(Constants.DWC_ROWTYPE_EVENT, 100L);
+    counts.put(Constants.DWC_ROWTYPE_OCCURRENCE, 10L);
     action.setRecordsByExtensionForVersion(counts);
 
     // do ordering

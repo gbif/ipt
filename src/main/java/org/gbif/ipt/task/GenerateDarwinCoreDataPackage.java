@@ -81,7 +81,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
 
-public class GenerateDarwinCoreDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
+public class GenerateDarwinCoreDataPackage extends ReportingTask implements Callable<Map<String, Long>> {
 
   private enum STATE {
     WAITING, STARTED, DATARESOURCES, METADATA, BUNDLING, COMPLETED, ARCHIVING, VALIDATING, CANCELLED, FAILED
@@ -108,11 +108,11 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private Exception exception;
   private File dataPackageFolder;
   private DataPackage dataPackage;
-  private int currRecords = 0;
-  private int currRecordsSkipped = 0;
+  private long currRecords = 0;
+  private long currRecordsSkipped = 0;
   private String currTableSchema;
   // record counts by extension <rowType, count>
-  private Map<String, Integer> recordsByTableSchema = new HashMap<>();
+  private Map<String, Long> recordsByTableSchema = new HashMap<>();
 
   public GenerateDarwinCoreDataPackage(
       Resource resource,
@@ -129,7 +129,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   }
 
   @Override
-  public Map<String, Integer> call() throws Exception {
+  public Map<String, Long> call() throws Exception {
     try {
       checkForInterruption();
       setState(STATE.STARTED);
@@ -397,7 +397,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    * @param line number of lines currently processed at the time of the check
    * @throws InterruptedException if the thread was found to be interrupted
    */
-  private void checkForInterruption(int line) throws InterruptedException {
+  private void checkForInterruption(long line) throws InterruptedException {
     if (Thread.interrupted()) {
       StatusReport report = report();
       String msg = "Interrupting package generator at line " + line + ". Last status: " + report.getState();
@@ -673,12 +673,12 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   private void dumpData(Writer writer, List<String> columns, DataPackageMapping schemaMapping)
       throws GeneratorException, InterruptedException {
     RecordFilter filter = schemaMapping.getFilter();
-    int recordsWithError = 0;
-    int linesWithWrongColumnNumber = 0;
-    int recordsFiltered = 0;
-    int emptyLines = 0;
+    long recordsWithError = 0;
+    long linesWithWrongColumnNumber = 0;
+    long recordsFiltered = 0;
+    long emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
-    int line = 0;
+    long line = 0;
 
     // field mappings of this mapping that are mapped or have a default value by field name
     Map<String, DataPackageFieldMapping> mappingsByFieldName = new HashMap<>();

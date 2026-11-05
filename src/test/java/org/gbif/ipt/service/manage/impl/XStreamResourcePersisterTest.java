@@ -136,6 +136,37 @@ public class XStreamResourcePersisterTest {
     assertEquals(PublicationStatus.PUBLIC, history.getPublicationStatus());
   }
 
+  /**
+   * Record counts used to be stored as int: old files have Integer map values, overflowed ones negative (#2923).
+   */
+  @Test
+  public void testLegacyIntRecordCounts() {
+    String emof = "http://rs.iobis.org/obis/terms/ExtendedMeasurementOrFact";
+    String xml = "<resource>"
+        + "<recordsPublished>-1887636530</recordsPublished>"
+        + "<recordsByExtension>"
+        + "<entry><string>" + emof + "</string><int>-1887636530</int></entry>"
+        + "<entry><string>event</string><int>100</int></entry>"
+        + "</recordsByExtension>"
+        + "<versionHistory><versionhistory><version>1.0</version>"
+        + "<recordsPublished>-1887636530</recordsPublished>"
+        + "<recordsByExtension><entry><string>" + emof + "</string><int>-1887636530</int></entry></recordsByExtension>"
+        + "</versionhistory></versionHistory>"
+        + "</resource>";
+
+    Resource loaded = load(xml);
+
+    assertEquals(2407330766L, loaded.getRecordsPublished());
+    assertEquals(Long.valueOf(2407330766L), loaded.getRecordsByExtension().get(emof));
+    assertEquals(Long.valueOf(100L), loaded.getRecordsByExtension().get("event"));
+    VersionHistory history = loaded.getVersionHistory().get(0);
+    assertEquals(2407330766L, history.getRecordsPublished());
+    assertEquals(Long.valueOf(2407330766L), history.getRecordsByExtension().get(emof));
+
+    // written back as long
+    assertTrue(save(loaded).contains("<long>2407330766</long>"));
+  }
+
   @Test
   public void testAliases() throws Exception {
     Resource resource = new Resource();

@@ -92,7 +92,7 @@ import static org.gbif.ipt.config.Constants.COL_DP;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
 
-public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Integer>> {
+public class GenerateDataPackage extends ReportingTask implements Callable<Map<String, Long>> {
 
   private enum STATE {
     WAITING, STARTED, DATARESOURCES, METADATA, BUNDLING, COMPLETED, ARCHIVING, VALIDATING, CANCELLED, FAILED
@@ -113,12 +113,12 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private Exception exception;
   private File dataPackageFolder;
   private Package dataPackage;
-  private int currRecords = 0;
-  private int currRecordsSkipped = 0;
+  private long currRecords = 0;
+  private long currRecordsSkipped = 0;
   private String currSchema;
   private String currTableSchema;
   // record counts by extension <rowType, count>
-  private Map<String, Integer> recordsByTableSchema = new HashMap<>();
+  private Map<String, Long> recordsByTableSchema = new HashMap<>();
 
   public GenerateDataPackage(
       Resource resource,
@@ -151,7 +151,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   }
 
   @Override
-  public Map<String, Integer> call() throws Exception {
+  public Map<String, Long> call() throws Exception {
     try {
       checkForInterruption();
       setState(STATE.STARTED);
@@ -330,7 +330,7 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param line number of lines currently processed at the time of the check
    * @throws InterruptedException if the thread was found to be interrupted
    */
-  private void checkForInterruption(int line) throws InterruptedException {
+  private void checkForInterruption(long line) throws InterruptedException {
     if (Thread.interrupted()) {
       StatusReport report = report();
       String msg = "Interrupting package generator at line " + line + ". Last status: " + report.getState();
@@ -605,12 +605,12 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     int dataFileRowSize = fields.size();
     EnumValues enumValues = new EnumValues(fields);
     RecordFilter filter = schemaMapping.getFilter();
-    int recordsWithError = 0;
-    int linesWithWrongColumnNumber = 0;
-    int recordsFiltered = 0;
-    int emptyLines = 0;
+    long recordsWithError = 0;
+    long linesWithWrongColumnNumber = 0;
+    long recordsFiltered = 0;
+    long emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
-    int line = 0;
+    long line = 0;
     Optional<Integer> maxMappedColumnIndexOpt = tableSchemaFieldMappings.stream()
         .filter(Objects::nonNull)
         .map(DataPackageFieldMapping::getIndex)

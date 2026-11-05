@@ -67,7 +67,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -81,7 +81,7 @@ import org.apache.logging.log4j.Level;
 
 import org.xml.sax.SAXException;
 
-public class GenerateDwca extends ReportingTask implements Callable<Map<String, Integer>> {
+public class GenerateDwca extends ReportingTask implements Callable<Map<String, Long>> {
 
   private enum STATE {
     WAITING, STARTED, DATAFILES, METADATA, BUNDLING, COMPLETED, ARCHIVING, VALIDATING, CANCELLED, FAILED
@@ -90,12 +90,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   private static final Pattern escapeChars = Pattern.compile("[\t\n\r]");
   private final Resource resource;
   // record counts by extension <rowType, count>
-  private Map<String, Integer> recordsByExtension = new HashMap<>();
+  private Map<String, Long> recordsByExtension = new HashMap<>();
   private Archive archive;
   private File dwcaFolder;
   // status reporting
-  private int currRecords = 0;
-  private int currRecordsSkipped = 0;
+  private long currRecords = 0;
+  private long currRecordsSkipped = 0;
   private String currExtension;
   private STATE state = STATE.WAITING;
   private final SourceManager sourceManager;
@@ -595,12 +595,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     File sortedFile = sortCoreDataFile(extFile, sortColumnIndex);
 
     // metrics
-    int recordsWithNoId = 0;
-    AtomicInteger recordsWithNoOccurrenceId = new AtomicInteger(0);
-    AtomicInteger recordsWithDuplicateOccurrenceId = new AtomicInteger(0);
-    AtomicInteger recordsWithNoBasisOfRecord = new AtomicInteger(0);
-    AtomicInteger recordsWithNonMatchingBasisOfRecord = new AtomicInteger(0);
-    AtomicInteger recordsWithAmbiguousBasisOfRecord = new AtomicInteger(0);
+    long recordsWithNoId = 0;
+    AtomicLong recordsWithNoOccurrenceId = new AtomicLong(0);
+    AtomicLong recordsWithDuplicateOccurrenceId = new AtomicLong(0);
+    AtomicLong recordsWithNoBasisOfRecord = new AtomicLong(0);
+    AtomicLong recordsWithNonMatchingBasisOfRecord = new AtomicLong(0);
+    AtomicLong recordsWithAmbiguousBasisOfRecord = new AtomicLong(0);
 
     // reporting
     currRecords = 0;
@@ -758,11 +758,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
         coreFile.getIgnoreHeaderLines());
 
     // metrics
-    AtomicInteger recordsWithNoId = new AtomicInteger(0);
-    AtomicInteger recordsWithDuplicateId = new AtomicInteger(0);
-    AtomicInteger recordsWithNoBasisOfRecord = new AtomicInteger(0);
-    AtomicInteger recordsWithNonMatchingBasisOfRecord = new AtomicInteger(0);
-    AtomicInteger recordsWithAmbiguousBasisOfRecord = new AtomicInteger(0);
+    AtomicLong recordsWithNoId = new AtomicLong(0);
+    AtomicLong recordsWithDuplicateId = new AtomicLong(0);
+    AtomicLong recordsWithNoBasisOfRecord = new AtomicLong(0);
+    AtomicLong recordsWithNonMatchingBasisOfRecord = new AtomicLong(0);
+    AtomicLong recordsWithAmbiguousBasisOfRecord = new AtomicLong(0);
 
     String lastId = null;
     try {
@@ -833,7 +833,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    *
    * @return identifier value
    */
-  private String validateIdentifier(String id, String lastId, AtomicInteger recordsWithNoId, AtomicInteger recordsWithDuplicateId) {
+  private String validateIdentifier(String id, String lastId, AtomicLong recordsWithNoId, AtomicLong recordsWithDuplicateId) {
     // check id exists
     if (StringUtils.isBlank(id)) {
       recordsWithNoId.getAndIncrement();
@@ -861,8 +861,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @param recordsWithNonMatchingBasisOfRecord number of records with basisOfRecord not matching vocabulary so far
    * @param recordsWithAmbiguousBasisOfRecord   number of records with ambiguous basisOfRecord so far
    */
-  private void validateBasisOfRecord(String bor, int line, AtomicInteger recordsWithNoBasisOfRecord,
-    AtomicInteger recordsWithNonMatchingBasisOfRecord, AtomicInteger recordsWithAmbiguousBasisOfRecord) {
+  private void validateBasisOfRecord(String bor, long line, AtomicLong recordsWithNoBasisOfRecord,
+    AtomicLong recordsWithNonMatchingBasisOfRecord, AtomicLong recordsWithAmbiguousBasisOfRecord) {
     // check basisOfRecord exists
     if (StringUtils.isBlank(bor)) {
       writePublicationLogMessage("Line #" + line + " does not have basisOfRecord");
@@ -915,8 +915,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    *
    * @throws GeneratorException if validation threshold exceeded
    */
-  private void summarizeBasisOfRecordValidation(AtomicInteger recordsWithNoBasisOfRecord,
-    AtomicInteger recordsWithNonMatchingBasisOfRecord, AtomicInteger recordsWithAmbiguousBasisOfRecord)
+  private void summarizeBasisOfRecordValidation(AtomicLong recordsWithNoBasisOfRecord,
+    AtomicLong recordsWithNonMatchingBasisOfRecord, AtomicLong recordsWithAmbiguousBasisOfRecord)
     throws GeneratorException {
     // add empty BoR user message
     if (recordsWithNoBasisOfRecord.get() > 0) {
@@ -970,7 +970,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    *
    * @throws GeneratorException if validation threshold exceeded
    */
-  private void summarizeIdentifierValidation(AtomicInteger recordsWithNoId, AtomicInteger recordsWithDuplicateId,
+  private void summarizeIdentifierValidation(AtomicLong recordsWithNoId, AtomicLong recordsWithDuplicateId,
     String term) throws GeneratorException {
     // add empty ids user message
     if (recordsWithNoId.get() > 0) {
@@ -1020,7 +1020,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @throws GeneratorException if DwC-A generation fails for any reason
    */
   @Override
-  public Map<String, Integer> call() throws Exception {
+  public Map<String, Long> call() throws Exception {
     try {
       checkForInterruption();
       setState(STATE.STARTED);
@@ -1107,7 +1107,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @param line number of lines currently processed at the time of the check
    * @throws InterruptedException if the thread was found to be interrupted
    */
-  private void checkForInterruption(int line) throws InterruptedException {
+  private void checkForInterruption(long line) throws InterruptedException {
     if (Thread.interrupted()) {
       StatusReport report = report();
       String msg = "Interrupting dwca generator at line " + line + ". Last status: " + report.getState();
@@ -1222,12 +1222,12 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       }
     }
 
-    int recordsWithError = 0;
-    int linesWithWrongColumnNumber = 0;
-    int recordsFiltered = 0;
-    int emptyLines = 0;
+    long recordsWithError = 0;
+    long linesWithWrongColumnNumber = 0;
+    long recordsFiltered = 0;
+    long emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
-    int line = 0;
+    long line = 0;
     try {
       // get the source iterator
       iter = sourceManager.rowIterator(mapping.getSource());

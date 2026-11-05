@@ -143,7 +143,7 @@ class PublishingMonitorTest {
   @Test
   void monitorFinishesOtherPublicationsWhenOneFails() {
     ResourcePublicationManager resourcePublicationManager = publicationManager();
-    Map<String, Future<Map<String, Integer>>> futures = new ConcurrentHashMap<>();
+    Map<String, Future<Map<String, Long>>> futures = new ConcurrentHashMap<>();
     futures.put("ants", new CompletableFuture<>());
     futures.put("bees", new CompletableFuture<>());
     when(resourcePublicationManager.getProcessFutures()).thenReturn(futures);

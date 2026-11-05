@@ -30,7 +30,9 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -1010,5 +1012,18 @@ public class ResourceTest extends IptBaseTest {
     assertFalse(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
     resource.setSourcesModified(new Date(inferred.getTime() + 1));
     assertTrue(resource.isInferredMetadataOutdated(InferredEmlMetadata.class));
+  }
+
+  @Test
+  public void testNormalizeRecordCounts() {
+    // legacy resource.xml files store record counts as int, possibly overflowed
+    Map<String, Integer> legacy = new HashMap<>();
+    legacy.put(Constants.DWC_ROWTYPE_EVENT, 100);
+    legacy.put("http://rs.iobis.org/obis/terms/ExtendedMeasurementOrFact", -1887636530);
+
+    Map<String, Long> normalized = Resource.normalizeRecordCounts(legacy);
+    assertEquals(100L, normalized.get(Constants.DWC_ROWTYPE_EVENT));
+    assertEquals(2407330766L, normalized.get("http://rs.iobis.org/obis/terms/ExtendedMeasurementOrFact"));
+    assertTrue(Resource.normalizeRecordCounts(null).isEmpty());
   }
 }

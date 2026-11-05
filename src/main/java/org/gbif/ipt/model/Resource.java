@@ -159,9 +159,9 @@ public class Resource implements Serializable, Comparable<Resource> {
   private Date makePublicDate;
   // core record count
   @Getter
-  private int recordsPublished = 0;
+  private long recordsPublished = 0;
   @Getter
-  private Map<String, Integer> recordsByExtension = new HashMap<>();
+  private Map<String, Long> recordsByExtension = new HashMap<>();
   // GBIF UUID, key assigned when resource is registered with GBIF
   // registry data - only exists when status=REGISTERED
   @Getter
@@ -1146,7 +1146,7 @@ public class Resource implements Serializable, Comparable<Resource> {
     this.organisation = organisation;
   }
 
-  public void setRecordsPublished(int recordsPublished) {
+  public void setRecordsPublished(long recordsPublished) {
     this.recordsPublished = recordsPublished;
   }
 
@@ -1391,8 +1391,44 @@ public class Resource implements Serializable, Comparable<Resource> {
   /**
    * @param recordsByExtension map of record counts (map value) by extension (map key)
    */
-  public void setRecordsByExtension(Map<String, Integer> recordsByExtension) {
+  public void setRecordsByExtension(Map<String, Long> recordsByExtension) {
     this.recordsByExtension = recordsByExtension;
+  }
+
+  /**
+   * Called by XStream after deserialization. Record counts used to be stored as int, so old resource.xml files
+   * contain Integer map values (and possibly overflowed negative values). Normalize them to non-negative Longs.
+   */
+  private Object readResolve() {
+    recordsPublished = normalizeRecordCount(recordsPublished);
+    recordsByExtension = normalizeRecordCounts(recordsByExtension);
+    return this;
+  }
+
+  /**
+   * Converts all values of a record counts map to Long, recovering counts that overflowed int.
+   *
+   * @param counts record counts map, possibly containing Integer values deserialized from an old file
+   * @return new map with Long values
+   */
+  static Map<String, Long> normalizeRecordCounts(Map<String, ? extends Number> counts) {
+    Map<String, Long> result = new HashMap<>();
+    if (counts != null) {
+      for (Map.Entry<String, ? extends Number> entry : counts.entrySet()) {
+        if (entry.getValue() != null) {
+          result.put(entry.getKey(), normalizeRecordCount(entry.getValue().longValue()));
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Record counts can't be negative: a negative count was persisted after an int overflow, recover it. Assumes the
+   * count wrapped once (up to 2^32 - 1 records); larger counts are only right again after republishing.
+   */
+  static long normalizeRecordCount(long count) {
+    return count < 0 ? count + (1L << 32) : count;
   }
 
   /**

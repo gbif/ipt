@@ -205,7 +205,7 @@ public class ResourcePublicationManagerImplStateTest {
   @Test
   public void testCancelledPublicationIsNotFinished() {
     when(resourceManager.get(SHORTNAME)).thenReturn(resource());
-    CompletableFuture<Map<String, Integer>> cancelled = new CompletableFuture<>();
+    CompletableFuture<Map<String, Long>> cancelled = new CompletableFuture<>();
     cancelled.cancel(true);
     manager.getProcessFutures().put(SHORTNAME, cancelled);
 
@@ -218,9 +218,9 @@ public class ResourcePublicationManagerImplStateTest {
 
   @Test
   public void testCancelPublishingKeepsNewPublication() {
-    CompletableFuture<Map<String, Integer>> next = new CompletableFuture<>();
+    CompletableFuture<Map<String, Long>> next = new CompletableFuture<>();
     // a new publication is started while the previous one is being cancelled
-    CompletableFuture<Map<String, Integer>> cancelled = new CompletableFuture<>() {
+    CompletableFuture<Map<String, Long>> cancelled = new CompletableFuture<>() {
       @Override
       public boolean cancel(boolean mayInterruptIfRunning) {
         manager.getProcessFutures().put(SHORTNAME, next);
@@ -242,7 +242,7 @@ public class ResourcePublicationManagerImplStateTest {
 
   @Test
   public void testCancelPublishing() {
-    CompletableFuture<Map<String, Integer>> future = new CompletableFuture<>();
+    CompletableFuture<Map<String, Long>> future = new CompletableFuture<>();
     manager.getProcessFutures().put(SHORTNAME, future);
 
     assertTrue(manager.cancelPublishing(SHORTNAME));
@@ -264,7 +264,7 @@ public class ResourcePublicationManagerImplStateTest {
 
   @Test
   public void testCancelPublishingOfOtherResource() {
-    CompletableFuture<Map<String, Integer>> future = new CompletableFuture<>();
+    CompletableFuture<Map<String, Long>> future = new CompletableFuture<>();
     manager.getProcessFutures().put("ants", future);
 
     assertFalse(manager.cancelPublishing(SHORTNAME));

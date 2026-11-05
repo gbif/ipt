@@ -40,8 +40,8 @@ public class VersionHistory {
   private PublicationStatus publicationStatus;
   private User modifiedBy;
   private String changeSummary;
-  private int recordsPublished;
-  private Map<String, Integer> recordsByExtension = new HashMap<>();
+  private long recordsPublished;
+  private Map<String, Long> recordsByExtension = new HashMap<>();
 
   public VersionHistory(BigDecimal version, Date released, PublicationStatus publicationStatus) {
     this.version = version.toPlainString();
@@ -104,7 +104,7 @@ public class VersionHistory {
   /**
    * @return the number of records published in this version
    */
-  public int getRecordsPublished() {
+  public long getRecordsPublished() {
     return recordsPublished;
   }
 
@@ -119,8 +119,17 @@ public class VersionHistory {
   /**
    * @return map containing record counts (map value) by extension (map key)
    */
-  public Map<String, Integer> getRecordsByExtension() {
+  public Map<String, Long> getRecordsByExtension() {
     return recordsByExtension;
+  }
+
+  /**
+   * Called by XStream after deserialization, see {@link Resource#normalizeRecordCounts(Map)}.
+   */
+  private Object readResolve() {
+    recordsPublished = Resource.normalizeRecordCount(recordsPublished);
+    recordsByExtension = Resource.normalizeRecordCounts(recordsByExtension);
+    return this;
   }
 
 }

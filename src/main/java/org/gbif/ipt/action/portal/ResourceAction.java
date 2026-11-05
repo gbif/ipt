@@ -166,11 +166,11 @@ public class ResourceAction extends PortalBaseAction {
 
   // record count for the published version (specified from version parameter)
   @Getter
-  private int recordsPublishedForVersion;
+  private long recordsPublishedForVersion;
 
   // map of record counts by extension for the published version (specified from version parameter)
   @Setter
-  private Map<String, Integer> recordsByExtensionForVersion = new HashMap<>();
+  private Map<String, Long> recordsByExtensionForVersion = new HashMap<>();
 
   @Getter
   private String coreType;
@@ -418,7 +418,7 @@ public class ResourceAction extends PortalBaseAction {
 
     // ensure record counts by extension always exists, defaulting to empty map
     if (recordsByExtensionForVersion == null) {
-      Map<String, Integer> m = new HashMap<>();
+      Map<String, Long> m = new HashMap<>();
       setRecordsByExtensionForVersion(m);
     }
 
@@ -1029,11 +1029,11 @@ public class ResourceAction extends PortalBaseAction {
   /**
    * @return the largest number of records found in any extension, including the core extension
    */
-  public int getMaxRecordsInExtension() {
-    int count = 0;
+  public long getMaxRecordsInExtension() {
+    long count = 0;
     if (!recordsByExtensionForVersion.isEmpty()) {
       for (String rowType : recordsByExtensionForVersion.keySet()) {
-        int extensionCount = recordsByExtensionForVersion.get(rowType);
+        long extensionCount = recordsByExtensionForVersion.get(rowType);
         count = Math.max(extensionCount, count);
       }
     }
@@ -1044,11 +1044,11 @@ public class ResourceAction extends PortalBaseAction {
    * @return map of record counts by extension for published version (specified from version parameter), sorted by
    * count then by extension name for uniqueness (as two extensions can have the same count)
    */
-  public LinkedHashMap<String, Integer> getRecordsByExtensionOrdered() {
-    LinkedHashMap<String, Integer> result = new LinkedHashMap<>();
+  public LinkedHashMap<String, Long> getRecordsByExtensionOrdered() {
+    LinkedHashMap<String, Long> result = new LinkedHashMap<>();
     recordsByExtensionForVersion
         .entrySet().stream()
-        .sorted(Map.Entry.<String, Integer>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
+        .sorted(Map.Entry.<String, Long>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
         .forEachOrdered(x -> result.put(x.getKey(), x.getValue()));
 
     return result;

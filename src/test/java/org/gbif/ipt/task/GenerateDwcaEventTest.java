@@ -147,18 +147,18 @@ public class GenerateDwcaEventTest extends IptBaseTest {
 
     generateDwca = new GenerateDwca(resource, mockHandler, mockDataDir, mockSourceManager, mockAppConfig,
         mockVocabulariesManager);
-    Map<String, Integer> recordsByExtension = generateDwca.call();
+    Map<String, Long> recordsByExtension = generateDwca.call();
     // record count for event core and occurrence extension
     assertEquals(2, recordsByExtension.size());
 
     // 2 rows in core file
     String coreRowType = resource.getCoreRowType();
     assertEquals(Constants.DWC_ROWTYPE_EVENT, coreRowType);
-    int recordCount = recordsByExtension.get(resource.getCoreRowType());
+    long recordCount = recordsByExtension.get(resource.getCoreRowType());
     assertEquals(2, recordCount);
 
     // 2 rows in extension file
-    int extRecordCount = recordsByExtension.get(Constants.DWC_ROWTYPE_OCCURRENCE);
+    long extRecordCount = recordsByExtension.get(Constants.DWC_ROWTYPE_OCCURRENCE);
     assertEquals(2, extRecordCount);
 
     // confirm existence of versioned (archived) DwC-A "dwca-2.0.zip"
