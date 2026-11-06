@@ -86,13 +86,25 @@ public class StrutsConfigTest {
   }
 
   /**
-   * The "locked" result redirects to locked.do, which uses the resource stored in the session.
+   * Resource-scoped manage actions return a 400 without the r parameter, so redirects to them must pass it on.
    */
   @Test
-  public void lockCheckRunsAfterResourceSession() throws Exception {
-    List<String> refs = stackRefs(parse("/struts.xml"), "managerStack");
-    assertTrue(refs.contains("resourceSession") && refs.indexOf("resourceSession") < refs.indexOf("resourceLocked"),
-        "managerStack: " + refs);
+  public void manageRedirectsKeepResourceParam() throws Exception {
+    Document doc = parse("/struts-manage.xml");
+
+    List<String> missing = new ArrayList<>();
+    NodeList results = doc.getElementsByTagName("result");
+    for (int i = 0; i < results.getLength(); i++) {
+      Element result = (Element) results.item(i);
+      String location = result.getTextContent().trim();
+      if ("redirect".equals(result.getAttribute("type"))
+          && location.contains("/manage/")
+          && !location.matches(".*/manage/(home|create)\\.do")
+          && !location.matches(".*[?&]r=%\\{[^}]+}.*")) {
+        missing.add(result.getAttribute("name") + " -> " + location);
+      }
+    }
+    assertTrue(missing.isEmpty(), "Redirects without the r parameter: " + missing);
   }
 
   @ParameterizedTest

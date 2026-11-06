@@ -50,6 +50,7 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -226,6 +227,9 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
 
   @Override
   public String delete() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     if (resource.deleteMapping(mapping)) {
       addActionMessage(getText("manage.mapping.deleted", new String[]{id}));
       // set mappings modified date
@@ -330,7 +334,8 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     // get mapping sequence id from parameters as setters are not called yet
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));
     if (midStr != null) {
-      mid = Integer.valueOf(midStr);
+      // not a number: -1, which matches no mapping (404)
+      mid = NumberUtils.toInt(midStr, -1);
     }
     // id is rowtype
     if (id != null) {
@@ -351,11 +356,15 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
           defaultResult = "error";
         }
       } else {
-        List<ExtensionMapping> maps = resource.getMappings(id);
-        mapping = maps.get(mid);
+        mapping = resource.getMapping(id, mid);
+        if (mapping == null) {
+          LOG.error("No mapping {} with index {} found!", id, mid);
+          notFound("manage.404.mapping.title", "manage.404.mapping.body", resource.getShortname());
+          return;
+        }
 
         Extension ext = extensionManager.get(id);
-        if (!ext.isLatest()) {
+        if (ext != null && !ext.isLatest()) {
           addActionWarning(getText("manage.overview.mappings.extension.outdated"));
         }
       }

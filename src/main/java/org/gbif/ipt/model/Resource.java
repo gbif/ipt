@@ -720,7 +720,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   public ExtensionMapping getMapping(String rowType, Integer index) {
     if (rowType != null && index != null) {
       List<ExtensionMapping> maps = getMappings(rowType);
-      if (maps.size() >= index) {
+      if (index >= 0 && index < maps.size()) {
         return maps.get(index);
       }
     }
@@ -730,7 +730,7 @@ public class Resource implements Serializable, Comparable<Resource> {
   public DataPackageMapping getDataPackageMapping(Integer index) {
     if (index != null) {
       List<DataPackageMapping> maps = getDataPackageMappings();
-      if (maps.size() >= index) {
+      if (index >= 0 && index < maps.size()) {
         return maps.get(index);
       }
     }

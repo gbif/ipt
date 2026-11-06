@@ -67,6 +67,7 @@ public class BaseAction extends ActionSupport
   private static final Logger LOG = LogManager.getLogger(BaseAction.class);
 
   public static final String NOT_MODIFIED = "304";
+  public static final String BAD_REQUEST = "400";
   public static final String NOT_FOUND = "404";
   public static final String NOT_ALLOWED = "401";
   public static final String NOT_ALLOWED_MANAGER = "401-manager";

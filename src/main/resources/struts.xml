@@ -110,8 +110,7 @@
       </interceptor-stack>
 
       <!-- stack to be used as the default for the manage package -->
-      <!-- interceptor order is covered by StrutsConfigTest; resourceSession runs before resourceLocked because
-           the "locked" result redirects to locked.do, which uses the resource stored in the session -->
+      <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="managerStack">
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="requireManager"/>

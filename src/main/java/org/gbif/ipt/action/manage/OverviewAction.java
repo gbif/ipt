@@ -1791,7 +1791,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       // There are many files inside, how to display that?
     } else {
       if (rowType != null && mid != null) {
-        ExtensionMapping mapping = resource.getMappings(id).get(mid);
+        ExtensionMapping mapping = resource.getMapping(id, mid);
         if (mapping != null) {
           try {
             GenerateDwca worker = dwcaFactory.create(resource, this);

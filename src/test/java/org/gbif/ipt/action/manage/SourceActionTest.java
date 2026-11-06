@@ -15,8 +15,10 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -26,6 +28,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -34,6 +37,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,12 +45,14 @@ import static org.mockito.Mockito.when;
 public class SourceActionTest extends IptBaseTest {
 
   private SourceAction action;
+  private ResourceManager resourceManager;
 
   @BeforeEach
   public void setup() throws IOException {
     // mock action
+    resourceManager = mock(ResourceManager.class);
     action = new SourceAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class),
-      mock(ResourceManager.class), mock(SourceManager.class), mock(JdbcSupport.class), mock(DataDir.class));
+      resourceManager, mock(SourceManager.class), mock(JdbcSupport.class), mock(DataDir.class));
   }
 
   @Test
@@ -80,6 +86,53 @@ public class SourceActionTest extends IptBaseTest {
     // POST: validation must not touch the missing resource
     when(req.getMethod()).thenReturn("POST");
     action.validate();
+    assertEquals(SourceAction.NOT_FOUND, action.execute());
+  }
+
+  /**
+   * The resource exists but has no source with the requested id: must return 404 instead of rendering the source
+   * form without a source.
+   */
+  @Test
+  public void testUnknownSourceReturnsNotFound() throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("res1");
+    when(resourceManager.get("res1")).thenReturn(resource);
+
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter("r")).thenReturn("res1");
+    when(req.getParameter("id")).thenReturn("occurrences");
+    when(req.getMethod()).thenReturn("GET");
+    action.setServletRequest(req);
+    action.setSession(new HashMap<>());
+
+    action.prepare();
+    // an action error would make the workflow interceptor return the input form before execute()
+    assertFalse(action.hasErrors());
+    assertEquals(SourceAction.NOT_FOUND, action.execute());
+    assertEquals(SourceAction.NOT_FOUND, action.peek());
+    assertEquals(SourceAction.NOT_FOUND, action.delete());
+  }
+
+  /**
+   * No resource parameter: the resource stored in the session must not be used instead.
+   */
+  @Test
+  public void testSessionResourceIsNotUsed() throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("res1");
+    when(resourceManager.get("res1")).thenReturn(resource);
+
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter("id")).thenReturn("occurrences");
+    when(req.getMethod()).thenReturn("GET");
+    action.setServletRequest(req);
+    Map<String, Object> session = new HashMap<>();
+    session.put(Constants.SESSION_RESOURCE, "res1");
+    action.setSession(session);
+
+    action.prepare();
+    assertNull(action.getResource());
     assertEquals(SourceAction.NOT_FOUND, action.execute());
   }
 }

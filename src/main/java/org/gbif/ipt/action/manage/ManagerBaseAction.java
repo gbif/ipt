@@ -28,6 +28,7 @@ import java.io.Serial;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
+import lombok.Getter;
 import lombok.Setter;
 
 public class ManagerBaseAction extends POSTAction {
@@ -39,6 +40,11 @@ public class ManagerBaseAction extends POSTAction {
   protected final ResourceManager resourceManager;
   @Setter
   protected Resource resource;
+  // shown on the 404 page instead of the generic "resource does not exist" text, e.g. for a missing source
+  @Getter
+  private String notFoundTitle;
+  @Getter
+  private String notFoundBody;
 
   @Inject
   public ManagerBaseAction(
@@ -53,20 +59,37 @@ public class ManagerBaseAction extends POSTAction {
   @Override
   public void prepare() {
     super.prepare();
-    // look for resource parameter
+    // the resource comes from the request parameter only, never from the session: a resource stored in the session
+    // can belong to another tab or an earlier page. RequireManagerInterceptor returns a 400 without it, see
+    // requiresResource().
     String res = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_RESOURCE));
-    if (res == null) {
-      // try session instead
-      try {
-        res = (String) session.get(Constants.SESSION_RESOURCE);
-      } catch (Exception e) {
-        // swallow. if the session is not yet opened, we get an exception here...
-      }
-    }
-    resource = resourceManager.get(res);
+    resource = res == null ? null : resourceManager.get(res);
     if (resource == null) {
       notFound = true;
     }
+  }
+
+  /**
+   * Marks the request as not found, with a message for the 404 page saying what is missing.
+   *
+   * @param titleKey i18n key of the 404 page title
+   * @param bodyKey i18n key of the 404 page text
+   * @param args arguments of the text
+   */
+  protected void notFound(String titleKey, String bodyKey, String... args) {
+    notFound = true;
+    notFoundTitle = getText(titleKey);
+    notFoundBody = getText(bodyKey, args);
+  }
+
+  /**
+   * Whether the action works on a single resource, given by the r parameter. RequireManagerInterceptor returns
+   * a 400 for such actions when the parameter is missing. Override for actions that don't need a resource.
+   *
+   * @return true if the r parameter is required, false otherwise
+   */
+  public boolean requiresResource() {
+    return true;
   }
 
   protected void saveResource() {

@@ -42,6 +42,10 @@
     <default-action-ref name="home"/>
 
     <global-results>
+      <result name="400" type="freemarkerWithStatus">
+        <param name="status">400</param>
+        <param name="location">/WEB-INF/pages/manage/400.ftl</param>
+      </result>
       <result name="404" type="freemarkerWithStatus">
         <param name="status">404</param>
         <param name="location">/WEB-INF/pages/manage/404.ftl</param>
@@ -50,9 +54,9 @@
         <param name="status">401</param>
         <param name="location">/WEB-INF/pages/manage/401.ftl</param>
       </result>
-      <result name="cancel" type="redirect">${baseURL}/manage/resource.do</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
       <result name="home" type="redirect">${baseURL}/manage/home.do</result>
-      <result name="locked" type="redirect">${baseURL}/manage/locked.do</result>
+      <result name="locked" type="redirect">${baseURL}/manage/locked.do?r=%{#parameters.r}</result>
     </global-results>
 
     <action name="home" class="org.gbif.ipt.action.manage.HomeAction">
@@ -66,6 +70,7 @@
     <action name="create" class="org.gbif.ipt.action.manage.CreateResourceAction">
       <interceptor-ref name="managerStack"/>
       <result name="input">/WEB-INF/pages/manage/create_input.ftl</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/home.do</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{shortname}</result>
     </action>
 
@@ -183,7 +188,7 @@
 
     <action name="delete-source" class="org.gbif.ipt.action.manage.SourceAction" method="delete">
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
-      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="eml" class="org.gbif.ipt.action.manage.ResourceFileAction" method="metadata">

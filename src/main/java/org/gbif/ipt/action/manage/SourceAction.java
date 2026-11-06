@@ -454,6 +454,9 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
 
   @Override
   public String delete() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     if (sourceManager.delete(resource, resource.getSource(id))) {
       addActionMessage(getText("manage.source.deleted", new String[] {id}));
       // set sources modified date
@@ -513,8 +516,9 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     if (id != null) {
       source = resource.getSource(id);
       if (source == null) {
+        // no action error here: the workflow interceptor would return the input form (without a source) for it
         LOG.error("No source with id {} found!", id);
-        addActionError(getText("manage.source.cannot.load", new String[] {id}));
+        notFound("manage.404.source.title", "manage.404.source.body", resource.getShortname(), id);
       } else {
         // store the original number of columns, in case they change, the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());

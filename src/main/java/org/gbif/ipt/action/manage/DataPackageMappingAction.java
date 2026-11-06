@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -80,9 +81,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private List<DataPackageFieldMapping> fields;
   @Getter
   private Map<String, Integer> fieldsIndices;
-  @Getter
   private List<String> newTableSchemas = new ArrayList<>();
-  @Getter
   private List<String> newSources = new ArrayList<>();
 
   @Inject
@@ -231,7 +230,8 @@ public class DataPackageMappingAction extends ManagerBaseAction {
     // get mapping sequence id from parameters as setters are not called yet
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));
     if (midStr != null) {
-      mid = Integer.valueOf(midStr);
+      // not a number: -1, which matches no mapping (404)
+      mid = NumberUtils.toInt(midStr, -1);
     }
 
     if (id != null) {
@@ -251,8 +251,11 @@ public class DataPackageMappingAction extends ManagerBaseAction {
           defaultResult = "error";
         }
       } else {
-        List<DataPackageMapping> maps = resource.getDataPackageMappings();
-        mapping = maps.get(mid);
+        mapping = resource.getDataPackageMapping(mid);
+        if (mapping == null) {
+          notFound("manage.404.mapping.title", "manage.404.mapping.body", resource.getShortname());
+          return;
+        }
       }
     } else {
       // worst case, just redirect to resource not found page
@@ -448,6 +451,9 @@ public class DataPackageMappingAction extends ManagerBaseAction {
 
   @Override
   public String delete() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     String sourceName = Optional.ofNullable(mapping.getSource())
         .map(Source::getName)
         .orElse("unknown");

@@ -14,6 +14,7 @@
 package org.gbif.ipt.struts2;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.action.manage.ManagerBaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -120,6 +121,57 @@ public class RequireManagerInterceptorTest {
     session.put(Constants.SESSION_RESOURCE, SHORTNAME);
     assertEquals(BaseAction.SUCCESS, interceptor.intercept(invocation));
     assertEquals(SHORTNAME, session.get(Constants.SESSION_RESOURCE));
+  }
+
+  @Test
+  public void missingResourceParamIsBadRequest() throws Exception {
+    params.clear();
+    rebuildContext();
+    session.put(Constants.SESSION_USER, owner);
+    // a resource in the session must not be used instead
+    session.put(Constants.SESSION_RESOURCE, SHORTNAME);
+    ManagerBaseAction action = resourceAction(true);
+    when(invocation.getAction()).thenReturn(action);
+    assertEquals(BaseAction.BAD_REQUEST, interceptor.intercept(invocation));
+    verify(invocation, never()).invoke();
+  }
+
+  @Test
+  public void emptyResourceParamIsBadRequest() throws Exception {
+    params.put(Constants.REQ_PARAM_RESOURCE, " ");
+    rebuildContext();
+    session.put(Constants.SESSION_USER, owner);
+    ManagerBaseAction action = resourceAction(true);
+    when(invocation.getAction()).thenReturn(action);
+    assertEquals(BaseAction.BAD_REQUEST, interceptor.intercept(invocation));
+    verify(invocation, never()).invoke();
+  }
+
+  @Test
+  public void missingResourceParamIsAllowedForActionsWithoutResource() throws Exception {
+    params.clear();
+    rebuildContext();
+    session.put(Constants.SESSION_USER, owner);
+    ManagerBaseAction action = resourceAction(false);
+    when(invocation.getAction()).thenReturn(action);
+    assertEquals(BaseAction.SUCCESS, interceptor.intercept(invocation));
+  }
+
+  @Test
+  public void unknownResourceIsNotFound() throws Exception {
+    params.put(Constants.REQ_PARAM_RESOURCE, "unknown");
+    rebuildContext();
+    session.put(Constants.SESSION_USER, owner);
+    ManagerBaseAction action = resourceAction(true);
+    when(invocation.getAction()).thenReturn(action);
+    assertEquals(BaseAction.NOT_FOUND, interceptor.intercept(invocation));
+    verify(invocation, never()).invoke();
+  }
+
+  private static ManagerBaseAction resourceAction(boolean requiresResource) {
+    ManagerBaseAction action = mock(ManagerBaseAction.class);
+    when(action.requiresResource()).thenReturn(requiresResource);
+    return action;
   }
 
   @Test
