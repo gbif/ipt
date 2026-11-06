@@ -49,6 +49,8 @@
       <interceptor name="requireAdmin" class="org.gbif.ipt.struts2.RequireAdminInterceptor"/>
       <interceptor name="requireManager" class="org.gbif.ipt.struts2.RequireManagerInterceptor"/>
       <interceptor name="protectPrivateResource" class="org.gbif.ipt.struts2.PrivateDeletedResourceInterceptor"/>
+      <!-- returns the "locked" result if the requested resource is locked, e.g. while being published -->
+      <interceptor name="resourceLocked" class="org.gbif.ipt.struts2.ResourceLockedInterceptor"/>
 
       <!-- interceptor changing the current resource in the session if a "r" parameter is supplied -->
       <interceptor name="resourceSession" class="org.gbif.ipt.struts2.ResourceSessionInterceptor"/>
@@ -91,30 +93,43 @@
       </interceptor-stack>
 
       <!-- stack to be used as the default for the public portal package -->
+      <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="portalStack">
-        <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="protectPrivateResource"/>
+        <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
       <!-- stack to be used as the default for the admin package -->
+      <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="adminStack">
         <interceptor-ref name="setupAndCancel"/>
-        <interceptor-ref name="iptStackWithoutSetup"/>
         <interceptor-ref name="requireAdmin"/>
+        <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
       <!-- stack to be used as the default for the manage package -->
+      <!-- interceptor order is covered by StrutsConfigTest; resourceSession runs before resourceLocked because
+           the "locked" result redirects to locked.do, which uses the resource stored in the session -->
       <interceptor-stack name="managerStack">
-        <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="setupAndCancel"/>
-        <interceptor-ref name="iptStackWithoutSetup"/>
         <interceptor-ref name="requireManager"/>
+        <interceptor-ref name="resourceSession"/>
+        <interceptor-ref name="iptStackWithoutSetup"/>
+        <interceptor-ref name="resourceLocked"/>
       </interceptor-stack>
 
-      <!-- stack to be used for individual ajax actions within any package -->
-      <interceptor-stack name="ajaxStack">
+      <!-- lightweight stack for ajax actions in the manage package; no lock check, so it can be used while a
+           resource is being published (e.g. publication report and cancel) -->
+      <interceptor-stack name="managerAjaxStack">
+        <interceptor-ref name="requireManager"/>
+        <interceptor-ref name="i18nStack"/>
+      </interceptor-stack>
+
+      <!-- lightweight stack for ajax actions in the admin package -->
+      <interceptor-stack name="adminAjaxStack">
+        <interceptor-ref name="requireAdmin"/>
         <interceptor-ref name="i18nStack"/>
       </interceptor-stack>
 

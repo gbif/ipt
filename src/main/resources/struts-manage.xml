@@ -101,7 +101,7 @@
     </action>
 
     <action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
-      <interceptor-ref name="ajaxStack"/>
+      <interceptor-ref name="managerAjaxStack"/>
       <interceptor-ref name="messageStore">
         <param name="operationMode">STORE</param>
       </interceptor-ref>
@@ -213,7 +213,7 @@
     </action>
 
     <action name="peek" class="org.gbif.ipt.action.manage.SourceAction" method="peek">
-      <interceptor-ref name="ajaxStack"/>
+      <interceptor-ref name="managerAjaxStack"/>
       <result>/WEB-INF/pages/manage/peek.ftl</result>
     </action>
 
@@ -289,13 +289,13 @@
 
     <!-- ajaxy status report about background processes kicked off by the current user -->
     <action name="report" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
-      <interceptor-ref name="ajaxStack"/>
+      <interceptor-ref name="managerAjaxStack"/>
       <result>/WEB-INF/pages/manage/report.ftl</result>
       <result name="cancel">/WEB-INF/pages/manage/report.ftl</result>
     </action>
 
     <action name="mappingPeek" class="org.gbif.ipt.action.manage.OverviewAction" method="peek">
-      <interceptor-ref name="ajaxStack"/>
+      <interceptor-ref name="managerAjaxStack"/>
       <result>/WEB-INF/pages/manage/peek.ftl</result>
     </action>
 

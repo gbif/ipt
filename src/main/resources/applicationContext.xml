@@ -306,6 +306,10 @@
     <property name="resourceManager" ref="resourceManager"/>
   </bean>
 
+  <bean id="resourceLockedInterceptor" class="org.gbif.ipt.struts2.ResourceLockedInterceptor">
+    <property name="resourceManager" ref="resourceManager"/>
+  </bean>
+
   <bean id="privateDeletedResourceInterceptor" class="org.gbif.ipt.struts2.PrivateDeletedResourceInterceptor">
     <property name="resourceManager" ref="resourceManager"/>
   </bean>

@@ -49,6 +49,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
 
   private ResourceManager resourceManager;
 
+
   protected static String getResourceParam(ActionInvocation invocation) {
     String requestedResource = null;
     Parameter requestedResourceName = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_RESOURCE);
@@ -127,15 +128,25 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
         if (!isAuthorized(user, resource)) {
           return BaseAction.NOT_ALLOWED;
         }
-        // locked?
-        if (resourceManager.isLocked(requestedResource)) {
-          return BaseAction.LOCKED;
-        }
+      } else {
+        // no resource parameter: check the resource stored in the session instead
+        dropUnauthorizedSessionResource(session, user);
       }
       return invocation.invoke();
     }
 
     return BaseAction.NOT_ALLOWED_MANAGER;
+  }
+
+  private void dropUnauthorizedSessionResource(Map<String, Object> session, User user) {
+    Object sessionResource = session.get(Constants.SESSION_RESOURCE);
+    if (sessionResource instanceof String shortname) {
+      Resource resource = resourceManager.get(shortname);
+      if (resource == null || !isAuthorized(user, resource)) {
+        LOG.debug("Removing resource {} from session", shortname);
+        session.remove(Constants.SESSION_RESOURCE);
+      }
+    }
   }
 
   @Inject
