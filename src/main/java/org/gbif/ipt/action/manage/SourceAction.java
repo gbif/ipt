@@ -506,6 +506,10 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   public void prepare() {
     super.prepare();
     session.remove(Constants.SESSION_FILE_NUMBER_COLUMNS);
+    // no resource selected - POSTAction/peek will return a 404
+    if (resource == null) {
+      return;
+    }
     if (id != null) {
       source = resource.getSource(id);
       if (source == null) {

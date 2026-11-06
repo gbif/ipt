@@ -284,7 +284,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   @Override
   public void prepare() {
     super.prepare();
-    if (session.get(Constants.SESSION_USER) == null) {
+    // no user logged in, or no resource selected (POSTAction will return a 404)
+    if (session.get(Constants.SESSION_USER) == null || resource == null) {
       return;
     }
 

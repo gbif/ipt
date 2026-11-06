@@ -25,13 +25,18 @@ import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
+import java.util.HashMap;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SourceActionTest extends IptBaseTest {
 
@@ -55,5 +60,26 @@ public class SourceActionTest extends IptBaseTest {
     assertFalse(action.alertColumnNumberChange(true, 10, 10));
     assertTrue(action.alertColumnNumberChange(true, 1, 2));
     assertTrue(action.alertColumnNumberChange(true, 2, 1));
+  }
+
+  /**
+   * No resource parameter and no resource in the session: must return 404 instead of throwing an NPE.
+   */
+  @Test
+  public void testNoResourceSelectedReturnsNotFound() throws Exception {
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter("id")).thenReturn("occurrence");
+    when(req.getMethod()).thenReturn("GET");
+    action.setServletRequest(req);
+    action.setSession(new HashMap<>());
+
+    action.prepare();
+    assertEquals(SourceAction.NOT_FOUND, action.peek());
+    assertEquals(SourceAction.NOT_FOUND, action.execute());
+
+    // POST: validation must not touch the missing resource
+    when(req.getMethod()).thenReturn("POST");
+    action.validate();
+    assertEquals(SourceAction.NOT_FOUND, action.execute());
   }
 }

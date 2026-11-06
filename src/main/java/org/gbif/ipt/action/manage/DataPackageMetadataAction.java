@@ -238,11 +238,12 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   @Override
   public void prepare() {
     super.prepare();
-    if (session.get(Constants.SESSION_USER) == null) {
+    // no user logged in, or no resource selected (POSTAction will return a 404)
+    if (session.get(Constants.SESSION_USER) == null || resource == null) {
       return;
     }
 
-    if (resource != null && CAMTRAP_DP.equals(resource.getCoreType())) {
+    if (CAMTRAP_DP.equals(resource.getCoreType())) {
       prepareCamtrap();
     } else{
       prepareFrictionless();
