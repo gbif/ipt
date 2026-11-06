@@ -43,11 +43,11 @@ import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
 import org.gbif.ipt.model.converter.ExtensionMappingConverter;
-import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
+import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
@@ -65,6 +65,8 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
+import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
+import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -106,6 +108,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AssertionFailureBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -870,6 +873,131 @@ public class ResourceManagerImplTest extends IptBaseTest {
 
     // test if resource.xml was created.
     assertTrue(mockedDataDir.resourceFile("math").exists());
+  }
+
+  /**
+   * Checks that an existing data directory still loads with XStream's type allowlist ({@code XStreamSecurity}).
+   * Skipped unless a data directory is given, e.g.:
+   * <pre>
+   * mvn test -Dtest='ResourceManagerImplTest#scanDataDirForForbiddenTypes' -Dipt.scanDataDir=/path/to/datadir
+   * </pre>
+   * Reads resources/{@literal *}/resource.xml, resources/{@literal *}/inferredMetadata*.xml, config/users.xml and
+   * config/registration*.xml with the IPT's own XStream instances. Read only: nothing is saved or migrated.
+   * Fails listing each file whose XML names a class outside the allowlist. Other read errors, e.g. a resource
+   * mapped to an extension that isn't installed here, are only reported.
+   */
+  @Test
+  @EnabledIfSystemProperty(named = "ipt.scanDataDir", matches = ".+")
+  public void scanDataDirForForbiddenTypes() throws Exception {
+    File dataDirRoot = new File(System.getProperty("ipt.scanDataDir"));
+    assertTrue(new File(dataDirRoot, "resources").isDirectory(), "Not an IPT data directory: " + dataDirRoot);
+
+    com.thoughtworks.xstream.XStream resourceXStream = xstreamField(getResourceManagerImpl(), "xstream");
+    com.thoughtworks.xstream.XStream usersXStream = xstreamField(
+        new UserAccountManagerImpl(mockAppConfig, mockedDataDir, mock(org.gbif.ipt.utils.PBEEncrypt.class)), "xstream");
+    RegistrationManagerImpl registrationManager = new RegistrationManagerImpl(mockAppConfig, mockedDataDir,
+        mock(org.gbif.ipt.service.registry.RegistryManager.class), mock(PasswordEncrypter.class));
+    com.thoughtworks.xstream.XStream registrationV1XStream = xstreamField(registrationManager, "xstreamV1");
+    com.thoughtworks.xstream.XStream registrationV2XStream = xstreamField(registrationManager, "xstreamV2");
+
+    List<String> forbidden = new java.util.ArrayList<>();
+    List<String> otherErrors = new java.util.ArrayList<>();
+    int read = 0;
+
+    File[] resourceDirs = new File(dataDirRoot, "resources").listFiles(File::isDirectory);
+    for (File resourceDir : resourceDirs == null ? new File[0] : resourceDirs) {
+      File[] files = resourceDir.listFiles((d, n) -> n.equals(DataDir.PERSISTENCE_FILENAME)
+          || (n.startsWith("inferredMetadata") && n.endsWith(".xml")));
+      for (File file : files == null ? new File[0] : files) {
+        read++;
+        scanFile(file, forbidden, otherErrors, () -> {
+          try (InputStream in = new java.io.FileInputStream(file)) {
+            resourceXStream.fromXML(in);
+          }
+        });
+      }
+    }
+
+    Map<String, com.thoughtworks.xstream.XStream> configFiles = new LinkedHashMap<>();
+    configFiles.put(UserAccountManagerImpl.PERSISTENCE_FILE, usersXStream);
+    configFiles.put(RegistrationManagerImpl.PERSISTENCE_FILE_V1, registrationV1XStream);
+    configFiles.put(RegistrationManagerImpl.PERSISTENCE_FILE_V2, registrationV2XStream);
+    for (Map.Entry<String, com.thoughtworks.xstream.XStream> entry : configFiles.entrySet()) {
+      File file = new File(new File(dataDirRoot, "config"), entry.getKey());
+      if (!file.exists()) {
+        continue;
+      }
+      read++;
+      scanFile(file, forbidden, otherErrors, () -> {
+        // these files hold a stream of objects, read the same way as UserAccountManagerImpl/RegistrationManagerImpl
+        try (java.io.ObjectInputStream in = entry.getValue().createObjectInputStream(
+            org.gbif.ipt.utils.FileUtils.getUtf8Reader(file))) {
+          while (true) {
+            try {
+              in.readObject();
+            } catch (java.io.EOFException e) {
+              break;
+            }
+          }
+        }
+      });
+    }
+
+    System.out.println("Scanned " + read + " files in " + dataDirRoot);
+    otherErrors.forEach(e -> System.out.println("NOT CHECKED (other read error): " + e));
+    forbidden.forEach(e -> System.out.println("FORBIDDEN: " + e));
+    assertTrue(read > 0, "No files found to scan in " + dataDirRoot);
+    assertTrue(forbidden.isEmpty(),
+        forbidden.size() + " file(s) name classes outside XStreamSecurity's allowlist:\n" + String.join("\n", forbidden));
+  }
+
+  private interface XmlRead {
+    void read() throws Exception;
+  }
+
+  private static void scanFile(File file, List<String> forbidden, List<String> otherErrors, XmlRead xmlRead) {
+    try {
+      xmlRead.read();
+    } catch (Throwable e) {
+      Throwable cause = e;
+      while (cause != null && !(cause instanceof com.thoughtworks.xstream.security.ForbiddenClassException)) {
+        cause = cause.getCause();
+      }
+      if (cause != null) {
+        forbidden.add(file + " -> " + cause.getMessage());
+      } else {
+        otherErrors.add(file + " -> " + e.getClass().getSimpleName() + ": "
+            + StringUtils.substringBefore(String.valueOf(e.getMessage()), "\n"));
+      }
+    }
+  }
+
+  private static com.thoughtworks.xstream.XStream xstreamField(Object manager, String fieldName) throws Exception {
+    java.lang.reflect.Field field = manager.getClass().getDeclaredField(fieldName);
+    field.setAccessible(true);
+    return (com.thoughtworks.xstream.XStream) field.get(manager);
+  }
+
+  /**
+   * A resource.xml naming a class outside XStream's allowlist must be refused, not instantiated. resource.xml can come
+   * from an uploaded "IPT Resource Folder".
+   */
+  @Test
+  public void testLoadFromDirRejectsForbiddenClass() throws Exception {
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+
+    File resourceDir = new File(FileUtils.createTempDir(), "forbidden");
+    org.apache.commons.io.FileUtils.forceMkdir(resourceDir);
+    File resourceFile = new File(resourceDir, DataDir.PERSISTENCE_FILENAME);
+    when(mockedDataDir.resourceFile("forbidden")).thenReturn(resourceFile);
+    java.nio.file.Files.writeString(resourceFile.toPath(),
+        "<resource><managers class=\"java.util.HashSet\"><java.util.Random/></managers></resource>");
+
+    InvalidConfigException e = assertThrows(InvalidConfigException.class,
+        () -> resourceManager.loadFromDir(resourceFile.getParentFile(), creator));
+    // refused by XStream's allowlist (ForbiddenClassException's message is the class name); without the allowlist
+    // Random would be instantiated and loading would fail later with a ClassCastException instead
+    assertEquals("Cannot read resource configuration for forbidden: java.util.Random", e.getMessage());
   }
 
   /**

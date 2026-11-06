@@ -26,8 +26,8 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.utils.FileUtils;
 import org.gbif.ipt.utils.PBEEncrypt;
+import org.gbif.ipt.utils.XStreamSecurity;
 
-import jakarta.inject.Inject;
 import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,9 +44,9 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.Strings;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import jakarta.inject.Inject;
 
 /**
  * Reads user accounts from a simple XStream managed xml file.
@@ -124,7 +124,7 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
   }
 
   private void defineXstreamMapping() {
-    xstream.addPermission(AnyTypePermission.ANY);
+    XStreamSecurity.restrict(xstream);
     xstream.ignoreUnknownElements();
     xstream.alias("user", User.class);
     xstream.useAttributeFor(User.class, "email");

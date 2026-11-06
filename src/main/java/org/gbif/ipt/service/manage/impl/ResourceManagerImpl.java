@@ -122,6 +122,7 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.PublicationFailureEmailUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.utils.XStreamSecurity;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.EmlValidator;
@@ -186,11 +187,6 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
 import javax.annotation.Nullable;
-
-import jakarta.validation.constraints.NotNull;
-
-import jakarta.mail.MessagingException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -200,10 +196,10 @@ import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Level;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.logging.log4j.Level;
 import org.jsoup.Jsoup;
 import org.xml.sax.SAXException;
 
@@ -211,8 +207,9 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
+import jakarta.mail.MessagingException;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -1249,7 +1246,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void defineXstreamMapping(ResourceConvertersManager resourceConvertersManager, PasswordEncrypter passwordEncrypter) {
-    xstream.addPermission(AnyTypePermission.ANY);
+    XStreamSecurity.restrict(xstream);
     xstream.ignoreUnknownElements();
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);

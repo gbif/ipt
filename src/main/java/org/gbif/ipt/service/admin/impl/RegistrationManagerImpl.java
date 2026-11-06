@@ -36,6 +36,7 @@ import org.gbif.ipt.service.InvalidConfigException.TYPE;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.FileUtils;
+import org.gbif.ipt.utils.XStreamSecurity;
 
 import java.io.EOFException;
 import java.io.File;
@@ -59,7 +60,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
 public class RegistrationManagerImpl extends BaseManager implements RegistrationManager {
 
@@ -221,7 +221,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * Define XStream used to parse former registration (registration.xml).
    */
   private void defineXstreamMappingV1() {
-    xstreamV1.addPermission(AnyTypePermission.ANY);
+    XStreamSecurity.restrict(xstreamV1);
     xstreamV1.ignoreUnknownElements();
     xstreamV1.omitField(LegacyRegistration.class, "associatedOrganisations");
     xstreamV1.alias("organisation", LegacyOrganisation.class);
@@ -234,7 +234,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * @param passwordEncrypter PasswordConverter
    */
   private void defineXstreamMappingV2(PasswordEncrypter passwordEncrypter) {
-    xstreamV2.addPermission(AnyTypePermission.ANY);
+    XStreamSecurity.restrict(xstreamV2);
     xstreamV2.ignoreUnknownElements();
     xstreamV2.omitField(Registration.class, "associatedOrganisations");
     xstreamV2.alias("organisation", Organisation.class);
