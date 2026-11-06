@@ -81,6 +81,7 @@
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/overview.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 <script src="${baseURL}/js/scrollspy.js"></script>
 
@@ -1447,6 +1448,122 @@
             e.preventDefault();
             window.location.href = "publication-settings.do?r=${resource.shortname}";
         });
+
+        // ---- redesigned overview: actions that hand over to the existing buttons and modals ----
+        // "Publish" in the status banner does what the header's publish button does (confirmation, warnings)
+        $('.ov-proxy-publish').on('click', function (e) {
+            e.preventDefault();
+            $('#publishButton, #publish-button-show-warning').first().trigger('click');
+        });
+        // when publishing is blocked the header button points at the reasons in the banner
+        $('#publish-button-blocked').on('click', function (e) {
+            e.preventDefault();
+            document.getElementById('overview-status').scrollIntoView({behavior: 'smooth', block: 'center'});
+        });
+        $('.ov-open-add-source').on('click', function (e) {
+            e.preventDefault();
+            $('#add-source-button').trigger('click');
+        });
+        $('.ov-open-add-mapping').on('click', function (e) {
+            e.preventDefault();
+            $('#add-mapping-button').trigger('click');
+        });
+        $('.ov-show-report').on('click', function () {
+            if (!$('#dwcaReport').is(':visible')) {
+                $('#toggleReport').trigger('click');
+            }
+        });
+
+        // ---- sources and mappings table: group by class or by source, filter, show all ----
+        (function () {
+            var $classTable = $('#ov-table-class');
+            var $sourceTable = $('#ov-table-source');
+            if (!$classTable.length) return;
+
+            var $more = $('#ov-data-more');
+            var state = {group: 'class', filter: 'all', query: '', expanded: false};
+            try {
+                state.group = localStorage.getItem('ipt.overview.groupBy') === 'source' ? 'source' : 'class';
+            } catch (err) { /* storage unavailable: use the default */ }
+
+            function matches($row) {
+                if (state.query && String($row.attr('data-ov-text') || '').indexOf(state.query) === -1) return false;
+                if (state.filter === 'changed') return $row.attr('data-ov-changed') === 'true';
+                if (state.filter === 'unmapped') return $row.attr('data-ov-unmapped') === 'true';
+                if (state.filter === 'problems') return $row.attr('data-ov-problem') === 'true';
+                return true;
+            }
+
+            function render() {
+                var bySource = state.group === 'source';
+                $classTable.toggle(!bySource);
+                $sourceTable.toggle(bySource);
+                $('.ov-sub-class').toggle(!bySource);
+                $('.ov-sub-source').toggle(bySource);
+                $('[data-ov-group]').each(function () {
+                    $(this).toggleClass('on', $(this).attr('data-ov-group') === state.group);
+                });
+                $('[data-ov-filter]').each(function () {
+                    $(this).toggleClass('on', $(this).attr('data-ov-filter') === state.filter);
+                });
+
+                var $table = bySource ? $sourceTable : $classTable;
+                var limit = parseInt($table.attr('data-ov-limit'), 10) || 8;
+                var $rows = $table.find('tr.ov-row');
+                var shown = 0, total = 0;
+                $rows.each(function () {
+                    var $row = $(this);
+                    var ok = matches($row);
+                    $row.toggleClass('ov-filtered', !ok);
+                    if (ok) {
+                        total++;
+                        $row.toggleClass('ov-hidden', !state.expanded && total > limit);
+                        if (state.expanded || total <= limit) shown++;
+                    } else {
+                        $row.removeClass('ov-hidden');
+                    }
+                });
+                // a group heading shows only when a row under it does
+                $table.find('tr.ov-grp').each(function () {
+                    var $heading = $(this), visible = false;
+                    $heading.nextUntil('tr.ov-grp').filter('tr.ov-row').each(function () {
+                        if (!$(this).hasClass('ov-filtered') && !$(this).hasClass('ov-hidden')) visible = true;
+                    });
+                    $heading.toggle(visible || !$heading.nextAll('tr.ov-row').length);
+                });
+                $table.find('tr.ov-nomatch').toggle($rows.length > 0 && total === 0);
+
+                if (total > limit) {
+                    $('#ov-data-showing').text($more.attr('data-showing').replace('{0}', shown).replace('{1}', total));
+                    $('#ov-data-expand').text(state.expanded ? $more.attr('data-show-fewer') : $more.attr('data-show-all').replace('{0}', total));
+                    $more.show();
+                } else {
+                    $more.hide();
+                }
+            }
+
+            $('[data-ov-group]').on('click', function () {
+                state.group = $(this).attr('data-ov-group');
+                state.expanded = false;
+                try { localStorage.setItem('ipt.overview.groupBy', state.group); } catch (err) { /* not remembered */ }
+                render();
+            });
+            $('[data-ov-filter]').on('click', function () {
+                state.filter = $(this).attr('data-ov-filter');
+                state.expanded = false;
+                render();
+            });
+            $('#ov-data-filter').on('input', function () {
+                state.query = $(this).val().trim().toLowerCase();
+                state.expanded = false;
+                render();
+            });
+            $('#ov-data-expand').on('click', function () {
+                state.expanded = !state.expanded;
+                render();
+            });
+            render();
+        })();
     });
 </script>
 
@@ -1467,6 +1584,10 @@
 <#assign metadataType = "metadata"/>
 <#assign isDataPackage = resource.isDataPackage()/>
 <#assign isColDp = resource.coreType?has_content && resource.coreType == "coldp"/>
+
+<#include "/WEB-INF/pages/manage/overview_status.ftl"/>
+<#assign publishLabel><@s.text name="manage.overview.publishVersion"><@s.param>${nextVersion}</@s.param></@s.text></#assign>
+<#assign publishLabel = publishLabel?markup_string>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -1494,128 +1615,122 @@
     </div>
 
     <div class="container-fluid border-bottom">
-        <div class="container bg-body border rounded-2 mb-4">
-            <div class="container my-3 p-3">
-                <div class="text-center fs-smaller">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview"/></li>
-                        </ol>
+        <div class="container">
+            <div class="ov-head">
+                <div class="ov-grow">
+                    <nav class="ov-crumb" aria-label="breadcrumb">
+                        <a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a> › <span aria-current="page"><@s.text name="breadcrumb.manage.overview"/></span>
                     </nav>
+                    <h1 property="dc:title" class="rtitle text-gbif-header">${resource.title!resource.shortname}</h1>
+                    <div class="ov-meta">
+                        <span class="fs-smaller-2 text-nowrap type-pill dt-content-link dt-content-pill type-${resourceTypeLowerCase}"<#if installedSchemaVersion?has_content> title="<@s.text name="manage.overview.schemaVersion"/>"</#if>><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/><#if installedSchemaVersion?has_content> &middot; ${installedSchemaVersion}</#if></span>
+                        <#if resourceSubtypeLowerCase?has_content>
+                            <span class="fs-smaller-2 text-nowrap subtype-pill dt-content-link dt-content-pill type-${resourceSubtypeLowerCase}"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
+                        </#if>
+                        <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.status!?lower_case}">
+                            <#if resource.status == "PUBLIC" || resource.status == "PRIVATE">
+                                <i class="bi bi-circle fs-smaller-2"></i>
+                            <#else>
+                                <i class="bi bi-circle-fill fs-smaller-2"></i>
+                            </#if>
+                            <span><@s.text name="manage.home.visible.${resource.status!?lower_case}"/></span>
+                        </span>
+                        <#if isStatusPending>
+                            <span class="ov-pill warn" title="<@s.text name='manage.overview.changed.publication.status.republication'/>">→ <@s.text name="manage.overview.pendingOnPublication"><@s.param><@s.text name="resource.status.${resource.pendingStatus?lower_case}"/></@s.param></@s.text></span>
+                        </#if>
+                        <span><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.name)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
+                        <span><@s.text name="manage.overview.shortname"/> <code>${resource.shortname}</code></span>
+                    </div>
                 </div>
 
-                <div class="text-center mt-1">
-                    <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                        <#if resource.title?has_content>
-                            ${resource.title}
-                        <#else>
-                            ${resource.shortname}
-                        </#if>
-                    </h1>
+                <div class="ov-acts">
+                    <#if isPublished && !isDeleted>
+                        <a href="${baseURL}/resource?r=${resource.shortname}" id="top-button-view-resource" class="btn btn-sm btn-outline-gbif-primary">
+                            <#if resource.status == "PRIVATE"><@s.text name="manage.overview.viewPage.private"/><#else><@s.text name="manage.overview.viewPage"/></#if>
+                        </a>
+                    </#if>
 
-                    <div>
-                        <div class="my-auto me-3">
-                            <span class="fs-smaller-2 text-nowrap type-pill dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"<#if installedSchemaVersion?has_content> title="<@s.text name="manage.overview.schemaVersion"/>"</#if>><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/><#if installedSchemaVersion?has_content> &middot; ${installedSchemaVersion}</#if></span>
-                            <#if resourceSubtypeLowerCase?has_content>
-                                <span class="fs-smaller-2 text-nowrap subtype-pill dt-content-link dt-content-pill type-${resourceSubtypeLowerCase} me-1"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
-                            </#if>
-                            <#assign isStatusPending = resource.pendingStatus?has_content && resource.status != resource.pendingStatus>
-                            <#if isStatusPending>
-                                <#if resource.pendingStatus == "PUBLIC">
-                                    <#assign pendingStatusColor = "primary"/>
-                                <#else>
-                                    <#assign pendingStatusColor = "text"/>
-                                </#if>
-                            </#if>
-                            <#if isStatusPending>
-                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.pendingStatus!?lower_case}">
-                                    <#if  resource.pendingStatus == "PUBLIC" || resource.pendingStatus == "PRIVATE">
-                                        <i class="bi bi-circle fs-smaller-2"></i>
-                                    <#else>
-                                        <i class="bi bi-circle-fill fs-smaller-2"></i>
-                                    </#if>
-                                    <span><@s.text name="manage.home.visible.pending.${resource.pendingStatus!?lower_case}"/></span>
-                                </span>
-                            <#elseif resource.status?has_content>
-                                <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.status!?lower_case}">
-                                    <#if  resource.status == "PUBLIC" || resource.status == "PRIVATE">
-                                        <i class="bi bi-circle fs-smaller-2"></i>
-                                    <#else>
-                                        <i class="bi bi-circle-fill fs-smaller-2"></i>
-                                    </#if>
-                                    <span><@s.text name="manage.home.visible.${resource.status!?lower_case}"/></span>
-                                </span>
-                            </#if>
-                        </div>
-                        <#if isStatusPending>
-                            <div class="mt-2">
-                                <span class="fs-smaller-2 text-discreet">
-                                    <@s.text name="manage.overview.changed.publication.status.description"/>: <b class="text-gbif-${pendingStatusColor}">${resource.pendingStatus}</b>. <@s.text name="manage.overview.changed.publication.status.republication"/>
-                                </span>
-                            </div>
+                    <#if isDeleted>
+                        <#if disableRegistrationRights == "false">
+                            <form action='resource-undelete.do' method='post'>
+                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                <@s.submit cssClass="btn btn-sm btn-gbif-solid confirmUndeletion" name="undelete" key="button.undelete"/>
+                            </form>
+                        <#else>
+                            <button class="btn btn-sm btn-gbif-solid ov-blocked button-show-delete-resource-disabled-modal" name="undelete"><@s.text name="button.undelete"/></button>
                         </#if>
-                        <div class="mt-2">
-                            <span class="fs-smaller-2 text-discreet"><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.name)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
-                        </div>
+                    <#elseif canPublish>
+                        <@publish resource=resource label=publishLabel/>
+                    <#else>
+                        <a href="#overview-status" id="publish-button-blocked" class="btn btn-sm btn-gbif-solid ov-blocked" title="<@s.text name='manage.overview.publishBlocked'/>">
+                            <i class="bi bi-upload me-1"></i>${publishLabel}
+                        </a>
+                    </#if>
+
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary" type="button" id="overview-more-actions" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.moreActions'/>" aria-label="<@s.text name='manage.overview.moreActions'/>">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="overview-more-actions">
+                            <#if displayDoiFunctionality && !isDeleted>
+                                <li>
+                                    <a class="dropdown-item" id="reserve-doi" href="#">
+                                        <#if resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#else><@s.text name="button.reserve"/> DOI</#if>
+                                        <small><@s.text name="manage.overview.menu.doi.help"><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param></@s.text></small>
+                                    </a>
+                                </li>
+                            </#if>
+                            <#if report??>
+                                <li><a class="dropdown-item ov-show-report" href="#anchor-publish"><@s.text name="manage.overview.published.report.show"/></a></li>
+                            </#if>
+                            <#if isPublished && !isMetadataOnly>
+                                <li><a class="dropdown-item" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name="portal.publication.log"/></a></li>
+                            </#if>
+                            <#if validationReportAvailable>
+                                <li><a class="dropdown-item" href="${baseURL}/manage/validationReport.do?r=${resource.shortname}"><@s.text name="manage.overview.menu.validationReport"/></a></li>
+                            </#if>
+                            <#if !isDataPackage && (resource.recordsPublished > 0)>
+                                <li><a class="dropdown-item" href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" target="_blank" rel="noopener"><@s.text name="manage.overview.menu.validator"/> <i class="bi bi-box-arrow-up-right"></i></a></li>
+                            </#if>
+                            <#if !isDeleted>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <#if disableRegistrationRights == "false">
+                                        <#if resource.key?? && resource.status == "REGISTERED">
+                                            <button class="dropdown-item text-gbif-danger button-show-delete-resource-modal" type="button" name="deleteFlag">
+                                        <#else>
+                                            <button class="dropdown-item text-gbif-danger proxy-button-delete-from-ipt" type="button" name="deleteFlag">
+                                        </#if>
+                                    <#else>
+                                        <button class="dropdown-item text-gbif-danger button-show-delete-resource-disabled-modal" type="button" name="deleteFlag">
+                                    </#if>
+                                        <@s.text name="manage.overview.menu.delete"/>
+                                        <small><#if resource.status == "REGISTERED"><@s.text name="manage.overview.menu.delete.registered"/><#else><@s.text name="manage.overview.menu.delete.help"/></#if></small>
+                                    </button>
+                                </li>
+                            </#if>
+                        </ul>
                     </div>
 
-                    <div class="mt-2">
-                        <#if resource.published>
-                            <a href="${baseURL}/resource?r=${resource.shortname}" id="top-button-view-resource" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.view"/></a>
-                        </#if>
-
-                        <#if resource.status == "DELETED">
-                            <div style="display: inline-block;">
-                                <#if disableRegistrationRights == "false">
-                                    <form action='resource-undelete.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary confirmUndeletion top-button" name="undelete" key="button.undelete"/>
-                                    </form>
-                                <#else>
-                                    <button class="btn btn-sm btn-outline-gbif-primary button-show-delete-resource-disabled-modal top-button" name="undelete"><@s.text name="button.undelete"/></button>
-                                </#if>
-                            </div>
-                        <#else>
-                            <#if disableRegistrationRights == "false">
-                                <#if resource.key?? && resource.status == "REGISTERED">
-                                    <form action="resource-delete.do" method='post' style="display: none;">
-                                        <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptAndGbif w-100 dropdown-button" cssStyle="text-transform: unset !important" name="deleteFlag" key="button.delete.fromIptAndGbif"/>
-                                    </form>
-                                    <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
-                                        <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly w-100 dropdown-button" cssStyle="text-transform: unset !important" name="deleteFlag" key="button.delete.fromIpt"/>
-                                    </form>
-                                    <button class="btn btn-sm btn-outline-gbif-danger top-button button-show-delete-resource-modal" name="deleteFlag"><@s.text name="button.delete"/></button>
-                                <#else>
-                                    <form action="resource-deleteFromIpt.do" method='post' style="display: none;">
-                                        <input name="r" type="hidden" value="${resource.shortname}" />
-                                        <@s.submit cssClass="btn btn-sm btn-outline-gbif-danger confirmDeletion confirmDeletionFromIptOnly top-button" name="deleteFlag" key="button.delete.fromIpt"/>
-                                    </form>
-                                    <button class="btn btn-sm btn-outline-gbif-danger top-button proxy-button-delete-from-ipt" name="deleteFlag"><@s.text name="button.delete"/></button>
-                                </#if>
-                            <#else>
-                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-disabled-modal top-button" name="deleteFlag"><@s.text name="button.delete"/></button>
+                    <#-- the forms the delete actions submit, and the target of the "Cancel" button in the sticky resource bar -->
+                    <div class="d-none">
+                        <#if !isDeleted && disableRegistrationRights == "false">
+                            <#if resource.key?? && resource.status == "REGISTERED">
+                                <form action="resource-delete.do" method='post'>
+                                    <input name="r" type="hidden" value="${resource.shortname}" />
+                                    <@s.submit cssClass="confirmDeletion confirmDeletionFromIptAndGbif" name="deleteFlag" key="button.delete.fromIptAndGbif"/>
+                                </form>
                             </#if>
+                            <form action="resource-deleteFromIpt.do" method='post'>
+                                <input name="r" type="hidden" value="${resource.shortname}" />
+                                <@s.submit cssClass="confirmDeletion confirmDeletionFromIptOnly" name="deleteFlag" key="button.delete.fromIpt"/>
+                            </form>
                         </#if>
-
-                        <a href="${baseURL}/manage/" id="top-button-cancel" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
+                        <a href="${baseURL}/manage/" id="top-button-cancel"><@s.text name="button.cancel"/></a>
                     </div>
-
-                    <p class="mt-3 mb-0 text-smaller fst-italic">
-                        <#if isDataPackage>
-                            <@s.text name="manage.overview.dataPackageSchema.description"/>
-                        <#elseif resource.coreType?has_content && resource.coreType==metadataType>
-                            <@s.text name="manage.overview.description.metadataOnly"/>
-                        <#else>
-                            <@s.text name="manage.overview.description"/>
-                        </#if>
-                    </p>
-
-                    <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
                 </div>
             </div>
+            <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
         </div>
     </div>
 
@@ -1624,874 +1739,110 @@
 
             <main class="bd-main">
                 <div class="bd-toc bd-toc-overview mt-4 pt-3 ps-3 mb-lg-5 text-muted">
-                    <nav id="sidebar-content">
+                    <div class="fw-semibold text-gbif-header-2 mb-2 text-smaller"><@s.text name="manage.overview.onThisPage"/></div>
+                    <nav id="sidebar-content" aria-label="<@s.text name='manage.overview.onThisPage'/>">
                         <ul>
-                            <#if resource.coreType?has_content && resource.coreType==metadataType>
-                                <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
-                            <#else>
-                                <li><a href="#anchor-sources" class="sidebar-navigation-link"><@s.text name='manage.overview.source.data'/></a></li>
-                                <li><a href="#anchor-mappings" class="sidebar-navigation-link"><#if isDataPackage><@s.text name='manage.overview.mappings'/><#else><@s.text name='manage.overview.DwC.Mappings'/></#if></a></li>
-                                <li><a href="#anchor-metadata" class="sidebar-navigation-link"><@s.text name='manage.overview.metadata'/></a></li>
+                            <#if !isMetadataOnly>
+                                <li><a href="#anchor-data" class="sidebar-navigation-link"><span class="ov-dot ${dataStatus}"></span><#if isDataPackage><@s.text name="manage.overview.data.title.dp"/><#else><@s.text name="manage.overview.data.title"/></#if></a></li>
                             </#if>
-                            <li><a href="#anchor-visibility" class="sidebar-navigation-link"><@s.text name='manage.overview.visibility'/></a></li>
-                            <li><a href="#anchor-publish" class="sidebar-navigation-link"><@s.text name='manage.overview.published'/></a></li>
-                            <li><a href="#anchor-registration" class="sidebar-navigation-link"><@s.text name='manage.overview.registration'/></a></li>
-                            <li><a href="#anchor-networks" class="sidebar-navigation-link"><@s.text name='manage.overview.networks.title'/></a></li>
-                            <li><a href="#anchor-managers" class="sidebar-navigation-link"><@s.text name='manage.overview.resource.managers'/></a></li>
+                            <li><a href="#anchor-metadata" class="sidebar-navigation-link"><span class="ov-dot ${metadataStatus}"></span><@s.text name="manage.overview.metadata"/></a></li>
+                            <li><a href="#anchor-visibility" class="sidebar-navigation-link"><span class="ov-dot ${sharingStatus}"></span><@s.text name="manage.overview.sharing.title"/></a></li>
+                            <li><a href="#anchor-publish" class="sidebar-navigation-link"><span class="ov-dot ${publicationStatus}"></span><@s.text name="manage.overview.published"/></a></li>
+                            <li><a href="#anchor-managers" class="sidebar-navigation-link"><span class="ov-dot ok"></span><@s.text name="manage.overview.resource.managers"/></a></li>
                         </ul>
                     </nav>
+
+                    <div class="ov-ready">
+                        <#if attention?has_content>
+                            <b><@s.text name="manage.overview.attention.title"><@s.param>${attention?size}</@s.param></@s.text></b>
+                            <ul>
+                                <#list attention as a>
+                                    <li><span class="ov-dot ${a[0]}"></span><span>${a[1]}</span></li>
+                                </#list>
+                            </ul>
+                        <#elseif isDeleted>
+                            <b><@s.text name="manage.overview.attention.readiness"/></b>
+                            <ul><li><span class="ov-dot off"></span><span><@s.text name="manage.overview.banner.deleted.title"/></span></li></ul>
+                        <#else>
+                            <b><@s.text name="manage.overview.attention.readiness"/></b>
+                            <ul><li><span class="ov-dot ok"></span><span><@s.text name="manage.overview.attention.none"/></span></li></ul>
+                        </#if>
+                    </div>
                 </div>
 
-                <div class="bd-content ps-lg-4">
-                    <!-- when resource is of type metadata-only, there is no need to show source data and mapping sections -->
-                    <#if resource.coreType?has_content && resource.coreType==metadataType>
-                        <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
+                <div class="bd-content ps-lg-4 pt-4">
+                    <#-- one status line: what's different from the last version, or what stops the next one -->
+                    <#assign proxyPublishButton><button type="button" class="btn btn-sm btn-gbif-solid ov-proxy-publish">${publishLabel}</button></#assign>
+                    <#if isDeleted>
+                        <div id="overview-status" class="ov-banner del" role="status">
+                            <span class="ov-ic" aria-hidden="true">×</span>
+                            <div class="ov-grow">
+                                <h2><@s.text name="manage.overview.banner.deleted.title"/></h2>
+                                <div class="ov-text"><#if resource.isAlreadyAssignedDoi()><@s.text name="manage.resource.status.intro.deleted"/><#else><@s.text name="manage.overview.banner.deleted.text"/></#if></div>
+                            </div>
+                            <#if disableRegistrationRights == "false">
+                                <button type="button" class="btn btn-sm btn-gbif-solid proxy-button-undelete-resource"><@s.text name="button.undelete"/></button>
+                            </#if>
+                        </div>
+                    <#elseif publishBlockers?has_content>
+                        <div id="overview-status" class="ov-banner bad" role="status">
+                            <span class="ov-ic" aria-hidden="true">!</span>
+                            <div class="ov-grow">
+                                <h2><#if isPublished><@s.text name="manage.overview.banner.blocked.title"><@s.param>${nextVersion}</@s.param></@s.text><#else><@s.text name="manage.overview.banner.blocked.titleFirst"/></#if></h2>
+                                <ul class="ov-text">
+                                    <#list publishBlockers as b>
+                                        <li>${b.text}${b.detail}<#if b.href?has_content> <a href="${b.href}" class="${b.linkClass}">${b.linkText} →</a></#if></li>
+                                    </#list>
+                                </ul>
+                            </div>
+                        </div>
+                    <#elseif usesAutoPublishing && autoPublicationSuspendedForThisResource>
+                        <div id="overview-status" class="ov-banner bad" role="status">
+                            <span class="ov-ic" aria-hidden="true">!</span>
+                            <div class="ov-grow">
+                                <h2><@s.text name="manage.overview.banner.suspended.title"/></h2>
+                                <div class="ov-text"><@s.text name="manage.overview.banner.suspended.text"/></div>
+                            </div>
+                            <#if report??><a href="#anchor-publish" class="btn btn-sm btn-outline-secondary ov-show-report"><@s.text name="manage.overview.published.report.show"/></a></#if>
+                            ${proxyPublishButton}
+                        </div>
+                    <#elseif !isPublished>
+                        <div id="overview-status" class="ov-banner i" role="status">
+                            <span class="ov-ic" aria-hidden="true">i</span>
+                            <div class="ov-grow">
+                                <h2><@s.text name="manage.overview.banner.first.title"/></h2>
+                                <div class="ov-text"><@s.text name="manage.overview.banner.first.text"><@s.param>${nextVersion}</@s.param></@s.text></div>
+                            </div>
+                            ${proxyPublishButton}
+                        </div>
+                    <#elseif hasChanges>
+                        <div id="overview-status" class="ov-banner w" role="status">
+                            <span class="ov-ic" aria-hidden="true">!</span>
+                            <div class="ov-grow">
+                                <h2><@s.text name="manage.overview.banner.changes.title"><@s.param>${currentVersion}</@s.param></@s.text></h2>
+                                <div class="ov-text"><#list changeList as c>${c}<#sep> · </#sep></#list></div>
+                            </div>
+                            ${proxyPublishButton}
+                        </div>
                     <#else>
-                        <#include "/WEB-INF/pages/manage/overview_data.ftl"/>
-                        <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
+                        <div id="overview-status" class="ov-banner ok" role="status">
+                            <span class="ov-ic" aria-hidden="true">✓</span>
+                            <div class="ov-grow">
+                                <h2><@s.text name="manage.overview.banner.upToDate.title"><@s.param>${currentVersion}</@s.param></@s.text></h2>
+                                <div class="ov-text">
+                                    <@s.text name="manage.overview.banner.upToDate.text"><@s.param>${resource.lastPublished?datetime?string.medium}</@s.param></@s.text><#if usesAutoPublishing && resource.nextPublished??> · <@s.text name="manage.overview.banner.upToDate.auto"><@s.param>${resource.nextPublished?datetime?string.medium}</@s.param></@s.text></#if><#if resource.status == "REGISTERED"> · <@s.text name="manage.overview.banner.upToDate.registered"/></#if>
+                                </div>
+                            </div>
+                        </div>
                     </#if>
 
-                    <span class="anchor anchor-overview-page" id="anchor-visibility"></span>
-                    <div class="py-5 border-bottom section" id="visibility">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <#assign visibilityTitleInfo>
-                                        <@s.text name='manage.overview.visibility.description'/>
-                                    </#assign>
-
-                                    <@popoverTextInfo visibilityTitleInfo/>
-                                    <@s.text name='manage.overview.visibility'/>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <#if action.canBeMadePublic()>
-                                    <#assign actionMethod>makePublic</#assign>
-                                    <form action='resource-${actionMethod}.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <button id="makePublic" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                            </svg>
-                                            <@s.text name='button.change'/>
-                                        </button>
-                                    </form>
-                                <#elseif action.canBeMadePrivate()>
-                                    <#assign actionMethod>makePrivate</#assign>
-                                    <form action='resource-${actionMethod}.do' method='post'>
-                                        <input name="r" type="hidden" value="${resource.shortname}"/>
-                                        <input name="unpublish" type="hidden" value="Change"/>
-                                        <button id="makePrivate" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                            </svg>
-                                            <@s.text name='button.change'/>
-                                        </button>
-                                    </form>
-                                <#elseif resource.pendingStatus?has_content>
-                                    <button id="cancelVisibilityChange" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
-                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                        </svg>
-                                        <@s.text name='button.change'/>
-                                    </button>
-                                <#else>
-                                    <button id="show-visibility-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
-                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                        </svg>
-                                        <@s.text name='button.change'/>
-                                    </button>
-                                </#if>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <#if isStatusPending>
-                                <#if resource.pendingStatus=="PRIVATE">
-                                    <p>
-                                        <@s.text name="manage.resource.status.intro.pending.private"/> <@s.text name="manage.overview.changed.publication.status.republication"/>
-                                    </p>
-                                <#elseif resource.pendingStatus=="PUBLIC">
-                                    <p>
-                                        <@s.text name="manage.resource.status.intro.pending.public"/> <@s.text name="manage.overview.changed.publication.status.republication"/>
-                                    </p>
-                                </#if>
-                            <#else>
-                            <p class="mb-0">
-                                <#if resource.status=="PRIVATE">
-                                    <#if resource.makePublicDate?has_content>
-                                        <@s.text name="manage.resource.status.intro.private.public.scheduled">
-                                            <@s.param>${resource.makePublicDate?datetime?string.long_short}</@s.param>
-                                        </@s.text>
-                                    <#else>
-                                        <@s.text name="manage.resource.status.intro.private"/>
-                                    </#if>
-                                <#elseif resource.status=="PUBLIC">
-                                    <@s.text name="manage.resource.status.intro.public"/>
-                                <#elseif resource.status=="REGISTERED">
-                                    <@s.text name="manage.resource.status.intro.registered"/>
-                                <#elseif resource.status=="DELETED">
-                                    <@s.text name="manage.resource.status.intro.deleted"/>
-                                </#if>
-                            </p>
-                            </#if>
-                        </div>
-                    </div>
-
-                    <span class="anchor anchor-overview-page" id="anchor-publish"></span>
-                    <div class="py-5 border-bottom section" id="publish">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <#assign overviewTitleInfo>
-                                        <#if resource.coreType?has_content && resource.coreType==metadataType>
-                                            <@s.text name="manage.overview.published.description.metadataOnly"/>
-                                        <#elseif resource.dataPackage==true>
-                                            <@s.text name="manage.overview.published.description.dp"/>
-                                        <#else>
-                                            <@s.text name="manage.overview.published.description"/>
-                                        </#if>
-                                        <br/><br/>
-
-                                        <#assign displayDoiFunctionality = (organisationWithPrimaryDoiAccount.key)?has_content && (resource.organisation.key)?has_content && (organisationWithPrimaryDoiAccount.key == resource.organisation.key || currentUser.role == "Admin" || resourceOrganisationAssociatedWithDoiAgency) && currentUser.hasRegistrationRights()>
-
-                                        <#if displayDoiFunctionality>
-                                            <@s.text name='manage.overview.published.description.doiAccount'><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.name}</@s.param><@s.param>${organisationWithPrimaryDoiAccount.doiPrefix}</@s.param></@s.text>
-                                        <#else>
-                                            <@s.text name="manage.overview.published.description.noDoiAccount"/>
-                                        </#if>
-                                    </#assign>
-                                    <@popoverTextInfo overviewTitleInfo/>
-
-                                    <@s.text name='manage.overview.published'/>
-                                </h5>
-                            </div>
-
-                            <#if displayDoiFunctionality>
-                                <#assign doiActionName>
-                                    <#if resource.identifierStatus == "UNRESERVED"><@s.text name="button.reserve"/> DOI<#t>
-                                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="button.delete"/> DOI<#t>
-                                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="button.reserve.new"/> DOI<#t>
-                                    <#else><@s.text name="button.reserve"/> DOI<#t>
-                                    </#if>
-                                </#assign>
-                            </#if>
-
-                            <div class="col-4 d-flex justify-content-end">
-                                <a id="edit-publication-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button me-2" type="button" href="publication-settings.do?r=${resource.shortname}">
-                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                    </svg>
-                                    <@s.text name="button.edit"/>
-                                </a>
-
-                                <@publish resource/>
-                                <div class="dropdown me-2">
-                                    <button class="icon-button icon-material-actions overview-action-button dropdown-toggle d-flex align-items-center" type="button" id="publicationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2"></path>
-                                        </svg>
-                                        <@s.text name="button.options"/>
-                                    </button>
-
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="publicationDropdown">
-                                        <#if displayDoiFunctionality>
-                                            <a title="${doiActionName!}" id="reserve-doi" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" type="button" href="#">
-                                                ${doiActionName!}
-                                            </a>
-                                        </#if>
-                                        <li>
-                                            <a class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" href="${baseURL}/manage/validationReport.do?r=${resource.shortname}">
-                                                Last validation report
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <#if isDataPackage && dataPackageUnresolvedFields?has_content>
-                            <div class="mt-4 text-smaller text-gbif-danger">
-                                <i class="bi bi-exclamation-triangle-fill"></i>
-                                <@s.text name="manage.overview.published.unresolvedFields"/>
-                                <#list dataPackageUnresolvedFields as mappingLabel, fieldNames>
-                                    <br><strong>${mappingLabel}</strong>: <#list fieldNames as fieldName><code>${fieldName}</code><#sep>, </#sep></#list>
-                                </#list>
-                            </div>
-                        </#if>
-
-                        <#assign autoPublicationSuspendedForThisResource = action.hasMaxProcessFailures()>
-                        <#assign autoPublicationEnabledForIPT = cfg.autoPublishingEnabled/>
-
-                        <div class="mt-4">
-                            <p class="mb-2">
-                                <#if resource.usesAutoPublishing() && autoPublicationEnabledForIPT>
-                                    <#if autoPublicationSuspendedForThisResource>
-                                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-suspended">
-                                            <@s.text name="manage.overview.autopublish.suspended"/>
-                                        </span>
-                                        <span class="text-gbif-danger fst-italic">
-                                            <@s.text name="manage.overview.autopublish.intro.suspended"/>
-                                        </span>
-                                    <#else>
-                                        <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill autopublish-enabled">
-                                            <@s.text name="manage.overview.autopublish.enabled"/>: ${autoPublishFrequencies.get(resource.updateFrequency.identifier)}
-                                        </span>
-                                        <@s.text name="manage.overview.autopublish.intro.activated"/>
-                                    </#if>
-                                </#if>
-                            </p>
-
-                            <#if (resource.organisation.name)?has_content>
-                            <div class="mb-2">
-                                <@s.text name="eml.publishingOrganisation"/>: <i>${resource.organisation.name}</i>
-                            </div>
-                            </#if>
-
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.published.intro"/>
-                            </p>
-
-                            <div class="details mt-3">
-                                <#assign lastPublishedTitle><@s.text name="manage.overview.published.last.publication.intro"/></#assign>
-                                <#assign lastPublishedTitle = lastPublishedTitle?markup_string>
-                                <#assign nextPublishedTitle><@s.text name="manage.overview.published.next.publication.intro"/></#assign>
-                                <#assign nextPublishedTitle = nextPublishedTitle?markup_string>
-                                <#assign versionTitle><@s.text name="manage.overview.published.version"/></#assign>
-                                <#assign releasedTitle><@s.text name="manage.overview.published.released"/></#assign>
-                                <#assign releasedTitle = releasedTitle?markup_string>
-                                <#assign nextPublicationDate><@s.text name="manage.overview.published.next.date"/></#assign>
-                                <#assign nextPublicationDate = nextPublicationDate?markup_string>
-                                <#assign pubLogTitle><@s.text name="portal.publication.log"/></#assign>
-                                <#assign pubLogTitle = pubLogTitle?markup_string>
-                                <#assign pubRepTitle><@s.text name="manage.overview.published.report.show"/></#assign>
-                                <#assign pubRepTitle = pubRepTitle?markup_string>
-                                <#assign downloadTitle><@s.text name='manage.overview.published.download'/></#assign>
-                                <#assign showTitle><@s.text name="basic.show"/></#assign>
-                                <#assign viewTitle><@s.text name='button.view'/></#assign>
-                                <#assign previewTitle><@s.text name='button.preview'/></#assign>
-                                <#assign emptyCell="-"/>
-                                <#assign visibilityTitle><@s.text name='manage.overview.visibility'/></#assign>
-                                <#assign licenseTitle><@s.text name='eml.intellectualRights.license'/></#assign>
-                                <#assign licenseTitle = licenseTitle?markup_string>
-
-                                <div class="row g-2">
-                                    <#if resource.lastPublished??>
-                                        <#assign lastPublishedVersionStatus = resource.getLastPublishedVersionsPublicationStatus()?string?lower_case />
-
-                                        <div class="col-xl-6" style="height: 100%">
-                                            <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
-                                                <div class="ps-2 published-version-item-link">
-                                                    <span>
-                                                        <#if lastPublishedVersionStatus == "registered">
-                                                            <i class="bi bi-circle-fill status-registered" title="<@s.text name="resource.status.registered"/>"></i>
-                                                        <#elseif lastPublishedVersionStatus == "public">
-                                                            <i class="bi bi-circle status-public" title="<@s.text name="resource.status.public"/>"></i>
-                                                        <#elseif lastPublishedVersionStatus == "private">
-                                                            <i class="bi bi-circle status-private" title="<@s.text name="resource.status.private"/>"></i>
-                                                        <#elseif lastPublishedVersionStatus == "deleted">
-                                                            <i class="bi bi-circle-fill status-deleted" title="<@s.text name="resource.status.deleted"/>"></i>
-                                                        </#if>
-                                                    </span>
-                                                    <span class="me-2 overview-version-title">
-                                                        <#if isDataPackage>
-                                                            <strong><@s.text name="footer.version"/> ${resource.metadataVersion}</strong>
-                                                        <#else>
-                                                            <strong><@s.text name="footer.version"/> ${resource.emlVersion.toPlainString()}</strong>
-                                                        </#if>
-                                                    </span><br>
-                                                    <span class="fs-smaller-2">
-                                                        <small>
-                                                            ${releasedTitle?cap_first} ${resource.lastPublished?datetime?string.medium}
-                                                        </small>
-                                                    </span><br>
-                                                    <span class="fs-smaller-2 text-nowrap version-pill version-current mt-2 mb-1">${lastPublishedTitle?upper_case}</span>
-                                                    <#if resource.isAlreadyAssignedDoi()>
-                                                        <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-current mt-2 mb-1"><strong>DOI</strong> ${resource.versionHistory[0].doi!}</span>
-                                                    </#if>
-                                                    <#if !isDataPackage>
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
-                                                    <#else>
-                                                        <#if isDwcDp>
-                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/></span><br>
-                                                        <#elseif !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
-                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
-                                                        <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
-                                                            <#list resource.dataPackageMetadata.licenses as license>
-                                                                <#if license.scope?? && license.scope == "data">
-                                                                    <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1">${(license.name)!}</span><br>
-                                                                </#if>
-                                                            </#list>
-                                                        <#elseif resource.coreType?? && resource.coreType == "coldp">
-                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-current mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
-                                                        </#if>
-                                                    </#if>
-                                                </div>
-
-                                                <div class="d-flex justify-content-end my-auto version-item-actions">
-                                                    <a title="<@s.text name="button.view"/>" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/resource?r=${resource.shortname}">
-                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                        </svg>
-                                                    </a>
-
-                                                    <#if (resource.coreType)! != "metadata">
-                                                        <a title="${pubLogTitle?cap_first}" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V7h14v12zm-2-7H7v-2h10v2zm-4 4H7v-2h6v2z"></path>
-                                                            </svg>
-                                                        </a>
-
-                                                        <#if report??>
-                                                            <a title="${pubRepTitle?cap_first}" id="toggleReport" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="#anchor-publish">
-                                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                    <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V7h14v12zm-5.5-6c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM12 9c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4zm0 6.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
-                                                                </svg>
-                                                            </a>
-                                                        </#if>
-                                                    </#if>
-
-                                                    <div class="dropdown d-sm-none">
-                                                        <a class="icon-button icon-material-actions version-item-action" type="button" href="#" id="dropdown-version-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                                            </svg>
-                                                        </a>
-
-                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-version-item-actions-current">
-                                                            <li>
-                                                                <a class="dropdown-item action-link" type="button" href="${baseURL}/resource?r=${resource.shortname}">
-                                                                    <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                    </svg>
-                                                                    <@s.text name="button.view"/>
-                                                                </a>
-                                                            </li>
-
-                                                            <#if (resource.coreType)! != "metadata">
-                                                                <li>
-                                                                    <a class="dropdown-item action-link" type="button" target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}">
-                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                            <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V7h14v12zm-2-7H7v-2h10v2zm-4 4H7v-2h6v2z"></path>
-                                                                        </svg>
-                                                                        ${pubLogTitle?cap_first}
-                                                                    </a>
-                                                                </li>
-
-
-                                                                <#if report??>
-                                                                    <li>
-                                                                        <a id="toggleReport" class="dropdown-item action-link" type="button" href="#anchor-publish">
-                                                                            <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                                <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm0 16H5V7h14v12zm-5.5-6c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5.67-1.5 1.5-1.5 1.5.67 1.5 1.5zM12 9c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4zm0 6.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path>
-                                                                            </svg>
-                                                                            <span id="toggleReport-text">
-                                                                                ${pubRepTitle?cap_first}
-                                                                            </span>
-                                                                        </a>
-                                                                    </li>
-                                                                </#if>
-                                                            </#if>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </#if>
-
-                                    <div class="col-xl-6" style="height: 100%">
-                                        <#if resource.pendingStatus?has_content>
-                                            <#assign nextVersionStatus>${resource.pendingStatus?lower_case}</#assign>
-                                        <#else>
-                                            <#assign nextVersionStatus>${resource.status?lower_case}</#assign>
-                                        </#if>
-
-                                        <#assign nextVersionStatus = nextVersionStatus?markup_string>
-
-                                        <div class="d-flex justify-content-between border rounded-2 mx-1 p-1 py-2 version-item text-smaller">
-                                            <div class="ps-2 next-version-item-link">
-                                                <span>
-                                                    <#if nextVersionStatus == "registered">
-                                                        <i class="bi bi-circle-fill status-registered" title="<@s.text name="resource.status.registered"/>"></i>
-                                                    <#elseif nextVersionStatus == "public">
-                                                        <i class="bi bi-circle status-public" title="<@s.text name="resource.status.public"/>"></i>
-                                                    <#elseif nextVersionStatus == "private">
-                                                        <i class="bi bi-circle status-private" title="<@s.text name="resource.status.private"/>"></i>
-                                                    <#elseif nextVersionStatus == "deleted">
-                                                        <i class="bi bi-circle-fill status-deleted" title="<@s.text name="resource.status.deleted"/>"></i>
-                                                    </#if>
-                                                </span>
-                                                <span class="me-2 overview-version-title">
-                                                    <strong><@s.text name="footer.version"/> ${resource.nextVersionPlainString}</strong>
-                                                </span><br>
-                                                <span class="fs-smaller-2">
-                                                    <small>
-                                                        <#if resource.nextPublished?? && !autoPublicationSuspendedForThisResource && autoPublicationEnabledForIPT>
-                                                            ${nextPublicationDate?cap_first} ${resource.nextPublished?datetime?string.medium}
-                                                        <#else>
-                                                            <@s.text name="manage.overview.published.date.not.set"/>
-                                                        </#if>
-                                                    </small>
-                                                </span><br>
-                                                <span class="fs-smaller-2 text-nowrap version-pill version-next mt-2 mb-1">
-                                                    ${nextPublishedTitle?upper_case}
-                                                </span>
-                                                <#if resource.doi??>
-                                                    <span title="DOI" class="fs-smaller-2 text-nowrap doi-pill doi-pill-next mt-2 mb-1"><strong>DOI</strong> ${resource.doi!}</span>
-                                                </#if>
-                                                <#if (resource.eml)?has_content && !isDataPackage>
-                                                    <#if resource.getEml().parseLicenseUrl()?has_content>
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
-                                                    <#else>
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
-                                                    </#if>
-                                                <#elseif isDataPackage>
-                                                    <#if isDwcDp>
-                                                        <#if resource.getEml().parseLicenseUrl()?has_content>
-                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@shortLicense resource.getEml().parseLicenseUrl()/></span><br>
-                                                        <#else>
-                                                            <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
-                                                        </#if>
-                                                    <#elseif !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1"><@s.text name="manage.overview.published.licenseNotSet"/></span><br>
-                                                    <#elseif resource.coreType?? && resource.coreType == "camtrap-dp">
-                                                        <#list resource.dataPackageMetadata.licenses as license>
-                                                            <#if license.scope?? && license.scope == "data">
-                                                                <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1">${(license.name)!}</span><br>
-                                                            </#if>
-                                                        </#list>
-                                                    <#elseif resource.coreType?? && resource.coreType == "coldp">
-                                                        <span title="${licenseTitle?cap_first}" class="fs-smaller-2 text-nowrap license-pill license-pill-next mt-2 mb-1">${(resource.dataPackageMetadata.license)!}</span><br>
-                                                    </#if>
-                                                </#if>
-                                            </div>
-
-                                            <div class="d-flex justify-content-end my-auto version-item-actions">
-                                                <#if validMetadata>
-                                                    <a title="<@s.text name="button.preview"/>" class="icon-button icon-material-actions version-item-action fs-smaller-2 d-sm-max-none" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
-                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                        </svg>
-                                                    </a>
-                                                </#if>
-
-                                                <div class="dropdown d-sm-none">
-                                                    <a class="icon-button icon-material-actions version-item-action" type="button" href="#" id="dropdown-version-item-actions-pending" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                                        </svg>
-                                                    </a>
-
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-version-item-actions-pending">
-                                                        <#if validMetadata>
-                                                            <li>
-                                                                <a class="dropdown-item action-link" type="button" href="${baseURL}/resource/preview?r=${resource.shortname}">
-                                                                    <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                    </svg>
-                                                                    <@s.text name="button.preview"/>
-                                                                </a>
-                                                            </li>
-                                                        </#if>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-2">
-                                    <#if report??>
-                                        <table>
-                                            <tr id="dwcaReport" style="display: none;">
-                                                <td colspan="2">
-                                                    <div class="report text-smaller">
-                                                        <ul class="simple list-unstyled">
-                                                            <#list report.messages as msg>
-                                                                <li class="${msg.level}"><span
-                                                                            class="small">${msg.date?time?string}</span> ${msg.message}
-                                                                </li>
-                                                            </#list>
-                                                        </ul>
-                                                        <#if cfg.debug() && report.hasException()>
-                                                            <br/>
-                                                            <ul class="simple">
-                                                                <li>
-                                                                    <strong>Exception</strong> ${report.exceptionMessage!}
-                                                                </li>
-                                                                <#list report.exceptionStacktrace as msg>
-                                                                    <li>${msg}</li>
-                                                                </#list>
-                                                            </ul>
-                                                        </#if>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </#if>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <span class="anchor anchor-overview-page" id="anchor-registration"></span>
-                    <div class="py-5 border-bottom section" id="registration">
-
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <#assign registrationTitleInfo>
-                                        <@s.text name="manage.resource.status.intro.registration"/>
-                                        <#if !resource.dataPackage??><br><br><@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></#if>
-                                        <br><br>
-                                        <@s.text name='manage.resource.status.intro.public.gbifWarning'/>
-                                    </#assign>
-
-                                    <@popoverTextInfo registrationTitleInfo/>
-                                    <@s.text name='manage.overview.registration'/>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <#if resource.status!="REGISTERED">
-                                    <#if !currentUser.hasRegistrationRights()>
-                                        <!-- Hide register button and show warning: user must have registration rights -->
-                                        <#assign visibilityConfirmRegistrationWarning>
-                                            <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                                        </#assign>
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                            </svg>
-                                            <@s.text name='button.register'/>
-                                        </button>
-                                    <#elseif missingValidPublishingOrganisation?string == "true">
-                                        <!-- Hide register button and show warning: user must assign valid publishing organisation -->
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                            </svg>
-                                            <@s.text name='button.register'/>
-                                        </button>
-                                    <#elseif missingRegistrationMetadata?string == "true">
-                                        <!-- Hide register button and show warning: user must fill in minimum registration metadata -->
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                            </svg>
-                                            <@s.text name='button.register'/>
-                                        </button>
-                                    <#elseif !resource.isLastPublishedVersionPublic()>
-                                        <!-- Hide register button and show warning: last published version must be publicly available to register -->
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                            </svg>
-                                            <@s.text name='button.register'/>
-                                        </button>
-                                    <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
-                                        <!-- Hide register button and show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                                        <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
-                                            <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                            </svg>
-                                            <@s.text name='button.register'/>
-                                        </button>
-                                    <#else>
-                                        <form action="resource-registerResource.do" method="post">
-                                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                                            <#if resource.isDwcDp()>
-                                                <input id="dwcDpDatasetType" name="dwcDpDatasetType" type="hidden" value=""/>
-                                            </#if>
-                                            <button id="register-resource-button" class="confirmRegistration text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="submit">
-                                                <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                                    <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                                </svg>
-                                                <@s.text name='button.register'/>
-                                            </button>
-                                        </form>
-                                    </#if>
-                                <#else>
-                                    <button id="show-registration-disabled-modal" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
-                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                            <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-                                        </svg>
-                                        <@s.text name='button.register'/>
-                                    </button>
-                                </#if>
-                                <#if resource.isDwcDp() && resource.status=="REGISTERED" && resource.key?? && currentUser.hasRegistrationRights()>
-                                    <button class="change-dwc-dp-dataset-type-button text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button">
-                                        <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                        </svg>
-                                        <@s.text name='manage.overview.registration.datasetType.change'/>
-                                    </button>
-                                </#if>
-                            </div>
-                        </div>
-
-                        <div class="row mt-4">
-                            <#if resource.status=="REGISTERED" && resource.key??>
-                                <p class="mb-0">
-                                    <@s.text name="manage.overview.registration.intro"/>
-                                </p>
-
-                                <div class="details mt-3">
-                                    <div class="row g-2">
-                                        <div class="col-xl-6">
-                                            <div class="d-flex registration-item border rounded-2 mx-1 p-1 py-2 text-smaller">
-                                                <div class="my-auto ps-2 d-flex">
-                                                    <svg class="gbif-logo-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 539.7 523.9" style="display: inline-block;" xml:space="preserve">
-                                                        <path class="ipt-icon-piece" d="M230.7,255.5c0-102.2,49.9-190.7,198.4-190.7C429.1,167.2,361.7,255.5,230.7,255.5"></path>
-                                                        <path class="ipt-icon-piece" d="M468.6,523.9c27.8,0,49.2-4,71.1-12c0-80.9-48.3-138.7-133.5-180.4c-65.2-32.7-145.5-49.7-218.8-49.7C219.5,185.4,196.1,65.7,165,0c-34.5,68.8-56,186.8-22.9,282.8C77,287.6,25.4,315.9,3.6,353.3c-1.6,2.8-5,8.9-3,10c1.6,0.8,4.1-1.7,5.6-3.1c23.5-21.8,54.6-32.4,84.5-32.4c69.1,0,117.8,57.3,152.3,91.7C317.1,493.5,389.4,524.1,468.6,523.9"></path>
-                                                    </svg>
-                                                </div>
-
-                                                <div class="my-auto ps-2 text-truncate registration-item-link fs-smaller-2 me-auto">
-                                                    <strong class="overview-registered-title fs-smaller">${resource.title!resource.shortname}</strong>
-                                                    <br>
-                                                    <small>${resource.key}</small>
-                                                    <#if resource.organisation??>
-                                                        |
-                                                        <small>${resource.organisation.name!"Organisation"}</small>
-                                                    </#if>
-                                                    <#if resource.isDwcDp() && resource.dwcDpDatasetType??>
-                                                        |
-                                                        <small><@s.text name="portal.resource.type.${resource.dwcDpDatasetType.name()?lower_case?replace('_', '')}"/></small>
-                                                    </#if>
-                                                </div>
-
-                                                <div class="d-flex justify-content-end my-auto registration-item-actions">
-                                                    <a title="<@s.text name="manage.overview.registration.view"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="${cfg.portalUrl}/dataset/${resource.key!}">
-                                                        <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                        </svg>
-                                                    </a>
-
-                                                    <div class="dropdown d-sm-none">
-                                                        <a class="icon-button icon-material-actions registration-item-action" type="button" href="#" id="dropdown-registration-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                                            </svg>
-                                                        </a>
-
-                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-registration-item-actions-current">
-                                                            <li>
-                                                                <a class="dropdown-item action-link" type="button" href="${cfg.portalUrl}/dataset/${resource.key!}">
-                                                                    <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                    </svg>
-                                                                    <@s.text name="manage.overview.registration.view"/>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <#if resource.isDwcDp() && !resource.dwcDpDatasetType??>
-                                    <p class="mt-3 mb-0 text-gbif-danger">
-                                        <@s.text name="manage.overview.registration.datasetType.missing"/>
-                                    </p>
-                                </#if>
-                            <#else>
-                                <p class="mb-0">
-                                    <@s.text name="manage.overview.registration.notRegistered"/>
-                                </p>
-                            </#if>
-                        </div>
-                    </div>
-
-                    <span class="anchor anchor-overview-page" id="anchor-networks"></span>
-                    <div class="py-5 border-bottom section" id="networks">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <@popoverPropertyInfo "manage.overview.networks.description"/>
-                                    <@s.text name="manage.overview.networks.title"/>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <a id="add-network-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
-                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                    <@s.text name="button.add"/>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <#if resource.key?has_content && (resourceNetworks?size>0)>
-                                <p class="mb-0">
-                                    <@s.text name="manage.overview.networks.intro"/>
-                                </p>
-                                <div class="details mt-3">
-                                    <div class="row g-2">
-                                        <#list resourceNetworks as n>
-                                            <div class="col-xl-6">
-                                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 network-item" data-ipt-network-key="${(n.key)!}">
-                                                    <div class="my-auto ps-2 d-flex">
-                                                        <i class="bi bi-globe2 me-1 text-gbif-primary"></i>
-                                                    </div>
-
-                                                    <div class="my-auto ps-2 text-truncate network-item-link fs-smaller-2 me-auto">
-                                                        <strong class="fs-smaller">${n.title!""}</strong><br>
-                                                        <small>${(n.key)!}</small>
-                                                    </div>
-
-                                                    <div class="d-flex justify-content-end my-auto network-item-actions">
-                                                        <a title="<@s.text name="manage.overview.networks.view.gbif"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="${cfg.portalUrl}/network/${n.key!}">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                            </svg>
-                                                        </a>
-
-                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                            </svg>
-                                                        </a>
-
-                                                        <div class="dropdown d-sm-none">
-                                                            <a class="icon-button icon-material-actions network-item-action" type="button" href="#" id="dropdown-network-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                                                </svg>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu" aria-labelledby="dropdown-network-item-actions-current">
-                                                                <li>
-                                                                    <a class="dropdown-item action-link" type="button" href="${cfg.portalUrl}/network/${n.key!}">
-                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                                                        </svg>
-                                                                        <@s.text name="manage.overview.networks.view.gbif"/>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a class="dropdown-item action-link" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
-                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                        <@s.text name="button.delete"/>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </#list>
-                                    </div>
-                                </div>
-                            <#else>
-                                <p class="mb-0">
-                                    <@s.text name="manage.overview.networks.noNetworks"/>
-                                </p>
-                            </#if>
-                        </div>
-                    </div>
-
-                    <span class="anchor anchor-overview-page" id="anchor-managers"></span>
-                    <div class="py-5 section" id="managers">
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <h5 class="my-auto text-gbif-header-2 fw-400">
-                                    <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
-                                    <@s.text name="manage.overview.resource.managers"/>
-                                </h5>
-                            </div>
-
-                            <div class="d-flex justify-content-end">
-                                <a id="add-manager-button" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button" type="button" href="#">
-                                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                    <@s.text name="button.add"/>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-4">
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.resource.managers.intro"><@s.param>${resource.shortname}</@s.param></@s.text>
-                            </p>
-
-                            <div class="details mt-3">
-                                <div class="row g-2">
-                                    <div class="col-xl-6">
-                                        <div class="d-flex border rounded-2 mx-1 p-1 py-2 manager-item">
-                                            <div class="my-auto ps-2 d-flex">
-                                                <i class="bi bi-person me-1 text-gbif-primary"></i>
-                                            </div>
-                                            <div class="my-auto text-truncate ps-2 fs-smaller-2">
-                                                <strong class="fs-smaller">${resource.creator.name!}</strong><br>
-                                                <small><@s.text name="manage.overview.resource.managers.creator"/>
-                                                    | ${resource.creator.email}</small>
-                                            </div>
-                                            <div class="d-flex justify-content-end my-auto manager-item-actions"></div>
-                                        </div>
-                                    </div>
-
-                                    <#if (resource.managers?size>0)>
-                                        <#list resource.managers as u>
-                                            <div class="col-xl-6">
-                                                <div class="d-flex border rounded-2 mx-1 p-1 py-2 manager-item">
-                                                    <div class="my-auto ps-2 d-flex">
-                                                        <i class="bi bi-person me-1 text-gbif-primary"></i>
-                                                    </div>
-                                                    <div class="my-auto text-truncate ps-2 fs-smaller-2 me-auto">
-                                                        <strong class="fs-smaller">${u.name}</strong><br>
-                                                        <small><@s.text name="manage.overview.resource.managers.manager"/>
-                                                            | ${u.email}</small>
-                                                    </div>
-                                                    <div class="d-flex justify-content-end my-auto manager-item-actions">
-                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions manager-item-action fs-smaller-2 d-sm-max-none" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
-                                                            <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                            </svg>
-                                                        </a>
-
-                                                        <div class="dropdown d-sm-none">
-                                                            <a class="icon-button icon-material-actions manager-item-action" type="button" href="#" id="dropdown-manager-item-actions-current" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                                                                </svg>
-                                                            </a>
-
-                                                            <ul class="dropdown-menu" aria-labelledby="dropdown-manager-item-actions-current">
-                                                                <li>
-                                                                    <a class="dropdown-item action-link" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
-                                                                        <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                        <@s.text name="button.delete"/>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </#list>
-                                    </#if>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <#if !isMetadataOnly>
+                        <#include "/WEB-INF/pages/manage/overview_data.ftl"/>
+                    </#if>
+                    <#include "/WEB-INF/pages/manage/overview_metadata.ftl"/>
+                    <#include "/WEB-INF/pages/manage/overview_sharing.ftl"/>
+                    <#include "/WEB-INF/pages/manage/overview_publication.ftl"/>
                 </div>
-
             </main>
         </div>
     </div>

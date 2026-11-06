@@ -1,37 +1,26 @@
-<#macro publishIcon>
-    <svg viewBox="0 0 24 24" class="overview-action-button-icon">
-        <path d="M5 4v2h14V4H5zm0 10h4v6h6v-6h4l-7-7-7 7z"></path>
-    </svg>
-</#macro>
-
+<#-- the publish button, styled as the page's primary action and labelled with the version it creates -->
 <#macro publishButton className>
     <button id="publishButton"
-            class="${className} text-gbif-header-2 icon-button icon-material-actions overview-action-button"
+            class="${className} btn btn-sm btn-gbif-solid"
             name="publish"
             value="Publish"
             type="submit">
-        <@publishIcon/>
-        <@s.text name="button.publish"/>
+        <i class="bi bi-upload me-1"></i>${publishButtonLabel}
     </button>
 </#macro>
 
 <#macro showPublicationWarningButton>
     <a id="publish-button-show-warning"
-       class="text-gbif-header-2 icon-button icon-material-actions overview-action-button"
+       class="btn btn-sm btn-gbif-solid ov-blocked"
        href="#">
-        <@publishIcon/>
-        <@s.text name="button.publish"/>
+        <i class="bi bi-upload me-1"></i>${publishButtonLabel}
     </a>
 </#macro>
 
-<#macro publish resource>
+<#macro publish resource label>
+    <#assign publishButtonLabel = label>
     <#if resource.status == "DELETED">
-        <button id="publish-button-show-warning"
-                class="publishDeletedResource text-gbif-header-2 icon-button icon-material-actions overview-action-button"
-                type="button">
-            <@publishIcon />
-            <@s.text name="button.publish"/>
-        </button>
+        <@showPublicationWarningButton/>
 
     <!-- resources cannot be published if the mandatory metadata is missing -->
     <!-- resources cannot be published if mappings are missing (for DPs) -->

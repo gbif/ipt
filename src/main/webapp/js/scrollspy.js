@@ -66,8 +66,31 @@
 
         var visibleSections = new Set();
         var observer = null;
+        // a link the user clicked stays active until they scroll themselves: sections near the end of the page
+        // can't scroll up to the activation line, so the observer alone would never pick them
+        var pinnedLink = null;
+
+        function isAtBottom() {
+            return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+        }
 
         function setActiveLink() {
+            if (pinnedLink || isAtBottom()) {
+                var $active = pinnedLink;
+                if (!$active) {
+                    // at the bottom of the page: the last section that's on screen
+                    sectionToLink.forEach(function ($link, el) {
+                        if (el.getBoundingClientRect().top < window.innerHeight) $active = $link;
+                    });
+                }
+                if ($active) {
+                    $tocLinks.removeClass(settings.activeClass);
+                    $active.addClass(settings.activeClass);
+                    if (typeof settings.onActivate === 'function') settings.onActivate($active);
+                    return;
+                }
+            }
+
             // Prefer the section that appears latest in document order among
             // those currently crossing the activation line — that's the one
             // the user has most recently scrolled into.
@@ -125,6 +148,8 @@
             if (!el) return;
 
             e.preventDefault();
+            pinnedLink = $link;
+            setActiveLink();
             el.scrollIntoView({ behavior: 'smooth' });
             history.pushState(null, '', $link.attr('href'));
         }
@@ -137,7 +162,13 @@
             resizeTimer = setTimeout(initObserver, 150);
         }
 
+        function unpin() {
+            pinnedLink = null;
+        }
+
         $(window).on('resize', onResize);
+        $(window).on('scroll', setActiveLink);
+        $(window).on('wheel touchstart keydown', unpin);
         $tocLinks.on('click', scrollToTarget);
 
         return {
@@ -145,6 +176,8 @@
             destroy: function () {
                 if (observer) observer.disconnect();
                 $(window).off('resize', onResize);
+                $(window).off('scroll', setActiveLink);
+                $(window).off('wheel touchstart keydown', unpin);
                 $tocLinks.off('click', scrollToTarget);
             }
         };

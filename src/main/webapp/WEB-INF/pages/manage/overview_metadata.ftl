@@ -1,134 +1,106 @@
-<!-- Represents metadata section on resource overview page -->
-<span class="anchor anchor-overview-page" id="anchor-metadata"></span>
-<div class="py-5 border-bottom section" id="metadata">
-    <div class="d-flex justify-content-between">
-        <div class="d-flex">
-            <h5 class="my-auto text-gbif-header-2 fw-400">
-                <#assign metadataHeaderInfo>
-                    <@s.text name='manage.metadata.description1'/><br><br><#if resource.dataPackage??><@s.text name='manage.metadata.description2.dp'/><#else><@s.text name='manage.metadata.description2.dwc'/></#if>
-                    <#if resource.coreType?has_content && resource.coreType==metadataType>
-                        <br><br>
-                        <@s.text name='manage.overview.source.hidden'>
-                            <@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param>
-                        </@s.text>
-                    </#if>
-                </#assign>
-                <@popoverTextInfo metadataHeaderInfo/>
-
-                <@s.text name='manage.overview.metadata'/>
-            </h5>
-        </div>
-
-        <#if dataPackageResource>
-            <#if resource.coreType?has_content && resource.coreType == "camtrap-dp">
-                <#assign viewOrEditElementId="edit-metadata-button"/>
-                <#assign viewOrEditButtonText>
-                    <@s.text name="button.edit"/>
-                </#assign>
-                <#assign viewOrEditAction="camtrap-metadata-basic.do?r=${resource.shortname}"/>
-                <#assign viewOrEditIcon>
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                </#assign>
-            <#elseif resource.coreType?has_content && resource.coreType == "coldp">
-                <#assign viewOrEditElementId="view-metadata-button"/>
-                <#assign viewOrEditButtonText>
-                    <@s.text name="button.view"/>
-                </#assign>
-                <#assign viewOrEditAction="#"/>
-                <#assign viewOrEditIcon>
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                </#assign>
-            <#elseif resource.coreType?has_content && resource.coreType == "dwc-dp">
-                <#assign viewOrEditElementId="edit-metadata-button"/>
-                <#assign viewOrEditButtonText>
-                    <@s.text name="button.edit"/>
-                </#assign>
-                <#assign viewOrEditAction="metadata-basic.do?r=${resource.shortname}"/>
-                <#assign viewOrEditIcon>
-                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                </#assign>
-            </#if>
-        <#else>
-            <#assign viewOrEditElementId="edit-metadata-button"/>
-            <#assign viewOrEditButtonText>
-                <@s.text name="button.edit"/>
-            </#assign>
-            <#assign viewOrEditAction="metadata-basic.do"/>
-            <#assign viewOrEditIcon>
-                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-            </#assign>
-        </#if>
-
-        <div class="d-flex justify-content-end align-items-center">
-            <a id="${viewOrEditElementId}" class="text-gbif-header-2 icon-button icon-material-actions overview-action-button me-2" type="button" href="${viewOrEditAction}">
-                <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                    ${viewOrEditIcon}
-                </svg>
-                ${viewOrEditButtonText}
-            </a>
-
-            <div class="dropdown me-2">
-                <button class="icon-button icon-material-actions overview-action-button dropdown-toggle d-flex align-items-center" type="button" id="metadataDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <svg class="overview-action-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2"></path>
-                    </svg>
-                    <@s.text name="button.options"/>
-                </button>
-
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="metadataDropdown">
-                    <li>
-                        <a class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" id="download-metadata-button"
-                           href="${baseURL}/manage/eml.do?r=${resource.shortname}"
-                           onclick="_gaq.push(['_trackEvent', 'EML', 'Download', 'test-empty-organization']);"
-                           download>
-                            <@s.text name="button.download"/>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" id="upload-metadata-button" href="#anchor-metadata">
-                            <@s.text name="button.upload"/>
-                        </a>
-                    </li>
-
-                    <#assign isDataPackage = resource.isDataPackage() />
-                    <#assign isDwcDp = resource.isDwcDp() />
-                    <#if !isDataPackage || isDwcDp || (resource.coreType?has_content && resource.coreType == "coldp")>
-                        <li>
-                            <a class="show-metadata-validation-result btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" href="#">
-                                <@s.text name="manage.overview.metadata.modal.validation.report"/>
-                            </a>
-                        </li>
-                    </#if>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <#if metadataModifiedSinceLastPublication || resource.lastPublished??>
-        <div class="text-smaller">
-            <small>
-                <#if metadataModifiedSinceLastPublication>
-                    <@s.text name='manage.home.last.modified'/> ${resource.getMetadataModified()?datetime?string.medium!}
-                <#elseif resource.lastPublished??>
-                    <@s.text name="manage.overview.notModified"/>
-                </#if>
-            </small>
-        </div>
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
+<#-- Metadata section of the resource overview: validity and the fields that publishing and registering depend on. Needs overview_status.ftl -->
+<#if isDataPackage && !isDwcDp>
+    <#if resource.coreType == "camtrap-dp">
+        <#assign viewOrEditElementId = "edit-metadata-button"/>
+        <#assign viewOrEditAction = "camtrap-metadata-basic.do?r=${resource.shortname}"/>
+        <#assign viewOrEditKey = "button.edit"/>
+    <#else>
+        <#-- ColDP metadata isn't edited in the IPT, only viewed -->
+        <#assign viewOrEditElementId = "view-metadata-button"/>
+        <#assign viewOrEditAction = "#"/>
+        <#assign viewOrEditKey = "button.view"/>
     </#if>
+<#else>
+    <#assign viewOrEditElementId = "edit-metadata-button"/>
+    <#assign viewOrEditAction = "metadata-basic.do?r=${resource.shortname}"/>
+    <#assign viewOrEditKey = "button.edit"/>
+</#if>
+<#assign hasValidationReport = !isDataPackage || isDwcDp || isColDp>
 
-    <div class="row mt-4">
-        <p class="mb-0">
-            <#if !validMetadata>
-                <span title="<@s.text name='manage.overview.metadata.invalid'/>" class="show-metadata-validation-result fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-incomplete"><@s.text name="manage.overview.metadata.invalid.logo"/></span>
-            <#else>
-                <span class="show-metadata-validation-result fs-smaller-2 text-nowrap dt-content-link dt-content-pill metadata-complete"><@s.text name="manage.overview.metadata.valid.logo"/></span>
-            </#if>
-            <#if resource.coreType?has_content && resource.coreType == "coldp">
-                <@s.text name="manage.overview.metadata.coldp.description"/>
-            <#else>
-                <@s.text name="manage.overview.metadata.description"/>
-            </#if>
-        </p>
+<span class="anchor anchor-overview-page" id="anchor-metadata"></span>
+<section class="ov-card section" id="metadata">
+    <div class="ov-ch">
+        <h2>
+            <#assign metadataHeaderInfo>
+                <@s.text name='manage.metadata.description1'/><br><br><#if isDataPackage><@s.text name='manage.metadata.description2.dp'/><#else><@s.text name='manage.metadata.description2.dwc'/></#if>
+                <#if isMetadataOnly>
+                    <br><br>
+                    <@s.text name='manage.overview.source.hidden'>
+                        <@s.param><a href="${baseURL}/manage/metadata-basic.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.basic"/></a></@s.param>
+                    </@s.text>
+                </#if>
+            </#assign>
+            <@popoverTextInfo metadataHeaderInfo/>
+            <@s.text name='manage.overview.metadata'/>
+        </h2>
+        <#if missingBasicMetadata>
+            <span class="ov-pill bad show-metadata-validation-result" role="button"><@s.text name="manage.overview.metadata.incomplete"/></span>
+        <#elseif !validMetadata>
+            <span class="ov-pill bad<#if hasValidationReport> show-metadata-validation-result</#if>" role="button" title="<@s.text name='manage.overview.metadata.invalid'/>"><@s.text name="manage.overview.metadata.invalid.logo"/></span>
+        <#else>
+            <span class="ov-pill ok<#if hasValidationReport> show-metadata-validation-result</#if>" role="button"><@s.text name="manage.overview.metadata.valid.logo"/></span>
+        </#if>
+        <#if metadataModifiedSinceLastPublication && isPublished>
+            <span class="ov-pill warn"><@s.text name="manage.overview.data.status.changed"/></span>
+        </#if>
+        <span class="ov-sp"></span>
+        <a id="${viewOrEditElementId}" class="btn btn-sm btn-outline-gbif-primary" href="${viewOrEditAction}"><@s.text name=viewOrEditKey/></a>
     </div>
-</div>
+
+    <div class="ov-sub">
+        <#if metadataModifiedSinceLastPublication && resource.metadataModified??>
+            <@s.text name='manage.home.last.modified'/> ${resource.metadataModified?datetime?string.medium}
+        <#elseif isPublished>
+            <@s.text name="manage.overview.notModified"/>
+        <#elseif isColDp>
+            <@s.text name="manage.overview.metadata.coldp.description"/>
+        <#else>
+            <@s.text name="manage.overview.metadata.description"/>
+        </#if>
+    </div>
+
+    <div class="ov-rows">
+        <div class="ov-r">
+            <span><@s.text name="manage.overview.metadata.row.title"/></span>
+            <span><#if resource.title?has_content>${resource.title}<#else><i class="text-muted"><@s.text name="manage.overview.metadata.shortnameUsed"/></i></#if></span>
+        </div>
+        <#if isEmlBased>
+            <div class="ov-r">
+                <span><@s.text name="eml.intellectualRights.license"/></span>
+                <span><#if (resource.eml.parseLicenseUrl())?has_content><@shortLicense resource.eml.parseLicenseUrl()/><#else><span class="ov-missing"><@s.text name="manage.overview.metadata.notSet"/></span></#if></span>
+            </div>
+            <div class="ov-r">
+                <span><@s.text name="manage.overview.metadata.row.contacts"/></span>
+                <span>
+                    <#assign contactCount = (resource.eml.contacts![])?size>
+                    <#if contactCount == 0>
+                        <span class="ov-missing"><@s.text name="manage.overview.metadata.none"/></span>
+                    <#else>
+                        <@s.text name="manage.overview.metadata.contactsCount"><@s.param>${contactCount}</@s.param><@s.param>${(resource.eml.creators![])?size}</@s.param></@s.text>
+                    </#if>
+                </span>
+            </div>
+            <#assign coverages = []>
+            <#if (resource.eml.geospatialCoverages![])?has_content><#assign c><@s.text name="submenu.geocoverage"/></#assign><#assign coverages = coverages + [c]></#if>
+            <#if (resource.eml.taxonomicCoverages![])?has_content><#assign c><@s.text name="submenu.taxcoverage"/></#assign><#assign coverages = coverages + [c]></#if>
+            <#if (resource.eml.temporalCoverages![])?has_content><#assign c><@s.text name="submenu.tempcoverage"/></#assign><#assign coverages = coverages + [c]></#if>
+            <div class="ov-r">
+                <span><@s.text name="manage.overview.metadata.row.coverage"/></span>
+                <span><#if coverages?has_content><#list coverages as c>${c}<#sep> · </#sep></#list><#else>—</#if></span>
+            </div>
+        </#if>
+    </div>
+
+    <div class="ov-links">
+        <#if hasValidationReport>
+            <a href="#" class="show-metadata-validation-result"><@s.text name="manage.overview.metadata.modal.validation.report"/></a>
+        </#if>
+        <a id="download-metadata-button" href="${baseURL}/manage/eml.do?r=${resource.shortname}" download>
+            <#if isEmlBased><@s.text name="manage.overview.metadata.downloadEml"/><#else><@s.text name="manage.overview.metadata.download"/></#if>
+        </a>
+        <a id="upload-metadata-button" href="#anchor-metadata">
+            <#if isEmlBased><@s.text name="manage.overview.metadata.uploadEml"/><#else><@s.text name="manage.overview.metadata.upload"/></#if>
+        </a>
+    </div>
+</section>
