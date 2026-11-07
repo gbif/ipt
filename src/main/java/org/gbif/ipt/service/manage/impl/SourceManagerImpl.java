@@ -67,6 +67,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -944,9 +945,23 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       try {
         DriverManager.setLoginTimeout(CONNECTION_TIMEOUT_SECS);
         Class.forName(source.getJdbcDriver());
-        conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
+        if (isDuckDb(source)) {
+          // DuckDB runs embedded in the IPT process. IPT only ever reads from a SQL source, so open the embedded
+          // database read-only. This both blocks any write through the user-supplied SQL and prevents DuckDB from
+          // creating/opening a database file at an arbitrary, attacker-chosen path (read-only refuses missing files).
+          Properties props = new Properties();
+          props.setProperty("duckdb.read_only", "true");
+          conn = DriverManager.getConnection(source.getJdbcUrl(), props);
+        } else {
+          conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
+        }
         // Disable Auto Commit to allow use of cursors (in PostgreSQL, but probably others too).
         conn.setAutoCommit(false);
+
+        // DuckDB runs embedded in the IPT process, so the user-supplied SQL could otherwise read or write
+        // arbitrary files on the server (read_csv, read_blob, COPY ... TO, extension loading, ...). Lock the
+        // connection down to the attached database only. IPT only ever reads tabular data, so no feature is lost.
+        hardenDuckDbConnection(source, conn);
 
         // If an SQLWarning object is available, log its warning(s). There may be multiple warnings chained.
         SQLWarning warn = conn.getWarnings();
@@ -972,6 +987,45 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       }
     }
     return conn;
+  }
+
+  /**
+   * Restricts an embedded DuckDB connection so that user-supplied SQL cannot touch the server's filesystem,
+   * install/load extensions, or otherwise reach outside the attached database.
+   * <p>
+   * Unlike the other supported RDBMS, DuckDB runs in-process within the IPT JVM. By default it can read and write
+   * local files (e.g. {@code read_csv}, {@code read_parquet}, {@code read_blob}, {@code COPY ... TO}) and load
+   * extensions, which would let any manager who can configure a source read or write any file the IPT process can
+   * access. We disable external access and extension installation, then lock the configuration so the user's own SQL
+   * cannot re-enable them. This is a no-op for all non-DuckDB drivers.
+   *
+   * @param source the SQL source being connected to
+   * @param conn   the freshly opened JDBC connection
+   */
+  private void hardenDuckDbConnection(SqlSource source, Connection conn) throws SQLException {
+    if (!isDuckDb(source)) {
+      return;
+    }
+    try (Statement stmt = conn.createStatement()) {
+      // Disable all filesystem/network access (read_csv, read_blob, COPY ... TO, httpfs, remote extension install).
+      stmt.execute("SET enable_external_access=false");
+      // Refuse to load unsigned/community extensions.
+      stmt.execute("SET allow_community_extensions=false");
+      // Lock the configuration so the user-supplied SQL cannot revert the two settings above. Must be set last.
+      stmt.execute("SET lock_configuration=true");
+      conn.commit();
+    }
+    LOG.debug("Hardened embedded DuckDB connection for source {}: external access and community extensions disabled",
+        source.getName());
+  }
+
+  /**
+   * @return true if the source is backed by the embedded DuckDB driver, which runs in-process and therefore needs
+   * extra filesystem hardening compared to the other (client/server) RDBMS drivers.
+   */
+  private boolean isDuckDb(SqlSource source) {
+    String driver = source.getJdbcDriver();
+    return driver != null && driver.toLowerCase().contains("duckdb");
   }
 
   /**
