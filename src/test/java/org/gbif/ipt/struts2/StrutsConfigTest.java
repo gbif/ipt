@@ -36,6 +36,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class StrutsConfigTest {
 
   private static final Set<String> ROLE_INTERCEPTORS = Set.of(
-      "managerStack", "managerAjaxStack", "requireManager",
+      "managerStack", "managerStackWithoutLock", "managerAjaxStack", "requireManager",
       "adminStack", "adminAjaxStack", "requireAdmin");
 
   /**
@@ -90,27 +91,45 @@ public class StrutsConfigTest {
     }
   }
 
+  /**
+   * @return the interceptors of the stack in order. A stack defined in the same document is expanded in place: its name
+   * is kept, followed by its interceptors, so both can be looked up. Stacks from struts-default.xml, e.g. defaultStack,
+   * are not expanded.
+   */
   private static List<String> stackRefs(Document doc, String stackName) {
+    Element stack = findStack(doc, stackName);
+    if (stack == null) {
+      throw new AssertionError("Stack not found: " + stackName);
+    }
+    List<String> refs = new ArrayList<>();
+    NodeList children = stack.getElementsByTagName("interceptor-ref");
+    for (int j = 0; j < children.getLength(); j++) {
+      String name = ((Element) children.item(j)).getAttribute("name");
+      refs.add(name);
+      if (findStack(doc, name) != null) {
+        refs.addAll(stackRefs(doc, name));
+      }
+    }
+    return refs;
+  }
+
+  private static Element findStack(Document doc, String stackName) {
     NodeList stacks = doc.getElementsByTagName("interceptor-stack");
     for (int i = 0; i < stacks.getLength(); i++) {
       Element stack = (Element) stacks.item(i);
       if (stackName.equals(stack.getAttribute("name"))) {
-        List<String> refs = new ArrayList<>();
-        NodeList children = stack.getElementsByTagName("interceptor-ref");
-        for (int j = 0; j < children.getLength(); j++) {
-          refs.add(((Element) children.item(j)).getAttribute("name"));
-        }
-        return refs;
+        return stack;
       }
     }
-    throw new AssertionError("Stack not found: " + stackName);
+    return null;
   }
 
   /**
    * The role and resource interceptors run before iptStackWithoutSetup.
    */
   @ParameterizedTest
-  @CsvSource({"portalStack,protectPrivateResource", "managerStack,requireManager", "adminStack,requireAdmin"})
+  @CsvSource({"portalStack,protectPrivateResource", "managerStack,requireManager",
+      "managerStackWithoutLock,requireManager", "adminStack,requireAdmin"})
   public void interceptorOrder(String stack, String interceptor) throws Exception {
     List<String> refs = stackRefs(parse("/struts.xml"), stack);
     int idx = refs.indexOf(interceptor);
@@ -199,6 +218,48 @@ public class StrutsConfigTest {
       }
     }
     assertTrue(missing.isEmpty(), "Redirects without the r parameter: " + missing);
+  }
+
+  /**
+   * The locked result redirects to the locked page. That action must not run the lock check itself, or the redirect
+   * would point to itself until publishing ends.
+   */
+  @Test
+  public void lockedPageSkipsLockCheck() throws Exception {
+    Document struts = parse("/struts.xml");
+    Document manage = parse("/struts-manage.xml");
+    assertTrue(stackRefs(struts, "managerStack").contains("resourceLocked"));
+
+    String target = null;
+    NodeList results = manage.getElementsByTagName("result");
+    for (int i = 0; i < results.getLength(); i++) {
+      Element result = (Element) results.item(i);
+      if ("locked".equals(result.getAttribute("name"))
+          && "global-results".equals(((Element) result.getParentNode()).getTagName())) {
+        target = StringUtils.substringBetween(result.getTextContent(), "/manage/", ".do");
+      }
+    }
+    assertNotNull(target, "No global locked result in struts-manage.xml");
+
+    Element lockedAction = null;
+    NodeList actions = manage.getElementsByTagName("action");
+    for (int i = 0; i < actions.getLength(); i++) {
+      Element action = (Element) actions.item(i);
+      if (target.equals(action.getAttribute("name"))) {
+        lockedAction = action;
+      }
+    }
+    assertNotNull(lockedAction, "No action " + target + " in struts-manage.xml");
+
+    List<String> refs = new ArrayList<>();
+    NodeList children = lockedAction.getChildNodes();
+    for (int j = 0; j < children.getLength(); j++) {
+      if (children.item(j) instanceof Element el && "interceptor-ref".equals(el.getTagName())) {
+        refs.add(el.getAttribute("name"));
+      }
+    }
+    assertEquals(List.of("managerStackWithoutLock"), refs, target + " interceptors");
+    assertFalse(stackRefs(struts, "managerStackWithoutLock").contains("resourceLocked"));
   }
 
   @ParameterizedTest

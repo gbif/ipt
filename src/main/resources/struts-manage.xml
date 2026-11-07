@@ -63,7 +63,9 @@
       <result>/WEB-INF/pages/manage/home.ftl</result>
     </action>
 
+    <!-- target of the locked result, so it must not run the lock check itself -->
     <action name="locked" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
+      <interceptor-ref name="managerStackWithoutLock"/>
       <result>/WEB-INF/pages/manage/locked.ftl</result>
     </action>
 
@@ -292,7 +294,7 @@
       <result>/WEB-INF/pages/manage/dataPackageTranslation.ftl</result>
     </action>
 
-    <!-- ajaxy status report about background processes kicked off by the current user -->
+    <!-- publishing status report, loaded by the locked page while the resource is being published -->
     <action name="report" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
       <interceptor-ref name="managerAjaxStack"/>
       <result>/WEB-INF/pages/manage/report.ftl</result>

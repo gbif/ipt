@@ -106,17 +106,23 @@
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
-      <!-- stack to be used as the default for the manage package -->
-      <!-- interceptor order is covered by StrutsConfigTest -->
-      <interceptor-stack name="managerStack">
+      <!-- managerStack without the lock check, used only by locked.do: the locked result redirects there, so with the
+           check the page would redirect to itself until publishing ends. Order covered by StrutsConfigTest -->
+      <interceptor-stack name="managerStackWithoutLock">
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="requireManager"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
+      </interceptor-stack>
+
+      <!-- default stack of the manage packages: returns the locked result while the requested resource is being
+           published -->
+      <interceptor-stack name="managerStack">
+        <interceptor-ref name="managerStackWithoutLock"/>
         <interceptor-ref name="resourceLocked"/>
       </interceptor-stack>
 
-      <!-- lightweight stack for ajax actions in the manage package; no lock check, so it can be used while a
-           resource is being published (e.g. publication report and cancel) -->
+      <!-- lightweight stack for AJAX actions in the manage package (report, cancel, peek, mappingPeek). No lock check,
+           so publishing can be followed and cancelled -->
       <interceptor-stack name="managerAjaxStack">
         <interceptor-ref name="requireManager"/>
         <interceptor-ref name="csrf"/>
