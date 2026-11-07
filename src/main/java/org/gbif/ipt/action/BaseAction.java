@@ -19,13 +19,12 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.CsrfInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.XSSUtils;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.ArrayList;
@@ -260,6 +259,32 @@ public class BaseAction extends ActionSupport
   }
 
   /**
+   * Logs the user into the session. Every login must go through here:
+   * <ul>
+   *   <li>the session gets a new ID, so an ID planted in the browser before login (session fixation) is worthless
+   *   afterwards. The session's contents are kept.</li>
+   *   <li>the session gets a fresh CSRF token. It's stored before the user, so a concurrent request never sees the
+   *   user without a token.</li>
+   * </ul>
+   *
+   * @param user the user to log in
+   */
+  protected void logIn(User user) {
+    if (req != null && req.getSession(false) != null) {
+      req.changeSessionId();
+    }
+    String token = CsrfInterceptor.resetToken(session);
+    session.put(Constants.SESSION_USER, user);
+
+    // CsrfInterceptor exposed the old token (if any) before the action ran. A page rendered by this request, e.g. the
+    // last setup step, must carry the new one, otherwise its forms are rejected.
+    ActionContext context = ActionContext.getContext();
+    if (context != null) {
+      context.put(CsrfInterceptor.TOKEN_CONTEXT_KEY, token);
+    }
+  }
+
+  /**
    * Return the locale language code.
    * Struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor.
    *
@@ -367,24 +392,6 @@ public class BaseAction extends ActionSupport
   public boolean isManagerRights() {
     User user = getCurrentUser();
     return user != null && user.hasManagerRights();
-  }
-
-  /**
-   * @param name cookie name
-   * @return the request cookie or null if no cookie with that name exists
-   */
-  public Cookie getCookie(String name) {
-    if (req != null) {
-      Cookie[] cookies = req.getCookies();
-      if (cookies != null) {
-        for (Cookie c : req.getCookies()) {
-          if (name.equals(c.getName())) {
-            return c;
-          }
-        }
-      }
-    }
-    return null;
   }
 
   /**

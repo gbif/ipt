@@ -39,6 +39,7 @@ import org.gbif.ipt.validation.ActionErrorCollector;
 import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.validation.ResourceValidator;
 import org.gbif.ipt.i18n.StrutsI18n;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.metadata.eml.ipt.model.Address;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
@@ -918,6 +919,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
     return s;
   }
 
+  @RequirePost
   public String uploadLogo() {
     UploadedFile upload = requireSingleUpload();
     File uploadedTempFile = (File) upload.getContent();

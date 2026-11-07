@@ -1098,6 +1098,7 @@
 
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "addsource.do", true);
+                xhr.setRequestHeader(IPT_CSRF.header, IPT_CSRF.token());
 
                 // Prevent automatic redirection by setting responseType to 'document'
                 xhr.responseType = 'document';
@@ -2271,7 +2272,7 @@
                                                             </svg>
                                                         </a>
 
-                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
+                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" data-post href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
                                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
@@ -2294,7 +2295,7 @@
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a class="dropdown-item action-link" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
+                                                                    <a class="dropdown-item action-link" type="button" data-post href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
                                                                         <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
@@ -2371,7 +2372,7 @@
                                                             | ${u.email}</small>
                                                     </div>
                                                     <div class="d-flex justify-content-end my-auto manager-item-actions">
-                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions manager-item-action fs-smaller-2 d-sm-max-none" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions manager-item-action fs-smaller-2 d-sm-max-none" type="button" data-post href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
                                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
@@ -2386,7 +2387,7 @@
 
                                                             <ul class="dropdown-menu" aria-labelledby="dropdown-manager-item-actions-current">
                                                                 <li>
-                                                                    <a class="dropdown-item action-link" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                                    <a class="dropdown-item action-link" type="button" data-post href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
                                                                         <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>

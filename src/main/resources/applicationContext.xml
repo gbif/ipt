@@ -298,10 +298,6 @@
     <property name="cfg" ref="appConfig"/>
   </bean>
 
-  <bean id="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor">
-    <property name="cfg" ref="appConfig"/>
-  </bean>
-
   <bean id="requireManagerInterceptor" class="org.gbif.ipt.struts2.RequireManagerInterceptor">
     <property name="resourceManager" ref="resourceManager"/>
   </bean>

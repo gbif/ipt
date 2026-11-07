@@ -62,8 +62,8 @@
       <!-- also check for any values in the cancel request parameter and returns the cancel result in that case immediately -->
       <interceptor name="setupAndCancel" class="org.gbif.ipt.struts2.SetupAndCancelInterceptor"/>
 
-      <!-- interceptor to set csrf login tokens in cookie and value stack to prevent CSRF login attacks -->
-      <interceptor name="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor"/>
+      <!-- CSRF token check for logged-in users, POST-only action methods (@RequirePost) and anti-framing headers -->
+      <interceptor name="csrf" class="org.gbif.ipt.struts2.CsrfInterceptor"/>
 
       <!-- Default locale interceptor -->
       <interceptor name="defaultLocale" class="org.gbif.ipt.struts2.DefaultLocaleInterceptor"/>
@@ -80,6 +80,8 @@
 
       <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
       <interceptor-stack name="iptStackWithoutSetup">
+        <!-- first, so a forged request is rejected before parameters are set or prepare() runs -->
+        <interceptor-ref name="csrf"/>
         <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="defaultLocale"/>
         <interceptor-ref name="i18n"/>
@@ -88,7 +90,6 @@
         <interceptor-ref name="validation">
           <param name="excludeMethods">input,back,cancel,list</param>
         </interceptor-ref>
-        <interceptor-ref name="csrfLoginInterceptor" />
         <interceptor-ref name="workflow"/>
       </interceptor-stack>
 
@@ -123,12 +124,14 @@
            resource is being published (e.g. publication report and cancel) -->
       <interceptor-stack name="managerAjaxStack">
         <interceptor-ref name="requireManager"/>
+        <interceptor-ref name="csrf"/>
         <interceptor-ref name="i18nStack"/>
       </interceptor-stack>
 
       <!-- lightweight stack for ajax actions in the admin package -->
       <interceptor-stack name="adminAjaxStack">
         <interceptor-ref name="requireAdmin"/>
+        <interceptor-ref name="csrf"/>
         <interceptor-ref name="i18nStack"/>
       </interceptor-stack>
 
@@ -150,6 +153,14 @@
       <result name="401-manager" type="freemarkerWithStatus">
         <param name="status">401</param>
         <param name="location">/WEB-INF/pages/error/401-manager.ftl</param>
+      </result>
+      <result name="403-csrf" type="freemarkerWithStatus">
+        <param name="status">403</param>
+        <param name="location">/WEB-INF/pages/error/403-csrf.ftl</param>
+      </result>
+      <result name="405" type="freemarkerWithStatus">
+        <param name="status">405</param>
+        <param name="location">/WEB-INF/pages/error/405.ftl</param>
       </result>
       <result name="304" type="httpheader">
         <param name="status">304</param>

@@ -28,6 +28,7 @@ import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.file.CompressionUtil;
@@ -111,6 +112,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     this.dataDir = dataDir;
   }
 
+  @RequirePost
   public String add() throws IOException {
     if (UiSourceType.SOURCE_URL.value.equals(sourceType)) {
       return addUrlSource();
@@ -453,6 +455,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   @Override
+  @RequirePost
   public String delete() {
     if (notFound) {
       return NOT_FOUND;

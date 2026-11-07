@@ -30,6 +30,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.ExtensionMappingValidator;
 import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
@@ -226,6 +227,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   }
 
   @Override
+  @RequirePost
   public String delete() {
     if (notFound) {
       return NOT_FOUND;

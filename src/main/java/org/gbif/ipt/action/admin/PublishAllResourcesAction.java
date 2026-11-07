@@ -24,6 +24,7 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.ipt.validation.EmlValidator;
@@ -75,6 +76,7 @@ public class PublishAllResourcesAction extends BaseAction {
   }
 
   @Override
+  @RequirePost
   public String execute() throws Exception {
     // if cancel was set to true - call cancel method
     if (cancel) {

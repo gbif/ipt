@@ -282,7 +282,7 @@ public class SetupAction extends BaseAction {
           userManager.setSetupUser(user);
 
           // login as new admin
-          session.put(Constants.SESSION_USER, user);
+          logIn(user);
 
           return SUCCESS;
         }
@@ -426,7 +426,7 @@ public class SetupAction extends BaseAction {
     if (setupUser != null) {
       try {
         configManager.loadDataDirConfig();
-        session.put(Constants.SESSION_USER, setupUser);
+        logIn(setupUser);
       } catch (InvalidConfigException e) {
         String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[]{e.getMessage()});
         LOG.error(msg, e);

@@ -44,6 +44,11 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- sets SameSite=Lax on the session cookie (needs the Servlet 6 API, so not configured in session-config) -->
+  <listener>
+    <listener-class>org.gbif.ipt.config.SessionCookieListener</listener-class>
+  </listener>
+
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>

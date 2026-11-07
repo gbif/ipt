@@ -27,6 +27,7 @@ import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMappingValidator;
 
@@ -177,6 +178,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   /**
    * Create new mappings. One mapping is required and optional number of additional mappings.
    */
+  @RequirePost
   public String create() {
     if (!isHttpPost()) {
       return CANCEL;
@@ -450,6 +452,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   }
 
   @Override
+  @RequirePost
   public String delete() {
     if (notFound) {
       return NOT_FOUND;

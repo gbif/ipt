@@ -74,6 +74,7 @@ import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.i18n.I18n;
 import org.gbif.ipt.validation.SectionErrorCollector;
 import org.gbif.ipt.i18n.StrutsI18n;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Citation;
@@ -257,6 +258,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Triggered by add network button on manage resource page.
    */
+  @RequirePost
   public String addNetwork() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -282,6 +284,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Triggered by add manager button on manage resource page.
    */
+  @RequirePost
   public String addManager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -335,6 +338,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Deletes a resource from the IPT only.
    */
+  @RequirePost
   public String deleteFromIpt() {
     if (resource == null) {
       return NOT_FOUND;
@@ -377,6 +381,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * </br>
    */
   @Override
+  @RequirePost
   public String delete() {
     if (resource == null) {
       return NOT_FOUND;
@@ -499,6 +504,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * however, at this time the GBIF registry api or GBIF registry legacy apis do not support the undelete operation and
    * thus require communication with the GBIF Helpdesk.   *
    */
+  @RequirePost
   public String undelete() {
     if (resource == null) {
       return NOT_FOUND;
@@ -656,6 +662,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Triggered by delete network link on manage resource page.
    */
+  @RequirePost
   public String deleteNetwork() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -684,6 +691,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Triggered by delete manager link on manage resource page.
    */
+  @RequirePost
   public String deleteManager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -815,6 +823,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * Change the visibility of a resource from public to private. This operation cannot be performed, if the resource
    * has been assigned a DOI (DOI that is registered, not reserved), or if the resource has been registered with GBIF.
    */
+  @RequirePost
   public String makePrivate() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -844,6 +853,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return execute();
   }
 
+  @RequirePost
   public String makePublic() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -882,6 +892,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return execute();
   }
 
+  @RequirePost
   public String cancelVisibilityChange() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -912,6 +923,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * If the resource has an existing DOI already, its an indication the resource is being transitioned to a new DOI.
    * In this case, the previous DOI must be replaced by the new DOI.
    */
+  @RequirePost
   public String reserveDoi() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1108,6 +1120,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * Can only be done to a resource whose DOI is reserved but not public. If the resource previously had been assigned
    * a DOI, that DOI is reassigned.
    */
+  @RequirePost
   public String deleteDoi() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1307,6 +1320,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * @return Struts2 result string
    * @throws Exception if method fails
    */
+  @RequirePost
   public String publish() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1432,6 +1446,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return ERROR;
   }
 
+  @RequirePost
   public synchronized String registerResource() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1687,6 +1702,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     this.makePublicDateTime = makePublicDateTime;
   }
 
+  @RequirePost
   public String replaceEml() {
     try {
       UploadedFile upload = requireSingleUpload("EML");
@@ -1714,6 +1730,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
   }
 
+  @RequirePost
   public String replaceDatapackageMetadata() {
     try {
       UploadedFile upload = requireSingleUpload("Metadata");

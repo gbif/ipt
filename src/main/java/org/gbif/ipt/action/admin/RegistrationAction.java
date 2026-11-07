@@ -27,6 +27,7 @@ import org.gbif.ipt.service.RegistryException.Type;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.IptValidator;
 import org.gbif.ipt.validation.OrganisationSupport;
@@ -284,6 +285,7 @@ public class RegistrationAction extends POSTAction {
     return SUCCESS;
   }
 
+  @RequirePost
   public String update() {
     try {
       if (cancel) {
@@ -327,6 +329,7 @@ public class RegistrationAction extends POSTAction {
     }
   }
 
+  @RequirePost
   public String changeTokens() {
     try {
       if (cancel) {
@@ -348,6 +351,7 @@ public class RegistrationAction extends POSTAction {
     return SUCCESS;
   }
 
+  @RequirePost
   public String associateWithNetwork() {
     try {
       if (cancel) {

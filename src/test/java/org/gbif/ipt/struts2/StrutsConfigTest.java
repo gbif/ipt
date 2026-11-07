@@ -14,13 +14,18 @@
 package org.gbif.ipt.struts2;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -30,6 +35,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -42,6 +48,36 @@ public class StrutsConfigTest {
   private static final Set<String> ROLE_INTERCEPTORS = Set.of(
       "managerStack", "managerAjaxStack", "requireManager",
       "adminStack", "adminAjaxStack", "requireAdmin");
+
+  /**
+   * Actions mapped to a method other than execute() that may be requested with GET, because they don't change state
+   * or only change it on POST. Every other such method must be annotated with {@link RequirePost}.
+   */
+  private static final Map<String, Set<String>> READ_ONLY_METHOD_MAPPINGS = Map.of(
+      "/struts.xml", Set.of(
+          // show the form on GET and only save on POST
+          "setupDataDirectory", "setupDefaultAdministrator", "setupMode", "setupPublicUrl",
+          // redirect target of the last setup step; logs the new admin in once, see SetupAction
+          "setupInstallationComplete",
+          // shows the form on GET; a POST is checked against the login token by LoginAction
+          "login",
+          "rss"),
+      "/struts-manage.xml", Set.of(
+          "locked", "raw-source", "eml", "peek", "detail", "report", "mappingPeek", "dataPackageMappingSourceNew",
+          // change the translation being edited, which is only saved by a form
+          "translationReload", "translationAutomap", "dataPackageFieldTranslationReload",
+          "dataPackageFieldTranslationAutomap",
+          // linked from the publication status message (manage.locked); restorable by publishing again
+          "cancel",
+          // maps to a method that doesn't exist
+          "canceloverwrite"),
+      "/struts-admin.xml", Set.of("users", "extensions", "dataPackages", "logfile", "organisations"));
+
+  /**
+   * Manage and admin actions that change state in execute() without checking for a POST themselves.
+   */
+  private static final Map<String, Set<String>> STATE_CHANGING_EXECUTE_MAPPINGS = Map.of(
+      "/struts-admin.xml", Set.of("publishAll", "deleteVersion"));
 
   private static Document parse(String config) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -83,6 +119,67 @@ public class StrutsConfigTest {
     if (refs.contains("resourceSession")) {
       assertTrue(idx < refs.indexOf("resourceSession"), stack + ": " + refs);
     }
+  }
+
+  /**
+   * The CSRF interceptor runs before parameters are set, and in the AJAX stacks after the role check.
+   */
+  @Test
+  public void csrfInterceptorInStacks() throws Exception {
+    Document doc = parse("/struts.xml");
+    assertEquals("csrf", stackRefs(doc, "iptStackWithoutSetup").get(0));
+    for (String stack : List.of("managerAjaxStack", "adminAjaxStack")) {
+      List<String> refs = stackRefs(doc, stack);
+      assertTrue(refs.indexOf("csrf") > 0, stack + ": " + refs);
+      assertTrue(refs.indexOf("csrf") < refs.indexOf("i18nStack"), stack + ": " + refs);
+    }
+  }
+
+  /**
+   * Actions mapped to a state-changing method only accept POST, so they can't be triggered by a link.
+   */
+  @ParameterizedTest
+  @ValueSource(strings = {"/struts.xml", "/struts-manage.xml", "/struts-admin.xml"})
+  public void stateChangingActionsRequirePost(String config) throws Exception {
+    Document doc = parse(config);
+    Set<String> readOnly = READ_ONLY_METHOD_MAPPINGS.getOrDefault(config, Set.of());
+    Set<String> stateChangingExecute = STATE_CHANGING_EXECUTE_MAPPINGS.getOrDefault(config, Set.of());
+
+    List<String> missing = new ArrayList<>();
+    NodeList actions = doc.getElementsByTagName("action");
+    for (int i = 0; i < actions.getLength(); i++) {
+      Element action = (Element) actions.item(i);
+      String name = action.getAttribute("name");
+      String method = action.getAttribute("method");
+      if (readOnly.contains(name) || (method.isEmpty() && !stateChangingExecute.contains(name))) {
+        continue;
+      }
+
+      List<String> methods = new ArrayList<>();
+      if (method.isEmpty()) {
+        methods.add("execute");
+      } else if (method.contains("{1}")) {
+        NodeList allowed = action.getElementsByTagName("allowed-methods");
+        assertEquals(1, allowed.getLength(), name + " needs allowed-methods");
+        Arrays.stream(allowed.item(0).getTextContent().split(","))
+            .map(String::trim)
+            .filter(StringUtils::isNotEmpty)
+            .forEach(methods::add);
+      } else {
+        methods.add(method);
+      }
+
+      Class<?> actionClass = Class.forName(action.getAttribute("class"));
+      for (String m : methods) {
+        Method javaMethod = MethodUtils.getMatchingAccessibleMethod(actionClass, m);
+        // an allowed method that doesn't exist can't be invoked anyway
+        if (javaMethod != null && MethodUtils.getAnnotation(javaMethod, RequirePost.class, true, true) == null) {
+          missing.add(name + " -> " + actionClass.getSimpleName() + "." + m + "()");
+        }
+      }
+    }
+    assertTrue(missing.isEmpty(), config + " has state-changing actions without @RequirePost "
+        + "(annotate them or add read-only ones to READ_ONLY_METHOD_MAPPINGS): " + missing);
   }
 
   /**
