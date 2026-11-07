@@ -75,13 +75,20 @@
       <!-- Adds validation errors to fields if there is potential XSS input -->
       <interceptor name="xssFieldError" class="org.gbif.ipt.struts2.XssFieldErrorInterceptor"/>
 
-      <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
-      <interceptor-stack name="iptStackWithoutSetup">
-        <!-- first, so a forged request is rejected before parameters are set or prepare() runs -->
-        <interceptor-ref name="csrf"/>
-        <interceptor-ref name="keepRedirectMessages"/>
+      <!-- runs before the role and resource checks, so the pages they return (400, 401, 404, 410) get the session,
+           the CSRF token and the user's language like any other page. It sets no action parameters and doesn't call
+           prepare(). The CSRF check also rejects a forged request here, before parameters are set; it comes after the
+           locale interceptors, so its 403 and 405 pages are in the user's language too -->
+      <interceptor-stack name="iptContextStack">
+        <interceptor-ref name="servletConfig"/>
         <interceptor-ref name="defaultLocale"/>
         <interceptor-ref name="i18n"/>
+        <interceptor-ref name="csrf"/>
+      </interceptor-stack>
+
+      <!-- runs after the role and resource checks: parameters, prepare(), validation -->
+      <interceptor-stack name="iptStackWithoutSetup">
+        <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="defaultStack"/>
         <interceptor-ref name="xssFieldError"/>
         <interceptor-ref name="validation">
@@ -94,6 +101,7 @@
       <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="portalStack">
         <interceptor-ref name="setupAndCancel"/>
+        <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="protectPrivateResource"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
@@ -102,6 +110,7 @@
       <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="adminStack">
         <interceptor-ref name="setupAndCancel"/>
+        <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireAdmin"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
@@ -110,6 +119,7 @@
            check the page would redirect to itself until publishing ends. Order covered by StrutsConfigTest -->
       <interceptor-stack name="managerStackWithoutLock">
         <interceptor-ref name="setupAndCancel"/>
+        <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireManager"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
@@ -124,15 +134,15 @@
       <!-- lightweight stack for AJAX actions in the manage package (report, cancel, peek, mappingPeek). No lock check,
            so publishing can be followed and cancelled -->
       <interceptor-stack name="managerAjaxStack">
+        <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireManager"/>
-        <interceptor-ref name="csrf"/>
         <interceptor-ref name="i18nStack"/>
       </interceptor-stack>
 
       <!-- lightweight stack for ajax actions in the admin package -->
       <interceptor-stack name="adminAjaxStack">
+        <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireAdmin"/>
-        <interceptor-ref name="csrf"/>
         <interceptor-ref name="i18nStack"/>
       </interceptor-stack>
 

@@ -125,29 +125,44 @@ public class StrutsConfigTest {
   }
 
   /**
-   * The role and resource interceptors run before iptStackWithoutSetup.
+   * The role and resource interceptors run after iptContextStack, so the pages they return have the session, the CSRF
+   * token and the user's language, and before the interceptors that set parameters and call prepare().
    */
   @ParameterizedTest
-  @CsvSource({"portalStack,protectPrivateResource", "managerStack,requireManager",
-      "managerStackWithoutLock,requireManager", "adminStack,requireAdmin"})
-  public void interceptorOrder(String stack, String interceptor) throws Exception {
+  @CsvSource({"portalStack,protectPrivateResource,iptStackWithoutSetup",
+      "managerStack,requireManager,iptStackWithoutSetup",
+      "managerStackWithoutLock,requireManager,iptStackWithoutSetup",
+      "adminStack,requireAdmin,iptStackWithoutSetup",
+      "managerAjaxStack,requireManager,i18nStack",
+      "adminAjaxStack,requireAdmin,i18nStack"})
+  public void interceptorOrder(String stack, String interceptor, String paramsStack) throws Exception {
     List<String> refs = stackRefs(parse("/struts.xml"), stack);
     int idx = refs.indexOf(interceptor);
     assertTrue(idx >= 0, stack + " misses " + interceptor);
-    assertTrue(idx < refs.indexOf("iptStackWithoutSetup"), stack + ": " + refs);
+    assertTrue(refs.indexOf("iptContextStack") >= 0, stack + " misses iptContextStack");
+    assertTrue(refs.indexOf("iptContextStack") < idx, stack + ": " + refs);
+    assertTrue(idx < refs.indexOf(paramsStack), stack + ": " + refs);
   }
 
   /**
-   * The CSRF interceptor runs before parameters are set, and in the AJAX stacks after the role check.
+   * The CSRF interceptor is part of iptContextStack, so it runs before parameters are set, and only once per stack.
+   * It runs after the session and locale interceptors, so its 403 and 405 pages have the session and the user's
+   * language.
    */
   @Test
   public void csrfInterceptorInStacks() throws Exception {
     Document doc = parse("/struts.xml");
-    assertEquals("csrf", stackRefs(doc, "iptStackWithoutSetup").get(0));
-    for (String stack : List.of("managerAjaxStack", "adminAjaxStack")) {
+    List<String> context = stackRefs(doc, "iptContextStack");
+    assertTrue(context.contains("csrf"), "iptContextStack: " + context);
+    for (String before : List.of("servletConfig", "defaultLocale", "i18n")) {
+      assertTrue(context.contains(before), "iptContextStack: " + context);
+      assertTrue(context.indexOf(before) < context.indexOf("csrf"), "iptContextStack: " + context);
+    }
+    assertFalse(stackRefs(doc, "iptStackWithoutSetup").contains("csrf"));
+    for (String stack : List.of("portalStack", "adminStack", "managerStack", "managerStackWithoutLock",
+        "managerAjaxStack", "adminAjaxStack")) {
       List<String> refs = stackRefs(doc, stack);
-      assertTrue(refs.indexOf("csrf") > 0, stack + ": " + refs);
-      assertTrue(refs.indexOf("csrf") < refs.indexOf("i18nStack"), stack + ": " + refs);
+      assertEquals(refs.indexOf("csrf"), refs.lastIndexOf("csrf"), stack + ": " + refs);
     }
   }
 
