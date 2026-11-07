@@ -107,7 +107,7 @@ public class StrutsConfigTest {
   }
 
   /**
-   * The role and resource interceptors run before iptStackWithoutSetup and resourceSession.
+   * The role and resource interceptors run before iptStackWithoutSetup.
    */
   @ParameterizedTest
   @CsvSource({"portalStack,protectPrivateResource", "managerStack,requireManager", "adminStack,requireAdmin"})
@@ -116,9 +116,6 @@ public class StrutsConfigTest {
     int idx = refs.indexOf(interceptor);
     assertTrue(idx >= 0, stack + " misses " + interceptor);
     assertTrue(idx < refs.indexOf("iptStackWithoutSetup"), stack + ": " + refs);
-    if (refs.contains("resourceSession")) {
-      assertTrue(idx < refs.indexOf("resourceSession"), stack + ": " + refs);
-    }
   }
 
   /**

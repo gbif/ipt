@@ -31,7 +31,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -104,32 +103,10 @@ public class RequireManagerInterceptorTest {
 
 
   @Test
-  public void unauthorizedSessionResourceIsDroppedWithoutResourceParam() throws Exception {
-    params.clear();
-    rebuildContext();
-    session.put(Constants.SESSION_USER, otherManager);
-    session.put(Constants.SESSION_RESOURCE, SHORTNAME);
-    assertEquals(BaseAction.SUCCESS, interceptor.intercept(invocation));
-    assertFalse(session.containsKey(Constants.SESSION_RESOURCE));
-  }
-
-  @Test
-  public void authorizedSessionResourceIsKeptWithoutResourceParam() throws Exception {
-    params.clear();
-    rebuildContext();
-    session.put(Constants.SESSION_USER, owner);
-    session.put(Constants.SESSION_RESOURCE, SHORTNAME);
-    assertEquals(BaseAction.SUCCESS, interceptor.intercept(invocation));
-    assertEquals(SHORTNAME, session.get(Constants.SESSION_RESOURCE));
-  }
-
-  @Test
   public void missingResourceParamIsBadRequest() throws Exception {
     params.clear();
     rebuildContext();
     session.put(Constants.SESSION_USER, owner);
-    // a resource in the session must not be used instead
-    session.put(Constants.SESSION_RESOURCE, SHORTNAME);
     ManagerBaseAction action = resourceAction(true);
     when(invocation.getAction()).thenReturn(action);
     assertEquals(BaseAction.BAD_REQUEST, interceptor.intercept(invocation));

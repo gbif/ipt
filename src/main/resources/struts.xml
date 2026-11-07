@@ -52,9 +52,6 @@
       <!-- returns the "locked" result if the requested resource is locked, e.g. while being published -->
       <interceptor name="resourceLocked" class="org.gbif.ipt.struts2.ResourceLockedInterceptor"/>
 
-      <!-- interceptor changing the current resource in the session if a "r" parameter is supplied -->
-      <interceptor name="resourceSession" class="org.gbif.ipt.struts2.ResourceSessionInterceptor"/>
-
       <!-- custom interceptor to preserve action messages across redirects -->
       <interceptor name="keepRedirectMessages" class="org.gbif.ipt.struts2.RedirectMessageInterceptor"/>
 
@@ -98,7 +95,6 @@
       <interceptor-stack name="portalStack">
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="protectPrivateResource"/>
-        <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
@@ -115,7 +111,6 @@
       <interceptor-stack name="managerStack">
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="requireManager"/>
-        <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
         <interceptor-ref name="resourceLocked"/>
       </interceptor-stack>

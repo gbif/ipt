@@ -15,7 +15,6 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Resource;
@@ -115,7 +114,7 @@ public class SourceActionTest extends IptBaseTest {
   }
 
   /**
-   * No resource parameter: the resource stored in the session must not be used instead.
+   * No resource parameter: a resource stored in the session, e.g. by IPT versions up to 3.3.7, must not be used instead.
    */
   @Test
   public void testSessionResourceIsNotUsed() throws Exception {
@@ -128,7 +127,7 @@ public class SourceActionTest extends IptBaseTest {
     when(req.getMethod()).thenReturn("GET");
     action.setServletRequest(req);
     Map<String, Object> session = new HashMap<>();
-    session.put(Constants.SESSION_RESOURCE, "res1");
+    session.put("curr_resource", "res1");
     action.setSession(session);
 
     action.prepare();

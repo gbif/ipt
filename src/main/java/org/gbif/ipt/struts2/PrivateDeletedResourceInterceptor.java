@@ -59,15 +59,6 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
       if (denied != null) {
         return denied;
       }
-    } else {
-      // no resource parameter: check the resource stored in the session instead
-      Object sessionResource = session.get(Constants.SESSION_RESOURCE);
-      if (sessionResource instanceof String shortname) {
-        Resource resource = resourceManager.get(shortname);
-        if (resource == null || checkAccess(invocation, resource, user) != null) {
-          session.remove(Constants.SESSION_RESOURCE);
-        }
-      }
     }
     return invocation.invoke();
   }

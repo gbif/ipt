@@ -30,7 +30,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -87,27 +86,5 @@ public class PrivateDeletedResourceInterceptorTest {
     params.put(Constants.REQ_PARAM_RESOURCE, PRIVATE);
     assertEquals(BaseAction.NOT_ALLOWED, intercept());
     verify(invocation, never()).invoke();
-  }
-
-  @Test
-  public void privateSessionResourceIsDroppedForAnonymous() throws Exception {
-    session.put(Constants.SESSION_RESOURCE, PRIVATE);
-    assertEquals(BaseAction.SUCCESS, intercept());
-    assertFalse(session.containsKey(Constants.SESSION_RESOURCE));
-  }
-
-  @Test
-  public void privateSessionResourceIsKeptForOwner() throws Exception {
-    session.put(Constants.SESSION_USER, owner);
-    session.put(Constants.SESSION_RESOURCE, PRIVATE);
-    assertEquals(BaseAction.SUCCESS, intercept());
-    assertEquals(PRIVATE, session.get(Constants.SESSION_RESOURCE));
-  }
-
-  @Test
-  public void publicSessionResourceIsKeptForAnonymous() throws Exception {
-    session.put(Constants.SESSION_RESOURCE, PUBLIC);
-    assertEquals(BaseAction.SUCCESS, intercept());
-    assertEquals(PUBLIC, session.get(Constants.SESSION_RESOURCE));
   }
 }
