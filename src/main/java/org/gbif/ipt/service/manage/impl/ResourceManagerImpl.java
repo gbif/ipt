@@ -68,6 +68,7 @@ import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.SafeTreeMapConverter;
 import org.gbif.ipt.model.converter.SafeTreeSetConverter;
@@ -1294,8 +1295,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(new SafeTreeSetConverter(), 10000);
     // persist only emails for users
     xstream.registerConverter(resourceConvertersManager.getUserConverter());
-    // custom converter for ExtensionMapping
-    xstream.registerConverter(resourceConvertersManager.getExtensionMappingConverter());
+    // custom converter for ExtensionMapping, resolving class names with this XStream's mapper (allowlist, aliases)
+    xstream.registerConverter(new ExtensionMappingConverter(xstream));
     // persist only rowtype
     xstream.registerConverter(resourceConvertersManager.getExtensionConverter());
     // persist only qualified concept name

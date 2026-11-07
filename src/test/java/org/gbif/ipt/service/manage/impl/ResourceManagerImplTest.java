@@ -32,6 +32,7 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SimplifiedResource;
 import org.gbif.ipt.model.SqlSource;
@@ -42,7 +43,6 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -88,10 +88,12 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -113,9 +115,11 @@ import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -260,7 +264,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     ConceptTermConverter conceptTermConverter = new ConceptTermConverter(extensionRowTypeConverter);
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), extensionRowTypeConverter,
+        mockEmailConverter, mockOrganisationKeyConverter, extensionRowTypeConverter,
         conceptTermConverter, mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), jdbcConverter);
 
@@ -1001,6 +1005,82 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
+   * Mappings are read by ExtensionMappingConverter, which must apply the same allowlist as the rest of resource.xml.
+   */
+  @Test
+  public void testLoadFromDirRejectsForbiddenClassInMapping() throws Exception {
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+
+    File resourceDir = new File(FileUtils.createTempDir(), "forbiddenmapping");
+    org.apache.commons.io.FileUtils.forceMkdir(resourceDir);
+    File resourceFile = new File(resourceDir, DataDir.PERSISTENCE_FILENAME);
+    when(mockedDataDir.resourceFile("forbiddenmapping")).thenReturn(resourceFile);
+    java.nio.file.Files.writeString(resourceFile.toPath(),
+        "<resource><mappings><mapping><filter class=\"java.util.Random\"/></mapping></mappings></resource>");
+
+    InvalidConfigException e = assertThrows(InvalidConfigException.class,
+        () -> resourceManager.loadFromDir(resourceFile.getParentFile(), creator));
+    assertEquals("Cannot read resource configuration for forbiddenmapping: java.util.Random", e.getMessage());
+  }
+
+  /**
+   * Mappings are written with fully qualified class names, as by IPT 3.2.0 to 3.3.7, so IPT 3.3.7 can still read them
+   * after a downgrade, and are read back.
+   */
+  @Test
+  public void testMappingXml() throws Exception {
+    com.thoughtworks.xstream.XStream xstream = xstreamField(getResourceManagerImpl(), "xstream");
+    String xml = xstream.toXML(resourceWithMapping());
+
+    assertTrue(xml.contains("<source class=\"org.gbif.ipt.model.SqlSource\""), xml);
+    assertTrue(xml.contains("<fields class=\"java.util.LinkedHashSet\""), xml);
+
+    Resource copy = (Resource) xstream.fromXML(xml);
+    ExtensionMapping mapping = copy.getMappings().get(0);
+    assertSame(copy.getSources().get(0), mapping.getSource());
+    assertInstanceOf(LinkedHashSet.class, mapping.getFields());
+    assertEquals(2, mapping.getIdColumn());
+    assertEquals("x", mapping.getFilter().getParam());
+  }
+
+  /**
+   * Mappings written with aliases, by IPT 3.1 and earlier, are still read.
+   */
+  @Test
+  public void testMappingXmlWithAliases() throws Exception {
+    com.thoughtworks.xstream.XStream xstream = xstreamField(getResourceManagerImpl(), "xstream");
+    String xml = xstream.toXML(resourceWithMapping())
+        .replace("<source class=\"org.gbif.ipt.model.SqlSource\"", "<source class=\"sqlsource\"")
+        .replace("<fields class=\"java.util.LinkedHashSet\"", "<fields class=\"sorted-set\"");
+
+    Resource copy = (Resource) xstream.fromXML(xml);
+    ExtensionMapping mapping = copy.getMappings().get(0);
+    assertSame(copy.getSources().get(0), mapping.getSource());
+    // sorted-set is TreeSet, which SafeTreeSetConverter reads into a LinkedHashSet
+    assertInstanceOf(LinkedHashSet.class, mapping.getFields());
+  }
+
+  private static Resource resourceWithMapping() throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("mappings");
+    SqlSource source = new SqlSource();
+    source.setName("db");
+    source.setResource(resource);
+    resource.addSource(source, true);
+
+    ExtensionMapping mapping = new ExtensionMapping();
+    mapping.setSource(source);
+    mapping.setFields(new LinkedHashSet<>());
+    mapping.setIdColumn(2);
+    RecordFilter filter = new RecordFilter();
+    filter.setColumn(3);
+    filter.setParam("x");
+    mapping.setFilter(filter);
+    resource.setMappings(new ArrayList<>(List.of(mapping)));
+    return resource;
+  }
+
+  /**
    * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
    */
   @Test
@@ -1203,7 +1283,7 @@ public class ResourceManagerImplTest extends IptBaseTest {
     when(mockAppConfig.getResourceUrl("bees")).thenReturn("http://192.38.28.24:7001/ipt/resource?r=bees");
 
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
-        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionMappingConverter.class), mock(ExtensionRowTypeConverter.class),
+        mockEmailConverter, mockOrganisationKeyConverter, mock(ExtensionRowTypeConverter.class),
         mock(ConceptTermConverter.class), mock(DataPackageIdentifierConverter.class),
         mock(TableSchemaNameConverter.class), mock(DataPackageFieldConverter.class), mockJdbcConverter);
 
