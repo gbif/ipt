@@ -145,6 +145,40 @@ public class StrutsConfigTest {
   }
 
   /**
+   * Every stack built on iptContextStack starts with the exception interceptor, so an exception in IPT's own
+   * interceptors (setupAndCancel, csrf, the role, resource and lock checks) gives the error page, not a bare servlet
+   * container 500. The exception interceptor in defaultStack and i18nStack runs after them and can't catch it.
+   */
+  @Test
+  public void exceptionInterceptorFirstInStacks() throws Exception {
+    Document doc = parse("/struts.xml");
+
+    Element exception = null;
+    NodeList interceptors = doc.getElementsByTagName("interceptor");
+    for (int i = 0; i < interceptors.getLength(); i++) {
+      Element interceptor = (Element) interceptors.item(i);
+      if ("iptException".equals(interceptor.getAttribute("name"))) {
+        exception = interceptor;
+      }
+    }
+    assertNotNull(exception, "iptException interceptor not declared");
+    assertEquals("org.apache.struts2.interceptor.ExceptionMappingInterceptor", exception.getAttribute("class"));
+
+    List<String> stacksChecked = new ArrayList<>();
+    NodeList stacks = doc.getElementsByTagName("interceptor-stack");
+    for (int i = 0; i < stacks.getLength(); i++) {
+      String stack = ((Element) stacks.item(i)).getAttribute("name");
+      List<String> refs = stackRefs(doc, stack);
+      if (!"iptContextStack".equals(stack) && refs.contains("iptContextStack")) {
+        assertEquals("iptException", refs.get(0), stack + ": " + refs);
+        stacksChecked.add(stack);
+      }
+    }
+    assertTrue(stacksChecked.containsAll(List.of("portalStack", "adminStack", "managerStack",
+        "managerStackWithoutLock", "managerAjaxStack", "adminAjaxStack")), "checked: " + stacksChecked);
+  }
+
+  /**
    * The CSRF interceptor is part of iptContextStack, so it runs before parameters are set, and only once per stack.
    * It runs after the session and locale interceptors, so its 403 and 405 pages have the session and the user's
    * language.

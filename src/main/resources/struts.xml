@@ -75,6 +75,15 @@
       <!-- Adds validation errors to fields if there is potential XSS input -->
       <interceptor name="xssFieldError" class="org.gbif.ipt.struts2.XssFieldErrorInterceptor"/>
 
+      <!-- maps exceptions to the error result, like the exception interceptor in defaultStack and i18nStack. Those run
+           after IPT's own interceptors (setupAndCancel, csrf, the role, resource and lock checks), so this one runs
+           first in every stack, otherwise an exception there gives a bare servlet container 500. Logged, as these
+           exceptions are not caught anywhere else -->
+      <interceptor name="iptException" class="org.apache.struts2.interceptor.ExceptionMappingInterceptor">
+        <param name="logEnabled">true</param>
+        <param name="logLevel">ERROR</param>
+      </interceptor>
+
       <!-- runs before the role and resource checks, so the pages they return (400, 401, 404, 410) get the session,
            the CSRF token and the user's language like any other page. It sets no action parameters and doesn't call
            prepare(). The CSRF check also rejects a forged request here, before parameters are set; it comes after the
@@ -100,6 +109,7 @@
       <!-- stack to be used as the default for the public portal package -->
       <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="portalStack">
+        <interceptor-ref name="iptException"/>
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="protectPrivateResource"/>
@@ -109,6 +119,7 @@
       <!-- stack to be used as the default for the admin package -->
       <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="adminStack">
+        <interceptor-ref name="iptException"/>
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireAdmin"/>
@@ -119,6 +130,7 @@
            (resource/preview, /manager-api). locked.do is the target of the locked result, so with the check it would
            redirect to itself until publishing ends. Order covered by StrutsConfigTest -->
       <interceptor-stack name="managerStackWithoutLock">
+        <interceptor-ref name="iptException"/>
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireManager"/>
@@ -129,6 +141,7 @@
            published. The lock check runs before parameters are set and prepare() runs, as these change the resource
            in memory, which publishing reads. Order covered by StrutsConfigTest -->
       <interceptor-stack name="managerStack">
+        <interceptor-ref name="iptException"/>
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireManager"/>
@@ -139,6 +152,7 @@
       <!-- lightweight stack for AJAX actions in the manage package (report, cancel, peek, mappingPeek). No lock check,
            so publishing can be followed and cancelled -->
       <interceptor-stack name="managerAjaxStack">
+        <interceptor-ref name="iptException"/>
         <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireManager"/>
         <interceptor-ref name="i18nStack"/>
@@ -146,6 +160,7 @@
 
       <!-- lightweight stack for ajax actions in the admin package -->
       <interceptor-stack name="adminAjaxStack">
+        <interceptor-ref name="iptException"/>
         <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireAdmin"/>
         <interceptor-ref name="i18nStack"/>
