@@ -195,6 +195,36 @@ public class Resource implements Serializable, Comparable<Resource> {
   @Getter
   private List<String> publicationFailureEmails = new ArrayList<>();
 
+  /**
+   * Called by XStream after reading resource.xml. XStream doesn't run field initializers, so a collection missing from
+   * the file, e.g. one added in a later IPT version than the one that last saved it, would be null.
+   */
+  @Serial
+  private Object readResolve() {
+    if (recordsByExtension == null) {
+      recordsByExtension = new HashMap<>();
+    }
+    if (managers == null) {
+      managers = new HashSet<>();
+    }
+    if (sources == null) {
+      sources = new HashSet<>();
+    }
+    if (mappings == null) {
+      mappings = new ArrayList<>();
+    }
+    if (dataPackageMappings == null) {
+      dataPackageMappings = new ArrayList<>();
+    }
+    if (versionHistory == null) {
+      versionHistory = new ArrayList<>();
+    }
+    if (publicationFailureEmails == null) {
+      publicationFailureEmails = new ArrayList<>();
+    }
+    return this;
+  }
+
   public void addManager(User manager) {
     if (manager != null) {
       this.managers.add(manager);

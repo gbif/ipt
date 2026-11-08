@@ -35,6 +35,7 @@ import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.SimplifiedResource;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
@@ -1058,6 +1059,26 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertSame(copy.getSources().get(0), mapping.getSource());
     // sorted-set is TreeSet, which SafeTreeSetConverter reads into a LinkedHashSet
     assertInstanceOf(LinkedHashSet.class, mapping.getFields());
+  }
+
+  /**
+   * A resource.xml saved by an older IPT version lacks the collections added since, e.g. dataPackageMappings (IPT 3.0)
+   * and publicationFailureEmails (IPT 3.3.3). They are read as empty, not null, so e.g. a source can be deleted.
+   */
+  @Test
+  public void testReadResourceWithoutNewerCollections() throws Exception {
+    com.thoughtworks.xstream.XStream xstream = xstreamField(getResourceManagerImpl(), "xstream");
+    String xml = java.nio.file.Files.readString(FileUtils.getClasspathFile("resources/res1/resource.xml").toPath());
+    assertFalse(xml.contains("dataPackageMappings"));
+    assertFalse(xml.contains("publicationFailureEmails"));
+
+    Resource resource = (Resource) xstream.fromXML(xml);
+    assertNotNull(resource.getPublicationFailureEmails());
+    assertTrue(resource.getPublicationFailureEmails().isEmpty());
+
+    Source source = resource.getSources().get(0);
+    assertTrue(resource.deleteSource(source));
+    assertTrue(resource.getSources().isEmpty());
   }
 
   private static Resource resourceWithMapping() throws Exception {
