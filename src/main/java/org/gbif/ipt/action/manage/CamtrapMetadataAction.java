@@ -225,7 +225,7 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
     this.metadataInferringService = metadataInferringService;
   }
 
-  @StrutsParameter(depth = 4)
+  @StrutsParameter(depth = 1)
   @Override
   public Resource getResource() {
     return resource;

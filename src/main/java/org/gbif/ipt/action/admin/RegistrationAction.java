@@ -455,4 +455,13 @@ public class RegistrationAction extends POSTAction {
   public Ipt getIpt() {
     return ipt;
   }
+
+  /**
+   * The registration form edits the registered IPT (registeredIpt.*). Only this admin action binds it, not every action.
+   */
+  @StrutsParameter(depth = 2)
+  @Override
+  public Ipt getRegisteredIpt() {
+    return super.getRegisteredIpt();
+  }
 }

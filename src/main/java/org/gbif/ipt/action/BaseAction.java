@@ -453,7 +453,6 @@ public class BaseAction extends ActionSupport
   /**
    * @return the registered IPT instance, or null if the IPT hasn't been registered yet.
    */
-  @StrutsParameter(depth = 2)
   public Ipt getRegisteredIpt() {
     return registrationManager.getIpt();
   }

@@ -693,6 +693,22 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     return source;
   }
 
+  /**
+   * The source forms only set the source's own fields. Its resource (the live resource) and its file are refused.
+   */
+  @Override
+  public boolean acceptableParameterName(String parameterName) {
+    if (!super.acceptableParameterName(parameterName)) {
+      return false;
+    }
+    for (String property : List.of("source", "fileSource", "sqlSource")) {
+      if (isNestedPropertyOf(parameterName, property, "resource") || isNestedPropertyOf(parameterName, property, "file")) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   enum UiSourceType {
     SOURCE_FILE("source-file"),
     SOURCE_URL("source-url"),

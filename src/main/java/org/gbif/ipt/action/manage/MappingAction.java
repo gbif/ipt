@@ -77,6 +77,18 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @Serial
   private static final long serialVersionUID = -831969146160030857L;
 
+  /**
+   * The mapping.* parameters the mapping form submits. The mapping holds the live source and the shared extension,
+   * so any other mapping.* parameter is refused.
+   */
+  private static final Set<String> MAPPING_PARAMETERS = Set.of(
+      "mapping.idColumn",
+      "mapping.idSuffix",
+      "mapping.filter.column",
+      "mapping.filter.comparator",
+      "mapping.filter.filterTime",
+      "mapping.filter.param");
+
   private static final Logger LOG = LogManager.getLogger(MappingAction.class);
 
   private static final Pattern NORM_TERM = Pattern.compile("[^a-zA-Z0-9:]+");
@@ -582,5 +594,11 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @StrutsParameter(depth = 2)
   public ExtensionMapping getMapping() {
     return mapping;
+  }
+
+  @Override
+  public boolean acceptableParameterName(String parameterName) {
+    return super.acceptableParameterName(parameterName)
+        && (!isPropertyOf(parameterName, "mapping") || MAPPING_PARAMETERS.contains(parameterName));
   }
 }
