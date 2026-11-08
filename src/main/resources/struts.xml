@@ -115,8 +115,9 @@
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
-      <!-- managerStack without the lock check, used only by locked.do: the locked result redirects there, so with the
-           check the page would redirect to itself until publishing ends. Order covered by StrutsConfigTest -->
+      <!-- managerStack without the lock check, for locked.do and for read-only actions that have no locked result
+           (resource/preview, /manager-api). locked.do is the target of the locked result, so with the check it would
+           redirect to itself until publishing ends. Order covered by StrutsConfigTest -->
       <interceptor-stack name="managerStackWithoutLock">
         <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="iptContextStack"/>

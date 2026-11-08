@@ -12,7 +12,8 @@
 <struts>
 
   <package name="ipt-manager-api" extends="ipt-api,ipt-default" namespace="/manager-api">
-    <default-interceptor-ref name="managerStack"/>
+    <!-- read-only JSON actions: no lock check, as there is no locked page to redirect to -->
+    <default-interceptor-ref name="managerStackWithoutLock"/>
 
     <action name="resources" class="org.gbif.ipt.action.manage.HomeAction">
       <result name="success" type="json">

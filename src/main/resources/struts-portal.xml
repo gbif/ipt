@@ -33,8 +33,9 @@
     <action name="resource" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
       <result>/WEB-INF/pages/portal/resource.ftl</result>
     </action>
+    <!-- read-only preview of the unpublished metadata: no lock check, as there is no locked result in this package -->
     <action name="resource/preview" class="org.gbif.ipt.action.portal.ResourceAction" method="preview">
-      <interceptor-ref name="managerStack"/>
+      <interceptor-ref name="managerStackWithoutLock"/>
       <result>/WEB-INF/pages/portal/resource.ftl</result>
     </action>
 

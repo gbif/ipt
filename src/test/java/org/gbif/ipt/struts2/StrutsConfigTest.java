@@ -293,6 +293,68 @@ public class StrutsConfigTest {
     assertFalse(stackRefs(struts, "managerStackWithoutLock").contains("resourceLocked"));
   }
 
+  /**
+   * An action whose stack runs the lock check needs a locked result, in the action or in its package's global results.
+   * Without one, a request while the resource is being published fails with "No result defined" (500).
+   */
+  @ParameterizedTest
+  @ValueSource(strings = {"/struts.xml", "/struts-portal.xml", "/struts-manage.xml", "/struts-admin.xml"})
+  public void lockCheckHasLockedResult(String config) throws Exception {
+    Document struts = parse("/struts.xml");
+    Document doc = parse(config);
+
+    List<String> missing = new ArrayList<>();
+    NodeList packages = doc.getElementsByTagName("package");
+    for (int i = 0; i < packages.getLength(); i++) {
+      Element pkg = (Element) packages.item(i);
+      String defaultStack = null;
+      boolean globalLocked = false;
+      NodeList pkgChildren = pkg.getChildNodes();
+      for (int j = 0; j < pkgChildren.getLength(); j++) {
+        if (pkgChildren.item(j) instanceof Element el) {
+          if ("default-interceptor-ref".equals(el.getTagName())) {
+            defaultStack = el.getAttribute("name");
+          } else if ("global-results".equals(el.getTagName())) {
+            globalLocked = hasResult(el, "locked");
+          }
+        }
+      }
+
+      NodeList actions = pkg.getElementsByTagName("action");
+      for (int j = 0; j < actions.getLength(); j++) {
+        Element action = (Element) actions.item(j);
+        List<String> refs = new ArrayList<>();
+        NodeList children = action.getChildNodes();
+        for (int k = 0; k < children.getLength(); k++) {
+          if (children.item(k) instanceof Element el && "interceptor-ref".equals(el.getTagName())) {
+            refs.add(el.getAttribute("name"));
+          }
+        }
+        if (refs.isEmpty() && defaultStack != null) {
+          refs.add(defaultStack);
+        }
+        boolean lockCheck = refs.stream()
+            .anyMatch(r -> "resourceLocked".equals(r)
+                || (findStack(struts, r) != null && stackRefs(struts, r).contains("resourceLocked")));
+        if (lockCheck && !globalLocked && !hasResult(action, "locked")) {
+          missing.add(pkg.getAttribute("name") + "/" + action.getAttribute("name"));
+        }
+      }
+    }
+    assertTrue(missing.isEmpty(), config + " has actions with a lock check but no locked result: " + missing);
+  }
+
+  private static boolean hasResult(Element parent, String name) {
+    NodeList children = parent.getChildNodes();
+    for (int i = 0; i < children.getLength(); i++) {
+      if (children.item(i) instanceof Element el && "result".equals(el.getTagName())
+          && name.equals(el.getAttribute("name"))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @ParameterizedTest
   @ValueSource(strings = {"/struts-manage.xml", "/struts-admin.xml"})
   public void actionsKeepRoleInterceptors(String config) throws Exception {
