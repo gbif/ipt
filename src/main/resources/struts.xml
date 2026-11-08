@@ -125,10 +125,14 @@
       </interceptor-stack>
 
       <!-- default stack of the manage packages: returns the locked result while the requested resource is being
-           published -->
+           published. The lock check runs before parameters are set and prepare() runs, as these change the resource
+           in memory, which publishing reads. Order covered by StrutsConfigTest -->
       <interceptor-stack name="managerStack">
-        <interceptor-ref name="managerStackWithoutLock"/>
+        <interceptor-ref name="setupAndCancel"/>
+        <interceptor-ref name="iptContextStack"/>
+        <interceptor-ref name="requireManager"/>
         <interceptor-ref name="resourceLocked"/>
+        <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
       <!-- lightweight stack for AJAX actions in the manage package (report, cancel, peek, mappingPeek). No lock check,

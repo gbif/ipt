@@ -236,6 +236,22 @@ public class StrutsConfigTest {
   }
 
   /**
+   * The lock check runs right after the role check, before parameters are set and prepare() runs: these change the
+   * resource in memory, which publishing reads. managerStackWithoutLock is the same stack without the check.
+   */
+  @Test
+  public void lockCheckBeforeParameters() throws Exception {
+    Document doc = parse("/struts.xml");
+    List<String> refs = stackRefs(doc, "managerStack");
+    assertEquals(refs.indexOf("requireManager") + 1, refs.indexOf("resourceLocked"), "managerStack: " + refs);
+    assertTrue(refs.indexOf("resourceLocked") < refs.indexOf("iptStackWithoutSetup"), "managerStack: " + refs);
+
+    List<String> withoutLock = new ArrayList<>(refs);
+    withoutLock.remove("resourceLocked");
+    assertEquals(withoutLock, stackRefs(doc, "managerStackWithoutLock"));
+  }
+
+  /**
    * The locked result redirects to the locked page. That action must not run the lock check itself, or the redirect
    * would point to itself until publishing ends.
    */
