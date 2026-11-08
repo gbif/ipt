@@ -669,6 +669,8 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         } else if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
           addFieldError("sqlSource.database",
             getText("validation.short", new String[] {getText("sqlSource.database"), "2"}));
+        } else if ("duckdb".equalsIgnoreCase(rdbms) && !SqlSource.isValidDuckDbDatabase(src.getDatabase())) {
+          addFieldError("sqlSource.database", getText("manage.source.duckdb.database.invalid"));
         }
       }
 

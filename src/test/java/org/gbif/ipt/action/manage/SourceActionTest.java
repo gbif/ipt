@@ -19,6 +19,7 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -27,12 +28,15 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -153,5 +157,48 @@ public class SourceActionTest extends IptBaseTest {
     action.prepare();
     assertNull(action.getResource());
     assertEquals(SourceAction.NOT_FOUND, action.execute());
+  }
+
+  /**
+   * Saving a DuckDB source with connection options, an in-memory or a MotherDuck database in the database field must
+   * fail validation: the options would undo the restrictions the database is opened with (#3283).
+   */
+  @ParameterizedTest
+  @ValueSource(strings = {
+      "/data/occ.duckdb;duckdb.read_only=false",
+      "/data/occ.duckdb;session_init_sql_file=/data/init.sql",
+      "/data/occ.duckdb?enable_external_access=true",
+      ":memory:",
+      "md:my_db"
+  })
+  public void testDuckDbDatabaseWithOptionsIsRefusedOnSave(String database) throws Exception {
+    assertTrue(validateDuckDbSource(database).containsKey("sqlSource.database"));
+  }
+
+  @Test
+  public void testDuckDbDatabaseFileIsAcceptedOnSave() throws Exception {
+    assertFalse(validateDuckDbSource("/data/occurrences.duckdb").containsKey("sqlSource.database"));
+  }
+
+  private Map<String, List<String>> validateDuckDbSource(String database) throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("res1");
+    when(resourceManager.get("res1")).thenReturn(resource);
+
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter("r")).thenReturn("res1");
+    when(req.getMethod()).thenReturn("POST");
+    action.setServletRequest(req);
+    action.setSession(new HashMap<>());
+    action.prepare();
+
+    SqlSource source = new SqlSource();
+    source.setName("occurrences");
+    source.setDatabase(database);
+    source.setSql("SELECT * FROM occurrence");
+    action.setSource(source);
+    action.setRdbms("duckdb");
+    action.validateHttpPostOnly();
+    return action.getFieldErrors();
   }
 }

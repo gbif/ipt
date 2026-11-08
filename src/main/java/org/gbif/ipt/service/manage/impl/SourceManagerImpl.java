@@ -938,7 +938,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return true;
   }
 
-  private Connection getDbConnection(SqlSource source) throws SQLException {
+  Connection getDbConnection(SqlSource source) throws SQLException {
     Connection conn = null;
     // try to connect to db via simple JDBC
     if (source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
@@ -946,22 +946,13 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         DriverManager.setLoginTimeout(CONNECTION_TIMEOUT_SECS);
         Class.forName(source.getJdbcDriver());
         if (isDuckDb(source)) {
-          // DuckDB runs embedded in the IPT process. IPT only ever reads from a SQL source, so open the embedded
-          // database read-only. This both blocks any write through the user-supplied SQL and prevents DuckDB from
-          // creating/opening a database file at an arbitrary, attacker-chosen path (read-only refuses missing files).
-          Properties props = new Properties();
-          props.setProperty("duckdb.read_only", "true");
-          conn = DriverManager.getConnection(source.getJdbcUrl(), props);
+          validateDuckDbDatabase(source.getDatabase());
+          conn = DriverManager.getConnection(source.getJdbcUrl(), duckDbConnectionProperties());
         } else {
           conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
         }
         // Disable Auto Commit to allow use of cursors (in PostgreSQL, but probably others too).
         conn.setAutoCommit(false);
-
-        // DuckDB runs embedded in the IPT process, so the user-supplied SQL could otherwise read or write
-        // arbitrary files on the server (read_csv, read_blob, COPY ... TO, extension loading, ...). Lock the
-        // connection down to the attached database only. IPT only ever reads tabular data, so no feature is lost.
-        hardenDuckDbConnection(source, conn);
 
         // If an SQLWarning object is available, log its warning(s). There may be multiple warnings chained.
         SQLWarning warn = conn.getWarnings();
@@ -971,6 +962,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           warn = warn.getNextWarning();
         }
       } catch (java.lang.ClassNotFoundException e) {
+        closeQuietly(conn);
         String msg =
           String
             .format(
@@ -979,6 +971,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         LOG.warn(msg, e);
         throw new SQLException(msg, e);
       } catch (Exception e) {
+        // don't leak a connection that was opened before a later step failed
+        closeQuietly(conn);
         String msg = String
           .format("Couldn't create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
             source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
@@ -990,33 +984,58 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   /**
-   * Restricts an embedded DuckDB connection so that user-supplied SQL cannot touch the server's filesystem,
-   * install/load extensions, or otherwise reach outside the attached database.
+   * Connection properties for the embedded DuckDB driver.
    * <p>
    * Unlike the other supported RDBMS, DuckDB runs in-process within the IPT JVM. By default it can read and write
-   * local files (e.g. {@code read_csv}, {@code read_parquet}, {@code read_blob}, {@code COPY ... TO}) and load
-   * extensions, which would let any manager who can configure a source read or write any file the IPT process can
-   * access. We disable external access and extension installation, then lock the configuration so the user's own SQL
-   * cannot re-enable them. This is a no-op for all non-DuckDB drivers.
-   *
-   * @param source the SQL source being connected to
-   * @param conn   the freshly opened JDBC connection
+   * local files (e.g. {@code read_csv}, {@code read_parquet}, {@code read_blob}, {@code COPY ... TO}), attach other
+   * databases and install or load extensions, which would let any manager who can configure a source read or write
+   * any file the IPT process can access. The database is therefore opened read-only, with external access and
+   * extension installing/loading disabled, and the configuration locked so the user-supplied SQL cannot re-enable
+   * any of it.
+   * <p>
+   * These are startup settings of the DuckDB instance, which the driver shares between all connections to the same
+   * database file. Setting them here (rather than with {@code SET} on an open connection) means every connection
+   * opens the instance with the same configuration, so concurrent connections to one file keep working.
+   * <p>
+   * As a consequence, SQL that needs files outside the database (e.g. a view over {@code read_csv} or Parquet files)
+   * or an extension (e.g. spatial) fails: the source has to select from tables stored in the database file itself.
    */
-  private void hardenDuckDbConnection(SqlSource source, Connection conn) throws SQLException {
-    if (!isDuckDb(source)) {
-      return;
+  static Properties duckDbConnectionProperties() {
+    Properties props = new Properties();
+    props.setProperty("duckdb.read_only", "true");
+    props.setProperty("enable_external_access", "false");
+    props.setProperty("allow_community_extensions", "false");
+    props.setProperty("autoinstall_known_extensions", "false");
+    props.setProperty("autoload_known_extensions", "false");
+    props.setProperty("lock_configuration", "true");
+    return props;
+  }
+
+  /**
+   * Refuses a DuckDB database that isn't a plain local file path (see {@link SqlSource#isValidDuckDbDatabase}),
+   * as it could undo the restrictions in {@link #duckDbConnectionProperties()}.
+   * <p>
+   * The source form checks this when the source is saved. It is checked again when connecting because sources also
+   * come from uploaded resource.xml files and from sources saved before this check existed.
+   *
+   * @param database the database of the SQL source
+   * @throws SQLException if the database isn't a plain local file path
+   */
+  static void validateDuckDbDatabase(String database) throws SQLException {
+    if (!SqlSource.isValidDuckDbDatabase(database)) {
+      throw new SQLException(
+          "The DuckDB database must be the path of a local database file, without connection options (';' or '?')");
     }
-    try (Statement stmt = conn.createStatement()) {
-      // Disable all filesystem/network access (read_csv, read_blob, COPY ... TO, httpfs, remote extension install).
-      stmt.execute("SET enable_external_access=false");
-      // Refuse to load unsigned/community extensions.
-      stmt.execute("SET allow_community_extensions=false");
-      // Lock the configuration so the user-supplied SQL cannot revert the two settings above. Must be set last.
-      stmt.execute("SET lock_configuration=true");
-      conn.commit();
+  }
+
+  private void closeQuietly(Connection conn) {
+    if (conn != null) {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        LOG.debug("Failed to close the connection after an error", e);
+      }
     }
-    LOG.debug("Hardened embedded DuckDB connection for source {}: external access and community extensions disabled",
-        source.getName());
   }
 
   /**
