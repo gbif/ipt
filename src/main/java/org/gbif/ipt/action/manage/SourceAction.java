@@ -503,6 +503,10 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     if (source == null) {
       return NOT_FOUND;
     }
+    // without an id, prepare() created a new, unsaved SQL source, which can't be previewed
+    if (id == null) {
+      return badRequest("manage.400.source.body", resource.getShortname());
+    }
     peek = sourceManager.peek(source, peekRows);
     columns = sourceManager.columns(source);
     return SUCCESS;

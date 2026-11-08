@@ -166,15 +166,15 @@
                                       <li>
                                           <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" name="analyze" key="button.analyze"/>
                                       </li>
-                                      <li>
-                                        <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
-                                            <@s.text name="button.preview"/>
-                                        </a>
-                                      </li>
                                         <#if id?has_content>
-                                      <li>
-                                          <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
-                                      </li>
+                                          <li>
+                                            <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
+                                                <@s.text name="button.preview"/>
+                                            </a>
+                                          </li>
+                                          <li>
+                                              <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
+                                          </li>
                                         </#if>
                                     </ul>
                                 </div>

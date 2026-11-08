@@ -305,6 +305,15 @@
     <action name="mappingPeek" class="org.gbif.ipt.action.manage.OverviewAction" method="peek">
       <interceptor-ref name="managerAjaxStack"/>
       <result>/WEB-INF/pages/manage/peek.ftl</result>
+      <!-- an unknown mapping or missing parameters: the preview modal shows the message from peek.ftl -->
+      <result name="400" type="freemarkerWithStatus">
+        <param name="status">400</param>
+        <param name="location">/WEB-INF/pages/manage/peek.ftl</param>
+      </result>
+      <result name="404" type="freemarkerWithStatus">
+        <param name="status">404</param>
+        <param name="location">/WEB-INF/pages/manage/peek.ftl</param>
+      </result>
     </action>
 
     <action name="urlMetadata" class="org.gbif.ipt.action.manage.UrlMetadataAction" />

@@ -555,7 +555,13 @@
             e.preventDefault();
             var addressValue = $(this).attr("href");
             displayProcessing();
-            $("#modalcontent").load(addressValue, hideProcessing);
+            // load() inserts nothing on an error status, but mappingPeek's 400/404 responses carry the message to show
+            $("#modalcontent").load(addressValue, function (response, status, xhr) {
+                if (xhr.status === 400 || xhr.status === 404) {
+                    $("#modalcontent").html(response);
+                }
+                hideProcessing();
+            });
             $("#modalbox").show();
         });
         $("#modalbox").click(function(e) {

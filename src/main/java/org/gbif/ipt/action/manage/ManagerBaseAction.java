@@ -45,6 +45,8 @@ public class ManagerBaseAction extends POSTAction {
   private String notFoundTitle;
   @Getter
   private String notFoundBody;
+  @Getter
+  private String badRequestBody;
 
   @Inject
   public ManagerBaseAction(
@@ -80,6 +82,16 @@ public class ManagerBaseAction extends POSTAction {
     notFound = true;
     notFoundTitle = getText(titleKey);
     notFoundBody = getText(bodyKey, args);
+  }
+
+  /**
+   * Sets the text the 400 page shows instead of the default one, which is about a missing resource parameter.
+   *
+   * @return the 400 result
+   */
+  protected String badRequest(String bodyKey, String... args) {
+    badRequestBody = getText(bodyKey, args);
+    return BAD_REQUEST;
   }
 
   /**

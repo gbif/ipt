@@ -114,6 +114,26 @@ public class SourceActionTest extends IptBaseTest {
   }
 
   /**
+   * No source id: prepare() creates a new, unsaved SQL source, which peek must not try to preview (it threw a 500).
+   */
+  @Test
+  public void testPeekWithoutIdReturnsBadRequest() throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("res1");
+    when(resourceManager.get("res1")).thenReturn(resource);
+
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter("r")).thenReturn("res1");
+    when(req.getParameter("id")).thenReturn("");
+    when(req.getMethod()).thenReturn("GET");
+    action.setServletRequest(req);
+    action.setSession(new HashMap<>());
+
+    action.prepare();
+    assertEquals(SourceAction.BAD_REQUEST, action.peek());
+  }
+
+  /**
    * No resource parameter: a resource stored in the session, e.g. by IPT versions up to 3.3.7, must not be used instead.
    */
   @Test

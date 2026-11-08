@@ -1796,6 +1796,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     columns = new ArrayList<>();
     Exception exception = null;
     List<TaskMessage> messages = new ArrayList<>();
+    String result = SUCCESS;
 
     // find the rowType
     Term rowType = null;
@@ -1847,21 +1848,31 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           }
         } else {
           messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[]{id, String.valueOf(mid)})));
+          result = NOT_FOUND;
         }
       } else {
         messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
+        result = BAD_REQUEST;
       }
     }
 
-    // add messages to those collected while generating preview
-    if (!messages.isEmpty()) {
-      report.getMessages().addAll(messages);
+    if (exception != null) {
+      report = new StatusReport(exception, "failed", messages);
+    } else if (!SUCCESS.equals(result)) {
+      // no preview was generated, so report is still the resource's publishing report (or null): show only the
+      // message, as not completed, so peek.ftl doesn't say the preview finished successfully
+      report = new StatusReport("failed", messages);
+    } else {
+      // messages collected while generating the preview, then ours; a new list, as report may be shared
+      List<TaskMessage> allMessages = new ArrayList<>();
+      if (report != null) {
+        allMessages.addAll(report.getMessages());
+      }
+      allMessages.addAll(messages);
+      report = new StatusReport(true, "succeeded", allMessages);
     }
 
-    report = (exception == null) ? new StatusReport(true, "succeeded", report.getMessages())
-        : new StatusReport(exception, "failed", messages);
-
-    return SUCCESS;
+    return result;
   }
 
   @Override

@@ -405,4 +405,26 @@ public class OverviewActionTest extends IptBaseTest {
     assertEquals("input", action.undelete());
     assertEquals(1, action.getActionErrors().size());
   }
+
+  /**
+   * Mapping preview without rowType and mapping ID: 400, and an unknown mapping: 404. Both keep the message for the
+   * preview modal.
+   */
+  @Test
+  public void testMappingPeekBadRequestAndUnknownMapping() {
+    Resource r = new Resource();
+    r.setShortname("res1");
+    action.setResource(r);
+
+    assertEquals(OverviewAction.BAD_REQUEST, action.peek());
+    assertEquals(1, action.getReport().getMessages().size());
+    // not completed, so the preview doesn't say it finished successfully
+    assertFalse(action.getReport().isCompleted());
+
+    action.id = "http://rs.tdwg.org/dwc/terms/Occurrence";
+    action.setMid(5);
+    assertEquals(OverviewAction.NOT_FOUND, action.peek());
+    assertEquals(1, action.getReport().getMessages().size());
+    assertFalse(action.getReport().isCompleted());
+  }
 }

@@ -27,7 +27,7 @@
 
 <main class="container main-content-container">
     <div class="my-3 p-3">
-        <p class="text-center">[@s.text name="manage.400.body"/]</p>
+        <p class="text-center">[#if badRequestBody?has_content]${badRequestBody}[#else][@s.text name="manage.400.body"/][/#if]</p>
     </div>
 </main>
 
