@@ -6,7 +6,13 @@
         loadReport();
         var reporter = setInterval(loadReport, 1000);
         function loadReport(){
-            $("#report").load("${baseURL}/manage/report.do?r=${resource.shortname}", function() {
+            $("#report").load("${baseURL}/manage/report.do?r=${resource.shortname}", function(response, status, xhr) {
+                // the session expired: stop polling and open the overview, which goes to login and returns there
+                if (xhr.status === 401) {
+                    clearInterval(reporter);
+                    window.location.href = "${baseURL}/manage/resource.do?r=${resource.shortname}";
+                    return;
+                }
                 if ($(".completed").length > 0){
                     // stop timer and hide gif
                     clearInterval(reporter);

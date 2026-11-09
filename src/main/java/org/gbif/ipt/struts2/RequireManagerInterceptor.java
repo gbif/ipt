@@ -29,7 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
-import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.interceptor.AbstractInterceptor;
 
@@ -84,25 +83,10 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(Constants.SESSION_USER);
 
-    // user is not logged in, redirect to login page
-    // remember referer and redirect there after successful authentication
+    // user is not logged in: redirect to the login page, or 401 for AJAX requests
     if (user == null) {
-      LOG.debug("User is not logged in, redirecting to login page");
-      ActionContext context = invocation.getInvocationContext();
-      HttpServletRequest request = (HttpServletRequest) context.get(HTTP_REQUEST);
-
-      String queryString = request.getQueryString();
-      String referer = request.getServletPath();
-      // check if there is a query string, if so append it
-      if (queryString != null) {
-        referer = referer + '?' + queryString;
-      }
-
-      // put referer into session
-      LOG.debug("Put referer into session: {}", referer);
-      session.put(Constants.SESSION_REFERER, referer);
-
-      return BaseAction.LOGIN;
+      HttpServletRequest request = (HttpServletRequest) invocation.getInvocationContext().get(HTTP_REQUEST);
+      return LoginRedirect.loginRequired(request, session);
     }
 
     // user is logged in, check if user has manager rights

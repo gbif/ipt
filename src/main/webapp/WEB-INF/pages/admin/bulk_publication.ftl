@@ -55,7 +55,13 @@
         var reporter = setInterval(loadReport, 1000);
 
         function loadReport() {
-            $("#bulkReport").load("${baseURL}/admin/bulkReport.do?", function () {
+            $("#bulkReport").load("${baseURL}/admin/bulkReport.do?", function (response, status, xhr) {
+                // the session expired: stop polling and open this page by GET, which goes to login and returns here
+                if (xhr.status === 401) {
+                    clearInterval(reporter);
+                    window.location.href = "${baseURL}/admin/bulk-publication.do";
+                    return;
+                }
                 if ($(".running").length === 0 && $(".completed").length > 0) {
                     clearInterval(reporter);
                 }

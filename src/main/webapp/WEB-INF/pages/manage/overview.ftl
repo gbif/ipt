@@ -557,6 +557,11 @@
             displayProcessing();
             // load() inserts nothing on an error status, but mappingPeek's 400/404 responses carry the message to show
             $("#modalcontent").load(addressValue, function (response, status, xhr) {
+                // the session expired: open the overview, which goes to login and returns there
+                if (xhr.status === 401) {
+                    window.location.href = "${baseURL}/manage/resource.do?r=${resource.shortname}";
+                    return;
+                }
                 if (xhr.status === 400 || xhr.status === 404) {
                     $("#modalcontent").html(response);
                 }

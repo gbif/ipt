@@ -27,7 +27,14 @@
         $("#peekBtn").click(function (e) {
             e.preventDefault();
             displayProcessing();
-            $("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}", hideProcessing);
+            $("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}", function (response, status, xhr) {
+                // the session expired: open the source page, which goes to login and returns there
+                if (xhr.status === 401) {
+                    window.location.href = "${baseURL}/manage/source.do?r=${resource.shortname}&id=${(id!)?url}";
+                    return;
+                }
+                hideProcessing();
+            });
             $("#modalbox").show();
         });
         $("#modalbox").click(function (e) {
