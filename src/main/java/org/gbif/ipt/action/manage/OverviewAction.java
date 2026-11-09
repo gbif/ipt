@@ -303,11 +303,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
   /**
    * Cancel resource publication. Publication is all or nothing. If incomplete, the version number of the resource
-   * must be rolled back.
+   * must be rolled back. POST only: a link on another site must not be able to cancel a publication.
    *
    * @return Struts2 result string
    */
   @Override
+  @RequirePost
   public String cancel() throws Exception {
     if (resource == null) {
       return NOT_FOUND;

@@ -75,14 +75,15 @@
                 <@s.text name='portal.publication.download.log'/> <a target="_blank" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name='portal.publication.log'/></a>
             </p>
         <#else>
+            <#assign lockedText><@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?r=${resource.shortname}</@s.param></@s.text></#assign>
             <p>
-                <@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?r=${resource.shortname}</@s.param></@s.text>
+                ${lockedText?markup_string?replace("<a href=", "<a data-post href=")?no_esc}
             </p>
             <div class="alert alert-warning" role="alert">
                 ${report.state?no_esc}
             </div>
             <p>
-                <a href="cancel.do?r=${resource.shortname}"><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>.
+                <a href="cancel.do?r=${resource.shortname}" data-post><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>.
             </p>
         </#if>
 

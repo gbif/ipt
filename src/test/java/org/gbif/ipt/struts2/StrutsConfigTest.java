@@ -68,8 +68,6 @@ public class StrutsConfigTest {
           // change the translation being edited, which is only saved by a form
           "translationReload", "translationAutomap", "dataPackageFieldTranslationReload",
           "dataPackageFieldTranslationAutomap",
-          // linked from the publication status message (manage.locked); restorable by publishing again
-          "cancel",
           // maps to a method that doesn't exist
           "canceloverwrite"),
       "/struts-admin.xml", Set.of("users", "extensions", "dataPackages", "logfile", "organisations"));
