@@ -19,6 +19,10 @@ import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import jakarta.servlet.http.HttpServletRequest;
+import org.gbif.ipt.task.StatusReport;
+import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
@@ -47,6 +51,7 @@ import org.gbif.metadata.eml.ipt.model.Eml;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +71,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -426,5 +434,42 @@ public class OverviewActionTest extends IptBaseTest {
     assertEquals(OverviewAction.NOT_FOUND, action.peek());
     assertEquals(1, action.getReport().getMessages().size());
     assertFalse(action.getReport().isCompleted());
+  }
+
+  /**
+   * While the resource is being published, report.do (polled every second), cancel.do and locked.do run prepare()
+   * without a lock check: it only loads the report, and leaves the resource that publishing reads unchanged.
+   */
+  @Test
+  public void testPrepareDoesNotChangeLockedResource() {
+    Extension occurrence = new Extension();
+    occurrence.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);
+    // a core mapping without fields, which prepare() deletes from a resource that isn't locked
+    ExtensionMapping emptyCoreMapping = new ExtensionMapping();
+    emptyCoreMapping.setExtension(occurrence);
+    Resource r = new Resource();
+    r.setShortname("res1");
+    r.addMapping(emptyCoreMapping);
+
+    StatusReport report = new StatusReport("publishing", new ArrayList<>());
+    ResourceManager resourceManager = mock(ResourceManager.class);
+    when(resourceManager.get("res1")).thenReturn(r);
+    when(resourceManager.isLocked("res1")).thenReturn(true);
+    when(resourceManager.status("res1")).thenReturn(report);
+    UserAccountManager userManager = mock(UserAccountManager.class);
+
+    OverviewAction lockedAction = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
+        mock(RegistrationManager.class), resourceManager, userManager, mock(ExtensionManager.class),
+        mock(GenerateDwcaFactory.class), mock(GenerateDataPackageFactory.class), mock(VocabulariesManager.class),
+        mock(RegistryManager.class), mock(DataPackageSchemaManager.class));
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn("res1");
+    lockedAction.setServletRequest(req);
+
+    lockedAction.prepare();
+
+    assertSame(report, lockedAction.getReport());
+    assertEquals(1, r.getMappings().size());
+    verify(userManager, never()).list(any());
   }
 }

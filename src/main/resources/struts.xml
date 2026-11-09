@@ -126,9 +126,8 @@
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
-      <!-- managerStack without the lock check, for locked.do and for read-only actions that have no locked result
-           (resource/preview, /manager-api). locked.do is the target of the locked result, so with the check it would
-           redirect to itself until publishing ends. Order covered by StrutsConfigTest -->
+      <!-- managerStack without the lock check: locked.do (the locked result's target) and read-only actions
+           (resource/preview, /manager-api). prepare() must not change a locked resource -->
       <interceptor-stack name="managerStackWithoutLock">
         <interceptor-ref name="iptException"/>
         <interceptor-ref name="setupAndCancel"/>
@@ -137,9 +136,8 @@
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
-      <!-- default stack of the manage packages: returns the locked result while the requested resource is being
-           published. The lock check runs before parameters are set and prepare() runs, as these change the resource
-           in memory, which publishing reads. Order covered by StrutsConfigTest -->
+      <!-- default stack of the manage packages: the lock check runs before parameters and prepare(), which change
+           the resource that publishing reads -->
       <interceptor-stack name="managerStack">
         <interceptor-ref name="iptException"/>
         <interceptor-ref name="setupAndCancel"/>
@@ -149,8 +147,8 @@
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
-      <!-- lightweight stack for AJAX actions in the manage package (report, cancel, peek, mappingPeek). No lock check,
-           so publishing can be followed and cancelled -->
+      <!-- AJAX actions in the manage package (report, cancel, peek, mappingPeek): no lock check, so publishing can be
+           followed and cancelled. prepare() runs (i18nStack) and must not change a locked resource -->
       <interceptor-stack name="managerAjaxStack">
         <interceptor-ref name="iptException"/>
         <interceptor-ref name="iptContextStack"/>

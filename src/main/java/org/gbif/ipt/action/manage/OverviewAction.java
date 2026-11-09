@@ -1177,8 +1177,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   public void prepare() {
     super.prepare();
     if (resource != null) {
-      // refresh archive report
+      // refresh archive report; this also finishes a publication whose task is done, which unlocks the resource
       updateReport();
+
+      // publishing reads the resource in memory. report.do, cancel.do, locked.do and mappingPeek.do have no lock
+      // check, so while it runs only the report is loaded: the rest below changes the resource, e.g. deletes
+      // mappings without fields, and only the overview page shows it
+      if (resourceManager.isLocked(resource.getShortname())) {
+        return;
+      }
 
       // check all extensions are up to date
       outdatedExtensions = resource.getMappings().stream()
