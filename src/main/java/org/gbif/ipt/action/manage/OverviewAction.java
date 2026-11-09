@@ -1798,19 +1798,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     List<TaskMessage> messages = new ArrayList<>();
     String result = SUCCESS;
 
-    // find the rowType
-    Term rowType = null;
-    if (id != null) {
-      rowType = TERM_FACTORY.findTerm(id);
-    }
-
     if (resource.getDataPackageIdentifier() != null) {
       // TODO: 06/04/2022 implement for schema resources?
       // There are many files inside, how to display that?
     } else {
-      if (rowType != null && mid != null) {
+      if (id != null && mid != null) {
         ExtensionMapping mapping = resource.getMapping(id, mid);
         if (mapping != null) {
+          // the row type of the mapping's extension: findTerm would register the raw id in the global TermFactory
+          Term rowType = TERM_FACTORY.findTerm(mapping.getExtension().getRowType());
           try {
             GenerateDwca worker = dwcaFactory.create(resource, this);
             worker.report();
