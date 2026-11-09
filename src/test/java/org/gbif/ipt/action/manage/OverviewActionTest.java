@@ -120,6 +120,22 @@ public class OverviewActionTest extends IptBaseTest {
           mock(DataPackageSchemaManager.class));
   }
 
+  /**
+   * The Replace button of the data package metadata can be clicked without choosing a file. The missing file must
+   * give the overview page with an error, not the exception error page.
+   */
+  @Test
+  public void testReplaceMetadataWithoutFile() {
+    action.withUploadedFiles(new ArrayList<>());
+    assertEquals(OverviewAction.ERROR, action.replaceEml());
+    assertEquals(1, action.getActionErrors().size());
+
+    action.clearErrorsAndMessages();
+    action.withUploadedFiles(new ArrayList<>());
+    assertEquals(OverviewAction.ERROR, action.replaceDatapackageMetadata());
+    assertEquals(1, action.getActionErrors().size());
+  }
+
   @Test
   public void testLogProcessFailures() {
     Resource resource = new Resource();

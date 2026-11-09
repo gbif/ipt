@@ -1749,7 +1749,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       LOG.error("Failed to replace data package metadata", e);
       addActionError(getText("manage.overview.failed.replace.metadata"));
       return ERROR;
-    } catch (IOException e) {
+    } catch (IllegalArgumentException | IOException e) {
       LOG.error("Failed to read data package metadata from file", e);
       addActionError(getText("manage.overview.failed.replace.metadata.read"));
       return ERROR;

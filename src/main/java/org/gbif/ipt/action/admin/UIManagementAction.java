@@ -91,7 +91,7 @@ public class UIManagementAction extends POSTAction implements UploadedFilesAware
 
   @RequirePost
   public String uploadLogo() {
-    UploadedFile file = uploadedFiles.get(0);
+    UploadedFile file = uploadedFiles == null || uploadedFiles.isEmpty() ? null : uploadedFiles.get(0);
 
     if (file != null) {
       // remove any previous logo file

@@ -940,8 +940,9 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
     if (notFound) {
       return NOT_FOUND;
     }
-    UploadedFile upload = requireSingleUpload();
-    File uploadedTempFile = (File) upload.getContent();
+    // the page uploads the logo as soon as a file is chosen, so there is always one, unless the request is made by hand
+    UploadedFile upload = uploadedFiles == null || uploadedFiles.isEmpty() ? null : uploadedFiles.get(0);
+    File uploadedTempFile = upload == null ? null : (File) upload.getContent();
 
     if (uploadedTempFile != null) {
       // remove any previous logo file
@@ -968,18 +969,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
       // resource.getEml().setLogoUrl(cfg.getResourceLogoUrl(resource.getShortname()));
     }
     return INPUT;
-  }
-
-  private UploadedFile requireSingleUpload() {
-    if (uploadedFiles == null || uploadedFiles.isEmpty()) {
-      throw new IllegalArgumentException("Failed to upload logo");
-    }
-
-    UploadedFile upload = uploadedFiles.get(0);
-    if (upload == null || upload.getContent() == null) {
-      throw new IllegalArgumentException("Logo upload: file was empty");
-    }
-    return upload;
   }
 
   @Override

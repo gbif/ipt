@@ -75,10 +75,10 @@
       <!-- Adds validation errors to fields if there is potential XSS input -->
       <interceptor name="xssFieldError" class="org.gbif.ipt.struts2.XssFieldErrorInterceptor"/>
 
-      <!-- maps exceptions to the error result, like the exception interceptor in defaultStack and i18nStack. Those run
-           after IPT's own interceptors (setupAndCancel, csrf, the role, resource and lock checks), so this one runs
-           first in every stack, otherwise an exception there gives a bare servlet container 500. Logged, as these
-           exceptions are not caught anywhere else -->
+      <!-- maps exceptions to the exception result (the error page), like the exception interceptor in defaultStack and
+           i18nStack. Those run after IPT's own interceptors (setupAndCancel, csrf, the role, resource and lock checks),
+           so this one runs first in every stack, otherwise an exception there gives a bare servlet container 500.
+           Logged, as these exceptions are not caught anywhere else -->
       <interceptor name="iptException" class="org.apache.struts2.interceptor.ExceptionMappingInterceptor">
         <param name="logEnabled">true</param>
         <param name="logLevel">ERROR</param>
@@ -198,6 +198,12 @@
         <param name="status">500</param>
         <param name="location">/WEB-INF/pages/error/error.ftl</param>
       </result>
+      <!-- the result of the exception mappings. Not "error": many actions have their own error result, e.g. a page or a
+           redirect for a failed operation, which would take precedence over the global one and hide the exception -->
+      <result name="exception" type="freemarkerWithStatus">
+        <param name="status">500</param>
+        <param name="location">/WEB-INF/pages/error/error.ftl</param>
+      </result>
       <result name="setupIncomplete" type="redirect">/setupDataDirectory.do</result>
       <result name="login" type="redirect">${baseURL}/login.do</result>
       <result name="home" type="redirect">${baseURL}/home.do</result>
@@ -205,8 +211,8 @@
     </global-results>
 
     <global-exception-mappings>
-      <exception-mapping result="error" exception="java.lang.RuntimeException"/>
-      <exception-mapping result="error" exception="org.gbif.ipt.service.InvalidConfigException"/>
+      <exception-mapping result="exception" exception="java.lang.RuntimeException"/>
+      <exception-mapping result="exception" exception="org.gbif.ipt.service.InvalidConfigException"/>
     </global-exception-mappings>
 
     <action name="setupDataDirectory" class="org.gbif.ipt.config.SetupAction" method="setupDataDirectory">

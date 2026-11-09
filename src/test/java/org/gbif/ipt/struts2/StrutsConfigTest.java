@@ -177,6 +177,35 @@ public class StrutsConfigTest {
   }
 
   /**
+   * Exceptions are mapped to the "exception" result, which only ipt-default defines. A result for it in a package or
+   * an action would take precedence, as an action's own "error" result (a page or a redirect for a failed
+   * operation) did, and the exception would render an unprepared page or be lost in a redirect.
+   */
+  @Test
+  public void exceptionsGiveTheErrorPage() throws Exception {
+    List<String> definitions = new ArrayList<>();
+    for (String config : List.of("/struts.xml", "/struts-portal.xml", "/struts-manage.xml", "/struts-admin.xml")) {
+      Document doc = parse(config);
+      NodeList mappings = doc.getElementsByTagName("exception-mapping");
+      for (int i = 0; i < mappings.getLength(); i++) {
+        Element mapping = (Element) mappings.item(i);
+        assertEquals("exception", mapping.getAttribute("result"), config + ": " + mapping.getAttribute("exception"));
+      }
+      NodeList results = doc.getElementsByTagName("result");
+      for (int i = 0; i < results.getLength(); i++) {
+        Element result = (Element) results.item(i);
+        if ("exception".equals(result.getAttribute("name"))) {
+          Element parent = (Element) result.getParentNode();
+          Element pkg = (Element) parent.getParentNode();
+          definitions.add(config + " " + pkg.getAttribute("name") + " " + parent.getTagName());
+          assertTrue(result.getTextContent().contains("/WEB-INF/pages/error/error.ftl"), config);
+        }
+      }
+    }
+    assertEquals(List.of("/struts.xml ipt-default global-results"), definitions);
+  }
+
+  /**
    * The CSRF interceptor is part of iptContextStack, so it runs before parameters are set, and only once per stack.
    * It runs after the session and locale interceptors, so its 403 and 405 pages have the session and the user's
    * language.
