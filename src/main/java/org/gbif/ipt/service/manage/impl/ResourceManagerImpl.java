@@ -2445,8 +2445,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String shortname = resourceDir.getName();
       try {
         File cfgFile = dataDir.resourceFile(shortname);
-        InputStream input = new FileInputStream(cfgFile);
-        Resource resource = (Resource) xstream.fromXML(input);
+        Resource resource;
+        try (InputStream input = new FileInputStream(cfgFile)) {
+          resource = (Resource) xstream.fromXML(input);
+        }
 
         // populate missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
@@ -4549,15 +4551,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public String calculateChecksum(File file) throws Exception {
     MessageDigest digest = MessageDigest.getInstance("SHA-256");
-    InputStream fis = new FileInputStream(file);
-
-    byte[] byteArray = new byte[1024];
-    int bytesCount = 0;
-
-    while ((bytesCount = fis.read(byteArray)) != -1) {
-      digest.update(byteArray, 0, bytesCount);
+    try (InputStream fis = new FileInputStream(file)) {
+      byte[] byteArray = new byte[1024];
+      int bytesCount;
+      while ((bytesCount = fis.read(byteArray)) != -1) {
+        digest.update(byteArray, 0, bytesCount);
+      }
     }
-    fis.close();
 
     byte[] bytes = digest.digest();
 

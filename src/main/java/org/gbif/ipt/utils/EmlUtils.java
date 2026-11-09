@@ -144,8 +144,7 @@ public class EmlUtils {
   public static Eml loadWithLocale(File emlFile, Locale locale) {
     Eml eml = null;
     Locale currentLocale = Locale.getDefault();
-    try {
-      InputStream in = new FileInputStream(emlFile);
+    try (InputStream in = new FileInputStream(emlFile)) {
       synchronized (currentLocale) {
         Locale.setDefault(locale);
         eml = EmlFactory.build(in);

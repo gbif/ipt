@@ -1604,9 +1604,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       } else {
         File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
         if (emlFile.exists()) {
-          try {
+          try (InputStream in = new FileInputStream(emlFile)) {
             LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
-            InputStream in = new FileInputStream(emlFile);
             Eml eml = EmlFactory.build(in);
             String licenseUrlString = eml.parseLicenseUrl();
             if (licenseUrlString != null) {
@@ -1641,9 +1640,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       BigDecimal latestVersion = new BigDecimal(latestVersionHistory.getVersion());
       File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
       if (emlFile.exists()) {
-        try {
+        try (InputStream in = new FileInputStream(emlFile)) {
           LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
-          InputStream in = new FileInputStream(emlFile);
           Eml eml = EmlFactory.build(in);
           return eml.parseLicenseUrl();
         } catch (Exception e) {
