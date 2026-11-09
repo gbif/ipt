@@ -579,11 +579,12 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     return false;
   }
 
-  // by default DefaultWorkflowInterceptor redirects to "input".
-  // "error" is necessary for this action
+  // by default DefaultWorkflowInterceptor returns "input" on action errors. The result set in prepare() is used
+  // instead, e.g. "error" (the overview page) for an unknown extension. The errors can also be ones stored for a
+  // redirect, so a request for a mapping that doesn't exist is still a 404, not the mapping page without a mapping.
   @Override
   public String actionErrorOccurred(String currentResultName) {
-    return defaultResult;
+    return notFound ? NOT_FOUND : defaultResult;
   }
 
   @StrutsParameter(depth = 2)
