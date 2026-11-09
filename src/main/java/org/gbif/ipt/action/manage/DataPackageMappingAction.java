@@ -48,6 +48,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.ValidationErrorAware;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
@@ -58,7 +59,7 @@ import static org.gbif.ipt.config.Constants.CANCEL;
 /**
  * Similar to {@link MappingAction}, but manage data package mappings.
  */
-public class DataPackageMappingAction extends ManagerBaseAction {
+public class DataPackageMappingAction extends ManagerBaseAction implements ValidationErrorAware {
 
   @Serial
   private static final long serialVersionUID = -2005597864256786458L;
@@ -172,6 +173,9 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   }
 
   public String source() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     return INPUT;
   }
 
@@ -182,6 +186,9 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   public String create() {
     if (!isHttpPost()) {
       return CANCEL;
+    }
+    if (notFound) {
+      return NOT_FOUND;
     }
 
     int newMappingsNumber = Math.min(newTableSchemas.size(), newSources.size());
@@ -474,6 +481,14 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       addActionMessage(getText("manage.mapping.couldnt.delete", new String[]{sourceName + " → " + tableSchemaName}));
     }
     return SUCCESS;
+  }
+
+  // by default DefaultWorkflowInterceptor returns "input" on action errors, e.g. an unknown schema id from prepare().
+  // The result set in prepare() ("error", the overview page) is defined for every mapping of this action. The errors
+  // can also be ones stored for a redirect, so a request that matched nothing is still a 404.
+  @Override
+  public String actionErrorOccurred(String currentResultName) {
+    return notFound ? NOT_FOUND : defaultResult;
   }
 
   public RecordFilter.Comparator[] getComparators() {

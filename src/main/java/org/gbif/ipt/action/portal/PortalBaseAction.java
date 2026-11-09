@@ -67,7 +67,8 @@ public class PortalBaseAction extends BaseAction {
   public void prepare() {
     super.prepare();
     // the resource comes from the request parameter only, never from the session: a resource stored in the session
-    // can belong to another tab or an earlier page. Without it the actions return a 404.
+    // can belong to another tab or an earlier page. Without it resource stays null, and every action that needs one
+    // returns a 404.
     String res = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_RESOURCE));
     if (res != null) {
       resource = resourceManager.get(res);

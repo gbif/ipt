@@ -368,7 +368,7 @@ public class ResourceAction extends PortalBaseAction {
       resources = resourceManager.latest(page, 25);
     } else {
       Resource r = resourceManager.get(resourceShortname);
-      if (r.getStatus() == PublicationStatus.PUBLIC || r.getStatus() == PublicationStatus.REGISTERED) {
+      if (r != null && (r.getStatus() == PublicationStatus.PUBLIC || r.getStatus() == PublicationStatus.REGISTERED)) {
         resources = Collections.singletonList(resourceManager.get(resourceShortname));
       } else {
         resources = new ArrayList<>();

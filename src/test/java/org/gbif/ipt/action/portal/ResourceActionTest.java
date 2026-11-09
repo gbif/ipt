@@ -280,6 +280,21 @@ public class ResourceActionTest extends IptBaseTest {
   }
 
   /**
+   * An unknown resource in the RSS feed: an empty feed instead of a NullPointerException.
+   */
+  @Test
+  public void testRssForUnknownResource() {
+    ResourceAction action = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class),
+        mock(DataDir.class), mock(ExtensionManager.class), mock(MetadataReader.class));
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn("unknown");
+    action.setServletRequest(req);
+    assertEquals(BaseAction.SUCCESS, action.rss());
+    assertTrue(action.getResources().isEmpty());
+  }
+
+  /**
    * When manager IS logged in, ensure ALL published versions are shown.
    */
   @Test

@@ -40,6 +40,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -121,6 +122,9 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
    * @return SUCCESS result, staying on translation page
    */
   public String automap() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     if (field == null || field.getConstraints().getVocabulary() == null) {
       addActionError(getText("manage.translation.cantfind.vocabulary"));
     } else {
@@ -186,7 +190,8 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       String midStr = StringUtils.trimToNull(req.getParameter(REQ_PARAM_MAPPINGID));
 
       if (midStr != null) {
-        mid = Integer.valueOf(midStr);
+        // not a number: -1, which matches no mapping (404)
+        mid = NumberUtils.toInt(midStr, -1);
         mapping = resource.getDataPackageMapping(mid);
       }
     } catch (Exception e) {
@@ -225,6 +230,9 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
    * @return SUCCESS regardless of outcome
    */
   public String reload() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     reloadSourceValues();
     // leaves the user on the translation page
     return SUCCESS;
@@ -236,12 +244,8 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
    * entry in the translation.translatedValues map, e.g. {{"k1", "Observation"}, {"k2", "Specimen"}}.
    */
   void reloadSourceValues() {
+    // the mapping and field were resolved in prepare()
     try {
-      String midStr = StringUtils.trimToNull(req.getParameter(REQ_PARAM_MAPPINGID));
-      if (midStr != null) {
-        mid = Integer.valueOf(midStr);
-        mapping = resource.getDataPackageMapping(mid);
-      }
 
       if (trans == null) {
         trans = new Translation();

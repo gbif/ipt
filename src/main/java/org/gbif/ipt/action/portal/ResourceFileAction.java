@@ -244,7 +244,8 @@ public class ResourceFileAction extends PortalBaseAction {
   }
 
   public String sourceLog() {
-    if (resource == null) {
+    // a missing r, or a missing or unknown s
+    if (resource == null || source == null) {
       return NOT_FOUND;
     }
     data = dataDir.sourceLogFile(resource.getShortname(), source.getName());
@@ -262,7 +263,7 @@ public class ResourceFileAction extends PortalBaseAction {
     super.prepare();
     // look for source parameter
     String src = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_SOURCE));
-    if (StringUtils.isNotBlank(src)) {
+    if (src != null && resource != null) {
       source = resource.getSource(src);
     }
   }

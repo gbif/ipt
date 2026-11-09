@@ -14,6 +14,14 @@
 package org.gbif.ipt.action.portal;
 
 import org.gbif.ipt.IptBaseTest;
+import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.HttpUtil;
 
@@ -22,6 +30,12 @@ import java.net.URL;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ResourceFileActionTest extends IptBaseTest {
 
@@ -36,5 +50,33 @@ public class ResourceFileActionTest extends IptBaseTest {
     URL url = new URL("http://localhost:7001/ipt/archive.do?r=condiget");
     boolean status = client.downloadIfChanged(url, down);
     System.out.println("Download success=" + status);
+  }
+
+  private static ResourceFileAction sourceLogAction(String r, String s) {
+    Resource resource = new Resource();
+    resource.setShortname("res");
+    ResourceManager resourceManager = mock(ResourceManager.class);
+    when(resourceManager.get("res")).thenReturn(resource);
+
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn(r);
+    when(req.getParameter(Constants.REQ_PARAM_SOURCE)).thenReturn(s);
+
+    ResourceFileAction action = new ResourceFileAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), mock(DataDir.class), resourceManager);
+    action.setServletRequest(req);
+    action.prepare();
+    return action;
+  }
+
+  /**
+   * The source log without r, or with a missing or unknown s, is a 404.
+   */
+  @Test
+  public void testSourceLogNotFound() {
+    assertEquals(BaseAction.NOT_FOUND, sourceLogAction(null, null).sourceLog());
+    assertEquals(BaseAction.NOT_FOUND, sourceLogAction(null, "src").sourceLog());
+    assertEquals(BaseAction.NOT_FOUND, sourceLogAction("res", null).sourceLog());
+    assertEquals(BaseAction.NOT_FOUND, sourceLogAction("res", "unknown").sourceLog());
   }
 }
