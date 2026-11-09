@@ -267,6 +267,19 @@ public class ResourceActionTest extends IptBaseTest {
   }
 
   /**
+   * No resource parameter: the preview returns a 404 instead of failing on the missing resource.
+   */
+  @Test
+  public void testPreviewWithoutResource() {
+    ResourceAction action = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class),
+        mock(DataDir.class), mock(ExtensionManager.class), mock(MetadataReader.class));
+    action.setServletRequest(mock(HttpServletRequest.class));
+    action.prepare();
+    assertEquals(BaseAction.NOT_FOUND, action.preview());
+  }
+
+  /**
    * When manager IS logged in, ensure ALL published versions are shown.
    */
   @Test

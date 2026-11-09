@@ -492,6 +492,9 @@ public class ResourceAction extends PortalBaseAction {
    * @return Struts2 result string
    */
   public String preview() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     if (resource.isDataPackage()) {
       return previewDataPackage();
     }
