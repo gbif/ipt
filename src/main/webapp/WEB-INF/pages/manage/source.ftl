@@ -33,6 +33,13 @@
                     window.location.href = "${baseURL}/manage/source.do?r=${resource.shortname}&id=${(id!)?url}";
                     return;
                 }
+                if (status === "error") {
+                    // load() inserts nothing on an error status. 400/404 carry the message from peek.ftl,
+                    // other errors have no fragment to show
+                    $("#modalcontent").html(xhr.status === 400 || xhr.status === 404 ? response
+                        : $('<div class="alert alert-danger fs-smaller-2" role="alert"></div>')
+                            .text('${action.getText("basic.error")?js_string} (' + xhr.status + ')'));
+                }
                 hideProcessing();
             });
             $("#modalbox").show();

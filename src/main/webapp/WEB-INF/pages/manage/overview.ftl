@@ -555,15 +555,18 @@
             e.preventDefault();
             var addressValue = $(this).attr("href");
             displayProcessing();
-            // load() inserts nothing on an error status, but mappingPeek's 400/404 responses carry the message to show
             $("#modalcontent").load(addressValue, function (response, status, xhr) {
                 // the session expired: open the overview, which goes to login and returns there
                 if (xhr.status === 401) {
                     window.location.href = "${baseURL}/manage/resource.do?r=${resource.shortname}";
                     return;
                 }
-                if (xhr.status === 400 || xhr.status === 404) {
-                    $("#modalcontent").html(response);
+                if (status === "error") {
+                    // load() inserts nothing on an error status. 400/404 carry the message from peek.ftl,
+                    // other errors have no fragment to show
+                    $("#modalcontent").html(xhr.status === 400 || xhr.status === 404 ? response
+                        : $('<div class="alert alert-danger fs-smaller-2" role="alert"></div>')
+                            .text('${action.getText("basic.error")?js_string} (' + xhr.status + ')'));
                 }
                 hideProcessing();
             });
