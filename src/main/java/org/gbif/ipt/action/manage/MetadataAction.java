@@ -299,6 +299,12 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
       section = MetadataSection.ADDITIONAL_SECTION;
     }
 
+    // an unknown section, or an EML page for a data package: stop before any metadata is inferred or saved
+    if (section == null || resource.isDataPackage()) {
+      notFound("manage.404.page.title", "manage.404.page.body", resource.getShortname());
+      return;
+    }
+
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
     boolean mappingsChangedAfterLastTry =
@@ -921,6 +927,9 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
   @RequirePost
   public String uploadLogo() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     UploadedFile upload = requireSingleUpload();
     File uploadedTempFile = (File) upload.getContent();
 

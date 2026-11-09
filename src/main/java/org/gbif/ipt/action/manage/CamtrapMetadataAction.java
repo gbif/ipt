@@ -238,23 +238,24 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
       return;
     }
 
-    if (resource != null) {
-      prepareCamtrap();
+    if (resource == null) {
+      return;
     }
+    // an unknown section, or a resource that isn't a Camtrap DP: stop before any metadata is inferred or saved
+    section = CamtrapMetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "camtrap-metadata-", "."));
+    if (section == null || !(resource.getDataPackageMetadata() instanceof CamtrapMetadata)) {
+      notFound("manage.404.page.title", "manage.404.page.body", resource.getShortname());
+      return;
+    }
+    prepareCamtrap();
   }
 
   private void prepareCamtrap() {
-    // take the section parameter from the requested url
-    section = CamtrapMetadataSection.fromName(StringUtils.substringBetween(req.getRequestURI(), "camtrap-metadata-", "."));
     CamtrapMetadata metadata = (CamtrapMetadata) resource.getDataPackageMetadata();
     DataPackageSchema dataPackageSchema = dataPackageSchemaManager.get(CAMTRAP_DP);
 
     if (dataPackageSchema != null) {
       metadata.setProfile(dataPackageSchema.getProfile());
-    }
-
-    if (section == null) {
-      return;
     }
 
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));

@@ -70,6 +70,11 @@ public class VersionHistoryAction extends ManagerBaseAction {
         LOG.error("Parameter version (v) was not a valid number: {}", String.valueOf(v));
       }
     }
+
+    // a missing, invalid or unknown version: there is no change summary to show or save
+    if (resource != null && (version == null || resource.findVersionHistory(version) == null)) {
+      notFound("manage.404.version.title", "manage.404.version.body", resource.getShortname());
+    }
   }
 
   @Override

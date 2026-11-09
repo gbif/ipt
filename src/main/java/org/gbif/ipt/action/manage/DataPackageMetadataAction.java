@@ -243,9 +243,17 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       return;
     }
 
-    if (CAMTRAP_DP.equals(resource.getCoreType())) {
+    // an EML resource, or a data package whose metadata these pages don't edit (ColDP)
+    boolean camtrap = CAMTRAP_DP.equals(resource.getCoreType());
+    DataPackageMetadata metadata = resource.getDataPackageMetadata();
+    if (camtrap ? !(metadata instanceof CamtrapMetadata) : !(metadata instanceof FrictionlessMetadata)) {
+      notFound("manage.404.page.title", "manage.404.page.body", resource.getShortname());
+      return;
+    }
+
+    if (camtrap) {
       prepareCamtrap();
-    } else{
+    } else {
       prepareFrictionless();
     }
   }
