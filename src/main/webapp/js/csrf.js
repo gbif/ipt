@@ -3,7 +3,8 @@
  * changes state:
  * - adds a hidden "iptCsrfToken" field to same-origin POST forms when they are submitted, by the user or by scripts
  * - adds the "X-CSRF-Token" header to same-origin jQuery AJAX requests other than GET/HEAD/OPTIONS
- * - turns links marked with data-post into POST requests: <a href="delete-source.do?r=..." data-post>
+ * - turns links marked with data-post into POST requests: <a href="delete-source.do?r=..." data-post>, and all links
+ *   inside an element marked with data-post-links, for links in translated texts: <p data-post-links>...</p>
  * Other scripts can use window.IPT_CSRF, e.g. to set the header on a plain XMLHttpRequest.
  * Without a logged-in user there's no meta tag and nothing is added.
  */
@@ -70,7 +71,7 @@
     // links that change state; handlers that ask for confirmation first (jConfirmAction) prevent the default and
     // call IPT_CSRF.postTo themselves once confirmed
     document.addEventListener("click", function (e) {
-        var link = e.target instanceof Element ? e.target.closest("a[data-post]") : null;
+        var link = e.target instanceof Element ? e.target.closest("a[data-post], [data-post-links] a[href]") : null;
         if (!link || e.defaultPrevented || e.button !== 0) {
             return;
         }
