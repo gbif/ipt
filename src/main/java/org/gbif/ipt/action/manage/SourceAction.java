@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -65,6 +66,29 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   private static final long serialVersionUID = 3324051864626106131L;
 
   private static final Logger LOG = LogManager.getLogger(SourceAction.class);
+
+  /**
+   * The source.*, fileSource.* and sqlSource.* parameters the source form submits. The source is the resource's live
+   * source, so any other parameter, e.g. source.readable, source.columns or sqlSource.password, is refused.
+   */
+  private static final Set<String> SOURCE_PARAMETERS = Set.of(
+      "source.name",
+      "source.encoding",
+      "source.dateFormat",
+      "source.ignoreHeaderLines",
+      "source.fieldsTerminatedByEscaped",
+      "source.fieldsEnclosedByEscaped",
+      "source.multiValueFieldsDelimitedBy",
+      "source.sheetIdx",
+      "fileSource.fieldsTerminatedByEscaped",
+      "fileSource.fieldsEnclosedByEscaped",
+      "sqlSource.host",
+      "sqlSource.database",
+      "sqlSource.username",
+      "sqlSource.sql");
+
+  // a GET request (the source page and its preview) only selects the source
+  private static final Set<String> GET_PARAMETERS = Set.of(Constants.REQ_PARAM_RESOURCE, "id");
 
   private static final Tika TIKA = new Tika();
 
@@ -586,6 +610,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     return result;
   }
 
+  @StrutsParameter
   public void setAnalyze(String analyze) {
     if (StringUtils.trimToNull(analyze) != null) {
       this.analyze = true;
@@ -694,16 +719,20 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   /**
-   * The source forms only set the source's own fields. Its resource (the live resource) and its file are refused.
+   * The source form only sets the fields in {@link #SOURCE_PARAMETERS}, and only with a POST request. A GET request
+   * only accepts {@link #GET_PARAMETERS}: rdbms and sqlSourcePassword also change the live source.
    */
   @Override
   public boolean acceptableParameterName(String parameterName) {
+    if (!isHttpPost()) {
+      return GET_PARAMETERS.contains(parameterName);
+    }
     if (!super.acceptableParameterName(parameterName)) {
       return false;
     }
     for (String property : List.of("source", "fileSource", "sqlSource")) {
-      if (isNestedPropertyOf(parameterName, property, "resource") || isNestedPropertyOf(parameterName, property, "file")) {
-        return false;
+      if (isPropertyOf(parameterName, property)) {
+        return SOURCE_PARAMETERS.contains(parameterName);
       }
     }
     return true;
