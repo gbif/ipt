@@ -175,12 +175,12 @@ public class ExtensionsAction extends POSTAction {
    * </br>
    * Optionally, the user may have triggered synchronise action, which updates default vocabularies to use the latest
    * versions, and synchronises all installed extensions and vocabularies with the registry to ensure their content
-   * is up-to-date.
+   * is up-to-date. Only with a POST request (the synchronise form), which is CSRF-checked, so a link can't trigger it.
    *
    * @return struts2 result
    */
   public String list() {
-    if (synchronise) {
+    if (synchronise && isHttpPost()) {
       try {
         synchronise();
         addActionMessage(getText("admin.extensions.synchronise.success"));
@@ -433,9 +433,7 @@ public class ExtensionsAction extends POSTAction {
   }
 
   /**
-   * To hold the state transition request, so the same request triggered purely by a URL will not work.
-   *
-   * @param synchronise form variable
+   * @param synchronise form variable. Only acted on with a POST request, see {@link #list()}.
    */
   public void setSynchronise(String synchronise) {
     this.synchronise = StringUtils.trimToNull(synchronise) != null;
