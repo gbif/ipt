@@ -17,11 +17,18 @@ import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.service.admin.impl.ExtensionManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
+import java.util.Objects;
 
 import org.apache.commons.lang3.LocaleUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FileUtilsTest extends IptBaseTest {
@@ -44,5 +51,23 @@ public class FileUtilsTest extends IptBaseTest {
     assertEquals(new Locale("ru"), LocaleUtils.toLocale("ru"));
     assertEquals(new Locale("pt"), LocaleUtils.toLocale("pt"));
     assertEquals(Locale.JAPANESE, LocaleUtils.toLocale("ja"));
+  }
+
+  @Test
+  public void testTempSiblingMovedIntoPlace(@TempDir Path dir) throws Exception {
+    // the target's directory doesn't exist yet
+    File target = dir.resolve("res").resolve("datapackage.json").toFile();
+
+    File tmp = FileUtils.createTempSibling(target);
+    assertEquals(target.getAbsoluteFile().getParentFile(), tmp.getParentFile());
+    Files.writeString(tmp.toPath(), "first", StandardCharsets.UTF_8);
+    FileUtils.moveIntoPlace(tmp, target);
+
+    tmp = FileUtils.createTempSibling(target);
+    Files.writeString(tmp.toPath(), "second", StandardCharsets.UTF_8);
+    FileUtils.moveIntoPlace(tmp, target);
+
+    assertEquals("second", Files.readString(target.toPath(), StandardCharsets.UTF_8));
+    assertArrayEquals(new String[] {"datapackage.json"}, Objects.requireNonNull(target.getParentFile().list()));
   }
 }

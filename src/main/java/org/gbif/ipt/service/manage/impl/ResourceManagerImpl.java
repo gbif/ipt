@@ -222,7 +222,9 @@ import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
 import static org.gbif.ipt.model.Resource.CoreRowType.METADATA;
+import static org.gbif.ipt.utils.FileUtils.createTempSibling;
 import static org.gbif.ipt.utils.FileUtils.getFileExtension;
+import static org.gbif.ipt.utils.FileUtils.moveIntoPlace;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -747,7 +749,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // reset change summary
         res.setChangeSummary(null);
         // remove all VersionHistory
-        res.getVersionHistory().clear();
+        res.setVersionHistory(new ArrayList<>());
         // turn off auto-publication
         res.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
         res.setUpdateFrequency(null);
@@ -4090,11 +4092,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setModified(new Date());
     // save into data dir
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+    // written to a temporary file and moved into place, so readers never see a partly written file
+    File tmpFile = null;
     try {
-      metadataReader.writeValue(metadataFile, resource.getDataPackageMetadata());
+      tmpFile = createTempSibling(metadataFile);
+      metadataReader.writeValue(tmpFile, resource.getDataPackageMetadata());
+      moveIntoPlace(tmpFile, metadataFile);
     } catch (IOException e) {
       LOG.error("Failed to save datapackage metadata!", e);
       throw new RuntimeException(e);
+    } finally {
+      if (tmpFile != null) {
+        tmpFile.delete();
+      }
     }
 
     LOG.debug("Updated metadata file for {}", resource);

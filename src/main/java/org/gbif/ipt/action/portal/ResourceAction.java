@@ -504,8 +504,9 @@ public class ResourceAction extends PortalBaseAction {
     try {
       File emlFile = dataDir.resourceEmlFile(shortname);
       LOG.debug("Loading metadata from file: {}", emlFile.getAbsolutePath());
-      InputStream in = new FileInputStream(emlFile);
-      eml = stripXSS(EmlFactory.build(in));
+      try (InputStream in = new FileInputStream(emlFile)) {
+        eml = stripXSS(EmlFactory.build(in));
+      }
     } catch (FileNotFoundException e) {
       LOG.error("Metadata file version #{} for resource {} not found", getStringVersion(), shortname);
       return NOT_FOUND;

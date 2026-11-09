@@ -15,15 +15,22 @@ package org.gbif.ipt.utils;
 
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Resource;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.KeywordSet;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmlUtilsTest extends IptBaseTest {
@@ -85,4 +92,21 @@ public class EmlUtilsTest extends IptBaseTest {
     assertEquals(1, keywords.size());
   }
 
+  @Test
+  public void testWriteWithLocaleReplacesFileWithoutLeftovers(@TempDir Path dir) throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("res");
+    resource.setEml(eml);
+    eml.setTitle("First");
+    // the resource folder doesn't exist yet
+    File emlFile = dir.resolve("res").resolve("eml.xml").toFile();
+
+    EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
+    eml.setTitle("Second");
+    EmlUtils.writeWithLocale(emlFile, resource, Locale.US);
+
+    assertEquals("Second", EmlUtils.loadWithLocale(emlFile, Locale.US).getTitle());
+    // the temporary file was moved into place
+    assertArrayEquals(new String[] {"eml.xml"}, Objects.requireNonNull(emlFile.getParentFile().list()));
+  }
 }

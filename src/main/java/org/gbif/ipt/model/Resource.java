@@ -177,7 +177,8 @@ public class Resource implements Serializable, Comparable<Resource> {
   // the change summary, explaining what has changed in this version compared with the last
   @Getter
   private String changeSummary;
-  private List<VersionHistory> versionHistory = new ArrayList<>();
+  // replaced, never changed in place, so pages iterating it while publishing don't fail
+  private volatile List<VersionHistory> versionHistory = new ArrayList<>();
 
   private IdentifierStatus identifierStatus = IdentifierStatus.UNRESERVED;
   private DOI doi;
@@ -248,7 +249,9 @@ public class Resource implements Serializable, Comparable<Resource> {
     }
     if (!exists) {
       LOG.debug("Adding new version history: {}", history.getVersion());
-      versionHistory.add(0, history);
+      List<VersionHistory> updated = new ArrayList<>(getVersionHistory());
+      updated.add(0, history);
+      versionHistory = updated;
     }
   }
 
@@ -259,13 +262,9 @@ public class Resource implements Serializable, Comparable<Resource> {
    */
   public void removeVersionHistory(BigDecimal version) {
     if (version != null) {
-      Iterator<VersionHistory> iter = getVersionHistory().iterator();
-      while (iter.hasNext()) {
-        BigDecimal historyVersion = new BigDecimal(iter.next().getVersion());
-        if (version.compareTo(historyVersion) == 0) {
-          iter.remove();
-        }
-      }
+      List<VersionHistory> updated = new ArrayList<>(getVersionHistory());
+      updated.removeIf(vh -> version.compareTo(new BigDecimal(vh.getVersion())) == 0);
+      versionHistory = updated;
     }
   }
 

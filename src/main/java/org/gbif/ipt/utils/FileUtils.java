@@ -31,6 +31,10 @@ import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
@@ -181,6 +185,27 @@ public class FileUtils {
             + baseName
             + (TEMP_DIR_ATTEMPTS - 1)
             + ')');
+  }
+
+  /**
+   * Creates an empty temporary file next to the target (creating its directory if needed). Write it, then replace
+   * the target with {@link #moveIntoPlace(File, File)}.
+   */
+  public static File createTempSibling(File target) throws IOException {
+    Path dir = Files.createDirectories(target.getAbsoluteFile().getParentFile().toPath());
+    return Files.createTempFile(dir, target.getName(), ".tmp").toFile();
+  }
+
+  /**
+   * Replaces the target with the source in one step where the file system allows it, so readers never see a partly
+   * written target.
+   */
+  public static void moveIntoPlace(File source, File target) throws IOException {
+    try {
+      Files.move(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+    } catch (AtomicMoveNotSupportedException e) {
+      Files.move(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
   }
 
   /**

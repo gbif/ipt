@@ -106,15 +106,19 @@ public class EmlUtils {
   /**
    * Writes the EML file using a specific locale to interpret correctly: decimal separators, commas and currency
    * formats.
+   * The file is written to a temporary file and then moved into place, so readers never see a partly written file.
    */
   public static void writeWithLocale(File emlFile, Resource resource, Locale locale) {
     Locale currentLocale = Locale.getDefault();
+    File tmpFile = null;
     try {
+      tmpFile = FileUtils.createTempSibling(emlFile);
       synchronized (currentLocale) {
         Locale.setDefault(locale);
-        IptEmlWriter.writeEmlFile(emlFile, resource.getEml());
+        IptEmlWriter.writeEmlFile(tmpFile, resource.getEml());
         Locale.setDefault(currentLocale);
       }
+      FileUtils.moveIntoPlace(tmpFile, emlFile);
     } catch (IOException e) {
       LOG.error(e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "IO exception when writing eml for " + resource, e);
@@ -123,6 +127,9 @@ public class EmlUtils {
       throw new InvalidConfigException(TYPE.EML, "EML template exception when writing eml for " + resource + ": " + e.getMessage(), e);
     } finally {
       Locale.setDefault(currentLocale);
+      if (tmpFile != null) {
+        tmpFile.delete();
+      }
     }
   }
 
