@@ -295,6 +295,31 @@ public class ResourceActionTest extends IptBaseTest {
   }
 
   /**
+   * A manager opening the page of a never-published resource: there's no eml-{version}.xml, that's a 404, not a 500.
+   */
+  @Test
+  public void testDetailForNeverPublishedResource() {
+    Resource draft = new Resource();
+    draft.setShortname("draft");
+    draft.setCreator(MANAGER);
+
+    DataDir dataDir = mock(DataDir.class);
+    when(dataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(new File("no-such-dir", "eml-1.0.xml"));
+    ResourceAction draftAction = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class), dataDir,
+        mock(ExtensionManager.class), mock(MetadataReader.class));
+    draftAction.setResource(draft);
+    Container container = mock(Container.class);
+    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(new DefaultLocaleProviderFactory());
+    draftAction.setContainer(container);
+    Map<String, Object> session = new HashMap<>();
+    session.put(Constants.SESSION_USER, MANAGER);
+    draftAction.withSession(session);
+
+    assertEquals(BaseAction.NOT_FOUND, draftAction.detail());
+  }
+
+  /**
    * When manager IS logged in, ensure ALL published versions are shown.
    */
   @Test
