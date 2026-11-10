@@ -115,6 +115,23 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+  /**
+   * Closes the result set, statement and connection of an SQL iterator, each one even if closing another fails.
+   * Any of them can be null. An open connection keeps the database in use, e.g. a shared DuckDB instance with its
+   * memory and file lock.
+   */
+  private void closeSqlResources(ResultSet rs, Statement stmt, Connection conn, String sourceName) {
+    for (AutoCloseable resource : new AutoCloseable[] {rs, stmt, conn}) {
+      if (resource != null) {
+        try {
+          resource.close();
+        } catch (Exception e) {
+          LOG.error("Can't close iterator for SQL source {}", sourceName, e);
+        }
+      }
+    }
+  }
+
   private class SqlColumnIterator implements ClosableIterator<Object> {
 
     private final Connection conn;
@@ -140,28 +157,30 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
      * @param sql statement to query in the sql source
      */
     private SqlColumnIterator(SqlSource source, int column, String sql) throws SQLException {
-      this.conn = getDbConnection(source);
-      this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      source.getRdbms().enableLargeResultSet(this.stmt);
       this.column = column + 1;
-      LOG.debug("Executing SQL {}", sql);
-      this.rs = stmt.executeQuery(sql);
-      this.hasNext = rs.next();
       sourceName = source.getName();
+      Connection c = getDbConnection(source);
+      Statement s = null;
+      ResultSet r = null;
+      try {
+        s = c.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        source.getRdbms().enableLargeResultSet(s);
+        LOG.debug("Executing SQL {}", sql);
+        r = s.executeQuery(sql);
+        this.hasNext = r.next();
+      } catch (SQLException | RuntimeException e) {
+        // the caller gets no iterator to close
+        closeSqlResources(r, s, c, sourceName);
+        throw e;
+      }
+      this.conn = c;
+      this.stmt = s;
+      this.rs = r;
     }
 
     @Override
     public void close() {
-      if (rs != null) {
-        try {
-          rs.close();
-          stmt.close();
-          conn.close();
-        } catch (SQLException e) {
-          LOG.error("Can't close iterator for SQL source {}", sourceName, e);
-        }
-      }
-
+      closeSqlResources(rs, stmt, conn, sourceName);
     }
 
     @Override
@@ -174,9 +193,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       String val = null;
       if (hasNext) {
         try {
-          // forward rs cursor
-          hasNext = rs.next();
+          // the cursor is on the current row: read it, then move on
           val = rs.getString(column);
+          hasNext = rs.next();
         } catch (SQLException e2) {
           hasNext = false;
         }
@@ -203,29 +222,31 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private Exception exception;
 
     SqlRowIterator(SqlSource source) throws SQLException {
-      this.conn = getDbConnection(source);
-      this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      source.getRdbms().enableLargeResultSet(this.stmt);
-      LOG.debug("Executing SQL {}", source.getSql());
-      this.rs = stmt.executeQuery(source.getSql());
-      this.rowSize = rs.getMetaData().getColumnCount();
-      this.hasNext = rs.next();
       sourceName = source.getName();
       this.rowError = false;
+      Connection c = getDbConnection(source);
+      Statement s = null;
+      ResultSet r = null;
+      try {
+        s = c.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        source.getRdbms().enableLargeResultSet(s);
+        LOG.debug("Executing SQL {}", source.getSql());
+        r = s.executeQuery(source.getSql());
+        this.rowSize = r.getMetaData().getColumnCount();
+        this.hasNext = r.next();
+      } catch (SQLException | RuntimeException e) {
+        // the caller gets no iterator to close
+        closeSqlResources(r, s, c, sourceName);
+        throw e;
+      }
+      this.conn = c;
+      this.stmt = s;
+      this.rs = r;
     }
 
     @Override
     public void close() {
-      if (rs != null) {
-        try {
-          rs.close();
-          stmt.close();
-          conn.close();
-        } catch (SQLException e) {
-          LOG.error("Can't close iterator for SQL source {}", sourceName, e);
-        }
-      }
-
+      closeSqlResources(rs, stmt, conn, sourceName);
     }
 
     @Override

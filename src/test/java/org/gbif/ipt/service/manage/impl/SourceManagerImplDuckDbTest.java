@@ -17,7 +17,9 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.SqlSource;
+import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.file.FileStoreManager;
+import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -28,6 +30,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +45,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 /**
@@ -171,5 +178,59 @@ public class SourceManagerImplDuckDbTest {
     SourceManagerImpl.validateDuckDbDatabase("/data/occurrences.duckdb");
     SourceManagerImpl.validateDuckDbDatabase("C:\\data\\occurrences.duckdb");
     assertTrue(SourceManagerImpl.duckDbConnectionProperties().getProperty("lock_configuration").equals("true"));
+  }
+
+  /**
+   * @return a manager that records the connections it opens
+   */
+  private SourceManagerImpl recordingConnections(List<Connection> connections) throws SQLException {
+    SourceManagerImpl recording = spy(manager);
+    doAnswer(inv -> {
+      Connection c = (Connection) inv.callRealMethod();
+      connections.add(c);
+      return c;
+    }).when(recording).getDbConnection(any(SqlSource.class));
+    return recording;
+  }
+
+  /**
+   * SQL that the restrictions refuse fails when the iterators are created. They must close the connection, as the
+   * caller gets no iterator to close: an open connection keeps the shared DuckDB instance in use.
+   */
+  @Test
+  public void iteratorsCloseTheConnectionWhenTheQueryFails() throws Exception {
+    List<Connection> connections = new ArrayList<>();
+    SourceManagerImpl recording = recordingConnections(connections);
+    File other = dir.resolve("secret.txt").toFile();
+    Files.writeString(other.toPath(), "secret", StandardCharsets.UTF_8);
+    SqlSource source = source(dbFile.getAbsolutePath());
+    source.setSql("SELECT content FROM read_text('" + other.getAbsolutePath() + "')");
+
+    assertThrows(SourceException.class, () -> recording.rowIterator(source));
+    assertThrows(SourceException.class, () -> recording.inspectColumn(source, 0, 10, 0));
+
+    assertEquals(2, connections.size());
+    for (Connection c : connections) {
+      assertTrue(c.isClosed());
+    }
+  }
+
+  @Test
+  public void iteratorsCloseTheConnection() throws Exception {
+    List<Connection> connections = new ArrayList<>();
+    SourceManagerImpl recording = recordingConnections(connections);
+    SqlSource source = source(dbFile.getAbsolutePath());
+    source.setSql("SELECT id FROM occurrence ORDER BY id");
+
+    try (ClosableReportingIterator<String[]> rows = recording.rowIterator(source)) {
+      assertEquals("occ1", rows.next()[0]);
+    }
+    // including the value of the first row
+    assertEquals(Set.of("occ1", "occ2"), recording.inspectColumn(source, 0, 10, 0));
+
+    assertEquals(2, connections.size());
+    for (Connection c : connections) {
+      assertTrue(c.isClosed());
+    }
   }
 }
