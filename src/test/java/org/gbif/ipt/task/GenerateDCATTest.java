@@ -27,6 +27,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
@@ -38,6 +39,7 @@ import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
+import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -62,6 +64,9 @@ import org.gbif.utils.file.FileUtils;
 
 import java.io.File;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -74,8 +79,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -127,6 +134,34 @@ public class GenerateDCATTest extends IptBaseTest {
 
     assertTrue(actualFeed.contains(expectedFeed));
     verify(mockRegistrationManager, atLeastOnce()).getHostingOrganisation();
+  }
+
+  /**
+   * A published public Camtrap DP (or ColDP) resource has no EML: it's left out of resource.xml and only the data
+   * package metadata is loaded, so getEml() is null, and there's no eml-{version}.xml. It must not break the feed.
+   */
+  @Test
+  public void testFeedSkipsResourcesWithoutEml() {
+    Resource dataPackage = new Resource();
+    dataPackage.setShortname("camtrap-resource");
+    dataPackage.setDataPackageIdentifier("http://rs.gbif.org/data-packages/camtrap-dp");
+    dataPackage.setCoreType("camtrap-dp");
+    dataPackage.setEml(null);
+    dataPackage.addVersionHistory(new VersionHistory(BigDecimal.ONE, new Date(), PublicationStatus.PUBLIC));
+
+    when(mockAppConfig.getDataDir()).thenReturn(mockDataDir);
+    // no eml-1.xml on disk
+    when(mockDataDir.resourceEmlFile(anyString(), any(BigDecimal.class)))
+        .thenReturn(new File(resourceDir, "camtrap-resource/eml-1.xml"));
+
+    ResourceManager resourceManager = mock(ResourceManager.class);
+    when(resourceManager.listPublishedPublicVersions()).thenReturn(List.of(dataPackage));
+    GenerateDCAT generateDCAT = new GenerateDCAT(mockAppConfig, mockRegistrationManager, resourceManager);
+
+    String feed = generateDCAT.getFeed();
+
+    assertTrue(feed.contains("a dcat:Catalog"));
+    assertFalse(feed.contains("camtrap-resource"));
   }
 
   @Test

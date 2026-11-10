@@ -122,6 +122,10 @@
         <param name="contentCharSet">UTF-8</param>
         <param name="inputName">dcatInfo</param>
       </result>
+      <!-- a bare 500: the error page needs a BaseAction (baseURL etc.), DCATAction logs the exception itself -->
+      <result name="error" type="httpheader">
+        <param name="status">500</param>
+      </result>
     </action>
   </package>
 </struts>
