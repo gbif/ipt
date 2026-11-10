@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * Sets SameSite=Lax on the session cookie, so browsers don't send it with cross-site POST requests, frames, images
- * or scripts, only with top-level navigation. This is a second line of defence: the CSRF token checked by
+ * or scripts, only with top-level GET navigation. This is a second line of defence: the CSRF token checked by
  * {@link org.gbif.ipt.struts2.CsrfInterceptor} is the main one.
  * <p>
  * Done here rather than in web.xml, which can only set cookie attributes with the Servlet 6 schema. The session

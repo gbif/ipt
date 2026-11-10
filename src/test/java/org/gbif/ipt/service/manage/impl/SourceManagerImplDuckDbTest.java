@@ -157,8 +157,9 @@ public class SourceManagerImplDuckDbTest {
   }
 
   /**
-   * MotherDuck databases are only checked by the validation, never by connecting: if the check failed, connecting
-   * would start a MotherDuck login in the browser.
+   * MotherDuck databases are only checked by the validation, never by connecting. With the connection properties,
+   * connecting fails too, as the extension can't be loaded, but it's the validation that refuses them with a clear
+   * message.
    */
   @ParameterizedTest
   @ValueSource(strings = {"md:my_db", "MD:my_db", "motherduck:my_db", "MotherDuck:my_db"})
@@ -177,7 +178,7 @@ public class SourceManagerImplDuckDbTest {
   public void validatesTheDatabasePath() throws Exception {
     SourceManagerImpl.validateDuckDbDatabase("/data/occurrences.duckdb");
     SourceManagerImpl.validateDuckDbDatabase("C:\\data\\occurrences.duckdb");
-    assertTrue(SourceManagerImpl.duckDbConnectionProperties().getProperty("lock_configuration").equals("true"));
+    assertEquals("true", SourceManagerImpl.duckDbConnectionProperties().getProperty("lock_configuration"));
   }
 
   /**

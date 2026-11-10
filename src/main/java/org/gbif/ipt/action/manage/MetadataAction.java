@@ -295,7 +295,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   @Override
   public void prepare() {
     super.prepare();
-    // no user logged in, or no resource selected (POSTAction will return a 404)
+    // no user logged in, or no resource: RequireManagerInterceptor already returned the login page, a 400 or a 404,
+    // so this only happens when the action runs without it, e.g. in tests
     if (session.get(Constants.SESSION_USER) == null || resource == null) {
       return;
     }

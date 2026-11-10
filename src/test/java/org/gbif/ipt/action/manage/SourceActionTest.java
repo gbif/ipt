@@ -72,7 +72,7 @@ public class SourceActionTest extends IptBaseTest {
   }
 
   /**
-   * No resource parameter and no resource in the session: must return 404 instead of throwing an NPE.
+   * No resource parameter: must return 404 instead of throwing an NPE.
    */
   @Test
   public void testNoResourceSelectedReturnsNotFound() throws Exception {

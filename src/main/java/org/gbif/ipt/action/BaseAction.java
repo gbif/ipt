@@ -263,8 +263,8 @@ public class BaseAction extends ActionSupport
    * <ul>
    *   <li>the session gets a new ID, so an ID planted in the browser before login (session fixation) is worthless
    *   afterwards. The session's contents are kept.</li>
-   *   <li>the session gets a fresh CSRF token. It's stored before the user, so a concurrent request never sees the
-   *   user without a token.</li>
+   *   <li>the session gets a fresh CSRF token, replacing the one of the anonymous login form. It's stored before the
+   *   user, so a concurrent request never sees the user together with the old token.</li>
    * </ul>
    *
    * @param user the user to log in

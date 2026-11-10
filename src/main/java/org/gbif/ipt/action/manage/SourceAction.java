@@ -540,7 +540,8 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   public void prepare() {
     super.prepare();
     session.remove(Constants.SESSION_FILE_NUMBER_COLUMNS);
-    // no resource selected - POSTAction/peek will return a 404
+    // no resource: RequireManagerInterceptor already returned a 400 or a 404, so this only happens when the action
+    // runs without it, e.g. in tests. The action methods then return a 404 (notFound)
     if (resource == null) {
       return;
     }

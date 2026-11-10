@@ -38,8 +38,8 @@ public class ManagerBaseAction extends POSTAction implements ParameterNameAware 
   @Serial
   private static final long serialVersionUID = -7385261456013846954L;
 
-  // the resourceManager session is populated by the resource interceptor and kept alive for an entire manager session
   protected final ResourceManager resourceManager;
+  // the resource of the r parameter, set by prepare()
   @Setter
   protected Resource resource;
   // shown on the 404 page instead of the generic "resource does not exist" text, e.g. for a missing source
@@ -47,6 +47,7 @@ public class ManagerBaseAction extends POSTAction implements ParameterNameAware 
   private String notFoundTitle;
   @Getter
   private String notFoundBody;
+  // shown on the 400 page instead of the generic "missing resource parameter" text
   @Getter
   private String badRequestBody;
 
@@ -89,6 +90,8 @@ public class ManagerBaseAction extends POSTAction implements ParameterNameAware 
   /**
    * Sets the text the 400 page shows instead of the default one, which is about a missing resource parameter.
    *
+   * @param bodyKey i18n key of the 400 page text
+   * @param args arguments of the text
    * @return the 400 result
    */
   protected String badRequest(String bodyKey, String... args) {

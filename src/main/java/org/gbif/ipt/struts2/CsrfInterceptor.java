@@ -46,7 +46,7 @@ import org.apache.struts2.interceptor.AbstractInterceptor;
  *   <li>Action methods annotated with {@link RequirePost} only accept POST, otherwise the result is
  *   {@value #METHOD_NOT_ALLOWED} (405). Together with the token check this means state can't be changed by a link
  *   or an image on another site, nor by a link inside the IPT, where SameSite cookies don't help.</li>
- *   <li>Pages of logged-in users can only be framed by the IPT itself.</li>
+ *   <li>Pages of logged-in users, and the login page, can only be framed by the IPT itself.</li>
  * </ul>
  * Anonymous requests aren't checked: they have no session to abuse. The login form is protected by
  * {@link LoginAction}, which checks the same session token.

@@ -106,7 +106,8 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
-   * Return the version number requested. Null version is equal to the latest published version.
+   * Return the version number requested. It is null if the v parameter is missing or invalid, and prepare() then
+   * gives a 404.
    *
    * @return the version number requested
    */
@@ -116,7 +117,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
-   * Version number of the resource requested. Null version is equal to the latest published version.
+   * Version number of the resource requested.
    *
    * @param version version number requested
    */
@@ -126,7 +127,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
-   * Return the version number requested. Null version is equal to the latest published version.
+   * Return the version number requested, for the page. Only called once prepare() has found the version.
    *
    * @return the version number requested
    */

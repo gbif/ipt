@@ -136,7 +136,7 @@
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
-      <!-- default stack of the manage packages: the lock check runs before parameters and prepare(), which change
+      <!-- default stack of the manage package: the lock check runs before parameters and prepare(), which change
            the resource that publishing reads -->
       <interceptor-stack name="managerStack">
         <interceptor-ref name="iptException"/>
