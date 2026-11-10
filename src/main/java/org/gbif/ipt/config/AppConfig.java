@@ -101,8 +101,6 @@ public class AppConfig {
   private REGISTRY_TYPE type;
 
   private static final int SESSION_TIMEOUT = 60 * 60; // in seconds
-  private static final int CSRF_TOKEN_EXPIRATION = 15 * 60; // in seconds
-  private static final int CSRF_PAGE_REFRESH_DELAY = 10 * 60 * 1000; // in milliseconds, should be lower than CSRF_TOKEN_EXPIRATION
 
   // to support compatibility with historical data directories, we default to the original hard coded
   // types that were scattered across the code.
@@ -301,14 +299,6 @@ public class AppConfig {
     } else {
       return SESSION_TIMEOUT;
     }
-  }
-
-  public int getCsrfTokenExpiration() {
-    return CSRF_TOKEN_EXPIRATION;
-  }
-
-  public int getCsrfPageRefreshDelay() {
-    return CSRF_PAGE_REFRESH_DELAY;
   }
 
   public String getProperty(String key) {

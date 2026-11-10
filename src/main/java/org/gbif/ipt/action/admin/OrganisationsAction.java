@@ -26,6 +26,7 @@ import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.OrganisationSupport;
 
@@ -253,6 +254,7 @@ public class OrganisationsAction extends POSTAction {
     }
   }
 
+  @RequirePost
   public String synchronize() {
     try {
       registrationManager.updateAssociatedOrganisationsMetadata();

@@ -50,6 +50,8 @@
         const bsModal = new bootstrap.Modal(modalEl);
         let hasUnsavedChanges = false;
         let redirectUrl = null;
+        // the link to follow on Leave is marked data-post (e.g. logout): it must be sent as a POST, see csrf.js
+        let redirectPost = false;
         let isIntentionalUnload = false;
 
         // Track form changes
@@ -137,6 +139,7 @@
                 if (hasUnsavedChanges) {
                     e.preventDefault();
                     redirectUrl = link.href;
+                    redirectPost = link.hasAttribute('data-post');
                     bsModal.show();
                 }
             });
@@ -154,7 +157,11 @@
             if (redirectUrl) {
                 isIntentionalUnload = true;
                 hasUnsavedChanges = false;
-                window.location.href = redirectUrl;
+                if (redirectPost && window.IPT_CSRF) {
+                    window.IPT_CSRF.postTo(redirectUrl);
+                } else {
+                    window.location.href = redirectUrl;
+                }
             }
         });
     });

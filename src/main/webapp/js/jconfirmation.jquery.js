@@ -98,7 +98,10 @@
                     }
 
                     yesButton.on("click", function () {
-                        if (thisHref != null) {
+                        if (thisHref != null && submitBtn.is("[data-post]") && window.IPT_CSRF) {
+                            // the link changes state: send it as a POST with the CSRF token (see csrf.js)
+                            window.IPT_CSRF.postTo(thisHref);
+                        } else if (thisHref != null) {
                             window.location = thisHref;
                         } else {
                             submitBtn.attr("jconfirmed", true);

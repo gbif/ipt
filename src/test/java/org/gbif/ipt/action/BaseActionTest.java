@@ -15,9 +15,14 @@ package org.gbif.ipt.action;
 
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.CsrfInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -30,8 +35,13 @@ import org.apache.struts2.locale.LocaleProvider;
 import org.apache.struts2.locale.LocaleProviderFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class BaseActionTest extends IptBaseTest {
@@ -77,6 +87,68 @@ public class BaseActionTest extends IptBaseTest {
       Locale locale = action.getLocale();
 
       assertEquals(Locale.JAPANESE, locale);
+    } finally {
+      ActionContext.clear();
+    }
+  }
+
+  private BaseAction newAction(HttpServletRequest request, Map<String, Object> session) {
+    BaseAction action = new BaseAction(mock(SimpleTextProvider.class), mock(AppConfig.class), mock(RegistrationManager.class));
+    action.withServletRequest(request);
+    action.withSession(session);
+    return action;
+  }
+
+  /**
+   * Login changes the session ID (against session fixation), renews the CSRF token and stores the user.
+   */
+  @Test
+  public void logInChangesSessionIdAndRenewsCsrfToken() {
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    when(request.getSession(false)).thenReturn(mock(HttpSession.class));
+    Map<String, Object> session = new HashMap<>();
+    session.put(Constants.SESSION_CSRF_TOKEN, "old-token");
+    User user = new User();
+
+    newAction(request, session).logIn(user);
+
+    verify(request).changeSessionId();
+    assertSame(user, session.get(Constants.SESSION_USER));
+    assertNotNull(session.get(Constants.SESSION_CSRF_TOKEN));
+    assertNotEquals("old-token", session.get(Constants.SESSION_CSRF_TOKEN));
+  }
+
+  /**
+   * Without an HTTP session there's no ID to change; login still works.
+   */
+  @Test
+  public void logInWithoutHttpSessionDoesNotChangeSessionId() {
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    Map<String, Object> session = new HashMap<>();
+    User user = new User();
+
+    newAction(request, session).logIn(user);
+
+    verify(request, never()).changeSessionId();
+    assertSame(user, session.get(Constants.SESSION_USER));
+    assertNotNull(session.get(Constants.SESSION_CSRF_TOKEN));
+  }
+
+  /**
+   * A page rendered by the login request itself (e.g. the last setup step) must carry the new token, not the one the
+   * CsrfInterceptor exposed before the action ran.
+   */
+  @Test
+  public void logInExposesTheNewTokenToThePage() {
+    ActionContext context = ActionContext.of(new HashMap<>());
+    context.put(CsrfInterceptor.TOKEN_CONTEXT_KEY, "old-token");
+    ActionContext.bind(context);
+    try {
+      Map<String, Object> session = new HashMap<>();
+      newAction(mock(HttpServletRequest.class), session).logIn(new User());
+
+      assertEquals(session.get(Constants.SESSION_CSRF_TOKEN), context.get(CsrfInterceptor.TOKEN_CONTEXT_KEY));
+      assertNotEquals("old-token", context.get(CsrfInterceptor.TOKEN_CONTEXT_KEY));
     } finally {
       ActionContext.clear();
     }

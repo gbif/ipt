@@ -33,8 +33,9 @@
     <action name="resource" class="org.gbif.ipt.action.portal.ResourceAction" method="detail">
       <result>/WEB-INF/pages/portal/resource.ftl</result>
     </action>
+    <!-- read-only preview of the unpublished metadata: no lock check, as there is no locked result in this package -->
     <action name="resource/preview" class="org.gbif.ipt.action.portal.ResourceAction" method="preview">
-      <interceptor-ref name="managerStack"/>
+      <interceptor-ref name="managerStackWithoutLock"/>
       <result>/WEB-INF/pages/portal/resource.ftl</result>
     </action>
 
@@ -120,6 +121,10 @@
         <param name="contentType">text/turtle</param>
         <param name="contentCharSet">UTF-8</param>
         <param name="inputName">dcatInfo</param>
+      </result>
+      <!-- a bare 500: the error page needs a BaseAction (baseURL etc.), DCATAction logs the exception itself -->
+      <result name="error" type="httpheader">
+        <param name="status">500</param>
       </result>
     </action>
   </package>

@@ -19,13 +19,12 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.CsrfInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.XSSUtils;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.ArrayList;
@@ -67,6 +66,7 @@ public class BaseAction extends ActionSupport
   private static final Logger LOG = LogManager.getLogger(BaseAction.class);
 
   public static final String NOT_MODIFIED = "304";
+  public static final String BAD_REQUEST = "400";
   public static final String NOT_FOUND = "404";
   public static final String NOT_ALLOWED = "401";
   public static final String NOT_ALLOWED_MANAGER = "401-manager";
@@ -259,6 +259,32 @@ public class BaseAction extends ActionSupport
   }
 
   /**
+   * Logs the user into the session. Every login must go through here:
+   * <ul>
+   *   <li>the session gets a new ID, so an ID planted in the browser before login (session fixation) is worthless
+   *   afterwards. The session's contents are kept.</li>
+   *   <li>the session gets a fresh CSRF token, replacing the one of the anonymous login form. It's stored before the
+   *   user, so a concurrent request never sees the user together with the old token.</li>
+   * </ul>
+   *
+   * @param user the user to log in
+   */
+  protected void logIn(User user) {
+    if (req != null && req.getSession(false) != null) {
+      req.changeSessionId();
+    }
+    String token = CsrfInterceptor.resetToken(session);
+    session.put(Constants.SESSION_USER, user);
+
+    // CsrfInterceptor exposed the old token (if any) before the action ran. A page rendered by this request, e.g. the
+    // last setup step, must carry the new one, otherwise its forms are rejected.
+    ActionContext context = ActionContext.getContext();
+    if (context != null) {
+      context.put(CsrfInterceptor.TOKEN_CONTEXT_KEY, token);
+    }
+  }
+
+  /**
    * Return the locale language code.
    * Struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor.
    *
@@ -369,24 +395,6 @@ public class BaseAction extends ActionSupport
   }
 
   /**
-   * @param name cookie name
-   * @return the request cookie or null if no cookie with that name exists
-   */
-  public Cookie getCookie(String name) {
-    if (req != null) {
-      Cookie[] cookies = req.getCookies();
-      if (cookies != null) {
-        for (Cookie c : req.getCookies()) {
-          if (name.equals(c.getName())) {
-            return c;
-          }
-        }
-      }
-    }
-    return null;
-  }
-
-  /**
    * Extract request parameter from request as Optional.
    *
    * @param request   request
@@ -445,7 +453,6 @@ public class BaseAction extends ActionSupport
   /**
    * @return the registered IPT instance, or null if the IPT hasn't been registered yet.
    */
-  @StrutsParameter(depth = 2)
   public Ipt getRegisteredIpt() {
     return registrationManager.getIpt();
   }

@@ -25,6 +25,7 @@ import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.registry.RegistryManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
@@ -125,6 +126,7 @@ public class DataPackageSchemaAction extends POSTAction {
    *
    * @return struts2 result
    */
+  @RequirePost
   public String update() throws Exception {
     try {
       LOG.info("Updating data schema {} to the latest version...", id);

@@ -28,6 +28,7 @@ import org.gbif.ipt.service.InvalidFilenameException;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.URLUtils;
 import org.gbif.utils.file.CompressionUtil;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -64,6 +66,29 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   private static final long serialVersionUID = 3324051864626106131L;
 
   private static final Logger LOG = LogManager.getLogger(SourceAction.class);
+
+  /**
+   * The source.*, fileSource.* and sqlSource.* parameters the source form submits. The source is the resource's live
+   * source, so any other parameter, e.g. source.readable, source.columns or sqlSource.password, is refused.
+   */
+  private static final Set<String> SOURCE_PARAMETERS = Set.of(
+      "source.name",
+      "source.encoding",
+      "source.dateFormat",
+      "source.ignoreHeaderLines",
+      "source.fieldsTerminatedByEscaped",
+      "source.fieldsEnclosedByEscaped",
+      "source.multiValueFieldsDelimitedBy",
+      "source.sheetIdx",
+      "fileSource.fieldsTerminatedByEscaped",
+      "fileSource.fieldsEnclosedByEscaped",
+      "sqlSource.host",
+      "sqlSource.database",
+      "sqlSource.username",
+      "sqlSource.sql");
+
+  // a GET request (the source page and its preview) only selects the source
+  private static final Set<String> GET_PARAMETERS = Set.of(Constants.REQ_PARAM_RESOURCE, "id");
 
   private static final Tika TIKA = new Tika();
 
@@ -111,6 +136,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     this.dataDir = dataDir;
   }
 
+  @RequirePost
   public String add() throws IOException {
     if (UiSourceType.SOURCE_URL.value.equals(sourceType)) {
       return addUrlSource();
@@ -453,7 +479,11 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   }
 
   @Override
+  @RequirePost
   public String delete() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     if (sourceManager.delete(resource, resource.getSource(id))) {
       addActionMessage(getText("manage.source.deleted", new String[] {id}));
       // set sources modified date
@@ -497,6 +527,10 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     if (source == null) {
       return NOT_FOUND;
     }
+    // without an id, prepare() created a new, unsaved SQL source, which can't be previewed
+    if (id == null) {
+      return badRequest("manage.400.source.body", resource.getShortname());
+    }
     peek = sourceManager.peek(source, peekRows);
     columns = sourceManager.columns(source);
     return SUCCESS;
@@ -506,11 +540,17 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   public void prepare() {
     super.prepare();
     session.remove(Constants.SESSION_FILE_NUMBER_COLUMNS);
+    // no resource: RequireManagerInterceptor already returned a 400 or a 404, so this only happens when the action
+    // runs without it, e.g. in tests. The action methods then return a 404 (notFound)
+    if (resource == null) {
+      return;
+    }
     if (id != null) {
       source = resource.getSource(id);
       if (source == null) {
+        // no action error here: the workflow interceptor would return the input form (without a source) for it
         LOG.error("No source with id {} found!", id);
-        addActionError(getText("manage.source.cannot.load", new String[] {id}));
+        notFound("manage.404.source.title", "manage.404.source.body", resource.getShortname(), id);
       } else {
         // store the original number of columns, in case they change, the user should be warned to update its mappings
         session.put(Constants.SESSION_FILE_NUMBER_COLUMNS, source.getColumns());
@@ -571,6 +611,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     return result;
   }
 
+  @StrutsParameter
   public void setAnalyze(String analyze) {
     if (StringUtils.trimToNull(analyze) != null) {
       this.analyze = true;
@@ -654,6 +695,8 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         } else if (StringUtils.trimToEmpty(src.getDatabase()).length() < 2) {
           addFieldError("sqlSource.database",
             getText("validation.short", new String[] {getText("sqlSource.database"), "2"}));
+        } else if ("duckdb".equalsIgnoreCase(rdbms) && !SqlSource.isValidDuckDbDatabase(src.getDatabase())) {
+          addFieldError("sqlSource.database", getText("manage.source.duckdb.database.invalid"));
         }
       }
 
@@ -674,6 +717,26 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   @StrutsParameter(depth = 2)
   public Source getSource() {
     return source;
+  }
+
+  /**
+   * The source form only sets the fields in {@link #SOURCE_PARAMETERS}, and only with a POST request. A GET request
+   * only accepts {@link #GET_PARAMETERS}: rdbms and sqlSourcePassword also change the live source.
+   */
+  @Override
+  public boolean acceptableParameterName(String parameterName) {
+    if (!isHttpPost()) {
+      return GET_PARAMETERS.contains(parameterName);
+    }
+    if (!super.acceptableParameterName(parameterName)) {
+      return false;
+    }
+    for (String property : List.of("source", "fileSource", "sqlSource")) {
+      if (isPropertyOf(parameterName, property)) {
+        return SOURCE_PARAMETERS.contains(parameterName);
+      }
+    }
+    return true;
   }
 
   enum UiSourceType {

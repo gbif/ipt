@@ -555,7 +555,21 @@
             e.preventDefault();
             var addressValue = $(this).attr("href");
             displayProcessing();
-            $("#modalcontent").load(addressValue, hideProcessing);
+            $("#modalcontent").load(addressValue, function (response, status, xhr) {
+                // the session expired: open the overview, which goes to login and returns there
+                if (xhr.status === 401) {
+                    window.location.href = "${baseURL}/manage/resource.do?r=${resource.shortname}";
+                    return;
+                }
+                if (status === "error") {
+                    // load() inserts nothing on an error status. 400/404 carry the message from peek.ftl,
+                    // other errors have no fragment to show
+                    $("#modalcontent").html(xhr.status === 400 || xhr.status === 404 ? response
+                        : $('<div class="alert alert-danger fs-smaller-2" role="alert"></div>')
+                            .text('${action.getText("basic.error")?js_string} (' + xhr.status + ')'));
+                }
+                hideProcessing();
+            });
             $("#modalbox").show();
         });
         $("#modalbox").click(function(e) {
@@ -1098,6 +1112,9 @@
 
                 var xhr = new XMLHttpRequest();
                 xhr.open("POST", "addsource.do", true);
+                xhr.setRequestHeader(IPT_CSRF.header, IPT_CSRF.token());
+                // an expired session then gets a 401 instead of the login page, which would look like success
+                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
                 // Prevent automatic redirection by setting responseType to 'document'
                 xhr.responseType = 'document';
@@ -1111,8 +1128,19 @@
                             window.location.href = redirectUrl;
                         }
                     } else {
-                        // Process the error response
+                        // the session expired: open the overview, which goes to login and returns there
+                        if (xhr.status === 401) {
+                            window.location.href = "${baseURL}/manage/resource.do?r=${resource.shortname}";
+                            reject(new Error("Session expired"));
+                            return;
+                        }
+
+                        // Process the error response: the message of a rejected file, or any other failed request
+                        // (e.g. 403 for a missing CSRF token), which has no message of its own
                         var errorMessage = xhr.getResponseHeader("X-Error-Message");
+                        if (!errorMessage && xhr.status !== 200) {
+                            errorMessage = '${action.getText("basic.error")?js_string} (' + xhr.status + ')';
+                        }
 
                         if (errorMessage) {
                             // file error div
@@ -2271,7 +2299,7 @@
                                                             </svg>
                                                         </a>
 
-                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
+                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions network-item-action fs-smaller-2 d-sm-max-none" type="button" data-post href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
                                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
@@ -2294,7 +2322,7 @@
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a class="dropdown-item action-link" type="button" href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
+                                                                    <a class="dropdown-item action-link" type="button" data-post href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}">
                                                                         <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>
@@ -2371,7 +2399,7 @@
                                                             | ${u.email}</small>
                                                     </div>
                                                     <div class="d-flex justify-content-end my-auto manager-item-actions">
-                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions manager-item-action fs-smaller-2 d-sm-max-none" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                        <a title="<@s.text name="button.delete"/>" class="icon-button icon-material-actions manager-item-action fs-smaller-2 d-sm-max-none" type="button" data-post href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
                                                             <svg class="icon-button-svg" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                             </svg>
@@ -2386,7 +2414,7 @@
 
                                                             <ul class="dropdown-menu" aria-labelledby="dropdown-manager-item-actions-current">
                                                                 <li>
-                                                                    <a class="dropdown-item action-link" type="button" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
+                                                                    <a class="dropdown-item action-link" type="button" data-post href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email}">
                                                                         <svg class="overview-item-action-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
                                                                             <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
                                                                         </svg>

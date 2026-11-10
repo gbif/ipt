@@ -19,6 +19,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.IptColorScheme;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
@@ -88,8 +89,9 @@ public class UIManagementAction extends POSTAction implements UploadedFilesAware
     return SUCCESS;
   }
 
+  @RequirePost
   public String uploadLogo() {
-    UploadedFile file = uploadedFiles.get(0);
+    UploadedFile file = uploadedFiles == null || uploadedFiles.isEmpty() ? null : uploadedFiles.get(0);
 
     if (file != null) {
       // remove any previous logo file

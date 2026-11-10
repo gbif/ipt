@@ -68,6 +68,7 @@ import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.SafeTreeMapConverter;
 import org.gbif.ipt.model.converter.SafeTreeSetConverter;
@@ -122,6 +123,7 @@ import org.gbif.ipt.utils.MapUtils;
 import org.gbif.ipt.utils.MetadataUtils;
 import org.gbif.ipt.utils.PublicationFailureEmailUtils;
 import org.gbif.ipt.utils.ResourceUtils;
+import org.gbif.ipt.utils.XStreamSecurity;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
 import org.gbif.metadata.eml.EMLProfileVersion;
 import org.gbif.metadata.eml.EmlValidator;
@@ -186,11 +188,6 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 
 import javax.annotation.Nullable;
-
-import jakarta.validation.constraints.NotNull;
-
-import jakarta.mail.MessagingException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -200,10 +197,10 @@ import org.apache.commons.collections4.ListValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Level;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.logging.log4j.Level;
 import org.jsoup.Jsoup;
 import org.xml.sax.SAXException;
 
@@ -211,8 +208,9 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.rtf.RtfWriter2;
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
+import jakarta.mail.MessagingException;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
@@ -224,7 +222,9 @@ import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
 import static org.gbif.ipt.config.DataDir.EML_XML_FILENAME;
 import static org.gbif.ipt.config.DataDir.FRICTIONLESS_METADATA_FILENAME;
 import static org.gbif.ipt.model.Resource.CoreRowType.METADATA;
+import static org.gbif.ipt.utils.FileUtils.createTempSibling;
 import static org.gbif.ipt.utils.FileUtils.getFileExtension;
+import static org.gbif.ipt.utils.FileUtils.moveIntoPlace;
 import static org.gbif.ipt.utils.MetadataUtils.metadataClassForType;
 
 public class ResourceManagerImpl extends BaseManager implements ResourceManager, ReportHandler {
@@ -749,7 +749,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
         // reset change summary
         res.setChangeSummary(null);
         // remove all VersionHistory
-        res.getVersionHistory().clear();
+        res.setVersionHistory(new ArrayList<>());
         // turn off auto-publication
         res.setPublicationMode(PublicationMode.AUTO_PUBLISH_OFF);
         res.setUpdateFrequency(null);
@@ -1249,7 +1249,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
   }
 
   private void defineXstreamMapping(ResourceConvertersManager resourceConvertersManager, PasswordEncrypter passwordEncrypter) {
-    xstream.addPermission(AnyTypePermission.ANY);
+    XStreamSecurity.restrict(xstream);
     xstream.ignoreUnknownElements();
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
@@ -1297,8 +1297,8 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     xstream.registerConverter(new SafeTreeSetConverter(), 10000);
     // persist only emails for users
     xstream.registerConverter(resourceConvertersManager.getUserConverter());
-    // custom converter for ExtensionMapping
-    xstream.registerConverter(resourceConvertersManager.getExtensionMappingConverter());
+    // custom converter for ExtensionMapping, resolving class names with this XStream's mapper (allowlist, aliases)
+    xstream.registerConverter(new ExtensionMappingConverter(xstream));
     // persist only rowtype
     xstream.registerConverter(resourceConvertersManager.getExtensionConverter());
     // persist only qualified concept name
@@ -2445,8 +2445,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
       String shortname = resourceDir.getName();
       try {
         File cfgFile = dataDir.resourceFile(shortname);
-        InputStream input = new FileInputStream(cfgFile);
-        Resource resource = (Resource) xstream.fromXML(input);
+        Resource resource;
+        try (InputStream input = new FileInputStream(cfgFile)) {
+          resource = (Resource) xstream.fromXML(input);
+        }
 
         // populate missing creator - it cannot be null! (this fixes issue #1309)
         if (creator != null && resource.getCreator() == null) {
@@ -4092,11 +4094,19 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
     resource.setModified(new Date());
     // save into data dir
     File metadataFile = dataDir.resourceDatapackageMetadataFile(resource.getShortname(), resource.getCoreType());
+    // written to a temporary file and moved into place, so readers never see a partly written file
+    File tmpFile = null;
     try {
-      metadataReader.writeValue(metadataFile, resource.getDataPackageMetadata());
+      tmpFile = createTempSibling(metadataFile);
+      metadataReader.writeValue(tmpFile, resource.getDataPackageMetadata());
+      moveIntoPlace(tmpFile, metadataFile);
     } catch (IOException e) {
       LOG.error("Failed to save datapackage metadata!", e);
       throw new RuntimeException(e);
+    } finally {
+      if (tmpFile != null) {
+        tmpFile.delete();
+      }
     }
 
     LOG.debug("Updated metadata file for {}", resource);
@@ -4541,15 +4551,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager,
 
   public String calculateChecksum(File file) throws Exception {
     MessageDigest digest = MessageDigest.getInstance("SHA-256");
-    InputStream fis = new FileInputStream(file);
-
-    byte[] byteArray = new byte[1024];
-    int bytesCount = 0;
-
-    while ((bytesCount = fis.read(byteArray)) != -1) {
-      digest.update(byteArray, 0, bytesCount);
+    try (InputStream fis = new FileInputStream(file)) {
+      byte[] byteArray = new byte[1024];
+      int bytesCount;
+      while ((bytesCount = fis.read(byteArray)) != -1) {
+        digest.update(byteArray, 0, bytesCount);
+      }
     }
-    fis.close();
 
     byte[] bytes = digest.digest();
 

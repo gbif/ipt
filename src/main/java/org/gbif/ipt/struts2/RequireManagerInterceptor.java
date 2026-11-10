@@ -14,6 +14,7 @@
 package org.gbif.ipt.struts2;
 
 import org.gbif.ipt.action.BaseAction;
+import org.gbif.ipt.action.manage.ManagerBaseAction;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
@@ -28,7 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.Parameter;
-import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.interceptor.AbstractInterceptor;
 
@@ -36,9 +36,10 @@ import static org.apache.struts2.StrutsStatics.HTTP_REQUEST;
 
 /**
  * An Interceptor that makes sure a user with manager rights (=admin or manager role) is currently logged in and
- * returns a notAllowed otherwise. It also checks if the resource is currently locked and returns locked in that case
- * regardless of user rights.
+ * returns a notAllowed otherwise. Locked resources are checked by {@link ResourceLockedInterceptor}.
  * If a resource is requested, it also checks that the logged-in user has permissions to manage that specific resource.
+ * Actions working on a single resource (see {@link ManagerBaseAction#requiresResource()}) get a 400 without the
+ * resource parameter, and a 404 if the resource doesn't exist.
  */
 public class RequireManagerInterceptor extends AbstractInterceptor {
 
@@ -49,6 +50,7 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
 
   private ResourceManager resourceManager;
 
+
   protected static String getResourceParam(ActionInvocation invocation) {
     String requestedResource = null;
     Parameter requestedResourceName = invocation.getInvocationContext().getParameters().get(Constants.REQ_PARAM_RESOURCE);
@@ -56,16 +58,6 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
       requestedResource = StringUtils.trimToNull(requestedResourceName.getValue());
     }
     return requestedResource;
-  }
-
-  /**
-   * Checks whether the resource parameter is used in the request.
-   *
-   * @param invocation ActionInvocation
-   * @return true if the resource parameter was used in the request, false otherwise.
-   */
-  protected static boolean hasResourceParam(ActionInvocation invocation) {
-    return invocation.getInvocationContext().getParameters().containsKey(Constants.REQ_PARAM_RESOURCE);
   }
 
   public static boolean isAuthorized(User user, Resource resource) {
@@ -91,25 +83,10 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
     Map<String, Object> session = invocation.getInvocationContext().getSession();
     User user = (User) session.get(Constants.SESSION_USER);
 
-    // user is not logged in, redirect to login page
-    // remember referer and redirect there after successful authentication
+    // user is not logged in: redirect to the login page, or 401 for AJAX requests
     if (user == null) {
-      LOG.debug("User is not logged in, redirecting to login page");
-      ActionContext context = invocation.getInvocationContext();
-      HttpServletRequest request = (HttpServletRequest) context.get(HTTP_REQUEST);
-
-      String queryString = request.getQueryString();
-      String referer = request.getServletPath();
-      // check if there is a query string, if so append it
-      if (queryString != null) {
-        referer = referer + '?' + queryString;
-      }
-
-      // put referer into session
-      LOG.debug("Put referer into session: {}", referer);
-      session.put(Constants.SESSION_REFERER, referer);
-
-      return BaseAction.LOGIN;
+      HttpServletRequest request = (HttpServletRequest) invocation.getInvocationContext().get(HTTP_REQUEST);
+      return LoginRedirect.loginRequired(request, session);
     }
 
     // user is logged in, check if user has manager rights
@@ -117,6 +94,11 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
       // now also check if we have rights for a specific resource requested
       // lets see if we are about to manage a new resource
       String requestedResource = getResourceParam(invocation);
+      if (requestedResource == null
+          && invocation.getAction() instanceof ManagerBaseAction action && action.requiresResource()) {
+        LOG.debug("Resource parameter missing for {}", action.getClass().getSimpleName());
+        return BaseAction.BAD_REQUEST;
+      }
       if (requestedResource != null) {
         // does resource exist at all?
         Resource resource = resourceManager.get(requestedResource);
@@ -126,10 +108,6 @@ public class RequireManagerInterceptor extends AbstractInterceptor {
         // authorized?
         if (!isAuthorized(user, resource)) {
           return BaseAction.NOT_ALLOWED;
-        }
-        // locked?
-        if (resourceManager.isLocked(requestedResource)) {
-          return BaseAction.LOCKED;
         }
       }
       return invocation.invoke();

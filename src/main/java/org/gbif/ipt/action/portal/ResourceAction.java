@@ -49,7 +49,6 @@ import java.io.InputStream;
 import java.io.Serial;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -214,31 +213,29 @@ public class ResourceAction extends PortalBaseAction {
   }
 
   /**
-   * Loads a specific version of a resource's metadata from its eml-v.xml file located inside its resource directory.
-   * </br>
-   * If no specific version is requested, the latest published version is loaded.
-   * </br>
-   * If there have been no published versions yet, the resource is loaded from the default eml.xml file.
-   * </br>
-   * If no eml.xml file exists yet, an empty EML instance is loaded.
+   * Loads a specific version of a resource's metadata from its eml-{version}.xml file located inside its resource
+   * directory.
    *
    * @param shortname resource shortname
    * @param version   resource version (eml version)
    *
-   * @return EML object loaded from eml.xml file with specific version or a new EML instance if none found
+   * @return EML object loaded from the eml-{version}.xml file
    *
-   * @throws IOException                                    if problem occurred loading eml file (e.g. it doesn't
-   *                                                        exist)
-   * @throws SAXException                                   if problem occurred parsing eml file
-   * @throws javax.xml.parsers.ParserConfigurationException if problem occurred parsing eml file
+   * @throws FileNotFoundException if the eml-{version}.xml file doesn't exist, e.g. the resource was never published
+   * @throws IOException if a problem occurred reading the EML file
+   * @throws SAXException if a problem occurred parsing the EML file
+   * @throws ParserConfigurationException if a problem occurred parsing the EML file
    */
   private Eml loadEmlFromFile(String shortname, @NotNull BigDecimal version)
     throws IOException, SAXException, ParserConfigurationException {
     Objects.requireNonNull(version);
     File emlFile = dataDir.resourceEmlFile(shortname, version);
     LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
-    InputStream in = Files.newInputStream(emlFile.toPath());
-    return stripXSS(EmlFactory.build(in));
+    // FileInputStream, not Files.newInputStream: a missing file must be a FileNotFoundException (a 404 in detail()),
+    // not a NoSuchFileException
+    try (InputStream in = new FileInputStream(emlFile)) {
+      return stripXSS(EmlFactory.build(in));
+    }
   }
 
   /**
@@ -368,7 +365,7 @@ public class ResourceAction extends PortalBaseAction {
       resources = resourceManager.latest(page, 25);
     } else {
       Resource r = resourceManager.get(resourceShortname);
-      if (r.getStatus() == PublicationStatus.PUBLIC || r.getStatus() == PublicationStatus.REGISTERED) {
+      if (r != null && (r.getStatus() == PublicationStatus.PUBLIC || r.getStatus() == PublicationStatus.REGISTERED)) {
         resources = Collections.singletonList(resourceManager.get(resourceShortname));
       } else {
         resources = new ArrayList<>();
@@ -492,6 +489,9 @@ public class ResourceAction extends PortalBaseAction {
    * @return Struts2 result string
    */
   public String preview() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
     if (resource.isDataPackage()) {
       return previewDataPackage();
     }
@@ -501,8 +501,9 @@ public class ResourceAction extends PortalBaseAction {
     try {
       File emlFile = dataDir.resourceEmlFile(shortname);
       LOG.debug("Loading metadata from file: {}", emlFile.getAbsolutePath());
-      InputStream in = new FileInputStream(emlFile);
-      eml = stripXSS(EmlFactory.build(in));
+      try (InputStream in = new FileInputStream(emlFile)) {
+        eml = stripXSS(EmlFactory.build(in));
+      }
     } catch (FileNotFoundException e) {
       LOG.error("Metadata file version #{} for resource {} not found", getStringVersion(), shortname);
       return NOT_FOUND;

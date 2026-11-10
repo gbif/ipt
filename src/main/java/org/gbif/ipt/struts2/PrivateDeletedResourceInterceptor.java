@@ -45,6 +45,9 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
 
   @Override
   public String intercept(ActionInvocation invocation) throws Exception {
+    Map<String, Object> session = invocation.getInvocationContext().getSession();
+    User user = (User) session.get(Constants.SESSION_USER);
+
     String requestedResource = RequireManagerInterceptor.getResourceParam(invocation);
     if (requestedResource != null) {
       // does resource exist at all?
@@ -52,55 +55,61 @@ public class PrivateDeletedResourceInterceptor extends AbstractInterceptor {
       if (resource == null) {
         return BaseAction.NOT_FOUND;
       }
-
-      // get current user
-      Map<String, Object> session = invocation.getInvocationContext().getSession();
-      User user = (User) session.get(Constants.SESSION_USER);
-
-      // is the resource version requested private, or has it been deleted?
-      String requestedResourceVersion = getResourceVersionParam(invocation);
-      if (requestedResourceVersion != null) {
-        try {
-          BigDecimal version = new BigDecimal(requestedResourceVersion);
-          VersionHistory history = resource.findVersionHistory(version);
-          if (history != null) {
-            if (history.getPublicationStatus() == PublicationStatus.PRIVATE) {
-              // user authorised?
-              if (user == null || !isAuthorized(user, resource)) {
-                return BaseAction.NOT_ALLOWED;
-              }
-            } else if (history.getPublicationStatus() == PublicationStatus.DELETED) {
-              // user authorised?
-              if (user == null || !isAuthorized(user, resource)) {
-                return BaseAction.GONE;
-              }
-            }
-          }
-        } catch (NumberFormatException e) {
-          // return 404 if version was in incorrect format
-          return BaseAction.NOT_FOUND;
-        }
-      } else {
-        if (PublicationStatus.DELETED == resource.getStatus()) {
-          // user authorised?
-          if (user == null || !isAuthorized(user, resource)) {
-            return BaseAction.GONE;
-          }
-        }
-
-        PublicationStatus resourceStatus = CollectionUtils.isNotEmpty(resource.getVersionHistory())
-            ? resource.getVersionHistory().get(0).getPublicationStatus()
-            : resource.getStatus();
-
-        if (PublicationStatus.PRIVATE == resourceStatus) {
-          // user authorised?
-          if (user == null || !isAuthorized(user, resource)) {
-            return BaseAction.NOT_ALLOWED;
-          }
-        }
+      String denied = checkAccess(invocation, resource, user);
+      if (denied != null) {
+        return denied;
       }
     }
     return invocation.invoke();
+  }
+
+  /**
+   * @return null if the resource (version) can be shown to the user, otherwise the result to return
+   */
+  private String checkAccess(ActionInvocation invocation, Resource resource, User user) {
+    // is the resource version requested private, or has it been deleted?
+    String requestedResourceVersion = getResourceVersionParam(invocation);
+    if (requestedResourceVersion != null) {
+      try {
+        BigDecimal version = new BigDecimal(requestedResourceVersion);
+        VersionHistory history = resource.findVersionHistory(version);
+        if (history != null) {
+          if (history.getPublicationStatus() == PublicationStatus.PRIVATE) {
+            // user authorised?
+            if (user == null || !isAuthorized(user, resource)) {
+              return BaseAction.NOT_ALLOWED;
+            }
+          } else if (history.getPublicationStatus() == PublicationStatus.DELETED) {
+            // user authorised?
+            if (user == null || !isAuthorized(user, resource)) {
+              return BaseAction.GONE;
+            }
+          }
+        }
+      } catch (NumberFormatException e) {
+        // return 404 if version was in incorrect format
+        return BaseAction.NOT_FOUND;
+      }
+    } else {
+      if (PublicationStatus.DELETED == resource.getStatus()) {
+        // user authorised?
+        if (user == null || !isAuthorized(user, resource)) {
+          return BaseAction.GONE;
+        }
+      }
+
+      PublicationStatus resourceStatus = CollectionUtils.isNotEmpty(resource.getVersionHistory())
+          ? resource.getVersionHistory().get(0).getPublicationStatus()
+          : resource.getStatus();
+
+      if (PublicationStatus.PRIVATE == resourceStatus) {
+        // user authorised?
+        if (user == null || !isAuthorized(user, resource)) {
+          return BaseAction.NOT_ALLOWED;
+        }
+      }
+    }
+    return null;
   }
 
   private boolean isAuthorized(User user, Resource resource) {
