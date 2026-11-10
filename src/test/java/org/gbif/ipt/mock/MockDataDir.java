@@ -24,6 +24,7 @@ import org.mockito.stubbing.Answer;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 /**
@@ -34,7 +35,11 @@ public class MockDataDir {
   private static DataDir dataDir = mock(DataDir.class);
   private static String tempDir = System.getProperty("java.io.tmpdir");
 
+  /**
+   * The mock is shared, so stubs from an earlier test (e.g. a deleted @TempDir as the resources folder) are cleared.
+   */
   public static DataDir buildMock() {
+    reset(dataDir);
     setupMock();
     return dataDir;
   }
