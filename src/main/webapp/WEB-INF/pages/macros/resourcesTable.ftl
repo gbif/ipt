@@ -83,7 +83,9 @@ resourcesTable macro: Generates a data table that has searching, pagination, and
             var dt = $('#rtable').DataTable({
                 ajax: {
                     url: <#if shownPublicly>'${baseURL}/api/resources'<#else>'${baseURL}/manager-api/resources'</#if>,
-                    type: 'POST'
+                    type: 'POST',
+                    // DataTables sends its own XMLHttpRequest, not $.ajax, so csrf.js doesn't add the CSRF header
+                    headers: window.IPT_CSRF && IPT_CSRF.token() ? {[IPT_CSRF.header]: IPT_CSRF.token()} : {}
                 },
                 responsive: true,
                 "processing": true,

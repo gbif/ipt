@@ -69,7 +69,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -1345,7 +1345,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    */
   @Override
   public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
-    Set<String> values = new HashSet<>();
+    // insertion order, so truncating the values keeps the first ones found
+    Set<String> values = new LinkedHashSet<>();
     try (ClosableIterator<Object> iter = iterSourceColumn(source, column, maxRows)){
       // get distinct values
       while (iter.hasNext() && (maxValues < 1 || values.size() < maxValues)) {

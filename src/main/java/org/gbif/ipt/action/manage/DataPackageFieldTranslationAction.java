@@ -14,7 +14,6 @@
 package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
@@ -28,12 +27,9 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
@@ -55,38 +51,9 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
   private static final Logger LOG = LogManager.getLogger(DataPackageFieldTranslationAction.class);
 
-  static class Translation {
-
-    private String tableSchema;
-
-    private String field;
-
-    @Getter
-    private TreeMap<String, String> sourceValues;
-
-    @Getter
-    private TreeMap<String, String> translatedValues;
-
-    public Map<String, String> getPersistentMap() {
-      Map<String, String> m = new HashMap<>();
-      for (Entry<String, String> translatedValueEntry : translatedValues.entrySet()) {
-        m.put(sourceValues.get(translatedValueEntry.getKey()), StringUtils.trimToEmpty(translatedValueEntry.getValue()));
-      }
-      return m;
-    }
-
-    public void setTmap(String tableSchema, String field, TreeMap<String, String> sourceValues,
-                        TreeMap<String, String> translatedValues) {
-      this.sourceValues = sourceValues;
-      this.translatedValues = translatedValues;
-      this.tableSchema = tableSchema;
-      this.field = field;
-    }
-  }
-
   private final SourceManager sourceManager;
   @Getter
-  private Translation trans = new Translation();
+  private final ValueTranslation translation = new ValueTranslation();
 
   protected static final String REQ_PARAM_MAPPINGID = "mid";
   protected static final String REQ_FIELD = "field";
@@ -116,8 +83,8 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
   }
 
   /**
-   * Automatically map source values to the terms in a vocabulary. A match occurs when the source value matches
-   * against one of the vocabulary's term's name, preferred name, or alternate name.
+   * Automatically map source values not translated yet to the values in the field's vocabulary. A match occurs when
+   * the source value matches a vocabulary value ignoring case, whitespace, underscores and hyphens.
    *
    * @return SUCCESS result, staying on translation page
    */
@@ -125,52 +92,32 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     if (notFound) {
       return NOT_FOUND;
     }
-    if (field == null || field.getConstraints().getVocabulary() == null) {
+    if (field == null || field.getConstraints() == null || field.getConstraints().getVocabulary() == null) {
       addActionError(getText("manage.translation.cantfind.vocabulary"));
     } else {
       List<String> vocab = field.getConstraints().getVocabulary();
-      int count = 0;
-      for (Entry<String, String> sourceValueEntry : getSourceValuesMap().entrySet()) {
-        // only if not yet mapped
-        if (!getTmap().containsValue(sourceValueEntry.getValue())) {
-          Optional<String> vocabularyMatch = vocab.stream()
-              .filter(v -> v.replaceAll("_", "")
-                  .equalsIgnoreCase(sourceValueEntry.getValue().replaceAll("_", "")))
-              .findFirst();
-
-          if (vocabularyMatch.isPresent()) {
-            getTmap().put(sourceValueEntry.getKey(), vocabularyMatch.get());
-            count++;
-          }
-        }
-      }
+      int count = translation.automap(value -> vocab.stream()
+          .filter(v -> ValueTranslation.looselyEquals(v, value))
+          .findFirst()
+          .orElse(null));
       addActionMessage(getText("manage.translation.mapped.fields", new String[]{String.valueOf(count)}));
     }
     return SUCCESS;
   }
 
   /**
-   * Deletes the translation for the field. The sessionScoped translation must also be deleted, otherwise it
-   * will reappear on the next page visit. The source values get reloaded, so they are populated on next page visit.
+   * Deletes the translation for the field.
    *
    * @return NONE result, going back to mapping page
    */
   @Override
   public String delete() {
-    // proceed with deletion
     if (fieldMapping != null) {
-      // 1. ensure the translation map on the FieldMapping is empty
       fieldMapping.setTranslation(new TreeMap<>());
-      // 2. ensure the static sessionScoped translation for this field is empty
-      trans.setTmap(this.mapping.getDataPackageTableSchemaName().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
-      // 3. save the resource
       saveResource();
-      // 4. add msg to appear in UI indicating the translation for this PropertyMapping has been deleted
       addActionMessage(getText("manage.translation.field.deleted", new String[]{field.getName()}));
-      // 5. reload source values, so they aren't empty on next page visit
-      reloadSourceValues();
     } else {
-      LOG.error("User wanted to deleted translation for propertyMapping field, but field was null");
+      LOG.error("User wanted to delete translation for propertyMapping field, but field was null");
     }
 
     DataPackageSchema schema = mapping.getDataPackageSchema();
@@ -204,7 +151,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
 
       if (fieldMapping != null) {
         notFound = false;
-        field = mapping.getField(fieldParam).getField();
+        field = fieldMapping.getField();
 
         if (field.getConstraints() != null && field.getConstraints().getVocabulary() != null) {
           Map<String, String> vocabRawData = field.getConstraints().getVocabulary().stream()
@@ -212,20 +159,16 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
           vocabTerms = new SimpleMapModel(vocabRawData, null);
         }
 
-        if (!isLoaded(mapping.getDataPackageTableSchemaName().getName(), fieldMapping.getField())) {
-          reloadSourceValues();
-        }
-
-        // empty translation before POST
-        if (isHttpPost()) {
-          trans.getTranslatedValues().clear();
+        // a submitted form carries its own source values
+        if (!isHttpPost()) {
+          loadSourceValues();
         }
       }
     }
   }
 
   /**
-   * Reload the source values, and display to the User this has happened.
+   * Tells the user the source values were reloaded, which prepare() did.
    *
    * @return SUCCESS regardless of outcome
    */
@@ -233,85 +176,73 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     if (notFound) {
       return NOT_FOUND;
     }
-    reloadSourceValues();
+    if (!hasActionErrors()) {
+      addActionMessage(getText("manage.translation.reloaded.field.values",
+          new String[]{String.valueOf(translation.getSourceValueCount()), field.getName()}));
+    }
     // leaves the user on the translation page
     return SUCCESS;
   }
 
   /**
-   * Clears the existing translation, reloads the source values, and repopulates existing translations.
-   * The key of each entry in the translation.sourceValues map, e.g. {{"k1", "obs"}, {"k2", "spe"}} corresponds to each
-   * entry in the translation.translatedValues map, e.g. {{"k1", "Observation"}, {"k2", "Specimen"}}.
+   * Reads the distinct source values and merges them with the saved translation.
    */
-  void reloadSourceValues() {
-    // the mapping and field were resolved in prepare()
+  void loadSourceValues() {
+    Set<String> values;
     try {
-
-      if (trans == null) {
-        trans = new Translation();
-      }
-      // reinitialize translation, including maps
-      trans.setTmap(mapping.getDataPackageTableSchemaName().getName(), field.getName(), new TreeMap<>(), new TreeMap<>());
-
-      // reload new values
-      int i = 1;
-      for (String val : sourceManager.inspectColumn(mapping.getSource(), fieldMapping.getIndex(), 1000, 10000)) {
-        String key = "k" + i;
-        getSourceValuesMap().put(key, val);
-        i++;
-      }
-
-      // keep existing translations
-      if (fieldMapping.getTranslation() != null) {
-        for (Entry<String, String> entry : fieldMapping.getTranslation().entrySet()) {
-          // only keep entries with values mapped that exist in the newly reloaded map
-          if (entry.getValue() != null && getSourceValuesMap().containsValue(entry.getKey())) {
-            for (Entry<String, String> sourceValueEntry : getSourceValuesMap().entrySet()) {
-              if (sourceValueEntry.getValue().equals(entry.getKey())) {
-                getTmap().put(sourceValueEntry.getKey(), entry.getValue());
-              }
-            }
-          }
-        }
-      }
-
-      // bring it to user's attention, that the source values have been reloaded
-      if (!isHttpPost()) {
-        addActionMessage(getText("manage.translation.reloaded.field.values",
-            new String[]{String.valueOf(getSourceValuesMap().size()), fieldMapping.getField().getName()}));
-      }
-
+      values = sourceManager.inspectColumn(mapping.getSource(), fieldMapping.getIndex(),
+          ValueTranslation.MAX_DISTINCT_VALUES + 1, ValueTranslation.MAX_SQL_ROWS);
     } catch (SourceException e) {
       // if an error has occurred, bring it to the user's attention
       addActionError(getText("manage.translation.reloaded.field.fail",
-          new String[]{fieldMapping.getField().getName(), e.getMessage()}));
+          new String[]{field.getName(), e.getMessage()}));
+      values = Collections.emptySet();
+    }
+    translation.load(values, fieldMapping.getTranslation());
+    if (translation.isTruncated()) {
+      addActionWarning(getText("manage.translation.values.truncated",
+          new String[]{String.valueOf(ValueTranslation.MAX_DISTINCT_VALUES)}));
     }
   }
 
   /**
-   * Persist the translation for the PropertyTerm by saving the Resource anew, and display to the User this happened.
+   * Persist the translation for the field by saving the Resource anew, and display to the User this happened.
    *
    * @return NONE result, going back to mapping page
    */
   @Override
   public String save() {
-    // put map with non-empty values back to field
-    fieldMapping.setTranslation(trans.getPersistentMap());
+    fieldMapping.setTranslation(translation.getPersistentMap());
     // save entire resource config
     saveResource();
     id = mapping.getDataPackageTableSchemaName().getName();
-    addActionMessage(getText("manage.translation.field.saved", new String[]{fieldMapping.getField().getName()}));
+    addActionMessage(getText("manage.translation.field.saved", new String[]{field.getName()}));
 
     return NONE;
   }
 
   public Map<String, String> getSourceValuesMap() {
-    return trans.getSourceValues();
+    return translation.getSourceValues();
   }
 
+  /**
+   * On submitting the translation form, sets each row's source value, named "smap".
+   */
+  @StrutsParameter(depth = 2)
+  public Map<String, String> getSmap() {
+    return translation.getSourceValues();
+  }
+
+  /**
+   * On submitting the translation form, sets each row's translated value, named "tmap". Keys correspond to "smap".
+   */
   @StrutsParameter(depth = 2)
   public Map<String, String> getTmap() {
-    return trans.getTranslatedValues();
+    return translation.getTranslatedValues();
+  }
+
+  public boolean isNotInSource(String key) {
+    return translation.isNotInSource(key);
   }
 
   public int getVocabTermsSize() {
@@ -321,25 +252,5 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
   public Set<String> getVocabTermsKeys() {
     return vocabTerms != null && (vocabTerms.getWrappedObject() instanceof Map) ?
         ((Map) vocabTerms.getWrappedObject()).keySet() : Collections.emptySet();
-  }
-
-  /**
-   * On submitting the translation form sets the translated values map, named "tmap".
-   *
-   * @param translatedValues map with translated values, whose key corresponds to translation.sourceValues map
-   */
-  @StrutsParameter(depth = 2)
-  public void setTmap(TreeMap<String, String> translatedValues) {
-    this.trans.translatedValues = translatedValues;
-  }
-
-  public boolean isLoaded(String tableSchema, DataPackageField field) {
-    trans = (Translation) session.get(Constants.SESSION_DP_TRANSLATION);
-    return trans != null
-        && trans.tableSchema != null
-        && trans.tableSchema.equals(tableSchema)
-        && trans.field != null
-        && trans.field.equals(field.getName())
-        && trans.sourceValues != null;
   }
 }

@@ -39,105 +39,75 @@
         });
         // end hack
 
+        // keys for typed source values, which have none yet
+        var newKeyIndex = 0;
+
         $('#plus').click(function (e) {
             e.preventDefault();
-            showAddNewTranslationModal();
+            $("#dialog").modal('show');
+        });
+
+        $("#add-button").on("click", function () {
+            addNewTranslation();
         });
 
         function addNewTranslation() {
+            var select = $('#addNewTranslation');
             // get selected option from dropdown
-            var selected = $('#addNewTranslation').find(":selected");
-            // get selected option's id
-            var optionId = selected.attr("id");
+            var selected = select.find(":selected");
+            var value = selected.val();
 
-            if (optionId) {
-                // get index from id (e.g. option-k2, k2 is the index)
-                var elementIndex = optionId.split("option-")[1];
-                // get value from option
-                var value = selected.val()
-
-                // add new line (item)
-                addNewItem(value, elementIndex);
+            if (value) {
+                if (!isTranslated(value)) {
+                    var key = selected.attr("data-key") || ("n" + (++newKeyIndex));
+                    addNewItem(value, key);
+                }
+                // remove this option from dropdown - translation already added
+                selected.remove();
+                select.val(null).trigger('change');
             }
         }
 
-        function addNewItem(value, index) {
+        function isTranslated(value) {
+            return $('#translation .source-value').filter(function () {
+                return $(this).val() === value;
+            }).length > 0;
+        }
+
+        function addNewItem(value, key) {
             // clone template and temporarily hide it
             var newItem = $('#baseItem').clone();
             newItem.hide();
 
-            // add it to translation div
-            $("#translation").append(newItem)
+            newItem.attr("id", "item-" + key);
+            newItem.find(".value").val(value);
+            newItem.find(".source-value").attr("name", "smap['" + key + "']").val(value);
+            newItem.find(".translated-value").attr("name", "tmap['" + key + "']");
 
-            // show item
+            // add it to translation div and show it
+            $("#translation").append(newItem);
             newItem.slideDown('slow');
-
-            // set values and properties
-            setItemValueAndIndex(newItem, value, index);
         }
 
-        function setItemValueAndIndex(item, value, index) {
-            // set id with index
-            item.attr("id", "item-" + index);
-            // set id to item's remove link
-            $("#item-" + index + " .removeLink").attr("id", "removeLink-" + index);
-            // set value to input
-            $("#item-" + index + " .value").val(value);
-            // set name attribute of the translated input
-            $("#item-" + index + " .translated-value").attr("name", "tmap['" + index + "']");
-            // remove this option from dropdown - translation already added
-            $("#option-" + index).remove();
-
-            // initialize remove link
-            $("#removeLink-" + index).click(function (e) {
-                e.preventDefault();
-                remove(e);
-            });
-        }
-
-        $(".removeLink").click(function (e) {
-            e.preventDefault();
-            remove(e);
-        });
-
-        function remove(e) {
+        $("#translation").on("click", ".removeLink", function (e) {
             e.preventDefault();
 
-            // get clicked target
-            var $target = $(e.target);
-            // make sure it's a link
-            if (!$target.is('a')) {
-                $target = $(e.target).closest('a');
-            }
+            var item = $(this).closest(".item");
+            var key = item.attr("id").substring("item-".length);
 
-            // get element index
-            var index = $target.attr("id").split("-")[1];
-
-            // remove element by index
-            $('#item-' + index).slideUp('slow', function () {
-                // find deleted value and return it back to select options
-                var value = $(this).find("input.value").val();
+            item.slideUp('slow', function () {
+                // return the source value back to select options
+                var value = item.find(".source-value").val();
                 var o = new Option(value, value);
-                o.id = "option-" + index;
+                $(o).attr("data-key", key);
                 $("#addNewTranslation").append(o);
 
-                // remove
-                $(this).remove();
+                item.remove();
             });
-        }
-
-        function showAddNewTranslationModal() {
-            var dialogWindow = $("#dialog");
-
-            $("#add-button").off('click').on("click", function () {
-                addNewTranslation();
-            });
-
-            dialogWindow.modal('show');
-        }
+        });
 
         $("#addNewTranslation").select2({
-            placeholder: '${action.getText("manage.translation.select")?js_string}',
+            placeholder: '${action.getText("manage.translation.select")?js_string?no_esc}',
             dropdownParent: $('#dialog'),
             language: {
                 noResults: function () {
@@ -146,11 +116,32 @@
             },
             width: "100%",
             allowClear: true,
-            minimumResultsForSearch: 15,
+            // allow typing values not listed, e.g. when the source has too many distinct values to list them all
+            tags: true,
             dropdownCssClass: 'text-smaller',
             theme: 'bootstrap4'
         });
 
+        // a row without a vocabulary value wouldn't be saved; not checked when deleting
+        $("#translation-form").submit(function (e) {
+            var submitter = e.originalEvent ? e.originalEvent.submitter : null;
+            if (submitter && submitter.name === "deleteFlag") {
+                return;
+            }
+
+            var selects = $('#translation select.translated-value');
+            selects.removeClass("is-invalid").next('.invalid-feedback').remove();
+            var unselected = selects.filter(function () {
+                return $(this).val() === null;
+            });
+            if (unselected.length) {
+                unselected.addClass("is-invalid").after(function () {
+                    return $('<div class="invalid-feedback">')
+                        .text('${action.getText("manage.translation.vocabulary.select.required")?js_string?no_esc}');
+                });
+                e.preventDefault();
+            }
+        });
     });
 </script>
 <#assign currentMenu = "manage"/>
@@ -187,7 +178,7 @@
 
                 <div class="mt-2 text-center">
                     <div>
-                        <@s.submit form="translation" cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
+                        <@s.submit form="translation-form" cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
 
                         <div class="btn-group btn-group-sm" role="group">
                             <button id="btnGroup" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -207,7 +198,7 @@
                                     </li>
                                 </#if>
                                 <li>
-                                    <@s.submit form="translation" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
+                                    <@s.submit form="translation-form" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
                                 </li>
                             </ul>
                         </div>
@@ -250,7 +241,7 @@
         </div>
 
         <div class="my-3 p-3">
-            <form id="translation" class="translation-form" action="translation.do" method="post">
+            <form id="translation-form" class="translation-form" action="translation.do" method="post">
                 <input type="hidden" name="r" value="${resource.shortname}"/>
                 <input type="hidden" name="rowtype" value="${property.extension.rowType}"/>
                 <input type="hidden" name="mid" value="${mid}"/>
@@ -267,11 +258,12 @@
                         </div>
                     </div>
 
-                    <#list sourceValuesMap?keys as k>
+                    <#list sourceValuesMap as k, val>
                         <#if (tmap.get(k))??>
+                            <#assign translated = tmap.get(k)/>
                             <div id="item-${k}" class="item row g-2 border-bottom pb-2">
                                 <div class="d-flex justify-content-end mt-3">
-                                    <a id="removeLink-${k}" class="removeLink text-smaller" href="">
+                                    <a class="removeLink text-smaller" href="">
                                             <span>
                                                 <svg viewBox="0 0 24 24" class="link-icon">
                                                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -282,15 +274,23 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <input type="text" class="value form-control" value="${sourceValuesMap.get(k)!}" disabled/>
+                                    <input type="hidden" class="source-value" name="smap['${k}']" value="${val}"/>
+                                    <input type="text" class="value form-control" value="${val}" disabled/>
+                                    <#if action.isNotInSource(k)>
+                                        <div class="form-text"><@s.text name="manage.translation.notInSource"/></div>
+                                    </#if>
                                 </div>
 
                                 <#if (vocabTermsSize>0)>
                                     <div class="col-6">
-                                        <select name="tmap['${k}']" class="form-select">
+                                        <select name="tmap['${k}']" class="translated-value form-select">
                                             <option value="" disabled selected><@s.text name="manage.translation.vocabulary"/></option>
+                                            <#-- keep a saved value that isn't in the vocabulary, so saving doesn't drop it -->
+                                            <#if !(vocabTerms[translated])??>
+                                                <option value="${translated}" selected>${translated}</option>
+                                            </#if>
                                             <#list vocabTermsKeys as code>
-                                                <option value="${code?replace('"','\"')}" <#if tmap.get(k) == code>selected</#if> >
+                                                <option value="${code}" <#if translated == code>selected</#if> >
                                                     ${vocabTerms[code]}
                                                 </option>
                                             </#list>
@@ -298,7 +298,7 @@
                                     </div>
                                 <#else>
                                     <div class="col-6">
-                                        <input type="text" placeholder="<@s.text name='manage.translation.empty.value'/>" class="translatedValue form-control" name="tmap['${k}']" value="${tmap.get(k)!}"/>
+                                        <input type="text" placeholder="<@s.text name='manage.translation.empty.value'/>" class="translated-value form-control" name="tmap['${k}']" value="${translated}"/>
                                     </div>
                                 </#if>
                             </div>
@@ -326,7 +326,7 @@
 
 <div id="baseItem" class="item row g-2 border-bottom pb-2" style="display:none">
     <div class="d-flex justify-content-end mt-3">
-        <a id="removeLink" class="removeLink text-smaller" href="">
+        <a class="removeLink text-smaller" href="">
             <span>
                 <svg viewBox="0 0 24 24" class="link-icon">
                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -336,15 +336,16 @@
         </a>
     </div>
     <div class="col-6">
+        <input type="hidden" class="source-value" value=""/>
         <input type="text" class="value form-control" value="" disabled/>
     </div>
 
     <#if (vocabTermsSize>0)>
         <div class="col-6">
-            <select name="tmap" class="translated-value form-select">
+            <select class="translated-value form-select">
                 <option value="" disabled selected><@s.text name="manage.translation.vocabulary"/></option>
                 <#list vocabTermsKeys as code>
-                    <option value="${code?replace('"','\"')}">
+                    <option value="${code}">
                         ${vocabTerms[code]}
                     </option>
                 </#list>
@@ -352,7 +353,7 @@
         </div>
     <#else>
         <div class="col-6" >
-            <input type="text" placeholder="<@s.text name='manage.translation.empty.value'/>" class="translated-value form-control" name="tmap" value=""/>
+            <input type="text" placeholder="<@s.text name='manage.translation.empty.value'/>" class="translated-value form-control" value=""/>
         </div>
     </#if>
 </div>
@@ -369,11 +370,8 @@
                     <select name="addNewTranslation" id="addNewTranslation" class="form-select">
                         <option value="" disabled selected><@s.text name="manage.translation.select"/></option>
                         <#list sourceValuesMap as key, val>
-                            <#if tmap?? && tmap[key]??>
-                            <#else>
-                                <option id="option-${key}" value="${val}">
-                                    ${val}
-                                </option>
+                            <#if !(tmap.get(key))??>
+                                <option data-key="${key}" value="${val}">${val}</option>
                             </#if>
                         </#list>
                     </select>

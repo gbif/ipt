@@ -39,114 +39,85 @@
             });
             // end hack
 
+            // keys for typed source values, which have none yet
+            var newKeyIndex = 0;
+
             $('#plus').click(function (e) {
                 e.preventDefault();
-                showAddNewTranslationModal();
+                $("#dialog").modal('show');
+            });
+
+            $("#add-button").on("click", function () {
+                addNewTranslation();
             });
 
             function addNewTranslation() {
+                var select = $('#addNewTranslation');
                 // get selected option from dropdown
-                var selected = $('#addNewTranslation').find(":selected");
-                // get selected option's id
-                var optionId = selected.attr("id");
+                var selected = select.find(":selected");
+                var value = selected.val();
 
-                if (optionId) {
-                    // get index from id (e.g. option-k2, k2 is the index)
-                    var elementIndex = optionId.split("option-")[1];
-                    // get value from option
-                    var value = selected.val()
-
-                    // add new line (item)
-                    addNewItem(value, elementIndex);
+                if (value) {
+                    if (!isTranslated(value)) {
+                        var key = selected.attr("data-key") || ("n" + (++newKeyIndex));
+                        addNewItem(value, key);
+                    }
+                    // remove this option from dropdown - translation already added
+                    selected.remove();
+                    select.val(null).trigger('change');
                 }
             }
 
-            function addNewItem(value, index) {
+            function isTranslated(value) {
+                return $('#translation .source-value').filter(function () {
+                    return $(this).val() === value;
+                }).length > 0;
+            }
+
+            function addNewItem(value, key) {
                 // clone template and temporarily hide it
                 var newItem = $('#baseItem').clone();
                 newItem.hide();
 
-                // add it to translation div
-                $("#translation").append(newItem)
+                newItem.attr("id", "item-" + key);
+                newItem.find(".value").val(value);
+                newItem.find(".source-value").attr("name", "smap['" + key + "']").val(value);
+                newItem.find(".translated-value").attr("name", "tmap['" + key + "']");
 
-                // show item
+                // add it to translation div and show it
+                $("#translation").append(newItem);
                 newItem.slideDown('slow');
-
-                // set values and properties
-                setItemValueAndIndex(newItem, value, index);
             }
 
-            function setItemValueAndIndex(item, value, index) {
-                // set id with index
-                item.attr("id", "item-" + index);
-                // set id to item's remove link
-                $("#item-" + index + " .removeLink").attr("id", "removeLink-" + index);
-                // set value to input
-                $("#item-" + index + " .value").val(value);
-                // set name attribute of the translated input
-                $("#item-" + index + " .translatedValue").attr("name", "tmap['" + index + "']");
-                // remove this option from dropdown - translation already added
-                $("#option-" + index).remove();
-
-                // initialize remove link
-                $("#removeLink-" + index).click(function (e) {
-                    e.preventDefault();
-                    remove(e);
-                });
-            }
-
-            $(".removeLink").click(function (e) {
-                e.preventDefault();
-                remove(e);
-            });
-
-            function remove(e) {
+            $("#translation").on("click", ".removeLink", function (e) {
                 e.preventDefault();
 
-                // get clicked target
-                var $target = $(e.target);
-                // make sure it's a link
-                if (!$target.is('a')) {
-                    $target = $(e.target).closest('a');
-                }
+                var item = $(this).closest(".item");
+                var key = item.attr("id").substring("item-".length);
 
-                // get element index
-                var index = $target.attr("id").split("-")[1];
-
-                // remove element by index
-                $('#item-' + index).slideUp('slow', function () {
-                    // find deleted value and return it back to select options
-                    var value = $(this).find("input.value").val();
+                item.slideUp('slow', function () {
+                    // return the source value back to select options
+                    var value = item.find(".source-value").val();
                     var o = new Option(value, value);
-                    o.id = "option-" + index;
+                    $(o).attr("data-key", key);
                     $("#addNewTranslation").append(o);
 
-                    // remove
-                    $(this).remove();
+                    item.remove();
                 });
-            }
-
-            function showAddNewTranslationModal() {
-                var dialogWindow = $("#dialog");
-
-                $("#add-button").on("click", function () {
-                    addNewTranslation();
-                });
-
-                dialogWindow.modal('show');
-            }
+            });
 
             $("#addNewTranslation").select2({
-                placeholder: '${action.getText("manage.translation.select")?js_string}',
+                placeholder: '${action.getText("manage.translation.select")?js_string?no_esc}',
                 dropdownParent: $('#dialog'),
                 width: "100%",
                 allowClear: true,
-                minimumResultsForSearch: 15,
+                // allow typing values not listed, e.g. when the source has too many distinct values to list them all
+                tags: true,
                 dropdownCssClass: 'text-smaller',
                 theme: 'bootstrap4'
             });
 
-            var fieldType = "${field.type!}";
+            var fieldType = "${(field.type!)?js_string}";
             var isRequiredConstraint = false;
             var minConstraint;
             var maxConstraint;
@@ -159,24 +130,23 @@
             var patternConstraintViolatedMessage = "<@s.text name='validation.pattern.violated'/>";
             var minimumConstraintViolatedMessage = "<@s.text name='validation.minimum.violated'/>";
             var maximumConstraintViolatedMessage = "<@s.text name='validation.maximum.violated'/>";
+            var vocabularyValueExpectedMessage = "<@s.text name='manage.translation.vocabulary.select.required'/>";
 
             <#if (field.constraints.pattern)??>
-                // escape slashes to prevent issues with patterns
-                patternConstraint = "${field.constraints.pattern?replace('\\', '\\\\')}";
+                patternConstraint = "${field.constraints.pattern?js_string?no_esc}";
             </#if>
 
             <#if (field.constraints.minimum)??>
-                minConstraint = "${field.constraints.minimum}";
+                minConstraint = ${field.constraints.minimum?c};
             </#if>
 
             <#if (field.constraints.maximum)??>
-                maxConstraint = "${field.constraints.maximum}";
+                maxConstraint = ${field.constraints.maximum?c};
             </#if>
 
             <#if (field.constraints.required)?? && field.constraints.required == true>
                 isRequiredConstraint = true;
             </#if>
-
 
             function isNumberType(value) {
                 return !isNaN(parseFloat(value)) && isFinite(value);
@@ -190,150 +160,84 @@
                 return value === "true" || value === "false";
             }
 
-            var isDeleteOperation = false;
+            function matchesPattern(value) {
+                try {
+                    // a Table Schema pattern must match the whole value
+                    return new RegExp("^(?:" + patternConstraint + ")$").test(value);
+                } catch (e) {
+                    console.log("Invalid regex!");
+                    return true;
+                }
+            }
 
-            // intercept input submit - and store whether it's a delete operation
-            $('.dropdown-menu input[type=submit]').click(function () {
-                isDeleteOperation = ($(this)[0].id === "delete");
-            });
-
-            // validation
+            // validation, skipped when deleting
             $("#translation-form").submit(function (e) {
-                // Ignore delete
-                if (isDeleteOperation) {
-                    isDeleteOperation = false;
+                var submitter = e.originalEvent ? e.originalEvent.submitter : null;
+                if (submitter && submitter.name === "deleteFlag") {
                     return;
                 }
 
-                e.preventDefault();
-                var isTypeValid = true;
-                var isConstrainsValid = true;
-
-                var translatedValues = $('#translation .translatedValue');
-
-                translatedValues.each(function(index, element) {
-                    if (fieldType === 'number') {
-                        isTypeValid = validateNumberField(element);
-                    } else if (fieldType === 'integer') {
-                        isTypeValid = validateIntegerField(element);
-                    } else if (fieldType === 'boolean') {
-                        isTypeValid = validateBooleanField(element);
-                    }
-
-                    if (isRequiredConstraint) {
-                        isConstrainsValid = validateRequiredConstraint(element);
-                    } else if (patternConstraint) {
-                        isConstrainsValid = validatePatternConstraint(element);
-                    } else if (minConstraint) {
-                        isConstrainsValid = validateMinimumConstraint(element);
-                    } else if (maxConstraint) {
-                        isConstrainsValid = validateMaximumConstraint(element);
+                var isValid = true;
+                $('#translation .translated-value').each(function (index, element) {
+                    var message = validateValue(element);
+                    if (message) {
+                        addInputError(element, message);
+                        isValid = false;
+                    } else {
+                        removeInputError(element);
                     }
                 });
 
-                if (isTypeValid && isConstrainsValid) {
-                    $('#translation-form')[0].submit();
+                if (!isValid) {
+                    e.preventDefault();
                 }
             });
 
-            function validateRequiredConstraint(element) {
-                var isValid = true;
+            /**
+             * @return error message if the translated value is invalid, null otherwise
+             */
+            function validateValue(element) {
                 var value = $(element).val();
 
-                if (value === null || value === undefined || value === '') {
-                    isValid = false;
-                    addInputError(element, requiredConstraintViolatedMessage);
+                // vocabulary value not selected
+                if (value === null || value === undefined) {
+                    return vocabularyValueExpectedMessage;
                 }
 
-                return isValid;
-            }
-
-            function validateNumberField(element) {
-                var isValidNumber = true;
-                var value = $(element).val();
-
-                if (!isNumberType(value)) {
-                    isValidNumber = false;
-                    addInputError(element, numberExpectedMessage);
-                } else {
-                    removeInputError(element);
+                // an empty value leaves the value empty
+                if (value === '') {
+                    return isRequiredConstraint ? requiredConstraintViolatedMessage : null;
                 }
 
-                return isValidNumber;
-            }
-
-            function validateIntegerField(element) {
-                var isValidNumber = true;
-                var value = $(element).val();
-
-                if (!isIntegerType(value)) {
-                    isValidNumber = false;
-                    addInputError(element, integerExpectedMessage);
+                if (fieldType === 'number' && !isNumberType(value)) {
+                    return numberExpectedMessage;
+                }
+                if (fieldType === 'integer' && !isIntegerType(value)) {
+                    return integerExpectedMessage;
+                }
+                if (fieldType === 'boolean' && !isBooleanType(value)) {
+                    return booleanExpectedMessage;
+                }
+                if (patternConstraint !== undefined && !matchesPattern(value)) {
+                    return patternConstraintViolatedMessage;
+                }
+                if (fieldType === 'number' || fieldType === 'integer') {
+                    var number = parseFloat(value);
+                    if (minConstraint !== undefined && number < minConstraint) {
+                        return minimumConstraintViolatedMessage;
+                    }
+                    if (maxConstraint !== undefined && number > maxConstraint) {
+                        return maximumConstraintViolatedMessage;
+                    }
                 }
 
-                return isValidNumber;
-            }
-
-            function validateBooleanField(element) {
-                var isValidBoolean = true;
-                var value = $(element).val();
-
-                if (!isBooleanType(value)) {
-                    isValidBoolean = false;
-                    addInputError(element, booleanExpectedMessage);
-                }
-
-                return isValidBoolean;
-            }
-
-            function validatePatternConstraint(element) {
-                var isValid = true;
-                var value = $(element).val();
-
-                var patternConstraintRegex;
-
-                try {
-                    patternConstraintRegex = new RegExp(patternConstraint);
-                    isValid = patternConstraintRegex.test(value);
-                } catch (e) {
-                    console.log("Invalid regex!")
-                }
-
-                if (!isValid) {
-                    addInputError(element, patternConstraintViolatedMessage);
-                }
-
-                return isValid;
-            }
-
-            function validateMaximumConstraint(element) {
-                var isValid = true;
-                var value = $(element).val();
-
-                if (value > maxConstraint) {
-                    isValid = false;
-                    addInputError(element, maximumConstraintViolatedMessage);
-                }
-
-                return isValid;
-            }
-
-            function validateMinimumConstraint(element) {
-                var isValid = true;
-                var value = $(element).val();
-
-                if (value < minConstraint) {
-                    isValid = false;
-                    addInputError(element, minimumConstraintViolatedMessage);
-                }
-
-                return isValid;
+                return null;
             }
 
             function addInputError(element, message) {
                 var errorWrongTypeUl = $('<ul class="invalid-feedback list-unstyled field-error my-1">');
                 errorWrongTypeUl.append('<li>')
-                errorWrongTypeUl.append('<span>' + message + '</span>')
+                errorWrongTypeUl.append($('<span>').text(message))
 
                 $(element).next('.invalid-feedback').remove();
                 $(element).addClass("is-invalid");
@@ -416,7 +320,7 @@
                                     </li>
                                 </#if>
                                 <li>
-                                    <@s.submit form="translation-form" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="delete" key="button.delete"/>
+                                    <@s.submit form="translation-form" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
                                 </li>
                             </ul>
                         </div>
@@ -513,11 +417,12 @@
                         </div>
                     </div>
 
-                    <#list sourceValuesMap?keys as k>
+                    <#list sourceValuesMap as k, val>
                         <#if (tmap.get(k))??>
+                            <#assign translated = tmap.get(k)/>
                             <div id="item-${k}" class="item row g-2 border-bottom pb-2">
                                 <div class="d-flex justify-content-end mt-3">
-                                    <a id="removeLink-${k}" class="removeLink text-smaller" href="">
+                                    <a class="removeLink text-smaller" href="">
                         <span>
                             <svg viewBox="0 0 24 24" class="link-icon">
                                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -528,18 +433,25 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <input type="text" class="value form-control" value="${sourceValuesMap.get(k)!}"
-                                           disabled/>
+                                    <input type="hidden" class="source-value" name="smap['${k}']" value="${val}"/>
+                                    <input type="text" class="value form-control" value="${val}" disabled/>
+                                    <#if action.isNotInSource(k)>
+                                        <div class="form-text"><@s.text name="manage.translation.notInSource"/></div>
+                                    </#if>
                                 </div>
 
                                 <#if (vocabTermsSize>0)>
                                     <div class="col-6">
-                                        <select name="tmapP['${k}']" class="form-select">
+                                        <select name="tmap['${k}']" class="translated-value form-select">
                                             <option value="" disabled
                                                     selected><@s.text name="manage.translation.vocabulary"/></option>
+                                            <#-- keep a saved value that isn't in the vocabulary, so saving doesn't drop it -->
+                                            <#if !(vocabTerms[translated])??>
+                                                <option value="${translated}" selected>${translated}</option>
+                                            </#if>
                                             <#list vocabTermsKeys as code>
-                                                <option value="${code?replace('"','\"')}"
-                                                        <#if tmap.get(k) == code>selected</#if> >
+                                                <option value="${code}"
+                                                        <#if translated == code>selected</#if> >
                                                     ${vocabTerms[code]}
                                                 </option>
                                             </#list>
@@ -549,8 +461,8 @@
                                     <div class="col-6">
                                         <input type="text"
                                                placeholder="<@s.text name='manage.translation.empty.value'/>"
-                                               class="translatedValue form-control" name="tmap['${k}']"
-                                               value="${tmap.get(k)!}"/>
+                                               class="translated-value form-control" name="tmap['${k}']"
+                                               value="${translated}"/>
                                     </div>
                                 </#if>
                             </div>
@@ -578,7 +490,7 @@
 
     <div id="baseItem" class="item row g-2 border-bottom pb-2" style="display:none">
         <div class="d-flex justify-content-end mt-3">
-            <a id="removeLink" class="removeLink text-smaller" href="">
+            <a class="removeLink text-smaller" href="">
         <span>
             <svg viewBox="0 0 24 24" class="link-icon">
                 <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
@@ -588,15 +500,16 @@
             </a>
         </div>
         <div class="col-6">
+            <input type="hidden" class="source-value" value=""/>
             <input type="text" class="value form-control" value="" disabled/>
         </div>
 
         <#if (vocabTermsSize>0)>
             <div class="col-6">
-                <select name="tmap" class="translatedValue form-select">
+                <select class="translated-value form-select">
                     <option value="" disabled selected><@s.text name="manage.translation.vocabulary"/></option>
                     <#list vocabTermsKeys as code>
-                        <option value="${code?replace('"','\"')}">
+                        <option value="${code}">
                             ${vocabTerms[code]}
                         </option>
                     </#list>
@@ -605,7 +518,7 @@
         <#else>
             <div class="col-6">
                 <input type="text" placeholder="<@s.text name='manage.translation.empty.value'/>"
-                       class="translatedValue form-control" name="tmap" value=""/>
+                       class="translated-value form-control" value=""/>
             </div>
         </#if>
     </div>
@@ -622,11 +535,8 @@
                         <select name="addNewTranslation" id="addNewTranslation" class="form-select">
                             <option value="" disabled selected><@s.text name="manage.translation.select"/></option>
                             <#list sourceValuesMap as key, val>
-                                <#if tmap?? && tmap['${key}']??>
-                                <#else>
-                                    <option id="option-${key}" value="${val}">
-                                        ${val}
-                                    </option>
+                                <#if !(tmap.get(key))??>
+                                    <option data-key="${key}" value="${val}">${val}</option>
                                 </#if>
                             </#list>
                         </select>
