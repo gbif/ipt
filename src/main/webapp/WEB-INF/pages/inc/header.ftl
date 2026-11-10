@@ -46,6 +46,11 @@
     <link href="${baseURL}/rss.do" title="Latest Resources" rel="alternate" type="application/rss+xml" />
 
     <script src="${baseURL}/js/jquery/jquery-3.7.1.min.js"></script>
+    [#-- CSRF token of the logged-in user, sent by csrf.js with forms and AJAX requests --]
+    [#if iptCsrfToken??]
+    <meta name="ipt-csrf-token" content="${iptCsrfToken}" />
+    [/#if]
+    <script src="${baseURL}/js/csrf.js"></script>
     <script src="${baseURL}/js/global.js"></script>
 
     <script>
@@ -71,15 +76,6 @@
             gtag('js', new Date());
             gtag('config', '${cfg.analyticsKey}');
         </script>
-    [/#if]
-
-    [#-- If not logged, refresh page periodically to avoid CSRF token expiration --]
-    [#if !loggedIn]
-      <script>
-        setTimeout(function(){
-          window.location.reload();
-        }, ${cfg.getCsrfPageRefreshDelay()?c});
-      </script>
     [/#if]
 
     [#-- Metadata used by browsers (title in browser toolbar, bookmark when added to favorites), search engines (keywords) --]

@@ -283,6 +283,15 @@ public class ResourceFileAction extends PortalBaseAction {
       return NOT_FOUND;
     }
 
+    // if no specific version is requested, use the latest published version, like archive() and metadata()
+    if (version == null) {
+      BigDecimal latestVersion = resource.getLastPublishedVersionsVersion();
+      if (latestVersion == null) {
+        return NOT_FOUND;
+      }
+      version = latestVersion;
+    }
+
     data = dataDir.resourceRtfFile(resource.getShortname(), version);
     mimeType = "application/rtf";
 

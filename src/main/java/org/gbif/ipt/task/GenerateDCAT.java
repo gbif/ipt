@@ -193,6 +193,11 @@ public class GenerateDCAT {
         BigDecimal v = resource.getLastPublishedVersionsVersion();
         String shortname = resource.getShortname();
         File versionEmlFile = cfg.getDataDir().resourceEmlFile(shortname, v);
+        // the feed is built from EML: skip resources published without it, e.g. Camtrap DP and ColDP data packages
+        if (!versionEmlFile.exists()) {
+          LOG.debug("No EML for version #{} of resource {}, left out of the DCAT feed", v, shortname);
+          continue;
+        }
         Resource publishedPublicVersion = ResourceUtils.reconstructVersion(v, resource.getShortname(), resource.getCoreType(), resource.getDataPackageIdentifier(),
             resource.getAssignedDoi(), resource.getOrganisation(), resource.findVersionHistory(v), versionEmlFile,
             resource.getKey());
@@ -372,7 +377,8 @@ public class GenerateDCAT {
     Date lastModification = new Date(0);
     boolean lastPublishedDatePresent = false;
     for (Resource res : resourceManager.listPublishedPublicVersions()) {
-      if (res.getEml().parseLicenseUrl() != null) {
+      // resources without EML, e.g. Camtrap DP and ColDP data packages, aren't in the feed
+      if (res.getEml() != null && res.getEml().parseLicenseUrl() != null) {
         String uri = cfg.getResourceUrl(res.getShortname()) + "#Dataset";
         uris.add(uri);
         if (res.getCreated() != null && res.getCreated().before(firstCreation)) {

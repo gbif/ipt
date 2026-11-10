@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.io.Serial;
 import java.nio.charset.StandardCharsets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ActionSupport;
 
 import lombok.Getter;
@@ -32,6 +34,8 @@ public class DCATAction extends ActionSupport {
 
   @Serial
   private static final long serialVersionUID = 1261384385423019045L;
+
+  private static final Logger LOG = LogManager.getLogger(DCATAction.class);
 
   private final GenerateDCAT generateDCAT;
 
@@ -53,7 +57,13 @@ public class DCATAction extends ActionSupport {
    */
   @Override
   public String execute() throws Exception {
-    dcatInfo = new ByteArrayInputStream(generateDCAT.getFeed().getBytes(StandardCharsets.UTF_8));
+    try {
+      dcatInfo = new ByteArrayInputStream(generateDCAT.getFeed().getBytes(StandardCharsets.UTF_8));
+    } catch (RuntimeException e) {
+      // logged here: the error page can't be used, this action isn't a BaseAction (no baseURL etc. for the page)
+      LOG.error("Failed to generate the DCAT feed", e);
+      return ERROR;
+    }
     return SUCCESS;
   }
 

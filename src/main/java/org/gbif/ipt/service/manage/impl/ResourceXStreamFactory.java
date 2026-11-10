@@ -42,20 +42,21 @@ import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.UrlSource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.VersionHistory;
+import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
 import org.gbif.ipt.model.converter.SafeTreeMapConverter;
 import org.gbif.ipt.model.converter.SafeTreeSetConverter;
+import org.gbif.ipt.utils.XStreamSecurity;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.AnyTypePermission;
 
 public class ResourceXStreamFactory {
 
   public static XStream create(ResourceConvertersManager convertersManager, PasswordEncrypter passwordEncrypter) {
     XStream xstream = new XStream();
 
-    xstream.addPermission(AnyTypePermission.ANY);
+    XStreamSecurity.restrict(xstream);
     xstream.ignoreUnknownElements();
     xstream.alias("resource", Resource.class);
     xstream.alias("user", User.class);
@@ -104,8 +105,8 @@ public class ResourceXStreamFactory {
     xstream.registerConverter(new SafeTreeSetConverter(), 10000);
     // persist only emails for users
     xstream.registerConverter(convertersManager.getUserConverter());
-    // custom converter for ExtensionMapping
-    xstream.registerConverter(convertersManager.getExtensionMappingConverter());
+    // custom converter for ExtensionMapping, resolving class names with this XStream's mapper (allowlist, aliases)
+    xstream.registerConverter(new ExtensionMappingConverter(xstream));
     // persist only rowtype
     xstream.registerConverter(convertersManager.getExtensionConverter());
     // persist only qualified concept name

@@ -23,7 +23,6 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -68,7 +67,7 @@ public class DataPackageMappingPersistenceTest {
     DataPackageIdentifierConverter schemaConverter = new DataPackageIdentifierConverter(schemaManager);
     TableSchemaNameConverter tableSchemaNameConverter = new TableSchemaNameConverter();
     ResourceConvertersManager converters = new ResourceConvertersManager(mock(UserEmailConverter.class),
-        mock(OrganisationKeyConverter.class), mock(ExtensionMappingConverter.class),
+        mock(OrganisationKeyConverter.class),
         mock(ExtensionRowTypeConverter.class), mock(ConceptTermConverter.class), schemaConverter,
         tableSchemaNameConverter, new DataPackageFieldConverter(schemaConverter, tableSchemaNameConverter),
         mock(JdbcInfoConverter.class));

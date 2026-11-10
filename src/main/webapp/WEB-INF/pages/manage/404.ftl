@@ -1,6 +1,7 @@
 [#ftl]
 [#include "/WEB-INF/pages/inc/header.ftl"/]
-<title>[@s.text name="manage.404.title"/]</title>
+[#assign notFoundTitleText][#if notFoundTitle?has_content]${notFoundTitle}[#else][@s.text name="manage.404.title"/][/#if][/#assign]
+<title>${notFoundTitleText}</title>
 [#assign currentMenu = "manage"/]
 [#include "/WEB-INF/pages/inc/menu.ftl"/]
 
@@ -18,7 +19,7 @@
 
             <div class="text-center">
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    [@s.text name="manage.404.title"/]
+                    ${notFoundTitleText}
                 </h1>
             </div>
         </div>
@@ -27,7 +28,7 @@
 
 <main class="container main-content-container">
     <div class="my-3 p-3">
-        <p class="text-center">[@s.text name="manage.404.body"/]</p>
+        <p class="text-center">[#if notFoundBody?has_content]${notFoundBody}[#else][@s.text name="manage.404.body"/][/#if]</p>
     </div>
 </main>
 

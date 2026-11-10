@@ -17,6 +17,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserValidator;
 
@@ -118,6 +119,7 @@ public class AccountAction extends POSTAction {
     return INPUT;
   }
 
+  @RequirePost
   public String changePassword() {
     if (currentUser != null) {
       String trimmedCurrentPassword = StringUtils.trimToNull(currentPassword);

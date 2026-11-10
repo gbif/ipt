@@ -172,6 +172,37 @@ public class MappingActionTest extends IptBaseTest {
     assertEquals(Resource.CoreRowType.OCCURRENCE.toString(), StringUtils.capitalize(action.getResource().getCoreType()));
   }
 
+  /**
+   * Action errors (e.g. ones stored for a redirect) make the workflow interceptor call actionErrorOccurred. For a
+   * mapping that doesn't exist, that must still be the 404, not the mapping page without a mapping.
+   */
+  @Test
+  public void testActionErrorForUnknownMapping() {
+    prepareWithMid("5");
+    action.addActionError("stored for a redirect");
+    assertEquals(MappingAction.NOT_FOUND, action.actionErrorOccurred(MappingAction.INPUT));
+  }
+
+  /**
+   * For an existing mapping, the result set in prepare() is used: the mapping has no source yet, so the source page.
+   */
+  @Test
+  public void testActionErrorForExistingMapping() {
+    prepareWithMid("0");
+    action.addActionError("stored for a redirect");
+    assertEquals("source", action.actionErrorOccurred(MappingAction.INPUT));
+  }
+
+  private void prepareWithMid(String mid) {
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter("id")).thenReturn(Constants.DWC_ROWTYPE_OCCURRENCE);
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn(RESOURCE_SHORT_NAME);
+    when(req.getParameter("mid")).thenReturn(mid);
+    when(req.getMethod()).thenReturn("get");
+    action.withServletRequest(req);
+    action.prepare();
+  }
+
   @Test
   public void testGetNonMappedColumns() {
     List<String> nonMapped = action.getNonMappedColumns();

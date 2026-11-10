@@ -53,7 +53,6 @@
     <#elseif resource.lastPublished?? && resource.identifierStatus == "UNRESERVED" && resource.status != "REGISTERED">
 
         <form action="publish.do?r=${resource.shortname}" method="post">
-            <input name="r" type="hidden" value="${resource.shortname}"/>
             <textarea id="summary" name="summary" cols="40" rows="5" style="display: none"></textarea>
 
             <#if dataPackageResource>

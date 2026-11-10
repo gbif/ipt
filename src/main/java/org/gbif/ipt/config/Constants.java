@@ -27,13 +27,13 @@ public final class Constants {
 
   public static final String CANCEL = "cancel";
   public static final String SESSION_USER = "curr_user";
-  public static final String SESSION_RESOURCE = "curr_resource";
   public static final String SESSION_URL = "url";
   public static final String SESSION_SOURCE_NAME = "sourceName";
   public static final String SESSION_SOURCE_OVERWRITE_MESSAGE = "sourceOverwriteMessage";
   public static final String SESSION_FILE = "file";
   public static final String SESSION_FILE_NAME = "fileName";
   public static final String SESSION_REFERER = "referer";
+  public static final String SESSION_CSRF_TOKEN = "csrf_token";
   public static final String SESSION_FILE_CONTENT_TYPE = "contentType";
   public static final String SESSION_DWC_TRANSLATION = "dwcTranslation";
   public static final String SESSION_DP_TRANSLATION = "dwcTranslation";

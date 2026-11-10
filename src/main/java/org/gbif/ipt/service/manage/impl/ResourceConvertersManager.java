@@ -16,7 +16,6 @@ package org.gbif.ipt.service.manage.impl;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
@@ -32,7 +31,6 @@ public class ResourceConvertersManager {
 
   private UserEmailConverter userConverter;
   private OrganisationKeyConverter orgConverter;
-  private ExtensionMappingConverter extensionMappingConverter;
   private ExtensionRowTypeConverter extensionConverter;
   private ConceptTermConverter conceptTermConverter;
   private DataPackageIdentifierConverter dataSchemaConverter;
@@ -45,13 +43,11 @@ public class ResourceConvertersManager {
 
   public ResourceConvertersManager(
       UserEmailConverter userConverter, OrganisationKeyConverter orgConverter,
-      ExtensionMappingConverter extensionMappingConverter,
       ExtensionRowTypeConverter extensionConverter, ConceptTermConverter conceptTermConverter,
       DataPackageIdentifierConverter dataSchemaConverter, TableSchemaNameConverter tableSchemaNameConverter,
       DataPackageFieldConverter dataPackageFieldConverter, JdbcInfoConverter jdbcInfoConverter) {
     this.userConverter = userConverter;
     this.orgConverter = orgConverter;
-    this.extensionMappingConverter = extensionMappingConverter;
     this.extensionConverter = extensionConverter;
     this.conceptTermConverter = conceptTermConverter;
     this.dataSchemaConverter = dataSchemaConverter;
@@ -68,11 +64,6 @@ public class ResourceConvertersManager {
   @Inject
   public void setOrgConverter(OrganisationKeyConverter orgConverter) {
     this.orgConverter = orgConverter;
-  }
-
-  @Inject
-  public void setExtensionMappingConverter(ExtensionMappingConverter extensionMappingConverter) {
-    this.extensionMappingConverter = extensionMappingConverter;
   }
 
   @Inject

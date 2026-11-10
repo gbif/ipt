@@ -417,10 +417,8 @@ public class ResourceLoaderImpl implements ResourceLoader {
       }
 
       // otherwise read the metadata file
-      try {
-        InputStream input = Files.newInputStream(inferredMetadataFile.toPath());
-        InferredCamtrapMetadata inferredMetadata = resourcePersister.loadInferredCamtrapMetadata(input);
-        resource.setInferredMetadata(inferredMetadata);
+      try (InputStream input = Files.newInputStream(inferredMetadataFile.toPath())) {
+        resource.setInferredMetadata(resourcePersister.loadInferredCamtrapMetadata(input));
       } catch (Exception e) {
         LOG.error("Cannot read inferred metadata file (Camtrap) for resource {}", resource.getShortname(), e);
         resource.setInferredMetadata(new InferredCamtrapMetadata());
@@ -431,10 +429,8 @@ public class ResourceLoaderImpl implements ResourceLoader {
         return;
       }
 
-      try {
-        InputStream input = Files.newInputStream(inferredMetadataFile.toPath());
-        InferredEmlMetadata inferredMetadata = resourcePersister.loadInferredEmlMetadata(input);
-        resource.setInferredMetadata(inferredMetadata);
+      try (InputStream input = Files.newInputStream(inferredMetadataFile.toPath())) {
+        resource.setInferredMetadata(resourcePersister.loadInferredEmlMetadata(input));
       } catch (Exception e) {
         LOG.error("Cannot read inferred metadata file (EML) for resource {}", resource.getShortname(), e);
         resource.setInferredMetadata(new InferredEmlMetadata());

@@ -50,9 +50,8 @@
       <interceptor name="requireManager" class="org.gbif.ipt.struts2.RequireManagerInterceptor"/>
       <interceptor name="deactivatedUser" class="org.gbif.ipt.struts2.DeactivatedUserInterceptor"/>
       <interceptor name="protectPrivateResource" class="org.gbif.ipt.struts2.PrivateDeletedResourceInterceptor"/>
-
-      <!-- interceptor changing the current resource in the session if a "r" parameter is supplied -->
-      <interceptor name="resourceSession" class="org.gbif.ipt.struts2.ResourceSessionInterceptor"/>
+      <!-- returns the "locked" result if the requested resource is locked, e.g. while being published -->
+      <interceptor name="resourceLocked" class="org.gbif.ipt.struts2.ResourceLockedInterceptor"/>
 
       <!-- custom interceptor to preserve action messages across redirects -->
       <interceptor name="keepRedirectMessages" class="org.gbif.ipt.struts2.RedirectMessageInterceptor"/>
@@ -61,8 +60,8 @@
       <!-- also check for any values in the cancel request parameter and returns the cancel result in that case immediately -->
       <interceptor name="setupAndCancel" class="org.gbif.ipt.struts2.SetupAndCancelInterceptor"/>
 
-      <!-- interceptor to set csrf login tokens in cookie and value stack to prevent CSRF login attacks -->
-      <interceptor name="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor"/>
+      <!-- CSRF token check for logged-in users, POST-only action methods (@RequirePost) and anti-framing headers -->
+      <interceptor name="csrf" class="org.gbif.ipt.struts2.CsrfInterceptor"/>
 
       <!-- Default locale interceptor -->
       <interceptor name="defaultLocale" class="org.gbif.ipt.struts2.DefaultLocaleInterceptor"/>
@@ -80,48 +79,98 @@
       <!-- Reloads the metadata from disk after a metadata form failed to save, so its values are not saved later -->
       <interceptor name="discardFailedMetadataEdits" class="org.gbif.ipt.struts2.DiscardFailedMetadataEditsInterceptor"/>
 
-      <!-- see http://struts.apache.org/2.1.8/docs/interceptors.html -->
-      <interceptor-stack name="iptStackWithoutSetup">
-        <interceptor-ref name="keepRedirectMessages"/>
+      <!-- maps exceptions to the exception result (the error page), like the exception interceptor in defaultStack and
+           i18nStack. Those run after IPT's own interceptors (setupAndCancel, csrf, the role, resource and lock checks),
+           so this one runs first in every stack, otherwise an exception there gives a bare servlet container 500.
+           Logged, as these exceptions are not caught anywhere else -->
+      <interceptor name="iptException" class="org.apache.struts2.interceptor.ExceptionMappingInterceptor">
+        <param name="logEnabled">true</param>
+        <param name="logLevel">ERROR</param>
+      </interceptor>
+
+      <!-- runs before the role and resource checks, so the pages they return (400, 401, 404, 410) get the session,
+           the CSRF token and the user's language like any other page. It sets no action parameters and doesn't call
+           prepare(). The CSRF check also rejects a forged request here, before parameters are set; it comes after the
+           locale interceptors, so its 403 and 405 pages are in the user's language too -->
+      <interceptor-stack name="iptContextStack">
+        <interceptor-ref name="servletConfig"/>
         <interceptor-ref name="defaultLocale"/>
         <interceptor-ref name="i18n"/>
+        <interceptor-ref name="csrf"/>
+      </interceptor-stack>
+
+      <!-- runs after the role and resource checks: parameters, prepare(), validation -->
+      <interceptor-stack name="iptStackWithoutSetup">
+        <interceptor-ref name="keepRedirectMessages"/>
         <interceptor-ref name="defaultStack"/>
         <interceptor-ref name="xssFieldError"/>
         <interceptor-ref name="validation">
           <param name="excludeMethods">input,back,cancel,list</param>
         </interceptor-ref>
-        <interceptor-ref name="csrfLoginInterceptor" />
         <interceptor-ref name="workflow"/>
       </interceptor-stack>
 
       <!-- stack to be used as the default for the public portal package -->
+      <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="portalStack">
+        <interceptor-ref name="iptException"/>
         <interceptor-ref name="deactivatedUser"/>
-        <interceptor-ref name="resourceSession"/>
         <interceptor-ref name="setupAndCancel"/>
+        <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="protectPrivateResource"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
       </interceptor-stack>
 
       <!-- stack to be used as the default for the admin package -->
+      <!-- interceptor order is covered by StrutsConfigTest -->
       <interceptor-stack name="adminStack">
+        <interceptor-ref name="iptException"/>
         <interceptor-ref name="deactivatedUser"/>
         <interceptor-ref name="setupAndCancel"/>
-        <interceptor-ref name="iptStackWithoutSetup"/>
+        <interceptor-ref name="iptContextStack"/>
         <interceptor-ref name="requireAdmin"/>
-      </interceptor-stack>
-
-      <!-- stack to be used as the default for the manage package -->
-      <interceptor-stack name="managerStack">
-        <interceptor-ref name="deactivatedUser"/>
-        <interceptor-ref name="resourceSession"/>
-        <interceptor-ref name="setupAndCancel"/>
         <interceptor-ref name="iptStackWithoutSetup"/>
-        <interceptor-ref name="requireManager"/>
       </interceptor-stack>
 
-      <!-- stack to be used for individual ajax actions within any package -->
-      <interceptor-stack name="ajaxStack">
+      <!-- managerStack without the lock check: locked.do (the locked result's target) and read-only actions
+           (resource/preview, /manager-api). prepare() must not change a locked resource -->
+      <interceptor-stack name="managerStackWithoutLock">
+        <interceptor-ref name="iptException"/>
+        <interceptor-ref name="deactivatedUser"/>
+        <interceptor-ref name="setupAndCancel"/>
+        <interceptor-ref name="iptContextStack"/>
+        <interceptor-ref name="requireManager"/>
+        <interceptor-ref name="iptStackWithoutSetup"/>
+      </interceptor-stack>
+
+      <!-- default stack of the manage package: the lock check runs before parameters and prepare(), which change
+           the resource that publishing reads -->
+      <interceptor-stack name="managerStack">
+        <interceptor-ref name="iptException"/>
+        <interceptor-ref name="deactivatedUser"/>
+        <interceptor-ref name="setupAndCancel"/>
+        <interceptor-ref name="iptContextStack"/>
+        <interceptor-ref name="requireManager"/>
+        <interceptor-ref name="resourceLocked"/>
+        <interceptor-ref name="iptStackWithoutSetup"/>
+      </interceptor-stack>
+
+      <!-- AJAX actions in the manage package (report, cancel, peek, mappingPeek): no lock check, so publishing can be
+           followed and cancelled. prepare() runs (i18nStack) and must not change a locked resource -->
+      <interceptor-stack name="managerAjaxStack">
+        <interceptor-ref name="iptException"/>
+        <interceptor-ref name="deactivatedUser"/>
+        <interceptor-ref name="iptContextStack"/>
+        <interceptor-ref name="requireManager"/>
+        <interceptor-ref name="i18nStack"/>
+      </interceptor-stack>
+
+      <!-- lightweight stack for ajax actions in the admin package -->
+      <interceptor-stack name="adminAjaxStack">
+        <interceptor-ref name="iptException"/>
+        <interceptor-ref name="deactivatedUser"/>
+        <interceptor-ref name="iptContextStack"/>
+        <interceptor-ref name="requireAdmin"/>
         <interceptor-ref name="i18nStack"/>
       </interceptor-stack>
 
@@ -144,10 +193,24 @@
         <param name="status">401</param>
         <param name="location">/WEB-INF/pages/error/401-manager.ftl</param>
       </result>
+      <result name="403-csrf" type="freemarkerWithStatus">
+        <param name="status">403</param>
+        <param name="location">/WEB-INF/pages/error/403-csrf.ftl</param>
+      </result>
+      <result name="405" type="freemarkerWithStatus">
+        <param name="status">405</param>
+        <param name="location">/WEB-INF/pages/error/405.ftl</param>
+      </result>
       <result name="304" type="httpheader">
         <param name="status">304</param>
       </result>
       <result name="error" type="freemarkerWithStatus">
+        <param name="status">500</param>
+        <param name="location">/WEB-INF/pages/error/error.ftl</param>
+      </result>
+      <!-- the result of the exception mappings. Not "error": many actions have their own error result, e.g. a page or a
+           redirect for a failed operation, which would take precedence over the global one and hide the exception -->
+      <result name="exception" type="freemarkerWithStatus">
         <param name="status">500</param>
         <param name="location">/WEB-INF/pages/error/error.ftl</param>
       </result>
@@ -158,8 +221,8 @@
     </global-results>
 
     <global-exception-mappings>
-      <exception-mapping result="error" exception="java.lang.RuntimeException"/>
-      <exception-mapping result="error" exception="org.gbif.ipt.service.InvalidConfigException"/>
+      <exception-mapping result="exception" exception="java.lang.RuntimeException"/>
+      <exception-mapping result="exception" exception="org.gbif.ipt.service.InvalidConfigException"/>
     </global-exception-mappings>
 
     <action name="setupDataDirectory" class="org.gbif.ipt.config.SetupAction" method="setupDataDirectory">

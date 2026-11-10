@@ -18,6 +18,7 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.DataPackageMetadata;
 import org.gbif.ipt.model.datapackage.metadata.FrictionlessMetadata;
+import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.voc.DataPackageMetadataSection;
 import org.gbif.ipt.model.voc.FrictionlessMetadataSection;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -61,15 +62,24 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
   @Override
   public void prepare() {
     super.prepare();
-    if (session.get(Constants.SESSION_USER) == null) {
+    // no user logged in, or no resource: RequireManagerInterceptor already returned the login page, a 400 or a 404,
+    // so this only happens when the action runs without it, e.g. in tests
+    if (session.get(Constants.SESSION_USER) == null || resource == null) {
       return;
     }
 
-    FrictionlessMetadata metadata = (FrictionlessMetadata) resource.getDataPackageMetadata();
+    // an EML resource, a Camtrap DP (it has its own pages), or a data package without Frictionless metadata (ColDP)
+    DataPackageMetadata metadata = resource.getDataPackageMetadata();
+    if (!(metadata instanceof FrictionlessMetadata) || metadata instanceof CamtrapMetadata) {
+      notFound("manage.404.page.title", "manage.404.page.body", resource.getShortname());
+      return;
+    }
+
     if (isHttpPost()) {
-      metadata.getContributors().clear();
-      metadata.getLicenses().clear();
-      metadata.getSources().clear();
+      FrictionlessMetadata<?, ?, ?> frictionless = (FrictionlessMetadata<?, ?, ?>) metadata;
+      frictionless.getContributors().clear();
+      frictionless.getLicenses().clear();
+      frictionless.getSources().clear();
     }
   }
 

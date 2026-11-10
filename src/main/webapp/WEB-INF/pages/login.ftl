@@ -40,7 +40,7 @@
         </p>
 
         <form class="needs-validation" action="${baseURL}/login.do" method="post" novalidate>
-            <input type="hidden" name="csrfToken" value="${newCsrfToken!}">
+            <input type="hidden" name="csrfToken" value="${loginToken}">
             <#assign userEmail>
                 <@s.text name="user.email"/>
             </#assign>

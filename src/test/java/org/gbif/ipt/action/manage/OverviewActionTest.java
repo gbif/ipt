@@ -19,6 +19,10 @@ import org.gbif.doi.service.datacite.RestJsonApiDataCiteService;
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import jakarta.servlet.http.HttpServletRequest;
+import org.gbif.ipt.task.StatusReport;
+import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
@@ -78,6 +82,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -185,6 +192,22 @@ public class OverviewActionTest extends IptBaseTest {
       resource.addDataPackageMapping(mapping);
     }
     return resource;
+  }
+
+  /**
+   * The Replace button of the data package metadata can be clicked without choosing a file. The missing file must
+   * give the overview page with an error, not the exception error page.
+   */
+  @Test
+  public void testReplaceMetadataWithoutFile() {
+    action.withUploadedFiles(new ArrayList<>());
+    assertEquals(OverviewAction.ERROR, action.replaceEml());
+    assertEquals(1, action.getActionErrors().size());
+
+    action.clearErrorsAndMessages();
+    action.withUploadedFiles(new ArrayList<>());
+    assertEquals(OverviewAction.ERROR, action.replaceDatapackageMetadata());
+    assertEquals(1, action.getActionErrors().size());
   }
 
   @Test
@@ -596,5 +619,66 @@ public class OverviewActionTest extends IptBaseTest {
     action.setUndelete("true");
     assertEquals("input", action.undelete());
     assertEquals(1, action.getActionErrors().size());
+  }
+
+  /**
+   * Mapping preview without rowType and mapping ID: 400, and an unknown mapping: 404. Both keep the message for the
+   * preview modal.
+   */
+  @Test
+  public void testMappingPeekBadRequestAndUnknownMapping() {
+    Resource r = new Resource();
+    r.setShortname("res1");
+    action.setResource(r);
+
+    assertEquals(OverviewAction.BAD_REQUEST, action.peek());
+    assertEquals(1, action.getReport().getMessages().size());
+    // not completed, so the preview doesn't say it finished successfully
+    assertFalse(action.getReport().isCompleted());
+
+    action.id = "http://rs.tdwg.org/dwc/terms/Occurrence";
+    action.setMid(5);
+    assertEquals(OverviewAction.NOT_FOUND, action.peek());
+    assertEquals(1, action.getReport().getMessages().size());
+    assertFalse(action.getReport().isCompleted());
+  }
+
+  /**
+   * While the resource is being published, report.do (polled every second), cancel.do and locked.do run prepare()
+   * without a lock check: it only loads the report, and leaves the resource that publishing reads unchanged.
+   */
+  @Test
+  public void testPrepareDoesNotChangeLockedResource() {
+    Extension occurrence = new Extension();
+    occurrence.setRowType(Constants.DWC_ROWTYPE_OCCURRENCE);
+    // a core mapping without fields, which prepare() deletes from a resource that isn't locked
+    ExtensionMapping emptyCoreMapping = new ExtensionMapping();
+    emptyCoreMapping.setExtension(occurrence);
+    Resource r = new Resource();
+    r.setShortname("res1");
+    r.addMapping(emptyCoreMapping);
+
+    StatusReport report = new StatusReport("publishing", new ArrayList<>());
+    ResourceManager resourceManager = mock(ResourceManager.class);
+    when(resourceManager.get("res1")).thenReturn(r);
+    ResourcePublicationManager publicationManager = mock(ResourcePublicationManager.class);
+    when(publicationManager.isLocked("res1")).thenReturn(true);
+    when(publicationManager.status("res1")).thenReturn(report);
+    UserAccountManager userManager = mock(UserAccountManager.class);
+
+    OverviewAction lockedAction = new OverviewAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
+        mock(RegistrationManager.class), resourceManager, userManager, mock(ExtensionManager.class),
+        mock(GenerateDwcaFactory.class), mock(GenerateDataPackageFactory.class), mock(VocabulariesManager.class),
+        mock(RegistryManager.class), mock(DataPackageSchemaManager.class), publicationManager,
+        mock(MetadataReader.class));
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn("res1");
+    lockedAction.setServletRequest(req);
+
+    lockedAction.prepare();
+
+    assertSame(report, lockedAction.getReport());
+    assertEquals(1, r.getMappings().size());
+    verify(userManager, never()).list(any());
   }
 }

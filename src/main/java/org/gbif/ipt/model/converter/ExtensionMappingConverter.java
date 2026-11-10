@@ -15,18 +15,28 @@ package org.gbif.ipt.model.converter;
 
 import org.gbif.ipt.model.ExtensionMapping;
 
-import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
-import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
+import com.thoughtworks.xstream.mapper.MapperWrapper;
 
+/**
+ * Converts the mappings of a resource (resource.xml).
+ * <p>
+ * Class names are resolved by the mapper of the XStream instance the converter is registered with, so its type
+ * allowlist ({@link org.gbif.ipt.utils.XStreamSecurity}) and aliases (e.g. filesource, sqlsource) apply inside
+ * mappings as well.
+ */
 public class ExtensionMappingConverter extends ReflectionConverter {
 
-  public ExtensionMappingConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
-    super(mapper, reflectionProvider);
+  /**
+   * @param xstream the XStream instance this converter gets registered with
+   */
+  public ExtensionMappingConverter(XStream xstream) {
+    super(new MappingMapper(xstream.getMapper()), new PureJavaReflectionProvider());
   }
 
   @Override
@@ -50,8 +60,30 @@ public class ExtensionMappingConverter extends ReflectionConverter {
     return mapping;
   }
 
-  @Override
-  public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
-    super.marshal(source, writer, context);
+  /**
+   * Keeps the format IPT 3.3.7 writes, so it can still read the mappings after a downgrade: fully qualified class
+   * names instead of aliases (as written since IPT 3.2.0), and default implementations only for null and primitive
+   * types (XStream's DefaultImplementationsMapper defaults), so the class of any other field is written whenever it
+   * differs from the declared type. Everything else, including the allowlist check when reading, comes from the
+   * wrapped mapper.
+   */
+  private static class MappingMapper extends MapperWrapper {
+
+    MappingMapper(Mapper wrapped) {
+      super(wrapped);
+    }
+
+    @Override
+    public String serializedClass(Class type) {
+      return type.getName();
+    }
+
+    @Override
+    public Class defaultImplementationOf(Class type) {
+      if (type == null || type.isPrimitive()) {
+        return super.defaultImplementationOf(type);
+      }
+      return type;
+    }
   }
 }

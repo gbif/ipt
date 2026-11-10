@@ -18,6 +18,7 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.IptColorScheme;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptFileUtils;
 

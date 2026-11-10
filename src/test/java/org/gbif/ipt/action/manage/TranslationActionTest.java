@@ -15,6 +15,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.IptBaseTest;
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
@@ -326,5 +327,23 @@ public class TranslationActionTest extends IptBaseTest {
     assertEquals(2, action.getVocabTerms().size());
     assertEquals(3, action.getTrans().getSourceValues().size());
     assertEquals(2, action.getTrans().getTranslatedValues().size());
+  }
+
+  /**
+   * A mapping id that isn't a number matches no mapping: reload and automap return a 404.
+   */
+  @Test
+  public void testInvalidMappingId() {
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter(TranslationAction.REQ_PARAM_MAPPINGID)).thenReturn("abc");
+    when(req.getParameter(TranslationAction.REQ_PARAM_ROWTYPE)).thenReturn(Constants.DWC_ROWTYPE_OCCURRENCE);
+    when(req.getParameter(TranslationAction.REQ_PARAM_TERM)).thenReturn(DwcTerm.basisOfRecord.qualifiedName());
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn("TestResource");
+    when(req.getMethod()).thenReturn("GET");
+    action.withServletRequest(req);
+
+    action.prepare();
+    assertEquals(BaseAction.NOT_FOUND, action.reload());
+    assertEquals(BaseAction.NOT_FOUND, action.automap());
   }
 }

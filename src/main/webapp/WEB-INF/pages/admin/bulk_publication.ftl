@@ -53,9 +53,26 @@
 
         loadReport();
         var reporter = setInterval(loadReport, 1000);
+        // a request is sent every second, so more than one can fail
+        var failed = false;
 
         function loadReport() {
-            $("#bulkReport").load("${baseURL}/admin/bulkReport.do?", function () {
+            $("#bulkReport").load("${baseURL}/admin/bulkReport.do?", function (response, status, xhr) {
+                // the session expired: stop polling and open this page by GET, which goes to login and returns here
+                if (xhr.status === 401) {
+                    clearInterval(reporter);
+                    window.location.href = "${baseURL}/admin/bulk-publication.do";
+                    return;
+                }
+                if (status === "error") {
+                    if (xhr.status !== 0 && !failed) {
+                        failed = true;
+                        clearInterval(reporter);
+                        $("#bulkReport").prepend($('<div class="alert alert-danger fs-smaller-2" role="alert"></div>')
+                            .text('${action.getText("basic.error")?js_string?no_esc} (' + xhr.status + ')'));
+                    }
+                    return;
+                }
                 if ($(".running").length === 0 && $(".completed").length > 0) {
                     clearInterval(reporter);
                 }

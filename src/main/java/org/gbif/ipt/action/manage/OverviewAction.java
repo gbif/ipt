@@ -83,6 +83,7 @@ import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.ipt.i18n.I18n;
 import org.gbif.ipt.validation.SectionErrorCollector;
 import org.gbif.ipt.i18n.StrutsI18n;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.metadata.eml.InvalidEmlException;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Citation;
@@ -297,6 +298,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Triggered by add network button on manage resource page.
    */
+  @RequirePost
   public String addNetwork() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -322,6 +324,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Triggered by add manager button on manage resource page.
    */
+  @RequirePost
   public String addManager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -340,11 +343,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
   /**
    * Cancel resource publication. Publication is all or nothing. If incomplete, the version number of the resource
-   * must be rolled back.
+   * must be rolled back. POST only: a link on another site must not be able to cancel a publication.
    *
    * @return Struts2 result string
    */
   @Override
+  @RequirePost
   public String cancel() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -371,6 +375,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Deletes a resource from the IPT only.
    */
+  @RequirePost
   public String deleteFromIpt() {
     if (resource == null) {
       return NOT_FOUND;
@@ -413,6 +418,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * </br>
    */
   @Override
+  @RequirePost
   public String delete() {
     if (resource == null) {
       return NOT_FOUND;
@@ -535,6 +541,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * however, at this time the GBIF registry api or GBIF registry legacy apis do not support the undelete operation and
    * thus require communication with the GBIF Helpdesk.   *
    */
+  @RequirePost
   public String undelete() {
     if (resource == null) {
       return NOT_FOUND;
@@ -692,6 +699,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Triggered by delete network link on manage resource page.
    */
+  @RequirePost
   public String deleteNetwork() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -720,6 +728,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Triggered by delete manager link on manage resource page.
    */
+  @RequirePost
   public String deleteManager() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -851,6 +860,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * Change the visibility of a resource from public to private. This operation cannot be performed, if the resource
    * has been assigned a DOI (DOI that is registered, not reserved), or if the resource has been registered with GBIF.
    */
+  @RequirePost
   public String makePrivate() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -880,6 +890,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return execute();
   }
 
+  @RequirePost
   public String makePublic() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -918,6 +929,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return execute();
   }
 
+  @RequirePost
   public String cancelVisibilityChange() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -948,6 +960,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * If the resource has an existing DOI already, its an indication the resource is being transitioned to a new DOI.
    * In this case, the previous DOI must be replaced by the new DOI.
    */
+  @RequirePost
   public String reserveDoi() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1144,6 +1157,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * Can only be done to a resource whose DOI is reserved but not public. If the resource previously had been assigned
    * a DOI, that DOI is reassigned.
    */
+  @RequirePost
   public String deleteDoi() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1199,8 +1213,15 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   public void prepare() {
     super.prepare();
     if (resource != null) {
-      // refresh archive report
+      // refresh archive report; this also finishes a publication whose task is done, which unlocks the resource
       updateReport();
+
+      // publishing reads the resource in memory. report.do, cancel.do, locked.do and mappingPeek.do have no lock
+      // check, so while it runs only the report is loaded: the rest below changes the resource, e.g. deletes
+      // mappings without fields, and only the overview page shows it
+      if (resourcePublicationManager.isLocked(resource.getShortname())) {
+        return;
+      }
 
       // check all extensions are up to date
       outdatedExtensions = resource.getMappings().stream()
@@ -1367,6 +1388,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * @return Struts2 result string
    * @throws Exception if method fails
    */
+  @RequirePost
   public String publish() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1492,6 +1514,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return ERROR;
   }
 
+  @RequirePost
   public synchronized String registerResource() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1718,9 +1741,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       BigDecimal latestVersion = new BigDecimal(latestVersionHistory.getVersion());
       File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), latestVersion);
       if (emlFile.exists()) {
-        try {
+        try (InputStream in = new FileInputStream(emlFile)) {
           LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
-          InputStream in = new FileInputStream(emlFile);
           Eml eml = EmlFactory.build(in);
           return eml.parseLicenseUrl();
         } catch (Exception e) {
@@ -1735,6 +1757,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   /**
    * Changes the GBIF dataset type of a registered DwC-DP resource and updates its registration.
    */
+  @RequirePost
   public synchronized String updateDwcDpDatasetType() throws Exception {
     if (resource == null) {
       return NOT_FOUND;
@@ -1853,6 +1876,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     this.makePublicDateTime = makePublicDateTime;
   }
 
+  @RequirePost
   public String replaceEml() {
     try {
       UploadedFile upload = requireSingleUpload("EML");
@@ -1881,6 +1905,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
   }
 
+  @RequirePost
   public String replaceDatapackageMetadata() {
     try {
       UploadedFile upload = requireSingleUpload("Metadata");
@@ -1893,7 +1918,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       LOG.error("Failed to replace data package metadata", e);
       addActionError(getText("manage.overview.failed.replace.metadata"));
       return ERROR;
-    } catch (IOException e) {
+    } catch (IllegalArgumentException | IOException e) {
       LOG.error("Failed to read data package metadata from file", e);
       addActionError(getText("manage.overview.failed.replace.metadata.read"));
       return ERROR;
@@ -1946,20 +1971,17 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     columns = new ArrayList<>();
     Exception exception = null;
     List<TaskMessage> messages = new ArrayList<>();
-
-    // find the rowType
-    Term rowType = null;
-    if (id != null) {
-      rowType = TERM_FACTORY.findTerm(id);
-    }
+    String result = SUCCESS;
 
     if (resource.getDataPackageIdentifier() != null) {
       // TODO: 06/04/2022 implement for schema resources?
       // There are many files inside, how to display that?
     } else {
-      if (rowType != null && mid != null) {
-        ExtensionMapping mapping = resource.getMappings(id).get(mid);
+      if (id != null && mid != null) {
+        ExtensionMapping mapping = resource.getMapping(id, mid);
         if (mapping != null) {
+          // the row type of the mapping's extension: findTerm would register the raw id in the global TermFactory
+          Term rowType = TERM_FACTORY.findTerm(mapping.getExtension().getRowType());
           try {
             GenerateDwca worker = dwcaFactory.create(resource, this);
             worker.report();
@@ -1997,21 +2019,31 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           }
         } else {
           messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.mapping.not.found", new String[]{id, String.valueOf(mid)})));
+          result = NOT_FOUND;
         }
       } else {
         messages.add(new TaskMessage(Level.ERROR, getText("mapping.preview.bad.request")));
+        result = BAD_REQUEST;
       }
     }
 
-    // add messages to those collected while generating preview
-    if (!messages.isEmpty()) {
-      report.getMessages().addAll(messages);
+    if (exception != null) {
+      report = new StatusReport(exception, "failed", messages);
+    } else if (!SUCCESS.equals(result)) {
+      // no preview was generated, so report is still the resource's publishing report (or null): show only the
+      // message, as not completed, so peek.ftl doesn't say the preview finished successfully
+      report = new StatusReport("failed", messages);
+    } else {
+      // messages collected while generating the preview, then ours; a new list, as report may be shared
+      List<TaskMessage> allMessages = new ArrayList<>();
+      if (report != null) {
+        allMessages.addAll(report.getMessages());
+      }
+      allMessages.addAll(messages);
+      report = new StatusReport(true, "succeeded", allMessages);
     }
 
-    report = (exception == null) ? new StatusReport(true, "succeeded", report.getMessages())
-        : new StatusReport(exception, "failed", messages);
-
-    return SUCCESS;
+    return result;
   }
 
   @Override

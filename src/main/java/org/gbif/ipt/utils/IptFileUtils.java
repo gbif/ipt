@@ -33,11 +33,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.FileSystemException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -62,6 +69,11 @@ public class IptFileUtils {
   private static final Logger LOG = LogManager.getLogger(IptFileUtils.class);
 
   public static final String UTF8 = "UTF8";
+
+  // how often moveIntoPlace tries to replace the target, and how long it waits in between
+  private static final int MOVE_ATTEMPTS = 5;
+  private static final long MOVE_RETRY_MILLIS = 100;
+
   private static final int BUFFER_SIZE = 8192;
   private static final int TEMP_DIR_ATTEMPTS = 10000;
 
@@ -231,6 +243,91 @@ public class IptFileUtils {
             + baseName
             + (TEMP_DIR_ATTEMPTS - 1)
             + ')');
+  }
+
+  /**
+   * Creates an empty temporary file next to the target (creating its directory if needed). Write it, then replace
+   * the target with {@link #moveIntoPlace(File, File)}. Unlike {@link Files#createTempFile}, which makes the file
+   * readable by its owner only, the file gets the default permissions of new files (the umask).
+   */
+  public static File createTempSibling(File target) throws IOException {
+    Path dir = Files.createDirectories(target.getAbsoluteFile().getParentFile().toPath());
+    return Files.createFile(dir.resolve(target.getName() + "." + UUID.randomUUID() + ".tmp")).toFile();
+  }
+
+  /**
+   * Replaces the target with the source in one step where the file system allows it, so readers never see a partly
+   * written target. The source first gets the target's permissions, so replacing the target doesn't change them.
+   * <p>
+   * On Windows, a file that another thread has open with FileInputStream can't be deleted or renamed over, only
+   * written. If the move fails, it is tried again a few times, and as a last resort the target's content is
+   * overwritten in place, as before IPT 3.3.8. A reader can then see a partly written target.
+   */
+  public static void moveIntoPlace(File source, File target) throws IOException {
+    Path src = source.toPath();
+    Path dst = target.toPath();
+    copyPosixPermissions(dst, src);
+
+    FileSystemException failure = null;
+    for (int attempt = 1; attempt <= MOVE_ATTEMPTS; attempt++) {
+      try {
+        move(src, dst);
+        return;
+      } catch (NoSuchFileException e) {
+        throw e;
+      } catch (FileSystemException e) {
+        failure = e;
+        if (attempt < MOVE_ATTEMPTS && !sleep(MOVE_RETRY_MILLIS)) {
+          break;
+        }
+      }
+    }
+
+    LOG.warn("Could not replace {} in one step, overwriting it instead: {}", target, failure.toString());
+    try (OutputStream out = Files.newOutputStream(dst)) {
+      Files.copy(src, out);
+    }
+    // the target is written, so a source that can't be deleted (it's in the same directory) doesn't fail the write
+    if (!source.delete()) {
+      LOG.warn("Could not delete {}", source);
+    }
+  }
+
+  private static void move(Path src, Path dst) throws IOException {
+    try {
+      Files.move(src, dst, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+    } catch (AtomicMoveNotSupportedException e) {
+      Files.move(src, dst, StandardCopyOption.REPLACE_EXISTING);
+    }
+  }
+
+  /**
+   * Copies the POSIX permissions of an existing file to another file. Does nothing on other file systems.
+   */
+  private static void copyPosixPermissions(Path from, Path to) {
+    if (!Files.exists(from)) {
+      return;
+    }
+    try {
+      Files.setPosixFilePermissions(to, Files.getPosixFilePermissions(from));
+    } catch (UnsupportedOperationException e) {
+      // not a POSIX file system, e.g. Windows
+    } catch (IOException e) {
+      LOG.warn("Could not copy the permissions of {}: {}", from, e.toString());
+    }
+  }
+
+  /**
+   * @return false if the thread was interrupted
+   */
+  private static boolean sleep(long millis) {
+    try {
+      Thread.sleep(millis);
+      return true;
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      return false;
+    }
   }
 
   /**

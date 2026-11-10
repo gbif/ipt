@@ -36,7 +36,6 @@ import org.gbif.ipt.model.datapackage.metadata.col.ColMetadata;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -364,7 +363,6 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter,
         mockOrganisationKeyConverter,
-        mock(ExtensionMappingConverter.class),
         extensionRowTypeConverter,
         conceptTermConverter,
         mock(DataPackageIdentifierConverter.class),

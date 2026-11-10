@@ -326,6 +326,20 @@ public class ResourceTest extends IptBaseTest {
   }
 
   @Test
+  public void testVersionHistoryCanBeIteratedWhileChanged() {
+    Resource resource = getResource();
+
+    // publishing adds and removes versions while pages iterate the history
+    for (VersionHistory vh : resource.getVersionHistory()) {
+      resource.addVersionHistory(new VersionHistory(BigDecimal.valueOf(9.9), new Date(), PublicationStatus.PUBLIC));
+      resource.removeVersionHistory(new BigDecimal(vh.getVersion()));
+    }
+
+    assertEquals(1, resource.getVersionHistory().size());
+    assertEquals("9.9", resource.getVersionHistory().get(0).getVersion());
+  }
+
+  @Test
   public void testRemoveVersionHistory() {
     Resource resource = new Resource();
 

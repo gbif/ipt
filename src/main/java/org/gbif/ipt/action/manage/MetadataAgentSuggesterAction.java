@@ -56,6 +56,14 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
     super.prepare();
   }
 
+  /**
+   * suggest-resources lists all resources of the user; suggest-agents filters them by r itself.
+   */
+  @Override
+  public boolean requiresResource() {
+    return false;
+  }
+
   @Override
   public String execute() {
     List<Resource> resources = resourceManager.list(getCurrentUser());

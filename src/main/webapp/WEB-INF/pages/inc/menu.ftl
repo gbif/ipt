@@ -123,7 +123,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item menu-link" href="${baseURL}/logout.do">
+                                        <a class="dropdown-item menu-link" href="${baseURL}/logout.do" data-post>
                                             <svg class="account-dropdown-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="LogoutIcon">
                                                 <path d="m17 7-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"></path>
                                             </svg>
@@ -134,7 +134,7 @@
                             </li>
                         </ul>
                         <div class="show-xl-smaller d-flex nav-item-border-top">
-                            <a class="nav-link ps-0 show-xl-smaller" href="${baseURL}/logout.do">
+                            <a class="nav-link ps-0 show-xl-smaller" href="${baseURL}/logout.do" data-post>
                                 [@s.text name="menu.logout"/]
                             </a>
                             <a href="${baseURL}/account.do" class="nav-link show-xl-smaller nav-link-account">

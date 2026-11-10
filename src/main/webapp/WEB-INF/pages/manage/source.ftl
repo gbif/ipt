@@ -27,7 +27,21 @@
         $("#peekBtn").click(function (e) {
             e.preventDefault();
             displayProcessing();
-            $("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}", hideProcessing);
+            $("#modalcontent").load("peek.do?r=${resource.shortname}&id=${id!}", function (response, status, xhr) {
+                // the session expired: open the source page, which goes to login and returns there
+                if (xhr.status === 401) {
+                    window.location.href = "${baseURL}/manage/source.do?r=${resource.shortname}&id=${(id!)?url}";
+                    return;
+                }
+                if (status === "error") {
+                    // load() inserts nothing on an error status. 400/404 carry the message from peek.ftl,
+                    // other errors have no fragment to show
+                    $("#modalcontent").html(xhr.status === 400 || xhr.status === 404 ? response
+                        : $('<div class="alert alert-danger fs-smaller-2" role="alert"></div>')
+                            .text('${action.getText("basic.error")?js_string} (' + xhr.status + ')'));
+                }
+                hideProcessing();
+            });
             $("#modalbox").show();
         });
         $("#modalbox").click(function (e) {
@@ -218,11 +232,6 @@
                                       <li>
                                           <@s.submit cssClass="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button" name="analyze" key="button.analyze"/>
                                       </li>
-                                      <li>
-                                        <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
-                                            <@s.text name="button.preview"/>
-                                        </a>
-                                      </li>
                                         <#if logExists>
                                       <li>
                                         <a href="${baseURL}/manage/sourcelog.do?r=${resource.shortname}&s=${source.name?url}" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
@@ -231,9 +240,14 @@
                                       </li>
                                         </#if>
                                         <#if id?has_content>
-                                      <li>
-                                          <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
-                                      </li>
+                                          <li>
+                                            <a id="peekBtn" href="#" class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
+                                                <@s.text name="button.preview"/>
+                                            </a>
+                                          </li>
+                                          <li>
+                                              <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
+                                          </li>
                                         </#if>
                                     </ul>
                                 </div>
