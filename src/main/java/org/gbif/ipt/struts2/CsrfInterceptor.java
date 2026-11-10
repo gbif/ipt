@@ -163,7 +163,8 @@ public class CsrfInterceptor extends AbstractInterceptor {
     if (invocation.getProxy() == null) {
       return String.valueOf(invocation.getAction());
     }
-    return invocation.getProxy().getNamespace() + "/" + invocation.getProxy().getActionName()
-        + " (" + invocation.getProxy().getMethod() + ")";
+    // the root namespace is "/": without removing it, its actions would be logged as "//logout"
+    return StringUtils.removeEnd(invocation.getProxy().getNamespace(), "/") + "/"
+        + invocation.getProxy().getActionName() + " (" + invocation.getProxy().getMethod() + ")";
   }
 }
