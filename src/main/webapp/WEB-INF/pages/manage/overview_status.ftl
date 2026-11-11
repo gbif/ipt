@@ -98,7 +98,7 @@
             href="#anchor-data" linkKey="manage.overview.go.mappings" detail=missingTablesDetail/>
     </#if>
     <#if resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-        <@blocker key="manage.overview.prevented.resource.publishing.noGBIFLicense" short="manage.overview.attention.noGbifLicence"
+        <@blocker key="manage.overview.prevented.resource.publishing.noGBIFLicense" short="manage.overview.attention.noGbifLicense"
             href="metadata-basic.do?r=${resource.shortname}" linkKey="submenu.basic"/>
     </#if>
     <#assign needsRegistrationRights = resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"
@@ -113,6 +113,26 @@
     </#if>
 </#if>
 <#assign canPublish = !isDeleted && !publishBlockers?has_content>
+<#-- the last publication run failed: the report of a failed run stays until the next run or a restart -->
+<#assign lastPublicationFailed = !isDeleted && report?? && report.completed && report.hasException()>
+
+<#-- the license of the next version -->
+<#macro nextLicense>
+    <#if isEmlBased>
+        <#if (resource.eml.parseLicenseUrl())?has_content><@shortLicense resource.eml.parseLicenseUrl()/><#else><@s.text name="manage.overview.published.licenseNotSet"/></#if>
+    <#elseif !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
+        <@s.text name="manage.overview.published.licenseNotSet"/>
+    <#elseif resource.coreType == "camtrap-dp">
+        <#list resource.dataPackageMetadata.licenses as license><#if license.scope?? && license.scope == "data">${(license.name)!}</#if></#list>
+    <#elseif isColDp>
+        ${(resource.dataPackageMetadata.license)!}
+    </#if>
+</#macro>
+
+<#if isPublished>
+    <#assign currentLicense><#if isEmlBased><@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/><#else><@nextLicense/></#if></#assign>
+</#if>
+<#assign nextLicense><@nextLicense/></#assign>
 
 <#-- what changed since the last version -->
 <#assign changeList = []>
@@ -127,6 +147,10 @@
     </#if>
     <#if metadataModifiedSinceLastPublication>
         <#assign c><@s.text name="manage.overview.changes.metadata"/></#assign>
+        <#assign changeList = changeList + [c]>
+    </#if>
+    <#if currentLicense?markup_string?trim != nextLicense?markup_string?trim>
+        <#assign c><@s.text name="manage.overview.changes.license"><@s.param>${currentLicense?markup_string?trim}</@s.param><@s.param>${nextLicense?markup_string?trim}</@s.param></@s.text></#assign>
         <#assign changeList = changeList + [c]>
     </#if>
     <#if isStatusPending>
@@ -184,6 +208,10 @@
     <#assign t><@s.text name="manage.overview.attention.notPublished"/></#assign>
     <#assign attention = attention + [["warn", t]]>
 </#if>
+<#if lastPublicationFailed>
+    <#assign t><@s.text name="manage.overview.publication.failed"/></#assign>
+    <#assign attention = attention + [["bad", t]]>
+</#if>
 <#if hasChanges && canPublish>
     <#assign t><@s.text name="manage.overview.attention.unpublishedChanges"/></#assign>
     <#assign attention = attention + [["warn", t]]>
@@ -213,7 +241,7 @@
 </#if>
 <#if isDeleted>
     <#assign publicationStatus = "off">
-<#elseif publishBlockers?has_content || (usesAutoPublishing && autoPublicationSuspendedForThisResource)>
+<#elseif publishBlockers?has_content || lastPublicationFailed || (usesAutoPublishing && autoPublicationSuspendedForThisResource)>
     <#assign publicationStatus = "bad">
 <#elseif !isPublished || hasChanges>
     <#assign publicationStatus = "warn">

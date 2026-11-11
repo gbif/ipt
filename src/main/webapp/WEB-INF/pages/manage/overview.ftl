@@ -220,17 +220,18 @@
         // Initialize scrollspy
         IptScrollSpy.init({tocSelector: '.bd-toc nav a'});
 
-        var showReport = false;
-        $("#toggleReport").click(function () {
-            if (showReport) {
-                showReport = false;
-                $("#toggleReport-text").text("<@s.text name='manage.overview.published.report.show'/>");
-                $('#dwcaReport').fadeOut();
-            } else {
-                showReport = true;
-                $("#toggleReport-text").text("<@s.text name='manage.overview.published.report.hide'/>");
+        // the publication report: toggled from the Publication card (menu, failure line), shown from the page header menu
+        function setReportVisible(show) {
+            $(".ov-toggle-report-text").text(show ? "<@s.text name='manage.overview.published.report.hide'/>" : "<@s.text name='manage.overview.published.report.show'/>");
+            if (show) {
                 $('#dwcaReport').fadeIn();
+            } else {
+                $('#dwcaReport').fadeOut();
             }
+        }
+        $(".ov-toggle-report").on('click', function (e) {
+            e.preventDefault();
+            setReportVisible(!$('#dwcaReport').is(':visible'));
         });
         //Hack needed for Internet Explorer X.*x
         $('.edit').each(function() {
@@ -1486,7 +1487,7 @@
             checks.scrollIntoView({behavior: 'smooth', block: 'center'});
         });
         // when publishing is blocked the header button points at the reasons in the banner
-        $('#publish-button-blocked').on('click', function (e) {
+        $('#publish-button-blocked, .ov-see-blockers').on('click', function (e) {
             e.preventDefault();
             document.getElementById('overview-status').scrollIntoView({behavior: 'smooth', block: 'center'});
         });
@@ -1500,7 +1501,7 @@
         });
         $('.ov-show-report').on('click', function () {
             if (!$('#dwcaReport').is(':visible')) {
-                $('#toggleReport').trigger('click');
+                setReportVisible(true);
             }
         });
 
@@ -1697,6 +1698,8 @@
                         </a>
                     </#if>
 
+                    <#-- DOI and delete; publication links are in the Publication card. Nothing to offer once deleted -->
+                    <#if !isDeleted>
                     <div class="dropdown">
                         <button class="btn btn-sm btn-outline-secondary" type="button" id="overview-more-actions" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.moreActions'/>" aria-label="<@s.text name='manage.overview.moreActions'/>">
                             <@icon name="more_horiz"/>
@@ -1710,20 +1713,8 @@
                                     </a>
                                 </li>
                             </#if>
-                            <#if report??>
-                                <li><a class="dropdown-item ov-show-report" href="#anchor-publish"><@s.text name="manage.overview.published.report.show"/></a></li>
-                            </#if>
-                            <#if isPublished && !isMetadataOnly>
-                                <li><a class="dropdown-item" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name="portal.publication.log"/></a></li>
-                            </#if>
-                            <#if validationReportAvailable>
-                                <li><a class="dropdown-item" href="${baseURL}/manage/validationReport.do?r=${resource.shortname}"><@s.text name="manage.overview.menu.validationReport"/></a></li>
-                            </#if>
-                            <#if !isDataPackage && (resource.recordsPublished > 0)>
-                                <li><a class="dropdown-item" href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" target="_blank" rel="noopener"><@s.text name="manage.overview.menu.validator"/> <@icon name="open_in_new"/></a></li>
-                            </#if>
                             <#if !isDeleted>
-                                <li><hr class="dropdown-divider"></li>
+                                <#if displayDoiFunctionality><li><hr class="dropdown-divider"></li></#if>
                                 <li>
                                     <#if disableRegistrationRights == "false">
                                         <#if resource.key?? && resource.status == "REGISTERED">
@@ -1741,6 +1732,7 @@
                             </#if>
                         </ul>
                     </div>
+                    </#if>
 
                     <#-- the forms the delete actions submit, and the target of the "Cancel" button in the sticky resource bar -->
                     <div class="d-none">

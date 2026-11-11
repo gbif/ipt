@@ -1,19 +1,6 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#-- Publication and Resource managers sections of the resource overview. Needs overview_status.ftl -->
 
-<#-- the licence of the next version -->
-<#macro nextLicence>
-    <#if isEmlBased>
-        <#if (resource.eml.parseLicenseUrl())?has_content><@shortLicense resource.eml.parseLicenseUrl()/><#else><@s.text name="manage.overview.published.licenseNotSet"/></#if>
-    <#elseif !(resource.dataPackageMetadata.licenses)?has_content && !(resource.dataPackageMetadata.license)?has_content>
-        <@s.text name="manage.overview.published.licenseNotSet"/>
-    <#elseif resource.coreType == "camtrap-dp">
-        <#list resource.dataPackageMetadata.licenses as license><#if license.scope?? && license.scope == "data">${(license.name)!}</#if></#list>
-    <#elseif isColDp>
-        ${(resource.dataPackageMetadata.license)!}
-    </#if>
-</#macro>
-
 <#function initials name>
     <#local parts = name?trim?split(" ")?filter(p -> p?has_content)>
     <#if !parts?has_content><#return "?"></#if>
@@ -23,6 +10,21 @@
 <#macro visibleTo status>
     <#if status == "PRIVATE"><@s.text name="manage.overview.publication.managersOnly"/><#else><@s.text name="manage.overview.publication.everyone"/></#if>
 </#macro>
+
+<#-- shows or hides the report of the last publication run (#dwcaReport) -->
+<#macro reportToggle class="">
+    <#if report??>
+        <a class="ov-toggle-report ${class}" href="#anchor-publish"><span class="ov-toggle-report-text"><@s.text name="manage.overview.published.report.show"/></span></a>
+    </#if>
+</#macro>
+<#assign hasPublicationLog = isPublished && !isMetadataOnly>
+<#assign hasValidatorLink = !isDataPackage && (resource.recordsPublished > 0)>
+
+<#-- visibility of the published and of the next version; licenses are worked out in overview_status.ftl -->
+<#if isPublished>
+    <#assign currentVisibleTo><@visibleTo resource.getLastPublishedVersionsPublicationStatus()?string/></#assign>
+</#if>
+<#assign nextVisibleTo><@visibleTo nextVisibility/></#assign>
 
 <span class="anchor anchor-overview-page" id="anchor-publish"></span>
 <section class="ov-card section" id="publish">
@@ -46,10 +48,13 @@
             <@popoverTextInfo overviewTitleInfo/>
             <@s.text name='manage.overview.published'/>
         </h2>
+        <#-- the one status of this card -->
         <#if isDeleted>
             <span class="ov-pill bad"><@s.text name="resource.status.deleted"/></span>
         <#elseif publishBlockers?has_content>
             <span class="ov-pill bad"><@s.text name="manage.overview.publication.blocked"/></span>
+        <#elseif lastPublicationFailed>
+            <span class="ov-pill bad"><@s.text name="manage.overview.publication.failed"/></span>
         <#elseif !isPublished>
             <span class="ov-pill warn"><@s.text name="manage.overview.publication.notPublished"/></span>
         <#elseif hasChanges>
@@ -59,71 +64,84 @@
         </#if>
         <span class="ov-sp"></span>
         <a id="edit-publication-button" class="ov-hact" href="publication-settings.do?r=${resource.shortname}"><@icon name="edit"/> <@s.text name="manage.overview.publication.settings"/></a>
-    </div>
-
-    <#-- the publishing organization is set in the publication settings -->
-    <div class="ov-autop mt-2">
-        <span class="text-muted"><@s.text name="eml.publishingOrganisation"/>:</span>
-        <#if (resource.organisation.name)?has_content>
-            <span>${resource.organisation.name}</span>
-        <#else>
-            <a class="ov-missing" href="publication-settings.do?r=${resource.shortname}"><@s.text name="manage.overview.metadata.notSelected"/></a>
+        <#if hasPublicationLog || report?? || validationReportAvailable || hasValidatorLink>
+            <div class="dropdown">
+                <button class="ov-hmenu" type="button" id="publication-menu" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.publication.actions'/>" aria-label="<@s.text name='manage.overview.publication.actions'/>">
+                    <@icon name="more_horiz"/>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="publication-menu">
+                    <#if hasPublicationLog>
+                        <li><a class="dropdown-item" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name="portal.publication.log"/></a></li>
+                    </#if>
+                    <#if report??>
+                        <li><@reportToggle class="dropdown-item"/></li>
+                    </#if>
+                    <#if validationReportAvailable>
+                        <li><a class="dropdown-item" href="${baseURL}/manage/validationReport.do?r=${resource.shortname}"><@s.text name="manage.overview.menu.validationReport"/></a></li>
+                    </#if>
+                    <#if hasValidatorLink>
+                        <li><a class="dropdown-item" href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" target="_blank" rel="noopener"><@s.text name="manage.overview.menu.validator"/> <@icon name="open_in_new"/></a></li>
+                    </#if>
+                </ul>
+            </div>
         </#if>
     </div>
-    <div class="ov-autop">
-        <#if usesAutoPublishing>
-            <#if autoPublicationSuspendedForThisResource>
-                <span class="ov-pill bad"><@s.text name="manage.overview.autopublish.title"/>: <@s.text name="manage.overview.autopublish.suspended"/></span>
-                <span class="text-gbif-danger"><@s.text name="manage.overview.autopublish.intro.suspended"/></span>
+
+    <#-- the publication settings in one line: organization, how it's published, DOIs -->
+    <div class="ov-sub">
+        <#if (resource.organisation.name)?has_content>
+            ${resource.organisation.name}
+        <#else>
+            <a class="ov-missing" href="publication-settings.do?r=${resource.shortname}"><@s.text name="manage.overview.publication.noOrganisation"/></a>
+        </#if>
+        <#if !isDeleted>
+            ·
+            <#if usesAutoPublishing && autoPublicationSuspendedForThisResource>
+                <span class="ov-missing"><@s.text name="manage.overview.publication.autoSuspended"/></span>
+            <#elseif usesAutoPublishing>
+                <@s.text name="manage.overview.publication.auto"><@s.param>${(autoPublishFrequencies.get(resource.updateFrequency.identifier)!"")?lower_case}</@s.param></@s.text>
             <#else>
-                <span class="ov-pill ok"><@s.text name="manage.overview.autopublish.title"/> · ${autoPublishFrequencies.get(resource.updateFrequency.identifier)!}</span>
-            </#if>
-        <#elseif !isDeleted>
-            <span class="ov-pill grey"><@s.text name="manage.overview.publication.byHand"/></span>
-            <#if autoPublicationEnabledForIPT>
-                <a href="publication-settings.do?r=${resource.shortname}"><@s.text name="manage.overview.publication.setUpAuto"/></a>
+                <@s.text name="manage.overview.publication.byHand"/>
             </#if>
         </#if>
         <#if displayDoiFunctionality>
-            <span class="ov-pill grey"><@s.text name="manage.overview.publication.doiVia"><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param></@s.text></span>
+            · <@s.text name="manage.overview.publication.doiVia"><@s.param>${organisationWithPrimaryDoiAccount.doiRegistrationAgency}</@s.param></@s.text>
         </#if>
     </div>
 
-    <div class="ov-vers"<#if isDeleted> style="grid-template-columns: 1fr;"</#if>>
+    <#if lastPublicationFailed && !isDeleted>
+        <div class="ov-failed" role="status">
+            <@icon name="error"/>
+            <span>${report.state} <span class="ov-small d-inline">· ${report.timestamp?number_to_datetime?string.medium}</span> · <@reportToggle/></span>
+        </div>
+    </#if>
+
+    <#-- the next version only when there's something to publish, or nothing is published yet -->
+    <#assign nothingNew = isPublished && !hasChanges>
+    <#assign showNext = !isDeleted && !nothingNew>
+    <div class="ov-vers">
         <#-- current version -->
         <#if isPublished>
             <div class="ov-ver">
-                <h3><@s.text name="manage.overview.publication.version"><@s.param>${currentVersion}</@s.param></@s.text>
-                    <span class="ov-pill ${isDeleted?then('bad', 'ok')}"><#if isDeleted><@s.text name="resource.status.deleted"/><#else><@s.text name="manage.overview.published.last.publication.intro"/></#if></span></h3>
+                <h3><@s.text name="manage.overview.publication.version"><@s.param>${currentVersion}</@s.param></@s.text></h3>
                 <dl class="ov-kv">
                     <dt><@s.text name="manage.overview.published.released"/></dt>
                     <dd>${resource.lastPublished?datetime?string.medium}</dd>
                     <dt><@s.text name="manage.overview.publication.records"/></dt>
                     <dd><#if isMetadataOnly><@s.text name="manage.overview.publication.metadataOnly"/><#else>${resource.recordsPublished?string.number}</#if></dd>
                     <dt><@s.text name="manage.overview.publication.visibleTo"/></dt>
-                    <dd><@visibleTo resource.getLastPublishedVersionsPublicationStatus()?string/></dd>
+                    <dd>${currentVisibleTo}</dd>
                     <dt><@s.text name="eml.intellectualRights.license"/></dt>
-                    <dd>
-                        <#if isEmlBased>
-                            <@shortLicense action.getLastPublishedVersionAssignedLicense(resource)!/>
-                        <#else>
-                            <@nextLicence/>
-                        </#if>
-                    </dd>
+                    <dd>${currentLicense}</dd>
                     <#if resource.isAlreadyAssignedDoi()>
                         <dt>DOI</dt>
                         <dd>${resource.versionHistory[0].doi!}</dd>
                     </#if>
+                    <#if nothingNew && usesAutoPublishing && !autoPublicationSuspendedForThisResource && resource.nextPublished??>
+                        <dt><@s.text name="manage.overview.publication.scheduled"/></dt>
+                        <dd>${resource.nextPublished?datetime?string.medium}</dd>
+                    </#if>
                 </dl>
-                <div class="ov-links">
-                    <a href="${baseURL}/resource?r=${resource.shortname}"><@s.text name="button.view"/></a>
-                    <#if !isMetadataOnly>
-                        <a href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name="portal.publication.log"/></a>
-                    </#if>
-                    <#if report??>
-                        <a id="toggleReport" href="#anchor-publish"><span id="toggleReport-text"><@s.text name="manage.overview.published.report.show"/></span></a>
-                    </#if>
-                </div>
             </div>
         <#else>
             <div class="ov-ver text-muted">
@@ -132,24 +150,17 @@
             </div>
         </#if>
 
-        <#if !isDeleted>
+        <#if showNext>
             <div class="ov-arr" aria-hidden="true"><@icon name="arrow_forward"/></div>
 
-            <#-- next version -->
-            <#assign nothingNew = isPublished && !hasChanges>
-            <div class="ov-ver next<#if nothingNew && canPublish> same</#if>">
-                <h3><@s.text name="manage.overview.publication.version"><@s.param>${nextVersion}</@s.param></@s.text>
-                    <#if !canPublish>
-                        <span class="ov-pill bad"><@s.text name="manage.overview.publication.blocked"/></span>
-                    <#elseif nothingNew>
-                        <span class="ov-pill grey"><@s.text name="manage.overview.publication.nothingNew"/></span>
-                    <#else>
-                        <span class="ov-pill warn"><@s.text name="manage.overview.published.next.publication.intro"/></span>
-                    </#if>
-                </h3>
-                <#if nothingNew>
-                    <div class="text-smaller text-muted"><@s.text name="manage.overview.publication.sameText"><@s.param>${currentVersion}</@s.param><@s.param>${nextVersion}</@s.param></@s.text></div>
-                <#elseif isPublished>
+            <#-- next version: what changes -->
+            <div class="ov-ver next<#if !canPublish> blocked</#if>">
+                <h3><@s.text name="manage.overview.publication.version"><@s.param>${nextVersion}</@s.param></@s.text></h3>
+                <#-- still shows what's changed, the reasons are in the banner at the top -->
+                <#if !canPublish>
+                    <div class="ov-blocked-note"><@s.text name="manage.overview.publication.blockedNote"/> <a href="#overview-status" class="ov-see-blockers"><@s.text name="manage.overview.publication.seeWhy"/> ↑</a></div>
+                </#if>
+                <#if isPublished>
                     <div class="text-smaller"><@s.text name="manage.overview.publication.changesSince"><@s.param>${currentVersion}</@s.param></@s.text></div>
                     <ul class="ov-chlist"><#list changeList as c><li>${c}</li></#list></ul>
                 <#else>
@@ -162,10 +173,16 @@
                     </ul>
                 </#if>
                 <dl class="ov-kv">
-                    <dt><@s.text name="manage.overview.publication.visibleTo"/></dt>
-                    <dd><@visibleTo nextVisibility/></dd>
-                    <dt><@s.text name="eml.intellectualRights.license"/></dt>
-                    <dd><@nextLicence/></dd>
+                    <#-- a visibility change is in the list of changes -->
+                    <#if !isPublished>
+                        <dt><@s.text name="manage.overview.publication.visibleTo"/></dt>
+                        <dd>${nextVisibleTo}</dd>
+                    </#if>
+                    <#-- a license change is in the list of changes -->
+                    <#if !isPublished>
+                        <dt><@s.text name="eml.intellectualRights.license"/></dt>
+                        <dd>${nextLicense}</dd>
+                    </#if>
                     <#if resource.doi?? && resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
                         <dt>DOI</dt>
                         <dd>${resource.doi} <span class="ov-small d-inline"><@s.text name="manage.overview.publication.doiReserved"/></span></dd>

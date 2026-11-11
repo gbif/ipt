@@ -23,7 +23,7 @@
     href="metadata-basic.do?r=${resource.shortname}" linkKey="submenu.basic"/>
 <@registerCheck ok=resource.isLastPublishedVersionPublic() label="manage.overview.sharing.req.public" noKey="manage.overview.prevented.resource.registration.notPublic"
     href="#anchor-publish" linkKey="manage.overview.published"/>
-<@registerCheck ok=action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource) label="manage.overview.sharing.req.licence" noKey="manage.overview.prevented.resource.registration.noGBIFLicense" escape=true
+<@registerCheck ok=action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource) label="manage.overview.sharing.req.license" noKey="manage.overview.prevented.resource.registration.noGBIFLicense" escape=true
     href="metadata-basic.do?r=${resource.shortname}" linkKey="submenu.basic"/>
 <#assign canRegister = resource.status == "PUBLIC" && !registerChecks?filter(c -> !c.ok)?has_content>
 

@@ -161,13 +161,15 @@ body { padding-top: 68px !important; }
 .ov-checks .ov-small { margin-top: 1px; }
 
 /* versions */
-.ov-autop { font-size: 0.8rem; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
 .ov-vers { display: grid; grid-template-columns: 1fr 26px 1fr; gap: 6px; align-items: stretch; margin-top: 6px; }
 @media (max-width: 767px) { .ov-vers { grid-template-columns: 1fr; } .ov-vers .ov-arr { display: none !important; } }
+.ov-failed { display: flex; gap: 8px; align-items: flex-start; font-size: 0.82rem; color: rgb(176, 50, 64); background: rgba(var(--color-gbif-danger), .05); border: 1px solid rgba(var(--color-gbif-danger), .3); border-radius: 6px; padding: 8px 10px; margin: 0 0 8px; overflow-wrap: anywhere; }
+.ov-failed .material-icon { font-size: 1.1rem; flex: none; }
 .ov-vers .ov-arr { display: flex; align-items: center; justify-content: center; color: #6c757d; }
 .ov-ver { border: 1px solid #dee2e6; border-radius: 8px; padding: 10px 12px; font-size: 0.85rem; min-width: 0; }
 .ov-ver.next { border: 1px dashed #e0a526; background: #fffcf4; }
-.ov-ver.next.same { border-color: #dee2e6; background: #fff; }
+.ov-ver.next.blocked { border-color: rgba(var(--color-gbif-danger), .4); background: #fff; }
+.ov-ver .ov-blocked-note { color: rgb(176, 50, 64); font-size: 0.8rem; margin-bottom: 4px; }
 .ov-ver h3 { margin: 0 0 2px; font-size: 0.92rem; font-weight: 600; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .ov-kv { display: grid; grid-template-columns: 110px 1fr; gap: 2px 10px; font-size: 0.8rem; margin: 6px 0; }
 .ov-kv dt { color: #6c757d; font-weight: 400; }
