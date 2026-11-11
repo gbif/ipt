@@ -27,3 +27,6 @@ package/rpm/RPMS/noarch/*
 
 # npm (front-end libraries, see scripts/vendor/README.md) #
 node_modules/
+
+# data dir file
+src/main/webapp/WEB-INF/datadir.location
