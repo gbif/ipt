@@ -1524,42 +1524,29 @@
             }
         });
 
-        // ---- sources and mappings table: group by class or by source, filter, show all ----
+        // ---- sources and mappings: filter, search and show all, over the mappings and the unused sources ----
         (function () {
-            var $classTable = $('#ov-table-class');
-            var $sourceTable = $('#ov-table-source');
-            if (!$classTable.length) return;
+            var $data = $('#ov-data');
+            if (!$data.length) return;
 
             var $more = $('#ov-data-more');
-            var state = {group: 'class', filter: 'all', query: '', expanded: false};
-            try {
-                state.group = localStorage.getItem('ipt.overview.groupBy') === 'source' ? 'source' : 'class';
-            } catch (err) { /* storage unavailable: use the default */ }
+            var limit = parseInt($data.attr('data-ov-limit'), 10) || 8;
+            var state = {filter: 'all', query: '', expanded: false};
 
             function matches($row) {
                 if (state.query && String($row.attr('data-ov-text') || '').indexOf(state.query) === -1) return false;
-                if (state.filter === 'changed') return $row.attr('data-ov-changed') === 'true';
+                if (state.filter === 'changed') return $row.attr('data-ov-changed') === 'true' || $row.attr('data-ov-mapping-changed') === 'true';
                 if (state.filter === 'unmapped') return $row.attr('data-ov-unmapped') === 'true';
                 if (state.filter === 'problems') return $row.attr('data-ov-problem') === 'true';
                 return true;
             }
 
             function render() {
-                var bySource = state.group === 'source';
-                $classTable.toggle(!bySource);
-                $sourceTable.toggle(bySource);
-                $('.ov-sub-class').toggle(!bySource);
-                $('.ov-sub-source').toggle(bySource);
-                $('[data-ov-group]').each(function () {
-                    $(this).toggleClass('on', $(this).attr('data-ov-group') === state.group);
-                });
                 $('[data-ov-filter]').each(function () {
                     $(this).toggleClass('on', $(this).attr('data-ov-filter') === state.filter);
                 });
 
-                var $table = bySource ? $sourceTable : $classTable;
-                var limit = parseInt($table.attr('data-ov-limit'), 10) || 8;
-                var $rows = $table.find('tr.ov-row');
+                var $rows = $data.find('.ov-row');
                 var shown = 0, total = 0;
                 $rows.each(function () {
                     var $row = $(this);
@@ -1573,15 +1560,14 @@
                         $row.removeClass('ov-hidden');
                     }
                 });
-                // a group heading shows only when a row under it does
-                $table.find('tr.ov-grp').each(function () {
-                    var $heading = $(this), visible = false;
-                    $heading.nextUntil('tr.ov-grp').filter('tr.ov-row').each(function () {
-                        if (!$(this).hasClass('ov-filtered') && !$(this).hasClass('ov-hidden')) visible = true;
-                    });
-                    $heading.toggle(visible || !$heading.nextAll('tr.ov-row').length);
+                function isVisible() { return !$(this).hasClass('ov-filtered') && !$(this).hasClass('ov-hidden'); }
+                // a group heading, the table and the unused list show only when a row under them does
+                $data.find('tr.ov-grp').each(function () {
+                    $(this).toggle($(this).nextUntil('tr.ov-grp').filter('.ov-row').filter(isVisible).length > 0);
                 });
-                $table.find('tr.ov-nomatch').toggle($rows.length > 0 && total === 0);
+                $data.find('table.ov-table').toggle($data.find('tr.ov-row').filter(isVisible).length > 0);
+                $data.find('.ov-unused').toggle($data.find('.ov-unused-row').filter(isVisible).length > 0);
+                $data.find('.ov-nomatch').toggle($rows.length > 0 && total === 0);
 
                 if (total > limit) {
                     $('#ov-data-showing').text($more.attr('data-showing').replace('{0}', shown).replace('{1}', total));
@@ -1592,12 +1578,6 @@
                 }
             }
 
-            $('[data-ov-group]').on('click', function () {
-                state.group = $(this).attr('data-ov-group');
-                state.expanded = false;
-                try { localStorage.setItem('ipt.overview.groupBy', state.group); } catch (err) { /* not remembered */ }
-                render();
-            });
             $('[data-ov-filter]').on('click', function () {
                 state.filter = $(this).attr('data-ov-filter');
                 state.expanded = false;
