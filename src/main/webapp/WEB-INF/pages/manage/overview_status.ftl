@@ -180,6 +180,10 @@
     <#assign t><@s.text name="manage.overview.attention.autopublishSuspended"/></#assign>
     <#assign attention = attention + [["bad", t]]>
 </#if>
+<#if !isPublished && canPublish>
+    <#assign t><@s.text name="manage.overview.attention.notPublished"/></#assign>
+    <#assign attention = attention + [["warn", t]]>
+</#if>
 <#if hasChanges && canPublish>
     <#assign t><@s.text name="manage.overview.attention.unpublishedChanges"/></#assign>
     <#assign attention = attention + [["warn", t]]>

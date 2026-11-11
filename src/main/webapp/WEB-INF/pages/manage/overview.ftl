@@ -1478,11 +1478,6 @@
         });
 
         // ---- redesigned overview: actions that hand over to the existing buttons and modals ----
-        // "Publish" in the status banner does what the header's publish button does (confirmation, warnings)
-        $('.ov-proxy-publish').on('click', function (e) {
-            e.preventDefault();
-            $('#publishButton, #publish-button-show-warning').first().trigger('click');
-        });
         // when publishing is blocked the header button points at the reasons in the banner
         $('#publish-button-blocked').on('click', function (e) {
             e.preventDefault();
@@ -1800,10 +1795,9 @@
 
                 <div class="bd-content ps-lg-4 pt-4">
                     <#-- one status line: what's different from the last version, or what stops the next one -->
-                    <#assign proxyPublishButton><button type="button" class="btn btn-sm btn-gbif-solid ov-proxy-publish">${publishLabel}</button></#assign>
                     <#if isDeleted>
                         <div id="overview-status" class="ov-banner del" role="status">
-                            <span class="ov-ic" aria-hidden="true">×</span>
+                            <i class="ov-ic bi bi-x-circle text-discreet" aria-hidden="true"></i>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.deleted.title"/></h2>
                                 <div class="ov-text"><#if resource.isAlreadyAssignedDoi()><@s.text name="manage.resource.status.intro.deleted"/><#else><@s.text name="manage.overview.banner.deleted.text"/></#if></div>
@@ -1814,7 +1808,7 @@
                         </div>
                     <#elseif publishBlockers?has_content>
                         <div id="overview-status" class="ov-banner bad" role="status">
-                            <span class="ov-ic" aria-hidden="true">!</span>
+                            <i class="ov-ic bi bi-exclamation-circle alert-red-2" aria-hidden="true"></i>
                             <div class="ov-grow">
                                 <h2><#if isPublished><@s.text name="manage.overview.banner.blocked.title"><@s.param>${nextVersion}</@s.param></@s.text><#else><@s.text name="manage.overview.banner.blocked.titleFirst"/></#if></h2>
                                 <ul class="ov-text">
@@ -1826,35 +1820,32 @@
                         </div>
                     <#elseif usesAutoPublishing && autoPublicationSuspendedForThisResource>
                         <div id="overview-status" class="ov-banner bad" role="status">
-                            <span class="ov-ic" aria-hidden="true">!</span>
+                            <i class="ov-ic bi bi-exclamation-circle alert-red-2" aria-hidden="true"></i>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.suspended.title"/></h2>
                                 <div class="ov-text"><@s.text name="manage.overview.banner.suspended.text"/></div>
                             </div>
                             <#if report??><a href="#anchor-publish" class="btn btn-sm btn-outline-secondary ov-show-report"><@s.text name="manage.overview.published.report.show"/></a></#if>
-                            ${proxyPublishButton}
                         </div>
                     <#elseif !isPublished>
-                        <div id="overview-status" class="ov-banner i" role="status">
-                            <span class="ov-ic" aria-hidden="true">i</span>
+                        <div id="overview-status" class="ov-banner w" role="status">
+                            <i class="ov-ic bi bi-exclamation-triangle alert-orange-2" aria-hidden="true"></i>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.first.title"/></h2>
                                 <div class="ov-text"><@s.text name="manage.overview.banner.first.text"><@s.param>${nextVersion}</@s.param></@s.text></div>
                             </div>
-                            ${proxyPublishButton}
                         </div>
                     <#elseif hasChanges>
                         <div id="overview-status" class="ov-banner w" role="status">
-                            <span class="ov-ic" aria-hidden="true">!</span>
+                            <i class="ov-ic bi bi-exclamation-triangle alert-orange-2" aria-hidden="true"></i>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.changes.title"><@s.param>${currentVersion}</@s.param></@s.text></h2>
                                 <div class="ov-text"><#list changeList as c>${c}<#sep> · </#sep></#list></div>
                             </div>
-                            ${proxyPublishButton}
                         </div>
                     <#else>
                         <div id="overview-status" class="ov-banner ok" role="status">
-                            <span class="ov-ic" aria-hidden="true">✓</span>
+                            <i class="ov-ic bi bi-check2-circle alert-green-2" aria-hidden="true"></i>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.upToDate.title"><@s.param>${currentVersion}</@s.param></@s.text></h2>
                                 <div class="ov-text">

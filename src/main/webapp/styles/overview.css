@@ -62,22 +62,16 @@ body { padding-top: 68px !important; }
 
 /* status banner */
 .ov-banner { border-radius: 8px; padding: 12px 14px; margin: 0 0 16px; font-size: 0.875rem; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.ov-banner .ov-ic { width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex: none; }
+.ov-banner .ov-ic { font-size: 1.25rem; line-height: 1; flex: none; }
 .ov-banner .ov-grow { flex: 1; min-width: 240px; }
 .ov-banner h2 { margin: 0; font-size: 0.95rem; font-weight: 600; }
 .ov-banner .ov-text { margin: 2px 0 0; color: #495057; }
 .ov-banner ul { margin: 4px 0 0; padding-left: 18px; }
 .ov-banner ul li { margin: 2px 0; }
 .ov-banner.w { background: #fffaf0; border: 1px solid rgba(176, 125, 0, .4); }
-.ov-banner.w .ov-ic { background: #f6c142; color: #5c4300; }
 .ov-banner.ok { background: rgba(var(--color-gbif-primary), .06); border: 1px solid rgba(var(--color-gbif-primary), .45); }
-.ov-banner.ok .ov-ic { background: rgb(var(--color-gbif-primary)); color: #fff; }
 .ov-banner.bad { background: rgba(var(--color-gbif-danger), .05); border: 1px solid rgba(var(--color-gbif-danger), .4); }
-.ov-banner.bad .ov-ic { background: rgb(var(--color-gbif-danger)); color: #fff; }
-.ov-banner.i { background: rgba(61, 90, 128, .05); border: 1px solid rgba(61, 90, 128, .3); }
-.ov-banner.i .ov-ic { background: rgb(61, 90, 128); color: #fff; }
 .ov-banner.del { background: #f6f7f8; border: 1px solid #dee2e6; }
-.ov-banner.del .ov-ic { background: #868e96; color: #fff; }
 
 /* cards */
 .ov-card { border: 1px solid #dee2e6; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; scroll-margin-top: var(--navbar-height); }
