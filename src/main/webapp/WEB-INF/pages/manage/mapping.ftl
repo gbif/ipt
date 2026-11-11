@@ -1,805 +1,518 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MappingAction" -->
+<#-- Mapping of a source to a core or an extension (DwC-A). The form posts the same parameters as before; the sections,
+     counts, sample checks and the by-column view are built in the browser by js/mapping.js from the markup below -->
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl"/>
-<title><@s.text name="manage.mapping.title"/></title>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
-    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
-    <style>
-        .select2-container--bootstrap4 .select2-selection--single {
-            height: calc(1.5em + 0.5rem + 2px) !important;
-        }
-
-        .select2-container--bootstrap4 .select2-results__option {
-            padding: 0.25rem 0.75rem;
-        }
-
-        .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
-            line-height: 1.5;
-            padding: 0.25rem 0.5rem !important;
-        }
-
-        .select2-container--bootstrap4 .select2-selection__clear {
-            margin-right: 0.875em;
-            margin-top: 0.275em;
-        }
-
-        .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
-             line-height: 1.5;
-        }
-
-        .popover {
-            width: 50%;
-            max-width: 600px;
-        }
-    </style>
-    <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            function showHideIdSuffix(){
-                if($('#idColumn option:selected').val()!="" && $('#idColumn option:selected').val()>=-1){
-                    $('.idSuffix').show();
-                }else{
-                    $('.idSuffix').hide();
-                    $('input.idSuffix').val("");
-                }
-            }
-            function showHideFilter(){
-                if($('#filterComp option:selected').val()=="Equals" || $('#filterComp option:selected').val()=="NotEquals"){
-                    $('#filterParam').show();
-                }else{
-                    $('#filterParam').hide();
-                    $('#filterParam').val("");
-                }
-            }
-            function showHideFilterName() {
-                if($("#filterName option:selected").val() == "") {
-                    $("#filterComp").hide();
-                    $("#filterComp").val("");
-                    showHideFilter();
-                } else {
-                    $("#filterComp").show();
-                }
-            }
-            function activateDeactivateAllStaticInputs() {
-                $('.fidx').each(function() {
-                    activateDeactivateStaticInput($(this));
-                });
-            }
-            function activateDeactivateStaticInput(target) {
-                var index = target.attr('id').substring(4);
-                var input = $("#fVal"+index);
-                var checkbox = $("#cVal"+index);
-                if (!target.val().trim()) {
-                    input.prop('disabled', false);
-                    checkbox.attr('disabled', false);
-                } else {
-                    // deactivate input
-                    input.val('');
-                    input.prop('disabled', true);
-                    // deactivate checkbox
-                    checkbox.attr('checked', false);
-                    checkbox.attr('disabled', true);
-
-                }
-            }
-            function hideFields() {
-                showAll=false;
-                $("#showAllValue").val("false");
-                $("#toggleFields").text("<@s.text name="manage.mapping.showAll" />");
-                $('div.mappingRow').not('.required').each(function(index) {
-                    // always show all mapped and required fields
-                    if ($(".fidx", this).val() === "" && $(".fval", this).val() === "" && $("#doiUsedForDatasetId", this).is(":checked") === false){
-                        $(this).hide();
-                    }
-                });
-
-                if($('#filterComp option:selected').val() === "") {
-                    $('#filterSection').hide();
-                }
-            }
-            function hideRedundantGroups() {
-                showAllGroups=false;
-                $("#showAllGroupsValue").val("false");
-                $("#toggleGroups").text("<@s.text name="manage.mapping.showAllGroups" />");
-                // hide redundant sections
-                $('div.redundant').each(function(index) {
-                    $(this).hide();
-                });
-                // hide anchors
-                $('span.redundant').each(function(index) {
-                    $(this).hide();
-                });
-                // hide sidebar links
-                $('li.redundant').each(function(index) {
-                    $(this).hide();
-                });
-            }
-
-            mirrorCoreIdElementMapping();
-            showHideIdSuffix();
-            showHideFilter();
-            showHideFilterName();
-            activateDeactivateAllStaticInputs();
-            var showAll=${Parameters.showAll!"true"};
-            if (!showAll){
-                hideFields();
-            }
-            var showAllGroups=${Parameters.showAllGroups!"false"};
-            if (!showAllGroups){
-                hideRedundantGroups();
-            }
-
-            $('.confirm').jConfirmAction({
-                titleQuestion: "<@s.text name="basic.confirm"/>",
-                question: "<@s.text name ="manage.mapping.confirmation.message"/>",
-                yesAnswer: "<@s.text name="basic.yes"/>",
-                cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger",
-                baseUrl: "${baseURL}"
-            });
-
-            $("#save").on("click", displayProcessing);
-
-            // show only required and mapped fields
-            $("#toggleFields").click(function() {
-                if(showAll){
-                    hideFields();
-                }else{
-                    showAll=true;
-                    $("#showAllValue").val("true");
-                    $("#toggleFields").text("<@s.text name="manage.mapping.hideEmpty"/>");
-                    $('div.mappingRow').show();
-                    $(".groupmenu").show();
-                }
-                showHideFilter();
-            });
-
-            // show only required and mapped fields
-            $("#toggleGroups").click(function() {
-                if(showAllGroups) {
-                    hideRedundantGroups();
-                } else {
-                    showAllGroups=true;
-                    $("#showAllGroupsValue").val("true");
-                    $("#toggleGroups").text("<@s.text name="manage.mapping.hideGroups"/>");
-                    // show sidebar links
-                    $('li.redundant').each(function(index) {
-                        $(this).show();
-                    });
-                    // show anchors
-                    $('span.redundant').each(function(index) {
-                        $(this).show();
-                    });
-                    // show redundant sections
-                    $('div.redundant').each(function(index) {
-                        $(this).show();
-                    });
-                }
-            });
-
-            /**
-             * Ensures coreId term mapping (e.g. eventID) always mirrors id mapping at top of page. Otherwise it
-             * would be possible for the user to specify two different mappings for the term.
-             * This method also makes the term's select unselectable, disables its constant value input and hides its source
-             * examples and translation button.
-             */
-            function mirrorCoreIdElementMapping() {
-                var index = $("#coreIdTermFieldsIndex").val();
-                if (index != null && index !== '') {
-                    // value of coreId element mapping
-                    var coreIdElementValueSelected = $("#idColumn").val();
-                    // ensure value of coreId term mapping mirrors coreId element mapping
-                    var coreIdTerm = $("#fIdx"+index);
-                    coreIdTerm.val(coreIdElementValueSelected);
-
-                    // make coreId term mapping select unselectable (warning - do not make disabled or won't get submitted)
-                    coreIdTerm.css({"pointer-events": "none", "cursor": "default"});
-                    // disable coreId term constant value input
-                    $("#fVal"+index).attr('disabled', true);
-                    // hide coreId term mapping source sample
-                    $("#fSIdx"+index).hide();
-                    // hide coreId term mapping translation section
-                    $("#fTIdx"+index).hide();
-                }
-            }
-
-            $("#idColumn").change(function() {
-                showHideIdSuffix();
-                mirrorCoreIdElementMapping()
-            });
-
-            $("#filterComp").change(function() {
-                showHideFilter();
-            });
-
-            $("#filterName").change(function() {
-                showHideFilterName();
-            });
-
-            $(".fidx").change(function() {
-                activateDeactivateStaticInput($(this));
-            });
-
-            // Collapse/uncollapse source examples
-            $(".sample").click(function() {
-                if ($(this).hasClass("text-uncollapse")) {
-                    $(this).removeClass("text-uncollapse")
-                } else {
-                    $(this).addClass("text-uncollapse")
-                }
-            });
-
-            $("#idColumn").select2({
-                placeholder: '${action.getText("manage.mapping.noid")?js_string?no_esc}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                minimumResultsForSearch: 15,
-                dropdownCssClass: 'text-smaller',
-                theme: 'bootstrap4'
-            });
-            $("#mapping\\.filter\\.filterTime").select2({
-                placeholder: '',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                minimumResultsForSearch: 15,
-                dropdownCssClass: 'text-smaller',
-                theme: 'bootstrap4'
-            });
-            $("#filterName").select2({
-                placeholder: '',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                minimumResultsForSearch: 15,
-                dropdownCssClass: 'text-smaller',
-                theme: 'bootstrap4'
-            });
-            $("#filterComp").select2({
-                placeholder: '',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                minimumResultsForSearch: 15,
-                dropdownCssClass: 'text-smaller',
-                theme: 'bootstrap4'
-            });
-            $("[id^=fIdx]").select2({
-                placeholder: '',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                minimumResultsForSearch: 15,
-                dropdownCssClass: 'text-smaller',
-                theme: 'bootstrap4'
-            });
-            $(".fval-select").select2({
-                placeholder: '',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                minimumResultsForSearch: 15,
-                dropdownCssClass: 'text-smaller',
-                theme: 'bootstrap4'
-            });
-
-            // spy scroll and manage sidebar menu
-            $(window).scroll(function () {
-                var scrollPosition = $(document).scrollTop();
-
-                $('.bd-toc nav a.sidebar-navigation-link').each(function () {
-                    var currentLink = $(this);
-                    var anchor = $(currentLink.attr("href"));
-                    var sectionId = anchor[0].id.replace("anchor-", "");
-                    var section = $("#" + sectionId);
-
-                    var sectionsContainer = $("#sections");
-
-                    if (sectionsContainer.position().top - 100 > scrollPosition) {
-                        var removeActiveFromThisLink = $('.bd-toc nav a.active');
-                        removeActiveFromThisLink.removeClass('active');
-                    } else if (section.position().top - 100  <= scrollPosition
-                        && section.position().top + section.height() > scrollPosition) {
-                        if (!currentLink.hasClass("active")) {
-                            var removeFromThisLink = $('.bd-toc nav a.active');
-                            removeFromThisLink.removeClass('active');
-                            $(this).addClass('active');
-                        }
-                    }
-                });
-            })
-        });
-    </script>
+<#assign extensionTitle = mapping.extension.title!mapping.extension.name!/>
+<#assign isCoreMapping = action.isCoreMapping()/>
+<title><#if isCoreMapping><@s.text name="manage.mapping.title.core"><@s.param>${extensionTitle}</@s.param></@s.text><#else><@s.text name="manage.mapping.title.extension"><@s.param>${extensionTitle}</@s.param></@s.text></#if>: ${resource.title!resource.shortname}</title>
+<style>
+    :root { --navbar-height: 120px; }
+</style>
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/overview.css">
+<link rel="stylesheet" href="${baseURL}/styles/mapping.css">
+<script src="${baseURL}/js/scrollspy.js"></script>
+<script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
+<script src="${baseURL}/js/mapping.js"></script>
 
 <#assign currentMenu = "manage"/>
-<#assign redundants = action.getRedundantGroups()/>
-<#assign nonMapped = action.getNonMappedColumns()/>
 <#include "/WEB-INF/pages/inc/menu.ftl"/>
-<#include "/WEB-INF/pages/macros/forms.ftl"/>
-<#include "/WEB-INF/pages/macros/popover.ftl"/>
 
-<#macro threeButtons>
-    <div class="col-12 my-3">
-        <@s.submit cssClass="button btn btn-outline-gbif-primary" name="save" key="button.save"/>
-        <@s.submit cssClass="confirm btn btn-outline-gbif-danger" name="deleteFlag" key="button.delete"/>
-        <@s.submit cssClass="button btn btn-outline-secondary" name="cancel" key="button.back"/>
-    </div>
-</#macro>
-
-<#macro sourceSample index fieldsIndex>
-    <div id="fSIdx${fieldsIndex}" class="text-collapse sample mappingText mx-lg-4">
-        <@s.text name='manage.mapping.sourceSample' />:
-        <em>
-            <#list peek! as row>
-                <#if row??>
-                    <#if row[index]?has_content && row[index]!=" ">
-                        <code>${row[index]}</code>
-                    <#else>
-                        &nbsp;
-                    </#if>
-                    <#if row_has_next> | </#if>
-                </#if>
-            </#list>
-        </em>
-    </div>
-</#macro>
-
-<#macro datasetDoiCheckbox idAttr name i18nkey classAttr requiredField value="-99999" errorfield="">
-    <small>
-        <div class="checkbox form-check">
-            <#-- use name if value was not supplied -->
-            <#if value == "-99999">
-                <#assign value><@s.property value="${name}"/></#assign>
-            </#if>
-            <@s.checkbox key=name id=idAttr value=value cssClass=classAttr/>
-            <#include "/WEB-INF/pages/macros/form_checkbox_label.ftl">
-            <#include "/WEB-INF/pages/macros/help_icon.ftl">
-            <#include "/WEB-INF/pages/macros/form_field_error.ftl">
-        </div>
-    </small>
-</#macro>
+<#assign redundants = action.getRedundantGroups()/>
+<#assign sampleProblems = action.getSampleTypeProblems()/>
+<#assign coreRowType = resource.coreRowType!mapping.extension.rowType/>
+<#assign coreExtensionTitle = (coreid.extension.title)!""/>
+<#assign idTermName = (coreid.name)!"ID"/>
+<#assign alsoDeleted = action.getMappingsDeletedWithThis()/>
+<#assign coreIdTermFieldsIndex = ""/>
+<#if !isCoreMapping && coreid??>
+    <#assign coreIdTermFieldsIndex = (action.getFieldsTermIndices().get(coreid.qualname)?c)!""/>
+</#if>
 
 <#macro processSurroundedWithBackticksAsCode description>
     ${description?replace("`(.*?)`", "<code>$1</code>", "r")?replace("'", "&#39;")?replace("\\[(.*)\\]\\((.*)\\)", "<a href='$2'>$1</a>", "r")?no_esc}
 </#macro>
 
-<#macro showField field index>
-    <#assign p=field.term/>
-    <#assign fieldsIndex = action.getFieldsTermIndices().get(p.qualifiedName())/>
+<#-- dwc:name, dcterms:name, ... -->
+<#macro termName p><#compress>
+    <#if p.namespace()?starts_with("http://rs.tdwg.org/dwc/terms/")>dwc:${p.name}
+    <#elseif p.namespace()?starts_with("http://purl.org/dc/terms")>dcterms:${p.name}
+    <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>dc:${p.name}
+    <#elseif p.namespace()?starts_with("http://rs.tdwg.org/ac/terms/")>ac:${p.name}
+    <#else>${p.name}</#if>
+</#compress></#macro>
 
-    <div class="row py-1 g-1 mappingRow border-bottom text-smaller">
-        <div class="col-lg-4 pt-1">
-            <div class="d-flex align-items-start gap-2 mappingRow">
-                <#assign fieldPopoverInfo>
-                    <#if p.qualifiedName()?has_content><a href="${p.qualifiedName()}">${p.qualifiedName()}</a><#else>${p.name!}</#if><br/><br/>
-                    <#if (p.translations[currentLocale].description)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].description/><br/><br/><#elseif p.description?has_content>${p.description}<br/><br/></#if>
-                    <#if (p.translations[currentLocale].comments)?has_content><@processSurroundedWithBackticksAsCode p.translations[currentLocale].comments/><br/><br/><#elseif p.comments?has_content>${p.comments}<br/><br/></#if>
-                    <#if p.vocabulary??><@s.text name="extension.vocabulary"/> <a href="vocabulary.do?id=${p.vocabulary.uriString}" class="no-text-decoration" target="_blank">${p.vocabulary.title!}</a><br/><br/></#if>
-                    <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><@s.text name='manage.mapping.datasetIdColumn.help'/><br/><br/></#if>
-                    <#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><br/><br/></#if>
-                    <#if (p.translations[currentLocale].examples)?has_content>
-                        <em><@s.text name="basic.examples"/></em>:
-                        <@processSurroundedWithBackticksAsCode p.translations[currentLocale].examples />
-                    <#elseif p.examples?has_content>
-                        <em><@s.text name="basic.examples"/></em>:
-                        <@processSurroundedWithBackticksAsCode p.examples />
-                    </#if>
-                </#assign>
-                <@popoverTextInfo fieldPopoverInfo />
+<#macro termDefinition p>
+    <#if (p.translations[currentLocale].description)?has_content><p><@processSurroundedWithBackticksAsCode p.translations[currentLocale].description/></p><#elseif p.description?has_content><p>${p.description}</p></#if>
+    <#if (p.translations[currentLocale].comments)?has_content><p><@processSurroundedWithBackticksAsCode p.translations[currentLocale].comments/></p><#elseif p.comments?has_content><p>${p.comments}</p></#if>
+    <#if (p.translations[currentLocale].examples)?has_content>
+        <p><em><@s.text name="basic.examples"/></em>: <@processSurroundedWithBackticksAsCode p.translations[currentLocale].examples/></p>
+    <#elseif p.examples?has_content>
+        <p><em><@s.text name="basic.examples"/></em>: <@processSurroundedWithBackticksAsCode p.examples/></p>
+    </#if>
+    <#if p.vocabulary??><p><@s.text name="extension.vocabulary"/> <a href="vocabulary.do?id=${p.vocabulary.uriString}" target="_blank">${p.vocabulary.title!}</a></p></#if>
+    <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case><p><@s.text name='manage.mapping.datasetIdColumn.help'/></p></#if>
+    <p><#if p.link?has_content><@s.text name="basic.seealso"/> <a href="${p.link}" target="_blank">${p.link}</a><#elseif p.qualifiedName()?has_content><a href="${p.qualifiedName()}" target="_blank">${p.qualifiedName()}</a></#if></p>
+</#macro>
 
-                <div class="field-label">
-                    <div class="field-label__main">
-                        <strong>
-                            ${(p.translations[currentLocale].label)!p.label!p.name}
-                            <span class="text-gbif-danger"><#if p.required>&#42;</#if></span>
-                        </strong>
-                    </div>
-                    <div class="field-label__original">
-                        <small>
-                            <i>
-                                <#if p.namespace()?starts_with("http://rs.tdwg.org/dwc/terms/")>
-                                    dwc:${p.name}
-                                <#elseif p.namespace()?starts_with("http://purl.org/dc/terms")>
-                                    dcterms:${p.name}
-                                <#elseif p.namespace()?starts_with("http://purl.org/dc/elements/1.1")>
-                                    dc:${p.name}
-                                <#elseif p.namespace()?starts_with("http://rs.tdwg.org/ac/terms/")>
-                                    ac:${p.name}
-                                <#else>
-                                    ${p.name}
-                                </#if>
-                            </i>
-                        </small>
-                    </div>
-                </div>
+<#macro columnOptions selected=-99999>
+    <option value=""></option>
+    <#list columns as col>
+        <option value="${col_index}"<#if selected == col_index> selected</#if>>${col}</option>
+    </#list>
+</#macro>
+
+<#macro fieldRow field g>
+    <#local p = field.term/>
+    <#local i = action.getFieldsTermIndices().get(p.qualifiedName())/>
+    <#local label = (p.translations[currentLocale].label)!p.label!p.name/>
+    <#local isDatasetId = datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case/>
+    <#local isMirrored = coreIdTermFieldsIndex?has_content && coreIdTermFieldsIndex == i?c/>
+    <#local type = (p.type?lower_case)!"string"/>
+    <#local description><#if (p.translations[currentLocale].description)?has_content>${p.translations[currentLocale].description}<#else>${p.description!}</#if></#local>
+    <#local description = description?markup_string/>
+    <#local translations = field.translation!{}/>
+    <div class="mp-field" id="field-${i?c}" data-i="${i?c}" data-group="${g}" data-label="${label}" data-term="<@termName p/>"
+         data-required="${p.required?c}" data-type="${type}"<#if p.vocabulary??> data-vocab="${p.vocabulary.title!}"</#if><#if isMirrored> data-mirrored="true"</#if>
+         data-search="${(label + ' ' + p.name + ' ' + description)?lower_case}">
+        <div class="mp-name">
+            <div class="mp-label">
+                <button type="button" class="mp-info" aria-expanded="false" aria-controls="field-def-${i?c}" title="<@s.text name='manage.mapping.field.definition'/>">${label}</button>
             </div>
+            <div class="mp-term"><@termName p/>
+                <#if type != "string"><span class="mp-badge t">${type}</span></#if>
+                <#if p.vocabulary??><span class="mp-badge v" title="<@s.text name='extension.vocabulary'/>">${p.vocabulary.title!}</span></#if>
+                <#if p.required><span class="mp-badge r"><@s.text name="manage.mapping.field.required"/></span></#if>
+                <#if isMirrored><span class="mp-badge lock"><@icon name="lock"/> <@s.text name="manage.mapping.field.locked"/></span></#if>
+            </div>
+            <div class="mp-def" id="field-def-${i?c}" hidden><@termDefinition p/></div>
         </div>
-
-        <div class="col-lg-4">
-            <select id="fIdx${fieldsIndex}" class="fidx form-select form-select-sm" name="fields[${fieldsIndex}].index">
-                <option value="" <#if !field.index??> selected="selected"</#if>></option>
-                <#list columns as col>
-                    <option value="${col_index}" <#if (field.index!-1)==col_index> selected="selected"</#if>>${col}</option>
-                </#list>
+        <div>
+            <select id="fIdx${i?c}" class="form-select form-select-sm mp-col<#if isMirrored> mp-locked</#if>" name="fields[${i?c}].index" aria-label="${label}: <@s.text name='manage.mapping.fields.head.column'/>"<#if isMirrored> tabindex="-1" aria-disabled="true"</#if>>
+                <@columnOptions (field.index)!-99999/>
             </select>
         </div>
-
-        <div class="col-lg-4">
+        <div>
             <#if p.vocabulary??>
-                <#assign vocab=vocabTerms[p.vocabulary.uriString] />
-
-                <div class="input-group input-group-sm">
-                    <select id="fVal${fieldsIndex}" class="fval fval-select form-select form-select-sm" name="fields[${fieldsIndex}].defaultValue">
-                        <option value="" <#if !field.defaultValue??> selected="selected"</#if>></option>
-                        <#list vocab?keys as code>
-                            <option value="${code}" <#if (field.defaultValue!"")==code> selected="selected"</#if>>${vocab.get(code)}</option>
-                        </#list>
-                    </select>
-                </div>
+                <#local vocab = vocabTerms[p.vocabulary.uriString]/>
+                <select id="fVal${i?c}" class="form-select form-select-sm mp-const" name="fields[${i?c}].defaultValue" aria-label="${label}: <@s.text name='manage.mapping.fields.head.constant'/>">
+                    <option value=""></option>
+                    <#list vocab?keys as code>
+                        <option value="${code}"<#if (field.defaultValue!"") == code> selected</#if>>${vocab.get(code)}</option>
+                    </#list>
+                </select>
             <#else>
-                <input id="fVal${fieldsIndex}" class="fval form-control form-control-sm" name="fields[${fieldsIndex}].defaultValue" value="${field.defaultValue!}"/>
+                <input id="fVal${i?c}" class="form-control form-control-sm mp-const" name="fields[${i?c}].defaultValue" value="${field.defaultValue!}" placeholder="<@s.text name='manage.mapping.field.constant.placeholder'/>" aria-label="${label}: <@s.text name='manage.mapping.fields.head.constant'/>"/>
+            </#if>
+            <#if isDatasetId>
+                <div class="form-check mp-doi">
+                    <input type="hidden" name="__checkbox_doiUsedForDatasetId" value="true"/>
+                    <input class="form-check-input" type="checkbox" id="doiUsedForDatasetId" name="doiUsedForDatasetId" value="true"<#if doiUsedForDatasetId> checked</#if>/>
+                    <label class="form-check-label" for="doiUsedForDatasetId"><@s.text name="manage.mapping.datasetIdColumn"/></label>
+                </div>
             </#if>
         </div>
-
-        <#if field.index??>
-            <small><@sourceSample field.index fieldsIndex/></small>
-            <div id="fTIdx${fieldsIndex}" class="sample mappingText">
-                <small class="mx-lg-4"><@s.text name='manage.mapping.translation' />:</small>
-                <small>
-                    <a href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${mid}&term=${p.qualname?url}">
-                        <#if (((field.translation?size)!0)>0)>
-                            ${(field.translation?size)!0} terms
-                        <#else>
-                            <@s.text name="button.add"/>
-                        </#if>
-                    </a>
-                </small>
-            </div>
-        </#if>
-
-        <#if datasetId?? && p.qualifiedName()?lower_case == datasetId.qualname?lower_case>
-            <div class="sample mappingText">
-                <#-- option to use DOI as datasetID -->
-                <@datasetDoiCheckbox idAttr="cVal${fieldsIndex}" name="doiUsedForDatasetId" i18nkey="manage.mapping.datasetIdColumn" classAttr="cval datasetDoiCheckbox form-check-input" requiredField=false value="${doiUsedForDatasetId?string}" errorfield="" />
-            </div>
+        <div class="mp-samples" hidden></div>
+        <div class="mp-msgs"></div>
+        <#if field.index?? && !isMirrored>
+            <a class="mp-translate<#if !p.vocabulary?? && !translations?has_content> quiet</#if>" data-saved-column="${field.index?c}"
+               href="translation.do?r=${resource.shortname}&rowtype=${p.extension.rowType?url}&mid=${(mid?c)!}&term=${p.qualname?url}"><#if translations?has_content><@s.text name="manage.mapping.field.translations"><@s.param>${translations?size}</@s.param></@s.text><#else><@s.text name="manage.mapping.field.translate"/></#if></a>
+            <#list translations as from, to><span class="mp-tr" hidden data-from="${from}" data-to="${to!}"></span></#list>
         </#if>
     </div>
 </#macro>
 
-<form id="mappingForm" class="needs-validation" action="mapping.do" method="post">
+<form id="mappingForm" action="mapping.do" method="post">
+    <input type="hidden" name="r" value="${resource.shortname}"/>
+    <input type="hidden" name="id" value="${mapping.extension.rowType}"/>
+    <input type="hidden" name="mid" value="${(mid?c)!}"/>
+    <input type="hidden" name="mapping.idColumn" id="idColumn" value="${(mapping.idColumn?c)!}"/>
 
-<div class="container px-0">
-    <#if (redundants?size>0)>
-        <div class="alert alert-success alert-dismissible fade show d-flex" role="alert">
-            <div class="me-3">
-                <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
+    <#-- messages from the last action: above the heading, as wide as its box -->
+    <div class="container px-0 ov-alerts">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
+
+    <#-- the heading every IPT page has: centred, in a box; what it is, then what you can do with it -->
+    <div class="container-fluid border-bottom">
+        <div class="container bg-body border rounded-2 mb-4">
+            <div class="container my-3 p-3 ov-head">
+                <div class="ov-grow">
+                    <div class="fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item"><a href="resource.do?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping"/></li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal"><#if isCoreMapping><@s.text name="manage.mapping.title.core"><@s.param>${extensionTitle}</@s.param></@s.text><#else><@s.text name="manage.mapping.title.extension"><@s.param>${extensionTitle}</@s.param></@s.text></#if></h1>
+                    <div class="ov-meta">
+                        <span>${resource.title!resource.shortname}</span>
+                    </div>
+                </div>
+
+                <div class="ov-acts">
+                    <button type="submit" class="btn btn-sm btn-gbif-solid" name="save" value="save"><@s.text name="button.save"/></button>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary" name="cancel" value="cancel"><@s.text name="button.back"/></button>
+                    <#-- confirmed in #mp-delete-modal, which lists the mappings deleted with it -->
+                    <button type="button" class="btn btn-sm btn-outline-gbif-danger" data-bs-toggle="modal" data-bs-target="#mp-delete-modal"><@s.text name="button.delete"/></button>
+                </div>
             </div>
-            <div class="overflow-x-hidden pt-1">
-                <@s.text name="manage.mapping.redundant.info"><@s.param>${redundants?size}</@s.param></@s.text>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </#if>
+    </div>
 
-    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-</div>
+    <#-- texts for js/mapping.js -->
+    <div id="mp-i18n" hidden
+         data-fields-mapped="<@s.text name='manage.mapping.fact.fieldsValue'/>"
+         data-required-missing="<@s.text name='manage.mapping.fact.requiredMissing'/>"
+         data-none="<@s.text name='manage.mapping.fact.none'/>"
+         data-not-set="<@s.text name='manage.mapping.fact.notSet'/>"
+         data-no-id="<@s.text name='manage.mapping.id.none'/>"
+         data-line-number="<@s.text name='manage.mapping.id.line'/>"
+         data-uuid="<@s.text name='manage.mapping.id.uuid'/>"
+         data-translations-value="<@s.text name='manage.mapping.fact.translationsValue'/>"
+         data-filter-on="<@s.text name='manage.mapping.filter.on'/>"
+         data-msg-required="<@s.text name='manage.mapping.msg.required'/>"
+         data-msg-vocab="<@s.text name='manage.mapping.msg.vocab'/>"
+         data-msg-integer="<@s.text name='manage.mapping.msg.type.integer'/>"
+         data-msg-decimal="<@s.text name='manage.mapping.msg.type.decimal'/>"
+         data-msg-date="<@s.text name='manage.mapping.msg.type.date'/>"
+         data-msg-uri="<@s.text name='manage.mapping.msg.type.uri'/>"
+         data-sample="<@s.text name='manage.mapping.field.sample'/>"
+         data-empty="<@s.text name='manage.mapping.field.empty'/>"
+         data-id-ok="<@s.text name='manage.mapping.id.sample.ok'/>"
+         data-id-filled="<@s.text name='manage.mapping.id.sample.filled'/>"
+         data-suffix-integer="<@s.text name='validation.mapping.coreid.linenumber.integer'/>"
+         data-suffix-same="<@s.text name='validation.mapping.coreid.linenumber.samesufix'/>"
+         data-suffix-no-core-line="<@s.text name='validation.mapping.coreid.linenumber.nocoresuffix'/>"
+         data-suffix-no-core="<@s.text name='manage.mapping.id.suffix.noCore'/>"
+         data-id-dup="<@s.text name='manage.mapping.id.sample.dup'/>"
+         data-id-empty="<@s.text name='manage.mapping.id.sample.empty'/>"
+         data-filter-kept="<@s.text name='manage.mapping.filter.kept'/>"
+         data-filter-skipped="<@s.text name='manage.mapping.filter.skipped'/>"
+         data-filter-preview="<@s.text name='manage.mapping.filter.preview'/>"
+         data-group-more="<@s.text name='manage.mapping.group.more'/>"
+         data-group-mapped="<@s.text name='manage.mapping.group.mapped'/>"
+         data-group-problems="<@s.text name='manage.mapping.group.problems'/>"
+         data-expand-all="<@s.text name='manage.mapping.fields.expandAll'/>"
+         data-collapse-all="<@s.text name='manage.mapping.fields.collapseAll'/>"
+         data-search-field="<@s.text name='manage.mapping.fields.search'/>"
+         data-search-column="<@s.text name='manage.mapping.fields.searchColumn'/>"
+         data-column-n="<@s.text name='manage.mapping.bycol.columnN'/>"
+         data-not-used="<@s.text name='manage.mapping.bycol.notUsed'/>"
+         data-map-to="<@s.text name='manage.mapping.bycol.mapTo'/>"
+         data-remove="<@s.text name='manage.mapping.bycol.remove'/>"
+         data-record-id="<#if isCoreMapping><@s.text name='manage.mapping.bycol.id'><@s.param>${idTermName}</@s.param></@s.text><#else><@s.text name='manage.mapping.bycol.link'><@s.param>${idTermName}</@s.param></@s.text></#if>"
+         data-translated="<@s.text name='manage.mapping.bycol.translated'/>"
+         data-no-results="${selectNoResultsFound}"
+         data-unsaved="<@s.text name='manage.mapping.savebar.leave'/>"></div>
 
-<div class="container-fluid border-bottom">
-    <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3">
-            <div class="text-center">
-                <div class="text-center fs-smaller">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                            <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping"/></li>
-                        </ol>
+    <#-- the 5 sample rows the IPT read, with the data types each value fails (MappingAction.getSampleTypeProblems) -->
+    <table id="mp-peek" hidden>
+        <#list peek! as row>
+            <#if row??>
+                <tr><#list columns as col><td data-bad="${(sampleProblems[row?index][col?index])!}">${(row[col?index])!}</td></#list></tr>
+            </#if>
+        </#list>
+    </table>
+    <ul id="mp-columns" hidden><#list columns as col><li>${col}</li></#list></ul>
+
+    <div id="sections" class="container-fluid bg-body">
+        <div class="container main-content-container mb-md-4 bd-layout">
+            <main class="bd-main">
+                <div class="bd-toc bd-toc-overview mt-4 pt-3 ps-3 mb-lg-5 text-muted">
+                    <div class="fw-semibold text-gbif-header-2 mb-2 text-smaller"><@s.text name="manage.overview.onThisPage"/></div>
+                    <nav id="sidebar-content" aria-label="<@s.text name='manage.overview.onThisPage'/>">
+                        <ul>
+                            <li><a href="#anchor-mp-overview" class="sidebar-navigation-link"><span class="ov-dot" id="mp-dot-overview"></span><@s.text name="manage.mapping.overview.title"/></a></li>
+                            <li><a href="#anchor-mp-id" class="sidebar-navigation-link"><span class="ov-dot" id="mp-dot-id"></span><#if isCoreMapping><@s.text name="manage.mapping.id.title"/><#else><@s.text name="manage.mapping.id.title.extension"/></#if></a></li>
+                            <li><a href="#anchor-mp-filter" class="sidebar-navigation-link"><span class="ov-dot off" id="mp-dot-filter"></span><@s.text name="manage.mapping.filter.title"/></a></li>
+                            <li><a href="#anchor-mp-fields" class="sidebar-navigation-link"><span class="ov-dot" id="mp-dot-fields"></span><@s.text name="manage.mapping.fields.title"/></a></li>
+                            <#list fieldsByGroup?keys as g>
+                                <#if fieldsByGroup.get(g)?has_content>
+                                    <li class="mp-toc-group<#if redundants?seq_contains(g)> redundant</#if>"><a href="#anchor-mp-group-${g?index}" class="sidebar-navigation-link" data-group-link="${g?index}"><span><#if g?has_content>${g}<#else><@s.text name="manage.mapping.noClass"/></#if></span><span class="mp-count" data-group-count="${g?index}"></span></a></li>
+                                </#if>
+                            </#list>
+                        </ul>
                     </nav>
                 </div>
 
-                <h5 property="dc:title" class="rtitle pt-2 text-gbif-header fs-2 fw-400 text-center">
-                    <@s.text name='manage.mapping.title'/>
-                </h5>
+                <div class="bd-content ps-lg-4 pt-4">
 
-                <div class="text-center fs-smaller">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+                    <#-- OVERVIEW -->
+                    <span class="mp-anchor" id="anchor-mp-overview"></span>
+                    <section id="mp-overview" class="mp-section">
+                        <div class="mp-sec-head"><h2><@s.text name="manage.mapping.overview.title"/></h2><span><@s.text name="manage.mapping.overview.desc"/></span></div>
+                        <div class="mp-summary">
+                            <div>
+                                <div class="mp-flow">
+                                    <div class="mp-node">
+                                        <div class="k"><@s.text name="manage.mapping.overview.source"/></div>
+                                        <div class="v"><a href="source.do?r=${resource.shortname}&id=${mapping.source.name?url}">${mapping.source.name}</a></div>
+                                        <div class="m">
+                                            <#if !mapping.source.readable><span class="ov-missing"><@s.text name="manage.source.notReadable"/></span>
+                                            <#elseif mapping.source.isSqlSource()>${columns?size} <@s.text name="manage.overview.source.columns"/>
+                                            <#else><#attempt>${mapping.source.rows?string.number} <@s.text name="manage.overview.source.rows"/> · <#recover></#attempt>${columns?size} <@s.text name="manage.overview.source.columns"/></#if>
+                                        </div>
+                                    </div>
+                                    <span class="mp-arrow"><@icon name="arrow_forward"/></span>
+                                    <div class="mp-node">
+                                        <div class="k"><#if isCoreMapping><@s.text name="manage.mapping.overview.core"/><#elseif coreExtensionTitle?has_content><@s.text name="manage.mapping.overview.extensionOf"><@s.param>${coreExtensionTitle}</@s.param></@s.text><#else><@s.text name="manage.mapping.overview.extension"/></#if></div>
+                                        <div class="v"><a href="${baseURL}/admin/extension.do?id=${mapping.extension.rowType?url}" target="_blank">${extensionTitle}</a></div>
+                                        <div class="m"><#if mapping.extension.issued??>${mapping.extension.issued?date?string("yyyy-MM-dd")} · </#if><#if mapping.extension.latest><@s.text name="manage.mapping.overview.latest"/><#else><span class="mp-warn-text"><@s.text name="manage.mapping.overview.outdated"/></span></#if></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mp-facts">
+                                <div><span><@s.text name="manage.mapping.fact.fields"/></span><span id="mp-fact-fields"></span></div>
+                                <div><span><@s.text name="manage.mapping.overview.columns"/></span><span id="mp-fact-columns"></span></div>
+                                <div><span><@s.text name="manage.mapping.fact.required"/></span><span id="mp-fact-required"></span></div>
+                                <div><span><@s.text name="manage.mapping.fact.problems"/></span><span id="mp-fact-problems"></span></div>
+                                <div id="mp-fact-translations-row" hidden><span><@s.text name="manage.mapping.fact.translations"/></span><span id="mp-fact-translations"></span></div>
+                                <div><span><#if isCoreMapping><@s.text name="manage.mapping.fact.recordId"/><#else><@s.text name="manage.mapping.fact.linkedBy"/></#if></span><span id="mp-fact-id"></span></div>
+                                <div><span><@s.text name="manage.mapping.fact.filter"/></span><span id="mp-fact-filter"></span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <#-- RECORD ID / LINK TO THE CORE -->
+                    <#assign idColumn = mapping.idColumn!-99999/>
+                    <#if !mapping.idColumn?? || idColumn == -3><#assign idMode = isCoreMapping?then("none", "column")/>
+                    <#elseif idColumn == -1><#assign idMode = "line"/>
+                    <#elseif idColumn == -2><#assign idMode = "uuid"/>
+                    <#else><#assign idMode = "column"/></#if>
+                    <#-- the other core mappings: an extension links to their IDs, a core mapping mustn't repeat their line numbers -->
+                    <#assign coreSetups = action.getCoreIdSetups()/>
+                    <#assign coreUsesLines = coreSetups?filter(c -> c.mode == "line")?has_content/>
+                    <#if !isCoreMapping>
+                        <#-- an extension can't generate UUIDs: they'd point at no core record (the validator says so on save) -->
+                        <#if idMode == "uuid"><#assign idMode = "column"/></#if>
+                        <#-- line numbers only make sense when the core uses them too; otherwise the column is the only way -->
+                        <#assign showIdCards = coreUsesLines || idMode == "line"/>
+                    <#else>
+                        <#assign showIdCards = true/>
+                    </#if>
+                    <span class="mp-anchor" id="anchor-mp-id"></span>
+                    <section id="mp-id" class="mp-section" data-core="${isCoreMapping?c}" data-has-extensions="${resource.mappings?filter(m -> !m.isCore())?has_content?c}">
+                        <div class="mp-sec-head">
+                            <h2><#if isCoreMapping><@s.text name="manage.mapping.id.title"/><#else><@s.text name="manage.mapping.id.title.extension"/></#if></h2>
+                            <span><#if isCoreMapping><@s.text name="manage.mapping.id.desc"><@s.param>${idTermName}</@s.param></@s.text><#else><@s.text name="manage.mapping.id.desc.extension"><@s.param>${idTermName}</@s.param><@s.param>${coreExtensionTitle}</@s.param></@s.text></#if></span>
+                        </div>
+                        <ul id="mp-core-setups" hidden><#list coreSetups as c><li data-mode="${c.mode}" data-suffix="${c.suffix}"></li></#list></ul>
+                        <#-- the cards and the column select aren't submitted (no form "mp-ui"): js/mapping.js writes the choice into mapping.idColumn -->
+                        <#if showIdCards>
+                        <div class="mp-cards" role="radiogroup" aria-label="<#if isCoreMapping><@s.text name='manage.mapping.id.title'/><#else><@s.text name='manage.mapping.id.title.extension'/></#if>">
+                            <label class="mp-choice">
+                                <input type="radio" name="mp-idmode" value="column" form="mp-ui"<#if idMode == "column"> checked</#if>>
+                                <span class="t"><@s.text name="manage.mapping.id.column"/><span class="tick"></span></span>
+                                <span class="d"><#if isCoreMapping><@s.text name="manage.mapping.id.column.desc"><@s.param>${idTermName}</@s.param></@s.text><#else><@s.text name="manage.mapping.id.column.desc.extension"><@s.param>${idTermName}</@s.param></@s.text></#if></span>
+                            </label>
+                            <#if isCoreMapping>
+                                <label class="mp-choice">
+                                    <input type="radio" name="mp-idmode" value="none" form="mp-ui"<#if idMode == "none"> checked</#if>>
+                                    <span class="t"><@s.text name="manage.mapping.id.none"/><span class="tick"></span></span>
+                                    <span class="d"><@s.text name="manage.mapping.id.none.desc"/></span>
+                                </label>
+                                <label class="mp-choice<#if !mapping.isTaxonCore()> off</#if>">
+                                    <input type="radio" name="mp-idmode" value="line" form="mp-ui"<#if idMode == "line"> checked</#if><#if !mapping.isTaxonCore()> disabled</#if>>
+                                    <span class="t"><@s.text name="manage.mapping.id.line"/><span class="tick"></span></span>
+                                    <span class="d"><#if mapping.isTaxonCore()><@s.text name="manage.mapping.id.line.desc"/><#else><@s.text name="manage.mapping.id.off.taxon"/></#if></span>
+                                </label>
+                                <label class="mp-choice<#if !mapping.isTaxonCore()> off</#if>">
+                                    <input type="radio" name="mp-idmode" value="uuid" form="mp-ui"<#if idMode == "uuid"> checked</#if><#if !mapping.isTaxonCore()> disabled</#if>>
+                                    <span class="t"><@s.text name="manage.mapping.id.uuid"/><span class="tick"></span></span>
+                                    <span class="d"><#if mapping.isTaxonCore()><@s.text name="manage.mapping.id.uuid.desc"/><#else><@s.text name="manage.mapping.id.off.taxon"/></#if></span>
+                                </label>
+                            <#else>
+                                <label class="mp-choice">
+                                    <input type="radio" name="mp-idmode" value="line" form="mp-ui"<#if idMode == "line"> checked</#if>>
+                                    <span class="t"><@s.text name="manage.mapping.id.line.extension"/><span class="tick"></span></span>
+                                    <span class="d"><@s.text name="manage.mapping.id.line.desc.extension"/></span>
+                                </label>
+                            </#if>
+                        </div>
+                        </#if>
+
+                        <div class="mp-idrow">
+                            <div class="mp-id-column">
+                                <label class="mp-fl" for="mp-idcol"><@s.text name="manage.mapping.id.columnLabel"><@s.param>${idTermName}</@s.param></@s.text> <span class="text-gbif-danger">*</span></label>
+                                <select id="mp-idcol" class="form-select form-select-sm" form="mp-ui">
+                                    <@columnOptions (idColumn >= 0)?then(idColumn, -99999)/>
+                                </select>
+                                <div class="mp-msg bad" id="mp-idcol-missing" hidden><#if isCoreMapping><@s.text name="manage.mapping.id.chooseColumn"/><#else><@s.text name="validation.mapping.coreid.missing"/></#if></div>
+                            </div>
+                            <div class="mp-id-suffix">
+                                <label class="mp-fl" for="mp-idsuffix"><@s.text name="manage.mapping.id.suffix"/> <span class="mp-opt"><@s.text name="manage.mapping.id.suffix.optional"/></span></label>
+                                <input id="mp-idsuffix" type="text" name="mapping.idSuffix" value="${mapping.idSuffix!}" class="form-control form-control-sm"/>
+                                <#if isCoreMapping>
+                                    <div class="mp-msg mu mp-suffix-column"><@s.text name="manage.mapping.id.suffix.help"/></div>
+                                    <div class="mp-msg mu mp-suffix-line"><@s.text name="manage.mapping.id.suffix.help.line"/></div>
+                                <#else>
+                                    <div class="mp-msg mu"><@s.text name="manage.mapping.id.suffix.help.extension"/></div>
+                                </#if>
+                                <#-- filled in by js/mapping.js: the suffix checks of ExtensionMappingValidator, before saving -->
+                                <div class="mp-msg" id="mp-suffix-problem" hidden></div>
+                            </div>
+                        </div>
+                        <div class="mp-id-samples" id="mp-id-samples"></div>
+                        <div class="mp-msg w mp-id-none" hidden><@s.text name="manage.mapping.id.none.warn"/></div>
+                        <div class="mp-msg bad" id="mp-id-uuid-ext" hidden><@s.text name="validation.mapping.coreid.uuid.extensions.exist"/></div>
+
+                        <#-- what the core does, so the two can be compared -->
+                        <#if !isCoreMapping>
+                            <div class="mp-core-setups">
+                                <#list coreSetups as c>
+                                    <div class="mp-msg <#if c.mode == "none" || c.mode == "uuid">bad<#else>mu</#if>">
+                                        <#if c.mode == "column">
+                                            <#if c.suffix?has_content><@s.text name="manage.mapping.id.core.columnSuffix"><@s.param>${c.source}</@s.param><@s.param>${c.column}</@s.param><@s.param>${c.suffix}</@s.param></@s.text><#else><@s.text name="manage.mapping.id.core.column"><@s.param>${c.source}</@s.param><@s.param>${c.column}</@s.param></@s.text></#if>
+                                        <#elseif c.mode == "line">
+                                            <#if c.suffix?has_content><@s.text name="manage.mapping.id.core.lineSuffix"><@s.param>${c.source}</@s.param><@s.param>${c.suffix}</@s.param></@s.text><#else><@s.text name="manage.mapping.id.core.line"><@s.param>${c.source}</@s.param></@s.text></#if>
+                                        <#elseif c.mode == "uuid">
+                                            <@s.text name="manage.mapping.id.core.uuid"><@s.param>${c.source}</@s.param></@s.text>
+                                        <#else>
+                                            <@s.text name="manage.mapping.id.core.none"><@s.param>${c.source}</@s.param></@s.text>
+                                        </#if>
+                                    </div>
+                                </#list>
+                            </div>
+                        </#if>
+                        <#if !isCoreMapping && coreIdTermFieldsIndex?has_content>
+                            <div class="mp-msg mu mp-id-mirror"><@icon name="lock"/> <@s.text name="manage.mapping.id.mirrored"><@s.param>${idTermName}</@s.param></@s.text></div>
+                        </#if>
+                        <#if idProblem?has_content>
+                            <div class="mp-msg bad" id="mp-id-server-problem"><@icon name="error"/> ${idProblem}</div>
+                        </#if>
+                    </section>
+
+                    <#-- FILTER -->
+                    <#assign filterOn = mapping.filter.column?? && mapping.filter.comparator??/>
+                    <span class="mp-anchor" id="anchor-mp-filter"></span>
+                    <section id="mp-filter" class="mp-section">
+                        <div class="mp-sec-head"><h2><@s.text name="manage.mapping.filter.title"/></h2><span><@s.text name="manage.mapping.filter.desc"/></span></div>
+                        <div class="mp-sentence">
+                            <label class="mp-filter-on"><input type="checkbox" class="form-check-input" id="mp-filter-on" form="mp-ui"<#if filterOn> checked</#if>> <@s.text name="manage.mapping.filter.sentence"/></label>
+                            <select id="filterName" name="mapping.filter.column" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.fields.head.column'/>">
+                                <@columnOptions (mapping.filter.column)!-99999/>
+                            </select>
+                            <select id="filterComp" name="mapping.filter.comparator" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.filter.comparator'/>">
+                                <option value=""></option>
+                                <#list comparators as c>
+                                    <option value="${c}"<#if c == mapping.filter.comparator!""> selected</#if>><@s.text name="manage.mapping.filter.${c}"/></option>
+                                </#list>
+                            </select>
+                            <input id="filterParam" name="mapping.filter.param" class="form-control form-control-sm" value="${mapping.filter.param!}" placeholder="<@s.text name='manage.mapping.filter.value'/>" aria-label="<@s.text name='manage.mapping.filter.value'/>"/>
+                            <span class="mp-filter-when"><@s.text name="manage.mapping.filter.checked"/></span>
+                            <select id="filterTime" name="mapping.filter.filterTime" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.filter.time'/>">
+                                <#list ["BeforeTranslation", "AfterTranslation"] as t>
+                                    <option value="${t}"<#if t == (mapping.filter.filterTime!"")?string> selected</#if>><#if t == "BeforeTranslation"><@s.text name="manage.mapping.filter.time.before"/><#else><@s.text name="manage.mapping.filter.time.after"/></#if></option>
+                                </#list>
+                            </select>
+                        </div>
+                        <div class="mp-msg mu" id="mp-filter-off"><@s.text name="manage.mapping.filter.off"/></div>
+                        <div id="mp-filter-preview"></div>
+                    </section>
+
+                    <#-- FIELDS -->
+                    <#assign groupCount = 0/>
+                    <#list fieldsByGroup?keys as g><#if fieldsByGroup.get(g)?has_content><#assign groupCount = groupCount + 1/></#if></#list>
+                    <span class="mp-anchor" id="anchor-mp-fields"></span>
+                    <section id="mp-fields" class="mp-section">
+                        <div class="mp-sec-head"><h2><@s.text name="manage.mapping.fields.title"/></h2><span><@s.text name="manage.mapping.fields.desc"><@s.param>${extensionTitle}</@s.param><@s.param>${fields?size}</@s.param><@s.param>${groupCount}</@s.param></@s.text></span></div>
+                        <div class="mp-toolbar">
+                            <div class="mp-seg" id="mp-view" role="group">
+                                <button type="button" data-view="field" class="on"><@s.text name="manage.mapping.fields.byField"/></button>
+                                <button type="button" data-view="column"><@s.text name="manage.mapping.fields.byColumn"/></button>
+                            </div>
+                            <div class="mp-seg" id="mp-show" role="group">
+                                <button type="button" data-show="default" class="on"><@s.text name="manage.mapping.show.default"/><span class="mp-count"></span></button>
+                                <button type="button" data-show="problems"><@s.text name="manage.mapping.show.problems"/><span class="mp-count"></span></button>
+                                <button type="button" data-show="unmapped"><@s.text name="manage.mapping.show.unmapped"/><span class="mp-count"></span></button>
+                                <button type="button" data-show="all"><@s.text name="manage.mapping.show.all"/><span class="mp-count"></span></button>
+                            </div>
+                            <input type="search" id="mp-q" class="form-control form-control-sm" form="mp-ui" placeholder="<@s.text name='manage.mapping.fields.search'/>" aria-label="<@s.text name='manage.mapping.fields.search'/>">
+                            <span class="ov-sp"></span>
+                            <button type="button" class="ov-link-btn" id="mp-expand-all"><@s.text name="manage.mapping.fields.expandAll"/></button>
+                        </div>
+
+                        <div id="mp-byfield">
+                            <div class="mp-fhead"><span><@s.text name="manage.mapping.fields.head.field"/></span><span><@s.text name="manage.mapping.fields.head.column"/></span><span><@s.text name="manage.mapping.fields.head.constant"/></span></div>
+                            <#list fieldsByGroup?keys as g>
+                                <#assign groupFields = fieldsByGroup.get(g)/>
+                                <#if groupFields?has_content>
+                                    <#assign isRedundant = redundants?seq_contains(g)/>
+                                    <span class="mp-anchor" id="anchor-mp-group-${g?index}"></span>
+                                    <div class="mp-group<#if isRedundant> redundant</#if>" id="mp-group-${g?index}" data-g="${g?index}">
+                                        <button type="button" class="mp-group-h" aria-expanded="false" aria-controls="mp-group-b-${g?index}">
+                                            <h3><#if g?has_content>${g}<#else><@s.text name="manage.mapping.noClass"/></#if></h3>
+                                            <#if isRedundant><span class="mp-redundant"><@s.text name="manage.mapping.group.redundant"/></span></#if>
+                                            <span class="ov-sp"></span>
+                                            <span class="mp-count" data-group-problems hidden></span>
+                                            <span class="mp-count" data-group-mapped></span>
+                                            <@icon name="expand_more" class="mp-chev"/>
+                                        </button>
+                                        <div class="mp-group-b" id="mp-group-b-${g?index}">
+                                            <#list groupFields as f>
+                                                <@fieldRow f g?index?c/>
+                                            </#list>
+                                            <div class="mp-group-more" hidden><span></span> · <button type="button" class="ov-link-btn" data-show-group><@s.text name="manage.mapping.group.showThem"/></button></div>
+                                        </div>
+                                    </div>
+                                </#if>
+                            </#list>
+                            <div class="ov-empty" id="mp-nomatch" hidden><b><@s.text name="manage.mapping.fields.noMatch"/></b><button type="button" class="ov-link-btn" id="mp-clear-q"><@s.text name="manage.mapping.fields.clearSearch"/></button></div>
+                        </div>
+
+                        <div id="mp-bycolumn" hidden>
+                            <table class="ov-table mp-cols">
+                                <thead><tr><th><@s.text name="manage.mapping.bycol.column"/></th><th><@s.text name="manage.mapping.bycol.samples"/></th><th><@s.text name="manage.mapping.bycol.publishedAs"/></th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </section>
                 </div>
+            </main>
+        </div>
+    </div>
 
-                <#if action.isCoreMapping()>
-                    <#assign extensionType><@s.text name='extension.core'/></#assign>
+    <div class="mp-savebar" id="mp-savebar" aria-hidden="true">
+        <div class="container">
+            <span class="ov-grow"><@s.text name="manage.mapping.savebar.unsaved"/></span>
+            <a class="btn btn-sm btn-outline-secondary" href="mapping.do?r=${resource.shortname}&id=${mapping.extension.rowType?url}&mid=${(mid?c)!}" id="mp-discard"><@s.text name="manage.mapping.savebar.discard"/></a>
+            <button type="submit" class="btn btn-sm btn-gbif-solid" name="save" value="save"><@s.text name="button.save"/></button>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade" id="mp-delete-modal" tabindex="-1" aria-labelledby="mp-delete-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mp-delete-modal-title"><@s.text name="manage.mapping.delete.modal.title"/></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<@s.text name='button.cancel'/>"></button>
+            </div>
+            <div class="modal-body text-smaller">
+                <#if alsoDeleted?has_content>
+                    <p><@s.text name="manage.mapping.delete.modal.core"/></p>
+                    <ul>
+                        <#list alsoDeleted as m>
+                            <li>${(m.extension.title)!m.extension.rowType} ← ${(m.source.name)!""}</li>
+                        </#list>
+                    </ul>
+                    <p class="mb-0"><@s.text name="manage.mapping.delete.modal.kept.core"/></p>
                 <#else>
-                    <#assign extensionType><@s.text name='extension'/></#assign>
+                    <p class="mb-0"><@s.text name="manage.mapping.delete.modal.text"><@s.param>${extensionTitle}</@s.param><@s.param>${mapping.source.name}</@s.param></@s.text></p>
                 </#if>
-                <#assign extensionType = extensionType?markup_string>
-
-                <div class="mt-2">
-                    <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                    <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger top-button" name="deleteFlag" key="button.delete"/>
-                    <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-                </div>
-
-                <p class="mt-3 mb-0 text-smaller fst-italic">
-                    <@s.text name='manage.mapping.intro1'>
-                        <@s.param>
-                            <a href="source.do?r=${resource.shortname}&id=${mapping.source.name}" title="<@s.text name='manage.overview.source.data'/>">
-                                ${mapping.source.name}
-                            </a>
-                        </@s.param>
-                        <@s.param>${extensionType?lower_case}:</@s.param>
-                        <@s.param><a href="${baseURL}/admin/extension.do?id=${mapping.extension.rowType!}" target="_blank">${mapping.extension.title!}</a></@s.param>
-                    </@s.text>
-                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                <button type="submit" form="mappingForm" class="btn btn-sm btn-danger" name="deleteFlag" value="delete"><#if alsoDeleted?has_content><@s.text name="manage.mapping.delete.modal.button.n"><@s.param>${alsoDeleted?size + 1}</@s.param></@s.text><#else><@s.text name="button.delete"/></#if></button>
             </div>
         </div>
     </div>
 </div>
-
-<div class="container-fluid bg-body mt-2">
-    <div class="container bd-layout main-content-container">
-        <main class="bd-main">
-            <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
-                <#assign groups = fieldsByGroup?keys/>
-                <nav id="sidebar-content">
-                    <ul>
-                        <#if (groups?size>0)>
-                            <#list groups as g>
-                                <li <#if redundants?seq_contains(g)> class="redundant" </#if> >
-                                    <a class="sidebar-navigation-link" href="#anchor-group_${g?replace(' ', '_')}">
-                                        <#if g?has_content>
-                                            ${g}
-                                        <#else>
-                                            <@s.text name="manage.mapping.noClass"/>
-                                        </#if>
-                                    </a>
-                                </li>
-                            </#list>
-                        </#if>
-
-                        <#if (nonMapped?size>0)>
-                            <li><a class="sidebar-navigation-link" href="#anchor-nonmapped"><@s.text name='manage.mapping.no.mapped.title'/></a></li>
-                        </#if>
-
-                        <#if (redundants?size>0)>
-                            <li><a class="sidebar-navigation-link" href="#anchor-redundant"><@s.text name='manage.mapping.redundant'/></a></li>
-                        </#if>
-                    </ul>
-
-                    <ul>
-                        <li><a id="toggleFields" class="sidebar-link"><@s.text name='manage.mapping.hideEmpty'/></a></li>
-                        <#if (redundants?size>0)>
-                            <li><a id="toggleGroups" class="sidebar-link"><@s.text name='manage.mapping.hideGroups'/></a></li>
-                        </#if>
-                    </ul>
-
-                    <div class="d-flex align-content-between" style="margin-left: -10px;">
-                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary me-1" name="save" key="button.save"/>
-                        <@s.submit cssClass="confirm btn btn-sm btn-outline-gbif-danger me-1" name="deleteFlag" key="button.delete"/>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary" name="cancel" key="button.back"/>
-                    </div>
-                </nav>
-
-                <nav id="sidebar-content">
-                    <ul class="dropdown-menu dropdown-menu-light text-light" aria-labelledby="filtersDropdown">
-                        <li><a id="toggleFields" class="dropdown-item menu-link" href="#"><@s.text name='manage.mapping.hideEmpty'/></a></li>
-
-                        <#if (redundants?size>0)>
-                            <li><a id="toggleGroups" class="dropdown-item menu-link" href="#"><@s.text name='manage.mapping.hideGroups'/></a></li>
-                        </#if>
-                    </ul>
-                </nav>
-
-            </div>
-
-            <div class="bd-content ps-lg-4">
-
-                <div>
-                    <input type="hidden" name="r" value="${resource.shortname}" />
-                    <input type="hidden" name="id" value="${mapping.extension.rowType}" />
-                    <input type="hidden" name="mid" value="${mid!}" />
-                    <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
-                    <input id="showAllGroupsValue" type="hidden" name="showAllGroups" value="${Parameters.showAllGroups!"true"}" />
-                </div>
-
-                <#-- Filter and required mapping -->
-                <div class="border-bottom mb-2 text-smaller">
-                    <div class="row pt-3 pb-2 g-2 requiredMapping">
-                        <div class="col-lg-4 pt-1" id="coreID">
-                            <#if coreid??>
-                                <#assign text1>
-                                    <#if coreid.qualifiedName()?has_content><a href="${coreid.qualifiedName()}">${coreid.qualifiedName()}</a><#else>${coreid.name!}</#if><br/><br/>
-                                    <#if (coreid.translations[currentLocale].description)?has_content><@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].description/><br/><br/><#elseif coreid.description?has_content>${coreid.description}<br/><br/></#if>
-                                    <#if (coreid.translations[currentLocale].comments)?has_content><@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].comments/><br/><br/><#elseif coreid.comments?has_content>${coreid.comments}<br/><br/></#if>
-                                    <#if coreid.link?has_content><@s.text name="basic.seealso"/> <a href="${coreid.link}" target="_blank">${coreid.link}</a><br/><br/></#if>
-                                    <span class="idSuffix">
-                                        <@s.text name='manage.mapping.info.linenumbers'/>
-                                    </span>
-                                    <#if (coreid.translations[currentLocale].examples)?has_content>
-                                        <em><@s.text name="basic.examples"/></em>:
-                                        <@processSurroundedWithBackticksAsCode coreid.translations[currentLocale].examples />
-                                    <#elseif coreid.examples?has_content>
-                                        <em><@s.text name="basic.examples"/></em>:
-                                        <@processSurroundedWithBackticksAsCode coreid.examples />
-                                    </#if>
-                                </#assign>
-                                <@popoverTextInfo text1/>
-                            </#if>
-                            <strong class="ps-1">${(coreid.translations[currentLocale].label)!coreid.label!coreid.name!"Record ID"}</strong>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <select name="mapping.idColumn" id="idColumn" class="form-select form-select-sm">
-                                <#if action.isCoreMapping()>
-                                    <option value="" <#if !mapping.idColumn??> selected="selected"<#elseif (mapping.idColumn!-99)==-3> selected="selected"</#if>><@s.text name="manage.mapping.noid"/></option>
-                                </#if>
-                                <!-- auto generating identifiers is only available for the Taxon core -->
-                                <#if mapping.isTaxonCore()>
-                                    <option value="-2" <#if (mapping.idColumn!-99)==-2> selected="selected"</#if>><@s.text name="manage.mapping.uuid"/></option>
-                                    <option value="-1" <#if (mapping.idColumn!-99)==-1> selected="selected"</#if>><@s.text name="manage.mapping.lineNumber"/></option>
-                                </#if>
-                                <#list columns as col>
-                                    <option value="${col_index}" <#if (mapping.idColumn!-99)==col_index> selected="selected"</#if>>${col}</option>
-                                </#list>
-                            </select>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <input type="text" name="mapping.idSuffix" value="${mapping.idSuffix!}" class="form-control form-control-sm" />
-                        </div>
-
-                        <#if ((mapping.idColumn!-99)>=0)>
-                            <small><@sourceSample mapping.idColumn "idColumn"/></small>
-                        </#if>
-                    </div>
-
-                    <div id="filterSection" class="mappingRow">
-
-                        <div class="row pt-2 pb-3 g-2 mappingFiler">
-                            <div class="col-lg-1 pt-1" id="filter">
-                                <@popoverPropertyInfo "manage.mapping.info" />
-                                <strong class="ps-1"><@s.text name='manage.mapping.filter'/></strong>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <select name="mapping.filter.filterTime" id="mapping.filter.filterTime" class="form-select form-select-sm">
-                                    <#list mapping.filter.filterTimes?keys as filterTime>
-                                        <option value="${filterTime}" <#if (mapping.filter.filterTime!"")==filterTime> selected="selected"</#if>>${filterTime}</option>
-                                    </#list>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <select id="filterName" name="mapping.filter.column" class="form-select form-select-sm">
-                                    <option value="" <#if !mapping.filter.column??> selected="selected"</#if>></option>
-                                    <#list columns as c>
-                                        <option value="${c_index}" <#if c_index==mapping.filter.column!-999> selected="selected"</#if>>${c}</option>
-                                    </#list>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-2">
-                                <select id="filterComp" name="mapping.filter.comparator" class="form-select form-select-sm">
-                                    <option value="" <#if !mapping.filter.comparator??> selected="selected"</#if>></option>
-                                    <#list comparators as c>
-                                        <option value="${c}" <#if c==mapping.filter.comparator!""> selected="selected"</#if>>${c}</option>
-                                    </#list>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-2">
-                                <input id="filterParam" name="mapping.filter.param" class="form-control form-control-sm" value="${mapping.filter.param!}" />
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div id="sections">
-                    <#-- Display fields either by group, or as single list of fields-->
-                    <#if (fieldsByGroup?keys?size>0)>
-                        <#list fieldsByGroup?keys as g>
-                            <#assign groupsFields = fieldsByGroup.get(g)/>
-                            <#if (groupsFields?size>0)>
-                                <span class="anchor anchor-base <#if redundants?seq_contains(g)>redundant</#if> " id="anchor-group_${g?replace(' ', '_')}"></span>
-                                <div class="mt-5 <#if redundants?seq_contains(g)>redundant</#if>">
-                                    <div id="group_${g?replace(' ', '_')}" <#if redundants?seq_contains(g)>class="redundant"</#if> >
-                                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                            <#if g?has_content>
-                                                ${g}
-                                            <#else>
-                                                <@s.text name="manage.mapping.noClass"/>
-                                            </#if>
-                                        </h4>
-                                        <#list groupsFields as field>
-                                            <@showField field field_index/>
-                                        </#list>
-                                    </div>
-                                </div>
-                            </#if>
-                        </#list>
-                    <#else>
-                        <div class="mt-5">
-                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                <@s.text name="manage.mapping.fields"/>
-                            </h4>
-                            <#list fields as field>
-                                <@showField field field_index/>
-                            </#list>
-                        </div>
-                    </#if>
-
-                    <#-- store coreId term mapping field index, used to mirror coreId element mapping -->
-                    <#if !action.isCoreMapping() && coreid??>
-                        <#assign coreIdTermFieldsIndex = action.getFieldsTermIndices().get(coreid.qualname)!/>
-                        <#if coreIdTermFieldsIndex?has_content>
-                            <input id="coreIdTermFieldsIndex" type="hidden" value="${coreIdTermFieldsIndex}" />
-                        </#if>
-                    </#if>
-
-                    <#if (nonMapped?size>0)>
-                        <span class="anchor anchor-base" id="anchor-nonmapped"></span>
-                        <div class="mt-5" <#if (action.getRedundantGroups()?size==0)>style="height: 100vh; min-height: 200px;"</#if> >
-                            <h4 id="nonmapped" class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                <@s.text name="manage.mapping.no.mapped.title"/>
-                            </h4>
-                            <p><@s.text name="manage.mapping.no.mapped.columns"/>:</p>
-
-                            <div class="text-smaller">
-                                <#list nonMapped as col>
-                                    <#if col?has_content>
-                                        <span class="unmapped-field"><strong>${col}</strong></span><#sep> </#sep>
-                                    </#if>
-                                </#list>
-                            </div>
-                        </div>
-                    </#if>
-
-                    <#if (redundants?size>0)>
-                        <span class="anchor anchor-base" id="anchor-redundant"></span>
-                        <div class="mt-5" style="height: 100vh; min-height: 200px;">
-                            <h4 id="redundant" class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-                                <@s.text name="manage.mapping.redundant.classes.title"/>
-                            </h4>
-                            <p><@s.text name="manage.mapping.redundant.classes.intro"/>:</p>
-
-                            <div class="text-smaller">
-                                <#list redundants as gr>
-                                    <span class="redundant-section"><strong>${gr}</strong></span><#sep> </#sep>
-                                </#list>
-                            </div>
-                        </div>
-                    </#if>
-                </div>
-
-            </div>
-        </main>
-    </div>
-</div>
-
-</form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl"/>

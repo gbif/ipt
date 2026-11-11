@@ -80,13 +80,13 @@
 .ov-card .ov-sp { flex: 1; }
 /* card header actions: quiet links and a bare "more" menu, so Publish stays the only button that stands out */
 .ov-card .ov-ch { column-gap: 8px; }
-.ov-card .ov-ch form { display: inline-flex; margin: 0; }
+.ov-card .ov-ch form { display: contents !important; }
 .ov-hact, .ov-hmenu { border: 0; background: none; padding: 2px 4px; font-size: 0.82rem; line-height: 1.5; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
 #sections .ov-card .ov-hact { color: rgb(var(--color-gbif-primary)) !important; font-weight: 500; text-decoration: none !important; }
 #sections .ov-card .ov-hact:hover { text-decoration: underline !important; }
 .ov-hmenu { color: #6c757d; border-radius: 4px; }
 .ov-hmenu:hover, .ov-hmenu[aria-expanded=true] { color: #343a40; background: #f1f3f5; }
-.ov-ch .dropdown { display: inline-block; }
+.ov-ch .dropdown { display: flex; }
 .ov-card .ov-sub { color: #6c757d; font-size: 0.8rem; margin: 2px 0 10px; }
 
 /* sources & mappings table */

@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.action.manage;
 
+import org.gbif.dwc.ArchiveField.DataType;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.AppConfig;
@@ -136,6 +137,9 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @Getter
   private boolean doiUsedForDatasetId;
 
+  // the problem with the record ID set up, e.g. line numbers for an extension without a matching core
+  private String idProblem;
+
   @Inject
   public MappingAction(
       SimpleTextProvider textProvider,
@@ -159,17 +163,13 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
       return;
     }
 
+    // missing required fields and values of the wrong type are shown on the fields themselves (mapping.ftl),
+    // the ID problem in the record ID section
     ExtensionMappingValidator validator = new ExtensionMappingValidator();
     ValidationStatus v = validator.validate(mapping, resource, peek, columns);
     if (v != null && !v.isValid()) {
       if (v.getIdProblem() != null) {
-        addActionWarning(getText(v.getIdProblem(), v.getIdProblemParams()));
-      }
-      for (Term t : v.getMissingRequiredFields()) {
-        addActionWarning(getText("validation.required", new String[]{t.simpleName()}));
-      }
-      for (Term t : v.getWrongDataTypeFields()) {
-        addActionWarning(getText("validation.wrong.datatype", new String[]{t.simpleName()}));
+        idProblem = getText(v.getIdProblem(), v.getIdProblemParams());
       }
       // report columns that have been translated multiple times
       for (String columnName : v.getMultipleTranslationsForSameColumn()) {
@@ -520,8 +520,9 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
 
   @Override
   public String save() throws IOException {
-    // a new mapping?
-    if (resource.getMapping(id, mid) == null) {
+    // a new mapping? Adding one goes through here too, before its source is chosen: no "saved" message for that
+    boolean isNew = resource.getMapping(id, mid) == null;
+    if (isNew) {
       mid = resource.addMapping(mapping);
     } else {
       // save field mappings
@@ -555,6 +556,9 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
 
     // save entire resource config
     saveResource();
+    if (!isNew) {
+      addActionMessage(getText("manage.mapping.saved"));
+    }
     // report validation without skipping this save
     validateAndReport();
     LOG.debug("mapping saved..");
@@ -585,6 +589,127 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @Override
   public String actionErrorOccurred(String currentResultName) {
     return notFound ? NOT_FOUND : defaultResult;
+  }
+
+  /**
+   * @return the other mappings deleted together with this one: all of them when this is the only core mapping
+   * (see Resource.deleteMapping), none otherwise
+   */
+  public List<ExtensionMapping> getMappingsDeletedWithThis() {
+    List<ExtensionMapping> others = new ArrayList<>();
+    if (mapping != null && isCoreMapping() && resource.getMappings(resource.getCoreRowType()).size() == 1) {
+      for (ExtensionMapping m : resource.getMappings()) {
+        if (m != mapping) {
+          others.add(m);
+        }
+      }
+    }
+    return others;
+  }
+
+  public String getIdProblem() {
+    return idProblem;
+  }
+
+  /**
+   * How a core mapping sets the record ID, for the mapping page: an extension shows it next to its link to the core and
+   * checks its own suffix against it, a core mapping checks it doesn't repeat the line numbers of another one.
+   *
+   * @param source the name of the core mapping's source
+   * @param mode column, line, uuid or none
+   * @param column the name of the ID column, for mode column
+   * @param suffix the ID suffix, empty if none
+   */
+  public record CoreIdSetup(String source, String mode, String column, String suffix) {
+    // getters for Freemarker, which doesn't see record accessors
+    public String getSource() {
+      return source;
+    }
+
+    public String getMode() {
+      return mode;
+    }
+
+    public String getColumn() {
+      return column;
+    }
+
+    public String getSuffix() {
+      return suffix;
+    }
+  }
+
+  /**
+   * @return the ID set-up of the core mappings other than this one
+   */
+  public List<CoreIdSetup> getCoreIdSetups() {
+    List<CoreIdSetup> setups = new ArrayList<>();
+    for (ExtensionMapping m : resource.getCoreMappings()) {
+      if (m == mapping) {
+        continue;
+      }
+      Integer id = m.getIdColumn();
+      String suffix = StringUtils.trimToEmpty(m.getIdSuffix());
+      String sourceName = m.getSource() == null ? "" : m.getSource().getName();
+      if (id == null || id.equals(ExtensionMapping.NO_ID)) {
+        setups.add(new CoreIdSetup(sourceName, "none", null, ""));
+      } else if (id.equals(ExtensionMapping.IDGEN_LINE_NUMBER)) {
+        setups.add(new CoreIdSetup(sourceName, "line", null, suffix));
+      } else if (id.equals(ExtensionMapping.IDGEN_UUID)) {
+        setups.add(new CoreIdSetup(sourceName, "uuid", null, ""));
+      } else {
+        setups.add(new CoreIdSetup(sourceName, "column", columnName(m.getSource(), id), suffix));
+      }
+    }
+    return setups;
+  }
+
+  /**
+   * @return the name of a source column as the mapping page shows it, "Column #n" for a file without a header line
+   */
+  private String columnName(Source src, int index) {
+    String fallback = "Column #" + (index + 1);
+    if (src == null || ((src.isUrlSource() || src.isFileSource()) && ((SourceWithHeader) src).getIgnoreHeaderLines() == 0)) {
+      return fallback;
+    }
+    try {
+      List<String> cols = sourceManager.columns(src);
+      return index < cols.size() ? cols.get(index) : fallback;
+    } catch (Exception e) {
+      LOG.debug("Can't read the columns of source {}", src.getName(), e);
+      return fallback;
+    }
+  }
+
+  /**
+   * The data types each sample value can't be read as, so the mapping page can flag a value when a column is mapped to
+   * a field of that type, also after the column is changed in the page. Checked the same way as the mapping validation.
+   *
+   * @return per peek row, per column: the names of the data types (integer, decimal, date, uri) the value fails,
+   * separated by spaces
+   */
+  public List<List<String>> getSampleTypeProblems() {
+    List<List<String>> problems = new ArrayList<>();
+    if (peek == null) {
+      return problems;
+    }
+    DataType[] types = {DataType.integer, DataType.decimal, DataType.date, DataType.uri};
+    for (String[] row : peek) {
+      List<String> rowProblems = new ArrayList<>();
+      if (row != null) {
+        for (String val : row) {
+          List<String> failed = new ArrayList<>();
+          for (DataType type : types) {
+            if (!ExtensionMappingValidator.isValidValue(type, val)) {
+              failed.add(type.name());
+            }
+          }
+          rowProblems.add(String.join(" ", failed));
+        }
+      }
+      problems.add(rowProblems);
+    }
+    return problems;
   }
 
   @StrutsParameter(depth = 2)

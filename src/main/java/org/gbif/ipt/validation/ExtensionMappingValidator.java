@@ -119,34 +119,35 @@ public class ExtensionMappingValidator {
       }
     }
     for (String val : testData) {
-      val = StringUtils.trimToNull(val);
-      if (val == null) {
-        continue;
-      }
-      try {
-        if (DataType.bool == dt) {
-          if (val.equals("1")) {
-            continue;
-          }
-        } else if (DataType.date == dt) {
-          ParseResult<TemporalAccessor> parsedDateResult = TEXTDATE_PARSER.parse(val);
-          TemporalAccessor parsedDateTa = parsedDateResult.getPayload();
-          if (parsedDateTa == null) {
-            return false;
-          }
-          if (!parsedDateTa.isSupported(ChronoField.YEAR)) {
-            return false;
-          }
-        } else if (DataType.decimal == dt) {
-          Float.parseFloat(val);
-        } else if (DataType.integer == dt) {
-          Integer.parseInt(val);
-        } else if (DataType.uri == dt) {
-          new URI(val);
-        }
-      } catch (NumberFormatException | URISyntaxException e) {
+      if (!isValidValue(dt, val)) {
         return false;
       }
+    }
+    return true;
+  }
+
+  /**
+   * @return true if the value is empty or can be read as the data type, false otherwise
+   */
+  public static boolean isValidValue(DataType dt, String val) {
+    val = StringUtils.trimToNull(val);
+    if (dt == null || dt == DataType.string || val == null) {
+      return true;
+    }
+    try {
+      if (DataType.date == dt) {
+        ParseResult<TemporalAccessor> parsedDateResult = TEXTDATE_PARSER.parse(val);
+        TemporalAccessor parsedDateTa = parsedDateResult.getPayload();
+        return parsedDateTa != null && parsedDateTa.isSupported(ChronoField.YEAR);
+      } else if (DataType.decimal == dt) {
+        Float.parseFloat(val);
+      } else if (DataType.integer == dt) {
+        Integer.parseInt(val);
+      } else if (DataType.uri == dt) {
+        new URI(val);
+      }
+    } catch (NumberFormatException | URISyntaxException e) {
+      return false;
     }
     return true;
   }
