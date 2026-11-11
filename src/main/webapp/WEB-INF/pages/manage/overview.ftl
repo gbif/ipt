@@ -71,7 +71,10 @@
 
 <style>
     :root {
-        --navbar-height: 120px;
+        /* the shrunk navbar (57px) and the resource bar (52px) stay on top while scrolling;
+           sections and the sidebar keep clear of them */
+        --ov-bars-height: 109px;
+        --navbar-height: calc(var(--ov-bars-height) + 16px);
     }
 
     .section {
@@ -219,6 +222,22 @@
 
         // Initialize scrollspy
         IptScrollSpy.init({tocSelector: '.bd-toc nav a'});
+
+        // room under the last section, so every section in "On this page" can scroll up under the bars, but no more than that
+        (function () {
+            var content = document.querySelector("#sections .bd-content");
+            var last = document.getElementById("managers");
+            if (!content || !last) return;
+            function fitLastSection() {
+                var padding = parseFloat(content.style.paddingBottom) || 0;
+                var below = document.documentElement.scrollHeight - padding - (last.getBoundingClientRect().top + window.scrollY);
+                var needed = window.innerHeight - (parseFloat(getComputedStyle(last).scrollMarginTop) || 0) - below;
+                content.style.paddingBottom = needed > 0 ? Math.ceil(needed) + "px" : "";
+            }
+            // content-box changes only (cards opening, tables filtering), so setting the padding doesn't fire it again
+            new ResizeObserver(fitLastSection).observe(content);
+            window.addEventListener("resize", fitLastSection);
+        })();
 
         // the publication report: toggled from the Publication card (menu, failure line), shown from the page header menu
         function setReportVisible(show) {
@@ -1445,23 +1464,23 @@
             dialogWindow.modal('show');
         }
 
+        // the resource bar replaces the heading once its actions have scrolled under the navbar (which shrinks on scroll)
         var resourceNav = document.getElementById("resource-nav");
-        window.onscroll = function() {
-            displayHideSecondNavOnScroll();
-        };
-
+        var mainNav = document.querySelector(".main-nav");
+        var headActions = document.querySelector(".ov-head .ov-acts");
         function displayHideSecondNavOnScroll() {
-            if ($(document).scrollTop() > 220) {
-                resourceNav.style.display = "block";
-            } else {
-                resourceNav.style.display = "none";
-            }
+            var navBottom = mainNav.getBoundingClientRect().bottom;
+            resourceNav.style.top = navBottom + "px";
+            resourceNav.hidden = headActions.getBoundingClientRect().bottom > navBottom;
         }
+        window.addEventListener("scroll", displayHideSecondNavOnScroll, {passive: true});
+        window.addEventListener("resize", displayHideSecondNavOnScroll);
+        displayHideSecondNavOnScroll();
 
-        var scrollPosition = $(document).scrollTop();
-        if (scrollPosition > 220) {
-            resourceNav.style.display = "block";
-        }
+        $(".proxy-button-publish").on('click', function () {
+            var target = document.querySelector(".ov-head #publishButton, .ov-head #publish-button-show-warning, .ov-head #publish-button-blocked");
+            if (target) target.click();
+        });
 
         $("#view-metadata-button").on('click', function () {
             var dialogWindow = $("#datapackage-metadata-modal");
@@ -1620,31 +1639,6 @@
 <#assign publishLabel><@s.text name="manage.overview.publishVersion"><@s.param>${nextVersion}</@s.param></@s.text></#assign>
 <#assign publishLabel = publishLabel?markup_string>
 
-    <div class="container px-0">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-        <#-- problems the IPT worked around when loading the resource, e.g. unreadable metadata: they stay until fixed -->
-        <#list resource.loadNotices?filter(n -> n.needsAttention) as n>
-            <div class="alert alert-warning d-flex" role="status">
-                <div class="me-3">
-                    <@icon name="warning" class="alert-orange-2 fs-bigger-2 me-2"/>
-                </div>
-                <div class="overflow-x-hidden pt-1">
-                    <@s.text name=n.textKey><@s.param>${n.detail}</@s.param></@s.text>
-                </div>
-            </div>
-        </#list>
-
-        <div id="sources-created-successfully-info" class="alert alert-success alert-dismissible fade show d-flex" role="alert" style="display: none !important;">
-            <div class="me-3">
-                <@icon name="check_circle" class="alert-green-2 fs-bigger-2 me-2"/>
-            </div>
-            <div class="overflow-x-hidden pt-1 message">
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    </div>
-
     <div class="container-fluid border-bottom">
         <div class="container">
             <div class="ov-head">
@@ -1756,6 +1750,36 @@
         </div>
     </div>
 
+    <#-- shown once the heading has scrolled under the navbar: the title and the same actions as the heading -->
+    <nav id="resource-nav" class="resource-nav ov-bar border-bottom" aria-label="${(resource.title!resource.shortname)}" hidden>
+        <div class="container">
+            <div class="ov-bar-in">
+                <div class="ov-bar-title">
+                    <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase}"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
+                    <span class="ov-bar-name">${resource.title!resource.shortname}</span>
+                </div>
+                <div class="ov-acts">
+                    <#if isPublished && !isDeleted>
+                        <button type="button" class="btn btn-sm btn-outline-gbif-primary proxy-button-view-resource">
+                            <#if resource.status == "PRIVATE"><@s.text name="manage.overview.viewPage.private"/><#else><@s.text name="manage.overview.viewPage"/></#if>
+                        </button>
+                    </#if>
+                    <#if isDeleted>
+                        <#if disableRegistrationRights == "false">
+                            <button type="button" class="btn btn-sm btn-gbif-solid proxy-button-undelete-resource"><@s.text name="button.undelete"/></button>
+                        <#else>
+                            <button type="button" class="btn btn-sm btn-gbif-solid ov-blocked button-show-delete-resource-disabled-modal"><@s.text name="button.undelete"/></button>
+                        </#if>
+                    <#else>
+                        <button type="button" class="btn btn-sm btn-gbif-solid proxy-button-publish<#if !canPublish> ov-blocked</#if>"<#if !canPublish> title="<@s.text name='manage.overview.publishBlocked'/>"</#if>>
+                            <@icon name="upload" class="me-1"/>${publishLabel}
+                        </button>
+                    </#if>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div id="sections" class="container-fluid bg-body">
         <div class="container main-content-container mb-md-4 bd-layout">
 
@@ -1793,6 +1817,32 @@
                 </div>
 
                 <div class="bd-content ps-lg-4 pt-4">
+                    <#-- messages from the last action and loading problems, in the content column next to the cards they are about -->
+                    <div class="ov-alerts">
+                    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+                    <#-- problems the IPT worked around when loading the resource, e.g. unreadable metadata: they stay until fixed -->
+                    <#list resource.loadNotices?filter(n -> n.needsAttention) as n>
+                        <div class="alert alert-warning d-flex" role="status">
+                            <div class="me-3">
+                                <@icon name="warning" class="alert-orange-2 fs-bigger-2 me-2"/>
+                            </div>
+                            <div class="overflow-x-hidden pt-1">
+                                <@s.text name=n.textKey><@s.param>${n.detail}</@s.param></@s.text>
+                            </div>
+                        </div>
+                    </#list>
+
+                    <div id="sources-created-successfully-info" class="alert alert-success alert-dismissible fade show d-flex" role="alert" style="display: none !important;">
+                        <div class="me-3">
+                            <@icon name="check_circle" class="alert-green-2 fs-bigger-2 me-2"/>
+                        </div>
+                        <div class="overflow-x-hidden pt-1 message">
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    </div>
+
                     <#-- a banner only when something stops publishing; versions and changes are in the Publication card -->
                     <#if isDeleted>
                         <div id="overview-status" class="ov-banner del" role="status">

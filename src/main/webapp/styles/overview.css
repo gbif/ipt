@@ -45,8 +45,17 @@ body { padding-top: 68px !important; }
 .ov-pill.bad { background: rgba(var(--color-gbif-danger), .12); color: rgb(176, 50, 64); }
 .ov-pill.grey { background: #f1f3f5; color: #6c757d; font-weight: 500; }
 
-/* layout: sidebar + content */
-#sections .bd-toc-overview { margin-top: 0 !important; padding-top: 1.5rem !important; }
+/* resource bar: fixed under the navbar once the heading has scrolled away (top is set by the page script) */
+.ov-bar { position: fixed; top: 57px; left: 0; right: 0; z-index: 1030; background: var(--bs-body-bg, #fff); box-shadow: 0 2px 4px rgba(0, 0, 0, .04); }
+.ov-bar-in { display: flex; gap: 12px; align-items: center; justify-content: space-between; height: 51px; }
+.ov-bar-title { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.ov-bar-title .dt-content-pill { margin: 0 !important; padding: 2px 8px !important; line-height: 18px; }
+.ov-bar-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.ov-bar .ov-acts { flex-wrap: nowrap; flex: none; }
+@media (max-width: 575px) { .ov-bar-title .dt-content-pill { display: none; } }
+
+/* layout: sidebar + content. The sidebar is as tall as its links, not the viewport (main.css), so it can stick under the bars */
+#sections .bd-toc-overview { margin-top: 0 !important; padding-top: 1.5rem !important; top: var(--ov-bars-height); height: auto; align-self: start; max-height: calc(100vh - var(--ov-bars-height)); }
 #sections .bd-toc nav a.sidebar-navigation-link { display: flex; gap: 8px; align-items: center; }
 #sections .section { min-height: 0; }
 .ov-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; display: inline-block; }
@@ -60,6 +69,15 @@ body { padding-top: 68px !important; }
 .ov-ready ul { list-style: none; margin: 0; padding: 0; }
 .ov-ready li { display: flex; gap: 6px; align-items: flex-start; margin: 3px 0; color: #495057; }
 .ov-ready li .ov-dot { margin-top: 5px; }
+
+/* action messages and loading notices: above the cards, same shape as the status banner */
+.ov-alerts:empty, .ov-alerts #action-alerts:empty { display: none; }
+.ov-alerts .alert { border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; font-size: 0.875rem; align-items: flex-start; }
+.ov-alerts .alert .me-3 { margin-right: 4px !important; line-height: 1; padding-top: 2px; }
+.ov-alerts .alert .me-3 > * { font-size: 1.25rem !important; margin-right: 0 !important; }
+.ov-alerts .alert .overflow-x-hidden { padding-top: 1px !important; flex: 1; }
+.ov-alerts .alert-dismissible { padding-right: 40px; }
+.ov-alerts .alert-dismissible .btn-close { padding: 13px 14px; font-size: 0.7rem; }
 
 /* status banner */
 .ov-banner { border-radius: 8px; padding: 12px 14px; margin: 0 0 16px; font-size: 0.875rem; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -78,7 +96,7 @@ body { padding-top: 68px !important; }
 .ov-card .ov-ch { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .ov-card h2 { margin: 0; font-size: 1rem; font-weight: 500; color: #4e565f; }
 .ov-card .ov-sp { flex: 1; }
-/* card header actions: quiet links and a bare ⋯ menu, so Publish stays the only button that stands out */
+/* card header actions: quiet links and a bare "more" menu, so Publish stays the only button that stands out */
 .ov-card .ov-ch { column-gap: 8px; }
 .ov-card .ov-ch form { display: inline-flex; margin: 0; }
 .ov-hact, .ov-hmenu { border: 0; background: none; padding: 2px 4px; font-size: 0.82rem; line-height: 1.5; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }

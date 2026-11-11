@@ -158,67 +158,6 @@
         </div>
     </nav>
 
-    [#if currentPage?? && currentPage == "overview"]
-    <nav id="resource-nav" class="resource-nav bg-body border-bottom" style="display: none;">
-        <div class="container mx-auto">
-            <div class="d-flex justify-content-between">
-                <div class="d-flex py-2 fs-smaller">
-                    <div class="py-2 me-3">
-                        <span class="fs-smaller-2 text-nowrap me-1 my-1 dt-content-link dt-content-pill type-${resourceTypeLowerCase}"[#if installedSchemaVersion?has_content] title="[@s.text name="manage.overview.schemaVersion"/]"[/#if]>[@s.text name="portal.resource.type.${resourceTypeLowerCase}"/][#if installedSchemaVersion?has_content] &middot; ${installedSchemaVersion}[/#if]</span>
-
-                        [#if resource.pendingStatus?has_content && resource.status != resource.pendingStatus]
-                        <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.pendingStatus?lower_case}">
-                            [#if resource.pendingStatus == "PUBLIC" || resource.pendingStatus == "PRIVATE"]
-                                <i class="bi bi-circle fs-smaller-2"></i>
-                            [#else]
-                                <i class="bi bi-circle-fill fs-smaller-2"></i>
-                            [/#if]
-                            <span>[@s.text name="manage.home.visible.pending.${resource.pendingStatus?lower_case}"/]</span>
-                        </span>
-                        [#elseif resource.status??]
-                        <span class="text-nowrap text-discreet fs-smaller-2 status-pill status-${resource.status?lower_case}">
-                            [#if resource.status == "PUBLIC" || resource.status == "PRIVATE"]
-                                <i class="bi bi-circle fs-smaller-2"></i>
-                            [#else]
-                                <i class="bi bi-circle-fill fs-smaller-2"></i>
-                            [/#if]
-                            <span>[@s.text name="manage.home.visible.${resource.status?lower_case}"/]</span>
-                        </span>
-                        [/#if]
-                    </div>
-
-                    <div>
-                        <span class="fw-500">${resource.title!resource.shortname}</span><br>
-                        <span class="fs-smaller-2 text-discreet">[@s.text name="basic.createdByOn"][@s.param]${(resource.creator.name)!}[/@s.param][@s.param]${resource.created?date?string("MMM d, yyyy")}[/@s.param][/@s.text]</span>
-                    </div>
-                </div>
-                <div class="d-flex gap-1 my-auto">
-                    <button class="btn btn-sm btn-outline-gbif-primary proxy-button-view-resource" name="view">[@s.text name="button.view"/]</button>
-
-                    [#if resource.status == "DELETED"]
-                        [#if disableRegistrationRights == "false"]
-                            <button class="btn btn-sm btn-outline-gbif-primary proxy-button-undelete-resource" name="undelete">[@s.text name="button.undelete"/]</button>
-                        [#else]
-                            <button class="btn btn-sm btn-outline-gbif-primary" name="undelete" disabled>[@s.text name="button.undelete"/]</button>
-                        [/#if]
-                    [#else]
-                        [#if disableRegistrationRights == "false"]
-                            [#if resource.key?? && resource.status == "REGISTERED"]
-                                <button class="btn btn-sm btn-outline-gbif-danger button-show-delete-resource-modal" name="delete">[@s.text name="button.delete"/]</button>
-                            [#else]
-                                <button class="btn btn-sm btn-outline-gbif-danger proxy-button-delete-from-ipt" name="delete">[@s.text name="button.delete"/]</button>
-                            [/#if]
-                        [#else]
-                            <button class="btn btn-sm btn-outline-gbif-danger" name="delete" disabled>[@s.text name="button.delete"/]</button>
-                        [/#if]
-                    [/#if]
-
-                    <button class="btn btn-sm btn-outline-secondary proxy-button-cancel" name="cancel">[@s.text name="button.cancel"/]</button>
-                </div>
-            </div>
-        </div>
-    </nav>
-    [/#if]
 </header>
 
 <div id="dialog-confirm" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
