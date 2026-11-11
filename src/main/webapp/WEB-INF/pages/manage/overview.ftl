@@ -1664,21 +1664,22 @@
                         <#if resourceSubtypeLowerCase?has_content>
                             <span class="fs-smaller-2 text-nowrap subtype-pill dt-content-link dt-content-pill type-${resourceSubtypeLowerCase}"><@s.text name="portal.resource.subtype.${resourceSubtypeLowerCase}"/></span>
                         </#if>
-                        <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.status!?lower_case}">
+                        <#-- visibility now, and what it becomes on the next publication (the Visibility card explains and can cancel it) -->
+                        <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.status!?lower_case}"<#if isStatusPending> title="<@s.text name='manage.overview.changed.publication.status.republication'/>"</#if>>
                             <#if resource.status == "PUBLIC" || resource.status == "PRIVATE">
                                 <@icon name="radio_button_unchecked" class="fs-smaller-2"/>
                             <#else>
                                 <@icon name="circle" class="fs-smaller-2"/>
                             </#if>
                             <span><@s.text name="manage.home.visible.${resource.status!?lower_case}"/></span>
+                            <#if isStatusPending>
+                                <@icon name="arrow_forward" class="fs-smaller-2"/>
+                                <span><@s.text name="resource.status.${resource.pendingStatus?lower_case}"/></span>
+                            </#if>
                         </span>
-                        <#if isStatusPending>
-                            <span class="ov-pill warn" title="<@s.text name='manage.overview.changed.publication.status.republication'/>">→ <@s.text name="manage.overview.pendingOnPublication"><@s.param><@s.text name="resource.status.${resource.pendingStatus?lower_case}"/></@s.param></@s.text></span>
-                        </#if>
                     </div>
                     <div class="ov-meta">
                         <span><@s.text name="basic.createdByOn"><@s.param>${(resource.creator.name)!}</@s.param><@s.param>${resource.created?date?string("MMM d, yyyy")}</@s.param></@s.text></span>
-                        <span><@s.text name="manage.overview.shortname"/> <code>${resource.shortname}</code></span>
                     </div>
                 </div>
 
