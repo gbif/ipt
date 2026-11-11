@@ -192,10 +192,6 @@
     <#assign t><@s.text name="manage.overview.attention.datasetTypeMissing"/></#assign>
     <#assign attention = attention + [["warn", t]]>
 </#if>
-<#if resource.status == "PUBLIC" && !isStatusPending>
-    <#assign t><@s.text name="manage.overview.attention.notRegistered"/></#assign>
-    <#assign attention = attention + [["warn", t]]>
-</#if>
 <#assign attention = attention?filter(a -> a[0] == "bad") + attention?filter(a -> a[0] == "warn")>
 
 <#-- section statuses -->
@@ -209,10 +205,9 @@
     <#assign dataStatus = "ok">
 </#if>
 <#assign metadataStatus = (missingBasicMetadata || !validMetadata)?then("bad", "ok")>
-<#if resource.status == "REGISTERED">
+<#-- private, public and registered are all fine; grey only marks a resource nobody else can see -->
+<#if resource.status == "REGISTERED" || resource.status == "PUBLIC">
     <#assign sharingStatus = "ok">
-<#elseif resource.status == "PUBLIC">
-    <#assign sharingStatus = "warn">
 <#else>
     <#assign sharingStatus = "off">
 </#if>

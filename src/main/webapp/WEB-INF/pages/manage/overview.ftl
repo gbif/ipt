@@ -1479,6 +1479,12 @@
         });
 
         // ---- redesigned overview: actions that hand over to the existing buttons and modals ----
+        // when registering is blocked, the greyed-out Register link opens the list of what's missing
+        $('#register-blocked').on('click', function () {
+            var checks = document.getElementById('registration-checks');
+            checks.open = true;
+            checks.scrollIntoView({behavior: 'smooth', block: 'center'});
+        });
         // when publishing is blocked the header button points at the reasons in the banner
         $('#publish-button-blocked').on('click', function (e) {
             e.preventDefault();

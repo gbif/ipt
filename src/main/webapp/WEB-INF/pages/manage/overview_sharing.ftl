@@ -1,22 +1,30 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
-<#-- Visibility & registration section of the resource overview: private → public → registered, with what registering needs. Needs overview_status.ftl -->
-<#assign pencilIcon><svg viewBox="0 0 24 24" class="overview-action-button-icon"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg></#assign>
+<#-- Visibility & registration section of the resource overview: the current visibility in one line, the actions that change it,
+     and what stops registration. Needs overview_status.ftl -->
 
-<#-- the checks resource-registerResource.do makes, in the order #registration-modal reports them -->
+<#-- the checks resource-registerResource.do makes, in the order #registration-modal reports them.
+     label: short, reads right whether the check passes or not; noKey: what to do when it fails -->
 <#assign registerChecks = []>
-<#macro registerCheck ok okKey noKey escape=false>
-    <#local text><#if ok><@s.text name=okKey/><#else><@s.text name=noKey escapeHtml=escape/></#if></#local>
-    <#assign registerChecks = registerChecks + [{"ok": ok, "text": text}]>
+<#macro registerCheck ok label noKey escape=false href="" linkKey="">
+    <#local labelText><@s.text name=label/></#local>
+    <#local text><#if !ok><@s.text name=noKey escapeHtml=escape/></#if></#local>
+    <#local linkText><#if !ok && linkKey?has_content><@s.text name=linkKey/></#if></#local>
+    <#assign registerChecks = registerChecks + [{"ok": ok, "label": labelText, "text": text, "href": href, "linkText": linkText}]>
 </#macro>
 <#assign registrationTypeSupported = !resource.dataPackage || resource.coreType == "camtrap-dp" || resource.coreType == "coldp" || resource.coreType == "dwc-dp">
-<@registerCheck currentUser.hasRegistrationRights() "manage.overview.sharing.check.rights.ok" "manage.overview.sharing.check.rights.no"/>
+<@registerCheck ok=currentUser.hasRegistrationRights() label="manage.overview.sharing.req.rights" noKey="manage.overview.sharing.check.rights.no"/>
+<#-- only listed for the data package types GBIF doesn't take yet -->
 <#if !registrationTypeSupported>
-    <@registerCheck false "" "manage.resource.status.registration.forbiddenTypes"/>
+    <@registerCheck ok=false label="manage.overview.sharing.req.type" noKey="manage.resource.status.registration.forbiddenTypes"/>
 </#if>
-<@registerCheck !missingValidPublishingOrganisation "manage.overview.sharing.check.organisation.ok" "manage.overview.visibility.missing.organisation"/>
-<@registerCheck !missingRegistrationMetadata "manage.overview.sharing.check.metadata.ok" "manage.overview.sharing.check.metadata.no"/>
-<@registerCheck resource.isLastPublishedVersionPublic() "manage.overview.sharing.check.public.ok" "manage.overview.prevented.resource.registration.notPublic"/>
-<@registerCheck action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource) "manage.overview.sharing.check.licence.ok" "manage.overview.prevented.resource.registration.noGBIFLicense" true/>
+<@registerCheck ok=!missingValidPublishingOrganisation label="manage.overview.sharing.req.organisation" noKey="manage.overview.sharing.check.organisation.no"
+    href="publication-settings.do?r=${resource.shortname}" linkKey="manage.overview.publication.settings"/>
+<@registerCheck ok=!missingRegistrationMetadata label="manage.overview.sharing.req.metadata" noKey="manage.overview.sharing.check.metadata.no"
+    href="metadata-basic.do?r=${resource.shortname}" linkKey="submenu.basic"/>
+<@registerCheck ok=resource.isLastPublishedVersionPublic() label="manage.overview.sharing.req.public" noKey="manage.overview.prevented.resource.registration.notPublic"
+    href="#anchor-publish" linkKey="manage.overview.published"/>
+<@registerCheck ok=action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource) label="manage.overview.sharing.req.licence" noKey="manage.overview.prevented.resource.registration.noGBIFLicense" escape=true
+    href="metadata-basic.do?r=${resource.shortname}" linkKey="submenu.basic"/>
 <#assign canRegister = resource.status == "PUBLIC" && !registerChecks?filter(c -> !c.ok)?has_content>
 
 <span class="anchor anchor-overview-page" id="anchor-visibility"></span>
@@ -32,87 +40,90 @@
             <@popoverTextInfo visibilityTitleInfo/>
             <@s.text name="manage.overview.sharing.title"/>
         </h2>
-        <#if resource.status == "REGISTERED">
-            <span class="ov-pill ok"><@s.text name="resource.status.registered"/></span>
-        <#elseif resource.status == "PUBLIC">
-            <span class="ov-pill warn"><@s.text name="manage.overview.sharing.notRegistered"/></span>
+        <span class="ov-sp"></span>
+        <#if !isDeleted && !isStatusPending>
+            <#if resource.status == "PRIVATE">
+                <#if action.canBeMadePublic()>
+                    <form action='resource-makePublic.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <button id="makePublic" class="ov-hact" type="submit"><@s.text name="manage.overview.sharing.makePublic"/></button>
+                    </form>
+                <#else>
+                    <button id="show-visibility-disabled-modal" class="ov-hact ov-blocked" type="button"><@s.text name="manage.overview.sharing.makePublic"/></button>
+                </#if>
+            <#elseif resource.status == "PUBLIC">
+                <#if canRegister>
+                    <form action="resource-registerResource.do" method="post">
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <#if isDwcDp>
+                            <input id="dwcDpDatasetType" name="dwcDpDatasetType" type="hidden" value=""/>
+                        </#if>
+                        <button id="register-resource-button" class="confirmRegistration ov-hact" type="submit"><@s.text name="manage.overview.sharing.register"/></button>
+                    </form>
+                <#else>
+                    <#-- opens the checklist below, which says what's missing -->
+                    <button id="register-blocked" class="ov-hact ov-blocked" type="button" title="<@s.text name='manage.overview.sharing.registerBlocked'/>"><@s.text name="manage.overview.sharing.register"/></button>
+                </#if>
+                <#if action.canBeMadePrivate()>
+                    <form action='resource-makePrivate.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <input name="unpublish" type="hidden" value="Change"/>
+                        <button id="makePrivate" class="ov-hact" type="submit"><@s.text name="manage.overview.sharing.makePrivate"/></button>
+                    </form>
+                </#if>
+            </#if>
         </#if>
     </div>
-    <div class="ov-sub"><@s.text name="manage.overview.sharing.sub"/></div>
 
-    <#assign steps = [["PRIVATE", "private"], ["PUBLIC", "public"], ["REGISTERED", "registered"]]>
-    <#assign currentStep = ["PRIVATE", "PUBLIC", "REGISTERED"]?seq_index_of(resource.status?string)>
-    <div class="ov-steps">
-        <#list steps as step>
-            <#if step?index == currentStep>
-                <#assign stepClass = "on">
-            <#elseif !isDeleted && ((resource.pendingStatus?string)! == step[0] || (!isStatusPending && step?index == currentStep + 1))>
-                <#assign stepClass = "next">
-            <#else>
-                <#assign stepClass = "">
-            </#if>
-            <div class="${stepClass}">
-                <b><#if step?index == currentStep>● </#if><@s.text name="resource.status.${step[1]}"/></b>
-                <@s.text name="manage.overview.sharing.step.${step[1]}"/>
-            </div>
-        </#list>
-    </div>
-
-    <#if isDeleted>
-        <p class="text-smaller text-muted mt-2 mb-0"><@s.text name="manage.overview.sharing.deleted"/></p>
-
-    <#elseif isStatusPending>
-        <p class="text-smaller mt-2 mb-0">
-            <@s.text name="manage.overview.sharing.pending"><@s.param><@s.text name="resource.status.${resource.pendingStatus?lower_case}"/></@s.param></@s.text>
-            <button id="cancelVisibilityChange" class="ov-link-btn ms-1" type="button"><@s.text name="manage.overview.sharing.cancelChange"/></button>
-        </p>
-
-    <#elseif resource.status == "PRIVATE">
-        <p class="text-smaller mt-2 mb-2">
-            <#if resource.makePublicDate?has_content>
-                <@s.text name="manage.resource.status.intro.private.public.scheduled"><@s.param>${resource.makePublicDate?datetime?string.long_short}</@s.param></@s.text>
-            <#else>
-                <@s.text name="manage.resource.status.intro.private"/>
-            </#if>
-        </p>
-        <#if action.canBeMadePublic()>
-            <form action='resource-makePublic.do' method='post' class="d-inline">
-                <input name="r" type="hidden" value="${resource.shortname}"/>
-                <button id="makePublic" class="btn btn-sm btn-outline-gbif-primary" type="submit"><@s.text name="manage.overview.sharing.makePublic"/></button>
-            </form>
+    <#-- what the current visibility means, and what's about to change -->
+    <div class="ov-sub mb-0">
+        <#if isDeleted>
+            <@s.text name="manage.overview.sharing.deleted"/>
         <#else>
-            <button id="show-visibility-disabled-modal" class="btn btn-sm btn-outline-gbif-primary ov-blocked" type="button"><@s.text name="manage.overview.sharing.makePublic"/></button>
+            <b><@s.text name="resource.status.${resource.status?lower_case}"/></b> ·
+            <#if resource.status == "PRIVATE" && resource.makePublicDate?has_content>
+                <@s.text name="manage.overview.sharing.desc.privateScheduled"><@s.param>${resource.makePublicDate?datetime?string.long_short}</@s.param></@s.text>
+            <#else>
+                <@s.text name="manage.overview.sharing.desc.${resource.status?lower_case}"/>
+            </#if>
+            <#if isStatusPending>
+                <span class="ov-pending">
+                    <@s.text name="manage.overview.sharing.pending"><@s.param><@s.text name="resource.status.${resource.pendingStatus?lower_case}"/></@s.param></@s.text>
+                    <button id="cancelVisibilityChange" class="ov-link-btn ms-1" type="button"><@s.text name="manage.overview.sharing.cancelChange"/></button>
+                </span>
+            </#if>
         </#if>
+    </div>
 
-    <#elseif resource.status == "PUBLIC">
-        <div class="ov-h4"><@s.text name="manage.overview.sharing.checks"/></div>
+    <#if resource.status == "PUBLIC" && !isDeleted && !isStatusPending>
+        <#-- always collapsed: staying public without registering is fine. The greyed-out Register link opens it -->
+        <#assign failedChecks = registerChecks?filter(c -> !c.ok)?size>
+        <details class="ov-checks-box" id="registration-checks">
+            <summary>
+                <#if failedChecks == 0>
+                    <@icon name="check_circle" class="text-gbif-primary"/> <@s.text name="manage.overview.sharing.checks.ready"/>
+                <#else>
+                    <@s.text name="manage.overview.sharing.checks.missing"><@s.param>${failedChecks}</@s.param><@s.param>${registerChecks?size}</@s.param></@s.text>
+                </#if>
+            </summary>
         <ul class="ov-checks">
-            <#list registerChecks as c>
-                <li><span class="${c.ok?then('y', 'n')}">${c.ok?then('✓', '✗')}</span><span class="${c.ok?then('muted', '')}">${c.text}</span></li>
+            <#-- failed checks first: they take the full width for their explanation -->
+            <#list registerChecks?filter(c -> !c.ok) + registerChecks?filter(c -> c.ok) as c>
+                <li class="${c.ok?then('ok', 'no')}">
+                    <@icon name=c.ok?then("check", "close")/>
+                    <span>
+                        ${c.label}
+                        <#if !c.ok>
+                            <span class="ov-small">${c.text}<#if c.href?has_content> <a href="${c.href}">${c.linkText} →</a></#if></span>
+                        </#if>
+                    </span>
+                </li>
             </#list>
         </ul>
-        <div class="d-flex gap-2 mt-2 flex-wrap">
-            <#if canRegister>
-                <form action="resource-registerResource.do" method="post" class="d-inline">
-                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                    <#if isDwcDp>
-                        <input id="dwcDpDatasetType" name="dwcDpDatasetType" type="hidden" value=""/>
-                    </#if>
-                    <button id="register-resource-button" class="confirmRegistration btn btn-sm btn-gbif-solid" type="submit"><@s.text name="manage.overview.sharing.register"/></button>
-                </form>
-            <#else>
-                <button id="show-registration-disabled-modal" class="btn btn-sm btn-outline-gbif-primary ov-blocked" type="button"><@s.text name="manage.overview.sharing.register"/></button>
-            </#if>
-            <#if action.canBeMadePrivate()>
-                <form action='resource-makePrivate.do' method='post' class="d-inline">
-                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                    <input name="unpublish" type="hidden" value="Change"/>
-                    <button id="makePrivate" class="btn btn-sm btn-outline-secondary" type="submit"><@s.text name="manage.overview.sharing.makePrivate"/></button>
-                </form>
-            </#if>
-        </div>
+        </details>
+    </#if>
 
-    <#elseif resource.status == "REGISTERED">
+    <#if resource.status == "REGISTERED" && !isDeleted>
         <div class="ov-rows mt-2">
             <#if resource.key??>
                 <div class="ov-r">
