@@ -78,13 +78,24 @@
     <span class="ov-small bad"><@icon name="warning"/> <@s.text name=key/></span>
 </#macro>
 
-<#-- sources no mapping uses: under the table, each with "Map to…" and its menu -->
+<#-- sources no mapping uses: under the table, each with "Map to…" and its menu. More than a few are folded into one
+     line with their names; filtering and searching look inside it anyway -->
+<#assign unusedFoldAbove = 3>
 <#macro unusedSources headingKey idPrefix>
     <#if unmappedSources?has_content>
-        <div class="ov-unused">
-            <div class="ov-unused-h"><@s.text name=headingKey/></div>
+        <#local folded = (unmappedSources?size > unusedFoldAbove)>
+        <div class="ov-unused<#if folded> ov-folded</#if>"<#if folded> data-ov-foldable="true"</#if>>
+            <div class="ov-unused-h">
+                <span><@s.text name=headingKey/></span>
+                <#if folded>
+                    <span class="ov-unused-names">· ${unmappedSources?map(src -> src.name)?join(", ")}</span>
+                    <button type="button" class="ov-link-btn ov-unused-toggle"
+                            data-show="<@s.text name='manage.overview.data.showAll'><@s.param>${unmappedSources?size}</@s.param></@s.text>"
+                            data-hide="<@s.text name='manage.overview.data.showFewer'/>"><@s.text name='manage.overview.data.showAll'><@s.param>${unmappedSources?size}</@s.param></@s.text></button>
+                </#if>
+            </div>
             <#list unmappedSources as src>
-                <div class="ov-unused-row ov-row" <@filterAttrs src ""/> data-ov-problem="${(!src.readable)?c}">
+                <div class="ov-unused-row ov-row" data-ov-unused="true" data-ov-text="${src.name?lower_case}" data-ov-changed="${isSourceChanged(src)?c}" data-ov-unmapped="true" data-ov-problem="${(!src.readable)?c}">
                     <@sourceCell src/>
                     <span class="ov-sp"></span>
                     <#if src.readable && !isDataPackage><button type="button" class="ov-link-btn ov-open-add-mapping"><@s.text name="manage.overview.data.mapTo"/></button></#if>
@@ -95,12 +106,48 @@
     </#if>
 </#macro>
 
-<#-- data attributes used by the filter chips and the search box -->
-<#macro filterAttrs src text>
-    data-ov-text="${(src.name + ' ' + text)?lower_case}"
-    data-ov-changed="${isSourceChanged(src)?c}"
-    data-ov-unmapped="${(!mappedSourceNames?seq_contains(src.name))?c}"
+<#-- search and filter chips over the rows, once there are more than fit -->
+<#macro dataTools rowCount anyChanged anyProblem>
+    <#if (rowCount > rowLimit)>
+        <div class="ov-tools">
+            <#local placeholder><@s.text name=isDataPackage?then('manage.overview.data.filter.placeholder.dp', 'manage.overview.data.filter.placeholder')/></#local>
+            <input type="search" id="ov-data-filter" placeholder="${placeholder}" aria-label="${placeholder}">
+            <button type="button" class="ov-chip on" data-ov-filter="all"><@s.text name="manage.overview.data.filter.all"/></button>
+            <#if anyChanged><button type="button" class="ov-chip" data-ov-filter="changed"><@s.text name="manage.overview.data.filter.changed"/></button></#if>
+            <#if unmappedSources?has_content><button type="button" class="ov-chip" data-ov-filter="unmapped"><@s.text name="manage.overview.data.filter.unmapped"/> ${unmappedSources?size}</button></#if>
+            <#if anyProblem><button type="button" class="ov-chip" data-ov-filter="problems"><@s.text name="manage.overview.data.filter.problems"/></button></#if>
+        </div>
+    </#if>
 </#macro>
+
+<#-- "Showing 8 of 20 · Show all", under the rows -->
+<#macro dataMore>
+    <p class="ov-nomatch text-muted text-smaller" style="display: none;"><@s.text name="manage.overview.data.noMatch"/></p>
+    <div class="ov-more" id="ov-data-more" style="display: none;"
+         data-showing="<@s.text name='manage.overview.data.showing'/>"
+         data-show-all="<@s.text name='manage.overview.data.showAll'/>"
+         data-show-fewer="<@s.text name='manage.overview.data.showFewer'/>">
+        <span id="ov-data-showing"></span>
+        <button type="button" class="ov-link-btn" id="ov-data-expand"></button>
+    </div>
+</#macro>
+
+<#macro changedTag><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#macro>
+
+<#-- rows shown before "Show all"; rows with a problem are always shown -->
+<#assign rowLimit = 8>
+
+<#-- what makes a row need attention -->
+<#function dwcProblem r>
+    <#return ((r.m.source)?? && !r.m.source.readable) || r.m.fields?size == 0>
+</#function>
+<#function dpProblem m>
+    <#local tableName = (m.dataPackageTableSchemaName.name)!"?">
+    <#return (missingRequiredFieldsDataPackage!{})?keys?seq_contains(tableName) || ((m.source)?? && !m.source.readable) || dataPackageMappingHasIssues(m)>
+</#function>
+<#function dpChanged m>
+    <#return isMappingChanged(m) || ((m.source)?? && isSourceChanged(m.source))>
+</#function>
 
 <span class="anchor anchor-overview-page" id="anchor-data"></span>
 <section class="ov-card section" id="data">
@@ -125,7 +172,15 @@
         </#if>
     </div>
 
-    <#-- when the data last changed; what the card shows is in the column headings and the (i) -->
+    <#-- when the data last changed. A CHANGED tag only tells something when not every row has it; if every mapping
+         changed, that's said here once instead -->
+    <#if isDataPackage>
+        <#assign mappingsForTags = resource.dataPackageMappings![]>
+        <#assign allChanged = isPublished && mappingsForTags?has_content && !mappingsForTags?filter(m -> !isMappingChanged(m))?has_content>
+    <#else>
+        <#assign allChanged = isPublished && classRows?has_content && !classRows?filter(r -> !isMappingChanged(r.m))?has_content>
+    </#if>
+    <#assign showChangedTags = !allChanged>
     <div class="ov-sub">
         <#if sourcesModifiedSinceLastPublication || mappingsModifiedSinceLastPublication>
             <#assign dataModified = "">
@@ -134,6 +189,7 @@
             <#if dataModified?is_date>
                 <@s.text name='manage.home.last.modified'/> ${dataModified?datetime?string.medium}.
             </#if>
+            <#if allChanged><@s.text name="manage.overview.data.allChanged"><@s.param>${currentVersion}</@s.param></@s.text></#if>
         <#elseif isPublished>
             <@s.text name="manage.overview.notModified"/>.
         </#if>
@@ -157,7 +213,7 @@
         </div>
 
     <#elseif isDataPackage>
-        <#-- data packages: one row per mapped table, grouped like the schema; sources no table uses go last -->
+        <#-- data packages: one line per mapped table, grouped like the schema, problems first in each group; unused sources last -->
         <#assign dpGroups = []>
         <#if isDwcDp>
             <#assign dpGroups = [["Events", dwcDpEvents], ["Entities", dwcDpEntities], ["Agents", dwcDpAgents], ["Joins", dwcDpJoins]]>
@@ -168,13 +224,19 @@
             <#assign groupName = "">
             <#list dpGroups as g><#if g[1]?seq_contains(tableName)><#assign groupName = g[0]><#break></#if></#list>
             <#if isDwcDp && !groupName?has_content><#assign groupName = "Others"></#if>
-            <#assign dpRows = dpRows + [{"m": m, "mid": m_index, "group": groupName}]>
+            <#assign dpRows = dpRows + [{"m": m, "mid": m_index, "group": groupName, "problem": dpProblem(m)}]>
         </#list>
         <#assign groupOrder = ["Events", "Entities", "Agents", "Joins", "Others", ""]>
+
+        <@dataTools rowCount=dpRows?size + unmappedSources?size anyChanged=(showChangedTags && dpRows?filter(r -> isMappingChanged(r.m))?has_content) || changedSources?has_content anyProblem=dpRows?filter(r -> r.problem)?has_content || unreadableSources?has_content/>
+
+        <div id="ov-data" data-ov-limit="${rowLimit}">
+        <#if dpRows?has_content>
         <table class="ov-table">
             <thead>
             <tr>
                 <th><@s.text name="manage.overview.data.col.table"/></th>
+                <th><@s.text name="manage.overview.data.col.fromSource"/></th>
                 <th class="ov-num"><@s.text name="manage.overview.data.col.fields"/></th>
                 <th></th>
             </tr>
@@ -182,26 +244,22 @@
             <tbody>
             <#list groupOrder as groupName>
                 <#assign rowsInGroup = dpRows?filter(r -> r.group == groupName)>
+                <#assign rowsInGroup = rowsInGroup?filter(r -> r.problem) + rowsInGroup?filter(r -> !r.problem)>
                 <#if rowsInGroup?has_content>
-                    <#if groupName?has_content><tr class="ov-grp"><td colspan="3">${groupName}</td></tr></#if>
+                    <#if groupName?has_content><tr class="ov-grp"><td colspan="4">${groupName}</td></tr></#if>
                     <#list rowsInGroup as r>
                         <#assign m = r.m>
                         <#assign tableName = (m.dataPackageTableSchemaName.name)!"?">
+                        <#assign sourceName = (m.source.name)!"?">
                         <#assign missingRequired = (missingRequiredFieldsDataPackage!{})?keys?seq_contains(tableName)>
                         <#assign editUrl = "dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}">
-                        <tr>
+                        <tr class="ov-row" data-ov-text="${(tableName + ' ' + sourceName)?lower_case}" data-ov-changed="${dpChanged(m)?c}" data-ov-unmapped="false" data-ov-problem="${r.problem?c}">
                             <td>
-                                <div class="ov-src">
-                                    <span class="ov-ftype tbl">TBL</span>
-                                    <div>
-                                        <a href="${editUrl}" class="ov-name fw-semibold">${tableName}</a><#if isMappingChanged(m)><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#if>
-                                        <span class="ov-small"><@s.text name="manage.overview.data.fromSource"><@s.param>${(m.source.name)!"?"}</@s.param></@s.text><#if (m.source)?? && isSourceChanged(m.source)><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#if></span>
-                                        <#if missingRequired && !m.tableSchemaMissing><@problemNote "manage.overview.data.status.requiredMissing"/></#if>
-                                        <#if (m.source)?? && !m.source.readable><@problemNote "manage.overview.data.status.unreadable"/></#if>
-                                        <@dataPackageMappingIssues m/>
-                                    </div>
-                                </div>
+                                <a href="${editUrl}" class="ov-name fw-semibold">${tableName}</a><#if showChangedTags && isMappingChanged(m)><@changedTag/></#if>
+                                <#if missingRequired && !m.tableSchemaMissing><@problemNote "manage.overview.data.status.requiredMissing"/></#if>
+                                <@dataPackageMappingIssues m/>
                             </td>
+                            <td><#if (m.source)??><@sourceCell m.source/><#else>?</#if></td>
                             <td class="ov-num">${(m.fields)!?size}</td>
                             <td class="ov-rowacts">
                                 <a href="${editUrl}"><@s.text name="button.edit"/></a>
@@ -222,23 +280,24 @@
             </#list>
             </tbody>
         </table>
-        <@unusedSources "manage.overview.data.group.notUsed" "dp-"/>
-        <#if installedSchemaVersion?has_content>
-            <div class="ov-more"><span></span><span>${installedSchemaName!""} ${installedSchemaVersion}</span></div>
         </#if>
+        <@dataMore/>
+        <@unusedSources "manage.overview.data.group.notUsed" "dp-"/>
+        </div>
 
     <#else>
-        <#-- Darwin Core Archive: what goes into the archive, by class, and the source each part comes from; unused sources last -->
-        <#assign rowLimit = 8>
-        <#if (resource.sources?size > rowLimit)>
-            <div class="ov-tools">
-                <input type="search" id="ov-data-filter" placeholder="<@s.text name='manage.overview.data.filter.placeholder'/>" aria-label="<@s.text name='manage.overview.data.filter.placeholder'/>">
-                <button type="button" class="ov-chip on" data-ov-filter="all"><@s.text name="manage.overview.data.filter.all"/></button>
-                <#if changedSources?has_content || classRows?filter(r -> isMappingChanged(r.m))?has_content><button type="button" class="ov-chip" data-ov-filter="changed"><@s.text name="manage.overview.data.filter.changed"/></button></#if>
-                <#if unmappedSources?has_content><button type="button" class="ov-chip" data-ov-filter="unmapped"><@s.text name="manage.overview.data.filter.unmapped"/> ${unmappedSources?size}</button></#if>
-                <#if unreadableSources?has_content || emptyMappings?has_content><button type="button" class="ov-chip" data-ov-filter="problems"><@s.text name="manage.overview.data.filter.problems"/> ${unreadableSources?size + emptyMappings?size}</button></#if>
-            </div>
-        </#if>
+        <#-- Darwin Core Archive: one line per class, core first, then extensions with problems first. A class filled from
+             several sources gets one line that opens to a line per source; unused sources last -->
+        <#assign classGroups = []>
+        <#list classRows as r>
+            <#if r?is_first || classRows[r?index - 1].ext.rowType != r.ext.rowType>
+                <#assign groupRows = classRows?filter(x -> x.ext.rowType == r.ext.rowType)>
+                <#assign classGroups = classGroups + [{"ext": r.ext, "core": r.core, "rows": groupRows, "problem": groupRows?filter(x -> dwcProblem(x))?has_content}]>
+            </#if>
+        </#list>
+        <#assign classGroups = classGroups?filter(g -> g.core) + classGroups?filter(g -> !g.core && g.problem) + classGroups?filter(g -> !g.core && !g.problem)>
+
+        <@dataTools rowCount=classGroups?size + unmappedSources?size anyChanged=(showChangedTags && classRows?filter(r -> isMappingChanged(r.m))?has_content) || changedSources?has_content anyProblem=emptyMappings?has_content || unreadableSources?has_content/>
 
         <#if (classRows?size > 1)>
             <#assign deleteCoreMappingClass = "delete-core-mapping">
@@ -247,7 +306,7 @@
         </#if>
 
         <div id="ov-data" data-ov-limit="${rowLimit}">
-        <#if classRows?has_content>
+        <#if classGroups?has_content>
         <table class="ov-table">
             <thead>
             <tr>
@@ -259,54 +318,88 @@
             </thead>
             <tbody>
             <#assign lastGroup = "">
-            <#list classRows as r>
-                <#assign m = r.m>
-                <#assign groupKey = r.core?then("manage.overview.data.group.core", "manage.overview.data.group.extensions")>
+            <#list classGroups as g>
+                <#assign groupKey = g.core?then("manage.overview.data.group.core", "manage.overview.data.group.extensions")>
                 <#if groupKey != lastGroup>
                     <tr class="ov-grp"><td colspan="4"><@s.text name=groupKey/></td></tr>
                     <#assign lastGroup = groupKey>
                 </#if>
-                <#assign editUrl = "mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}">
-                <tr class="ov-row"<#if (m.source)??> <@filterAttrs m.source r.ext.title/></#if> data-ov-mapping-changed="${isMappingChanged(m)?c}" data-ov-problem="${((m.source)?? && !m.source.readable || m.fields?size == 0)?c}">
-                    <td>
-                        <a href="${editUrl}" class="ov-name fw-semibold">${r.ext.title}</a><#if isMappingChanged(m)><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#if>
-                        <#if m.fields?size == 0><@problemNote "manage.overview.data.status.noTerms"/></#if>
-                    </td>
-                    <td><#if (m.source)??><@sourceCell m.source/><#else>?</#if></td>
-                    <td class="ov-num<#if m.fields?size == 0> ov-missing</#if>">${m.fields?size}</td>
-                    <td class="ov-rowacts">
-                        <a href="${editUrl}"><@s.text name="button.edit"/></a>
-                        <a class="peekBtn" href="mappingPeek.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="button.preview"/></a>
-                        <div class="dropdown">
-                            <a href="#" id="mapping-menu-${r?index}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><@icon name="more_horiz"/></a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mapping-menu-${r?index}">
-                                <#if (m.source)??>
-                                    <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
-                                    <#if m.source.isFileSource() || m.source.isExcelSource()>
-                                        <li><a class="dropdown-item" href="raw-source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.downloadSource"/></a></li>
-                                    </#if>
-                                    <li><hr class="dropdown-divider"></li>
-                                </#if>
-                                <li><a class="dropdown-item text-gbif-danger ${r.core?then(deleteCoreMappingClass, 'delete-mapping')}" data-post href="delete-mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
+                <#assign anyMappingChanged = g.rows?filter(r -> isMappingChanged(r.m))?has_content>
+                <#if g.rows?size == 1>
+                    <@dwcMappingRow g.rows[0] true/>
+                <#else>
+                    <#-- several sources: one line for the class, opening to a line per source (open when one has a problem) -->
+                    <#assign groupId = "ov-class-" + g?index>
+                    <#assign groupText = g.ext.title + " " + g.rows?map(r -> (r.m.source.name)!"")?join(" ")>
+                    <tr class="ov-row ov-parent<#if g.problem> open</#if>" id="${groupId}" data-ov-text="${groupText?lower_case}"
+                        data-ov-changed="${g.rows?filter(r -> (r.m.source)?? && isSourceChanged(r.m.source))?has_content?c}" data-ov-mapping-changed="${anyMappingChanged?c}"
+                        data-ov-unmapped="false" data-ov-problem="${g.problem?c}">
+                        <td>
+                            <span class="ov-name fw-semibold">${g.ext.title}</span><#if showChangedTags && anyMappingChanged><@changedTag/></#if>
+                            <#if g.rows?filter(r -> r.m.fields?size == 0)?has_content><@problemNote "manage.overview.data.status.noTerms"/></#if>
+                        </td>
+                        <td>
+                            <button type="button" class="ov-link-btn ov-toggle-sources" aria-expanded="${g.problem?c}" aria-controls="${groupId}">
+                                <@s.text name="manage.overview.data.sourcesCount"><@s.param>${g.rows?size}</@s.param></@s.text>
+                            </button>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <#assign showChildChangedTags = showChangedTags && g.rows?filter(r -> !isMappingChanged(r.m))?has_content>
+                    <#list g.rows as r>
+                        <@dwcMappingRow r false groupId/>
+                    </#list>
+                </#if>
             </#list>
             </tbody>
         </table>
         <#else>
             <p class="text-muted text-smaller mb-2"><@s.text name="manage.overview.data.noMappings"/></p>
         </#if>
+        <@dataMore/>
         <@unusedSources "manage.overview.data.group.notInArchive" "unused-"/>
-        <p class="ov-nomatch text-muted text-smaller" style="display: none;"><@s.text name="manage.overview.data.noMatch"/></p>
-        </div>
-        <div class="ov-more" id="ov-data-more" style="display: none;"
-             data-showing="<@s.text name='manage.overview.data.showing'/>"
-             data-show-all="<@s.text name='manage.overview.data.showAll'/>"
-             data-show-fewer="<@s.text name='manage.overview.data.showFewer'/>">
-            <span id="ov-data-showing"></span>
-            <button type="button" class="ov-link-btn" id="ov-data-expand"></button>
         </div>
     </#if>
 </section>
+
+<#-- one Darwin Core mapping: a row of its own (withClass), or a line under its class when the class has several sources -->
+<#macro dwcMappingRow r withClass parentId="">
+    <#local m = r.m>
+    <#local editUrl = "mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}">
+    <#if withClass>
+        <tr class="ov-row"<#if (m.source)??> data-ov-text="${(m.source.name + ' ' + r.ext.title)?lower_case}" data-ov-changed="${isSourceChanged(m.source)?c}"</#if> data-ov-mapping-changed="${isMappingChanged(m)?c}" data-ov-unmapped="false" data-ov-problem="${dwcProblem(r)?c}">
+    <#else>
+        <tr class="ov-child" data-ov-parent="${parentId}">
+    </#if>
+        <td>
+            <#if withClass>
+                <a href="${editUrl}" class="ov-name fw-semibold">${r.ext.title}</a><#if showChangedTags && isMappingChanged(m)><@changedTag/></#if>
+                <#if m.fields?size == 0><@problemNote "manage.overview.data.status.noTerms"/></#if>
+            <#elseif m.fields?size == 0>
+                <@problemNote "manage.overview.data.status.noTerms"/>
+            <#elseif showChildChangedTags && isMappingChanged(m)>
+                <@changedTag/>
+            </#if>
+        </td>
+        <td><#if (m.source)??><@sourceCell m.source/><#else>?</#if></td>
+        <td class="ov-num<#if m.fields?size == 0> ov-missing</#if>">${m.fields?size}</td>
+        <td class="ov-rowacts">
+            <a href="${editUrl}"><@s.text name="button.edit"/></a>
+            <a class="peekBtn" href="mappingPeek.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="button.preview"/></a>
+            <div class="dropdown">
+                <a href="#" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><@icon name="more_horiz"/></a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <#if (m.source)??>
+                        <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
+                        <#if m.source.isFileSource() || m.source.isExcelSource()>
+                            <li><a class="dropdown-item" href="raw-source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.downloadSource"/></a></li>
+                        </#if>
+                        <li><hr class="dropdown-divider"></li>
+                    </#if>
+                    <li><a class="dropdown-item text-gbif-danger ${r.core?then(deleteCoreMappingClass, 'delete-mapping')}" data-post href="delete-mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+</#macro>

@@ -98,7 +98,17 @@
 .ov-table th.ov-num, .ov-table td.ov-num { text-align: right; width: 1%; white-space: nowrap; padding-right: 24px; }
 /* sources no mapping uses, under the table */
 .ov-unused { margin-top: 12px; font-size: 0.82rem; }
-.ov-unused-h { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; font-weight: 600; padding: 0 8px 4px; }
+.ov-unused-h { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; font-weight: 600; padding: 0 8px 4px; display: flex; gap: 6px; align-items: baseline; min-width: 0; }
+.ov-unused-h .ov-unused-names { text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
+.ov-unused-h .ov-link-btn { text-transform: none; letter-spacing: 0; font-weight: 400; white-space: nowrap; margin-left: auto; }
+.ov-unused:not(.ov-folded) .ov-unused-names { display: none; }
+.ov-unused.ov-folded .ov-unused-row { display: none !important; }
+/* a class filled from several sources: its line opens to a line per source */
+.ov-toggle-sources { display: inline-flex; align-items: center; gap: 4px; }
+.ov-toggle-sources::after { content: "\203A"; transition: transform .15s; }
+tr.ov-parent.open .ov-toggle-sources::after { transform: rotate(90deg); }
+.ov-table tr.ov-child td { border-bottom-color: #f6f7f8; background: #fcfcfd; }
+.ov-table tr.ov-child td:first-child { padding-left: 24px; }
 .ov-unused-row { display: flex; gap: 12px; align-items: center; padding: 6px 8px; border: 1px dashed #dee2e6; border-radius: 6px; margin-bottom: 6px; }
 .ov-unused-row .ov-src { align-items: center; }
 .ov-src { display: flex; gap: 8px; align-items: flex-start; min-width: 0; }

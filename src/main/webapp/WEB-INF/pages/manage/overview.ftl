@@ -1524,14 +1524,15 @@
             }
         });
 
-        // ---- sources and mappings: filter, search and show all, over the mappings and the unused sources ----
+        // ---- sources and mappings: filter, search and show all; classes with several sources open to a line each;
+        // many unused sources folded into one line. Rows with a problem are never hidden by the limit ----
         (function () {
             var $data = $('#ov-data');
             if (!$data.length) return;
 
             var $more = $('#ov-data-more');
             var limit = parseInt($data.attr('data-ov-limit'), 10) || 8;
-            var state = {filter: 'all', query: '', expanded: false};
+            var state = {filter: 'all', query: '', expanded: false, unusedOpen: false};
 
             function matches($row) {
                 if (state.query && String($row.attr('data-ov-text') || '').indexOf(state.query) === -1) return false;
@@ -1540,36 +1541,57 @@
                 if (state.filter === 'problems') return $row.attr('data-ov-problem') === 'true';
                 return true;
             }
+            function isProblem($row) { return $row.attr('data-ov-problem') === 'true'; }
+            function isVisible() { return !$(this).hasClass('ov-filtered') && !$(this).hasClass('ov-hidden'); }
 
             function render() {
+                var narrowing = state.filter !== 'all' || state.query !== '';
                 $('[data-ov-filter]').each(function () {
                     $(this).toggleClass('on', $(this).attr('data-ov-filter') === state.filter);
                 });
 
-                var $rows = $data.find('.ov-row');
-                var shown = 0, total = 0;
+                // the limit applies to the table's rows; the unused sources have their own fold
+                var $rows = $data.find('tr.ov-row');
+                var $unused = $data.find('.ov-unused-row');
+                var forced = 0, total = 0;
                 $rows.each(function () {
                     var $row = $(this);
                     var ok = matches($row);
                     $row.toggleClass('ov-filtered', !ok);
-                    if (ok) {
-                        total++;
-                        $row.toggleClass('ov-hidden', !state.expanded && total > limit);
-                        if (state.expanded || total <= limit) shown++;
-                    } else {
-                        $row.removeClass('ov-hidden');
-                    }
+                    if (ok) { total++; if (isProblem($row)) forced++; }
                 });
-                function isVisible() { return !$(this).hasClass('ov-filtered') && !$(this).hasClass('ov-hidden'); }
-                // a group heading, the table and the unused list show only when a row under them does
-                $data.find('tr.ov-grp').each(function () {
-                    $(this).toggle($(this).nextUntil('tr.ov-grp').filter('.ov-row').filter(isVisible).length > 0);
+                var budget = Math.max(0, limit - forced), used = 0, shown = 0;
+                $rows.each(function () {
+                    var $row = $(this);
+                    if ($row.hasClass('ov-filtered')) { $row.removeClass('ov-hidden'); return; }
+                    var show = state.expanded || isProblem($row) || used < budget;
+                    if (show && !isProblem($row)) used++;
+                    $row.toggleClass('ov-hidden', !show);
+                    if (show) shown++;
                 });
-                $data.find('table.ov-table').toggle($data.find('tr.ov-row').filter(isVisible).length > 0);
-                $data.find('.ov-unused').toggle($data.find('.ov-unused-row').filter(isVisible).length > 0);
-                $data.find('.ov-nomatch').toggle($rows.length > 0 && total === 0);
+                // a class's lines per source follow its line, when it's open
+                $data.find('tr.ov-child').each(function () {
+                    var $parent = $('#' + $(this).attr('data-ov-parent'));
+                    $(this).toggle($parent.hasClass('open') && $parent.is(isVisible));
+                });
 
-                if (total > limit) {
+                $unused.each(function () { $(this).toggleClass('ov-filtered', !matches($(this))); });
+                var unusedMatching = $unused.not('.ov-filtered').length;
+                var $fold = $data.find('.ov-unused[data-ov-foldable]');
+                $fold.toggleClass('ov-folded', !narrowing && !state.unusedOpen);
+                $fold.find('.ov-unused-toggle').toggle(!narrowing).each(function () {
+                    $(this).text(state.unusedOpen ? $(this).attr('data-hide') : $(this).attr('data-show'));
+                });
+
+                // group headings, the table and the unused list show only when a row under them does
+                $data.find('tr.ov-grp').each(function () {
+                    $(this).toggle($(this).nextUntil('tr.ov-grp').filter('tr.ov-row').filter(isVisible).length > 0);
+                });
+                $data.find('table.ov-table').toggle($rows.filter(isVisible).length > 0);
+                $data.find('.ov-unused').toggle(unusedMatching > 0);
+                $data.find('.ov-nomatch').toggle(($rows.length + $unused.length) > 0 && total + unusedMatching === 0);
+
+                if (total > shown || (state.expanded && total > limit)) {
                     $('#ov-data-showing').text($more.attr('data-showing').replace('{0}', shown).replace('{1}', total));
                     $('#ov-data-expand').text(state.expanded ? $more.attr('data-show-fewer') : $more.attr('data-show-all').replace('{0}', total));
                     $more.show();
@@ -1578,6 +1600,15 @@
                 }
             }
 
+            $data.on('click', '.ov-toggle-sources', function () {
+                var $parent = $(this).closest('tr.ov-parent').toggleClass('open');
+                $(this).attr('aria-expanded', $parent.hasClass('open'));
+                render();
+            });
+            $data.on('click', '.ov-unused-toggle', function () {
+                state.unusedOpen = !state.unusedOpen;
+                render();
+            });
             $('[data-ov-filter]').on('click', function () {
                 state.filter = $(this).attr('data-ov-filter');
                 state.expanded = false;
