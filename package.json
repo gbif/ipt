@@ -10,6 +10,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@material-design-icons/svg": "0.14.15",
     "@ttskch/select2-bootstrap4-theme": "1.5.2",
     "bootstrap": "5.3.8",
     "bootstrap-icons": "1.10.3",
