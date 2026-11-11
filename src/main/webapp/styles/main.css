@@ -12,7 +12,7 @@
     --alert-success-icon-color: 76, 175, 80;
     --alert-warning-background-color: 255, 244, 229;
     --alert-warning-text-color: 102, 60, 0 ;
-    --alert-warning-icon-color: 255, 152, 0;
+    --alert-warning-icon-color: 239, 108, 0; /* md-orange-800: as readable on white as --color-gbif-danger */
     --alert-danger-background-color: 253, 237, 237;
     --alert-danger-text-color: 95, 33, 32;
     --alert-danger-icon-color: 239, 83, 80;
@@ -802,8 +802,9 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: rgb(var(--color-gbif-danger));
 }
 
+/* text in the warning colour itself (yellow) can't be read on white: the orange of the warning alert icons */
 .text-gbif-warning {
-    color: rgb(var(--color-gbif-warning));
+    color: rgb(var(--alert-warning-icon-color));
 }
 
 .text-gbif-warning-dark {
