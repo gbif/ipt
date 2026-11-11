@@ -1795,7 +1795,7 @@
                 </div>
 
                 <div class="bd-content ps-lg-4 pt-4">
-                    <#-- one status line: what's different from the last version, or what stops the next one -->
+                    <#-- a banner only when something stops publishing; versions and changes are in the Publication card -->
                     <#if isDeleted>
                         <div id="overview-status" class="ov-banner del" role="status">
                             <@icon name="cancel" class="ov-ic text-discreet"/>
@@ -1827,32 +1827,6 @@
                                 <div class="ov-text"><@s.text name="manage.overview.banner.suspended.text"/></div>
                             </div>
                             <#if report??><a href="#anchor-publish" class="btn btn-sm btn-outline-secondary ov-show-report"><@s.text name="manage.overview.published.report.show"/></a></#if>
-                        </div>
-                    <#elseif !isPublished>
-                        <div id="overview-status" class="ov-banner w" role="status">
-                            <@icon name="warning" class="ov-ic alert-orange-2"/>
-                            <div class="ov-grow">
-                                <h2><@s.text name="manage.overview.banner.first.title"/></h2>
-                                <div class="ov-text"><@s.text name="manage.overview.banner.first.text"><@s.param>${nextVersion}</@s.param></@s.text></div>
-                            </div>
-                        </div>
-                    <#elseif hasChanges>
-                        <div id="overview-status" class="ov-banner w" role="status">
-                            <@icon name="warning" class="ov-ic alert-orange-2"/>
-                            <div class="ov-grow">
-                                <h2><@s.text name="manage.overview.banner.changes.title"><@s.param>${currentVersion}</@s.param></@s.text></h2>
-                                <div class="ov-text"><#list changeList as c>${c}<#sep> · </#sep></#list></div>
-                            </div>
-                        </div>
-                    <#else>
-                        <div id="overview-status" class="ov-banner ok" role="status">
-                            <@icon name="check_circle" class="ov-ic alert-green-2"/>
-                            <div class="ov-grow">
-                                <h2><@s.text name="manage.overview.banner.upToDate.title"><@s.param>${currentVersion}</@s.param></@s.text></h2>
-                                <div class="ov-text">
-                                    <@s.text name="manage.overview.banner.upToDate.text"><@s.param>${resource.lastPublished?datetime?string.medium}</@s.param></@s.text><#if usesAutoPublishing && resource.nextPublished??> · <@s.text name="manage.overview.banner.upToDate.auto"><@s.param>${resource.nextPublished?datetime?string.medium}</@s.param></@s.text></#if><#if resource.status == "REGISTERED"> · <@s.text name="manage.overview.banner.upToDate.registered"/></#if>
-                                </div>
-                            </div>
                         </div>
                     </#if>
 

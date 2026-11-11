@@ -68,8 +68,6 @@ body { padding-top: 68px !important; }
 .ov-banner .ov-text { margin: 2px 0 0; color: #495057; }
 .ov-banner ul { margin: 4px 0 0; padding-left: 18px; }
 .ov-banner ul li { margin: 2px 0; }
-.ov-banner.w { background: #fffaf0; border: 1px solid rgba(176, 125, 0, .4); }
-.ov-banner.ok { background: rgba(var(--color-gbif-primary), .06); border: 1px solid rgba(var(--color-gbif-primary), .45); }
 .ov-banner.bad { background: rgba(var(--color-gbif-danger), .05); border: 1px solid rgba(var(--color-gbif-danger), .4); }
 .ov-banner.del { background: #f6f7f8; border: 1px solid #dee2e6; }
 
