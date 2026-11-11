@@ -1,27 +1,15 @@
 /* Resource overview page (manage/overview.ftl) */
 
-/* main.css pads the body ~22px more than the fixed navbar is tall; the overview heading has its own padding,
-   so the body only clears the navbar (68px from 1200px wide, 57px below) and the heading stays symmetrical */
-body { padding-top: 68px !important; }
-@media (max-width: 1199px) { body { padding-top: 57px !important; } }
-
-.ov-head {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 32px 0;
-}
-.ov-head .ov-grow { flex: 1; min-width: 280px; }
-.ov-head h1 { margin: 0; font-size: 1.6rem; font-weight: 400; line-height: 1.25; }
-.ov-crumb { font-size: 0.8rem; line-height: 1.2; color: #6c757d; margin-bottom: 4px; }
-.ov-crumb a { color: #6c757d; }
+/* heading: the IPT's centred heading box (as on the other pages), with the resource's pills, details and actions */
+.ov-head { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.ov-head h1 { overflow-wrap: anywhere; }
 /* type and status pills come from main.css with different paddings; same size in the heading */
 .ov-meta .dt-content-pill, .ov-meta .status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px !important; line-height: 18px; margin: 0 !important; }
-.ov-meta { display: flex; gap: 6px 14px; flex-wrap: wrap; align-items: center; font-size: 0.8rem; color: #6c757d; margin-top: 8px; }
+.ov-meta { display: flex; gap: 6px 14px; flex-wrap: wrap; align-items: center; justify-content: center; font-size: 0.8rem; color: #6c757d; margin-top: 8px; }
+.ov-head > .ov-acts { justify-content: center; margin-top: 16px; }
 .ov-acts { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .ov-acts form { display: inline-block; margin: 0; }
-.ov-acts .dropdown-menu { min-width: 260px; }
+.ov-acts .dropdown-menu { min-width: 260px; text-align: left; }
 .ov-acts .dropdown-item small { display: block; color: #6c757d; font-size: 0.75rem; white-space: normal; }
 
 .btn-gbif-solid {
@@ -70,11 +58,8 @@ body { padding-top: 68px !important; }
 .ov-ready li { display: flex; gap: 6px; align-items: flex-start; margin: 3px 0; color: #495057; }
 .ov-ready li .ov-dot { margin-top: 5px; }
 
-/* action messages and loading notices: above the heading, clear of the navbar. While one shows, the heading
-   loses part of its top padding, so the space above and below the alerts is the same */
-.ov-alerts .alert { border-radius: 8px; margin: 16px 0 0; }
-.ov-alerts + .container-fluid .ov-head { transition: padding-top .15s; }
-.ov-alerts:has(.alert:not([style*="display: none"])) + .container-fluid .ov-head { padding-top: 16px; }
+/* action messages and loading notices: above the heading box, as wide as it */
+.ov-alerts .alert { border-radius: 8px; }
 
 /* status banner */
 .ov-banner { border-radius: 8px; padding: 12px 14px; margin: 0 0 16px; font-size: 0.875rem; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
