@@ -64,6 +64,7 @@ const ICONS = [
   'check_circle',
   'circle',
   'close',
+  'delete',
   'edit',
   'error',
   'info',

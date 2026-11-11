@@ -64,12 +64,17 @@
         </#if>
         <span class="ov-sp"></span>
         <a id="edit-publication-button" class="ov-hact" href="publication-settings.do?r=${resource.shortname}"><@icon name="edit"/> <@s.text name="manage.overview.publication.settings"/></a>
-        <#if hasPublicationLog || report?? || validationReportAvailable || hasValidatorLink>
+        <#-- the next version's page, as it will look once published -->
+        <#assign canPreviewNext = !isDeleted && !(isPublished && !hasChanges) && validMetadata>
+        <#if canPreviewNext || hasPublicationLog || report?? || validationReportAvailable || hasValidatorLink>
             <div class="dropdown">
                 <button class="ov-hmenu" type="button" id="publication-menu" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.publication.actions'/>" aria-label="<@s.text name='manage.overview.publication.actions'/>">
                     <@icon name="more_horiz"/>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="publication-menu">
+                    <#if canPreviewNext>
+                        <li><a class="dropdown-item" href="${baseURL}/resource/preview?r=${resource.shortname}"><@s.text name="manage.overview.metadata.preview"><@s.param>v${nextVersion}</@s.param></@s.text></a></li>
+                    </#if>
                     <#if hasPublicationLog>
                         <li><a class="dropdown-item" href="${baseURL}/publicationlog.do?r=${resource.shortname}"><@s.text name="portal.publication.log"/></a></li>
                     </#if>
@@ -192,9 +197,6 @@
                         <dd>${resource.nextPublished?datetime?string.medium}</dd>
                     </#if>
                 </dl>
-                <#if validMetadata>
-                    <div class="ov-links"><a href="${baseURL}/resource/preview?r=${resource.shortname}"><@s.text name="button.preview"/></a></div>
-                </#if>
             </div>
         </#if>
     </div>
@@ -227,7 +229,6 @@
             <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
             <@s.text name="manage.overview.resource.managers"/>
         </h2>
-        <span class="ov-pill grey">${resource.managers?size + 1}</span>
         <span class="ov-sp"></span>
         <a id="add-manager-button" class="ov-hact" href="#"><@icon name="add"/> <@s.text name="manage.overview.managers.add"/></a>
     </div>
@@ -248,7 +249,8 @@
                     <b>${u.name}</b>
                     <span class="ov-small"><@s.text name="manage.overview.resource.managers.manager"/> · ${u.email}</span>
                 </div>
-                <a class="text-gbif-danger text-smaller" data-post href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email?url}"><@s.text name="manage.overview.managers.remove"/></a>
+                <#assign removeLabel><@s.text name="manage.overview.managers.remove"/> ${u.name}</#assign>
+                <a class="ov-hmenu ov-remove" data-post href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email?url}" title="${removeLabel}" aria-label="${removeLabel}"><@icon name="delete"/></a>
             </div>
         </#list>
     </div>

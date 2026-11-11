@@ -183,3 +183,6 @@
 .ov-person { border: 1px solid #dee2e6; border-radius: 8px; padding: 8px 10px; display: flex; gap: 10px; align-items: center; font-size: 0.85rem; }
 .ov-person .ov-av { width: 30px; height: 30px; border-radius: 50%; background: #e7f1e7; color: rgb(55, 110, 55); font-weight: 700; font-size: 0.7rem; display: inline-flex; align-items: center; justify-content: center; flex: none; }
 .ov-person .ov-grow { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+/* remove a manager: a quiet bin, red on hover (main.css colours every link with !important) */
+#sections .ov-person a.ov-remove { color: #6c757d !important; font-size: 1.1rem; padding: 4px; text-decoration: none !important; }
+#sections .ov-person a.ov-remove:hover, #sections .ov-person a.ov-remove:focus-visible { color: rgb(var(--color-gbif-danger)) !important; background: rgba(var(--color-gbif-danger), .08); }
