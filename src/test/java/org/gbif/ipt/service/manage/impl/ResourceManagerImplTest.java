@@ -32,9 +32,11 @@ import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceLoadFailure;
 import org.gbif.ipt.model.ResourceSummaryView;
+import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.model.TextFileSource;
 import org.gbif.ipt.model.User;
@@ -43,12 +45,11 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionMappingConverter;
-import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
 import org.gbif.ipt.model.converter.PasswordEncrypter;
+import org.gbif.ipt.model.converter.TableSchemaNameConverter;
 import org.gbif.ipt.model.converter.UserEmailConverter;
 import org.gbif.ipt.model.factory.ExtensionFactory;
 import org.gbif.ipt.model.factory.ThesaurusHandlingRule;
@@ -64,6 +65,8 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
+import org.gbif.ipt.service.admin.impl.RegistrationManagerImpl;
+import org.gbif.ipt.service.admin.impl.UserAccountManagerImpl;
 import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
@@ -85,11 +88,13 @@ import org.gbif.utils.file.FileUtils;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.nio.file.Files;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -103,10 +108,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AssertionFailureBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -248,7 +256,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
     ResourceConvertersManager mockResourceConvertersManager = new ResourceConvertersManager(
         mockEmailConverter,
         mockOrganisationKeyConverter,
-        mock(ExtensionMappingConverter.class),
         extensionRowTypeConverter,
         conceptTermConverter,
         mock(DataPackageIdentifierConverter.class),
@@ -954,7 +961,237 @@ public class ResourceManagerImplTest extends IptBaseTest {
   }
 
   /**
-   * Test resource retrieval from the resource.xml file. The loadFromDir method is responsible for this retrieval.
+   * Checks that an existing data directory still loads with XStream's type allowlist ({@code XStreamSecurity}).
+   * Skipped unless a data directory is given, e.g.:
+   * <pre>
+   * mvn test -Dtest='ResourceManagerImplTest#scanDataDirForForbiddenTypes' -Dipt.scanDataDir=/path/to/datadir
+   * </pre>
+   * Reads resources/{@literal *}/resource.xml, resources/{@literal *}/inferredMetadata*.xml, config/users.xml and
+   * config/registration*.xml with the IPT's own XStream instances. Read only: nothing is saved or migrated.
+   * Fails listing each file whose XML names a class outside the allowlist. Other read errors, e.g. a resource
+   * mapped to an extension that isn't installed here, are only reported.
+   */
+  @Test
+  @EnabledIfSystemProperty(named = "ipt.scanDataDir", matches = ".+")
+  public void scanDataDirForForbiddenTypes() throws Exception {
+    File dataDirRoot = new File(System.getProperty("ipt.scanDataDir"));
+    assertTrue(new File(dataDirRoot, "resources").isDirectory(), "Not an IPT data directory: " + dataDirRoot);
+
+    com.thoughtworks.xstream.XStream resourceXStream = resourceXStream();
+    com.thoughtworks.xstream.XStream usersXStream = xstreamField(
+        new UserAccountManagerImpl(mockAppConfig, mockedDataDir, mock(org.gbif.ipt.utils.PBEEncrypt.class)), "xstream");
+    RegistrationManagerImpl registrationManager = new RegistrationManagerImpl(mockAppConfig, mockedDataDir,
+        mock(org.gbif.ipt.service.registry.RegistryManager.class), mock(PasswordEncrypter.class));
+    com.thoughtworks.xstream.XStream registrationV1XStream = xstreamField(registrationManager, "xstreamV1");
+    com.thoughtworks.xstream.XStream registrationV2XStream = xstreamField(registrationManager, "xstreamV2");
+
+    List<String> forbidden = new java.util.ArrayList<>();
+    List<String> otherErrors = new java.util.ArrayList<>();
+    int read = 0;
+
+    File[] resourceDirs = new File(dataDirRoot, "resources").listFiles(File::isDirectory);
+    for (File resourceDir : resourceDirs == null ? new File[0] : resourceDirs) {
+      File[] files = resourceDir.listFiles((d, n) -> n.equals(DataDir.PERSISTENCE_FILENAME)
+          || (n.startsWith("inferredMetadata") && n.endsWith(".xml")));
+      for (File file : files == null ? new File[0] : files) {
+        read++;
+        scanFile(file, forbidden, otherErrors, () -> {
+          try (InputStream in = new java.io.FileInputStream(file)) {
+            resourceXStream.fromXML(in);
+          }
+        });
+      }
+    }
+
+    Map<String, com.thoughtworks.xstream.XStream> configFiles = new LinkedHashMap<>();
+    configFiles.put(UserAccountManagerImpl.PERSISTENCE_FILE, usersXStream);
+    configFiles.put(RegistrationManagerImpl.PERSISTENCE_FILE_V1, registrationV1XStream);
+    configFiles.put(RegistrationManagerImpl.PERSISTENCE_FILE_V2, registrationV2XStream);
+    for (Map.Entry<String, com.thoughtworks.xstream.XStream> entry : configFiles.entrySet()) {
+      File file = new File(new File(dataDirRoot, "config"), entry.getKey());
+      if (!file.exists()) {
+        continue;
+      }
+      read++;
+      scanFile(file, forbidden, otherErrors, () -> {
+        // these files hold a stream of objects, read the same way as UserAccountManagerImpl/RegistrationManagerImpl
+        try (java.io.ObjectInputStream in = entry.getValue().createObjectInputStream(
+            org.gbif.ipt.utils.IptFileUtils.getUtf8Reader(file))) {
+          while (true) {
+            try {
+              in.readObject();
+            } catch (java.io.EOFException e) {
+              break;
+            }
+          }
+        }
+      });
+    }
+
+    System.out.println("Scanned " + read + " files in " + dataDirRoot);
+    otherErrors.forEach(e -> System.out.println("NOT CHECKED (other read error): " + e));
+    forbidden.forEach(e -> System.out.println("FORBIDDEN: " + e));
+    assertTrue(read > 0, "No files found to scan in " + dataDirRoot);
+    assertTrue(forbidden.isEmpty(),
+        forbidden.size() + " file(s) name classes outside XStreamSecurity's allowlist:\n" + String.join("\n", forbidden));
+  }
+
+  private interface XmlRead {
+    void read() throws Exception;
+  }
+
+  private static void scanFile(File file, List<String> forbidden, List<String> otherErrors, XmlRead xmlRead) {
+    try {
+      xmlRead.read();
+    } catch (Throwable e) {
+      Throwable cause = e;
+      while (cause != null && !(cause instanceof com.thoughtworks.xstream.security.ForbiddenClassException)) {
+        cause = cause.getCause();
+      }
+      if (cause != null) {
+        forbidden.add(file + " -> " + cause.getMessage());
+      } else {
+        otherErrors.add(file + " -> " + e.getClass().getSimpleName() + ": "
+            + StringUtils.substringBefore(String.valueOf(e.getMessage()), "\n"));
+      }
+    }
+  }
+
+  /**
+   * @return the XStream instance ResourceManagerImpl reads and writes resource.xml with (in its XStreamResourcePersister)
+   */
+  private com.thoughtworks.xstream.XStream resourceXStream() throws Exception {
+    java.lang.reflect.Field field = ResourceManagerImpl.class.getDeclaredField("resourcePersister");
+    field.setAccessible(true);
+    return xstreamField(field.get(getResourceManagerImpl()), "xstream");
+  }
+
+  private static com.thoughtworks.xstream.XStream xstreamField(Object manager, String fieldName) throws Exception {
+    java.lang.reflect.Field field = manager.getClass().getDeclaredField(fieldName);
+    field.setAccessible(true);
+    return (com.thoughtworks.xstream.XStream) field.get(manager);
+  }
+
+  /**
+   * A resource.xml naming a class outside XStream's allowlist must be refused, not instantiated. resource.xml can come
+   * from an uploaded "IPT Resource Folder".
+   */
+  @Test
+  public void testLoadFromDirRejectsForbiddenClass() throws Exception {
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+
+    File resourceDir = new File(FileUtils.createTempDir(), "forbidden");
+    org.apache.commons.io.FileUtils.forceMkdir(resourceDir);
+    File resourceFile = new File(resourceDir, DataDir.PERSISTENCE_FILENAME);
+    when(mockedDataDir.resourceFile("forbidden")).thenReturn(resourceFile);
+    java.nio.file.Files.writeString(resourceFile.toPath(),
+        "<resource><managers class=\"java.util.HashSet\"><java.util.Random/></managers></resource>");
+
+    InvalidConfigException e = assertThrows(InvalidConfigException.class,
+        () -> resourceManager.loadFromDir(resourceFile.getParentFile(), creator));
+    // refused by XStream's allowlist (ForbiddenClassException's message is the class name); without the allowlist
+    // Random would be instantiated and loading would fail later with a ClassCastException instead
+    assertEquals("Cannot read resource configuration for forbidden: java.util.Random", e.getMessage());
+  }
+
+  /**
+   * Mappings are read by ExtensionMappingConverter, which must apply the same allowlist as the rest of resource.xml.
+   */
+  @Test
+  public void testLoadFromDirRejectsForbiddenClassInMapping() throws Exception {
+    ResourceManagerImpl resourceManager = getResourceManagerImpl();
+
+    File resourceDir = new File(FileUtils.createTempDir(), "forbiddenmapping");
+    org.apache.commons.io.FileUtils.forceMkdir(resourceDir);
+    File resourceFile = new File(resourceDir, DataDir.PERSISTENCE_FILENAME);
+    when(mockedDataDir.resourceFile("forbiddenmapping")).thenReturn(resourceFile);
+    java.nio.file.Files.writeString(resourceFile.toPath(),
+        "<resource><mappings><mapping><filter class=\"java.util.Random\"/></mapping></mappings></resource>");
+
+    InvalidConfigException e = assertThrows(InvalidConfigException.class,
+        () -> resourceManager.loadFromDir(resourceFile.getParentFile(), creator));
+    assertEquals("Cannot read resource configuration for forbiddenmapping: java.util.Random", e.getMessage());
+  }
+
+  /**
+   * Mappings are written with fully qualified class names, as by IPT 3.2.0 to 3.3.7, so IPT 3.3.7 can still read them
+   * after a downgrade, and are read back.
+   */
+  @Test
+  public void testMappingXml() throws Exception {
+    com.thoughtworks.xstream.XStream xstream = resourceXStream();
+    String xml = xstream.toXML(resourceWithMapping());
+
+    assertTrue(xml.contains("<source class=\"org.gbif.ipt.model.SqlSource\""), xml);
+    assertTrue(xml.contains("<fields class=\"java.util.LinkedHashSet\""), xml);
+
+    Resource copy = (Resource) xstream.fromXML(xml);
+    ExtensionMapping mapping = copy.getMappings().get(0);
+    assertSame(copy.getSources().get(0), mapping.getSource());
+    assertInstanceOf(LinkedHashSet.class, mapping.getFields());
+    assertEquals(2, mapping.getIdColumn());
+    assertEquals("x", mapping.getFilter().getParam());
+  }
+
+  /**
+   * Mappings written with aliases, by IPT 3.1 and earlier, are still read.
+   */
+  @Test
+  public void testMappingXmlWithAliases() throws Exception {
+    com.thoughtworks.xstream.XStream xstream = resourceXStream();
+    String xml = xstream.toXML(resourceWithMapping())
+        .replace("<source class=\"org.gbif.ipt.model.SqlSource\"", "<source class=\"sqlsource\"")
+        .replace("<fields class=\"java.util.LinkedHashSet\"", "<fields class=\"sorted-set\"");
+
+    Resource copy = (Resource) xstream.fromXML(xml);
+    ExtensionMapping mapping = copy.getMappings().get(0);
+    assertSame(copy.getSources().get(0), mapping.getSource());
+    // sorted-set is TreeSet, which SafeTreeSetConverter reads into a LinkedHashSet
+    assertInstanceOf(LinkedHashSet.class, mapping.getFields());
+  }
+
+  /**
+   * A resource.xml saved by an older IPT version lacks the collections added since, e.g. dataPackageMappings (IPT 3.0)
+   * and publicationFailureEmails (IPT 3.3.3). They are read as empty, not null, so e.g. a source can be deleted.
+   */
+  @Test
+  public void testReadResourceWithoutNewerCollections() throws Exception {
+    com.thoughtworks.xstream.XStream xstream = resourceXStream();
+    String xml = java.nio.file.Files.readString(FileUtils.getClasspathFile("resources/res1/resource.xml").toPath());
+    assertFalse(xml.contains("dataPackageMappings"));
+    assertFalse(xml.contains("publicationFailureEmails"));
+
+    Resource resource = (Resource) xstream.fromXML(xml);
+    assertNotNull(resource.getPublicationFailureEmails());
+    assertTrue(resource.getPublicationFailureEmails().isEmpty());
+
+    Source source = resource.getSources().get(0);
+    assertTrue(resource.deleteSource(source));
+    assertTrue(resource.getSources().isEmpty());
+  }
+
+  private static Resource resourceWithMapping() throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("mappings");
+    SqlSource source = new SqlSource();
+    source.setName("db");
+    source.setResource(resource);
+    resource.addSource(source, true);
+
+    ExtensionMapping mapping = new ExtensionMapping();
+    mapping.setSource(source);
+    mapping.setFields(new LinkedHashSet<>());
+    mapping.setIdColumn(2);
+    RecordFilter filter = new RecordFilter();
+    filter.setColumn(3);
+    filter.setParam("x");
+    mapping.setFilter(filter);
+    resource.setMappings(new ArrayList<>(List.of(mapping)));
+    return resource;
+  }
+
+  /**
+   * Test resource retrieval from resource.xml file. The loadFromDir method is responsible for this retrieval.
    */
   @Test
   public void testLoadFromDir() throws Exception {

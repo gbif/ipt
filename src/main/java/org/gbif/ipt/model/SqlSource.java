@@ -31,6 +31,27 @@ public class SqlSource extends SourceBase {
   private Date lastModified;
   private Password password = new Password();
 
+  /**
+   * Checks that the database of a DuckDB source is a plain local database file path.
+   * <p>
+   * The value is placed straight into the JDBC URL ({@code jdbc:duckdb:{database}}), and the driver reads
+   * {@code ;key=value} options from the URL that override the connection properties. An option such as
+   * {@code ;duckdb.read_only=false} or {@code ;session_init_sql_file=...} would undo the restrictions IPT opens the
+   * database with, so URL options are refused. In-memory and MotherDuck (remote) databases are refused too, as IPT
+   * only reads from a local database file.
+   *
+   * @param database the database of the SQL source
+   * @return true if the database is a plain local file path
+   */
+  public static boolean isValidDuckDbDatabase(String database) {
+    String db = database == null ? "" : database.trim();
+    if (db.isEmpty() || db.contains(";") || db.contains("?")) {
+      return false;
+    }
+    String lower = db.toLowerCase();
+    return !lower.startsWith(":memory:") && !lower.startsWith("md:") && !lower.startsWith("motherduck:");
+  }
+
   public String getDatabase() {
     return database;
   }

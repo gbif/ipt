@@ -30,6 +30,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -59,6 +60,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("HttpUrlsUsage")
@@ -175,5 +178,32 @@ public class ExtensionsActionTest extends IptBaseTest {
       }
     }
     return null;
+  }
+
+  /**
+   * The synchronisation changes the installed extensions and vocabularies, so a link (a GET request, which isn't
+   * CSRF-checked) must not trigger it.
+   */
+  @Test
+  public void testSynchroniseOnlyWithPost() throws Exception {
+    for (String method : List.of("GET", "POST")) {
+      VocabulariesManager vocabManager = mock(VocabulariesManager.class);
+      ExtensionManager extensionManager = mock(ExtensionManager.class);
+      ExtensionsAction listAction = new ExtensionsAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
+          mock(RegistrationManager.class), extensionManager, vocabManager, mock(RegistryManager.class),
+          mock(ConfigWarnings.class), mock(ResourceManager.class));
+      HttpServletRequest req = mock(HttpServletRequest.class);
+      when(req.getMethod()).thenReturn(method);
+      listAction.withServletRequest(req);
+      listAction.setSynchronise(true);
+      // set by prepare()
+      listAction.setLatestExtensionVersions(new ArrayList<>());
+
+      assertEquals(ExtensionsAction.SUCCESS, listAction.list());
+      int expected = "POST".equals(method) ? 1 : 0;
+      verify(vocabManager, times(expected)).installOrUpdateDefaults();
+      verify(vocabManager, times(expected)).updateIfChanged();
+      verify(extensionManager, times(expected)).updateIfChanged();
+    }
   }
 }

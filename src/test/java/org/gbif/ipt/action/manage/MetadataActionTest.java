@@ -15,10 +15,13 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.IptBaseTest;
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Resource;
+import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -27,16 +30,24 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.MapUtils;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class MetadataActionTest extends IptBaseTest {
 
@@ -144,5 +155,61 @@ public class MetadataActionTest extends IptBaseTest {
     withNewline = "Copyright Creative Commons Attribution-Share Alike License © 2011. \r"
                   + "http://creativecommons.org/licenses/by-sa/3.0/";
     assertEquals("Copyright Creative Commons Attribution-Share Alike License © 2011.  http://creativecommons.org/licenses/by-sa/3.0/", action.removeNewlineCharacters(withNewline));
+  }
+
+  /**
+   * Prepares a MetadataAction for the given page and resource, with a manager logged in.
+   */
+  private MetadataAction prepareMetadataPage(String uri, Resource resource,
+      InferredMetadataManager inferredMetadataManager, ResourceManager resourceManager) {
+    when(resourceManager.get("res")).thenReturn(resource);
+    MetadataAction metadataAction = new MetadataAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
+        mock(RegistrationManager.class), resourceManager, mock(VocabulariesManager.class), inferredMetadataManager,
+        mock(ConfigWarnings.class), mock(DataDir.class));
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getRequestURI()).thenReturn(uri);
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn("res");
+    when(req.getMethod()).thenReturn("GET");
+    metadataAction.withServletRequest(req);
+    Map<String, Object> session = new HashMap<>();
+    session.put(Constants.SESSION_USER, new User());
+    metadataAction.withSession(session);
+    metadataAction.prepare();
+    return metadataAction;
+  }
+
+  /**
+   * An unknown section is a 404, and no metadata is inferred or saved for it.
+   */
+  @Test
+  public void testUnknownSection() throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("res");
+    InferredMetadataManager inferredMetadataManager = mock(InferredMetadataManager.class);
+    ResourceManager resourceManager = mock(ResourceManager.class);
+
+    MetadataAction metadataAction =
+        prepareMetadataPage("/manage/metadata-foo.do", resource, inferredMetadataManager, resourceManager);
+    assertEquals(BaseAction.NOT_FOUND, metadataAction.execute());
+    verify(inferredMetadataManager, never()).getInferredMetadata(any(), anyBoolean());
+    verify(inferredMetadataManager, never()).getUpToDateInferredMetadata(any());
+    verify(resourceManager, never()).saveInferredMetadata(any());
+  }
+
+  /**
+   * The EML pages are a 404 for a data package resource.
+   */
+  @Test
+  public void testDataPackageResource() throws Exception {
+    Resource resource = new Resource();
+    resource.setShortname("res");
+    resource.setDataPackageIdentifier(Constants.DATA_PACKAGE_CAMTRAP_DP_IDENTIFIER);
+    InferredMetadataManager inferredMetadataManager = mock(InferredMetadataManager.class);
+
+    MetadataAction metadataAction =
+        prepareMetadataPage("/manage/metadata-basic.do", resource, inferredMetadataManager, mock(ResourceManager.class));
+    assertEquals(BaseAction.NOT_FOUND, metadataAction.execute());
+    verify(inferredMetadataManager, never()).getInferredMetadata(any(), anyBoolean());
+    verify(inferredMetadataManager, never()).getUpToDateInferredMetadata(any());
   }
 }

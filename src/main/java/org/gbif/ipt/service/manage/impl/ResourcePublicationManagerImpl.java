@@ -1036,15 +1036,13 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
   @Override
   public String calculateChecksum(File file) throws Exception {
     MessageDigest digest = MessageDigest.getInstance("SHA-256");
-    InputStream fis = new FileInputStream(file);
-
-    byte[] byteArray = new byte[1024];
-    int bytesCount = 0;
-
-    while ((bytesCount = fis.read(byteArray)) != -1) {
-      digest.update(byteArray, 0, bytesCount);
+    try (InputStream fis = new FileInputStream(file)) {
+      byte[] byteArray = new byte[1024];
+      int bytesCount;
+      while ((bytesCount = fis.read(byteArray)) != -1) {
+        digest.update(byteArray, 0, bytesCount);
+      }
     }
-    fis.close();
 
     byte[] bytes = digest.digest();
 

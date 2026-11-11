@@ -18,11 +18,12 @@ import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
-import org.gbif.ipt.struts2.CsrfLoginInterceptor;
+import org.gbif.ipt.struts2.CsrfInterceptor;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.CsrfTokenUtils;
 
 import jakarta.inject.Inject;
-import jakarta.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.List;
@@ -35,8 +36,8 @@ import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import lombok.Getter;
 
 /**
- * Action handling login/logout only. Login can happen both from small login box on every page, or dedicated login
- * page that provides the IPT administrator contact in case of problems or to create a new account.
+ * Action handling login and logout only. Login happens on the login page, which also provides the IPT administrator
+ * contact in case of problems or to create a new account.
  */
 public class LoginAction extends POSTAction {
 
@@ -108,20 +109,19 @@ public class LoginAction extends POSTAction {
   }
 
   public String login() throws IOException {
-    // login
-    Cookie csrfCookie = getCookie(CsrfLoginInterceptor.CSRFtoken);
-
     // user already logged in, return
     if (session.get(Constants.SESSION_USER) != null) {
       setRedirectUrl();
       return SUCCESS;
     }
 
-    if (email != null && !StringUtils.isBlank(csrfToken) && csrfCookie != null) {
-      // prevent login CSRF
-      // Make sure the token from the login form is the same as in the cookie
-      if (csrfToken.equals(csrfCookie.getValue())) {
-        User authUser = userManager.authenticate(email.trim(), password.trim());
+    if (email != null) {
+      // prevent login CSRF: the form must send the token of this session, which another site can't know
+      if (!CsrfTokenUtils.matches((String) session.get(Constants.SESSION_CSRF_TOKEN), csrfToken)) {
+        LOG.warn("Login rejected: missing or wrong CSRF token, e.g. an expired session or a malicious attack");
+        addActionError(getText("login.token.invalid"));
+      } else {
+        User authUser = userManager.authenticate(email.trim(), StringUtils.trimToEmpty(password));
         if (authUser == null) {
           addActionError(getText("admin.user.wrong.email.password.combination"));
           LOG.info("User {} failed to log in", email);
@@ -132,7 +132,7 @@ public class LoginAction extends POSTAction {
           LOG.info("User {} logged in successfully", email);
           authUser.setLastLoginToNow();
           userManager.save();
-          session.put(Constants.SESSION_USER, authUser);
+          logIn(authUser);
 
           int sessionTimeout = cfg.getSessionTimeout();
           LOG.debug("Setting session timeout to {} seconds", sessionTimeout);
@@ -142,13 +142,15 @@ public class LoginAction extends POSTAction {
           setRedirectUrl();
           return SUCCESS;
         }
-      } else {
-        LOG.warn("CSRF login token wrong! A potential malicious attack.");
       }
     }
     return INPUT;
   }
 
+  /**
+   * POST only, so another site can't log the user out with a link or an image.
+   */
+  @RequirePost
   public String logout() {
     redirectUrl = getBase() + "/";
     session.clear();
@@ -188,6 +190,14 @@ public class LoginAction extends POSTAction {
   @StrutsParameter
   public void setAdminEmail(String adminEmail) {
     this.adminEmail = adminEmail;
+  }
+
+  /**
+   * @return the CSRF token of the session for the login form, created when the form is first shown. Login replaces
+   * it with a new one (see {@link BaseAction#logIn(User)}).
+   */
+  public String getLoginToken() {
+    return CsrfInterceptor.getOrCreateToken(session);
   }
 
   @StrutsParameter

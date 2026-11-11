@@ -231,7 +231,7 @@
                     <b>${u.name}</b>
                     <span class="ov-small"><@s.text name="manage.overview.resource.managers.manager"/> · ${u.email}</span>
                 </div>
-                <a class="text-gbif-danger text-smaller" href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email?url}"><@s.text name="manage.overview.managers.remove"/></a>
+                <a class="text-gbif-danger text-smaller" data-post href="resource-deleteManager.do?r=${resource.shortname}&id=${u.email?url}"><@s.text name="manage.overview.managers.remove"/></a>
             </div>
         </#list>
     </div>

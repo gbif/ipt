@@ -39,6 +39,11 @@
     <link rel="shortcut icon" href="${baseURL}/images/icons/favicon-16x16.png" type="image/x-icon" />
 
     <script src="${baseURL}/js/jquery/jquery-3.7.1.min.js"></script>
+    [#-- CSRF token of the logged-in user, sent by csrf.js with forms and AJAX requests --]
+    [#if iptCsrfToken??]
+    <meta name="ipt-csrf-token" content="${iptCsrfToken}" />
+    [/#if]
+    <script src="${baseURL}/js/csrf.js"></script>
     <script src="${baseURL}/js/global.js"></script>
 
 </head>

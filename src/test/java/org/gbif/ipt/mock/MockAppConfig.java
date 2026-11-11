@@ -16,13 +16,18 @@ package org.gbif.ipt.mock;
 import org.gbif.ipt.config.AppConfig;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 public class MockAppConfig {
 
   private static AppConfig appConfig = mock(AppConfig.class);
 
+  /**
+   * The mock is shared, so stubs from an earlier test are cleared.
+   */
   public static AppConfig buildMock() {
+    reset(appConfig);
     setUpMock();
     return appConfig;
   }

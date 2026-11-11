@@ -15,6 +15,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.IptBaseTest;
+import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Extension;
@@ -45,7 +46,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,6 +58,7 @@ import org.apache.struts2.locale.DefaultLocaleProviderFactory;
 import org.apache.struts2.locale.LocaleProviderFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
@@ -69,6 +70,9 @@ import static org.mockito.Mockito.when;
 public class TranslationActionTest extends IptBaseTest {
 
   TranslationAction action;
+  SourceManager mockSourceManager;
+  HttpServletRequest mockRequest;
+  PropertyMapping field;
 
   @BeforeEach
   public void setup() throws Exception {
@@ -77,17 +81,13 @@ public class TranslationActionTest extends IptBaseTest {
     LocaleProviderFactory localeProviderFactory = new DefaultLocaleProviderFactory();
     AppConfig mockCfg = mock(AppConfig.class);
     ResourceManager mockResourceManager = mock(ResourceManager.class);
-    SourceManager mockSourceManager = mock(SourceManager.class);
+    mockSourceManager = mock(SourceManager.class);
     VocabulariesManager mockVocabManager = mock(VocabulariesManager.class);
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     Container container = mock(Container.class);
 
     // mock getting list of values back for BasisOfRecord field/column in source
-    Set<String> values = new LinkedHashSet<>();
-    values.add("spe");
-    values.add("obs");
-    values.add("fos");
-    when(mockSourceManager.inspectColumn(any(SourceBase.class), anyInt(), anyInt(), anyInt())).thenReturn(values);
+    mockSourceValues("spe", "obs", "fos");
 
     // mock getI18nVocab - only called in prepare()
     Map<String, String> mockVocab = new HashMap<>();
@@ -114,23 +114,13 @@ public class TranslationActionTest extends IptBaseTest {
     // add extension to ExtensionMapping
     mapping.setExtension(e);
 
-    // create map of source value
-    TreeMap<String, String> sourceValues = new TreeMap<>();
-    sourceValues.put("k1", "spe");
-    sourceValues.put("k2", "obs");
-
-    // create map of translation values
-    TreeMap<String, String> translatedValues = new TreeMap<>();
-    translatedValues.put("k1", "Preserved Specimen");
-    translatedValues.put("k2", "observation");
-
     // create map of translations that get persisted
     Map<String, String> persistedTranslations = new HashMap<>();
     persistedTranslations.put("spe", "Preserved Specimen");
     persistedTranslations.put("obs", "observation");
 
     // initialize PropertyMapping for BasisOfRecord term
-    PropertyMapping field = new PropertyMapping();
+    field = new PropertyMapping();
     // set ConceptTerm
     field.setTerm(DwcTerm.basisOfRecord);
     // set index
@@ -202,17 +192,8 @@ public class TranslationActionTest extends IptBaseTest {
     vocab.setUriString("http://rs.gbif.org/vocabulary/dwc/basis_of_record");
     property.setVocabulary(vocab);
 
-    // create sessionScoped Translation
-    // populate sessionScoped Translation with translations
-    action.getTrans().setTmap(mapping.getExtension().getRowType(), property, sourceValues, translatedValues);
-
-    // set various properties on Action
-    action.setField(field);
-    action.setExtensionMapping(mapping);
-    action.setProperty(property);
-
     // mock servlet request
-    HttpServletRequest mockRequest = mock(HttpServletRequest.class);
+    mockRequest = mock(HttpServletRequest.class);
     // the mapping id is 0 - relates to resource's List<ExtensionMapping> mappings
     when(mockRequest.getParameter(TranslationAction.REQ_PARAM_MAPPINGID)).thenReturn("0");
     when(mockRequest.getParameter(TranslationAction.REQ_PARAM_ROWTYPE)).thenReturn(Constants.DWC_ROWTYPE_OCCURRENCE);
@@ -225,97 +206,20 @@ public class TranslationActionTest extends IptBaseTest {
     action.setResource(resource);
   }
 
-  @Test
-  public void testDelete() {
-    // check there are 2 sessionScoped source values, 2 sessionScoped translated values, and the
-    // 2 PropertyMapping (field) translations
-    assertEquals(2, action.getTrans().getSourceValues().size());
-    assertEquals(2, action.getTrans().getTranslatedValues().size());
-    assertEquals(2, action.getField().getTranslation().size());
-
-    // perform deletion
-    action.delete();
-
-    // check 1. there are 0 sessionScoped source values or translations - both get cleared
-    assertEquals(0, action.getTrans().getTranslatedValues().size());
-
-    // check 2. the PropertyMapping (field) translations are empty
-    assertTrue(action.getField().getTranslation().isEmpty());
-
-    // check 3. the 3 source values got reloaded
-    assertEquals(3, action.getTrans().getSourceValues().size());
+  private void mockSourceValues(String... values) throws Exception {
+    Set<String> set = new LinkedHashSet<>(List.of(values));
+    when(mockSourceManager.inspectColumn(any(SourceBase.class), anyInt(), anyInt(), anyInt())).thenReturn(set);
   }
 
-  @Test
-  public void testReload() {
-    // check there are 2 sessionScoped and PropertyMapping (field) translations
-    assertEquals(2, action.getTrans().getSourceValues().size());
-    assertEquals(2, action.getField().getTranslation().size());
-
-    // perform reload
-    action.reload();
-
-    // check an additional sessionScoped translation was read from source (added to source values)
-    assertEquals(3, action.getTrans().getSourceValues().size());
-
-    // reloading source doesn't change the number of translated values, or persisted translations on the field itself
-    assertEquals(2, action.getTrans().getTranslatedValues().size());
-    assertEquals(2, action.getField().getTranslation().size());
-  }
-
-  @Test
-  public void testSaveTranslations() {
-    // create new set of 5 translations
-    TreeMap<String, String> sourceValues = new TreeMap<>();
-    sourceValues.put("k1", "spe");
-    sourceValues.put("k2", "obs");
-    sourceValues.put("k3", "liv");
-    sourceValues.put("k4", "mac");
-    sourceValues.put("k5", "zoo");
-
-    TreeMap<String, String> translatedValues = new TreeMap<>();
-    translatedValues.put("k1", "specimen");
-    translatedValues.put("k2", "observation");
-    translatedValues.put("k3", "livingSpecimen");
-    translatedValues.put("k4", "machineObservation");
-    translatedValues.put("k5", "");
-
-    // pretend this is the list of translations coming in from the UI
-    action.getTrans().setTmap(Constants.DWC_ROWTYPE_TAXON, DwcTerm.basisOfRecord, sourceValues, translatedValues);
-    // perform the save
-    action.save();
-    // ensure it has been saved to the PropertyMapping (field)
-    // only 4 should be present, since those translations with empty string values get removed
-    assertEquals(5, action.getField().getTranslation().entrySet().size());
-  }
-
-  @Test
-  public void testAutoMap() {
-    // create new map of source values that haven't been mapped yet
-    TreeMap<String, String> sourceValues = new TreeMap<>();
-    // will match vocab on concept
-    sourceValues.put("k1", "PreservedSpecimen");
-    // will match vocab on preferred title
-    sourceValues.put("k2", "Preserved Specimen");
-    // will match vocab on alternative title
-    sourceValues.put("k3", "Conserved Specimen");
-    // will not match vocab on anything
-    sourceValues.put("k4", "Unknown");
-
-    // create an empty map of translted values
-    TreeMap<String, String> translatedValues = new TreeMap<>();
-
-    action.getTrans().setTmap(Constants.DWC_ROWTYPE_TAXON, DwcTerm.basisOfRecord, sourceValues, translatedValues);
-
-    // perform auto mapping
-    action.automap();
-    // assert there are 4 source values still in total
-    assertEquals(4, action.getTrans().getSourceValues().size());
-    // assert there are 3 auto-mapped translated values now in total, and they all auto-mapped to PreservedSpecimen
-    assertEquals(3, action.getTrans().getTranslatedValues().size());
-    for (String val : action.getTmap().values()) {
-      assertEquals("PreservedSpecimen", val);
-    }
+  /**
+   * @return key of the row with the source value
+   */
+  private String keyOf(String sourceValue) {
+    return action.getSourceValuesMap().entrySet().stream()
+        .filter(e -> e.getValue().equals(sourceValue))
+        .map(Map.Entry::getKey)
+        .findFirst()
+        .orElseThrow();
   }
 
   @Test
@@ -324,7 +228,128 @@ public class TranslationActionTest extends IptBaseTest {
     assertEquals("0", String.valueOf(action.getMid()));
     assertEquals(DwcTerm.basisOfRecord.qualifiedName(), action.getProperty().getQualname());
     assertEquals(2, action.getVocabTerms().size());
-    assertEquals(3, action.getTrans().getSourceValues().size());
-    assertEquals(2, action.getTrans().getTranslatedValues().size());
+    // sorted
+    assertEquals(List.of("fos", "obs", "spe"), new ArrayList<>(action.getSourceValuesMap().values()));
+    assertEquals(2, action.getTmap().size());
+    assertEquals("Preserved Specimen", action.getTmap().get(keyOf("spe")));
+    assertEquals("observation", action.getTmap().get(keyOf("obs")));
+    assertFalse(action.isNotInSource(keyOf("spe")));
+    assertTrue(action.getActionMessages().isEmpty());
+  }
+
+  @Test
+  public void testPrepareKeepsTranslationsNotInSource() throws Exception {
+    mockSourceValues("spe");
+    action.prepare();
+
+    assertEquals(List.of("obs", "spe"), new ArrayList<>(action.getSourceValuesMap().values()));
+    assertEquals(2, action.getTmap().size());
+    assertTrue(action.isNotInSource(keyOf("obs")));
+    assertFalse(action.isNotInSource(keyOf("spe")));
+  }
+
+  @Test
+  public void testPrepareLimitsDistinctValues() throws Exception {
+    String[] values = new String[ValueTranslation.MAX_DISTINCT_VALUES + 1];
+    for (int i = 0; i < values.length; i++) {
+      values[i] = "v" + i;
+    }
+    mockSourceValues(values);
+    action.prepare();
+
+    assertTrue(action.getTranslation().isTruncated());
+    assertEquals(ValueTranslation.MAX_DISTINCT_VALUES, action.getTranslation().getSourceValueCount());
+    // the 2 saved translations are kept
+    assertEquals(ValueTranslation.MAX_DISTINCT_VALUES + 2, action.getSourceValuesMap().size());
+    assertEquals(1, action.getActionWarnings().size());
+  }
+
+  @Test
+  public void testReload() {
+    action.prepare();
+    action.reload();
+
+    assertEquals(3, action.getSourceValuesMap().size());
+    // reloading source doesn't change the translated values, or persisted translations on the field itself
+    assertEquals(2, action.getTmap().size());
+    assertEquals(2, action.getField().getTranslation().size());
+    assertEquals(1, action.getActionMessages().size());
+  }
+
+  @Test
+  public void testDelete() {
+    when(mockRequest.getMethod()).thenReturn("POST");
+    action.prepare();
+    action.delete();
+
+    assertTrue(action.getField().getTranslation().isEmpty());
+  }
+
+  @Test
+  public void testSaveTranslations() {
+    when(mockRequest.getMethod()).thenReturn("POST");
+    action.prepare();
+    // the source isn't read for a submitted form
+    assertTrue(action.getSourceValuesMap().isEmpty());
+
+    // pretend these are the rows coming in from the UI, in a different order than when the page was shown
+    action.getSmap().put("k2", "spe");
+    action.getSmap().put("k1", "obs");
+    action.getSmap().put("n1", "liv");
+    action.getSmap().put("k3", "zoo");
+    action.getTmap().put("k2", "specimen");
+    action.getTmap().put("k1", " observation ");
+    action.getTmap().put("n1", "livingSpecimen");
+    action.getTmap().put("k3", "");
+    // translated value without source value is ignored
+    action.getTmap().put("k9", "unknown");
+
+    action.save();
+
+    Map<String, String> saved = action.getField().getTranslation();
+    assertEquals(4, saved.size());
+    assertEquals("specimen", saved.get("spe"));
+    assertEquals("observation", saved.get("obs"));
+    assertEquals("livingSpecimen", saved.get("liv"));
+    assertEquals("", saved.get("zoo"));
+  }
+
+  @Test
+  public void testAutoMap() throws Exception {
+    mockSourceValues("PreservedSpecimen", "Preserved Specimen", "Conserved Specimen", "preserved_specimen",
+        "Preserved-Specimen", "Unknown", "obs", "spe");
+    field.setTranslation(Map.of("obs", "HumanObservation", "spe", "PreservedSpecimen"));
+    action.prepare();
+
+    action.automap();
+
+    // matches on concept, preferred title, alternative title, and ignoring underscores and hyphens
+    assertEquals("PreservedSpecimen", action.getTmap().get(keyOf("PreservedSpecimen")));
+    assertEquals("PreservedSpecimen", action.getTmap().get(keyOf("Preserved Specimen")));
+    assertEquals("PreservedSpecimen", action.getTmap().get(keyOf("Conserved Specimen")));
+    assertEquals("PreservedSpecimen", action.getTmap().get(keyOf("preserved_specimen")));
+    assertEquals("PreservedSpecimen", action.getTmap().get(keyOf("Preserved-Specimen")));
+    assertFalse(action.getTmap().containsKey(keyOf("Unknown")));
+    // existing translations are kept
+    assertEquals("HumanObservation", action.getTmap().get(keyOf("obs")));
+    assertEquals(7, action.getTmap().size());
+  }
+
+  /**
+   * A mapping id that isn't a number matches no mapping: reload and automap return a 404.
+   */
+  @Test
+  public void testInvalidMappingId() {
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter(TranslationAction.REQ_PARAM_MAPPINGID)).thenReturn("abc");
+    when(req.getParameter(TranslationAction.REQ_PARAM_ROWTYPE)).thenReturn(Constants.DWC_ROWTYPE_OCCURRENCE);
+    when(req.getParameter(TranslationAction.REQ_PARAM_TERM)).thenReturn(DwcTerm.basisOfRecord.qualifiedName());
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn("TestResource");
+    when(req.getMethod()).thenReturn("GET");
+    action.withServletRequest(req);
+
+    action.prepare();
+    assertEquals(BaseAction.NOT_FOUND, action.reload());
+    assertEquals(BaseAction.NOT_FOUND, action.automap());
   }
 }

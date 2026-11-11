@@ -178,15 +178,16 @@
                 </p>
             </#if>
         <#else>
-            <p>
-                <@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?r=${resource.shortname}</@s.param></@s.text>
+            <#assign lockedText><@s.text name="manage.locked"><@s.param>${baseURL}/manage/cancel.do?r=${resource.shortname}</@s.param></@s.text></#assign>
+            <#-- the cancel link in the translated text must be a POST: csrf.js posts the links in data-post-links -->
+            <p data-post-links>
+                ${lockedText}
             </p>
             <div class="alert alert-warning" role="alert">
                 ${report.state?no_esc}
             </div>
             <p>
-                <a href="cancel.do?r=${resource.shortname}"><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>
-                .
+                <a href="cancel.do?r=${resource.shortname}" data-post><@s.text name="button.cancel"/></a> <@s.text name="manage.overview.publishing"/>.
             </p>
         </#if>
 

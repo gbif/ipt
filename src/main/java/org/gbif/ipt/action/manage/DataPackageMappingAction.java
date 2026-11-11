@@ -27,6 +27,7 @@ import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.DataPackageMappingValidator;
 
@@ -45,8 +46,10 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
+import org.apache.struts2.interceptor.ValidationErrorAware;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
@@ -57,7 +60,7 @@ import static org.gbif.ipt.config.Constants.CANCEL;
 /**
  * Similar to {@link MappingAction}, but manage data package mappings.
  */
-public class DataPackageMappingAction extends ManagerBaseAction {
+public class DataPackageMappingAction extends ManagerBaseAction implements ValidationErrorAware {
 
   @Serial
   private static final long serialVersionUID = -2005597864256786458L;
@@ -92,9 +95,7 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   private List<DataPackageFieldMapping> fields;
   @Getter
   private Map<String, Integer> fieldsIndices;
-  @Getter
   private List<String> newTableSchemas = new ArrayList<>();
-  @Getter
   private List<String> newSources = new ArrayList<>();
   // what to do with field mappings of fields not in the installed schema, by field name: kept unless "discard", or
   // moved to the field named after "field:"
@@ -239,15 +240,22 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   }
 
   public String source() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     return INPUT;
   }
 
   /**
    * Create new mappings. One mapping is required and optional number of additional mappings.
    */
+  @RequirePost
   public String create() {
     if (!isHttpPost()) {
       return CANCEL;
+    }
+    if (notFound) {
+      return NOT_FOUND;
     }
 
     int newMappingsNumber = Math.min(newTableSchemas.size(), newSources.size());
@@ -299,7 +307,8 @@ public class DataPackageMappingAction extends ManagerBaseAction {
     // get mapping sequence id from parameters as setters are not called yet
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));
     if (midStr != null) {
-      mid = Integer.valueOf(midStr);
+      // not a number: -1, which matches no mapping (404)
+      mid = NumberUtils.toInt(midStr, -1);
     }
 
     if (id != null) {
@@ -319,8 +328,11 @@ public class DataPackageMappingAction extends ManagerBaseAction {
           defaultResult = "error";
         }
       } else {
-        List<DataPackageMapping> maps = resource.getDataPackageMappings();
-        mapping = maps.get(mid);
+        mapping = resource.getDataPackageMapping(mid);
+        if (mapping == null) {
+          notFound("manage.404.mapping.title", "manage.404.mapping.body", resource.getShortname());
+          return;
+        }
       }
     } else {
       // worst case, just redirect to resource not found page
@@ -493,7 +505,11 @@ public class DataPackageMappingAction extends ManagerBaseAction {
   }
 
   @Override
+  @RequirePost
   public String delete() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     String sourceName = Optional.ofNullable(mapping.getSource())
         .map(Source::getName)
         .orElse("unknown");
@@ -511,6 +527,14 @@ public class DataPackageMappingAction extends ManagerBaseAction {
       addActionMessage(getText("manage.mapping.couldnt.delete", new String[]{sourceName + " → " + tableSchemaName}));
     }
     return SUCCESS;
+  }
+
+  // by default DefaultWorkflowInterceptor returns "input" on action errors, e.g. an unknown schema id from prepare().
+  // The result set in prepare() ("error", the overview page) is defined for every mapping of this action. The errors
+  // can also be ones stored for a redirect, so a request that matched nothing is still a 404.
+  @Override
+  public String actionErrorOccurred(String currentResultName) {
+    return notFound ? NOT_FOUND : defaultResult;
   }
 
   public RecordFilter.Comparator[] getComparators() {

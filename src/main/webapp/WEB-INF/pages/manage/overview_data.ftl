@@ -68,7 +68,7 @@
                 <li><a class="dropdown-item" href="raw-source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.downloadSource"/></a></li>
             </#if>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-gbif-danger delete-source" href="delete-source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.deleteSource"/></a></li>
+            <li><a class="dropdown-item text-gbif-danger delete-source" data-post href="delete-source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.deleteSource"/></a></li>
         </ul>
     </div>
 </#macro>
@@ -225,7 +225,7 @@
                                             <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
                                             <li><hr class="dropdown-divider"></li>
                                         </#if>
-                                        <li><a class="dropdown-item text-gbif-danger delete-mapping" href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
+                                        <li><a class="dropdown-item text-gbif-danger delete-mapping" data-post href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -329,7 +329,7 @@
                                     </#if>
                                     <li><hr class="dropdown-divider"></li>
                                 </#if>
-                                <li><a class="dropdown-item text-gbif-danger ${r.core?then(deleteCoreMappingClass, 'delete-mapping')}" href="delete-mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
+                                <li><a class="dropdown-item text-gbif-danger ${r.core?then(deleteCoreMappingClass, 'delete-mapping')}" data-post href="delete-mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
                             </ul>
                         </div>
                     </td>

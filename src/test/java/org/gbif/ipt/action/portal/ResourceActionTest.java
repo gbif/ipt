@@ -53,6 +53,7 @@ import org.apache.struts2.locale.DefaultLocaleProviderFactory;
 import org.apache.struts2.locale.LocaleProviderFactory;
 
 import freemarker.template.TemplateException;
+import jakarta.servlet.http.HttpServletRequest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -241,6 +242,81 @@ public class ResourceActionTest extends IptBaseTest {
     // the published version 1.0 was private at time of publication
     action.setVersion(RESOURCE_VERSION_ONE);
     assertEquals(BaseAction.NOT_ALLOWED, action.detail());
+  }
+
+  /**
+   * No resource parameter: a resource stored in the session, e.g. by IPT versions up to 3.3.7, must not be used
+   * instead.
+   */
+  @Test
+  public void testSessionResourceIsNotUsed() {
+    ResourceManager resourceManager = mock(ResourceManager.class);
+    when(resourceManager.get(RESOURCE_SHORT_NAME)).thenReturn(resource);
+
+    ResourceAction action = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), resourceManager, mock(VocabulariesManager.class), mock(DataDir.class),
+        mock(ExtensionManager.class), mock(MetadataReader.class));
+    action.setServletRequest(mock(HttpServletRequest.class));
+    Map<String, Object> session = new HashMap<>();
+    session.put("curr_resource", RESOURCE_SHORT_NAME);
+    action.setSession(session);
+
+    action.prepare();
+    assertNull(action.getResource());
+    assertEquals(BaseAction.NOT_FOUND, action.detail());
+  }
+
+  /**
+   * No resource parameter: the preview returns a 404 instead of failing on the missing resource.
+   */
+  @Test
+  public void testPreviewWithoutResource() {
+    ResourceAction action = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class),
+        mock(DataDir.class), mock(ExtensionManager.class), mock(MetadataReader.class));
+    action.setServletRequest(mock(HttpServletRequest.class));
+    action.prepare();
+    assertEquals(BaseAction.NOT_FOUND, action.preview());
+  }
+
+  /**
+   * An unknown resource in the RSS feed: an empty feed instead of a NullPointerException.
+   */
+  @Test
+  public void testRssForUnknownResource() {
+    ResourceAction action = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class),
+        mock(DataDir.class), mock(ExtensionManager.class), mock(MetadataReader.class));
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn("unknown");
+    action.setServletRequest(req);
+    assertEquals(BaseAction.SUCCESS, action.rss());
+    assertTrue(action.getResources().isEmpty());
+  }
+
+  /**
+   * A manager opening the page of a never-published resource: there's no eml-{version}.xml, that's a 404, not a 500.
+   */
+  @Test
+  public void testDetailForNeverPublishedResource() {
+    Resource draft = new Resource();
+    draft.setShortname("draft");
+    draft.setCreator(MANAGER);
+
+    DataDir dataDir = mock(DataDir.class);
+    when(dataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(new File("no-such-dir", "eml-1.0.xml"));
+    ResourceAction draftAction = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class), dataDir,
+        mock(ExtensionManager.class), mock(MetadataReader.class));
+    draftAction.setResource(draft);
+    Container container = mock(Container.class);
+    when(container.getInstance(LocaleProviderFactory.class)).thenReturn(new DefaultLocaleProviderFactory());
+    draftAction.setContainer(container);
+    Map<String, Object> session = new HashMap<>();
+    session.put(Constants.SESSION_USER, MANAGER);
+    draftAction.withSession(session);
+
+    assertEquals(BaseAction.NOT_FOUND, draftAction.detail());
   }
 
   /**

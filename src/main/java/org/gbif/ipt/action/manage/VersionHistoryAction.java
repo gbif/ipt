@@ -70,6 +70,11 @@ public class VersionHistoryAction extends ManagerBaseAction {
         LOG.error("Parameter version (v) was not a valid number: {}", String.valueOf(v));
       }
     }
+
+    // a missing, invalid or unknown version: there is no change summary to show or save
+    if (resource != null && (version == null || resource.findVersionHistory(version) == null)) {
+      notFound("manage.404.version.title", "manage.404.version.body", resource.getShortname());
+    }
   }
 
   @Override
@@ -101,7 +106,8 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
-   * Return the version number requested. Null version is equal to the latest published version.
+   * Return the version number requested. It is null if the v parameter is missing or invalid, and prepare() then
+   * gives a 404.
    *
    * @return the version number requested
    */
@@ -111,7 +117,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
-   * Version number of the resource requested. Null version is equal to the latest published version.
+   * Version number of the resource requested.
    *
    * @param version version number requested
    */
@@ -121,7 +127,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
   }
 
   /**
-   * Return the version number requested. Null version is equal to the latest published version.
+   * Return the version number requested, for the page. Only called once prepare() has found the version.
    *
    * @return the version number requested
    */

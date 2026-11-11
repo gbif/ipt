@@ -425,7 +425,7 @@ public class ResourceManagerImplCrudTest {
 
     manager.saveDatapackageMetadata(resource);
 
-    verify(metadataReader).writeValue(new File(resourcesDir, SHORTNAME + "/datapackage.json"), metadata);
+    assertWrittenIntoPlace(metadata);
     assertNotNull(resource.getModified());
   }
 
@@ -646,7 +646,7 @@ public class ResourceManagerImplCrudTest {
     assertFalse(resource.isInferGeocoverageAutomatically());
     assertFalse(resource.isInferTaxonomicCoverageAutomatically());
     assertFalse(resource.isInferTemporalCoverageAutomatically());
-    verify(metadataReader).writeValue(new File(resourcesDir, SHORTNAME + "/datapackage.json"), replacement);
+    assertWrittenIntoPlace(replacement);
   }
 
   @Test
@@ -758,5 +758,17 @@ public class ResourceManagerImplCrudTest {
       }
     }
     return false;
+  }
+
+  /**
+   * The data package metadata is written to a temporary file next to datapackage.json, then moved into place.
+   */
+  private void assertWrittenIntoPlace(Object metadata) throws Exception {
+    File target = new File(resourcesDir, SHORTNAME + "/datapackage.json");
+    ArgumentCaptor<File> written = ArgumentCaptor.forClass(File.class);
+    verify(metadataReader).writeValue(written.capture(), eq(metadata));
+    assertEquals(target.getParentFile().getAbsoluteFile(), written.getValue().getParentFile().getAbsoluteFile());
+    assertTrue(target.exists());
+    assertFalse(written.getValue().exists());
   }
 }

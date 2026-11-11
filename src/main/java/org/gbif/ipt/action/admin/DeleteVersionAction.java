@@ -20,6 +20,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
@@ -67,6 +68,7 @@ public class DeleteVersionAction extends POSTAction {
   }
 
   @Override
+  @RequirePost
   public String execute() {
     resourcePublicationManager.removeVersion(resource, new BigDecimal(version));
     return SUCCESS;

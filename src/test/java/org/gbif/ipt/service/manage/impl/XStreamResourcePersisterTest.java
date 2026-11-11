@@ -27,7 +27,6 @@ import org.gbif.ipt.model.VersionHistory;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
 import org.gbif.ipt.model.converter.DataPackageFieldConverter;
 import org.gbif.ipt.model.converter.DataPackageIdentifierConverter;
-import org.gbif.ipt.model.converter.ExtensionMappingConverter;
 import org.gbif.ipt.model.converter.ExtensionRowTypeConverter;
 import org.gbif.ipt.model.converter.JdbcInfoConverter;
 import org.gbif.ipt.model.converter.OrganisationKeyConverter;
@@ -91,7 +90,6 @@ public class XStreamResourcePersisterTest {
     ResourceConvertersManager converters = new ResourceConvertersManager(
         new UserEmailConverter(userAccountManager),
         new OrganisationKeyConverter(registrationManager),
-        mock(ExtensionMappingConverter.class),
         mock(ExtensionRowTypeConverter.class),
         mock(ConceptTermConverter.class),
         schemaConverter,

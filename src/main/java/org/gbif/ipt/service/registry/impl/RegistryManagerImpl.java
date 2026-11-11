@@ -1229,9 +1229,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       BigDecimal version = new BigDecimal(lastPublishedVersion.getVersion());
       File emlFile = cfg.getDataDir().resourceEmlFile(resource.getShortname(), version);
       if (emlFile.exists()) {
-        try {
+        try (InputStream in = new FileInputStream(emlFile)) {
           LOG.debug("Loading EML from file: {}", emlFile.getAbsolutePath());
-          InputStream in = new FileInputStream(emlFile);
           Eml eml = EmlFactory.build(in);
           if (eml.getCitation() != null && StringUtils.isNotBlank(eml.getCitation().getIdentifier())) {
             String identifier = StringUtils.trimToNull(eml.getCitation().getIdentifier());

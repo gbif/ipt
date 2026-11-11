@@ -92,7 +92,6 @@
   <bean id="resourceConverterManager" class="org.gbif.ipt.service.manage.impl.ResourceConvertersManager" lazy-init="true">
     <property name="userConverter" ref="userEmailConverter"/>
     <property name="orgConverter" ref="organisationKeyConverter"/>
-    <property name="extensionMappingConverter" ref="extensionMappingConverter"/>
     <property name="extensionConverter" ref="extensionRowTypeConverter"/>
     <property name="conceptTermConverter" ref="conceptTermConverter"/>
     <property name="dataSchemaConverter" ref="dataPackageIdentifierConverter"/>
@@ -369,31 +368,15 @@
     <constructor-arg ref="simpleTextProvider"/>
   </bean>
 
-  <bean id="defaultMapper" class="com.thoughtworks.xstream.mapper.DefaultMapper">
-    <constructor-arg value="#{T(java.lang.Thread).currentThread().getContextClassLoader()}" />
-  </bean>
-
-  <bean id="xstreamMapper" class="org.gbif.ipt.model.converter.ExtendedXstreamMapper">
-    <constructor-arg ref="defaultMapper" />
-  </bean>
-
-  <bean id="xstreamReflectionProvider" class="com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider"/>
-
-  <bean id="extensionMappingConverter" class="org.gbif.ipt.model.converter.ExtensionMappingConverter">
-    <constructor-arg ref="xstreamMapper"/>
-    <constructor-arg ref="xstreamReflectionProvider"/>
-  </bean>
-
   <bean id="defaultLocaleInterceptor" class="org.gbif.ipt.struts2.DefaultLocaleInterceptor">
-    <property name="cfg" ref="appConfig"/>
-  </bean>
-
-  <bean id="csrfLoginInterceptor" class="org.gbif.ipt.struts2.CsrfLoginInterceptor">
     <property name="cfg" ref="appConfig"/>
   </bean>
 
   <bean id="requireManagerInterceptor" class="org.gbif.ipt.struts2.RequireManagerInterceptor">
     <property name="resourceManager" ref="resourceManager"/>
+  </bean>
+
+  <bean id="resourceLockedInterceptor" class="org.gbif.ipt.struts2.ResourceLockedInterceptor">
     <property name="resourcePublicationManager" ref="resourcePublicationManager"/>
   </bean>
 

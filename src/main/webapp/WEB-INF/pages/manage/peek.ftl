@@ -1,5 +1,16 @@
 <#setting url_escaping_charset="UTF-8">
 
+<#-- 400/404 of the source preview; the mapping preview reports them in report. Without any of them, nor a
+     preview, the action didn't run: RequireManagerInterceptor returned a 400 (no r parameter) or a 404 (unknown
+     resource) -->
+<#if badRequestBody?? || notFoundBody??>
+    <div class="alert alert-danger fs-smaller-2" role="alert">${badRequestBody!notFoundBody}</div>
+<#elseif !report?? && !peek??>
+    <div class="alert alert-danger fs-smaller-2" role="alert">
+        <#if (Parameters.r!"")?trim?has_content><@s.text name="manage.404.body"/><#else><@s.text name="manage.400.body"/></#if>
+    </div>
+</#if>
+
 <#if report??>
     <div id="preview-report" class="fs-smaller-2">
         <#if report.completed>
@@ -47,7 +58,7 @@
             </thead>
         </#if>
 
-        <#list peek as row><#if row??>
+        <#list peek![] as row><#if row??>
             <tr<#if (row_index % 2) == 0> class="even"<#else> class="odd"</#if>>
                 <#list row as col><td>${(col)!("<em>null</em>"?no_esc)}</td></#list>
             </tr>

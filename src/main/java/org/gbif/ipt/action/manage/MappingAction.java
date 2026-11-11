@@ -30,6 +30,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.ExtensionMappingValidator;
 import org.gbif.ipt.validation.ExtensionMappingValidator.ValidationStatus;
@@ -50,6 +51,7 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -74,6 +76,18 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
 
   @Serial
   private static final long serialVersionUID = -831969146160030857L;
+
+  /**
+   * The mapping.* parameters the mapping form submits. The mapping holds the live source and the shared extension,
+   * so any other mapping.* parameter is refused.
+   */
+  private static final Set<String> MAPPING_PARAMETERS = Set.of(
+      "mapping.idColumn",
+      "mapping.idSuffix",
+      "mapping.filter.column",
+      "mapping.filter.comparator",
+      "mapping.filter.filterTime",
+      "mapping.filter.param");
 
   private static final Logger LOG = LogManager.getLogger(MappingAction.class);
 
@@ -225,7 +239,11 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   }
 
   @Override
+  @RequirePost
   public String delete() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
     if (resource.deleteMapping(mapping)) {
       addActionMessage(getText("manage.mapping.deleted", new String[]{id}));
       // set mappings modified date
@@ -330,7 +348,8 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     // get mapping sequence id from parameters as setters are not called yet
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));
     if (midStr != null) {
-      mid = Integer.valueOf(midStr);
+      // not a number: -1, which matches no mapping (404)
+      mid = NumberUtils.toInt(midStr, -1);
     }
     // id is rowtype
     if (id != null) {
@@ -351,11 +370,15 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
           defaultResult = "error";
         }
       } else {
-        List<ExtensionMapping> maps = resource.getMappings(id);
-        mapping = maps.get(mid);
+        mapping = resource.getMapping(id, mid);
+        if (mapping == null) {
+          LOG.error("No mapping {} with index {} found!", id, mid);
+          notFound("manage.404.mapping.title", "manage.404.mapping.body", resource.getShortname());
+          return;
+        }
 
         Extension ext = extensionManager.get(id);
-        if (!ext.isLatest()) {
+        if (ext != null && !ext.isLatest()) {
           addActionWarning(getText("manage.overview.mappings.extension.outdated"));
         }
       }
@@ -556,11 +579,12 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     return false;
   }
 
-  // by default DefaultWorkflowInterceptor redirects to "input".
-  // "error" is necessary for this action
+  // by default DefaultWorkflowInterceptor returns "input" on action errors. The result set in prepare() is used
+  // instead, e.g. "error" (the overview page) for an unknown extension. The errors can also be ones stored for a
+  // redirect, so a request for a mapping that doesn't exist is still a 404, not the mapping page without a mapping.
   @Override
   public String actionErrorOccurred(String currentResultName) {
-    return defaultResult;
+    return notFound ? NOT_FOUND : defaultResult;
   }
 
   @StrutsParameter(depth = 2)
@@ -571,5 +595,11 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @StrutsParameter(depth = 2)
   public ExtensionMapping getMapping() {
     return mapping;
+  }
+
+  @Override
+  public boolean acceptableParameterName(String parameterName) {
+    return super.acceptableParameterName(parameterName)
+        && (!isPropertyOf(parameterName, "mapping") || MAPPING_PARAMETERS.contains(parameterName));
   }
 }

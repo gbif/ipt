@@ -106,7 +106,7 @@ public class POSTAction extends BaseAction {
   @Override
   public void validate() {
     // only validate on form submissions
-    if (isHttpPost() && validate) {
+    if (isHttpPost() && validate && !notFound) {
       validateHttpPostOnly();
     }
   }

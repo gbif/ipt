@@ -69,9 +69,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -128,6 +129,23 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     }
   }
 
+  /**
+   * Closes the result set, statement and connection of an SQL iterator, each one even if closing another fails.
+   * Any of them can be null. An open connection keeps the database in use, e.g. a shared DuckDB instance with its
+   * memory and file lock.
+   */
+  private void closeSqlResources(ResultSet rs, Statement stmt, Connection conn, String sourceName) {
+    for (AutoCloseable resource : new AutoCloseable[] {rs, stmt, conn}) {
+      if (resource != null) {
+        try {
+          resource.close();
+        } catch (Exception e) {
+          LOG.error("Can't close iterator for SQL source {}", sourceName, e);
+        }
+      }
+    }
+  }
+
   private class SqlColumnIterator implements ClosableIterator<Object> {
 
     private final Connection conn;
@@ -153,28 +171,30 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
      * @param sql statement to query in the sql source
      */
     private SqlColumnIterator(SqlSource source, int column, String sql) throws SQLException {
-      this.conn = getDbConnection(source);
-      this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      source.getRdbms().enableLargeResultSet(this.stmt);
       this.column = column + 1;
-      LOG.debug("Executing SQL {}", sql);
-      this.rs = stmt.executeQuery(sql);
-      this.hasNext = rs.next();
       sourceName = source.getName();
+      Connection c = getDbConnection(source);
+      Statement s = null;
+      ResultSet r = null;
+      try {
+        s = c.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        source.getRdbms().enableLargeResultSet(s);
+        LOG.debug("Executing SQL {}", sql);
+        r = s.executeQuery(sql);
+        this.hasNext = r.next();
+      } catch (SQLException | RuntimeException e) {
+        // the caller gets no iterator to close
+        closeSqlResources(r, s, c, sourceName);
+        throw e;
+      }
+      this.conn = c;
+      this.stmt = s;
+      this.rs = r;
     }
 
     @Override
     public void close() {
-      if (rs != null) {
-        try {
-          rs.close();
-          stmt.close();
-          conn.close();
-        } catch (SQLException e) {
-          LOG.error("Can't close iterator for SQL source {}", sourceName, e);
-        }
-      }
-
+      closeSqlResources(rs, stmt, conn, sourceName);
     }
 
     @Override
@@ -187,9 +207,9 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       String val = null;
       if (hasNext) {
         try {
-          // forward rs cursor
-          hasNext = rs.next();
+          // the cursor is on the current row: read it, then move on
           val = rs.getString(column);
+          hasNext = rs.next();
         } catch (SQLException e2) {
           hasNext = false;
         }
@@ -216,29 +236,31 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     private Exception exception;
 
     SqlRowIterator(SqlSource source) throws SQLException {
-      this.conn = getDbConnection(source);
-      this.stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-      source.getRdbms().enableLargeResultSet(this.stmt);
-      LOG.debug("Executing SQL {}", source.getSql());
-      this.rs = stmt.executeQuery(source.getSql());
-      this.rowSize = rs.getMetaData().getColumnCount();
-      this.hasNext = rs.next();
       sourceName = source.getName();
       this.rowError = false;
+      Connection c = getDbConnection(source);
+      Statement s = null;
+      ResultSet r = null;
+      try {
+        s = c.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        source.getRdbms().enableLargeResultSet(s);
+        LOG.debug("Executing SQL {}", source.getSql());
+        r = s.executeQuery(source.getSql());
+        this.rowSize = r.getMetaData().getColumnCount();
+        this.hasNext = r.next();
+      } catch (SQLException | RuntimeException e) {
+        // the caller gets no iterator to close
+        closeSqlResources(r, s, c, sourceName);
+        throw e;
+      }
+      this.conn = c;
+      this.stmt = s;
+      this.rs = r;
     }
 
     @Override
     public void close() {
-      if (rs != null) {
-        try {
-          rs.close();
-          stmt.close();
-          conn.close();
-        } catch (SQLException e) {
-          LOG.error("Can't close iterator for SQL source {}", sourceName, e);
-        }
-      }
-
+      closeSqlResources(rs, stmt, conn, sourceName);
     }
 
     @Override
@@ -1209,14 +1231,19 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     return true;
   }
 
-  private Connection getDbConnection(SqlSource source) throws SQLException {
+  Connection getDbConnection(SqlSource source) throws SQLException {
     Connection conn = null;
     // try to connect to db via simple JDBC
     if (source.getJdbcUrl() != null && source.getJdbcDriver() != null) {
       try {
         DriverManager.setLoginTimeout(CONNECTION_TIMEOUT_SECS);
         Class.forName(source.getJdbcDriver());
-        conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
+        if (isDuckDb(source)) {
+          validateDuckDbDatabase(source.getDatabase());
+          conn = DriverManager.getConnection(source.getJdbcUrl(), duckDbConnectionProperties());
+        } else {
+          conn = DriverManager.getConnection(source.getJdbcUrl(), source.getUsername(), source.getPassword());
+        }
         // Disable Auto Commit to allow use of cursors (in PostgreSQL, but probably others too).
         conn.setAutoCommit(false);
 
@@ -1228,6 +1255,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
           warn = warn.getNextWarning();
         }
       } catch (java.lang.ClassNotFoundException e) {
+        closeQuietly(conn);
         String msg =
           String
             .format(
@@ -1236,6 +1264,8 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
         LOG.warn(msg, e);
         throw new SQLException(msg, e);
       } catch (Exception e) {
+        // don't leak a connection that was opened before a later step failed
+        closeQuietly(conn);
         String msg = String
           .format("Couldn't create new external datasource connection with JDBC Class=%s, URL=%s, user=%s. Error: %s",
             source.getJdbcDriver(), source.getJdbcUrl(), source.getUsername(), e.getMessage());
@@ -1247,11 +1277,76 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
   }
 
   /**
+   * Connection properties for the embedded DuckDB driver.
+   * <p>
+   * Unlike the other supported RDBMS, DuckDB runs in-process within the IPT JVM. By default it can read and write
+   * local files (e.g. {@code read_csv}, {@code read_parquet}, {@code read_blob}, {@code COPY ... TO}), attach other
+   * databases and install or load extensions, which would let any manager who can configure a source read or write
+   * any file the IPT process can access. The database is therefore opened read-only, with external access and
+   * extension installing/loading disabled, and the configuration locked so the user-supplied SQL cannot re-enable
+   * any of it.
+   * <p>
+   * These are startup settings of the DuckDB instance, which the driver shares between all connections to the same
+   * database file. Setting them here (rather than with {@code SET} on an open connection) means every connection
+   * opens the instance with the same configuration, so concurrent connections to one file keep working.
+   * <p>
+   * As a consequence, SQL that needs files outside the database (e.g. a view over {@code read_csv} or Parquet files)
+   * or an extension (e.g. spatial) fails: the source has to select from tables stored in the database file itself.
+   */
+  static Properties duckDbConnectionProperties() {
+    Properties props = new Properties();
+    props.setProperty("duckdb.read_only", "true");
+    props.setProperty("enable_external_access", "false");
+    props.setProperty("allow_community_extensions", "false");
+    props.setProperty("autoinstall_known_extensions", "false");
+    props.setProperty("autoload_known_extensions", "false");
+    props.setProperty("lock_configuration", "true");
+    return props;
+  }
+
+  /**
+   * Refuses a DuckDB database that isn't a plain local file path (see {@link SqlSource#isValidDuckDbDatabase}),
+   * as it could undo the restrictions in {@link #duckDbConnectionProperties()}.
+   * <p>
+   * The source form checks this when the source is saved. It is checked again when connecting because sources also
+   * come from uploaded resource.xml files and from sources saved before this check existed.
+   *
+   * @param database the database of the SQL source
+   * @throws SQLException if the database isn't a plain local file path
+   */
+  static void validateDuckDbDatabase(String database) throws SQLException {
+    if (!SqlSource.isValidDuckDbDatabase(database)) {
+      throw new SQLException(
+          "The DuckDB database must be the path of a local database file, without connection options (';' or '?')");
+    }
+  }
+
+  private void closeQuietly(Connection conn) {
+    if (conn != null) {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        LOG.debug("Failed to close the connection after an error", e);
+      }
+    }
+  }
+
+  /**
+   * @return true if the source is backed by the embedded DuckDB driver, which runs in-process and therefore needs
+   * extra filesystem hardening compared to the other (client/server) RDBMS drivers.
+   */
+  private boolean isDuckDb(SqlSource source) {
+    String driver = source.getJdbcDriver();
+    return driver != null && driver.toLowerCase().contains("duckdb");
+  }
+
+  /**
    * {@inheritDoc}
    */
   @Override
   public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
-    Set<String> values = new HashSet<>();
+    // insertion order, so truncating the values keeps the first ones found
+    Set<String> values = new LinkedHashSet<>();
     try (ClosableIterator<Object> iter = iterSourceColumn(source, column, maxRows)){
       // get distinct values
       while (iter.hasNext() && (maxValues < 1 || values.size() < maxValues)) {
