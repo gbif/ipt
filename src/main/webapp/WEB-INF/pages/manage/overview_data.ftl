@@ -125,12 +125,8 @@
         </#if>
     </div>
 
+    <#-- when the data last changed; what the card shows is in the column headings and the (i) -->
     <div class="ov-sub">
-        <#if isDataPackage>
-            <@s.text name="manage.overview.data.sub.dp"/>
-        <#else>
-            <@s.text name="manage.overview.data.sub.class"/>
-        </#if>
         <#if sourcesModifiedSinceLastPublication || mappingsModifiedSinceLastPublication>
             <#assign dataModified = "">
             <#if sourcesModifiedSinceLastPublication && resource.sourcesModified??><#assign dataModified = resource.sourcesModified></#if>
@@ -273,7 +269,7 @@
                 <#assign editUrl = "mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}">
                 <tr class="ov-row"<#if (m.source)??> <@filterAttrs m.source r.ext.title/></#if> data-ov-mapping-changed="${isMappingChanged(m)?c}" data-ov-problem="${((m.source)?? && !m.source.readable || m.fields?size == 0)?c}">
                     <td>
-                        <a href="${editUrl}" class="ov-name fw-semibold">${r.ext.title}</a><#if r.core><span class="ov-core"><@s.text name="manage.overview.data.coreTag"/></span></#if><#if isMappingChanged(m)><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#if>
+                        <a href="${editUrl}" class="ov-name fw-semibold">${r.ext.title}</a><#if isMappingChanged(m)><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#if>
                         <#if m.fields?size == 0><@problemNote "manage.overview.data.status.noTerms"/></#if>
                     </td>
                     <td><#if (m.source)??><@sourceCell m.source/><#else>?</#if></td>

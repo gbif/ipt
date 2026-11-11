@@ -112,7 +112,6 @@
 .ov-small { font-size: 0.72rem; color: #6c757d; display: block; }
 .ov-small.bad { color: rgb(176, 50, 64); }
 .ov-chg { font-size: 0.62rem; font-weight: 700; background: #fff3d6; color: #8a6200; border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }
-.ov-core { font-size: 0.62rem; background: #f6f7f8; border: 1px solid #dee2e6; border-radius: 4px; padding: 0 4px; color: #6c757d; margin-left: 4px; vertical-align: 1px; }
 .ov-maps { display: flex; flex-direction: column; gap: 3px; }
 .ov-rowacts { white-space: nowrap; text-align: right; }
 .ov-rowacts > a, .ov-rowacts > .dropdown > a { margin-left: 10px; font-size: 0.78rem; }
