@@ -18,7 +18,7 @@
         <#local issues = issues + [issue]>
     </#if>
     <#if issues?has_content>
-        <span class="ov-small bad"><i class="bi bi-exclamation-triangle-fill"></i> <#list issues as issue>${issue}<#sep>; </#sep></#list></span>
+        <span class="ov-small bad"><@icon name="warning"/> <#list issues as issue>${issue}<#sep>; </#sep></#list></span>
     </#if>
 </#macro>
 
@@ -61,7 +61,7 @@
 <#-- the ⋯ menu for a source: edit, download, delete -->
 <#macro sourceMenu src id>
     <div class="dropdown">
-        <a href="#" class="ov-name" id="source-menu-${id}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.sourceActions'/>"><i class="bi bi-three-dots"></i></a>
+        <a href="#" class="ov-name" id="source-menu-${id}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.sourceActions'/>"><@icon name="more_horiz"/></a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="source-menu-${id}">
             <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
             <#if src.isFileSource() || src.isExcelSource()>
@@ -109,15 +109,15 @@
             </#if>
         </#if>
         <span class="ov-sp"></span>
-        <a id="add-source-button" class="btn btn-sm btn-outline-gbif-primary source-action" href="#"><i class="bi bi-plus"></i> <@s.text name="manage.overview.data.addSource"/></a>
+        <a id="add-source-button" class="ov-hact source-action" href="#"><@icon name="add"/> <@s.text name="manage.overview.data.addSource"/></a>
         <#if isDataPackage && resource.sources?has_content>
             <form action='dataPackageMappingSourceNew.do' method='post' class="d-inline">
                 <input name="r" type="hidden" value="${resource.shortname}"/>
                 <input name="id" type="hidden" value="${resource.dataPackageIdentifier}">
-                <button name="add" class="btn btn-sm btn-outline-gbif-primary" type="submit"><i class="bi bi-plus"></i> <@s.text name="manage.overview.data.mapTable"/></button>
+                <button name="add" class="ov-hact" type="submit"><@icon name="add"/> <@s.text name="manage.overview.data.mapTable"/></button>
             </form>
         <#else>
-            <a id="add-mapping-button" class="btn btn-sm btn-outline-gbif-primary mapping-action" href="#"><i class="bi bi-plus"></i> <#if isDataPackage><@s.text name="manage.overview.data.mapTable"/><#else><@s.text name="manage.overview.data.addMapping"/></#if></a>
+            <a id="add-mapping-button" class="ov-hact mapping-action" href="#"><@icon name="add"/> <#if isDataPackage><@s.text name="manage.overview.data.mapTable"/><#else><@s.text name="manage.overview.data.addMapping"/></#if></a>
         </#if>
     </div>
 
@@ -154,7 +154,7 @@
         <div class="ov-empty">
             <b><@s.text name="manage.overview.data.empty.title"/></b>
             <@s.text name="manage.overview.data.empty.text"/>
-            <div class="mt-2"><button type="button" class="btn btn-sm btn-outline-gbif-primary ov-open-add-source"><i class="bi bi-plus"></i> <@s.text name="manage.overview.data.addSource"/></button></div>
+            <div class="mt-2"><button type="button" class="btn btn-sm btn-outline-gbif-primary ov-open-add-source"><@icon name="add"/> <@s.text name="manage.overview.data.addSource"/></button></div>
         </div>
 
     <#elseif isDataPackage>
@@ -219,7 +219,7 @@
                             <td class="ov-rowacts">
                                 <a href="${editUrl}"><@s.text name="button.edit"/></a>
                                 <div class="dropdown">
-                                    <a href="#" id="dp-mapping-menu-${r.mid}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><i class="bi bi-three-dots"></i></a>
+                                    <a href="#" id="dp-mapping-menu-${r.mid}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><@icon name="more_horiz"/></a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dp-mapping-menu-${r.mid}">
                                         <#if (m.source.name)??>
                                             <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
@@ -320,7 +320,7 @@
                         <a href="${editUrl}"><@s.text name="button.edit"/></a>
                         <a class="peekBtn" href="mappingPeek.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="button.preview"/></a>
                         <div class="dropdown">
-                            <a href="#" id="mapping-menu-${r?index}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><i class="bi bi-three-dots"></i></a>
+                            <a href="#" id="mapping-menu-${r?index}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><@icon name="more_horiz"/></a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mapping-menu-${r?index}">
                                 <#if (m.source)??>
                                     <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>

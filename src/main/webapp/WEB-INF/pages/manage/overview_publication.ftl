@@ -58,7 +58,7 @@
             <span class="ov-pill ok"><@s.text name="manage.overview.publication.upToDate"/></span>
         </#if>
         <span class="ov-sp"></span>
-        <a id="edit-publication-button" class="btn btn-sm btn-outline-gbif-primary" href="publication-settings.do?r=${resource.shortname}"><@s.text name="manage.overview.publication.settings"/></a>
+        <a id="edit-publication-button" class="ov-hact" href="publication-settings.do?r=${resource.shortname}"><@icon name="edit"/> <@s.text name="manage.overview.publication.settings"/></a>
     </div>
 
     <#-- the publishing organization is set in the publication settings -->
@@ -133,7 +133,7 @@
         </#if>
 
         <#if !isDeleted>
-            <div class="ov-arr" aria-hidden="true"><i class="bi bi-arrow-right"></i></div>
+            <div class="ov-arr" aria-hidden="true"><@icon name="arrow_forward"/></div>
 
             <#-- next version -->
             <#assign nothingNew = isPublished && !hasChanges>
@@ -212,7 +212,7 @@
         </h2>
         <span class="ov-pill grey">${resource.managers?size + 1}</span>
         <span class="ov-sp"></span>
-        <a id="add-manager-button" class="btn btn-sm btn-outline-gbif-primary" href="#"><i class="bi bi-plus"></i> <@s.text name="manage.overview.managers.add"/></a>
+        <a id="add-manager-button" class="ov-hact" href="#"><@icon name="add"/> <@s.text name="manage.overview.managers.add"/></a>
     </div>
     <div class="ov-sub"><@s.text name="manage.overview.resource.managers.intro"><@s.param>${resource.shortname}</@s.param></@s.text></div>
 

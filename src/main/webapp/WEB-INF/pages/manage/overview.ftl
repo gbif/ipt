@@ -1,8 +1,9 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#macro dwcaValidator>
     <#if (resource.recordsPublished>0)>
         <a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate">
-            <i class="bi bi-check2 text-gbif-primary"></i>
+            <@icon name="check" class="text-gbif-primary"/>
         </a>
     </#if>
 </#macro>
@@ -847,7 +848,7 @@
             alertDiv.className = "alert alert-warning alert-dismissible fade show d-flex";
             alertDiv.setAttribute("role", "alert");
             alertDiv.innerHTML =
-                '<div class="me-3"><i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i></div>' +
+                '<div class="me-3"><@icon name="warning" class="alert-orange-2 fs-bigger-2 me-2"/></div>' +
                 '<div class="overflow-x-hidden pt-1"><span></span></div>' +
                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
             alertDiv.querySelector("span").textContent = warnings[0];
@@ -1039,12 +1040,12 @@
             // create "done" icon
             var fileDoneIcon = document.createElement("div");
             fileDoneIcon.className = "fileDoneIcon";
-            fileDoneIcon.innerHTML = '<i class="bi bi-check2 text-gbif-primary"></i>';
+            fileDoneIcon.innerHTML = '<@icon name="check" class="text-gbif-primary"/>';
 
             // create "error/warning" icon
             var fileWarningIcon = document.createElement("div");
             fileWarningIcon.className = "fileWarningIcon";
-            fileWarningIcon.innerHTML = '<i class="bi bi-exclamation-circle text-gbif-danger"></i>';
+            fileWarningIcon.innerHTML = '<@icon name="error" class="text-gbif-danger"/>';
 
             // link divs
             fileMeta.appendChild(fileName);
@@ -1619,7 +1620,7 @@
         <#list resource.loadNotices?filter(n -> n.needsAttention) as n>
             <div class="alert alert-warning d-flex" role="status">
                 <div class="me-3">
-                    <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
+                    <@icon name="warning" class="alert-orange-2 fs-bigger-2 me-2"/>
                 </div>
                 <div class="overflow-x-hidden pt-1">
                     <@s.text name=n.textKey><@s.param>${n.detail}</@s.param></@s.text>
@@ -1629,7 +1630,7 @@
 
         <div id="sources-created-successfully-info" class="alert alert-success alert-dismissible fade show d-flex" role="alert" style="display: none !important;">
             <div class="me-3">
-                <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
+                <@icon name="check_circle" class="alert-green-2 fs-bigger-2 me-2"/>
             </div>
             <div class="overflow-x-hidden pt-1 message">
             </div>
@@ -1652,9 +1653,9 @@
                         </#if>
                         <span class="text-nowrap text-discreet fs-smaller-2 status-pill main-status-pill status-${resource.status!?lower_case}">
                             <#if resource.status == "PUBLIC" || resource.status == "PRIVATE">
-                                <i class="bi bi-circle fs-smaller-2"></i>
+                                <@icon name="radio_button_unchecked" class="fs-smaller-2"/>
                             <#else>
-                                <i class="bi bi-circle-fill fs-smaller-2"></i>
+                                <@icon name="circle" class="fs-smaller-2"/>
                             </#if>
                             <span><@s.text name="manage.home.visible.${resource.status!?lower_case}"/></span>
                         </span>
@@ -1686,13 +1687,13 @@
                         <@publish resource=resource label=publishLabel/>
                     <#else>
                         <a href="#overview-status" id="publish-button-blocked" class="btn btn-sm btn-gbif-solid ov-blocked" title="<@s.text name='manage.overview.publishBlocked'/>">
-                            <i class="bi bi-upload me-1"></i>${publishLabel}
+                            <@icon name="upload" class="me-1"/>${publishLabel}
                         </a>
                     </#if>
 
                     <div class="dropdown">
                         <button class="btn btn-sm btn-outline-secondary" type="button" id="overview-more-actions" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.moreActions'/>" aria-label="<@s.text name='manage.overview.moreActions'/>">
-                            <i class="bi bi-three-dots"></i>
+                            <@icon name="more_horiz"/>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="overview-more-actions">
                             <#if displayDoiFunctionality && !isDeleted>
@@ -1713,7 +1714,7 @@
                                 <li><a class="dropdown-item" href="${baseURL}/manage/validationReport.do?r=${resource.shortname}"><@s.text name="manage.overview.menu.validationReport"/></a></li>
                             </#if>
                             <#if !isDataPackage && (resource.recordsPublished > 0)>
-                                <li><a class="dropdown-item" href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" target="_blank" rel="noopener"><@s.text name="manage.overview.menu.validator"/> <i class="bi bi-box-arrow-up-right"></i></a></li>
+                                <li><a class="dropdown-item" href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" target="_blank" rel="noopener"><@s.text name="manage.overview.menu.validator"/> <@icon name="open_in_new"/></a></li>
                             </#if>
                             <#if !isDeleted>
                                 <li><hr class="dropdown-divider"></li>
@@ -1797,7 +1798,7 @@
                     <#-- one status line: what's different from the last version, or what stops the next one -->
                     <#if isDeleted>
                         <div id="overview-status" class="ov-banner del" role="status">
-                            <i class="ov-ic bi bi-x-circle text-discreet" aria-hidden="true"></i>
+                            <@icon name="cancel" class="ov-ic text-discreet"/>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.deleted.title"/></h2>
                                 <div class="ov-text"><#if resource.isAlreadyAssignedDoi()><@s.text name="manage.resource.status.intro.deleted"/><#else><@s.text name="manage.overview.banner.deleted.text"/></#if></div>
@@ -1808,7 +1809,7 @@
                         </div>
                     <#elseif publishBlockers?has_content>
                         <div id="overview-status" class="ov-banner bad" role="status">
-                            <i class="ov-ic bi bi-exclamation-circle alert-red-2" aria-hidden="true"></i>
+                            <@icon name="error" class="ov-ic alert-red-2"/>
                             <div class="ov-grow">
                                 <h2><#if isPublished><@s.text name="manage.overview.banner.blocked.title"><@s.param>${nextVersion}</@s.param></@s.text><#else><@s.text name="manage.overview.banner.blocked.titleFirst"/></#if></h2>
                                 <ul class="ov-text">
@@ -1820,7 +1821,7 @@
                         </div>
                     <#elseif usesAutoPublishing && autoPublicationSuspendedForThisResource>
                         <div id="overview-status" class="ov-banner bad" role="status">
-                            <i class="ov-ic bi bi-exclamation-circle alert-red-2" aria-hidden="true"></i>
+                            <@icon name="error" class="ov-ic alert-red-2"/>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.suspended.title"/></h2>
                                 <div class="ov-text"><@s.text name="manage.overview.banner.suspended.text"/></div>
@@ -1829,7 +1830,7 @@
                         </div>
                     <#elseif !isPublished>
                         <div id="overview-status" class="ov-banner w" role="status">
-                            <i class="ov-ic bi bi-exclamation-triangle alert-orange-2" aria-hidden="true"></i>
+                            <@icon name="warning" class="ov-ic alert-orange-2"/>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.first.title"/></h2>
                                 <div class="ov-text"><@s.text name="manage.overview.banner.first.text"><@s.param>${nextVersion}</@s.param></@s.text></div>
@@ -1837,7 +1838,7 @@
                         </div>
                     <#elseif hasChanges>
                         <div id="overview-status" class="ov-banner w" role="status">
-                            <i class="ov-ic bi bi-exclamation-triangle alert-orange-2" aria-hidden="true"></i>
+                            <@icon name="warning" class="ov-ic alert-orange-2"/>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.changes.title"><@s.param>${currentVersion}</@s.param></@s.text></h2>
                                 <div class="ov-text"><#list changeList as c>${c}<#sep> · </#sep></#list></div>
@@ -1845,7 +1846,7 @@
                         </div>
                     <#else>
                         <div id="overview-status" class="ov-banner ok" role="status">
-                            <i class="ov-ic bi bi-check2-circle alert-green-2" aria-hidden="true"></i>
+                            <@icon name="check_circle" class="ov-ic alert-green-2"/>
                             <div class="ov-grow">
                                 <h2><@s.text name="manage.overview.banner.upToDate.title"><@s.param>${currentVersion}</@s.param></@s.text></h2>
                                 <div class="ov-text">
@@ -1880,7 +1881,7 @@
                             <div class="simpleCallout-inner">
                                 <div class="simpleCalloutInfo simpleCalloutInfo-message">
                                     <div class="simpleCalloutIcon">
-                                        <i class="bi bi-info-circle text-gbif-primary"></i>
+                                        <@icon name="info" class="text-gbif-primary"/>
                                     </div>
                                     <div class="simpleCalloutMeta">
                                         <div class="simpleCalloutMessage">
@@ -1944,7 +1945,7 @@
                             <div class="simpleCallout-inner">
                                 <div class="simpleCalloutInfo simpleCalloutInfo-warning">
                                     <div class="simpleCalloutIcon">
-                                        <i class="bi bi-info-circle text-gbif-danger"></i>
+                                        <@icon name="info" class="text-gbif-danger"/>
                                     </div>
                                     <div class="simpleCalloutMeta">
                                         <div class="simpleCalloutMessage">
@@ -2067,7 +2068,7 @@
                                             <div class="simpleCallout-inner">
                                                 <div class="simpleCalloutInfo simpleCalloutInfo-message">
                                                     <div class="simpleCalloutIcon">
-                                                        <i class="bi bi-info-circle text-gbif-primary"></i>
+                                                        <@icon name="info" class="text-gbif-primary"/>
                                                     </div>
                                                     <div class="simpleCalloutMeta">
                                                         <div class="simpleCalloutMessage">
@@ -2086,7 +2087,7 @@
                                             <div class="simpleCallout-inner">
                                                 <div class="simpleCalloutInfo simpleCalloutInfo-warning">
                                                     <div class="simpleCalloutIcon">
-                                                        <i class="bi bi-exclamation-circle text-gbif-danger"></i>
+                                                        <@icon name="error" class="text-gbif-danger"/>
                                                     </div>
                                                     <div class="simpleCalloutMeta">
                                                         <div class="simpleCalloutError">
@@ -2138,8 +2139,8 @@
                                                 <a id="check-url-source-link" class="smaller-action-link-button action-link-button-primary" href="#"><@s.text name="manage.source.url.checkUrl"/></a>
                                             </div>
                                             <div id="url-source-check-status-wrapper" class="me-3" style="display: none;">
-                                                <i id="url-source-check-status-fail" class="bi bi-x-circle-fill text-gbif-danger" style="display: none;"></i>
-                                                <i id="url-source-check-status-success" class="bi bi-check-circle-fill text-gbif-primary" style="display: none;"></i>
+                                                <@icon name="cancel" class="text-gbif-danger" id="url-source-check-status-fail" style="display: none;"/>
+                                                <@icon name="check_circle" class="text-gbif-primary" id="url-source-check-status-success" style="display: none;"/>
                                             </div>
                                             <div id="url-source-size-wrapper" class="me-3" style="display: none;">
                                                 <strong><@s.text name="manage.source.url.checkUrl.size"/>:</strong> <span id="url-source-size">?</span>
@@ -2252,7 +2253,7 @@
                                                     <div class="simpleCallout-inner">
                                                         <div class="simpleCalloutInfo simpleCalloutInfo-warning">
                                                             <div class="simpleCalloutIcon">
-                                                                <i class="bi bi-exclamation-circle text-gbif-danger"></i>
+                                                                <@icon name="error" class="text-gbif-danger"/>
                                                             </div>
                                                             <div class="simpleCalloutMeta">
                                                                 <div class="simpleCalloutMessage">
@@ -2433,7 +2434,7 @@
                                         <div class="simpleCallout-inner">
                                             <div class="simpleCalloutInfo simpleCalloutInfo-message">
                                                 <div class="simpleCalloutIcon">
-                                                    <i class="bi bi-info-circle text-gbif-primary"></i>
+                                                    <@icon name="info" class="text-gbif-primary"/>
                                                 </div>
                                                 <div class="simpleCalloutMeta">
                                                     <div class="simpleCalloutMessage">
@@ -2841,7 +2842,7 @@
                                 <#if errorCollector.result[key].hasErrors()>
                                     <div>
                                         <div>
-                                            <i class="bi bi-x text-gbif-danger"></i>
+                                            <@icon name="close" class="text-gbif-danger"/>
                                             <span class="text-gbif-danger me-2">
                                                 <b><@s.text name="submenu.${metadataSections[key]!key}"/></b>
                                             </span>

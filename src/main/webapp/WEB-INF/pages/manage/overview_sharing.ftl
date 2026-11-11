@@ -117,7 +117,7 @@
             <#if resource.key??>
                 <div class="ov-r">
                     <span><@s.text name="manage.overview.sharing.gbifDataset"/></span>
-                    <span><a href="${cfg.portalUrl}/dataset/${resource.key}" title="<@s.text name='manage.overview.registration.view'/>">${resource.key?string?substring(0, 8)}… <i class="bi bi-box-arrow-up-right"></i></a></span>
+                    <span><a href="${cfg.portalUrl}/dataset/${resource.key}" title="<@s.text name='manage.overview.registration.view'/>">${resource.key?string?substring(0, 8)}… <@icon name="open_in_new"/></a></span>
                 </div>
             </#if>
             <#if isDwcDp>
@@ -151,7 +151,7 @@
                     <#if networks?has_content>
                         <#list networks as n>
                             <span class="ov-pill grey"><a href="${cfg.portalUrl}/network/${n.key!}" class="ov-name">${n.title!n.key!""}</a>
-                                <a data-post href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}" class="text-muted" title="<@s.text name='button.delete'/>"><i class="bi bi-x"></i></a></span>
+                                <a data-post href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}" class="text-muted" title="<@s.text name='button.delete'/>"><@icon name="close"/></a></span>
                         </#list>
                     <#else>
                         <@s.text name="manage.overview.metadata.none"/>

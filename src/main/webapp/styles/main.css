@@ -1780,6 +1780,15 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     font-size: 1.125rem !important;
 }
 
+/* Material Icons from images/icons/material-icons.svg, see macros/icon.ftl */
+.material-icon {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    vertical-align: -0.125em;
+    flex: none;
+}
+
 .fs-bigger-2 {
     font-size: 1.25rem !important;
 }

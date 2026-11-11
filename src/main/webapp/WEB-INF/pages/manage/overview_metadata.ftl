@@ -1,5 +1,5 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
-<#-- Metadata section of the resource overview: validity and the fields that publishing and registering depend on. Needs overview_status.ftl -->
+<#-- Metadata section of the resource overview: validity, edit and the metadata file actions. Needs overview_status.ftl -->
 <#if isDataPackage && !isDwcDp>
     <#if resource.coreType == "camtrap-dp">
         <#assign viewOrEditElementId = "edit-metadata-button"/>
@@ -45,7 +45,27 @@
             <span class="ov-pill warn"><@s.text name="manage.overview.data.status.changed"/></span>
         </#if>
         <span class="ov-sp"></span>
-        <a id="${viewOrEditElementId}" class="btn btn-sm btn-outline-gbif-primary" href="${viewOrEditAction}"><@s.text name=viewOrEditKey/></a>
+        <a id="${viewOrEditElementId}" class="ov-hact" href="${viewOrEditAction}"><@icon (viewOrEditKey == "button.view")?then("visibility", "edit")/> <@s.text name=viewOrEditKey/></a>
+        <div class="dropdown">
+            <button class="ov-hmenu" type="button" id="metadata-menu" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.metadata.actions'/>" aria-label="<@s.text name='manage.overview.metadata.actions'/>">
+                <@icon name="more_horiz"/>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="metadata-menu">
+                <#if hasValidationReport>
+                    <li><a class="dropdown-item show-metadata-validation-result" href="#"><@s.text name="manage.overview.metadata.modal.validation.report"/></a></li>
+                </#if>
+                <li>
+                    <a class="dropdown-item" id="download-metadata-button" href="${baseURL}/manage/eml.do?r=${resource.shortname}" download>
+                        <#if isEmlBased><@s.text name="manage.overview.metadata.downloadEml"/><#else><@s.text name="manage.overview.metadata.download"/></#if>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" id="upload-metadata-button" href="#anchor-metadata">
+                        <#if isEmlBased><@s.text name="manage.overview.metadata.uploadEml"/><#else><@s.text name="manage.overview.metadata.upload"/></#if>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="ov-sub">
@@ -60,47 +80,4 @@
         </#if>
     </div>
 
-    <div class="ov-rows">
-        <div class="ov-r">
-            <span><@s.text name="manage.overview.metadata.row.title"/></span>
-            <span><#if resource.title?has_content>${resource.title}<#else><i class="text-muted"><@s.text name="manage.overview.metadata.shortnameUsed"/></i></#if></span>
-        </div>
-        <#if isEmlBased>
-            <div class="ov-r">
-                <span><@s.text name="eml.intellectualRights.license"/></span>
-                <span><#if (resource.eml.parseLicenseUrl())?has_content><@shortLicense resource.eml.parseLicenseUrl()/><#else><span class="ov-missing"><@s.text name="manage.overview.metadata.notSet"/></span></#if></span>
-            </div>
-            <div class="ov-r">
-                <span><@s.text name="manage.overview.metadata.row.contacts"/></span>
-                <span>
-                    <#assign contactCount = (resource.eml.contacts![])?size>
-                    <#if contactCount == 0>
-                        <span class="ov-missing"><@s.text name="manage.overview.metadata.none"/></span>
-                    <#else>
-                        <@s.text name="manage.overview.metadata.contactsCount"><@s.param>${contactCount}</@s.param><@s.param>${(resource.eml.creators![])?size}</@s.param></@s.text>
-                    </#if>
-                </span>
-            </div>
-            <#assign coverages = []>
-            <#if (resource.eml.geospatialCoverages![])?has_content><#assign c><@s.text name="submenu.geocoverage"/></#assign><#assign coverages = coverages + [c]></#if>
-            <#if (resource.eml.taxonomicCoverages![])?has_content><#assign c><@s.text name="submenu.taxcoverage"/></#assign><#assign coverages = coverages + [c]></#if>
-            <#if (resource.eml.temporalCoverages![])?has_content><#assign c><@s.text name="submenu.tempcoverage"/></#assign><#assign coverages = coverages + [c]></#if>
-            <div class="ov-r">
-                <span><@s.text name="manage.overview.metadata.row.coverage"/></span>
-                <span><#if coverages?has_content><#list coverages as c>${c}<#sep> · </#sep></#list><#else>—</#if></span>
-            </div>
-        </#if>
-    </div>
-
-    <div class="ov-links">
-        <#if hasValidationReport>
-            <a href="#" class="show-metadata-validation-result"><@s.text name="manage.overview.metadata.modal.validation.report"/></a>
-        </#if>
-        <a id="download-metadata-button" href="${baseURL}/manage/eml.do?r=${resource.shortname}" download>
-            <#if isEmlBased><@s.text name="manage.overview.metadata.downloadEml"/><#else><@s.text name="manage.overview.metadata.download"/></#if>
-        </a>
-        <a id="upload-metadata-button" href="#anchor-metadata">
-            <#if isEmlBased><@s.text name="manage.overview.metadata.uploadEml"/><#else><@s.text name="manage.overview.metadata.upload"/></#if>
-        </a>
-    </div>
 </section>
