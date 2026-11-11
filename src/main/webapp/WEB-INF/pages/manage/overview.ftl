@@ -1619,6 +1619,32 @@
 <#assign publishLabel><@s.text name="manage.overview.publishVersion"><@s.param>${nextVersion}</@s.param></@s.text></#assign>
 <#assign publishLabel = publishLabel?markup_string>
 
+    <#-- messages from the last action and loading problems: above the heading, the width of the page content -->
+    <div class="container ov-alerts">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+
+        <#-- problems the IPT worked around when loading the resource, e.g. unreadable metadata: they stay until fixed -->
+        <#list resource.loadNotices?filter(n -> n.needsAttention) as n>
+            <div class="alert alert-warning d-flex" role="status">
+                <div class="me-3">
+                    <@icon name="warning" class="alert-orange-2 fs-bigger-2 me-2"/>
+                </div>
+                <div class="overflow-x-hidden pt-1">
+                    <@s.text name=n.textKey><@s.param>${n.detail}</@s.param></@s.text>
+                </div>
+            </div>
+        </#list>
+
+        <div id="sources-created-successfully-info" class="alert alert-success alert-dismissible fade show d-flex" role="alert" style="display: none !important;">
+            <div class="me-3">
+                <@icon name="check_circle" class="alert-green-2 fs-bigger-2 me-2"/>
+            </div>
+            <div class="overflow-x-hidden pt-1 message">
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
     <div class="container-fluid border-bottom">
         <div class="container">
             <div class="ov-head">
@@ -1797,32 +1823,6 @@
                 </div>
 
                 <div class="bd-content ps-lg-4 pt-4">
-                    <#-- messages from the last action and loading problems, in the content column next to the cards they are about -->
-                    <div class="ov-alerts">
-                    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-
-                    <#-- problems the IPT worked around when loading the resource, e.g. unreadable metadata: they stay until fixed -->
-                    <#list resource.loadNotices?filter(n -> n.needsAttention) as n>
-                        <div class="alert alert-warning d-flex" role="status">
-                            <div class="me-3">
-                                <@icon name="warning" class="alert-orange-2 fs-bigger-2 me-2"/>
-                            </div>
-                            <div class="overflow-x-hidden pt-1">
-                                <@s.text name=n.textKey><@s.param>${n.detail}</@s.param></@s.text>
-                            </div>
-                        </div>
-                    </#list>
-
-                    <div id="sources-created-successfully-info" class="alert alert-success alert-dismissible fade show d-flex" role="alert" style="display: none !important;">
-                        <div class="me-3">
-                            <@icon name="check_circle" class="alert-green-2 fs-bigger-2 me-2"/>
-                        </div>
-                        <div class="overflow-x-hidden pt-1 message">
-                        </div>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    </div>
-
                     <#-- a banner only when something stops publishing; versions and changes are in the Publication card -->
                     <#if isDeleted>
                         <div id="overview-status" class="ov-banner del" role="status">

@@ -7,12 +7,25 @@
   alertClass: the alert's class, e.g. alert-warning
   iconClass: the icon's classes, e.g. bi-exclamation-triangle alert-orange-2
   moreKey: the text of the toggle, e.g. "{0} more warning(s)"
+  materialIcon: the Material icon used instead on pages that load the icon macro (macros/icon.ftl), e.g. warning
 --]
-[#macro alertList items alertClass iconClass moreKey]
+[#--
+  An alert's icon: a Material icon on pages already using them (they include macros/icon.ftl), else the Bootstrap one.
+  iconClass: the Bootstrap icon's classes, the colour among them, e.g. bi-exclamation-triangle alert-orange-2
+--]
+[#macro alertIcon materialIcon iconClass]
+    [#if materialIcon?has_content && .main.icon?? && .main.icon?is_directive]
+        [@.main.icon name=materialIcon class=iconClass?replace("bi-[a-z0-9-]+", "", "r")?trim + " fs-bigger-2 me-2"/]
+    [#else]
+        <i class="bi ${iconClass} fs-bigger-2 me-2"></i>
+    [/#if]
+[/#macro]
+
+[#macro alertList items alertClass iconClass moreKey materialIcon=""]
     [#if items?size > 0]
         <div class="alert ${alertClass} alert-dismissible fade show d-flex" role="alert">
             <div class="me-3">
-                <i class="bi ${iconClass} fs-bigger-2 me-2"></i>
+                [@alertIcon materialIcon iconClass/]
             </div>
             <div class="overflow-x-hidden pt-1">
                 [#list items as item]

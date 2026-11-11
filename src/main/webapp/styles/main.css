@@ -1789,6 +1789,11 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
     flex: none;
 }
 
+/* an alert's icon: level with the first line of text, which has pt-1 (inc/action_alerts_list.ftl) */
+.alert > .me-3 > .material-icon {
+    margin-top: 0.25rem;
+}
+
 .fs-bigger-2 {
     font-size: 1.25rem !important;
 }

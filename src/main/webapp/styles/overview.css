@@ -70,14 +70,11 @@ body { padding-top: 68px !important; }
 .ov-ready li { display: flex; gap: 6px; align-items: flex-start; margin: 3px 0; color: #495057; }
 .ov-ready li .ov-dot { margin-top: 5px; }
 
-/* action messages and loading notices: above the cards, same shape as the status banner */
-.ov-alerts:empty, .ov-alerts #action-alerts:empty { display: none; }
-.ov-alerts .alert { border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; font-size: 0.875rem; align-items: flex-start; }
-.ov-alerts .alert .me-3 { margin-right: 4px !important; line-height: 1; padding-top: 2px; }
-.ov-alerts .alert .me-3 > * { font-size: 1.25rem !important; margin-right: 0 !important; }
-.ov-alerts .alert .overflow-x-hidden { padding-top: 1px !important; flex: 1; }
-.ov-alerts .alert-dismissible { padding-right: 40px; }
-.ov-alerts .alert-dismissible .btn-close { padding: 13px 14px; font-size: 0.7rem; }
+/* action messages and loading notices: above the heading, clear of the navbar. While one shows, the heading
+   loses part of its top padding, so the space above and below the alerts is the same */
+.ov-alerts .alert { border-radius: 8px; margin: 16px 0 0; }
+.ov-alerts + .container-fluid .ov-head { transition: padding-top .15s; }
+.ov-alerts:has(.alert:not([style*="display: none"])) + .container-fluid .ov-head { padding-top: 16px; }
 
 /* status banner */
 .ov-banner { border-radius: 8px; padding: 12px 14px; margin: 0 0 16px; font-size: 0.875rem; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }

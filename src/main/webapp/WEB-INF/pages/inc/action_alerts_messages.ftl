@@ -1,10 +1,11 @@
 [#ftl output_format="HTML"]
+[#include "/WEB-INF/pages/inc/action_alerts_list.ftl"]
 
 [#if actionMessages?size>0]
     [#list actionMessages as message]
         <div class="alert alert-success alert-dismissible fade show d-flex" role="alert">
             <div class="me-3">
-                <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
+                [@alertIcon "check_circle" "bi-check2-circle alert-green-2"/]
             </div>
             <div class="overflow-x-hidden pt-1">
                 [#if message?has_content]
