@@ -16,6 +16,8 @@ package org.gbif.ipt.service.manage;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
+import org.gbif.ipt.model.datatable.HomeSearchRequest;
+import org.gbif.ipt.model.datatable.HomeSearchResult;
 
 import java.util.Map;
 
@@ -32,6 +34,16 @@ public interface ResourceDataTableViewManager {
    * @return list of resources wrapped by DatatableResult class
    */
   DatatableResult listPublishedPublicResourceSummaries(DatatableRequest request);
+
+  /**
+   * One page of the public resources (as {@link #listPublishedPublicResourceSummaries}) for the home page, matching a
+   * search and filters, with the values of each filter counted.
+   *
+   * @param request search, filters, sort and page
+   *
+   * @return the page, the counts and the filter values
+   */
+  HomeSearchResult searchPublishedPublicResources(HomeSearchRequest request);
 
   /**
    * list all resource that can be managed by a given user, in the organisation the request asks for (all if none).

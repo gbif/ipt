@@ -47,6 +47,17 @@ public class ResourceSummaryView {
   private boolean published;
   private boolean dataPackage;
 
+  // public home page only, from the last published version
+  // the description as plain text, cut to a few lines
+  private String description;
+  // the GBIF-supported licence code (CC0-1.0, CC-BY-4.0 or CC-BY-NC-4.0), null if none or another licence
+  private String licence;
+  // the DOI of the last published version (e.g. 10.1234/abcd) and its URL
+  private String doi;
+  private String doiUrl;
+  // GBIF registry key, when the resource is registered
+  private UUID gbifKey;
+
   // manage page only: what needs doing, worst first in ResourceDataTableViewManagerImpl#toUiAttention
   private boolean publishing;
   private boolean lastPublicationFailed;

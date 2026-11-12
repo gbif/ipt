@@ -25,6 +25,8 @@ import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
+import org.gbif.ipt.model.datatable.HomeSearchRequest;
+import org.gbif.ipt.model.datatable.HomeSearchResult;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.task.StatusReport;
@@ -54,6 +56,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class ResourceDataTableViewManagerImpl extends BaseManager implements ResourceDataTableViewManager {
@@ -64,6 +68,22 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
   private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
   private static final DateTimeFormatter DATETIME_FORMATTER =
       DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault());
+
+  // home page search: the filters, and the licences GBIF supports with their short names
+  static final String FACET_TYPES = "types";
+  static final String FACET_ORGANISATIONS = "organisations";
+  static final String FACET_LICENCES = "licences";
+  static final String FACET_UPDATED = "updated";
+  static final String HOME_LICENCE_OTHER = "other";
+  private static final Map<String, String> HOME_LICENCES;
+  static {
+    Map<String, String> licences = new LinkedHashMap<>();
+    licences.put("CC0-1.0", "CC0 1.0");
+    licences.put("CC-BY-4.0", "CC BY 4.0");
+    licences.put("CC-BY-NC-4.0", "CC BY-NC 4.0");
+    HOME_LICENCES = Collections.unmodifiableMap(licences);
+  }
+  private static final int HOME_MAX_LIMIT = 100;
 
   private final ResourceManager resourceManager;
   private final VocabulariesManager vocabManager;
@@ -117,6 +137,217 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
     result.setData(data);
 
     return result;
+  }
+
+  @Override
+  public HomeSearchResult searchPublishedPublicResources(HomeSearchRequest request) {
+    List<ResourceSummaryView> all = resourceManager.listPublishedPublicResourceSummaries();
+    List<ResourceSummaryView> searched = all.stream()
+        .filter(res -> matchesHomeSearch(res, request.getSearch()))
+        .toList();
+    Date now = new Date();
+    List<ResourceSummaryView> matched = searched.stream()
+        .filter(res -> matchesHomeFilters(res, request, null, now))
+        .toList();
+
+    Locale locale = Locale.forLanguageTag(request.getLocale());
+    Map<String, String> datasetTypes = datasetTypesVocab(request.getLocale(), locale);
+    Map<String, String> datasetSubtypes =
+        MapUtils.getMapWithLowercaseKeys(vocabManager.getI18nDatasetSubtypesVocab(request.getLocale(), false));
+    NumberFormat numberFormat = NumberFormat.getInstance(locale);
+
+    HomeSearchResult result = new HomeSearchResult();
+    result.setTotal(all.size());
+    result.setMatched(matched.size());
+    result.setItems(matched.stream()
+        .sorted(homeComparator(request.getSort()))
+        .skip(Math.max(0, request.getOffset()))
+        .limit(Math.min(Math.max(request.getLimit(), 1), HOME_MAX_LIMIT))
+        .map(res -> toHomeItem(res, datasetTypes, datasetSubtypes, numberFormat))
+        .toList());
+
+    // the values come from all public resources, so a value whose count drops to 0 stays in its place
+    Map<String, String> typeLabels = all.stream()
+        .map(ResourceSummaryView::getCoreType)
+        .filter(Objects::nonNull)
+        .map(type -> type.toLowerCase(Locale.ROOT))
+        .distinct()
+        .collect(Collectors.toMap(type -> type, type -> datasetTypes.getOrDefault(type, type)));
+    result.getFacets().put(FACET_TYPES, facet(searched, request, FACET_TYPES, now, sortedByLabel(typeLabels, null)));
+
+    Map<String, String> organisationLabels = all.stream()
+        .collect(Collectors.toMap(
+            ResourceDataTableViewManagerImpl::homeOrganisationKey,
+            res -> StringUtils.defaultIfBlank(homeOrganisationName(res),
+                text(locale, "manage.home.organisation.notSet", "Organization not set")),
+            (first, second) -> first));
+    result.getFacets().put(FACET_ORGANISATIONS, facet(searched, request, FACET_ORGANISATIONS, now,
+        sortedByLabel(organisationLabels, Constants.DEFAULT_ORG_KEY.toString())));
+
+    Map<String, String> licenceLabels = new LinkedHashMap<>();
+    Set<String> licencesInUse = all.stream().map(ResourceDataTableViewManagerImpl::homeLicenceKey).collect(Collectors.toSet());
+    HOME_LICENCES.forEach((code, label) -> {
+      if (licencesInUse.contains(code)) {
+        licenceLabels.put(code, label);
+      }
+    });
+    if (licencesInUse.contains(HOME_LICENCE_OTHER)) {
+      licenceLabels.put(HOME_LICENCE_OTHER, text(locale, "portal.home.licence.other", "Other"));
+    }
+    result.getFacets().put(FACET_LICENCES, facet(searched, request, FACET_LICENCES, now, licenceLabels));
+
+    Map<String, String> updatedLabels = new LinkedHashMap<>();
+    updatedLabels.put(HomeSearchRequest.UPDATED_MONTH, text(locale, "portal.home.updated.month", "Last month"));
+    updatedLabels.put(HomeSearchRequest.UPDATED_YEAR, text(locale, "portal.home.updated.year", "Last year"));
+    updatedLabels.put(HomeSearchRequest.UPDATED_OLDER, text(locale, "portal.home.updated.older", "Older"));
+    result.getFacets().put(FACET_UPDATED, facet(searched, request, FACET_UPDATED, now, updatedLabels));
+
+    return result;
+  }
+
+  /**
+   * The values of a filter with their counts: the resources matching the search and the other filters that have the
+   * value.
+   */
+  private List<HomeSearchResult.FacetValue> facet(
+      List<ResourceSummaryView> searched, HomeSearchRequest request, String facet, Date now, Map<String, String> labels) {
+    List<ResourceSummaryView> others = searched.stream()
+        .filter(res -> matchesHomeFilters(res, request, facet, now))
+        .toList();
+    return labels.entrySet().stream()
+        .map(e -> new HomeSearchResult.FacetValue(e.getKey(), e.getValue(),
+            (int) others.stream().filter(res -> hasFacetValue(res, facet, e.getKey(), now)).count()))
+        .toList();
+  }
+
+  /**
+   * Labels sorted alphabetically, with the value {@code last} (if any) at the end.
+   */
+  private static Map<String, String> sortedByLabel(Map<String, String> labels, String last) {
+    return labels.entrySet().stream()
+        .sorted(Comparator.<Map.Entry<String, String>, Boolean>comparing(e -> e.getKey().equals(last))
+            .thenComparing(Map.Entry::getValue, String.CASE_INSENSITIVE_ORDER))
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (first, second) -> first, LinkedHashMap::new));
+  }
+
+  /**
+   * Whether a resource matches the filters of a home page search, leaving out one filter (to count its values) or none.
+   */
+  private static boolean matchesHomeFilters(ResourceSummaryView res, HomeSearchRequest request, String skip, Date now) {
+    return matchesFacet(res, FACET_TYPES, request.getTypes(), skip, now)
+        && matchesFacet(res, FACET_ORGANISATIONS, request.getOrganisations(), skip, now)
+        && matchesFacet(res, FACET_LICENCES, request.getLicences(), skip, now)
+        && (FACET_UPDATED.equals(skip) || StringUtils.isBlank(request.getUpdated())
+            || hasFacetValue(res, FACET_UPDATED, request.getUpdated(), now));
+  }
+
+  private static boolean matchesFacet(ResourceSummaryView res, String facet, Set<String> values, String skip, Date now) {
+    return facet.equals(skip) || values == null || values.isEmpty()
+        || values.stream().anyMatch(value -> hasFacetValue(res, facet, value, now));
+  }
+
+  private static boolean hasFacetValue(ResourceSummaryView res, String facet, String value, Date now) {
+    return switch (facet) {
+      case FACET_TYPES -> res.getCoreType() != null && res.getCoreType().equalsIgnoreCase(value);
+      case FACET_ORGANISATIONS -> homeOrganisationKey(res).equals(value);
+      case FACET_LICENCES -> homeLicenceKey(res).equals(value);
+      case FACET_UPDATED -> {
+        // never published (can't be on the home page) counts as older
+        long days = res.getLastPublished() != null
+            ? TimeUnit.MILLISECONDS.toDays(now.getTime() - res.getLastPublished().getTime())
+            : Long.MAX_VALUE;
+        yield switch (value) {
+          case HomeSearchRequest.UPDATED_MONTH -> days <= 31;
+          case HomeSearchRequest.UPDATED_YEAR -> days <= 366;
+          case HomeSearchRequest.UPDATED_OLDER -> days > 366;
+          default -> true;
+        };
+      }
+      default -> false;
+    };
+  }
+
+  /**
+   * The organisation key of a public resource, the default organisation's key ("No organization") when it has none.
+   */
+  private static String homeOrganisationKey(ResourceSummaryView res) {
+    return res.getOrganisationKey() != null ? res.getOrganisationKey().toString() : Constants.DEFAULT_ORG_KEY.toString();
+  }
+
+  /**
+   * The organisation alias or name of a public resource, null when it has none or it's the default organisation.
+   */
+  private static String homeOrganisationName(ResourceSummaryView res) {
+    if (res.getOrganisationKey() == null || Constants.DEFAULT_ORG_KEY.equals(res.getOrganisationKey())) {
+      return null;
+    }
+    return StringUtils.trimToNull(res.getOrganizationAliasOrName());
+  }
+
+  private static String homeLicenceKey(ResourceSummaryView res) {
+    return res.getLicence() != null && HOME_LICENCES.containsKey(res.getLicence()) ? res.getLicence() : HOME_LICENCE_OTHER;
+  }
+
+  /**
+   * As the search of the resources table, and in the description too.
+   */
+  private boolean matchesHomeSearch(ResourceSummaryView res, String search) {
+    return StringUtils.isBlank(search)
+        || matchesSearchString(res, search.trim())
+        || Strings.CI.contains(res.getDescription(), search.trim());
+  }
+
+  /**
+   * Home page sort: most recently published first (the default), title A-Z, or most records first.
+   */
+  private static Comparator<ResourceSummaryView> homeComparator(String sort) {
+    Comparator<ResourceSummaryView> byTitle =
+        Comparator.comparing(ResourceSummaryView::getTitleOrShortname, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER));
+    if (HomeSearchRequest.SORT_TITLE.equals(sort)) {
+      return byTitle;
+    }
+    if (HomeSearchRequest.SORT_RECORDS.equals(sort)) {
+      return Comparator.comparingLong(ResourceSummaryView::getRecordsPublished).reversed().thenComparing(byTitle);
+    }
+    return Comparator.comparing(ResourceSummaryView::getLastPublished, Comparator.nullsLast(Comparator.reverseOrder()))
+        .thenComparing(byTitle);
+  }
+
+  private HomeSearchResult.Item toHomeItem(
+      ResourceSummaryView res, Map<String, String> datasetTypes, Map<String, String> datasetSubtypes,
+      NumberFormat numberFormat) {
+    HomeSearchResult.Item item = new HomeSearchResult.Item();
+    item.setShortname(res.getShortname());
+    item.setTitle(res.getTitleOrShortname());
+    item.setLogoUrl(StringUtils.trimToNull(res.getLogoUrl()));
+    item.setOrganisation(homeOrganisationName(res));
+    if (res.getCoreType() != null) {
+      String type = res.getCoreType().toLowerCase(Locale.ROOT);
+      item.setType(type);
+      item.setTypeLabel(datasetTypes.getOrDefault(type, res.getCoreType()));
+    }
+    if (res.getSubtype() != null) {
+      item.setSubtypeLabel(datasetSubtypes.get(res.getSubtype().toLowerCase(Locale.ROOT)));
+    }
+    item.setDescription(res.getDescription());
+    item.setRecords(res.getRecordsPublished());
+    item.setRecordsLabel(numberFormat.format(res.getRecordsPublished()));
+    item.setMetadataOnly(res.getCoreType() == null
+        || Constants.DATASET_TYPE_METADATA_IDENTIFIER.equalsIgnoreCase(res.getCoreType()));
+    if (res.getLastPublished() != null) {
+      item.setLastPublished(DATE_FORMAT.format(res.getLastPublished().toInstant()));
+      item.setLastPublishedTime(DATETIME_FORMATTER.format(res.getLastPublished().toInstant()));
+    }
+    if (res.getLicence() != null && HOME_LICENCES.containsKey(res.getLicence())) {
+      item.setLicence(res.getLicence());
+      item.setLicenceLabel(HOME_LICENCES.get(res.getLicence()));
+    }
+    item.setDoi(res.getDoi());
+    item.setDoiUrl(res.getDoiUrl());
+    if (res.getGbifKey() != null) {
+      item.setGbifUrl(cfg.getPortalUrl() + "/dataset/" + res.getGbifKey());
+    }
+    return item;
   }
 
   @Override

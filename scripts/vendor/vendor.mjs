@@ -69,6 +69,7 @@ const ICONS = [
   'edit',
   'error',
   'expand_more',
+  'hide_image',
   'info',
   'key',
   'link',

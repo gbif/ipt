@@ -62,7 +62,9 @@ public class StrutsConfigTest {
           "setupInstallationComplete",
           // shows the form on GET; a POST is checked against the login token by LoginAction
           "login",
-          "rss"),
+          "rss",
+          // JSON of the public resources for the home page
+          "home-resources"),
       "/struts-manage.xml", Set.of(
           "locked", "raw-source", "eml", "peek", "detail", "report", "mappingPeek", "dataPackageMappingSourceNew",
           // change the translation being edited, which is only saved by a form

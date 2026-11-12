@@ -15,6 +15,7 @@ package org.gbif.ipt.model;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.vocabulary.DatasetType;
+import org.gbif.api.vocabulary.License;
 import org.gbif.dwc.terms.Term;
 import org.gbif.dwc.terms.TermFactory;
 import org.gbif.ipt.config.Constants;
@@ -1058,27 +1059,42 @@ public class Resource implements Serializable, Comparable<Resource> {
    * @return true if the resource has been assigned a GBIF-supported license, false otherwise
    */
   public boolean isAssignedGBIFSupportedLicense() {
-    if (isDataPackage() && !isDwcDp()) {
-      if (CAMTRAP_DP.equals(coreType)) {
-        CamtrapMetadata camtrapMetadata = (CamtrapMetadata) dataPackageMetadata;
-        Optional<CamtrapLicense> dataLicenseWrapped = camtrapMetadata.getLicenses()
-            .stream()
-            .filter(license -> license.getScope() == CamtrapLicense.Scope.DATA)
-            .findFirst();
+    return getGbifLicenseCode() != null;
+  }
 
-        return dataLicenseWrapped.isPresent() && Constants.GBIF_SUPPORTED_LICENSES_CODES.contains(dataLicenseWrapped.get().getName());
-      } else if (COL_DP.equals(coreType)) {
+  /**
+   * The GBIF-supported license of the resource: of the data for a Camtrap DP, of the package for a ColDP, of the
+   * metadata (intellectual rights) otherwise.
+   *
+   * @return CC0-1.0, CC-BY-4.0 or CC-BY-NC-4.0, null if the license isn't one GBIF supports or there's none
+   */
+  @Nullable
+  public String getGbifLicenseCode() {
+    if (isDataPackage() && !isDwcDp()) {
+      String license = null;
+      if (CAMTRAP_DP.equals(coreType) && dataPackageMetadata instanceof CamtrapMetadata camtrapMetadata) {
+        license = camtrapMetadata.getLicenses()
+            .stream()
+            .filter(l -> l.getScope() == CamtrapLicense.Scope.DATA)
+            .findFirst()
+            .map(CamtrapLicense::getName)
+            .orElse(null);
+      } else if (COL_DP.equals(coreType) && dataPackageMetadata instanceof ColMetadata colMetadata) {
         // a ColDP license can be written in many ways, e.g. CC0 or CC BY 4.0
-        String license = dataPackageMetadata instanceof ColMetadata colMetadata
-            ? MetadataUtils.colDpLicenseToGbifCode(colMetadata.getLicense())
-            : null;
-        return license != null && Constants.GBIF_SUPPORTED_LICENSES_CODES.contains(license);
-      } else {
-        return false;
+        license = MetadataUtils.colDpLicenseToGbifCode(colMetadata.getLicense());
       }
-    } else {
-      return MetadataUtils.gbifLicense(eml) != null;
+      return license != null && Constants.GBIF_SUPPORTED_LICENSES_CODES.contains(license) ? license : null;
     }
+    License license = MetadataUtils.gbifLicense(eml);
+    if (license == null) {
+      return null;
+    }
+    return switch (license) {
+      case CC0_1_0 -> "CC0-1.0";
+      case CC_BY_4_0 -> "CC-BY-4.0";
+      case CC_BY_NC_4_0 -> "CC-BY-NC-4.0";
+      default -> null;
+    };
   }
 
   public boolean isRegistered() {

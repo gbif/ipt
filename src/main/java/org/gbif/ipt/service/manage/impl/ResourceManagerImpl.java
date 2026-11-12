@@ -13,6 +13,7 @@
  */
 package org.gbif.ipt.service.manage.impl;
 
+import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -49,6 +50,7 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.ResourcePersister;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.utils.ActionLogger;
+import org.gbif.ipt.utils.DocBookLanguages;
 import org.gbif.ipt.utils.EmlUtils;
 import org.gbif.ipt.utils.IptFileUtils;
 import org.gbif.ipt.utils.MetadataUtils;
@@ -84,6 +86,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 import org.xml.sax.SAXException;
 
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAME;
@@ -101,6 +104,12 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
 
   // longest reason kept for a failed load, the full stack trace is in the logs
   private static final int MAX_FAILURE_REASON_LENGTH = 500;
+  // home page: the description cut to about three lines
+  static final int SUMMARY_DESCRIPTION_LENGTH = 300;
+  // DocBook and HTML block elements, opening or closing, whose text must not run into the next block's
+  private static final Pattern BLOCK_TAG = Pattern.compile(
+      "</?(para|section|title|itemizedlist|orderedlist|listitem|literallayout|p|div|li|ul|ol|br|h[1-6])\\b[^>]*>",
+      Pattern.CASE_INSENSITIVE);
 
   private final ResourceIndex resourceIndex = new ResourceIndex();
 
@@ -200,6 +209,13 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     result.setNextPublished(effectiveNextPublished(resource));
     result.setCreatorName(resource.getCreatorName());
     result.setDataPackage(resource.isDataPackage());
+    result.setDescription(summaryDescription(publishedPublicVersion));
+    result.setLicence(publishedPublicVersion.getGbifLicenseCode());
+    DOI doi = resource.getAssignedDoi();
+    if (doi != null) {
+      result.setDoi(doi.getDoiName());
+      result.setDoiUrl(doi.getUrl().toString());
+    }
 
     // was the last published version later registered but never republished? Fix for issue #1319
     if (!publishedPublicVersion.isRegistered() && resource.isRegistered() && resource.getOrganisation() != null) {
@@ -207,8 +223,36 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
       result.setOrganisationAlias(resource.getOrganisationAlias());
       result.setOrganisationName(resource.getOrganisationName());
     }
+    if (result.getStatus() == PublicationStatus.REGISTERED) {
+      result.setGbifKey(resource.getKey());
+    }
 
     return result;
+  }
+
+  /**
+   * The description of a published version as plain text for the home page, cut to about three lines: the description
+   * in the metadata language, without its DocBook or HTML markup.
+   *
+   * @param version reconstructed published version
+   * @return plain text, null if there's no description
+   */
+  @Nullable
+  static String summaryDescription(Resource version) {
+    String description;
+    if (version.isDataPackage() && !version.isDwcDp()) {
+      description = version.getDataPackageMetadata() != null ? version.getDataPackageMetadata().getDescription() : null;
+    } else {
+      description = version.getEml() != null
+          ? DocBookLanguages.defaultContent(version.getEml().getDescription(), version.getEml().getMetadataLanguage())
+          : null;
+    }
+    if (StringUtils.isBlank(description)) {
+      return null;
+    }
+    // paragraphs, list items and headings are separated by a space
+    String text = StringUtils.normalizeSpace(Jsoup.parse(BLOCK_TAG.matcher(description).replaceAll(" $0")).text());
+    return StringUtils.trimToNull(StringUtils.abbreviate(text, "…", SUMMARY_DESCRIPTION_LENGTH));
   }
 
   /**
@@ -761,6 +805,7 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     ResourceSummaryView resourceSummaryView = resourceIndex.getPublishedPublicSummary(resource.getShortname());
     if (resourceSummaryView != null) {
       resourceSummaryView.setStatus(PublicationStatus.REGISTERED);
+      resourceSummaryView.setGbifKey(resource.getKey());
       resourceSummaryView.setOrganisationAlias(resource.getOrganisationAlias());
       resourceSummaryView.setOrganisationName(resource.getOrganisationName());
     }

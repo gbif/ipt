@@ -315,6 +315,14 @@
       </result>
     </action>
 
+    <!-- the public resources for the home page (portal/home.ftl), with the filter values counted -->
+    <action name="home-resources" class="org.gbif.ipt.action.portal.HomeAction" method="search">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">searchResult</param>
+      </result>
+    </action>
+
     <action name="health" class="org.gbif.ipt.action.HealthAction">
       <result name="success" type="json">
         <param name="noCache">true</param>

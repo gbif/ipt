@@ -18,6 +18,8 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
+import org.gbif.ipt.model.datatable.HomeSearchRequest;
+import org.gbif.ipt.model.datatable.HomeSearchResult;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -26,10 +28,16 @@ import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.annotations.JSON;
 
 import java.io.Serial;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class HomeAction extends BaseAction {
 
@@ -38,6 +46,7 @@ public class HomeAction extends BaseAction {
 
   private final ResourceDataTableViewManager resourceManager;
   private DatatableResult resources = new DatatableResult();
+  private HomeSearchResult searchResult = new HomeSearchResult();
 
   @Inject
   public HomeAction(
@@ -55,6 +64,35 @@ public class HomeAction extends BaseAction {
     resources = resourceManager.listPublishedPublicResourceSummaries(dr);
 
     return SUCCESS;
+  }
+
+  /**
+   * The public resources for the home page: one page matching the search and filters, with the filter values counted.
+   * Parameters: q, type, organisation and licence (each repeatable), updated (month, year or older), sort (published,
+   * title or records), offset and limit.
+   */
+  public String search() {
+    HttpServletRequest request = ServletActionContext.getRequest();
+    HomeSearchRequest hsr = new HomeSearchRequest();
+    hsr.setLocale(getLocaleLanguage());
+    hsr.setSearch(StringUtils.trimToEmpty(request.getParameter("q")));
+    hsr.setTypes(parameterValues(request, "type"));
+    hsr.setOrganisations(parameterValues(request, "organisation"));
+    hsr.setLicences(parameterValues(request, "licence"));
+    hsr.setUpdated(StringUtils.trimToEmpty(request.getParameter("updated")));
+    hsr.setSort(StringUtils.defaultIfBlank(request.getParameter("sort"), HomeSearchRequest.SORT_PUBLISHED));
+    hsr.setOffset(NumberUtils.toLong(request.getParameter("offset"), 0));
+    hsr.setLimit(NumberUtils.toInt(request.getParameter("limit"), 10));
+    searchResult = resourceManager.searchPublishedPublicResources(hsr);
+    return SUCCESS;
+  }
+
+  private static Set<String> parameterValues(HttpServletRequest request, String name) {
+    String[] values = request.getParameterValues(name);
+    return values == null ? new LinkedHashSet<>() : Arrays.stream(values)
+        .map(StringUtils::trimToNull)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toCollection(LinkedHashSet::new));
   }
 
   /**
@@ -102,6 +140,14 @@ public class HomeAction extends BaseAction {
   @JSON
   public DatatableResult getResources() {
     return resources;
+  }
+
+  /**
+   * The result of {@link #search()}.
+   */
+  @JSON
+  public HomeSearchResult getSearchResult() {
+    return searchResult;
   }
 
   public int getResourcesSize() {
