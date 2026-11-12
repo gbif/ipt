@@ -15,8 +15,25 @@ div.dt-container .dt-search { display: flex; align-items: center; }
 div.dt-container .dt-search input.dt-input { height: 31px; margin-left: 0; padding: 4px 8px; font-size: 14px; color: #4E565F; border: 1px solid #dee2e6; border-radius: 4px; }
 div.dt-container .dt-search input.dt-input:focus { outline: 0; border-color: rgba(var(--color-gbif-primary), .6); box-shadow: 0 0 0 .2rem rgba(var(--color-gbif-primary), .2); }
 div.dt-container .dt-search label:empty { display: none; }
-div.dt-container div.dt-layout-end:has(.mh-toolbar) { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
-div.dt-container div.dt-layout-end:has(.mh-toolbar) > :not(:first-child) { margin-left: 0; }
+/* above the table: the count on the left; organisation filter, search and Create new on the right */
+#rtable_wrapper div.dt-layout-end { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+#rtable_wrapper div.dt-layout-end > :not(:first-child) { margin-left: 0; }
+#mh-create { height: 31px; display: inline-flex; align-items: center; }
+.mh-count { font-size: 0.8125rem; color: #6c757d; }
+.mh-count b { color: #212529; font-weight: 600; }
+
+/* the pager as on the home page (portal-home.css): centred, outlined buttons, the current page in green */
+#rtable_wrapper .dt-paging { display: flex; justify-content: center; }
+#rtable_wrapper .dt-paging nav { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; }
+#rtable_wrapper .dt-paging .dt-paging-button,
+#rtable_wrapper .dt-paging .dt-paging-button:hover,
+#rtable_wrapper .dt-paging .dt-paging-button:active { margin: 0; min-width: 30px; padding: 2px 8px; font-size: 0.8125rem; color: #4E565F !important; background: #fff; border: 1px solid #dee2e6; border-radius: 4px; box-shadow: none; }
+#rtable_wrapper .dt-paging .dt-paging-button:hover { border-color: #adb5bd; }
+#rtable_wrapper .dt-paging .dt-paging-button.current,
+#rtable_wrapper .dt-paging .dt-paging-button.current:hover { border-color: rgb(var(--color-gbif-primary)); background: rgba(var(--color-gbif-primary), .08); color: #212529 !important; font-weight: 600; }
+#rtable_wrapper .dt-paging .dt-paging-button.disabled,
+#rtable_wrapper .dt-paging .dt-paging-button.disabled:hover { color: #adb5bd !important; border-color: #dee2e6; background: #fff; }
+#rtable_wrapper .dt-paging .ellipsis { padding: 2px 4px; color: #6c757d; }
 
 /* column headers as on the resource overview (.ov-table th): small grey capitals, an arrow only on the sorted column */
 table.dataTable.mh-table > thead > tr > th { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .04em; color: #6c757d; font-weight: 600; padding: 6px 10px; border-bottom: 1px solid #dee2e6; white-space: nowrap; vertical-align: bottom; }

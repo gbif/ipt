@@ -66,13 +66,14 @@
             lengthChange: false,
             autoWidth: false,
             layout: {
-                topStart: null,
-                topEnd: document.getElementById("mh-organisation") ? [document.getElementById("mh-toolbar"), "search"] : "search",
-                bottomStart: "info",
-                bottomEnd: "paging"
+                topStart: document.getElementById("mh-count"),
+                topEnd: [document.getElementById("mh-toolbar"), "search", document.getElementById("mh-create")].filter(Boolean),
+                bottomStart: null,
+                bottomEnd: null,
+                bottom: {paging: {firstLast: false}}
             },
             language: {
-                emptyTable: "<@s.text name="manage.home.resources.none"/><div class=\"mt-2\"><a href=\"${baseURL}/manage/create.do\"><@s.text name="manage.home.createFirst"/></a></div>",
+                emptyTable: "<@s.text name="manage.home.resources.none"/><#if (organisations?size>0)><div class=\"mt-2\"><a href=\"${baseURL}/manage/create.do\"><@s.text name="manage.home.createFirst"/></a></div></#if>",
                 zeroRecords: "<@s.text name="dataTables.sZeroRecords.resources"/>",
                 info: "<@s.text name="dataTables.sInfo"/>",
                 infoEmpty: "<@s.text name="dataTables.sInfoEmpty"/>",
@@ -96,6 +97,19 @@
             ],
             order: [[sortParam, orderParam]],
             search: {search: searchParam}
+        });
+
+        // "Resources: 15" above the table, "Resources: 3 of 15" when the search or organisation leaves some out (no
+        // counted noun, so no plural forms to translate)
+        var texts = {};
+        document.getElementById("mh-texts").content.querySelectorAll("[data-k]").forEach(function (el) { texts[el.dataset.k] = el.innerHTML.trim(); });
+        dt.on("draw", function () {
+            var info = dt.page.info();
+            var count = document.getElementById("mh-count");
+            if (!info.recordsTotal) { count.innerHTML = ""; return; }
+            count.innerHTML = info.recordsDisplay < info.recordsTotal
+                ? texts.count.replace("{0}", "<b>" + info.recordsDisplay + "</b>").replace("{1}", info.recordsTotal)
+                : texts.countAll.replace("{0}", "<b>" + info.recordsTotal + "</b>");
         });
 
         // as the other organisation selects (e.g. the overview's publishing organisation): a search from 15 options
@@ -137,60 +151,34 @@
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
-<div class="container-fluid border-bottom">
-    <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3">
-            <div class="text-center fs-smaller">
-                <@s.text name="menu.manage.short"/>
-            </div>
-
-            <div class="text-center">
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="manage.home.title"/>
-                </h1>
-
-                <#if (resources?size>0)>
-                    <div class="text-smaller text-gbif-primary">
-                        <@s.text name="portal.home.resources.available"><@s.param>${resourcesSize}</@s.param></@s.text>
-                    </div>
-                <#else>
-                    <div class="text-smaller text-gbif-danger">
-                        <@s.text name="manage.home.no.resources"/>
-                    </div>
-                </#if>
-
-                <#if (organisations?size==0)>
-                    <div class="text-smaller text-gbif-danger">
-                        <@s.text name="manage.resource.create.forbidden"/>
-                    </div>
-                </#if>
-
-                <#if (organisations?size>0)>
-                    <div class="mt-2">
-                        <a href="${baseURL}/manage/create.do" class="btn btn-sm btn-outline-gbif-primary top-button"><@icon name="add" class="me-1"/><@s.text name="button.create.new"/></a>
-                    </div>
-                </#if>
-            </div>
-        </div>
-    </div>
-</div>
-
 <main class="container main-content-container border rounded my-4">
     <div class="py-md-4 py-3 px-md-5 px-3">
-        <#-- moved next to the search by DataTables -->
-        <div id="mh-toolbar" class="mh-toolbar">
-            <#if (resourceOrganisations?size > 1)>
+        <h1 class="visually-hidden"><@s.text name="manage.home.title"/></h1>
+        <#if (organisations?size==0)>
+            <p class="text-gbif-danger fs-smaller-2 mb-2"><@s.text name="manage.resource.create.forbidden"/></p>
+        </#if>
+        <#-- the count, the organisation filter and Create new are moved around the table by DataTables -->
+        <span id="mh-count" class="mh-count" aria-live="polite"></span>
+        <#if (organisations?size>0)>
+            <a id="mh-create" href="${baseURL}/manage/create.do" class="btn btn-sm btn-outline-gbif-primary text-nowrap"><@icon name="add" class="me-1"/><@s.text name="button.create.new"/></a>
+        </#if>
+        <#if (resourceOrganisations?size > 1)>
+            <div id="mh-toolbar" class="mh-toolbar">
                 <select id="mh-organisation" class="form-select form-select-sm mh-organisation-filter" aria-label="<@s.text name="manage.home.organisation"/>">
                     <option value=""><@s.text name="manage.home.organisation.all"/></option>
                     <#list resourceOrganisations as key, name>
                         <option value="${key}">${name}</option>
                     </#list>
                 </select>
-            </#if>
-        </div>
+            </div>
+        </#if>
         <div class="resource-table text-smaller pt-2">
             <table class="display dataTable resourcesTable mh-table" id="rtable"></table>
         </div>
+        <template id="mh-texts">
+            <span data-k="count"><@s.text name="portal.home.count"><@s.param>{0}</@s.param><@s.param>{1}</@s.param></@s.text></span>
+            <span data-k="countAll"><@s.text name="portal.home.count.all"><@s.param>{0}</@s.param></@s.text></span>
+        </template>
     </div>
 </main>
 

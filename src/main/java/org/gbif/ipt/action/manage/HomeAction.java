@@ -140,10 +140,6 @@ public class HomeAction extends BaseAction {
     return resources;
   }
 
-  public int getResourcesSize() {
-    return resources != null ? resources.getTotalRecords() : 0;
-  }
-
   /**
    * method for dealing with the action for a locked resource.
    * Does nothing but the regular home plus an error message
