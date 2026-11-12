@@ -142,6 +142,18 @@
             return {mode: $(this).attr('data-mode'), suffix: $(this).attr('data-suffix') || ''};
         }).get();
         var hasExtensions = $idSection.attr('data-has-extensions') === 'true';
+        var isOccurrence = $idSection.attr('data-occurrence') === 'true';
+        // without occurrenceIDs GBIF tells records apart by institutionCode + collectionCode + catalogNumber, so for an
+        // Occurrence core the "no ID" warning depends on those three being mapped
+        function renderNoIdWarning() {
+            if (!isOccurrence || idMode() !== 'none') return;
+            var triplet = ['dwc:institutionCode', 'dwc:collectionCode', 'dwc:catalogNumber'].every(function (t) {
+                return fields.some(function (f) { return f.term === t && isMapped(f); });
+            });
+            $idSection.find('.mp-id-none-warn').prop('hidden', true);
+            $idSection.find('.mp-id-none-notriplet').prop('hidden', triplet);
+            $idSection.find('.mp-id-none-triplet').prop('hidden', !triplet);
+        }
         var idBad = false;
 
         // the checks ExtensionMappingValidator makes on save: {cls, text} or null
@@ -174,6 +186,8 @@
             $idSection.find('.mp-suffix-line').prop('hidden', mode !== 'line');
             if (mode === 'none' || mode === 'uuid') $('#mp-idsuffix').val('');
             $idSection.find('.mp-id-none').prop('hidden', mode !== 'none');
+            $idSection.find('.mp-id-nolink').prop('hidden', mode === 'none');
+            renderNoIdWarning();
             $('#mp-idcol-missing').prop('hidden', !(mode === 'column' && ci < 0));
             $idSection.find('.mp-id-mirror').prop('hidden', mode !== 'column');
             // generated UUIDs change on every publication, so the extensions' links would point at nothing
@@ -446,6 +460,7 @@
         $form.on('change input', '.mp-col, .mp-const, #doiUsedForDatasetId', function () {
             var f = byIndex[$(this).closest('.mp-field').attr('data-i')];
             if (f) renderField(f);
+            renderNoIdWarning();
             renderSummary();
             if (view === 'column') renderByColumn();
             if ($(this).is('.mp-col') && colOf(f) === ($fCol.val() === '' ? -1 : +$fCol.val())) renderFilter();
@@ -453,6 +468,10 @@
         });
         // the page now checks what the server checked on the last save
         $idSection.on('change', 'input[name=mp-idmode], #mp-idcol', function () { $('#mp-id-server-problem').prop('hidden', true); renderAll(); markDirty(); });
+        // "Publish without IDs" and back
+        $idSection.on('click', '[data-set-idmode]', function () {
+            $idSection.find('input[name=mp-idmode][value=' + $(this).attr('data-set-idmode') + ']').prop('checked', true).trigger('change');
+        });
         $('#mp-idsuffix').on('input', function () { $('#mp-id-server-problem').prop('hidden', true); renderAll(); markDirty(); });
         $filterOn.on('change', function () { renderFilter(); renderSummary(); markDirty(); });
         $('#mp-filter').on('change input', '#filterName, #filterComp, #filterParam, #filterTime', function () { renderFilter(); renderSummary(); markDirty(); });

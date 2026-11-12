@@ -294,10 +294,12 @@
                         <#-- line numbers only make sense when the core uses them too; otherwise the column is the only way -->
                         <#assign showIdCards = coreUsesLines || idMode == "line"/>
                     <#else>
-                        <#assign showIdCards = true/>
+                        <#-- line numbers and UUIDs are for a Taxon core only, so other cores just pick a column; cards stay
+                             for a mapping that already uses one of them, so it can be changed -->
+                        <#assign showIdCards = mapping.isTaxonCore() || idMode == "line" || idMode == "uuid"/>
                     </#if>
                     <span class="mp-anchor" id="anchor-mp-id"></span>
-                    <section id="mp-id" class="mp-section" data-core="${isCoreMapping?c}" data-has-extensions="${resource.mappings?filter(m -> !m.isCore())?has_content?c}">
+                    <section id="mp-id" class="mp-section" data-core="${isCoreMapping?c}" data-occurrence="${(mapping.extension.rowType == "http://rs.tdwg.org/dwc/terms/Occurrence")?c}" data-has-extensions="${resource.mappings?filter(m -> !m.isCore())?has_content?c}">
                         <div class="mp-sec-head">
                             <h2><#if isCoreMapping><@s.text name="manage.mapping.id.title"/><#else><@s.text name="manage.mapping.id.title.extension"/></#if></h2>
                             <span><#if isCoreMapping><@s.text name="manage.mapping.id.desc"><@s.param>${idTermName}</@s.param></@s.text><#else><@s.text name="manage.mapping.id.desc.extension"><@s.param>${idTermName}</@s.param><@s.param>${coreExtensionTitle}</@s.param></@s.text></#if></span>
@@ -312,11 +314,6 @@
                                 <span class="d"><#if isCoreMapping><@s.text name="manage.mapping.id.column.desc"><@s.param>${idTermName}</@s.param></@s.text><#else><@s.text name="manage.mapping.id.column.desc.extension"><@s.param>${idTermName}</@s.param></@s.text></#if></span>
                             </label>
                             <#if isCoreMapping>
-                                <label class="mp-choice">
-                                    <input type="radio" name="mp-idmode" value="none" form="mp-ui"<#if idMode == "none"> checked</#if>>
-                                    <span class="t"><@s.text name="manage.mapping.id.none"/><span class="tick"></span></span>
-                                    <span class="d"><@s.text name="manage.mapping.id.none.desc"/></span>
-                                </label>
                                 <label class="mp-choice<#if !mapping.isTaxonCore()> off</#if>">
                                     <input type="radio" name="mp-idmode" value="line" form="mp-ui"<#if idMode == "line"> checked</#if><#if !mapping.isTaxonCore()> disabled</#if>>
                                     <span class="t"><@s.text name="manage.mapping.id.line"/><span class="tick"></span></span>
@@ -335,6 +332,11 @@
                                 </label>
                             </#if>
                         </div>
+                        </#if>
+                        <#-- no ID isn't a card: it's offered by a link under the column, for the few who need it -->
+                        <#if isCoreMapping>
+                            <#if !showIdCards><input type="radio" name="mp-idmode" value="column" form="mp-ui" hidden<#if idMode == "column"> checked</#if>></#if>
+                            <input type="radio" name="mp-idmode" value="none" form="mp-ui" hidden<#if idMode == "none"> checked</#if>>
                         </#if>
 
                         <div class="mp-idrow">
@@ -359,7 +361,16 @@
                             </div>
                         </div>
                         <div class="mp-id-samples" id="mp-id-samples"></div>
-                        <div class="mp-msg w mp-id-none" hidden><@s.text name="manage.mapping.id.none.warn"/></div>
+                        <#if isCoreMapping>
+                            <div class="mp-id-nolink"><button type="button" class="ov-link-btn" data-set-idmode="none"><@s.text name="manage.mapping.id.noIds"/></button></div>
+                            <div class="mp-id-none" hidden>
+                                <div class="mp-msg w mp-id-none-warn"><@s.text name="manage.mapping.id.none.warn"/></div>
+                                <#-- an Occurrence core: GBIF falls back to the catalogue triplet (js/mapping.js shows one of these) -->
+                                <div class="mp-msg w mp-id-none-notriplet" hidden><@s.text name="manage.mapping.id.none.tripletMissing"/></div>
+                                <div class="mp-msg mu mp-id-none-triplet" hidden><@s.text name="manage.mapping.id.none.triplet"/></div>
+                                <button type="button" class="ov-link-btn" data-set-idmode="column"><@s.text name="manage.mapping.id.useColumn"/></button>
+                            </div>
+                        </#if>
                         <div class="mp-msg bad" id="mp-id-uuid-ext" hidden><@s.text name="validation.mapping.coreid.uuid.extensions.exist"/></div>
 
                         <#-- what the core does, so the two can be compared -->

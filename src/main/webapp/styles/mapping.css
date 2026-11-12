@@ -181,3 +181,6 @@ body.mp-dirty { padding-bottom: 60px; }
 .select2-container--bootstrap4 .select2-results__option { padding: 0.25rem 0.75rem; }
 .mp-sentence .select2-container { min-width: 130px; }
 .mp-core-setups { margin-top: 8px; }
+.mp-id-nolink { margin-top: 6px; }
+.mp-id-nolink[hidden], .mp-id-none[hidden] { display: none; }
+.mp-id-none .ov-link-btn { margin-top: 6px; }
