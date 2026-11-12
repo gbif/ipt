@@ -33,7 +33,7 @@
             --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
             --navbar-gbif-logo-color: ${navbarGbifLogoColor!"255, 255, 255"};
             --navbar-active-tab-color: ${navbarActiveTabColor!"255, 255, 255"};
-            --link-color: ${linkColor!"75, 162, 206"};
+            --link-color: ${linkColor!"97, 168, 97"};
         }
     </style>
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />

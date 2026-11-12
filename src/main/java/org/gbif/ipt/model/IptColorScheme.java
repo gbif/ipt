@@ -30,14 +30,14 @@ public class IptColorScheme {
   public static final String NAVBAR_ACTIVE_TAB_COLOR_PROPERTY = "navbarActiveTabColor";
   public static final String NAVBAR_ACTIVE_TAB_COLOR_DEFAULT_VALUE = "#ffffff";
   public static final String LINK_COLOR_PROPERTY = "linkColor";
-  public static final String LINK_COLOR_DEFAULT_VALUE = "#4ba2ce";
+  public static final String LINK_COLOR_DEFAULT_VALUE = PRIMARY_COLOR_DEFAULT_VALUE;
 
   private String primaryColor = "#61a861";
   private String navbarColor = "#78b578";
   private String navbarLinkColor = "#ffffff";
   private String navbarGbifLogoColor = "#ffffff";
   private String navbarActiveTabColor = "#ffffff";
-  private String linkColor = "#4ba2ce";
+  private String linkColor = LINK_COLOR_DEFAULT_VALUE;
 
   public IptColorScheme() {
   }

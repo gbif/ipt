@@ -257,10 +257,10 @@
                 applyNavbarActiveTabColor("#ffffff");
 
                 var $linkColorSelect = $("#linkColor-select");
-                $linkColorSelect.val("#4ba2ce");
+                $linkColorSelect.val("#61a861");
                 $linkColorSelect.trigger('change');
-                $("#linkColor-colorBox").css("background", "#4ba2ce");
-                applyLinkColor("#4ba2ce");
+                $("#linkColor-colorBox").css("background", "#61a861");
+                applyLinkColor("#61a861");
             })
 
             function urlExists(url, cb) {
