@@ -59,6 +59,8 @@
             <span class="ov-pill warn"><@s.text name="manage.overview.publication.notPublished"/></span>
         <#elseif hasChanges>
             <span class="ov-pill warn"><@s.text name="manage.overview.publication.changes"/></span>
+        <#elseif liveSources?has_content>
+            <span class="ov-pill ok"><@s.text name="manage.overview.publication.noKnownChanges"/></span>
         <#else>
             <span class="ov-pill ok"><@s.text name="manage.overview.publication.upToDate"/></span>
         </#if>
@@ -147,6 +149,7 @@
                         <dd>${resource.nextPublished?datetime?string.medium}</dd>
                     </#if>
                 </dl>
+                <#if nothingNew && liveSources?has_content><div class="ov-small">${liveSourcesNote}</div></#if>
             </div>
         <#else>
             <div class="ov-ver text-muted">
@@ -168,6 +171,7 @@
                 <#if isPublished>
                     <div class="text-smaller"><@s.text name="manage.overview.publication.changesSince"><@s.param>${currentVersion}</@s.param></@s.text></div>
                     <ul class="ov-chlist"><#list changeList as c><li>${c}</li></#list></ul>
+                    <#if liveSources?has_content><div class="ov-small">${liveSourcesNote}</div></#if>
                 <#else>
                     <div class="text-smaller"><@s.text name="manage.overview.publication.willInclude"/></div>
                     <ul class="ov-chlist">

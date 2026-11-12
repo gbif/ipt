@@ -41,9 +41,9 @@
     <#if !src.readable>
         <span class="ov-small bad"><@s.text name="manage.source.notReadable"/></span>
     <#elseif src.isSqlSource()>
-        <span class="ov-small">${src.getColumns()} <@s.text name="manage.overview.source.columns"/></span>
+        <span class="ov-small">${src.getColumns()} <@s.text name="manage.overview.source.columns"/><#if liveSourceNames?seq_contains(src.name)> · <@s.text name="manage.overview.source.live"/></#if></span>
     <#else>
-        <span class="ov-small"><#attempt>${src.formattedFileSize(currentLocale)}<#recover>-</#attempt> · ${src.rows?string.number} <@s.text name="manage.overview.source.rows"/> × ${src.getColumns()} <@s.text name="manage.overview.source.columns"/></span>
+        <span class="ov-small"><#attempt>${src.formattedFileSize(currentLocale)}<#recover>-</#attempt> · ${src.rows?string.number} <@s.text name="manage.overview.source.rows"/> × ${src.getColumns()} <@s.text name="manage.overview.source.columns"/><#if liveSourceNames?seq_contains(src.name)> · <@s.text name="manage.overview.source.live"/></#if></span>
     </#if>
 </#macro>
 
@@ -190,9 +190,10 @@
                 <@s.text name='manage.home.last.modified'/> ${dataModified?datetime?string.medium}.
             </#if>
             <#if allChanged><@s.text name="manage.overview.data.allChanged"><@s.param>${currentVersion}</@s.param></@s.text></#if>
-        <#elseif isPublished>
+        <#elseif isPublished && !liveSources?has_content>
             <@s.text name="manage.overview.notModified"/>.
         </#if>
+        <#if isPublished>${liveSourcesNote}</#if>
     </div>
 
     <#if isDataPackage && !dataPackageMappingsMissing && dataPackageSchemaChanged>

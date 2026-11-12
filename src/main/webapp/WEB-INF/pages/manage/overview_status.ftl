@@ -48,6 +48,11 @@
 <#assign unmappedSources = resource.sources?filter(src -> !mappedSourceNames?seq_contains(src.name))>
 <#assign unreadableSources = resource.sources?filter(src -> !src.readable)>
 <#assign changedSources = resource.sources?filter(src -> isSourceChanged(src))>
+<#-- mapped URL and SQL sources are read again at each publication: changes in their data can't be seen from dates -->
+<#assign liveSources = resource.sources?filter(src -> (src.isUrlSource() || src.isSqlSource()) && mappedSourceNames?seq_contains(src.name))>
+<#assign liveSourceNames = liveSources?map(src -> src.name)>
+<#-- names a few, counts many -->
+<#assign liveSourcesNote><#if (liveSources?size > 3)><@s.text name="manage.overview.data.liveSourcesCount"><@s.param>${liveSources?size}</@s.param></@s.text><#elseif liveSources?has_content><@s.text name="manage.overview.data.liveSources"><@s.param><#list liveSources as src>"${src.name}"<#sep>, </#sep></#list></@s.param></@s.text></#if></#assign>
 
 <#-- Darwin Core mappings as rows: core first, then extensions. "mid" is the mapping's index within its row type, as mapping.do expects -->
 <#assign classRows = []>
