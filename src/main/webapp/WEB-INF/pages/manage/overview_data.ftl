@@ -98,7 +98,7 @@
                 <div class="ov-unused-row ov-row" data-ov-unused="true" data-ov-text="${src.name?lower_case}" data-ov-changed="${isSourceChanged(src)?c}" data-ov-unmapped="true" data-ov-problem="${(!src.readable)?c}">
                     <@sourceCell src/>
                     <span class="ov-sp"></span>
-                    <#if src.readable && !isDataPackage><button type="button" class="ov-link-btn ov-open-add-mapping"><@s.text name="manage.overview.data.mapTo"/></button></#if>
+                    <#if src.readable && !isDataPackage><button type="button" class="ov-link-btn ov-open-add-mapping" data-source="${src.name}"><@s.text name="manage.overview.data.mapTo"/></button></#if>
                     <div class="ov-rowacts"><@sourceMenu src idPrefix + src?index/></div>
                 </div>
             </#list>

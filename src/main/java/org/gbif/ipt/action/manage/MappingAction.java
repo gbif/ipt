@@ -524,7 +524,10 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     boolean isNew = resource.getMapping(id, mid) == null;
     if (isNew) {
       mid = resource.addMapping(mapping);
-    } else {
+    }
+    // a new mapping added with its source ("Map to…" on the overview) keeps its automapped fields, like one whose
+    // source is chosen afterwards; otherwise the mapping page automaps again
+    if (!isNew || mapping.getSource() != null) {
       // save field mappings
       Set<PropertyMapping> mappedFields = new TreeSet<>();
       for (PropertyMapping f : fields) {

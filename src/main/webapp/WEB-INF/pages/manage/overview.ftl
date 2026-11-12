@@ -738,7 +738,15 @@
             dialogWindow.modal('show');
         }
 
+        // "Add mapping" lets the next page ask for the source; "Map to…" on a source row maps that source
+        function setAddMappingSource(name) {
+            $('#add-mapping-source').val(name || '').prop('disabled', !name);
+            $('#add-mapping-source-name').text(name || '');
+            $('#add-mapping-source-note').toggleClass('d-none', !name);
+        }
+
         $("#add-mapping-button").on('click', function () {
+            setAddMappingSource(null);
             showAddMappingModal();
         });
 
@@ -1517,6 +1525,7 @@
         $('.ov-open-add-mapping').on('click', function (e) {
             e.preventDefault();
             $('#add-mapping-button').trigger('click');
+            setAddMappingSource($(this).attr('data-source'));
         });
         $('.ov-show-report').on('click', function () {
             if (!$('#dwcaReport').is(':visible')) {
@@ -2236,6 +2245,8 @@
                         <#if (numberOfPotentialCores>0)>
                             <form id="addMappingForm" action='mapping.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}"/>
+                                <input name="source" type="hidden" id="add-mapping-source" value="" disabled/>
+                                <p id="add-mapping-source-note" class="text-smaller mb-1 d-none"><@s.text name="manage.mapping.source"/>: <b id="add-mapping-source-name"></b></p>
                                 <select name="id" class="form-select my-1" id="rowType" size="1">
                                     <optgroup label="<@s.text name='manage.overview.DwC.Mappings.cores.select'/>">
                                         <#list potentialCores as c>
