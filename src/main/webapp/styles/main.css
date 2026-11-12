@@ -1368,65 +1368,15 @@ div.dt-container .dt-paging .dt-paging-button:active{
     border-color: #5EA642C0 !important;
 }
 
-.type-occurrence, .type-camtrap-dp, .type-coldp, .type-dwc-dp, .type-material-dp, .type-interaction-dp {
-    background: #3e8622 !important;
-    color: white;
-    border-color: #3e8622 !important;
-}
-
-.type-checklist {
-    background: #947AB2 !important;
-    color: white;
-    border-color: #947AB2 !important;
-}
-
-.type-metadata {
-    background: #5976b1 !important;
-    color: white !important;
-    border-color: #5976b1 !important;
-}
-
-.type-samplingevent {
-    background: #297ea8 !important;
-    color: white;
-    border-color: #297ea8 !important;
-}
-
-.type-materialentity {
-    background: #0094df !important;
-    color: white !important;
-    border-color: #0094df !important;
-}
-
-.type-other {
-    background: #7B7979 !important;
-    color: white !important;
-    border-color: #7B7979 !important;
-}
-
+/* Resource type and subtype pills: one neutral grey for all, so the colours on a page are left to what they mean
+   (status, errors). Dark text on light grey (9:1) */
+.type-occurrence, .type-camtrap-dp, .type-coldp, .type-dwc-dp, .type-material-dp, .type-interaction-dp,
+.type-checklist, .type-metadata, .type-samplingevent, .type-materialentity, .type-other,
 .type-taxonomicauthority, .type-nomenclatorauthority, .type-inventorythematic, .type-inventoryregional,
-.type-globalspeciesdataset, .type-derivedfromoccurrence {
-    border: 1px solid;
-    background: white !important;
-    color: #947AB2 !important;
-}
-
-.type-derivedfromoccurrence {
-    border: 1px solid;
-    background: white !important;
-    color: #947AB2 !important;
-}
-
-.type-specimen {
-    border: 1px solid;
-    background: white !important;
-    color: #3e8622 !important;
-}
-
-.type-observation {
-    border: 1px solid;
-    background: white !important;
-    color: #3e8622 !important;
+.type-globalspeciesdataset, .type-derivedfromoccurrence, .type-specimen, .type-observation {
+    background: #eef0f2 !important;
+    color: #3d4349 !important;
+    border-color: #eef0f2 !important;
 }
 
 .user-admin, .user-manager, .user-publisher, .user-user {
