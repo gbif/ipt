@@ -298,7 +298,7 @@ table {
     color: #575757 !important;
 }
 
-/* Login container */
+/* Login page */
 .login-container {
     max-width: 500px;
     display: flex;
@@ -307,18 +307,91 @@ table {
     margin-bottom: auto;
 }
 
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.75rem 2rem 1.25rem;
+}
+
+@media (max-width: 575.98px) {
+    .login-card {
+        padding: 1.5rem 1.25rem 1rem;
+    }
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: .75rem;
+}
+
+/* shown by handleCustomLogoError() when no custom logo was uploaded */
 #login-page-logo {
     display: none;
+    height: 40px;
+    width: 40px;
 }
 
 #login-page-logo-custom {
-    max-height: 75px;
+    max-height: 60px;
     max-width: 100px;
 }
 
-#login-page-logo {
-    height: 50px;
-    width: 50px;
+.login-site-name {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.login-sub {
+    text-align: center;
+    color: #6c757d;
+    font-size: .8125rem;
+    margin: .125rem 0 1.75rem;
+    text-wrap: balance;
+}
+
+.login-intro {
+    text-align: center;
+    font-size: .875rem;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+}
+
+.login-continue {
+    text-align: center;
+    font-size: .875rem;
+    margin: -.5rem 0 1rem;
+}
+
+/* links in the primary green, as on GBIF.org; to be extended to the whole IPT later */
+.login-card a:not(.btn) {
+    color: rgb(var(--color-gbif-primary)) !important;
+}
+
+.login-card a:not(.btn):hover {
+    text-decoration: underline;
+}
+
+#login-form .form-label {
+    font-size: .875rem;
+    font-weight: 500;
+    margin-bottom: .25rem;
+}
+
+.login-caps {
+    color: #8a6d00;
+}
+
+.login-foot {
+    margin: 1rem 0 0;
+    text-align: center;
+    font-size: .8125rem;
+    color: #6c757d;
+}
+
+.login-admin-address {
+    overflow-wrap: anywhere;
 }
 
 #login-button {
@@ -993,6 +1066,25 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     border-color: #dee2e6 !important;
 }
 /* GBIF gray colored outline button START */
+
+
+/* GBIF green colored solid button START */
+.btn-gbif-primary {
+    color: #fff;
+    background-color: rgb(var(--color-gbif-primary));
+    border-color: rgb(var(--color-gbif-primary));
+    font-weight: 600;
+}
+.btn-gbif-primary:hover, .btn-gbif-primary:focus, .btn-gbif-primary:active {
+    color: #fff;
+    background-color: rgb(var(--color-gbif-primary));
+    border-color: rgb(var(--color-gbif-primary));
+    filter: brightness(.92);
+}
+.btn-gbif-primary:focus-visible {
+    box-shadow: 0 0 0 .25rem rgba(var(--color-gbif-primary), .3);
+}
+/* GBIF green colored solid button END */
 
 
 /* GBIF green colored outline button START */

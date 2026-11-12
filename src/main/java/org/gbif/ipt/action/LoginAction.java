@@ -200,6 +200,22 @@ public class LoginAction extends POSTAction {
     return CsrfInterceptor.getOrCreateToken(session);
   }
 
+  /**
+   * @return the menu key of the section the user goes to after login, for "Log in to continue to …", when they were
+   * sent to the login page from a manager or admin page; null otherwise
+   */
+  public String getContinueToKey() {
+    String referer = session == null ? null : (String) session.get(Constants.SESSION_REFERER);
+    if (referer == null) {
+      return null;
+    } else if (referer.startsWith("/manage/")) {
+      return "menu.manage";
+    } else if (referer.startsWith("/admin/")) {
+      return "menu.admin";
+    }
+    return null;
+  }
+
   @StrutsParameter
   public void setCsrfToken(String csrfToken) {
     this.csrfToken = csrfToken;
