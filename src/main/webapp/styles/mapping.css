@@ -173,8 +173,9 @@ body.mp-dirty { padding-bottom: 60px; }
 /* scrollspy anchors (js/scrollspy.js): no height, the sections have scroll-margin-top */
 .mp-anchor { display: block; height: 0; }
 
-/* select2 at the size of the small Bootstrap selects next to it */
-#mappingForm .select2-container--bootstrap4 .select2-selection--single { height: calc(1.5em + 0.5rem + 2px) !important; }
+/* select2 at the size of the small Bootstrap selects next to it: the font size is set here because the height is in em,
+   and select2 otherwise inherits it from wherever it sits (16px in the record ID, 0.82rem in the field rows) */
+#mappingForm .select2-container--bootstrap4 .select2-selection--single { font-size: 0.875rem; height: calc(1.5em + 0.5rem + 2px) !important; border-color: var(--bs-border-color); }
 #mappingForm .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered { line-height: 1.5; padding: 0.25rem 0.5rem !important; font-size: 0.875rem; }
 #mappingForm .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder { line-height: 1.5; }
 #mappingForm .select2-container--bootstrap4 .select2-selection__clear { margin-right: 0.875em; margin-top: 0.275em; }
