@@ -59,6 +59,7 @@ const ICONS_STYLE = 'filled';
 const ICONS = [
   'add',
   'arrow_forward',
+  'autorenew',
   'cancel',
   'check',
   'check_circle',

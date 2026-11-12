@@ -47,6 +47,14 @@ public class ResourceSummaryView {
   private boolean published;
   private boolean dataPackage;
 
+  // manage page only: what needs doing, worst first in ResourceDataTableViewManagerImpl#toUiAttention
+  private boolean publishing;
+  private boolean lastPublicationFailed;
+  private boolean autoPublishingSuspended;
+  private String reservedDoi;
+  // update frequency identifier (e.g. monthly) when the resource is auto-published
+  private String updateFrequency;
+
   public String getTitleOrShortname() {
     return title != null ? title : shortname;
   }

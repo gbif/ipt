@@ -1,0 +1,50 @@
+/* Manage resources page (manage/home.ftl) */
+
+/* the organisation filter, next to the search */
+.mh-toolbar { display: flex; align-items: center; }
+.mh-organisation-filter { width: auto; max-width: 260px; }
+/* select2 on the organisation filter, at the height of form-select-sm and the search box */
+.mh-toolbar .select2-container { max-width: 260px; }
+.mh-toolbar .select2-container--bootstrap4 .select2-selection--single { height: 31px !important; border-color: #dee2e6; border-radius: 4px; font-size: 14px; }
+.mh-toolbar .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered { line-height: 29px; padding-left: 8px; padding-right: 28px; color: #4E565F; }
+.mh-toolbar .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow { top: 0; height: 29px; }
+.mh-toolbar .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { top: 50%; }
+.select2-container--bootstrap4 .select2-dropdown .select2-results__option { font-size: 14px; }
+/* the search box the size and look of the select (Bootstrap form-select-sm); this stylesheet is only on this page */
+div.dt-container .dt-search { display: flex; align-items: center; }
+div.dt-container .dt-search input.dt-input { height: 31px; margin-left: 0; padding: 4px 8px; font-size: 14px; color: #4E565F; border: 1px solid #dee2e6; border-radius: 4px; }
+div.dt-container .dt-search input.dt-input:focus { outline: 0; border-color: rgba(var(--color-gbif-primary), .6); box-shadow: 0 0 0 .2rem rgba(var(--color-gbif-primary), .2); }
+div.dt-container .dt-search label:empty { display: none; }
+div.dt-container div.dt-layout-end:has(.mh-toolbar) { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+div.dt-container div.dt-layout-end:has(.mh-toolbar) > :not(:first-child) { margin-left: 0; }
+
+/* column headers as on the resource overview (.ov-table th): small grey capitals, an arrow only on the sorted column */
+table.dataTable.mh-table > thead > tr > th { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .04em; color: #6c757d; font-weight: 600; padding: 6px 10px; border-bottom: 1px solid #dee2e6; white-space: nowrap; vertical-align: bottom; }
+table.dataTable.mh-table > thead > tr > th:hover { outline: none; color: #4E565F; }
+table.dataTable.mh-table > thead > tr > th div.dt-column-header { justify-content: flex-start; gap: 4px; }
+table.dataTable.mh-table > thead > tr > th.dt-right div.dt-column-header { justify-content: flex-end; }
+table.dataTable.mh-table > thead > tr > th div.dt-column-title { flex-grow: 0; }
+table.dataTable.mh-table > thead > tr > th:not(.dt-ordering-asc, .dt-ordering-desc) .dt-column-order { display: none; }
+table.dataTable.mh-table > thead > tr > th.dt-ordering-asc .dt-column-order:after,
+table.dataTable.mh-table > thead > tr > th.dt-ordering-desc .dt-column-order:before { display: none; }
+table.dataTable.mh-table > thead > tr > th.dt-ordering-asc .dt-column-order:before,
+table.dataTable.mh-table > thead > tr > th.dt-ordering-desc .dt-column-order:after { top: 50%; bottom: auto; transform: translateY(-50%); }
+
+/* plain rows: no stripes, and no shading of the sorted column (the arrow says it); the hover stays */
+table.dataTable.mh-table { --dt-column-ordering_alpha: 0; --dt-row_alpha-stripe: 0; }
+
+/* cells */
+.mh-table td { vertical-align: middle; }
+.mh-table .resource-table-link { font-weight: 500; }
+.mh-shortname { font-size: 0.75rem; color: #6c757d; }
+.mh-muted { font-size: 0.75rem; color: #6c757d; white-space: nowrap; }
+.mh-muted .material-icon { vertical-align: -0.15em; }
+.mh-table td.mh-next { white-space: nowrap; }
+.mh-organisation { max-width: 190px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mh-table .status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; line-height: 18px; }
+
+/* what needs doing, under the status pill */
+.mh-attention { font-size: 0.75rem; margin-top: 3px; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+.mh-attention-danger { color: rgb(var(--color-gbif-danger)); }
+.mh-attention-warning { color: rgb(var(--alert-warning-icon-color)); }
+.mh-attention-info { color: #3d5a80; }

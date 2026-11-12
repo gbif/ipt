@@ -26,7 +26,10 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import jakarta.inject.Inject;
 
 import java.io.Serial;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -49,6 +52,16 @@ public class HomeAction extends BaseAction {
    */
   @Getter
   private List<Organisation> organisations;
+  /**
+   * organisations of the resources the user can manage, for the organisation filter: name by key
+   */
+  @Getter
+  private Map<String, String> resourceOrganisations = Collections.emptyMap();
+  /**
+   * whether the resources of this IPT belong to more than one organisation, so the table shows the organisation
+   */
+  @Getter
+  private boolean showOrganisationColumn;
 
   @Inject
   public HomeAction(
@@ -68,7 +81,27 @@ public class HomeAction extends BaseAction {
     // load organisations able to host
     organisations = registrationManager.list();
 
+    resourceOrganisations = organisationFilterOptions(resourceManager.listOrganisations(getCurrentUser()));
+    showOrganisationColumn = resourceManager.hasSeveralOrganisations();
+
     return SUCCESS;
+  }
+
+  /**
+   * The organisation filter's options: "Organization not set" (the default organisation) last.
+   *
+   * @param organisations name by key, sorted by name
+   * @return name by key
+   */
+  private Map<String, String> organisationFilterOptions(Map<String, String> organisations) {
+    String defaultKey = Constants.DEFAULT_ORG_KEY.toString();
+    if (!organisations.containsKey(defaultKey)) {
+      return organisations;
+    }
+    Map<String, String> result = new LinkedHashMap<>(organisations);
+    result.remove(defaultKey);
+    result.put(defaultKey, getText("manage.home.organisation.notSet"));
+    return result;
   }
 
   /**
@@ -94,6 +127,10 @@ public class HomeAction extends BaseAction {
     getRequestParameter(request, Constants.DATATABLE_LENGTH_PARAM)
         .map(Integer::parseInt)
         .ifPresent(result::setLimit);
+    // the manage page's organisation filter
+    getRequestParameter(request, "organisation")
+        .map(StringUtils::trimToEmpty)
+        .ifPresent(result::setOrganisation);
 
     return result;
   }

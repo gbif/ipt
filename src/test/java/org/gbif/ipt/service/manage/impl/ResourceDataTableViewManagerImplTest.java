@@ -24,6 +24,7 @@ import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import java.util.ArrayList;
@@ -81,6 +82,8 @@ class ResourceDataTableViewManagerImplTest {
   private SimpleTextProvider textProvider;
   @Mock
   private ResourceManager resourceManager;
+  @Mock
+  private ResourcePublicationManager resourcePublicationManager;
 
   private ResourceDataTableViewManager manager;
 
@@ -106,7 +109,8 @@ class ResourceDataTableViewManagerImplTest {
         resourceManager,
         vocabManager,
         schemaManager,
-        textProvider);
+        textProvider,
+        resourcePublicationManager);
   }
 
   private static ResourceSummaryView resource(String shortname) {

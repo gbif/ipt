@@ -12,17 +12,6 @@
 .ov-acts .dropdown-menu { min-width: 260px; text-align: left; }
 .ov-acts .dropdown-item small { display: block; color: #6c757d; font-size: 0.75rem; white-space: normal; }
 
-.btn-gbif-solid {
-    background-color: rgb(var(--color-gbif-primary));
-    border-color: rgb(var(--color-gbif-primary));
-    color: #fff;
-}
-.btn-gbif-solid:hover, .btn-gbif-solid:focus {
-    background-color: rgb(var(--color-gbif-primary));
-    border-color: rgb(var(--color-gbif-primary));
-    color: #fff;
-    filter: brightness(0.92);
-}
 .btn-gbif-solid.ov-blocked, .btn.ov-blocked { opacity: 0.55; cursor: not-allowed; }
 #sections .ov-card .ov-hact.ov-blocked { opacity: 0.55; cursor: pointer; text-decoration: none !important; }
 

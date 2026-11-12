@@ -17,6 +17,8 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 
+import java.util.Map;
+
 public interface ResourceDataTableViewManager {
 
   /**
@@ -32,7 +34,7 @@ public interface ResourceDataTableViewManager {
   DatatableResult listPublishedPublicResourceSummaries(DatatableRequest request);
 
   /**
-   * list all resource that can be managed by a given user.
+   * list all resource that can be managed by a given user, in the organisation the request asks for (all if none).
    *
    * @param user User
    * @param request request parameters
@@ -40,4 +42,20 @@ public interface ResourceDataTableViewManager {
    * @return list of resources wrapped by DatatableResult class
    */
   DatatableResult list(User user, DatatableRequest request);
+
+  /**
+   * The organisations of the resources a user can manage, for the organisation filter.
+   *
+   * @param user User
+   *
+   * @return organisation name (alias if set) by organisation key, sorted by name
+   */
+  Map<String, String> listOrganisations(User user);
+
+  /**
+   * Whether the resources of this IPT belong to more than one organisation, so the manage table shows the organisation.
+   *
+   * @return true if there are resources of two or more organisations
+   */
+  boolean hasSeveralOrganisations();
 }

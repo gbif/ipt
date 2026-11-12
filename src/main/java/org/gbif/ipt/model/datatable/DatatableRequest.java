@@ -27,6 +27,8 @@ public class DatatableRequest {
   private long offset = 0;
   private int limit = 10;
   private String locale = "en";
+  // manage page: which organisation (key, empty for all)
+  private String organisation = "";
 
   public String getSearch() {
     return search;
@@ -68,6 +70,14 @@ public class DatatableRequest {
     this.limit = limit;
   }
 
+  public String getOrganisation() {
+    return organisation;
+  }
+
+  public void setOrganisation(String organisation) {
+    this.organisation = organisation;
+  }
+
   public String getLocale() {
     return locale;
   }
@@ -86,12 +96,13 @@ public class DatatableRequest {
         && Objects.equals(sortOrder, that.sortOrder)
         && Objects.equals(offset, that.offset)
         && Objects.equals(limit, that.limit)
-        && Objects.equals(locale, that.locale);
+        && Objects.equals(locale, that.locale)
+        && Objects.equals(organisation, that.organisation);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(search, sortFieldIndex, sortOrder, offset, limit, locale);
+    return Objects.hash(search, sortFieldIndex, sortOrder, offset, limit, locale, organisation);
   }
 
   @Override
@@ -103,6 +114,7 @@ public class DatatableRequest {
         .add("offset=" + offset)
         .add("limit=" + limit)
         .add("locale='" + locale + "'")
+        .add("organisation='" + organisation + "'")
         .toString();
   }
 }

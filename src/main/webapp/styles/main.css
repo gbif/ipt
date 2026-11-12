@@ -1087,6 +1087,19 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 /* GBIF green colored solid button END */
 
 
+/* GBIF green filled button: a page's main action, at most one per heading */
+.btn-gbif-solid {
+    background-color: rgb(var(--color-gbif-primary));
+    border-color: rgb(var(--color-gbif-primary));
+    color: #fff;
+}
+.btn-gbif-solid:hover, .btn-gbif-solid:focus {
+    background-color: rgb(var(--color-gbif-primary));
+    border-color: rgb(var(--color-gbif-primary));
+    color: #fff;
+    filter: brightness(0.92);
+}
+
 /* GBIF green colored outline button START */
 .btn-outline-gbif-primary {
     color: rgb(var(--color-gbif-primary));

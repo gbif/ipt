@@ -255,6 +255,7 @@
     <constructor-arg ref="vocabulariesManager"/>
     <constructor-arg ref="dataPackageSchemaManager"/>
     <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="resourcePublicationManager"/>
   </bean>
 
   <bean id="resourceManagerProvider"
