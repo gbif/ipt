@@ -467,7 +467,7 @@
         <div class="columnLinks mt-2 d-flex justify-content-end">
             <a id="taxon-removeLink" href="" class="removeTaxonLink metadata-action-link">
                 <span>
-                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                    <svg viewBox="0 0 24 24" style="fill: rgb(var(--link-color));height: 1em;vertical-align: -0.125em !important;">
                         <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                     </svg>
                 </span>
@@ -520,7 +520,7 @@
         <div class="addNew col-12 mt-2">
             <a id="plus-vernacularName" class="metadata-action-link" href="">
                 <span>
-                    <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                    <svg viewBox="0 0 24 24" style="fill: rgb(var(--link-color));height: 1em;vertical-align: -0.125em !important;">
                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                     </svg>
                 </span>
@@ -533,7 +533,7 @@
         <div class="columnLinks mt-2 d-flex justify-content-end">
             <a id="vernacularName-removeLink" href="" class="removeVernacularNameLink metadata-action-link">
             <span>
-                <svg viewBox="0 0 24 24" style="fill: #4BA2CE;height: 1em;vertical-align: -0.125em !important;">
+                <svg viewBox="0 0 24 24" style="fill: rgb(var(--link-color));height: 1em;vertical-align: -0.125em !important;">
                     <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
                 </svg>
             </span>
