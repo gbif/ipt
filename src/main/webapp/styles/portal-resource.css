@@ -71,7 +71,7 @@ button.rp-chip:hover { background: #e2e6ea; }
 /* contacts as rows that open to the details (macro personRow) */
 .rp-people { display: flex; flex-direction: column; gap: 6px; font-size: .875rem; }
 .rp-person-row { border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; }
-.rp-pr-head { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) auto; gap: 4px 16px; align-items: start; padding: 8px 12px; list-style: none; }
+.rp-pr-head { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) calc(2em + 6px); gap: 4px 16px; align-items: start; padding: 8px 12px; list-style: none; }
 summary.rp-pr-head { cursor: pointer; }
 summary.rp-pr-head::-webkit-details-marker { display: none; }
 summary.rp-pr-head:hover { background: #f8f9fa; }
@@ -79,12 +79,12 @@ summary.rp-pr-head:hover { background: #f8f9fa; }
 .rp-pr-name { font-weight: 600; color: #4E565F; }
 .rp-pr-org, .rp-pr-roles { color: #6c757d; font-size: .8125rem; }
 .rp-pr-roles { padding-top: 1px; }
-.rp-pr-actions { display: flex; gap: 6px; align-items: center; color: #6c757d; }
+.rp-pr-actions { display: flex; gap: 6px; align-items: center; justify-content: flex-end; color: #6c757d; }
 .rp-pr-actions a.rp-pr-mail { display: inline-flex; color: #6c757d !important; } /* main.css forces link colour with !important */
 .rp-pr-actions a.rp-pr-mail:hover { color: rgb(var(--color-gbif-primary)) !important; }
 .rp-pr-chevron { transition: transform .15s; }
 .rp-person-row[open] .rp-pr-chevron { transform: rotate(180deg); }
-.rp-person-row:not(details) .rp-pr-actions { padding-right: 22px; } /* line the mail icons up with rows that have a chevron */
+.rp-person-row:not(details) .rp-pr-actions { padding-right: calc(1em + 6px); } /* line the mail icons up with rows that have a chevron */
 .rp-pr-details { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 0; padding: 8px 12px 10px; background: #f8f9fa; border-top: 1px solid #eef0f2; font-size: .8125rem; }
 .rp-pr-details dt { font-weight: 500; color: #6c757d; }
 .rp-pr-details dd { margin: 0; color: #495057; }
