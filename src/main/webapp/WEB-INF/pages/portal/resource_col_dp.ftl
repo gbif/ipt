@@ -3,90 +3,22 @@
 <title>${dpMetadata.title!"IPT"}</title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
-<#include "/WEB-INF/pages/macros/versionsTable.ftl"/>
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
+<#include "/WEB-INF/pages/macros/portal_resource.ftl"/>
+<#-- ColDP issued: a date in possibly truncated ISO format (2024, 2024-05, 2024-05-21), in the visitor's format -->
+<#assign colDpIssued = ((dpMetadata.issued)?string)!""/>
+<#if colDpIssued?matches("\\d{4}-\\d{2}-\\d{2}")>
+    <#assign colDpIssued = colDpIssued?date("yyyy-MM-dd")?string.long/>
+<#elseif colDpIssued?matches("\\d{4}-\\d{2}")>
+    <#assign colDpIssued = colDpIssued?date("yyyy-MM")?string("MMMM yyyy")/>
+</#if>
+<link rel="stylesheet" href="${baseURL}/styles/portal-resource.css">
 
-<#-- Construct an Agent -->
-<#macro agent entity>
-    <div class="contact">
-        <div class="contactName mb-1">
-            <#if entity.given?has_content || entity.family?has_content>
-                ${entity.given!} ${entity.family!}
-            <#else>
-                ${entity.organisation!}
-            </#if>
-
-        </div>
-
-        <div class="text-smaller text-discreet">
-            <div class="contactType fst-italic">
-                ${entity.role!}
-            </div>
-
-            <#if (entity.given?has_content || entity.family?has_content) && entity.organisation?has_content>
-                <div class="organisation">
-                    ${entity.organisation!}
-                </div>
-            </#if>
-
-            <div class="address">
-                <#if entity.city?has_content>
-                    <div class="city">
-                        ${entity.city}
-                    </div>
-                </#if>
-
-                <#if entity.state?has_content>
-                    <div class="state">${entity.state}</div>
-                </#if>
-
-                <#if entity.country?has_content>
-                    <div class="country">${entity.country}</div>
-                </#if>
-            </div>
-
-            <#if entity.email?has_content>
-                <div>
-                    <a href="mailto:${entity.email}">${entity.email}</a>
-                </div>
-            </#if>
-
-            <#if entity.url?has_content>
-                <div class="overflow-wrap">
-                    <a href="${entity.url}">${entity.url}</a>
-                </div>
-            </#if>
-
-            <#if entity.rorid?has_content>
-                <div class="overflow-wrap">
-                    rorid: ${entity.rorid}
-                </div>
-            </#if>
-
-            <#if entity.orcid?has_content>
-                <div class="overflow-wrap">
-                    orcid: ${entity.orcid}
-                </div>
-            </#if>
-        </div>
-    </div>
-</#macro>
-
-<#assign anchor_versions>#anchor-versions</#assign>
-<#assign anchor_rights>#anchor-rights</#assign>
-<#assign anchor_citation>#anchor-citation</#assign>
-<#assign no_description><@s.text name='portal.resource.no.description'/></#assign>
-<#assign publishedOnText><@s.text name='manage.overview.published.released'/></#assign>
-<#assign publishedOnText = publishedOnText?markup_string>
 <#assign download_dp_url>${baseURL}/archive.do?r=${resource.shortname}<#if version??>&v=${version.toPlainString()}</#if></#assign>
 <#assign download_metadata_url>${baseURL}/metadata.do?r=${resource.shortname}&v=<#if version??>${version.toPlainString()}<#else>${resource.metadataVersion.toPlainString()}</#if></#assign>
 <#assign isPreviewPage = action.isPreview() />
 
 <style>
-    <#-- For HTML headers inside description -->
-    h1, h2, h3, h4, h5 {
-        font-size: 1.25rem !important;
-    }
-
     :root {
         --navbar-height: 90px;
     }
@@ -96,7 +28,6 @@
     }
 </style>
 
-<script src="${baseURL}/js/dataTables/dataTables-3.1.5.min.js"></script>
 <script src="${baseURL}/js/scrollspy.js"></script>
 <script>
     $(document).ready(function () {
@@ -109,14 +40,9 @@
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
-<div class="container-fluid bg-body border-bottom">
-    <#-- display watermark for preview pages -->
-    <#if isPreviewPage>
-        <div id="watermark" class="text-center text-uppercase fs-1 mb-2">
-            <@s.text name='manage.overview.metadata.preview'><@s.param>${resource.metadataVersion.toPlainString()}</@s.param></@s.text>
-        </div>
-    </#if>
+<@previewNotice nextVersion=resource.metadataVersion.toPlainString()/>
 
+<div class="container-fluid bg-body border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
         <div class="container my-3 p-3">
             <div class="text-center fs-smaller">
@@ -139,40 +65,16 @@
                     <span class="fs-smaller-2 text-nowrap dt-content-link dt-content-pill type-${resourceTypeLowerCase} me-1"><@s.text name="portal.resource.type.${resourceTypeLowerCase}"/></span>
                 </div>
 
-                <#if resource.lastPublished??>
-                    <div class="text-gbif-primary fs-smaller-2 mt-2">
-                            <span>
-                                <#-- the existence of parameter version means the version is not equal to the latest published version -->
-                                <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
-                                    <em><@s.text name='portal.resource.version'/>&nbsp;${version.toPlainString()}</em>
-                                <#else>
-                                    <@s.text name='portal.resource.latest.version'/>
-                                </#if>
-
-                                ${publishedOnText?lower_case}&nbsp;<span>${resource.lastPublished?date?string.long}</span>
-                            </span>
-                    </div>
-                <#else>
-                    <div class="text-gbif-danger text-smaller">
-                        <@s.text name='portal.resource.published.never.long'/>
-                    </div>
-                </#if>
+                <@versionLine latestVersion=resource.metadataVersion.toPlainString() pubDateText=colDpIssued/>
 
                 <#if resource.lastPublished??>
                     <div class="mt-2">
+                        <@dataPackageDownloadButtons metadataFile="metadata.yaml" metadataKey="portal.resource.download.metadataYaml.description"/>
                         <#if managerRights>
                             <a href="${baseURL}/manage/resource.do?r=${resource.shortname}"
-                               class="btn btn-sm btn-outline-gbif-primary mt-1 me-xl-1 top-button">
+                               class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
                                 <@s.text name='button.edit'/>
                             </a>
-                        </#if>
-                        <#if version?? && version.toPlainString() != resource.metadataVersion.toPlainString()>
-                            <#if adminRights>
-                                <a class="confirmDeleteVersion btn btn-sm btn-outline-gbif-danger mt-1 me-xl-1 top-button"
-                                   data-post href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&v=${version.toPlainString()}">
-                                    <@s.text name='button.delete.version'/>
-                                </a>
-                            </#if>
                         </#if>
                     </div>
                 </#if>
@@ -181,148 +83,77 @@
     </div>
 </div>
 
-<div class="container-fluid bg-light border-bottom">
-    <div class="container px-0">
-        <div class="my-4 px-4 py-4 bg-body border rounded shadow-sm">
-            <span class="anchor anchor-home-resource-page-2 mb-3" id="anchor-downloads"></span>
-            <div class="mx-md-4 mx-2">
-                <div class="row">
-                    <div class="col-lg-4 text-smaller px-0 pb-lg-max-3 ps-lg-3 order-lg-2">
-                        <dl class="inline mb-0">
-                            <#if (dpMetadata.issued)??>
-                                <div>
-                                    <dt><@s.text name='portal.resource.publicationDate'/>:</dt>
-                                    <dd>${dpMetadata.issued?date?string.long}</dd>
-                                </div>
-                            </#if>
-                        </dl>
-                        <dl class="inline mb-0">
-                            <#if (dpMetadata.issued)?? && resource.organisation?has_content>
-                                <div>
-                                    <dt><@s.text name='portal.resource.publishedBy'/>:</dt>
-                                    <dd>
-                                        <a href="${cfg.portalUrl}/publisher/${resource.organisation.key}"
-                                           target="_blank">${resource.organisation.name!"Organisation"}</a>
-                                    </dd>
-                                </div>
-                            </#if>
-                        </dl>
-                    </div>
+<#-- the ccLicense code of a ColDP license, read as MetadataUtils.colDpLicenseToGbifCode reads it; "" for any other -->
+<#assign colDpLicenseCodes = {"CC0": "CC0-1.0", "CC01.0": "CC0-1.0", "CCBY": "CC-BY-4.0", "CCBY4.0": "CC-BY-4.0", "CCBYNC": "CC-BY-NC-4.0", "CCBYNC4.0": "CC-BY-NC-4.0"}/>
+<#assign colDpLicense = (dpMetadata.license)!""/>
+<#assign colDpLicenseCode = colDpLicenseCodes[colDpLicense?upper_case?replace("[\\s_-]", "", "r")]!""/>
 
-                    <div class="col-lg-8 text-smaller px-0 pt-lg-max-3 border-lg-max-top order-lg-1">
-                        <p class="mb-1"><@s.text name='portal.resource.downloads.datapackage.verbose'/></p>
+<#-- an ORCID or ROR given as an identifier or a URL, as a URL -->
+<#function idUrl id base>
+    <#if id?starts_with("http")><#return id/></#if>
+    <#return base + id/>
+</#function>
 
-                        <div class="table-responsive">
-                            <table class="downloads text-smaller table table-sm table-borderless mb-0">
-                                <tr>
-                                    <th class="col-4 p-0">
-                                        <@s.text name='portal.resource.dataPackage.verbose'/>
-                                    </th>
-                                    <td class="p-0">
-                                        <a href="${download_dp_url}"
-                                           onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}' ]);">
-                                            <svg class="link-icon" focusable="false" aria-hidden="true"
-                                                 viewBox="0 0 24 24" data-testid="DownloadIcon">
-                                                <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
-                                            </svg>
-                                            <@s.text name='portal.resource.download'/>
-                                        </a>
-                                        (${dataPackageSizeForVersion!"-"})
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="p-0"><@s.text name='portal.resource.datapackage.metadata.verbose'/></th>
-                                    <td class="p-0">
-                                        <a href="${download_metadata_url}"
-                                           onClick="_gaq.push(['_trackEvent', 'Metadata', 'Download', '${resource.shortname}']);"
-                                           download>
-                                            <svg class="link-icon" focusable="false" aria-hidden="true"
-                                                 viewBox="0 0 24 24" data-testid="DownloadIcon">
-                                                <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
-                                            </svg>
-                                            <@s.text name='portal.resource.download'/>
-                                        </a>
-                                        (${metadataSizeForVersion!"-"})
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<#-- people: each agent once (by name, or by organisation), with all their roles in the order of the roles below -->
+<#assign peopleKeys = []/>
+<#assign peopleAgents = {}/>
+<#assign peopleRoles = {}/>
+<#macro addAgent a role>
+    <#if a?is_hash>
+        <#local key = ((a.given!"") + "|" + (a.family!"") + "|" + ((a.given?has_content || a.family?has_content)?then("", a.organisation!"")))?lower_case?trim/>
+        <#if key != "||">
+            <#if !peopleKeys?seq_contains(key)>
+                <#assign peopleKeys = peopleKeys + [key]/>
+                <#assign peopleAgents = peopleAgents + {key: a}/>
+                <#assign peopleRoles = peopleRoles + {key: [role]}/>
+            <#elseif !peopleRoles[key]?seq_contains(role)>
+                <#assign peopleRoles = peopleRoles + {key: peopleRoles[key] + [role]}/>
+            </#if>
+        </#if>
+    </#if>
+</#macro>
+<#list (dpMetadata.creator)![] as c><@addAgent a=c role="creator"/></#list>
+<@addAgent a=(dpMetadata.contact)!"" role="contact"/>
+<#list (dpMetadata.editor)![] as c><@addAgent a=c role="editor"/></#list>
+<@addAgent a=(dpMetadata.publisher)!"" role="publisher"/>
+<#list (dpMetadata.contributor)![] as c><@addAgent a=c role="contributor"/></#list>
+
+<#assign isPublished = resource.lastPublished??/>
+<#assign doi = ((dpMetadata.doi)??)?then(dpMetadata.doi?string, "")/>
+<#assign temporalScope = (dpMetadata.temporalScope)!""/>
+<#assign hasCoverage = (dpMetadata.geographicScope)?has_content || temporalScope?has_content || (dpMetadata.taxonomicScope)?has_content/>
+<#assign isRegistered = resource.status == "REGISTERED" && resource.key??/>
+<#assign hasMore = isRegistered || (dpMetadata.keyword)?has_content || (dpMetadata.source)?has_content || (dpMetadata.identifier)?has_content || (dpMetadata.notes)?has_content
+    || (dpMetadata.alias)?has_content || (dpMetadata.url)?? || (dpMetadata.issn)?has_content || (dpMetadata.completeness)?? || (dpMetadata.confidence)??/>
 
 <div id="sections" class="container-fluid bg-body">
-    <div class="container my-md-4 bd-layout main-content-container">
+    <div class="container mb-md-4 bd-layout main-content-container">
         <main class="bd-main">
-            <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+            <div class="bd-toc mt-4 pt-3 ps-3 mb-lg-5 text-muted">
                 <nav id="sidebar-content">
                     <ul>
-                        <li><a href="#anchor-description"
-                               class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a>
-                        </li>
-                        <#if resource.lastPublished??>
+                        <li class="rp-toc-group"><@s.text name='portal.resource.toc.about'/></li>
+                        <li><a href="#anchor-description" class="sidebar-navigation-link"><@s.text name='portal.resource.description'/></a></li>
+                        <#if isPublished && (colDpLicense?has_content || doi?has_content)>
+                            <li><a href="#anchor-citation" class="sidebar-navigation-link"><@s.text name='portal.resource.citationLicense'/></a></li>
+                        </#if>
+                        <#if isPublished>
+                            <li class="rp-toc-group"><@s.text name='portal.resource.toc.data'/></li>
+                            <li><a href="#anchor-dataRecords" class="sidebar-navigation-link"><@s.text name='portal.resource.dataRecords'/></a></li>
                             <#if resource.versionHistory??>
-                                <li><a href="#anchor-versions"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a>
-                                </li>
+                                <li><a href="#anchor-versions" class="sidebar-navigation-link"><@s.text name='portal.resource.versions'/></a></li>
                             </#if>
-                            <#if (dpMetadata.identifier)?has_content>
-                                <li><a href="#anchor-identifiers"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.identifiers'/></a>
-                                </li>
+                            <#if hasCoverage>
+                                <li><a href="#anchor-coverage" class="sidebar-navigation-link"><@s.text name='portal.resource.coverage'/></a></li>
                             </#if>
-                            <#if (dpMetadata.keyword)?has_content>
-                                <li><a href="#anchor-keywords"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.keywords'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.contact)?has_content>
-                                <li><a href="#anchor-contact"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.contact'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.creator)?has_content>
-                                <li><a href="#anchor-creators"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.creators'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.editor)?has_content>
-                                <li><a href="#anchor-editors"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.editors'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.publisher)?has_content>
-                                <li><a href="#anchor-publisher"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.publisher'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.contributor)?has_content>
-                                <li><a href="#anchor-contributors"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.contributors'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.geographicScope)?has_content>
-                                <li><a href="#anchor-geographic"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.geographic'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.taxonomicScope)?has_content>
-                                <li><a href="#anchor-taxonomic"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.taxonomic'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.temporalScope)?has_content>
-                                <li><a href="#anchor-temporal"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.temporal'/></a>
-                                </li>
-                            </#if>
-                            <#if (dpMetadata.notes)?has_content>
-                                <li><a href="#anchor-notes"
-                                       class="sidebar-navigation-link"><@s.text name='portal.resource.notes'/></a>
-                                </li>
+                            <#if peopleKeys?has_content || hasMore>
+                                <li class="rp-toc-group"><@s.text name='portal.resource.toc.context'/></li>
+                                <#if peopleKeys?has_content>
+                                    <li><a href="#anchor-contacts" class="sidebar-navigation-link"><@s.text name='portal.resource.contacts'/></a></li>
+                                </#if>
+                                <#if hasMore>
+                                    <li><a href="#anchor-more" class="sidebar-navigation-link"><@s.text name='portal.resource.more'/></a></li>
+                                </#if>
                             </#if>
                         </#if>
                     </ul>
@@ -331,298 +162,181 @@
 
             <div class="bd-content ps-lg-4 pt-5">
                 <span class="anchor anchor-home-resource-page" id="anchor-description"></span>
-                <div id="description" class="pb-5 section">
-                    <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                        <@s.text name='portal.resource.description'/>
-                    </h4>
-                    <div property="dc:abstract" class="mt-3 overflow-x-auto">
-                        <#if (dpMetadata.description)?has_content>
-                            <p>
-                                ${dpMetadata.description?no_esc}
-                            </p>
-                        <#else>
-                            <p><@s.text name='portal.resource.no.description'/></p>
-                        </#if>
-                    </div>
-                </div>
-
-                <!-- Dataset must have been published for versions, downloads, and how to cite sections to show -->
-                <#if resource.lastPublished??>
-                    <!-- versions section -->
-                    <#if resource.versionHistory??>
-                        <span class="anchor anchor-resource-page" id="anchor-versions"></span>
-                        <div id="versions" class="pb-5 section">
-                            <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                                <@s.text name='portal.resource.versions'/>
-                            </h4>
-
-                            <#if managerRights>
-                                <p><@s.text name='portal.resource.versions.verbose.manager'/></p>
+                <section id="description" class="rp-section section">
+                    <h2 class="rp-h"><@s.text name='portal.resource.description'/></h2>
+                    <div class="rp-description overflow-x-auto">
+                        <@resourceLogo url=((dpMetadata.logo)?string)!""/>
+                        <div property="dc:abstract" class="rp-prose">
+                            <#if (dpMetadata.description)?has_content>
+                                <p>${dpMetadata.description?no_esc}</p>
                             <#else>
-                                <p><@s.text name='portal.resource.versions.verbose'/></p>
+                                <p><@s.text name='portal.resource.no.description'/></p>
                             </#if>
-                            <@versionsTable numVersionsShown=3 sEmptyTable="dataTables.sEmptyTable.versions" baseURL=baseURL shortname=resource.shortname />
-                            <div id="vtableContainer" class="table-responsive text-smaller"></div>
                         </div>
+                    </div>
+                </section>
+
+                <#if isPublished>
+                    <#-- licence and DOI (ColDP metadata has no ready-made citation) -->
+                    <#if colDpLicense?has_content || doi?has_content>
+                        <span class="anchor anchor-home-resource-page" id="anchor-citation"></span>
+                        <section id="citation" class="rp-section section">
+                            <h2 class="rp-h"><@s.text name='portal.resource.citationLicense'/></h2>
+                            <#if doi?has_content>
+                                <p class="mb-2">DOI <a property="dc:identifier" href="https://doi.org/${doi}">${doi}</a></p>
+                            </#if>
+                            <#if colDpLicense?has_content>
+                                <div class="rp-license">
+                                    <#if colDpLicenseCode?has_content>
+                                        <@ccLicense colDpLicenseCode/>
+                                    <#else>
+                                        <p class="mb-0"><@s.text name='portal.resource.license'/>: ${colDpLicense}</p>
+                                    </#if>
+                                </div>
+                            </#if>
+                        </section>
+                    </#if>
+
+                    <#-- data records: one bar per table, largest first -->
+                    <#assign recordsByExtensionOrdered = action.getRecordsByExtensionOrdered()/>
+                    <#assign maxRecords = action.getMaxRecordsInExtension()/>
+                    <span class="anchor anchor-home-resource-page" id="anchor-dataRecords"></span>
+                    <section id="dataRecords" class="rp-section section">
+                        <h2 class="rp-h"><@s.text name='portal.resource.dataRecords'/></h2>
+                        <p class="text-muted text-smaller"><@s.text name='portal.resource.dataRecords.dataPackageSchema.intro'/></p>
+                        <div class="rp-bars">
+                            <#list recordsByExtensionOrdered?keys as k>
+                                <#assign tableCount = recordsByExtensionOrdered.get(k)!0/>
+                                <div class="rp-bar-label">${k}</div>
+                                <div class="rp-bar"><i style="width:<#if (maxRecords > 0)>${(tableCount * 100 / maxRecords)?c}<#else>0</#if>%"></i></div>
+                                <div class="rp-bar-n">${tableCount}</div>
+                            </#list>
+                        </div>
+                    </section>
+
+                    <@versionsSection latestVersion=resource.metadataVersion.toPlainString()/>
+
+                    <#-- coverage: ColDP has it as text; a year or a year range also gets the time bar -->
+                    <#if hasCoverage>
+                        <span class="anchor anchor-home-resource-page" id="anchor-coverage"></span>
+                        <section id="coverage" class="rp-section section">
+                            <h2 class="rp-h"><@s.text name='portal.resource.coverage'/></h2>
+                            <#if temporalScope?matches("\\s*\\d{4}\\s*([-–]\\s*\\d{4}\\s*)?")>
+                                <#assign years = temporalScope?replace("[^0-9]+", " ", "r")?trim?split(" ")/>
+                                <div id="temporal-bar" class="rp-timeline mb-3" aria-hidden="true" data-ranges="[[&quot;${years?first}-01-01&quot;,&quot;${years?last}-12-31&quot;]]"></div>
+                            </#if>
+                            <dl class="rp-kv">
+                                <#if (dpMetadata.geographicScope)?has_content>
+                                    <dt><@s.text name='portal.resource.geographic'/></dt><dd property="dc:spatial">${dpMetadata.geographicScope}</dd>
+                                </#if>
+                                <#if temporalScope?has_content>
+                                    <dt><@s.text name='portal.resource.temporal'/></dt><dd property="dc:temporal">${temporalScope}</dd>
+                                </#if>
+                                <#if (dpMetadata.taxonomicScope)?has_content>
+                                    <dt><@s.text name='portal.resource.taxonomic'/></dt>
+                                    <dd>
+                                        ${dpMetadata.taxonomicScope}
+                                        <#if (dpMetadata.taxonomicScopeInEnglish)?has_content && dpMetadata.taxonomicScopeInEnglish != dpMetadata.taxonomicScope>
+                                            <span class="text-muted">(${dpMetadata.taxonomicScopeInEnglish})</span>
+                                        </#if>
+                                    </dd>
+                                </#if>
+                            </dl>
+                        </section>
+                    </#if>
+
+                    <#-- people: each person once, with all their roles -->
+                    <#if peopleKeys?has_content>
+                        <span class="anchor anchor-home-resource-page" id="anchor-contacts"></span>
+                        <section id="contacts" class="rp-section section">
+                            <h2 class="rp-h"><@s.text name='portal.resource.contacts'/></h2>
+                            <div class="rp-people">
+                                <#list peopleKeys as key>
+                                    <#assign a = peopleAgents[key]/>
+                                    <#assign isPerson = a.given?has_content || a.family?has_content/>
+                                    <#assign orgLine = []/>
+                                    <#if isPerson && a.organisation?has_content><#assign orgLine = orgLine + [a.organisation]/></#if>
+                                    <#if a.department?has_content><#assign orgLine = orgLine + [a.department]/></#if>
+                                    <#assign place = [a.city!, a.state!, a.country?has_content?then(countryName(a.country), "")]?filter(p -> p?has_content)/>
+                                    <@personRow name=isPerson?then(((a.given!"") + " " + (a.family!""))?trim, a.organisation!"")
+                                            orcidUrl=a.orcid?has_content?then(idUrl(a.orcid, 'https://orcid.org/'), "")
+                                            org=orgLine?join(" · ")
+                                            roleLabels=peopleRoles[key]?map(r -> action.getText('portal.resource.role.' + r))
+                                            email=a.email!"">
+                                        <@personDetail label=action.getText('eml.contact.address.address')><#list place as p>${p}<#sep>, </#sep></#list></@personDetail>
+                                        <@personDetail label=action.getText('eml.contact.email')><#if a.email?has_content><a href="mailto:${a.email}" class="break-all">${a.email}</a></#if></@personDetail>
+                                        <@personDetail label=action.getText('eml.contact.homepage')><#if (a.url)??><a href="${a.url}" class="break-all">${a.url}</a></#if></@personDetail>
+                                        <@personDetail label="ROR"><#if a.rorid?has_content><a href="${idUrl(a.rorid, 'https://ror.org/')}" class="break-all" target="_blank" rel="noopener">${idUrl(a.rorid, 'https://ror.org/')}</a></#if></@personDetail>
+                                        <@personDetail label=action.getText('portal.resource.notes')><#if a.note?has_content>${a.note}</#if></@personDetail>
+                                    </@personRow>
+                                </#list>
+                            </div>
+                        </section>
+                    </#if>
+
+                    <#-- the long tail: folded -->
+                    <#if hasMore>
+                        <span class="anchor anchor-home-resource-page" id="anchor-more"></span>
+                        <section id="more" class="rp-section section">
+                            <h2 class="rp-h"><@s.text name='portal.resource.more'/></h2>
+
+                            <#if (dpMetadata.keyword)?has_content>
+                                <details id="keywords" class="rp-more" open>
+                                    <summary><@s.text name='portal.resource.keywords'/></summary>
+                                    <div class="rp-keywords" property="dc:subject">
+                                        <#list dpMetadata.keyword as kw><#if kw?has_content><span>${kw}</span></#if></#list>
+                                    </div>
+                                </details>
+                            </#if>
+
+                            <#if (dpMetadata.source)?has_content>
+                                <details id="sources" class="rp-more">
+                                    <summary><@s.text name='portal.resource.sources'/> (${dpMetadata.source?size})</summary>
+                                    <ol class="overflow-x-auto mb-0">
+                                        <#list dpMetadata.source as src>
+                                            <li property="dc:references">
+                                                <#assign people = ((src.author)![]) + ((src.editor)![])/>
+                                                <#if people?has_content><#list people as p><#if p.literal?has_content>${p.literal}<#else>${p.family!} ${p.given!}</#if><#sep>, </#sep></#list>. </#if>
+                                                <#if (src.issued)??>(${src.issued?string}). </#if>
+                                                <strong>${src.title!src.id!}</strong><#if src.version?has_content>, ${src.version}</#if>.
+                                                <#if src.containerTitle?has_content><em>${src.containerTitle}</em><#if src.volume?has_content> ${src.volume}</#if><#if src.issue?has_content>(${src.issue})</#if><#if src.page?has_content>: ${src.page}</#if>. </#if>
+                                                <#if src.publisher?has_content>${src.publisher}<#if src.publisherPlace?has_content>, ${src.publisherPlace}</#if>. </#if>
+                                                <#if (src.doi)??><a href="https://doi.org/${src.doi?string}">https://doi.org/${src.doi?string}</a><#elseif (src.url)??><a href="${src.url}" class="break-all">${src.url}</a></#if>
+                                            </li>
+                                        </#list>
+                                    </ol>
+                                </details>
+                            </#if>
+
+                            <#if (dpMetadata.notes)?has_content>
+                                <details id="notes" class="rp-more">
+                                    <summary><@s.text name='portal.resource.notes'/></summary>
+                                    <div class="rp-prose">${dpMetadata.notes}</div>
+                                </details>
+                            </#if>
+
+                            <#if (dpMetadata.alias)?has_content || (dpMetadata.url)?? || (dpMetadata.identifier)?has_content || (dpMetadata.issn)?has_content || (dpMetadata.completeness)?? || (dpMetadata.confidence)??>
+                                <details id="additionalMetadata" class="rp-more">
+                                    <summary><@s.text name='manage.metadata.additional.title'/></summary>
+                                    <dl class="rp-kv">
+                                        <#if (dpMetadata.alias)?has_content><dt><@s.text name='portal.resource.alias'/></dt><dd>${dpMetadata.alias}</dd></#if>
+                                        <#if (dpMetadata.url)??><dt><@s.text name='portal.resource.website'/></dt><dd><a href="${dpMetadata.url}" class="break-all">${dpMetadata.url}</a></dd></#if>
+                                        <#if (dpMetadata.identifier)?has_content><dt><@s.text name='portal.resource.identifiers'/></dt><dd><#list dpMetadata.identifier as id><div class="break-all">${id}</div></#list></dd></#if>
+                                        <#if (dpMetadata.issn)?has_content><dt>ISSN</dt><dd>${dpMetadata.issn}</dd></#if>
+                                        <#if (dpMetadata.completeness)??><dt><@s.text name='portal.resource.completeness'/></dt><dd>${dpMetadata.completeness}%</dd></#if>
+                                        <#if (dpMetadata.confidence)??><dt><@s.text name='portal.resource.confidence'/></dt><dd>${dpMetadata.confidence} / 5</dd></#if>
+                                    </dl>
+                                </details>
+                            </#if>
+                            <#if isRegistered>
+                                <div id="gbif" class="rp-machine">
+                                    <span class="fw-bold"><@s.text name='portal.resource.organisation.key'/>:</span>
+                                    <a href="${cfg.portalUrl}/dataset/${resource.key}">${cfg.portalUrl}/dataset/${resource.key}</a>
+                                </div>
+                            </#if>
+                        </section>
                     </#if>
                 </#if>
-
-                <!-- Identifiers section -->
-                <#if (dpMetadata.identifier.additionalProperties)?has_content>
-                    <span class="anchor anchor-home-resource-page" id="anchor-identifiers"></span>
-                    <div id="identifiers" class="pb-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.identifiers'/>
-                        </h4>
-
-                        <p>
-                            <#list dpMetadata.identifier.additionalProperties as key, value>
-                                ${key}: ${value}<br>
-                            </#list>
-                        </p>
-                    </div>
-                </#if>
-
-                <!-- Keywords section -->
-                <#if (dpMetadata.keyword)?has_content>
-                    <span class="anchor anchor-home-resource-page" id="anchor-keywords"></span>
-                    <div id="keywords" class="pb-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.keywords'/>
-                        </h4>
-
-                        <p>
-                            <#list dpMetadata.keyword as keyword>
-                                ${keyword}<#sep>;</#sep>
-                            </#list>
-                        </p>
-                    </div>
-                </#if>
-
-                <!-- Contact section -->
-                <#if (dpMetadata.contact)?has_content>
-                    <span class="anchor anchor-resource-page" id="anchor-contact"></span>
-                    <div id="contact" class="pb-5 section">
-                        <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.contact'/>
-                        </h4>
-
-                        <div class="row g-3 border">
-                            <div class="col-lg-4 mt-0">
-                                <@agent entity=dpMetadata.contact />
-                            </div>
-                        </div>
-                    </div>
-                </#if>
-
-                <!-- Creators section -->
-                <#if (dpMetadata.creator)?has_content>
-                    <span class="anchor anchor-resource-page" id="anchor-creators"></span>
-                    <div id="creators" class="pb-5 section">
-                        <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.creators'/>
-                        </h4>
-
-                        <div class="row g-3 border">
-                            <#if (dpMetadata.creator?size>0)>
-                                <#list dpMetadata.creator as c>
-                                    <div class="col-lg-4 mt-0">
-                                        <@agent entity=c />
-                                    </div>
-                                </#list>
-                            </#if>
-                        </div>
-                    </div>
-                </#if>
-
-                <!-- Editors section -->
-                <#if (dpMetadata.editor)?has_content>
-                    <span class="anchor anchor-resource-page" id="anchor-editors"></span>
-                    <div id="editors" class="pb-5 section">
-                        <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.editors'/>
-                        </h4>
-
-                        <div class="row g-3 border">
-                            <#if (dpMetadata.editor?size>0)>
-                                <#list dpMetadata.editor as c>
-                                    <div class="col-lg-4 mt-0">
-                                        <@agent entity=c />
-                                    </div>
-                                </#list>
-                            </#if>
-                        </div>
-                    </div>
-                </#if>
-
-                <!-- Publishers section -->
-                <#if (dpMetadata.publisher)?has_content>
-                    <span class="anchor anchor-resource-page" id="anchor-publisher"></span>
-                    <div id="publisher" class="pb-5 section">
-                        <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.publisher'/>
-                        </h4>
-
-                        <div class="row g-3 border">
-                            <div class="col-lg-4 mt-0">
-                                <@agent entity=dpMetadata.publisher />
-                            </div>
-                        </div>
-                    </div>
-                </#if>
-
-                <!-- Contributors section -->
-                <#if (dpMetadata.contributor)?has_content>
-                    <span class="anchor anchor-resource-page" id="anchor-contributors"></span>
-                    <div id="contributors" class="pb-5 section">
-                        <h4 class="pb-2 mb-4 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.contributors'/>
-                        </h4>
-
-                        <div class="row g-3 border">
-                            <#if (dpMetadata.contributor?size>0)>
-                                <#list dpMetadata.contributor as c>
-                                    <div class="col-lg-4 mt-0">
-                                        <@agent entity=c />
-                                    </div>
-                                </#list>
-                            </#if>
-                        </div>
-                    </div>
-                </#if>
-
-                <!-- Sources section -->
-                <#if (dpMetadata.sources)?has_content>
-                    <span class="anchor anchor-home-resource-page" id="anchor-sources"></span>
-                    <div id="sources" class="pb-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.sources'/>
-                        </h4>
-
-                        <#list dpMetadata.sources as source>
-                            <div class="table-responsive">
-                                <table class="text-smaller table table-sm table-borderless">
-                                    <tr>
-                                        <th class="col-4">Title</th>
-                                        <td>${source.title!}</td>
-                                    </tr>
-                                    <#if source.path??>
-                                        <tr>
-                                            <th class="col-4">Path</th>
-                                            <td><a href="${source.path}">${source.path}</a></td>
-                                        </tr>
-                                    </#if>
-                                    <#if source.email??>
-                                        <tr>
-                                            <th class="col-4">Email</th>
-                                            <td><a href="mailto:${source.email}">${source.email}</a></td>
-                                        </tr>
-                                    </#if>
-                                    <tr>
-                                        <th class="col-4">Version</th>
-                                        <td>${source.version!source.additionalProperties['version']!"-"}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </#list>
-                    </div>
-                </#if>
-
-                <!-- Licenses section -->
-                <#if (dpMetadata.licenses)?has_content>
-                    <span class="anchor anchor-home-resource-page" id="anchor-licenses"></span>
-                    <div id="licenses" class="pb-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.licenses'/>
-                        </h4>
-
-                        <#list dpMetadata.licenses as license>
-                            <div class="table-responsive">
-                                <table class="text-smaller table table-sm table-borderless">
-                                    <#if license.name??>
-                                        <tr>
-                                            <th class="col-4">Name</th>
-                                            <td>${license.name}</td>
-                                        </tr>
-                                    </#if>
-                                    <#if license.title??>
-                                        <tr>
-                                            <th class="col-4">Title</th>
-                                            <td>${license.title}</td>
-                                        </tr>
-                                    </#if>
-                                    <#if license.path??>
-                                        <tr>
-                                            <th class="col-4">Path</th>
-                                            <td>${license.path}</td>
-                                        </tr>
-                                    </#if>
-                                    <tr>
-                                        <th class="col-4">Scope</th>
-                                        <td>${license.scope!}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </#list>
-                    </div>
-                </#if>
-
-                <!-- Geographic scope section -->
-                <#if (dpMetadata.geographicScope)??>
-                    <span class="anchor anchor-home-resource-page" id="anchor-geographic"></span>
-                    <div id="geographic" class="pb-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.geographic'/>
-                        </h4>
-
-                        <p>
-                            ${dpMetadata.geographicScope}
-                        </p>
-                    </div>
-                </#if>
-
-                <!-- Taxonomic scope section -->
-                <#if (dpMetadata.taxonomicScope)??>
-                    <span class="anchor anchor-home-resource-page" id="anchor-taxonomic"></span>
-                    <div id="taxonomic" class="pb-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.taxonomic'/>
-                        </h4>
-
-                        <p>
-                            ${dpMetadata.taxonomicScope}
-                        </p>
-                    </div>
-                </#if>
-
-                <!-- Temporal scope section -->
-                <#if (dpMetadata.temporalScope)??>
-                    <span class="anchor anchor-home-resource-page" id="anchor-temporal"></span>
-                    <div id="temporal" class="pb-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.temporal'/>
-                        </h4>
-
-                        <p>
-                            ${dpMetadata.temporalScope}
-                        </p>
-                    </div>
-                </#if>
-
-                <!-- Notes section -->
-                <#if (dpMetadata.notes)??>
-                    <span class="anchor anchor-home-resource-page" id="anchor-notes"></span>
-                    <div id="notes" class="pb-5 section">
-                        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fw-400">
-                            <@s.text name='portal.resource.notes'/>
-                        </h4>
-
-                        <p>
-                            ${dpMetadata.notes}
-                        </p>
-                    </div>
-                </#if>
-
             </div>
         </main>
     </div>
@@ -631,10 +345,8 @@
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
 
-<!-- data record line chart -->
-<script src="${baseURL}/js/graphs.js"></script>
-
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+<script src="${baseURL}/js/portal-resource.js"></script>
 
 <script>
     $('.confirmDeleteVersion').jConfirmAction({
@@ -645,19 +357,4 @@
         buttonType: "danger",
         baseUrl: "${baseURL}"
     });
-
-    $(function () {
-        <#if action.getRecordsByExtensionOrdered()?size gt 1>
-        var graph = $("#record_graph");
-        var maxRecords = ${action.getMaxRecordsInExtension()?c!5000};
-        // max 350px
-        graph.bindRecordBars((350 - ((maxRecords + "").length) * 10) / maxRecords);
-        </#if>
-    });
-
-    // show extension description in tooltip in data records section
-    $(function () {
-        $('.ext-tooltip').tooltip();
-    });
-
 </script>

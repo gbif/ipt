@@ -1610,16 +1610,6 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 /* Style select2 component END */
 
 
-#watermark {
-    position: fixed;
-    opacity: 0.5;
-    z-index: 1000;
-    left: 50%;
-    transform: translate(-50%, 0);
-    color: rgb(var(--color-gbif-primary));
-}
-
-
 /* Resource logo styling */
 .icon {
     background-repeat: no-repeat;

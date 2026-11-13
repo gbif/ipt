@@ -62,6 +62,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -356,6 +357,28 @@ public class ResourceAction extends PortalBaseAction {
     return null;
   }
 
+  /**
+   * The name of a country, e.g. "Romania" for RO, for contact addresses on the resource page. It is given in the
+   * language the metadata is written in (EML metadataLanguage), like the rest of the address, not in the visitor's
+   * language; English when the metadata doesn't say (e.g. ColDP). The country vocabulary only has upper-case English
+   * and Spanish names, so Java's locale data is used.
+   *
+   * @param code ISO 3166-1 alpha-2 code
+   * @return the country's name, or the value as given when it isn't a known code (e.g. already a name)
+   */
+  public String getCountryName(String code) {
+    String trimmed = StringUtils.trimToEmpty(code).toUpperCase(Locale.ROOT);
+    if (trimmed.length() != 2 || !Set.of(Locale.getISOCountries()).contains(trimmed)) {
+      return code;
+    }
+    Locale country = new Locale("", trimmed);
+    String tag = eml == null ? null : MetadataLanguageTags.toTag(null, eml.getMetadataLanguage());
+    Locale language = tag == null ? Locale.ENGLISH : Locale.forLanguageTag(tag);
+    String name = country.getDisplayCountry(language);
+    // Java has no name in that language: English
+    return StringUtils.isBlank(name) || name.equals(trimmed) ? country.getDisplayCountry(Locale.ENGLISH) : name;
+  }
+
   public Ipt getIpt() {
     if (registrationManager.getIpt() == null) {
       return new Ipt();
@@ -480,7 +503,10 @@ public class ResourceAction extends PortalBaseAction {
   public void finishLoadingDetail(@NotNull Resource resource, @NotNull DataPackageMetadata metadata, @NotNull BigDecimal version) {
     String name = resource.getShortname();
     File dataPackageFile = dataDir.resourceDataPackageFile(name, version);
-    dataPackageSizeForVersion = IptFileUtils.formatSize(dataPackageFile.length(), 0);
+    // left null when there is no data package, e.g. on the preview of a never-published resource
+    if (dataPackageFile.exists()) {
+      dataPackageSizeForVersion = IptFileUtils.formatSize(dataPackageFile.length(), 0);
+    }
 
     // determine metadata file size
     File metadataFile = dataDir.resourceDatapackageMetadataFile(name, resource.getCoreType(), version);

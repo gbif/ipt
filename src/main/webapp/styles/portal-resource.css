@@ -1,0 +1,136 @@
+/* Public resource pages (portal/resource_*.ftl, macros/portal_resource.ftl) */
+
+.rp-section { margin-bottom: 2.5rem; }
+.rp-h { font-size: 1.25rem; font-weight: 400; color: #4E565F; margin: 0 0 .75rem; padding: .5rem 0 .4rem; border-bottom: 1px solid #dee2e6; }
+.rp-h3 { font-size: .875rem; font-weight: 600; color: #4E565F; margin: 1rem 0 .4rem; }
+.rp-section > .rp-h + .rp-h3, .rp-coverage .rp-h3:first-child { margin-top: 0; }
+.rp-kv + .rp-h3 { margin-top: 1.75rem; } /* a sub-heading after a field list, e.g. project personnel */
+/* headings inside DocBook text (description, project, additional metadata) */
+.rp-prose :is(h1, h2, h3, h4, h5, h6), .rp-kv :is(h1, h2, h3, h4, h5, h6) { font-size: 1rem; font-weight: 600; }
+
+/* table of contents groups */
+.bd-toc nav .rp-toc-group { font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; color: #adb5bd; font-weight: 600; margin: 14px 0 2px; }
+.bd-toc nav .rp-toc-group:first-child { margin-top: 0; }
+
+/* citation and licence */
+.rp-cite { background: #f8f9fa; border-radius: 6px; padding: 10px 12px; }
+.rp-cite-top { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 6px; font-size: .875rem; }
+.rp-cite .howtocite { background: none; padding: 0 !important; border: 0; }
+.rp-copy { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.rp-license { display: flex; gap: 12px; align-items: center; margin-top: 12px; font-size: .875rem; }
+.rp-license + .rp-license { margin-top: 8px; }
+/* licence as Creative Commons icons with the short name */
+.bd-content a.rp-license-icons { flex-shrink: 0; display: inline-flex; flex-direction: column; align-items: center; gap: 2px; color: #4E565F !important; font-size: .6875rem; font-weight: 600; white-space: nowrap; text-decoration: none !important; }
+.rp-cc-icons { display: inline-flex; gap: 3px; }
+.rp-cc-icons img { width: 24px; height: 24px; }
+
+/* data records as bars */
+.rp-bars { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr) auto; gap: 6px 12px; align-items: center; font-size: .875rem; max-width: 50rem; }
+.rp-bar-label small { color: #6c757d; font-size: .75rem; }
+.rp-bar { height: 10px; background: #f1f3f5; border-radius: 5px; overflow: hidden; }
+.rp-bar i { display: block; height: 100%; min-width: 2px; background: rgb(var(--color-gbif-primary)); border-radius: 5px; }
+.rp-bar-n { text-align: end; font-variant-numeric: tabular-nums; }
+@media (max-width: 575.98px) {
+    .rp-bars { grid-template-columns: minmax(0, 1fr) auto; }
+    .rp-bar { grid-column: 1 / -1; order: 1; }
+}
+
+/* versions as a timeline */
+.rp-versions { border-inline-start: 2px solid #dee2e6; margin: 0 0 10px 6px; padding-inline-start: 16px; }
+.rp-version { position: relative; padding-bottom: 14px; font-size: .875rem; }
+.rp-version::before { content: ''; position: absolute; inset-inline-start: -23px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid #adb5bd; }
+.rp-version-current::before { border-color: rgb(var(--color-gbif-primary)); background: rgb(var(--color-gbif-primary)); }
+.rp-version-head { display: flex; gap: 4px 12px; align-items: baseline; flex-wrap: wrap; }
+.rp-version-head > span { color: #6c757d; font-size: .8125rem; }
+.rp-version-summary { color: #495057; margin-top: 2px; }
+.rp-version-summary a.rp-version-delete { color: rgb(var(--color-gbif-danger)) !important; } /* main.css forces link colour with !important */
+.rp-pill { font-size: .6875rem !important; border: 1px solid #dee2e6; border-radius: 10px; padding: 0 8px; color: #495057 !important; }
+/* the version line under the heading (macro versionLine) */
+.rp-version-line { font-size: .8125rem; color: #6c757d; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 6px; }
+.rp-version-line .rp-sep { color: #adb5bd; }
+
+/* coverage */
+.rp-coverage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+@media (min-width: 992px) { .rp-coverage-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.rp-map { height: 280px; border: 1px solid #dee2e6; border-radius: 6px; z-index: 0; }
+.rp-cov-desc { font-size: .8125rem; color: #495057; margin: 6px 0 0; }
+.rp-coords { display: block; color: #6c757d; font-variant-numeric: tabular-nums; }
+.rp-timeline { position: relative; height: 46px; margin: 4px 14px 0; }
+.rp-timeline .rp-axis { position: absolute; inset-inline: 0; top: 20px; height: 2px; background: #dee2e6; }
+.rp-timeline .rp-span { position: absolute; top: 14px; height: 14px; min-width: 4px; background: rgba(var(--color-gbif-primary), .35); border: 1px solid rgb(var(--color-gbif-primary)); border-radius: 3px; }
+.rp-timeline .rp-tick { position: absolute; top: 32px; font-size: .6875rem; color: #6c757d; transform: translateX(-50%); }
+#temporal + div { margin-top: 18px; } /* taxa under the time period */
+.rp-taxa + .rp-taxa { margin-top: 12px; }
+.rp-rank { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px; font-size: .875rem; padding: 4px 0; border-bottom: 1px solid #f1f3f5; }
+.rp-rank-name { color: #6c757d; font-size: .8125rem; }
+.rp-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.rp-chip { font-size: .8125rem; background: #f1f3f5; border-radius: 3px; padding: 0 7px; }
+button.rp-chip { border: 0; color: #495057; cursor: pointer; }
+button.rp-chip:hover { background: #e2e6ea; }
+
+/* contacts as rows that open to the details (macro personRow) */
+.rp-people { display: flex; flex-direction: column; gap: 6px; font-size: .875rem; }
+.rp-person-row { border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; }
+.rp-pr-head { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) auto; gap: 4px 16px; align-items: start; padding: 8px 12px; list-style: none; }
+summary.rp-pr-head { cursor: pointer; }
+summary.rp-pr-head::-webkit-details-marker { display: none; }
+summary.rp-pr-head:hover { background: #f8f9fa; }
+.rp-pr-who { display: flex; flex-direction: column; min-width: 0; }
+.rp-pr-name { font-weight: 600; color: #4E565F; }
+.rp-pr-org, .rp-pr-roles { color: #6c757d; font-size: .8125rem; }
+.rp-pr-roles { padding-top: 1px; }
+.rp-pr-actions { display: flex; gap: 6px; align-items: center; color: #6c757d; }
+.rp-pr-actions a.rp-pr-mail { display: inline-flex; color: #6c757d !important; } /* main.css forces link colour with !important */
+.rp-pr-actions a.rp-pr-mail:hover { color: rgb(var(--color-gbif-primary)) !important; }
+.rp-pr-chevron { transition: transform .15s; }
+.rp-person-row[open] .rp-pr-chevron { transform: rotate(180deg); }
+.rp-person-row:not(details) .rp-pr-actions { padding-right: 22px; } /* line the mail icons up with rows that have a chevron */
+.rp-pr-details { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 16px; margin: 0; padding: 8px 12px 10px; background: #f8f9fa; border-top: 1px solid #eef0f2; font-size: .8125rem; }
+.rp-pr-details dt { font-weight: 500; color: #6c757d; }
+.rp-pr-details dd { margin: 0; color: #495057; }
+@media (max-width: 575.98px) {
+    .rp-pr-head { grid-template-columns: minmax(0, 1fr) auto; }
+    .rp-pr-roles { grid-column: 1; grid-row: 2; }
+    .rp-pr-actions { grid-column: 2; grid-row: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .rp-pr-chevron { transition: none; } }
+
+/* methods, project, more */
+.rp-steps { padding-inline-start: 20px; }
+.rp-steps li { margin-bottom: 6px; }
+.rp-kv { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: 6px 16px; margin: 0; font-size: .875rem; }
+.rp-kv dt { color: #6c757d; font-weight: 400; }
+.rp-kv dd { margin: 0; }
+@media (max-width: 575.98px) {
+    .rp-kv { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .rp-kv dd { margin-bottom: 8px; }
+}
+.rp-award + .rp-award { margin-top: 8px; }
+.rp-more { border: 1px solid #dee2e6; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; font-size: .875rem; }
+.rp-more > summary { cursor: pointer; font-weight: 500; color: #4E565F; }
+.rp-more[open] > summary { margin-bottom: 8px; }
+.rp-keywords { display: flex; gap: 6px; flex-wrap: wrap; }
+.rp-keywords span { border: 1px solid #dee2e6; border-radius: 12px; padding: 0 9px; font-size: .8125rem; }
+.rp-machine { font-size: .8125rem; color: #6c757d; border-top: 1px solid #dee2e6; padding-top: 10px; margin-top: 14px; }
+
+/* download buttons in the heading (macros/portal_resource.ftl downloadButtons) */
+.rp-download { display: inline-flex; align-items: center; gap: 4px; }
+/* main.css sets every .dropdown-menu to 1rem !important (meant for the navbar); this menu is 13px */
+.rp-download-menu.dropdown-menu { min-width: 340px; max-width: min(400px, calc(100vw - 32px)); font-size: .8125rem !important; }
+.rp-download-menu .dropdown-item { font-size: inherit; }
+.rp-menu-file { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; white-space: normal; padding-top: 6px; padding-bottom: 6px; }
+.rp-menu-file-name { color: #212529; font-weight: 500; }
+.rp-menu-file-desc { display: block; color: #6c757d; font-size: .71875rem; font-weight: 400; }
+.rp-menu-file small { color: #6c757d; white-space: nowrap; font-size: .71875rem; padding-top: 1px; font-variant-numeric: tabular-nums; }
+
+/* preview notice fixed under the navbar (macro previewNotice); portal-resource.js sets --rp-navbar (the navbar's
+   height, which shrinks on scroll) and the spacer's height */
+.rp-preview-sticky { position: fixed; top: var(--rp-navbar, 57px); left: 0; right: 0; z-index: 1020; background: var(--bs-body-bg, #fff); padding: 8px 12px; }
+.rp-preview-spacer { height: 32px; flex-shrink: 0; } /* body is a fixed-height flex column, which would shrink it to 0 */
+.rp-preview-notice { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px; margin: 0; padding: 8px 12px; border-radius: 6px; background: #f1f3f5; color: #495057; font-size: .875rem; text-align: center; }
+.rp-preview-notice .material-icon { color: #6c757d; }
+
+/* the resource logo floated at the start of the description (macro resourceLogo), any shape from square to banner;
+   .rp-description scrolls wide content and holds the float */
+.rp-logo { float: left; margin: 4px 16px 8px 0; }
+.rp-logo img { display: block; max-height: 96px; max-width: min(200px, 40vw); object-fit: contain; }
