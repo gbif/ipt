@@ -146,7 +146,7 @@
                         <@resourceLogo url=(dpMetadata.image)!""/>
                         <div class="rp-prose">
                             <#if (dpMetadata.description)?has_content>
-                                <p>${dpMetadata.description?no_esc}</p>
+                                ${dpMetadata.description?no_esc}
                             <#else>
                                 <p><@s.text name='portal.resource.no.description'/></p>
                             </#if>
@@ -387,7 +387,7 @@
 <script>
     $('.confirmDeleteVersion').jConfirmAction({
         titleQuestion: "<@s.text name="basic.confirm"/>",
-        question: "<@s.text name='portal.resource.confirm.delete.version'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/></br></br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
+        question: "<@s.text name='portal.resource.confirm.delete.version'/><br><br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/><br><br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
         yesAnswer: "<@s.text name='basic.yes'/>",
         cancelAnswer: "<@s.text name='basic.no'/>",
         buttonType: "danger",

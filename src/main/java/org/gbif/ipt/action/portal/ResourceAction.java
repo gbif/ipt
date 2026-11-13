@@ -91,6 +91,8 @@ public class ResourceAction extends PortalBaseAction {
 
   private static final Logger LOG = LogManager.getLogger(ResourceAction.class);
 
+  private static final Set<String> ISO_COUNTRY_CODES = Set.of(Locale.getISOCountries());
+
   private final MetadataReader metadataReader;
   private final VocabulariesManager vocabManager;
 
@@ -368,7 +370,7 @@ public class ResourceAction extends PortalBaseAction {
    */
   public String getCountryName(String code) {
     String trimmed = StringUtils.trimToEmpty(code).toUpperCase(Locale.ROOT);
-    if (trimmed.length() != 2 || !Set.of(Locale.getISOCountries()).contains(trimmed)) {
+    if (!ISO_COUNTRY_CODES.contains(trimmed)) {
       return code;
     }
     Locale country = new Locale("", trimmed);
