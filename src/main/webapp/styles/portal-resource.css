@@ -54,6 +54,12 @@
 @media (min-width: 992px) { .rp-coverage-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 .rp-map { height: 280px; border: 1px solid #dee2e6; border-radius: 6px; z-index: 0; }
 .rp-cov-desc { font-size: .8125rem; color: #495057; margin: 6px 0 0; }
+/* long text folded to 4 lines; portal-resource.js adds "Show more" when it overflows, or drops the class */
+.rp-clamp { line-height: 1.5; max-height: 6em; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, #000 4.5em, transparent 6em); mask-image: linear-gradient(to bottom, #000 4.5em, transparent 6em); }
+.rp-clamp > :last-child { margin-bottom: 0; }
+.rp-clamp.rp-clamp-fits { -webkit-mask-image: none; mask-image: none; }
+.rp-clamp-more { display: block; padding: 0; border: 0; background: none; font-size: inherit; color: rgb(var(--color-gbif-primary)); }
+.rp-clamp-more:hover { text-decoration: underline; }
 .rp-coords { display: block; color: #6c757d; font-variant-numeric: tabular-nums; }
 .rp-timeline { position: relative; height: 46px; margin: 4px 14px 0; }
 .rp-timeline .rp-axis { position: absolute; inset-inline: 0; top: 20px; height: 2px; background: #dee2e6; }
@@ -69,7 +75,7 @@ button.rp-chip { border: 0; color: #495057; cursor: pointer; }
 button.rp-chip:hover { background: #e2e6ea; }
 
 /* contacts as rows that open to the details (macro personRow) */
-.rp-people { display: flex; flex-direction: column; gap: 6px; font-size: .875rem; }
+.rp-people, .rp-rows { display: flex; flex-direction: column; gap: 6px; font-size: .875rem; }
 .rp-person-row { border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; }
 .rp-pr-head { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) calc(2em + 6px); gap: 4px 16px; align-items: start; padding: 8px 12px; list-style: none; }
 summary.rp-pr-head { cursor: pointer; }
@@ -96,7 +102,7 @@ summary.rp-pr-head:hover { background: #f8f9fa; }
 @media (prefers-reduced-motion: reduce) { .rp-pr-chevron { transition: none; } }
 
 /* methods, project, more */
-.rp-steps { padding-inline-start: 20px; }
+.rp-steps { padding-inline-start: 2rem; } /* room for two-digit numbers: overflow-x-auto clips markers outside it */
 .rp-steps li { margin-bottom: 6px; }
 .rp-kv { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: 6px 16px; margin: 0; font-size: .875rem; }
 .rp-kv dt { color: #6c757d; font-weight: 400; }
@@ -106,12 +112,15 @@ summary.rp-pr-head:hover { background: #f8f9fa; }
     .rp-kv dd { margin-bottom: 8px; }
 }
 .rp-award + .rp-award { margin-top: 8px; }
-.rp-more { border: 1px solid #dee2e6; border-radius: 6px; padding: 8px 12px; margin-bottom: 8px; font-size: .875rem; }
-.rp-more > summary { cursor: pointer; font-weight: 500; color: #4E565F; }
-.rp-more[open] > summary { margin-bottom: 8px; }
-.rp-keywords { display: flex; gap: 6px; flex-wrap: wrap; }
-.rp-keywords span { border: 1px solid #dee2e6; border-radius: 12px; padding: 0 9px; font-size: .8125rem; }
-.rp-machine { font-size: .8125rem; color: #6c757d; border-top: 1px solid #dee2e6; padding-top: 10px; margin-top: 14px; }
+/* "More": folded rows like the contacts rows (macro moreRow) */
+.rp-pr-head.rp-more-head { display: flex; align-items: baseline; gap: 12px; }
+.rp-more-hint { flex: 1; min-width: 0; color: #6c757d; font-size: .8125rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rp-more-head .rp-pr-chevron { align-self: center; color: #6c757d; }
+.rp-more-body { padding: 10px 12px; background: #f8f9fa; border-top: 1px solid #eef0f2; }
+.rp-more-body > :last-child { margin-bottom: 0; }
+/* keywords under the description (macro keywordChips) */
+.rp-keywords { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.rp-keywords span { border: 1px solid #dee2e6; border-radius: 12px; padding: 0 9px; font-size: .8125rem; color: #6c757d; }
 
 /* download buttons in the heading (macros/portal_resource.ftl downloadButtons) */
 .rp-download { display: inline-flex; align-items: center; gap: 4px; }

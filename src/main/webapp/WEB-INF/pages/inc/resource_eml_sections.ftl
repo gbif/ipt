@@ -12,13 +12,19 @@
 <#assign hasContacts = (eml.contacts?size>0) || (eml.creators?size>0) || (eml.metadataProviders?size>0) || (eml.associatedParties?size>0)/>
 <#assign hasMethods = eml.studyExtent?has_content || eml.sampleDescription?has_content || eml.qualityControl?has_content || (eml.methodSteps?? && (eml.methodSteps?size>=1) && eml.methodSteps[0]?has_content)/>
 <#assign hasProject = eml.project?? && eml.project.title?has_content/>
-<#assign hasKeywords = eml.subject?has_content/>
 <#assign hasExternal = (eml.physicalData?size > 0)/>
 <#assign hasCollections = eml.collections?? && (eml.collections?size > 0) && eml.collections[0].collectionName?has_content/>
-<#assign hasBibliography = eml.bibliographicCitationSet?? && eml.bibliographicCitationSet.bibliographicCitations?has_content/>
+<#assign bibliography = (eml.bibliographicCitationSet.bibliographicCitations)![]/>
+<#assign hasBibliography = bibliography?filter(c -> c.citation?has_content)?has_content/>
 <#assign updateFrequency = (eml.updateFrequency?? && eml.updateFrequency.identifier?has_content && frequencies[eml.updateFrequency.identifier]?has_content)?then(frequencies[eml.updateFrequency.identifier]?cap_first, "")/>
 <#assign hasAdditional = eml.introduction?has_content || eml.gettingStarted?has_content || eml.acknowledgements?has_content || eml.additionalInfo?has_content || eml.purpose?has_content || eml.updateFrequencyDescription?has_content || (eml.alternateIdentifiers?size > 0)
     || updateFrequency?has_content || eml.distributionUrl?has_content/>
+<#assign hasMore = (isPublished && (hasBibliography || hasCollections || hasExternal)) || hasAdditional/>
+<#-- the keywords, without the dataset type and subtype IPT adds itself (shown as pills in the heading) -->
+<#assign shownKeywords = []/>
+<#list eml.keywords as ks>
+    <#if !(ks.keywordThesaurus!"")?starts_with("GBIF Dataset Type Vocabulary") && !(ks.keywordThesaurus!"")?starts_with("GBIF Dataset Subtype Vocabulary")><#assign shownKeywords = shownKeywords + ks.keywords/></#if>
+</#list>
 <#assign doi = (action.findDoiAssignedToPublishedVersion())!/>
 <#assign hasDoi = doi?has_content && (doi.getUrl())??/>
 <#assign gbifLicense = action.getGbifLicense(eml)!""/>
@@ -80,7 +86,9 @@
                         <#if isPublished && (hasGeo || hasTax || hasTemporal)>
                             <li><a href="#anchor-coverage" class="sidebar-navigation-link"><@s.text name='portal.resource.coverage'/></a></li>
                         </#if>
-                        <li class="rp-toc-group"><@s.text name='portal.resource.toc.context'/></li>
+                        <#if (isPublished && (hasContacts || hasMethods || hasProject)) || hasMore>
+                            <li class="rp-toc-group"><@s.text name='portal.resource.toc.context'/></li>
+                        </#if>
                         <#if isPublished>
                             <#if hasContacts>
                                 <li><a href="#anchor-contacts" class="sidebar-navigation-link"><@s.text name='portal.resource.contacts'/></a></li>
@@ -92,7 +100,9 @@
                                 <li><a href="#anchor-project" class="sidebar-navigation-link"><@s.text name='manage.metadata.project.title'/></a></li>
                             </#if>
                         </#if>
-                        <li><a href="#anchor-more" class="sidebar-navigation-link"><@s.text name='portal.resource.more'/></a></li>
+                        <#if hasMore>
+                            <li><a href="#anchor-more" class="sidebar-navigation-link"><@s.text name='portal.resource.more'/></a></li>
+                        </#if>
                     </ul>
                 </nav>
             </div>
@@ -111,9 +121,10 @@
                             </#if>
                         </div>
                     </div>
+                    <#if isPublished><@keywordChips keywords=shownKeywords/></#if>
                 </section>
 
-                <#-- citation to project only once published; "More" always -->
+                <#-- citation to project only once published -->
                 <#if isPublished>
                     <#if hasCitation || hasRights || hasDoi>
                         <span class="anchor anchor-home-resource-page" id="anchor-citation"></span>
@@ -235,7 +246,7 @@
                                         </#if>
                                         <#list eml.geospatialCoverages as g>
                                             <div class="rp-cov-desc" property="dc:spatial">
-                                                <#if g.description?has_content>${g.description?no_esc}</#if>
+                                                <#if g.description?has_content><div class="rp-clamp" data-show-more="${action.getText('portal.resource.showMore')}">${g.description?no_esc}</div></#if>
                                                 <#assign bc = g.boundingCoordinates!/>
                                                 <#if bc?has_content && bc.min?? && bc.max?? && bc.min.latitude?? && bc.min.longitude?? && bc.max.latitude?? && bc.max.longitude??>
                                                     <span class="rp-coords" dir="ltr"><@s.text name='eml.geospatialCoverages.boundingCoordinates.min.latitude'/> ${bc.min.latitude?c}, <@s.text name='eml.geospatialCoverages.boundingCoordinates.max.latitude'/> ${bc.max.latitude?c}, <@s.text name='eml.geospatialCoverages.boundingCoordinates.min.longitude'/> ${bc.min.longitude?c}, <@s.text name='eml.geospatialCoverages.boundingCoordinates.max.longitude'/> ${bc.max.longitude?c}</span>
@@ -413,24 +424,14 @@
                 </#if>
 
                 <#-- the long tail: folded -->
+                <#if hasMore>
                 <span class="anchor anchor-home-resource-page" id="anchor-more"></span>
                 <section id="more" class="rp-section section">
                     <h2 class="rp-h"><@s.text name='portal.resource.more'/></h2>
-
-                    <#if isPublished && hasKeywords>
-                        <details id="keywords" class="rp-more" open>
-                            <summary><@s.text name='portal.resource.summary.keywords'/></summary>
-                            <div class="rp-keywords" property="dc:subject">
-                                <#list eml.keywords as ks>
-                                    <#list ks.keywords as kw><#if kw?has_content><span>${kw}</span></#if></#list>
-                                </#list>
-                            </div>
-                        </details>
-                    </#if>
+                    <div class="rp-rows">
 
                     <#if isPublished && hasBibliography>
-                        <details id="reference" class="rp-more">
-                            <summary><@s.text name='manage.metadata.citations.bibliography'/> (${eml.bibliographicCitationSet.bibliographicCitations?size})</summary>
+                        <@moreRow id="reference" title=action.getText('manage.metadata.citations.bibliography') hint=bibliography?filter(c -> c.citation?has_content)?size?c>
                             <ol class="overflow-x-auto">
                                 <#list eml.bibliographicCitationSet.bibliographicCitations as item>
                                     <#if item.citation?has_content>
@@ -438,12 +439,11 @@
                                     </#if>
                                 </#list>
                             </ol>
-                        </details>
+                        </@moreRow>
                     </#if>
 
                     <#if isPublished && hasCollections>
-                        <details id="collection" class="rp-more">
-                            <summary><@s.text name='manage.metadata.collections.title'/></summary>
+                        <@moreRow id="collection" title=action.getText('manage.metadata.collections.title') hint=eml.collections?map(c -> c.collectionName!"")?filter(n -> n?has_content)?join(", ")>
                             <dl class="rp-kv">
                                 <#list eml.collections as item>
                                     <#if item.collectionName?has_content><dt><@s.text name='eml.collectionName'/></dt><dd>${item.collectionName}</dd></#if>
@@ -473,12 +473,11 @@
                                     </dd>
                                 </#if>
                             </dl>
-                        </details>
+                        </@moreRow>
                     </#if>
 
                     <#if isPublished && hasExternal>
-                        <details id="external" class="rp-more">
-                            <summary><@s.text name='manage.metadata.physical.alternativeTitle'/></summary>
+                        <@moreRow id="external" title=action.getText('manage.metadata.physical.alternativeTitle') hint=eml.physicalData?size?c>
                             <p class="text-muted"><@s.text name='portal.resource.otherFormats'/></p>
                             <dl class="rp-kv">
                                 <#list eml.physicalData as link>
@@ -489,12 +488,22 @@
                                     </dd>
                                 </#list>
                             </dl>
-                        </details>
+                        </@moreRow>
                     </#if>
 
                     <#if hasAdditional>
-                        <details id="additionalMetadata" class="rp-more">
-                            <summary><@s.text name='manage.metadata.additional.title'/></summary>
+                        <#-- the hint names the fields given -->
+                        <#assign additionalFields = []/>
+                        <#if eml.additionalInfo?has_content><#assign additionalFields = additionalFields + [action.getText('eml.additionalInfo')]/></#if>
+                        <#if eml.acknowledgements?has_content><#assign additionalFields = additionalFields + [action.getText('manage.metadata.acknowledgements')]/></#if>
+                        <#if eml.introduction?has_content><#assign additionalFields = additionalFields + [action.getText('manage.metadata.introduction')]/></#if>
+                        <#if eml.gettingStarted?has_content><#assign additionalFields = additionalFields + [action.getText('manage.metadata.gettingStarted')]/></#if>
+                        <#if eml.purpose?has_content><#assign additionalFields = additionalFields + [action.getText('eml.purpose')]/></#if>
+                        <#if updateFrequency?has_content><#assign additionalFields = additionalFields + [action.getText('eml.updateFrequency')]/></#if>
+                        <#if eml.distributionUrl?has_content><#assign additionalFields = additionalFields + [action.getText('eml.distributionUrl.short')]/></#if>
+                        <#if eml.updateFrequencyDescription?has_content><#assign additionalFields = additionalFields + [action.getText('eml.updateFrequencyDescription')]/></#if>
+                        <#if (eml.alternateIdentifiers?size > 0)><#assign additionalFields = additionalFields + [action.getText('manage.metadata.alternateIdentifiers.title')]/></#if>
+                        <@moreRow id="additionalMetadata" title=action.getText('manage.metadata.additional.title') hint=additionalFields?join(", ")>
                             <#if eml.additionalInfo?has_content>
                                 <div class="rp-prose overflow-x-auto mb-2">${eml.additionalInfo?no_esc}</div>
                             </#if>
@@ -532,20 +541,11 @@
                                     <dd><#list eml.alternateIdentifiers as item><div class="break-all"><@textWithFormattedLink item!/></div></#list></dd>
                                 </#if>
                             </dl>
-                        </details>
+                        </@moreRow>
                     </#if>
-
-                    <#-- GBIF registration -->
-                    <div id="gbif" class="rp-machine">
-                        <span class="fw-bold"><@s.text name='portal.resource.organisation.key'/>:</span>
-                        <#if resource.status=="REGISTERED" && resource.organisation??>
-                            <@s.text name='manage.home.registered.verbose'><@s.param>${cfg.portalUrl}/dataset/${resource.key}</@s.param><@s.param>${resource.key}</@s.param></@s.text>
-                            <@s.text name='manage.home.published.verbose'><@s.param>${cfg.portalUrl}/publisher/${resource.organisation.key}</@s.param><@s.param>${resource.organisation.name}</@s.param><@s.param>${cfg.portalUrl}/node/${resource.organisation.nodeKey!"#"}</@s.param><@s.param>${resource.organisation.nodeName!}</@s.param></@s.text>
-                        <#else>
-                            <@s.text name='manage.home.not.registered.verbose'/>
-                        </#if>
                     </div>
                 </section>
+                </#if>
             </div>
         </main>
     </div>

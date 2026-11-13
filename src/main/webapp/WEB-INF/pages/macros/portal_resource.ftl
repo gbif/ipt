@@ -112,7 +112,34 @@
             <span class="rp-sep">·</span>
             <a href="${baseURL}/resource?r=${resource.shortname}"><@s.text name='portal.resource.versionLine.latestIs'><@s.param>${latestVersion}</@s.param></@s.text></a>
         </#if>
+        <#if resource.status == "REGISTERED" && resource.key??>
+            <span class="rp-sep">·</span>
+            <a href="${cfg.portalUrl}/dataset/${resource.key}"><@s.text name='portal.resource.versionLine.viewOnGbif'/></a>
+        </#if>
     </div>
+</#macro>
+
+<#-- The keywords as chips under the description; nothing without keywords. keywords: a sequence of strings -->
+<#macro keywordChips keywords>
+    <#local shown = keywords?filter(k -> k?has_content)/>
+    <#if shown?has_content>
+        <div id="keywords" class="rp-keywords" property="dc:subject" role="list" aria-label="${action.getText('portal.resource.summary.keywords')}">
+            <#list shown as kw><span role="listitem">${kw}</span></#list>
+        </div>
+    </#if>
+</#macro>
+
+<#-- A folded block in the "More" section, a row like the contacts rows: the title, a short hint on what it holds
+     (e.g. a count, or the names of the fields given) and a chevron; it opens to the nested content -->
+<#macro moreRow id title hint="">
+    <details id="${id}" class="rp-person-row">
+        <summary class="rp-pr-head rp-more-head">
+            <span class="rp-pr-name">${title}</span>
+            <span class="rp-more-hint">${hint}</span>
+            <@icon name="expand_more" class="rp-pr-chevron"/>
+        </summary>
+        <div class="rp-more-body"><#nested></div>
+    </details>
 </#macro>
 
 <#-- A person or organisation in the contacts list: one row with the name (+ ORCID), organisation, roles and an email

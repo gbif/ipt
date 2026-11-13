@@ -122,8 +122,7 @@
 <#assign doi = ((dpMetadata.doi)??)?then(dpMetadata.doi?string, "")/>
 <#assign temporalScope = (dpMetadata.temporalScope)!""/>
 <#assign hasCoverage = (dpMetadata.geographicScope)?has_content || temporalScope?has_content || (dpMetadata.taxonomicScope)?has_content/>
-<#assign isRegistered = resource.status == "REGISTERED" && resource.key??/>
-<#assign hasMore = isRegistered || (dpMetadata.keyword)?has_content || (dpMetadata.source)?has_content || (dpMetadata.identifier)?has_content || (dpMetadata.notes)?has_content
+<#assign hasMore = (dpMetadata.source)?has_content || (dpMetadata.identifier)?has_content || (dpMetadata.notes)?has_content
     || (dpMetadata.alias)?has_content || (dpMetadata.url)?? || (dpMetadata.issn)?has_content || (dpMetadata.completeness)?? || (dpMetadata.confidence)??/>
 
 <div id="sections" class="container-fluid bg-body">
@@ -174,6 +173,7 @@
                             </#if>
                         </div>
                     </div>
+                    <#if isPublished><@keywordChips keywords=(dpMetadata.keyword)![]/></#if>
                 </section>
 
                 <#if isPublished>
@@ -279,19 +279,10 @@
                         <span class="anchor anchor-home-resource-page" id="anchor-more"></span>
                         <section id="more" class="rp-section section">
                             <h2 class="rp-h"><@s.text name='portal.resource.more'/></h2>
-
-                            <#if (dpMetadata.keyword)?has_content>
-                                <details id="keywords" class="rp-more" open>
-                                    <summary><@s.text name='portal.resource.keywords'/></summary>
-                                    <div class="rp-keywords" property="dc:subject">
-                                        <#list dpMetadata.keyword as kw><#if kw?has_content><span>${kw}</span></#if></#list>
-                                    </div>
-                                </details>
-                            </#if>
+                            <div class="rp-rows">
 
                             <#if (dpMetadata.source)?has_content>
-                                <details id="sources" class="rp-more">
-                                    <summary><@s.text name='portal.resource.sources'/> (${dpMetadata.source?size})</summary>
+                                <@moreRow id="sources" title=action.getText('portal.resource.sources') hint=dpMetadata.source?size?c>
                                     <ol class="overflow-x-auto mb-0">
                                         <#list dpMetadata.source as src>
                                             <li property="dc:references">
@@ -305,19 +296,24 @@
                                             </li>
                                         </#list>
                                     </ol>
-                                </details>
+                                </@moreRow>
                             </#if>
 
                             <#if (dpMetadata.notes)?has_content>
-                                <details id="notes" class="rp-more">
-                                    <summary><@s.text name='portal.resource.notes'/></summary>
+                                <@moreRow id="notes" title=action.getText('portal.resource.notes')>
                                     <div class="rp-prose">${dpMetadata.notes}</div>
-                                </details>
+                                </@moreRow>
                             </#if>
 
                             <#if (dpMetadata.alias)?has_content || (dpMetadata.url)?? || (dpMetadata.identifier)?has_content || (dpMetadata.issn)?has_content || (dpMetadata.completeness)?? || (dpMetadata.confidence)??>
-                                <details id="additionalMetadata" class="rp-more">
-                                    <summary><@s.text name='manage.metadata.additional.title'/></summary>
+                                <#assign additionalFields = []/>
+                                <#if (dpMetadata.alias)?has_content><#assign additionalFields = additionalFields + [action.getText('portal.resource.alias')]/></#if>
+                                <#if (dpMetadata.url)??><#assign additionalFields = additionalFields + [action.getText('portal.resource.website')]/></#if>
+                                <#if (dpMetadata.identifier)?has_content><#assign additionalFields = additionalFields + [action.getText('portal.resource.identifiers')]/></#if>
+                                <#if (dpMetadata.issn)?has_content><#assign additionalFields = additionalFields + ["ISSN"]/></#if>
+                                <#if (dpMetadata.completeness)??><#assign additionalFields = additionalFields + [action.getText('portal.resource.completeness')]/></#if>
+                                <#if (dpMetadata.confidence)??><#assign additionalFields = additionalFields + [action.getText('portal.resource.confidence')]/></#if>
+                                <@moreRow id="additionalMetadata" title=action.getText('manage.metadata.additional.title') hint=additionalFields?join(", ")>
                                     <dl class="rp-kv">
                                         <#if (dpMetadata.alias)?has_content><dt><@s.text name='portal.resource.alias'/></dt><dd>${dpMetadata.alias}</dd></#if>
                                         <#if (dpMetadata.url)??><dt><@s.text name='portal.resource.website'/></dt><dd><a href="${dpMetadata.url}" class="break-all">${dpMetadata.url}</a></dd></#if>
@@ -326,14 +322,9 @@
                                         <#if (dpMetadata.completeness)??><dt><@s.text name='portal.resource.completeness'/></dt><dd>${dpMetadata.completeness}%</dd></#if>
                                         <#if (dpMetadata.confidence)??><dt><@s.text name='portal.resource.confidence'/></dt><dd>${dpMetadata.confidence} / 5</dd></#if>
                                     </dl>
-                                </details>
+                                </@moreRow>
                             </#if>
-                            <#if isRegistered>
-                                <div id="gbif" class="rp-machine">
-                                    <span class="fw-bold"><@s.text name='portal.resource.organisation.key'/>:</span>
-                                    <a href="${cfg.portalUrl}/dataset/${resource.key}">${cfg.portalUrl}/dataset/${resource.key}</a>
-                                </div>
-                            </#if>
+                            </div>
                         </section>
                     </#if>
                 </#if>

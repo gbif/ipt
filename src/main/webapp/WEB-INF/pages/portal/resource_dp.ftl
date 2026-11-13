@@ -98,8 +98,7 @@
 <#assign hasTaxonomic = (dpMetadata.taxonomic)?has_content/>
 <#assign hasContributors = (dpMetadata.contributors)?has_content/>
 <#assign hasProject = (dpMetadata.project)??/>
-<#assign isRegistered = resource.status == "REGISTERED" && resource.key??/>
-<#assign hasMore = isRegistered || (dpMetadata.keywords)?has_content || (dpMetadata.sources)?has_content || (dpMetadata.references)?has_content || (dpMetadata.relatedIdentifiers)?has_content/>
+<#assign hasMore = (dpMetadata.sources)?has_content || (dpMetadata.references)?has_content || (dpMetadata.relatedIdentifiers)?has_content/>
 
 <div id="sections" class="container-fluid bg-body">
     <div class="container mb-md-4 bd-layout main-content-container">
@@ -152,6 +151,7 @@
                             </#if>
                         </div>
                     </div>
+                    <#if isPublished><@keywordChips keywords=(dpMetadata.keywords)![]/></#if>
                 </section>
 
                 <#if isPublished>
@@ -316,19 +316,10 @@
                         <span class="anchor anchor-home-resource-page" id="anchor-more"></span>
                         <section id="more" class="rp-section section">
                             <h2 class="rp-h"><@s.text name='portal.resource.more'/></h2>
-
-                            <#if (dpMetadata.keywords)?has_content>
-                                <details id="keywords" class="rp-more" open>
-                                    <summary><@s.text name='portal.resource.keywords'/></summary>
-                                    <div class="rp-keywords">
-                                        <#list dpMetadata.keywords as kw><#if kw?has_content><span>${kw}</span></#if></#list>
-                                    </div>
-                                </details>
-                            </#if>
+                            <div class="rp-rows">
 
                             <#if (dpMetadata.sources)?has_content>
-                                <details id="sources" class="rp-more">
-                                    <summary><@s.text name='portal.resource.sources'/> (${dpMetadata.sources?size})</summary>
+                                <@moreRow id="sources" title=action.getText('portal.resource.sources') hint=dpMetadata.sources?size?c>
                                     <#list dpMetadata.sources as source>
                                         <dl class="rp-kv<#if source?has_next> mb-3</#if>">
                                             <dt><@s.text name="portal.resource.source.title"/></dt><dd>${source.title!}</dd>
@@ -338,21 +329,19 @@
                                             <#if sourceVersion?has_content><dt><@s.text name="portal.resource.source.version"/></dt><dd>${sourceVersion}</dd></#if>
                                         </dl>
                                     </#list>
-                                </details>
+                                </@moreRow>
                             </#if>
 
                             <#if (dpMetadata.references)?has_content>
-                                <details id="references" class="rp-more">
-                                    <summary><@s.text name='portal.resource.references'/> (${dpMetadata.references?size})</summary>
+                                <@moreRow id="references" title=action.getText('portal.resource.references') hint=dpMetadata.references?size?c>
                                     <ol class="overflow-x-auto">
                                         <#list dpMetadata.references as ref><li><@textWithFormattedLink ref/></li></#list>
                                     </ol>
-                                </details>
+                                </@moreRow>
                             </#if>
 
                             <#if (dpMetadata.relatedIdentifiers)?has_content>
-                                <details id="relatedidentifiers" class="rp-more">
-                                    <summary><@s.text name='portal.resource.relatedIdentifiers'/> (${dpMetadata.relatedIdentifiers?size})</summary>
+                                <@moreRow id="relatedidentifiers" title=action.getText('portal.resource.relatedIdentifiers') hint=dpMetadata.relatedIdentifiers?size?c>
                                     <#list dpMetadata.relatedIdentifiers as ri>
                                         <dl class="rp-kv<#if ri?has_next> mb-3</#if>">
                                             <dt><@s.text name="portal.resource.relatedIdentifier.relatedIdentifier"/></dt><dd class="break-all"><@textWithFormattedLink ri.relatedIdentifier!/></dd>
@@ -361,14 +350,9 @@
                                             <#if (ri.relatedIdentifierType)??><dt><@s.text name="portal.resource.relatedIdentifier.relatedIdentifierType"/></dt><dd>${ri.relatedIdentifierType}</dd></#if>
                                         </dl>
                                     </#list>
-                                </details>
+                                </@moreRow>
                             </#if>
-                            <#if isRegistered>
-                                <div id="gbif" class="rp-machine">
-                                    <span class="fw-bold"><@s.text name='portal.resource.organisation.key'/>:</span>
-                                    <a href="${cfg.portalUrl}/dataset/${resource.key}">${cfg.portalUrl}/dataset/${resource.key}</a>
-                                </div>
-                            </#if>
+                            </div>
                         </section>
                     </#if>
                 </#if>

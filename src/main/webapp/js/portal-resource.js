@@ -1,5 +1,5 @@
 /**
- * Public resource pages (portal/resource_*.ftl): copy buttons, "all versions", folded taxa chips, the geographic
+ * Public resource pages (portal/resource_*.ftl): copy buttons, "all versions", folded taxa chips, folded long text, the geographic
  * coverage map, the temporal coverage time bar and the preview notice.
  */
 (function () {
@@ -36,6 +36,31 @@
             button.remove();
         });
     });
+
+    // Long text (geographic description): folded to 4 lines by .rp-clamp; "Show more" unfolds it.
+    // Text that fits isn't faded (rp-clamp-fits). Checked again once fonts have loaded, which can change the height.
+    function checkClamps() {
+        document.querySelectorAll('.rp-clamp').forEach(function (block) {
+            var overflows = block.scrollHeight > block.clientHeight + 1;
+            block.classList.toggle('rp-clamp-fits', !overflows);
+            var button = block.nextElementSibling && block.nextElementSibling.classList.contains('rp-clamp-more') ? block.nextElementSibling : null;
+            if (overflows && !button) {
+                button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'rp-clamp-more';
+                button.textContent = block.dataset.showMore;
+                button.addEventListener('click', function () {
+                    block.classList.remove('rp-clamp');
+                    button.remove();
+                });
+                block.after(button);
+            } else if (!overflows && button) {
+                button.remove();
+            }
+        });
+    }
+    checkClamps();
+    window.addEventListener('load', checkClamps);
 
     // Map: one rectangle per bounding box in data-boxes, [minLat, minLng, maxLat, maxLng] (EML),
     // or a GeoJSON geometry in data-geojson (Camtrap DP)
