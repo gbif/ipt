@@ -22,19 +22,18 @@
     </#if>
 </#macro>
 
+<#-- the source's kind as a grey badge with an icon; red when the source can't be read -->
 <#macro sourceType src>
-    <#if !src.readable>
-        <#local cls = "bad">
-    <#elseif src.isSqlSource()>
-        <#local cls = "sql">
+    <#if src.isSqlSource()>
+        <#local iconName = "dns_outlined" kindLabel = "SQL">
     <#elseif src.isUrlSource()>
-        <#local cls = "url">
+        <#local iconName = "link_outlined" kindLabel = "URL">
     <#elseif src.isExcelSource()>
-        <#local cls = "xls">
+        <#local iconName = "grid_on_outlined" kindLabel = "XLS">
     <#else>
-        <#local cls = "">
+        <#local iconName = "description_outlined" kindLabel = "FILE">
     </#if>
-    <span class="ov-ftype ${cls}"><#if src.isSqlSource()>SQL<#elseif src.isUrlSource()>URL<#elseif src.isExcelSource()>XLS<#else>FILE</#if></span>
+    <span class="ov-ftype<#if !src.readable> bad</#if>"><@icon name=iconName/>${kindLabel}</span>
 </#macro>
 
 <#macro sourceDims src>

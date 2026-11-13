@@ -13,12 +13,12 @@ npm run vendor                # copy the files into src/main/webapp
 
 `npm run vendor` copies the files listed in `vendor.mjs` and rebuilds the ProseMirror bundle (`js/prosemirror/prosemirror-bundle.min.js`, exposed as `window.PM`, used by `js/docbook/docbook-editor.js`).
 For file names that contain the version, such as `jquery-3.7.1.min.js`, it removes the old file and updates the references in the FTL pages.
-It also builds the icon sprite `images/icons/material-icons.svg` from the Material Icons listed in `ICONS` in `vendor.mjs`.
+It also builds the icon sprite `images/icons/material-icons.svg` from the Material Icons listed in `ICONS` and `ICONS_OUTLINED` in `vendor.mjs`.
 Commit `package.json`, `package-lock.json` and the changed files together.
 
 ## Icons
 
-Pages show Material Icons (filled) with the `icon` macro from `WEB-INF/pages/macros/icon.ftl`:
+Pages show Material Icons (filled, a few outlined) with the `icon` macro from `WEB-INF/pages/macros/icon.ftl`:
 
 ```ftl
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
@@ -27,6 +27,7 @@ Pages show Material Icons (filled) with the `icon` macro from `WEB-INF/pages/mac
 ```
 
 The icon is 1em square and takes the text colour. To use a new icon, add its name to `ICONS` in `vendor.mjs` and run `npm run vendor`.
+For the outlined style add it to `ICONS_OUTLINED` instead and use it with an `_outlined` suffix, e.g. `<@icon "dns_outlined"/>`.
 Names are those of the [Material Icons](https://fonts.google.com/icons?icon.set=Material+Icons) set.
 Bootstrap Icons (`<i class="bi bi-…">`) are being replaced by these.
 

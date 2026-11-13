@@ -1,7 +1,7 @@
 <#-- the publish button, styled as the page's primary action and labelled with the version it creates -->
 <#macro publishButton className>
     <button id="publishButton"
-            class="${className} btn btn-sm btn-gbif-solid"
+            class="${className} btn btn-sm btn-gbif-solid top-button"
             name="publish"
             value="Publish"
             type="submit">
@@ -11,7 +11,7 @@
 
 <#macro showPublicationWarningButton>
     <a id="publish-button-show-warning"
-       class="btn btn-sm btn-gbif-solid ov-blocked"
+       class="btn btn-sm btn-gbif-solid ov-blocked top-button"
        href="#">
         <i class="bi bi-upload me-1"></i>${publishButtonLabel}
     </a>

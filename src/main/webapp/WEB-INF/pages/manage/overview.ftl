@@ -1725,8 +1725,8 @@
 
                 <div class="ov-acts">
                     <#if isPublished && !isDeleted>
-                        <a href="${baseURL}/resource?r=${resource.shortname}" id="top-button-view-resource" class="btn btn-sm btn-outline-gbif-primary">
-                            <#if resource.status == "PRIVATE"><@s.text name="manage.overview.viewPage.private"/><#else><@s.text name="manage.overview.viewPage"/></#if>
+                        <a href="${baseURL}/resource?r=${resource.shortname}" id="top-button-view-resource" class="btn btn-sm btn-outline-gbif-primary top-button">
+                            <@s.text name="manage.overview.viewPage"/>
                         </a>
                     </#if>
 
@@ -1734,15 +1734,15 @@
                         <#if disableRegistrationRights == "false">
                             <form action='resource-undelete.do' method='post'>
                                 <input name="r" type="hidden" value="${resource.shortname}" />
-                                <@s.submit cssClass="btn btn-sm btn-gbif-solid confirmUndeletion" name="undelete" key="button.undelete"/>
+                                <@s.submit cssClass="btn btn-sm btn-gbif-solid top-button confirmUndeletion" name="undelete" key="button.undelete"/>
                             </form>
                         <#else>
-                            <button class="btn btn-sm btn-gbif-solid ov-blocked button-show-delete-resource-disabled-modal" name="undelete"><@s.text name="button.undelete"/></button>
+                            <button class="btn btn-sm btn-gbif-solid ov-blocked top-button button-show-delete-resource-disabled-modal" name="undelete"><@s.text name="button.undelete"/></button>
                         </#if>
                     <#elseif canPublish>
                         <@publish resource=resource label=publishLabel/>
                     <#else>
-                        <a href="#overview-status" id="publish-button-blocked" class="btn btn-sm btn-gbif-solid ov-blocked" title="<@s.text name='manage.overview.publishBlocked'/>">
+                        <a href="#overview-status" id="publish-button-blocked" class="btn btn-sm btn-gbif-solid ov-blocked top-button" title="<@s.text name='manage.overview.publishBlocked'/>">
                             <@icon name="upload" class="me-1"/>${publishLabel}
                         </a>
                     </#if>
@@ -1750,7 +1750,7 @@
                     <#-- DOI and delete; publication links are in the Publication card. Nothing to offer once deleted -->
                     <#if !isDeleted>
                     <div class="dropdown">
-                        <button class="btn btn-sm btn-outline-secondary" type="button" id="overview-more-actions" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.moreActions'/>" aria-label="<@s.text name='manage.overview.moreActions'/>">
+                        <button class="btn btn-sm btn-outline-secondary top-button ov-more-btn" type="button" id="overview-more-actions" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.moreActions'/>" aria-label="<@s.text name='manage.overview.moreActions'/>">
                             <@icon name="more_horiz"/>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="overview-more-actions">
@@ -1816,7 +1816,7 @@
                 <div class="ov-acts">
                     <#if isPublished && !isDeleted>
                         <button type="button" class="btn btn-sm btn-outline-gbif-primary proxy-button-view-resource">
-                            <#if resource.status == "PRIVATE"><@s.text name="manage.overview.viewPage.private"/><#else><@s.text name="manage.overview.viewPage"/></#if>
+                            <@s.text name="manage.overview.viewPage"/>
                         </button>
                     </#if>
                     <#if isDeleted>

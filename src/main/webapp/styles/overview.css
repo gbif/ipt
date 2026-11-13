@@ -9,6 +9,7 @@
 .ov-head > .ov-acts { justify-content: center; margin-top: 16px; }
 .ov-acts { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .ov-acts form { display: inline-block; margin: 0; }
+.ov-acts .top-button.ov-more-btn { min-width: calc(1.75em + 14px); min-height: calc(1.75em + 14px); display: inline-flex; align-items: center; justify-content: center; }
 .ov-acts .dropdown-menu { min-width: 260px; text-align: left; }
 .ov-acts .dropdown-item small { display: block; color: #6c757d; font-size: 0.75rem; white-space: normal; }
 
@@ -102,11 +103,9 @@ tr.ov-parent.open .ov-toggle-sources::after { transform: rotate(90deg); }
 .ov-unused-row .ov-src { align-items: center; }
 .ov-src { display: flex; gap: 8px; align-items: flex-start; min-width: 0; }
 .ov-src > div { min-width: 0; overflow-wrap: anywhere; }
-.ov-ftype { font-size: 0.62rem; font-weight: 700; border-radius: 4px; padding: 3px 5px; background: #e7f1e7; color: rgb(55, 110, 55); min-width: 36px; text-align: center; margin-top: 1px; flex: none; }
-.ov-ftype.sql { background: #eaf0fb; color: #2d4f8a; }
-.ov-ftype.url { background: #f3eefb; color: #5b3d99; }
-.ov-ftype.xls { background: #e4f3ec; color: #1d6b45; }
-.ov-ftype.tbl { background: #f1f3f5; color: #495057; }
+/* source kind: one grey for all, the icon tells them apart; red only when the source can't be read */
+.ov-ftype { display: inline-flex; align-items: center; gap: 3px; font-size: 0.62rem; font-weight: 700; border-radius: 4px; padding: 3px 5px; background: #f1f3f5; color: #6c757d; margin-top: 1px; flex: none; min-width: 44px; }
+.ov-ftype .material-icon { font-size: 0.75rem; }
 .ov-ftype.bad { background: rgba(var(--color-gbif-danger), .12); color: rgb(var(--color-gbif-danger)); }
 .ov-small { font-size: 0.72rem; color: #6c757d; display: block; }
 .ov-small.bad { color: rgb(var(--color-gbif-danger)); }
@@ -179,7 +178,7 @@ tr.ov-parent.open .ov-toggle-sources::after { transform: rotate(90deg); }
 /* people */
 .ov-people { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px; }
 .ov-person { border: 1px solid #dee2e6; border-radius: 8px; padding: 8px 10px; display: flex; gap: 10px; align-items: center; font-size: 0.85rem; }
-.ov-person .ov-av { width: 30px; height: 30px; border-radius: 50%; background: #e7f1e7; color: rgb(55, 110, 55); font-weight: 700; font-size: 0.7rem; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.ov-person .ov-av { width: 30px; height: 30px; border-radius: 50%; background: #f1f3f5; color: #6c757d; font-weight: 700; font-size: 0.7rem; display: inline-flex; align-items: center; justify-content: center; flex: none; }
 .ov-person .ov-grow { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 /* remove a manager: a quiet bin, red on hover (main.css colours every link with !important) */
 #sections .ov-person a.ov-remove { color: #6c757d !important; font-size: 1.1rem; padding: 4px; text-decoration: none !important; }
