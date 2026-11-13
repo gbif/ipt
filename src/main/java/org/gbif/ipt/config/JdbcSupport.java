@@ -120,7 +120,7 @@ public class JdbcSupport {
     }
 
     public String getJdbcUrl(SqlSource source) {
-      String jdbcUrl = this.url.replace("{database}", source.getDatabase());
+      String jdbcUrl = this.url.replace("{database}", StringUtils.trimToEmpty(source.getDatabase()));
       if (source.getHost() != null) {
         jdbcUrl = jdbcUrl.replace("{host}", source.getHost());
       }

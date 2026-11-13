@@ -102,10 +102,13 @@
       <!-- runs after the role and resource checks: parameters, prepare(), validation -->
       <interceptor-stack name="iptStackWithoutSetup">
         <interceptor-ref name="keepRedirectMessages"/>
-        <interceptor-ref name="defaultStack"/>
+        <!-- deleting doesn't submit the form, so it isn't validated -->
+        <interceptor-ref name="defaultStack">
+          <param name="validation.excludeMethods">input,back,cancel,browse,delete</param>
+        </interceptor-ref>
         <interceptor-ref name="xssFieldError"/>
         <interceptor-ref name="validation">
-          <param name="excludeMethods">input,back,cancel,list</param>
+          <param name="excludeMethods">input,back,cancel,list,delete</param>
         </interceptor-ref>
         <interceptor-ref name="workflow"/>
       </interceptor-stack>
