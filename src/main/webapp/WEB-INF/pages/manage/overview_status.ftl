@@ -118,8 +118,10 @@
     </#if>
 </#if>
 <#assign canPublish = !isDeleted && !publishBlockers?has_content>
-<#-- the last publication run failed: the report of a failed run stays until the next run or a restart -->
-<#assign lastPublicationFailed = !isDeleted && report?? && report.completed && report.hasException()>
+<#-- the last publication run failed: the report of a failed run stays until the next run or a restart. A cancelled run
+     isn't a failure -->
+<#assign lastPublicationFailed = !isDeleted && report?? && report.completed && report.hasException()
+    && !report.isCancelled()>
 
 <#-- the license of the next version -->
 <#macro nextLicense>

@@ -888,7 +888,9 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
     result.setPublishing(future != null && !future.isDone());
 
     StatusReport report = resourcePublicationManager.getProcessReports().get(shortname);
-    result.setLastPublicationFailed(!result.isPublishing() && report != null && report.isCompleted() && report.hasException());
+    // a cancelled run isn't a failure
+    result.setLastPublicationFailed(!result.isPublishing() && report != null && report.isCompleted()
+        && report.hasException() && !report.isCancelled());
 
     result.setAutoPublishingSuspended(cfg.isAutoPublishingEnabled() && resource.usesAutoPublishing()
         && resourcePublicationManager.hasMaxProcessFailures(resource, false));

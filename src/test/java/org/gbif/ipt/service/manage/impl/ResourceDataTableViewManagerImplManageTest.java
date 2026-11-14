@@ -334,6 +334,16 @@ class ResourceDataTableViewManagerImplManageTest {
   }
 
   @Test
+  void cancelledPublicationIsNotAFailure() {
+    Resource r = resource("r", me, orgA);
+    r.setLastPublished(minutesAgo(10));
+    reports.put("r", new StatusReport(new InterruptedException("cancelled"), "Cancelled", Collections.emptyList()));
+
+    String status = statusCell(r);
+    assertFalse(status.contains("Last publication failed"), status);
+  }
+
+  @Test
   void runningPublicationIsShown() {
     Resource r = resource("r", me, orgA);
     futures.put("r", new CompletableFuture<>());
