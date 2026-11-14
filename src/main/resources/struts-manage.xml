@@ -131,10 +131,14 @@
       <result name="input">/WEB-INF/pages/manage/overview.ftl</result>
     </action>
 
+    <!-- always redirects (post/redirect/get), so reloading the page doesn't post the form again and publish another
+         version: to the publishing page once publishing has started, else to the overview, e.g. after metadata-only
+         publishing (done in the request) or when publishing is refused. keepRedirectMessages carries the messages -->
     <action name="publish" class="org.gbif.ipt.action.manage.OverviewAction" method="publish">
-      <result name="publishing">/WEB-INF/pages/manage/locked.ftl</result>
-      <result>/WEB-INF/pages/manage/overview.ftl</result>
-      <result name="error">/WEB-INF/pages/manage/overview.ftl</result>
+      <result name="publishing" type="redirect">${baseURL}/manage/locked.do?r=%{#parameters.r}</result>
+      <result type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="input" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
     <action name="cancel" class="org.gbif.ipt.action.manage.OverviewAction" method="cancel">
@@ -359,7 +363,6 @@
     <action name="report" class="org.gbif.ipt.action.manage.OverviewAction" method="locked">
       <interceptor-ref name="managerAjaxStack"/>
       <result>/WEB-INF/pages/manage/report.ftl</result>
-      <result name="cancel">/WEB-INF/pages/manage/report.ftl</result>
     </action>
 
     <action name="mappingPeek" class="org.gbif.ipt.action.manage.OverviewAction" method="peek">

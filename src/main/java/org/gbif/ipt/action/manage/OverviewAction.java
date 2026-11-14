@@ -847,12 +847,12 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     } else return !resource.getOrganisation().getKey().equals(Constants.DEFAULT_ORG_KEY);
   }
 
-  public String locked() throws Exception {
+  /**
+   * The publishing page (locked.do) and its report (report.do). Publishing redirects here; the page shows the result
+   * too, so a reload or a publication that ended before the page loaded shows how it went.
+   */
+  public String locked() {
     now = new Date();
-    if (report != null && report.isCompleted()) {
-      addActionMessage(getText("manage.overview.resource.published"));
-      return "cancel";
-    }
     return SUCCESS;
   }
 
@@ -1452,8 +1452,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         // publish a new version of the resource
         if (resourcePublicationManager.publish(resource, nextVersion, this)) {
           addActionMessage(getText("publishing.started", new String[]{String.valueOf(nextVersion), resource.getShortname()}));
-          // refresh archive report
-          updateReport();
           return PUBLISHING;
         } else {
           // show action warning there is no source data and mapping, as long as resource isn't metadata-only
@@ -1467,11 +1465,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
             addActionWarning(getText("manage.overview.data.missing"));
           }
 
-          missingRegistrationMetadata = !hasMinimumRegistryInfo(resource);
-          metadataModifiedSinceLastPublication = setMetadataModifiedSinceLastPublication(resource);
-          mappingsModifiedSinceLastPublication = setMappingsModifiedSinceLastPublication(resource);
-          // refresh archive report
-          updateReport();
+          // published in this request (no mapped data): the redirect to the overview shows the result
           return SUCCESS;
         }
       } catch (PublicationException e) {
