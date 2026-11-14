@@ -22,7 +22,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -37,6 +39,8 @@ public abstract class ReportingTask {
   private List<TaskMessage> messages = new ArrayList<>();
   private final int reportingIntervall;
   private StatusReport lastReport;
+  // when each step started, in the order the steps ran
+  private final Map<String, Long> stepStarts = new LinkedHashMap<>();
   protected BufferedWriter publicationLogWriter;
 
   /**
@@ -97,11 +101,16 @@ public abstract class ReportingTask {
    */
   public StatusReport report() {
     Exception e = currentException();
+    String step = currentStep();
+    // setState reports at once, so a new step is seen when it starts
+    if (step != null) {
+      stepStarts.putIfAbsent(step, System.currentTimeMillis());
+    }
 
     if (e != null) {
-      lastReport = new StatusReport(e, currentState(), currentStep(), messages);
+      lastReport = new StatusReport(e, currentState(), step, messages).withStepStarts(stepStarts);
     } else {
-      lastReport = new StatusReport(completed(), currentState(), currentStep(), messages);
+      lastReport = new StatusReport(completed(), currentState(), step, messages).withStepStarts(stepStarts);
     }
 
     handler.report(resourceShortname, lastReport);

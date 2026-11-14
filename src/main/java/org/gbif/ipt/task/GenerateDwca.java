@@ -98,6 +98,8 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
   private long currRecordsSkipped = 0;
   private String currExtension;
   private STATE state = STATE.WAITING;
+  // step generation failed or was cancelled at
+  private STATE failedStep;
   private final SourceManager sourceManager;
   private final VocabulariesManager vocabManager;
   private Map<String, String> basisOfRecords;
@@ -1198,6 +1200,11 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
     }
   }
 
+  @Override
+  protected String currentStep() {
+    return failedStep != null ? failedStep.name() : state.name();
+  }
+
   /**
    * Write data file for mapping.
    *
@@ -1381,6 +1388,10 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @param e exception
    */
   private void setState(Exception e) {
+    // the step that was running at the first failure; later calls are for its wrappers
+    if (failedStep == null) {
+      failedStep = state;
+    }
     exception = e;
     state = (exception instanceof InterruptedException) ? STATE.CANCELLED : STATE.FAILED;
     report();

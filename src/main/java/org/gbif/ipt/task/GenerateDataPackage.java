@@ -110,6 +110,8 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
   private MetadataReader metadataReader;
   private final AppConfig cfg;
   private STATE state = STATE.WAITING;
+  // step generation failed or was cancelled at
+  private STATE failedStep;
   private Exception exception;
   private File dataPackageFolder;
   private Package dataPackage;
@@ -239,6 +241,11 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
     };
   }
 
+  @Override
+  protected String currentStep() {
+    return failedStep != null ? failedStep.name() : state.name();
+  }
+
   /**
    * Zips the data package folder. A temp version is created first, and when successful, it's moved into the resource's
    * data directory.
@@ -248,14 +255,13 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    */
   void bundleArchive() throws Exception {
     checkForInterruption();
-    setState(STATE.BUNDLING);
     File zip = null;
     BigDecimal version = resource.getDataPackageMetadataVersion();
     try {
-      // check values and keys first
+      // check values and keys first, both part of validating; checkValues sets VALIDATING
       checkValues();
-      setState(STATE.BUNDLING);
       checkRelations();
+      setState(STATE.BUNDLING);
 
       // create zip
       zip = dataDir.tmpFile(DATA_PACKAGE_NAME, DATA_PACKAGE_EXTENSION);
@@ -355,6 +361,10 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * @param e exception
    */
   private void setState(Exception e) {
+    // the step that was running at the first failure; later calls are for its wrappers
+    if (failedStep == null) {
+      failedStep = state;
+    }
     exception = e;
     state = (exception instanceof InterruptedException) ? STATE.CANCELLED : STATE.FAILED;
     report();

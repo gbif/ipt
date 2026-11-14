@@ -13,12 +13,16 @@
  */
 package org.gbif.ipt.task;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StatusReportTest {
 
@@ -28,5 +32,39 @@ public class StatusReportTest {
 
     assertEquals("METADATA", report.getStep());
     assertFalse(report.hasException());
+  }
+
+  @Test
+  public void testStepStartsAreKeptInOrder() {
+    Map<String, Long> starts = new LinkedHashMap<>();
+    starts.put("STARTED", 1000L);
+    starts.put("DATAFILES", 1500L);
+    starts.put("METADATA", 9000L);
+    StatusReport failed = new StatusReport(new Exception("boom"), "Failed", "METADATA", List.of())
+        .withStepStarts(starts);
+
+    assertEquals(List.of("STARTED", "DATAFILES", "METADATA"), List.copyOf(failed.getStepStarts().keySet()));
+    assertEquals(1500L, failed.getStepStarts().get("DATAFILES"));
+    // the rest of the report is unchanged
+    assertEquals("METADATA", failed.getStep());
+    assertTrue(failed.hasException());
+    assertTrue(failed.isCompleted());
+    // a copy: later steps of the task don't change a report already made
+    starts.put("BUNDLING", 10000L);
+    assertEquals(3, failed.getStepStarts().size());
+    assertThrows(UnsupportedOperationException.class, () -> failed.getStepStarts().put("X", 1L));
+  }
+
+  @Test
+  public void testCancelled() {
+    assertTrue(new StatusReport(new InterruptedException("stop"), "Cancelled", "DATAFILES", List.of()).isCancelled());
+    assertFalse(new StatusReport(new Exception("boom"), "Failed", "DATAFILES", List.of()).isCancelled());
+    assertFalse(new StatusReport(true, "Done", List.of()).isCancelled());
+  }
+
+  @Test
+  public void testNoStepStarts() {
+    assertTrue(new StatusReport(true, "Done", List.of()).getStepStarts().isEmpty());
+    assertTrue(new StatusReport(true, "Done", List.of()).withStepStarts(null).getStepStarts().isEmpty());
   }
 }

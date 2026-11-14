@@ -359,12 +359,16 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
       // this type of exception happens outside GenerateDwca - so add reason to StatusReport
       getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, reasonFailed));
     } finally {
+      // the generator's last report: its step and step times are kept in the final report
+      StatusReport generatorReport = processReports.get(shortname);
+      Map<String, Long> stepStarts = generatorReport != null ? generatorReport.getStepStarts() : null;
+
       // if publication was successful
       if (succeeded) {
         // update StatusReport on publishing page
         String msg =
             action.getText("publishing.success", new String[]{version.toPlainString(), resource.getShortname()});
-        StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname));
+        StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname)).withStepStarts(stepStarts);
         processReports.put(shortname, updated);
         resourcesToNotifyPublicationFailure.remove(resource.getShortname());
       } else {
@@ -387,22 +391,24 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         // update StatusReport on publishing page
         if (cause != null) {
           // keep the step publication failed at
-          StatusReport previous = processReports.get(shortname);
-          String step = previous != null ? previous.getStep() : null;
-          StatusReport updated = new StatusReport(cause, msg, step, getTaskMessages(shortname));
+          String step = generatorReport != null ? generatorReport.getStep() : null;
+          StatusReport updated = new StatusReport(cause, msg, step, getTaskMessages(shortname))
+              .withStepStarts(stepStarts);
           processReports.put(shortname, updated);
         }
 
         if (failedDueToDataNotChanged) {
           String dataNotChanged = action.getText("publishing.dataNotChanged.revert");
-          StatusReport updated = new StatusReport(true, dataNotChanged, getTaskMessages(shortname));
+          StatusReport updated = new StatusReport(true, dataNotChanged, getTaskMessages(shortname))
+              .withStepStarts(stepStarts);
           processReports.put(shortname, updated);
           updateNextPublishedDate(new Date(), resource);
         }
 
         if (failedDueToRecordsDrop) {
           String dropInRecords = action.getText("publishing.dropInRecords.revert");
-          StatusReport updated = new StatusReport(true, dropInRecords, getTaskMessages(shortname));
+          StatusReport updated = new StatusReport(true, dropInRecords, getTaskMessages(shortname))
+              .withStepStarts(stepStarts);
           processReports.put(shortname, updated);
           updateNextPublishedDate(new Date(), resource);
         }
