@@ -197,8 +197,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private Map<String, String> autoPublishFrequencies;
   @Getter
   private StatusReport report;
-  @Getter
-  private Date now;
   private List<UploadedFile> uploadedFiles = new ArrayList<>();
   @Setter
   private File datapackageMetadataFile;
@@ -852,7 +850,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * too, so a reload or a publication that ended before the page loaded shows how it went.
    */
   public String locked() {
-    now = new Date();
     return SUCCESS;
   }
 

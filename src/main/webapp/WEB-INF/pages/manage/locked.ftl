@@ -1,36 +1,66 @@
-<#setting url_escaping_charset="UTF-8">
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="manage.publication.title"/>: ${resource.title!resource.shortname}</title>
+<link rel="stylesheet" href="${baseURL}/styles/publishing.css">
 <script>
     $(document).ready(function(){
-        loadReport();
-        var reporter = setInterval(loadReport, 1000);
+        // the log filter and scroll position survive the reloads
+        var onlyProblems = false;
+        var logScroll = null; // null: follow the end of the log
 
-        // a request is sent every second, so more than one can fail
-        var failed = false;
+        // the next request is sent a second after the last one answered, so slow answers can't overlap
+        loadReport();
         function loadReport() {
+            var list = document.getElementById("log-list");
+            if (list) {
+                var atEnd = list.scrollHeight - list.scrollTop - list.clientHeight < 8;
+                logScroll = atEnd ? null : list.scrollTop;
+            }
             $("#report").load("${baseURL}/manage/report.do?r=${resource.shortname}", function (response, status, xhr) {
                 // the session expired: stop polling and open the overview, which goes to login and returns there
                 if (xhr.status === 401) {
-                    clearInterval(reporter);
                     window.location.href = "${baseURL}/manage/resource.do?r=${resource.shortname}";
                     return;
                 }
                 if (status === "error") {
-                    if (xhr.status !== 0 && !failed) {
-                        failed = true;
-                        clearInterval(reporter);
+                    // the IPT can't be reached (status 0): try again; other errors stop the polling
+                    if (xhr.status === 0) {
+                        setTimeout(loadReport, 1000);
+                    } else {
                         $("#report").prepend($('<div class="alert alert-danger fs-smaller-2" role="alert"></div>')
                             .text('${action.getText("basic.error")?js_string?no_esc} (' + xhr.status + ')'));
                     }
                     return;
                 }
+                $("#log-only-problems").prop("checked", onlyProblems);
+                $("#report .pub-log").toggleClass("only-problems", onlyProblems);
+                var list = document.getElementById("log-list");
+                if (list) {
+                    list.scrollTop = logScroll === null ? list.scrollHeight : logScroll;
+                }
                 if ($("#report-block.completed").length > 0) {
-                    // stop timer and hide gif
-                    clearInterval(reporter);
+                    // nothing left to cancel
+                    $("#cancel-publishing, #cancel-confirm").prop("hidden", true);
+                } else {
+                    setTimeout(loadReport, 1000);
                 }
             });
         }
+
+        $("#report").on("change", "#log-only-problems", function () {
+            onlyProblems = this.checked;
+            $("#report .pub-log").toggleClass("only-problems", onlyProblems);
+        });
+
+        $("#cancel-publishing").on("click", function () {
+            $("#cancel-confirm").prop("hidden", false);
+            $("#keep-publishing").trigger("focus");
+        });
+        $("#keep-publishing").on("click", function () {
+            $("#cancel-confirm").prop("hidden", true);
+            $("#cancel-publishing").trigger("focus");
+        });
     });
 </script>
 <#assign currentMenu = "manage"/>
@@ -61,13 +91,27 @@
                 <div class="text-smaller">
                     <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
                 </div>
+
+                <div class="mt-2">
+                    <button type="button" id="cancel-publishing" class="btn btn-sm btn-outline-gbif-danger top-button"><@s.text name="manage.report.cancel"/></button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <main class="container main-content-container">
-    <div class="mb-3 mt-4 pb-3">
+    <div class="pub-page mb-3 mt-4 pb-3">
+        <#-- asked before the POST: cancelling throws away the version being made -->
+        <div class="pub-confirm" id="cancel-confirm" role="group" aria-labelledby="cancel-confirm-title" hidden>
+            <div class="pub-confirm-head" id="cancel-confirm-title"><@s.text name="manage.report.cancel.title"/></div>
+            <div class="pub-confirm-body" id="cancel-confirm-text"><@s.text name="manage.report.cancel.text"/></div>
+            <div class="pub-confirm-foot">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="keep-publishing"><@s.text name="manage.report.cancel.keep"/></button>
+                <a href="${baseURL}/manage/cancel.do?r=${resource.shortname}" class="btn btn-sm btn-outline-gbif-danger" data-post><@s.text name="manage.report.cancel"/></a>
+            </div>
+        </div>
+
         <div id="report"></div>
     </div>
 </main>
