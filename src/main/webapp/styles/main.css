@@ -2302,13 +2302,6 @@ a.doi:hover span:first-of-type {
     font-size: 0.875rem !important;
 }
 
-@keyframes ripple {
-    100% {
-        transform: translate(-50%, -50%) scale(100);
-        opacity: 0;
-    }
-}
-
 .unmapped-field, .redundant-section {
     padding: 0.2em 0.4em;
     margin: 0;
