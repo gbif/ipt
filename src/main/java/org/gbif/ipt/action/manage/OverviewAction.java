@@ -1448,7 +1448,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       try {
         // publish a new version of the resource
         if (resourcePublicationManager.publish(resource, nextVersion, this)) {
-          addActionMessage(getText("publishing.started", new String[]{String.valueOf(nextVersion), resource.getShortname()}));
           return PUBLISHING;
         } else {
           // show action warning there is no source data and mapping, as long as resource isn't metadata-only
