@@ -650,7 +650,7 @@
                         <div class="fileItem">
                             <div class="fileItem-inner">
                                 <div class="fileInfo">
-                                    <div class="fileDoneIcon"><i class="bi bi-check2 text-gbif-primary"></i></div>
+                                    <div class="fileDoneIcon"><i class="bi bi-check2 text-gbif-success"></i></div>
                                     <div class="fileMeta">
                                         <div class="fileName" id="uploadFileName"></div>
                                         <div class="fileStatus" id="uploadStatus" role="status" aria-live="polite"></div>

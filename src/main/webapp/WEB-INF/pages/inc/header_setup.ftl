@@ -17,6 +17,8 @@
         :root {
             --color-gbif-primary: ${primaryColor!"97, 168, 97"};
             --color-gbif-danger: ${"227, 99, 112"};
+            /* done, OK, public: fixed GBIF green (#3d7d25), not set in Appearance, so a tick never takes a custom primary colour */
+            --color-gbif-success: ${"61, 125, 37"};
             --color-gbif-secondary: ${"78, 86, 95"};
             --color-gbif-warning: ${"255, 193, 8"};
             --navbar-color: ${navbarColor!"120, 181, 120"};

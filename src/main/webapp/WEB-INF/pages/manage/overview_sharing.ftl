@@ -101,7 +101,7 @@
         <details class="ov-checks-box" id="registration-checks">
             <summary>
                 <#if failedChecks == 0>
-                    <@icon name="check_circle" class="text-gbif-primary"/> <@s.text name="manage.overview.sharing.checks.ready"/>
+                    <@icon name="check_circle" class="text-gbif-success"/> <@s.text name="manage.overview.sharing.checks.ready"/>
                 <#else>
                     <@s.text name="manage.overview.sharing.checks.missing"><@s.param>${failedChecks}</@s.param><@s.param>${registerChecks?size}</@s.param></@s.text>
                 </#if>

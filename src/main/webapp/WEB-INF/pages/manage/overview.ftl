@@ -3,7 +3,7 @@
 <#macro dwcaValidator>
     <#if (resource.recordsPublished>0)>
         <a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate">
-            <@icon name="check" class="text-gbif-primary"/>
+            <@icon name="check" class="text-gbif-success"/>
         </a>
     </#if>
 </#macro>
@@ -1068,7 +1068,7 @@
             // create "done" icon
             var fileDoneIcon = document.createElement("div");
             fileDoneIcon.className = "fileDoneIcon";
-            fileDoneIcon.innerHTML = '<@icon name="check" class="text-gbif-primary"/>';
+            fileDoneIcon.innerHTML = '<@icon name="check" class="text-gbif-success"/>';
 
             // create "error/warning" icon
             var fileWarningIcon = document.createElement("div");
@@ -2191,7 +2191,7 @@
                                             </div>
                                             <div id="url-source-check-status-wrapper" class="me-3" style="display: none;">
                                                 <@icon name="cancel" class="text-gbif-danger" id="url-source-check-status-fail" style="display: none;"/>
-                                                <@icon name="check_circle" class="text-gbif-primary" id="url-source-check-status-success" style="display: none;"/>
+                                                <@icon name="check_circle" class="text-gbif-success" id="url-source-check-status-success" style="display: none;"/>
                                             </div>
                                             <div id="url-source-size-wrapper" class="me-3" style="display: none;">
                                                 <strong><@s.text name="manage.source.url.checkUrl.size"/>:</strong> <span id="url-source-size">?</span>

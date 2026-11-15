@@ -871,6 +871,10 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     color: rgb(var(--color-gbif-primary));
 }
 
+.text-gbif-success {
+    color: rgb(var(--color-gbif-success));
+}
+
 .text-gbif-danger {
     color: rgb(var(--color-gbif-danger));
 }
@@ -917,7 +921,7 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
 }
 
 .text-visibility-registered, .text-visibility-public {
-  color: rgb(var(--color-gbif-primary));
+  color: rgb(var(--color-gbif-success));
 }
 
 .text-visibility-private {
@@ -2530,7 +2534,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .step-svg-icon-root.completed {
-    color: rgb(var(--color-gbif-primary));
+    color: rgb(var(--color-gbif-success));
 }
 
 .step-svg-icon-root {
@@ -2635,7 +2639,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 /*.css-1apltql.Mui-completed, .css-1apltql.Mui-active {*/
-.publication-StepIcon-root.completed, .publication-StepIcon-root.active {
+.publication-StepIcon-root.completed {
+    color: rgb(var(--color-gbif-success));
+}
+
+.publication-StepIcon-root.active {
     color: rgb(var(--color-gbif-primary));
 }
 

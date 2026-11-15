@@ -49,7 +49,7 @@
                         <@s.text name="admin.config.publish.failed"/><br>
                     <#else>
                         <@s.text name="admin.config.publish.result"/>:
-                        <i class="bi bi-check-circle-fill text-gbif-primary"></i>
+                        <i class="bi bi-check-circle-fill text-gbif-success"></i>
                         <@s.text name="admin.config.publish.completed"/><br>
                     </#if>
                     <#if completedPublications[shortname].messages?size gt 0>

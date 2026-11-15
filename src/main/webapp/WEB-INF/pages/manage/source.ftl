@@ -301,7 +301,7 @@
                                         </div>
                                     <#else>
                                         <div class="text-smaller text-muted">
-                                            <i class="bi bi-check2 text-gbif-primary"></i>
+                                            <i class="bi bi-check2 text-gbif-success"></i>
                                             <@s.text name="manage.source.problems.none"/>
                                             <#if (source.linesWithEmbeddedBreaksRemoved!0) gt 0>
                                                 <@s.text name="manage.source.fixed.lineBreaksRemoved"><@s.param>${source.linesWithEmbeddedBreaksRemoved?c}</@s.param></@s.text>

@@ -36,7 +36,7 @@
 .ah-state { margin-top: auto; padding-top: 6px; font-size: 0.75rem; color: #495057; overflow-wrap: anywhere; }
 .ah-state .material-icon { width: 14px; height: 14px; vertical-align: -3px; margin-right: 4px; }
 /* the icon carries the severity, in the banner's colours; the text stays in the normal colour */
-.ah-state-ok .material-icon { color: rgb(var(--color-gbif-primary)); }
+.ah-state-ok .material-icon { color: rgb(var(--color-gbif-success)); }
 .ah-state-warning .material-icon { color: rgb(var(--alert-warning-icon-color)); }
 .ah-state-danger .material-icon { color: rgb(var(--alert-danger-icon-color)); }
 

@@ -6,7 +6,7 @@
 /* plain text with an inline icon, not flex: a flex heading would line up with the meta line by its icon, not its text */
 .pub-head h2 { margin: 0; font-size: 1.25rem; font-weight: 400; color: #4e565f; }
 .pub-head h2 .material-icon { vertical-align: -0.15em; margin-right: 2px; }
-.pub-head h2.ok .material-icon { color: rgb(var(--color-gbif-primary)); }
+.pub-head h2.ok .material-icon { color: rgb(var(--color-gbif-success)); }
 .pub-head h2.bad .material-icon { color: rgb(var(--color-gbif-danger)); }
 .pub-head h2.neutral .material-icon { color: #6c757d; }
 .pub-meta { font-size: 0.8rem; color: #6c757d; font-variant-numeric: tabular-nums; }
@@ -18,7 +18,7 @@
 .pub-steps .pub-step-icon { width: 18px; height: 18px; }
 .pub-step-time { font-size: 0.7rem; font-weight: 400; color: #6c757d; font-variant-numeric: tabular-nums; }
 .pub-steps li.done { color: #212529; }
-.pub-steps li.done .pub-step-icon { color: rgb(var(--color-gbif-primary)); }
+.pub-steps li.done .pub-step-icon { color: rgb(var(--color-gbif-success)); }
 .pub-steps li.todo .pub-step-icon { color: #adb5bd; }
 .pub-steps li.active { color: #212529; font-weight: 600; background: rgba(var(--color-gbif-primary), .05); }
 .pub-steps li.active .pub-step-icon { color: rgb(var(--color-gbif-primary)); animation: pub-spin 1.2s linear infinite; }
@@ -48,7 +48,7 @@
 
 /* result */
 .pub-result { border: 1px solid #dee2e6; border-radius: 6px; padding: 14px 16px; margin-bottom: 16px; }
-.pub-result.ok { border-color: rgba(var(--color-gbif-primary), .6); background: rgba(var(--color-gbif-primary), .04); }
+.pub-result.ok { border-color: rgba(var(--color-gbif-success), .6); background: rgba(var(--color-gbif-success), .04); }
 .pub-result.bad { border-color: rgba(var(--color-gbif-danger), .5); background: rgba(var(--color-gbif-danger), .03); }
 .pub-result.neutral { background: #f8f9fa; }
 .pub-result p { margin: 6px 0; font-size: 0.875rem; }
