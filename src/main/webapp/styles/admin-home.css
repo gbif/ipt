@@ -1,0 +1,45 @@
+/* Administration home page (admin/home.ftl): cards in groups, the whole card is the link */
+
+/* the resource loading banner, as the overview page's banners (overview.css .ov-banner) */
+.ah-banner { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 1.5rem; padding: 12px 14px; border-radius: 8px; font-size: 0.875rem; }
+.ah-banner-icon { font-size: 1.25rem; flex: none; }
+.ah-banner-body { flex: 1; min-width: 240px; }
+.ah-banner h2 { margin: 0; font-size: 0.95rem; font-weight: 600; }
+.ah-banner-text { margin: 2px 0 0; color: #495057; }
+.ah-banner-danger { background: rgba(var(--color-gbif-danger), .05); border: 1px solid rgba(var(--color-gbif-danger), .4); }
+.ah-banner-danger .ah-banner-icon { color: rgb(var(--alert-danger-icon-color)); }
+.ah-banner-warning { background: rgba(var(--alert-warning-icon-color), .05); border: 1px solid rgba(var(--alert-warning-icon-color), .4); }
+.ah-banner-warning .ah-banner-icon { color: rgb(var(--alert-warning-icon-color)); }
+
+.ah-group { margin-bottom: 1.75rem; }
+.ah-group h2 { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; font-weight: 600; margin: 0 0 .5rem; }
+
+.ah-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
+
+.ah-card { --ah-accent: var(--color-gbif-primary); position: relative; display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid #dee2e6; border-radius: 6px; background: #fff; transition: border-color .15s, box-shadow .15s; }
+.ah-card:hover, .ah-card:focus-within { border-color: rgba(var(--ah-accent), .6); box-shadow: 0 2px 8px rgba(0, 0, 0, .05); }
+.ah-card h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 0.9375rem; font-weight: 600; }
+/* custom-link: main.css's global link rules (colour, underline and brightness on hover/focus) skip it */
+.ah-card h3 a, .ah-card h3 a:hover, .ah-card h3 a:focus { color: #212529; text-decoration: none; }
+/* stretch the title link over the card */
+.ah-card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: 6px; }
+.ah-card h3 a:focus-visible { outline: 0; }
+.ah-card h3 a:focus-visible::after { box-shadow: 0 0 0 .2rem rgba(var(--ah-accent), .35); }
+.ah-card:hover h3 a { color: rgb(var(--ah-accent)); }
+.ah-card h3 .material-icon { width: 18px; height: 18px; color: rgb(var(--ah-accent)); }
+/* a card that is itself an alert (resource loading problems): icon, hover border and hovered title in the banner's colours */
+.ah-card-danger { --ah-accent: var(--alert-danger-icon-color); }
+.ah-card-warning { --ah-accent: var(--alert-warning-icon-color); }
+.ah-card p { margin: 0; font-size: 0.8125rem; color: #6c757d; }
+
+/* the state line at the bottom of the card */
+.ah-state { margin-top: auto; padding-top: 6px; font-size: 0.75rem; color: #495057; overflow-wrap: anywhere; }
+.ah-state .material-icon { width: 14px; height: 14px; vertical-align: -3px; margin-right: 4px; }
+/* the icon carries the severity, in the banner's colours; the text stays in the normal colour */
+.ah-state-ok .material-icon { color: rgb(var(--color-gbif-primary)); }
+.ah-state-warning .material-icon { color: rgb(var(--alert-warning-icon-color)); }
+.ah-state-danger .material-icon { color: rgb(var(--alert-danger-icon-color)); }
+
+/* a page that can't be used yet, e.g. organizations before registration */
+.ah-card-off { background: #fafafa; }
+.ah-card.ah-card-off h3 a { color: #6c757d; }
