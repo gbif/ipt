@@ -124,9 +124,9 @@
       </result>
     </action>
 
-    <action name="uiManagement" class="org.gbif.ipt.action.admin.UIManagementAction">
-      <result name="success" type="redirect">${baseURL}/admin/uiManagement.do</result>
-      <result name="input">/WEB-INF/pages/admin/ui_management.ftl</result>
+    <action name="appearance" class="org.gbif.ipt.action.admin.AppearanceAction">
+      <result name="success" type="redirect">${baseURL}/admin/appearance.do</result>
+      <result name="input">/WEB-INF/pages/admin/appearance.ftl</result>
     </action>
 
     <!-- REGISTRY ACTIONS -->

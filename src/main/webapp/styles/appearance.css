@@ -1,0 +1,58 @@
+/* Appearance page (admin/appearance.ftl); sections are the overview's cards (overview.css) */
+
+/* as the IPT's warning alerts (main.css .alert-warning) */
+.ap-banner { background: rgb(var(--alert-warning-background-color)); border: 1px solid rgba(var(--alert-warning-icon-color), .3); color: rgb(var(--alert-warning-text-color)); }
+.ap-banner .ov-ic { color: rgb(var(--alert-warning-icon-color)); }
+
+.ap-where { font-size: 0.8rem; color: #6c757d; }
+
+/* logo */
+.ap-logo { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+.ap-logo-preview { width: 200px; height: 76px; flex: none; display: flex; align-items: center; justify-content: center; border: 1px solid #dee2e6; border-radius: 8px; background: rgb(var(--navbar-color)); padding: 10px 16px; }
+.ap-logo-preview img { max-height: 54px; max-width: 100%; }
+.ap-mark { height: 46px; width: auto; display: block; }
+.ap-mark path { fill: rgb(var(--navbar-gbif-logo-color)); }
+.ap-logo-input { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.ap-logo-input .form-control { max-width: 420px; }
+.ap-logo-remove { padding: 0; color: rgb(var(--color-gbif-danger)) !important; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; font-size: 0.85rem; }
+
+/* schemes */
+.ap-schemes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.ap-scheme { display: flex; flex-direction: column; padding: 0; border: 1px solid #dee2e6; border-radius: 8px; background: #fff; overflow: hidden; text-align: left; cursor: pointer; }
+.ap-scheme:hover { border-color: #adb5bd; }
+.ap-scheme[aria-pressed="true"] { border-color: rgb(var(--color-gbif-primary)); box-shadow: 0 0 0 1px rgb(var(--color-gbif-primary)); }
+.ap-scheme-bar { display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px; border-bottom: 1px solid #e9ecef; position: relative; }
+.ap-scheme-logo { width: 12px; height: 12px; border-radius: 3px; }
+.ap-scheme-menu { font-size: 12px; font-weight: 500; }
+.ap-scheme-tab { position: absolute; left: 32px; bottom: 0; width: 22px; height: 3px; }
+.ap-scheme-page { display: flex; align-items: center; gap: 8px; height: 26px; padding: 0 10px; }
+.ap-scheme-btn { width: 26px; height: 10px; border-radius: 3px; }
+.ap-scheme-link { width: 34px; height: 3px; border-radius: 2px; }
+.ap-scheme-name { padding: 6px 10px 8px; font-size: 0.85rem; font-weight: 500; color: #212529; }
+.ap-scheme-default { font-weight: 400; color: #6c757d; }
+
+/* colour rows */
+.ap-rows { margin: 0 -16px -14px; border-top: 1px solid #f1f3f5; }
+.ap-row { display: flex; gap: 16px; padding: 12px 16px; flex-wrap: wrap; }
+.ap-row + .ap-row { border-top: 1px solid #f1f3f5; }
+.ap-row-text { flex: 1 1 260px; }
+.ap-label { font-weight: 500; font-size: 0.875rem; margin-bottom: 2px; }
+.ap-row-input { flex: 0 1 300px; }
+.ap-pick { display: flex; gap: 6px; align-items: center; }
+.ap-swatch { width: 38px; height: 31px; padding: 2px; border: 1px solid #ced4da; border-radius: 4px; background: #fff; cursor: pointer; flex: none; }
+.ap-hex { width: 110px; font-family: SFMono-Regular, Menlo, Consolas, monospace; text-transform: lowercase; }
+.ap-checks { margin-top: 4px; }
+.ap-check { font-size: 0.8rem; }
+.ap-check .material-icon { width: 14px; height: 14px; vertical-align: -3px; margin-right: 4px; }
+.ap-check-ok { color: #6c757d; }
+.ap-check-ok .material-icon { color: rgb(var(--color-gbif-success)); }
+.ap-check-low { color: #a15c00; }
+.ap-check-low .material-icon { color: rgb(var(--alert-warning-icon-color)); }
+.ap-row-off .ap-label, .ap-row-off .ap-row-input { opacity: .55; }
+.ap-off-note { font-style: italic; }
+
+/* unsaved changes, as on the mapping page */
+.ap-savebar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #dee2e6; box-shadow: 0 -4px 14px rgba(0, 0, 0, .06); transform: translateY(110%); transition: transform .2s; z-index: 1020; }
+.ap-savebar.show { transform: none; }
+.ap-savebar .container { padding-top: 10px; padding-bottom: 10px; display: flex; gap: 12px; align-items: center; font-size: 0.85rem; }
+.ap-grow { flex: 1; font-weight: 600; }

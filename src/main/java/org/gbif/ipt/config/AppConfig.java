@@ -30,7 +30,6 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -63,7 +62,12 @@ public class AppConfig {
   }
 
   private static final String UI_SETTINGS_FOLDER = ".uiSettings";
-  private static final String COLOR_SCHEME_PROPFILE = "ipt-color-scheme.properties";
+  /** IPT 3.0 to 3.4 colours; read only to offer them again on the Appearance page. */
+  private static final String LEGACY_COLOR_SCHEME_PROPFILE = "ipt-color-scheme.properties";
+  /** The colours since the light navigation bar became the default. */
+  private static final String COLOR_SCHEME_PROPFILE = "ipt-color-scheme-v2.properties";
+  /** Written into a new colour scheme file when it replaced an administrator's own colours; dropped on the next save. */
+  private static final String COLOR_SCHEME_REPLACED_PROPERTY = "replacedCustomColours";
   protected static final String DATADIR_PROPFILE = "ipt.properties";
   static final String CLASSPATH_PROPFILE = "application.properties";
   public static final String BASEURL = "ipt.baseURL";
@@ -95,6 +99,12 @@ public class AppConfig {
   public static final String BUILD_NUMBER_REGEX = "-r\\$\\{buildNumber\\}$|-r\\w{7}$";
   private Properties properties = new Properties();
   private IptColorScheme colorScheme;
+  /** The administrator's colours from ipt-color-scheme.properties, or null if there are none or they are the defaults. */
+  @Getter
+  private IptColorScheme previousColorScheme;
+  /** True while the new default colours replace the administrator's own colours, until Appearance is saved. */
+  @Getter
+  private boolean colorSchemeReplaced;
   private static final Logger LOG = LogManager.getLogger(AppConfig.class);
   @Getter
   private DataDir dataDir;
@@ -585,38 +595,7 @@ public class AppConfig {
           LOG.warn("DataDir configured, but user configuration doesnt exist: {}", userCfgFile.getAbsolutePath());
         }
 
-        // load (and create if absent) default colors configuration from ipt-color.scheme.properties
-        File cfgFile = new File(dataDir.dataDir, "config/" + UI_SETTINGS_FOLDER + '/' + COLOR_SCHEME_PROPFILE);
-        if (!cfgFile.exists()) {
-          LOG.info("IPT UI settings not found, try to create them and then load");
-          Path parentDir = cfgFile.getParentFile().toPath();
-          if (!Files.exists(parentDir)) {
-            try {
-              Files.createDirectories(parentDir);
-            } catch (IOException e) {
-              LOG.error("Failed to create .uiSettings directory", e);
-            }
-          }
-
-          // populate properties with default values and store
-          try (OutputStream out = Files.newOutputStream(cfgFile.toPath())) {
-            // create object with default values
-            colorScheme = new IptColorScheme();
-            Properties uiProps = colorScheme.toProperties();
-            uiProps.store(out, "Default IPT color scheme configuration, last saved " + new Date());
-          } catch (IOException e) {
-            LOG.error("Failed to load the default application configuration from ipt-color-scheme.properties", e);
-          }
-        } else {
-          LOG.info("Loading IPT UI settings");
-          try (InputStream in = Files.newInputStream(cfgFile.toPath())) {
-            Properties uiProps = new Properties();
-            uiProps.load(in);
-            colorScheme = new IptColorScheme(uiProps);
-          } catch (IOException e) {
-            LOG.error("Failed to load the application configuration from ipt-color-scheme.properties", e);
-          }
-        }
+        loadColorScheme();
 
         // check if this datadir is a production or test installation
         // we use a hidden file to indicate the production type
@@ -696,17 +675,73 @@ public class AppConfig {
   }
 
   /**
+   * Loads the colour scheme from ipt-color-scheme-v2.properties, creating it with the defaults if absent. The colours
+   * of IPT 3.0 to 3.4 (ipt-color-scheme.properties) are not carried over: their default was a green navigation bar.
+   * An administrator's own colours from that file are kept as {@link #getPreviousColorScheme()}, to apply again.
+   */
+  private void loadColorScheme() {
+    File uiDir = new File(dataDir.dataDir, "config/" + UI_SETTINGS_FOLDER);
+    File legacyFile = new File(uiDir, LEGACY_COLOR_SCHEME_PROPFILE);
+    File cfgFile = new File(uiDir, COLOR_SCHEME_PROPFILE);
+
+    previousColorScheme = null;
+    if (legacyFile.exists()) {
+      try (InputStream in = Files.newInputStream(legacyFile.toPath())) {
+        Properties legacyProps = new Properties();
+        legacyProps.load(in);
+        IptColorScheme legacy = new IptColorScheme(legacyProps, IptColorScheme.legacyDefaults());
+        if (!legacy.isLegacyDefault()) {
+          previousColorScheme = legacy;
+        }
+      } catch (IOException e) {
+        LOG.warn("Failed to read the previous colour scheme from {}", LEGACY_COLOR_SCHEME_PROPFILE, e);
+      }
+    }
+
+    if (cfgFile.exists()) {
+      LOG.info("Loading IPT UI settings");
+      try (InputStream in = Files.newInputStream(cfgFile.toPath())) {
+        Properties uiProps = new Properties();
+        uiProps.load(in);
+        colorScheme = new IptColorScheme(uiProps);
+        colorSchemeReplaced = Boolean.parseBoolean(uiProps.getProperty(COLOR_SCHEME_REPLACED_PROPERTY));
+      } catch (IOException e) {
+        LOG.error("Failed to load the colour scheme from {}", COLOR_SCHEME_PROPFILE, e);
+        colorScheme = new IptColorScheme();
+      }
+    } else {
+      LOG.info("IPT UI settings not found, creating them with the default colours");
+      colorScheme = new IptColorScheme();
+      colorSchemeReplaced = previousColorScheme != null;
+      try {
+        Files.createDirectories(uiDir.toPath());
+        try (OutputStream out = Files.newOutputStream(cfgFile.toPath())) {
+          Properties uiProps = colorScheme.toProperties();
+          if (colorSchemeReplaced) {
+            uiProps.setProperty(COLOR_SCHEME_REPLACED_PROPERTY, "true");
+          }
+          uiProps.store(out, "Default IPT color scheme configuration, last saved " + new Date());
+        }
+      } catch (IOException e) {
+        LOG.error("Failed to store the default colour scheme in {}", COLOR_SCHEME_PROPFILE, e);
+      }
+    }
+  }
+
+  /**
    * Store color scheme configuration to the property file.
    *
    * @param colorScheme IPT color scheme
    */
   public void saveColorSchemeConfig(IptColorScheme colorScheme) throws IOException {
-    this.colorScheme = colorScheme;
     File cfgFile = new File(dataDir.dataDir, "config/" + UI_SETTINGS_FOLDER + '/' + COLOR_SCHEME_PROPFILE);
+    Files.createDirectories(cfgFile.getParentFile().toPath());
     try (OutputStream out = Files.newOutputStream(cfgFile.toPath())) {
       Properties props = colorScheme.toProperties();
       props.store(out, "IPT color scheme configuration, last saved " + new Date());
     }
+    this.colorScheme = colorScheme;
+    this.colorSchemeReplaced = false;
   }
 
   public IptColorScheme getColorSchemeConfig() {

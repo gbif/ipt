@@ -15,6 +15,7 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.IptColorScheme;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -28,7 +29,9 @@ import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,12 +42,12 @@ import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
 import lombok.Getter;
 
-public class UIManagementAction extends POSTAction implements UploadedFilesAware {
+public class AppearanceAction extends POSTAction implements UploadedFilesAware {
 
   @Serial
   private static final long serialVersionUID = 2001100185337026057L;
 
-  private static final Logger LOG = LogManager.getLogger(UIManagementAction.class);
+  private static final Logger LOG = LogManager.getLogger(AppearanceAction.class);
 
   private final DataDir dataDir;
 
@@ -54,7 +57,7 @@ public class UIManagementAction extends POSTAction implements UploadedFilesAware
   private boolean removeLogo;
 
   @Inject
-  public UIManagementAction(
+  public AppearanceAction(
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
@@ -66,11 +69,16 @@ public class UIManagementAction extends POSTAction implements UploadedFilesAware
   @Override
   public void prepare() {
     super.prepare();
-    colorScheme = getCfg().getColorSchemeConfig();
+    // a copy: the posted values must not reach the pages before they are checked and saved
+    colorScheme = new IptColorScheme(getCfg().getColorSchemeConfig());
   }
 
   @Override
   public String save() {
+    if (!validColours()) {
+      return INPUT;
+    }
+
     File logo = uploadedLogo();
     String logoType = logo == null ? null : IptFileUtils.imageType(logo);
     if (logo != null && logoType == null) {
@@ -101,6 +109,33 @@ public class UIManagementAction extends POSTAction implements UploadedFilesAware
   }
 
   /**
+   * Normalises each posted colour to #rrggbb; a field error for each one that isn't a hex colour.
+   *
+   * @return true if all colours are valid
+   */
+  private boolean validColours() {
+    String primary = check("primaryColor", colorScheme.getPrimaryColor());
+    String navbar = check("navbarColor", colorScheme.getNavbarColor());
+    String navbarLink = check("navbarLinkColor", colorScheme.getNavbarLinkColor());
+    String logoColour = check("navbarGbifLogoColor", colorScheme.getNavbarGbifLogoColor());
+    String activeTab = check("navbarActiveTabColor", colorScheme.getNavbarActiveTabColor());
+    String link = check("linkColor", colorScheme.getLinkColor());
+    if (hasFieldErrors()) {
+      return false;
+    }
+    colorScheme = new IptColorScheme(primary, navbar, navbarLink, logoColour, activeTab, link);
+    return true;
+  }
+
+  private String check(String field, String value) {
+    String hex = IptColorScheme.normalizeHex(value);
+    if (hex == null) {
+      addFieldError("colorScheme." + field, getText("admin.uiManagement.error.colour"));
+    }
+    return hex;
+  }
+
+  /**
    * @return the uploaded logo, or null if no file was chosen
    */
   private File uploadedLogo() {
@@ -118,6 +153,34 @@ public class UIManagementAction extends POSTAction implements UploadedFilesAware
   @StrutsParameter(depth = 1)
   public IptColorScheme getColorScheme() {
     return colorScheme;
+  }
+
+  /**
+   * @return the colour schemes to start from, by key; the first is the default
+   */
+  public Map<String, IptColorScheme> getPresets() {
+    return IptColorScheme.presets();
+  }
+
+  /**
+   * @return the administrator's colours from before the light navigation bar became the default, or null
+   */
+  public IptColorScheme getPreviousColorScheme() {
+    return getCfg().getPreviousColorScheme();
+  }
+
+  /**
+   * @return true while the new default colours replace the administrator's own colours
+   */
+  public boolean isColorSchemeReplaced() {
+    return getCfg().isColorSchemeReplaced();
+  }
+
+  /**
+   * @return true when an administrator uploaded a logo, checked the way AppFileAction serves it
+   */
+  public boolean isCustomLogo() {
+    return Arrays.stream(Constants.IMAGE_TYPES).anyMatch(type -> dataDir.appLogoFile(type).exists());
   }
 
   @Override

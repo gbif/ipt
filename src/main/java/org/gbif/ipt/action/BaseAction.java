@@ -17,6 +17,7 @@ import org.gbif.api.vocabulary.License;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.IptColorScheme;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -35,6 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -176,46 +178,41 @@ public class BaseAction extends ActionSupport
         .orElse(cfg.getBaseUrl());
   }
 
+  /**
+   * @return the colour scheme in use, never null (the defaults before the data directory is set up)
+   */
+  private IptColorScheme colorScheme() {
+    return Objects.requireNonNullElseGet(cfg.getColorSchemeConfig(), IptColorScheme::new);
+  }
+
+  // The colours as "r, g, b", for the CSS variables in header.ftl. A value that isn't #rrggbb gets the default.
+
   public String getPrimaryColor() {
-    String primaryColorHex = cfg.getColorSchemeConfig().getPrimaryColor();
-    return Integer.valueOf(primaryColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(primaryColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(primaryColorHex.substring(5, 7), 16);
+    return IptColorScheme.toRgb(colorScheme().getPrimaryColor(), IptColorScheme.PRIMARY_COLOR_DEFAULT_VALUE);
   }
 
   public String getNavbarColor() {
-    String navbarColorHex = cfg.getColorSchemeConfig().getNavbarColor();
-    return Integer.valueOf(navbarColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(navbarColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(navbarColorHex.substring(5, 7), 16);
+    return IptColorScheme.toRgb(colorScheme().getNavbarColor(), IptColorScheme.NAVBAR_COLOR_DEFAULT_VALUE);
+  }
+
+  public String getNavbarStripeColor() {
+    return IptColorScheme.toRgb(colorScheme().getNavbarStripeColor(), IptColorScheme.NAVBAR_COLOR_DEFAULT_VALUE);
   }
 
   public String getNavbarLinkColor() {
-    String navbarLinkColorHex = cfg.getColorSchemeConfig().getNavbarLinkColor();
-    return Integer.valueOf(navbarLinkColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(navbarLinkColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(navbarLinkColorHex.substring(5, 7), 16);
+    return IptColorScheme.toRgb(colorScheme().getNavbarLinkColor(), IptColorScheme.NAVBAR_LINK_COLOR_DEFAULT_VALUE);
   }
 
   public String getNavbarGbifLogoColor() {
-    String navbarGbifLogoColorHex = cfg.getColorSchemeConfig().getNavbarGbifLogoColor();
-    return Integer.valueOf(navbarGbifLogoColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(navbarGbifLogoColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(navbarGbifLogoColorHex.substring(5, 7), 16);
+    return IptColorScheme.toRgb(colorScheme().getNavbarGbifLogoColor(), IptColorScheme.NAVBAR_GBIF_LOGO_COLOR_DEFAULT_VALUE);
   }
 
   public String getNavbarActiveTabColor() {
-    String navbarActiveTabColorHex = cfg.getColorSchemeConfig().getNavbarActiveTabColor();
-    return Integer.valueOf(navbarActiveTabColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(navbarActiveTabColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(navbarActiveTabColorHex.substring(5, 7), 16);
+    return IptColorScheme.toRgb(colorScheme().getNavbarActiveTabColor(), IptColorScheme.NAVBAR_ACTIVE_TAB_COLOR_DEFAULT_VALUE);
   }
 
   public String getLinkColor() {
-    String linkColorHex = cfg.getColorSchemeConfig().getLinkColor();
-    return Integer.valueOf(linkColorHex.substring(1, 3), 16) + ","
-        + Integer.valueOf(linkColorHex.substring(3, 5), 16) + ","
-        + Integer.valueOf(linkColorHex.substring(5, 7), 16);
+    return IptColorScheme.toRgb(colorScheme().getLinkColor(), IptColorScheme.LINK_COLOR_DEFAULT_VALUE);
   }
 
   /**

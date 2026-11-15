@@ -47,8 +47,8 @@
             <@card href="/admin/config.do" iconName="settings" title="admin.home.editConfig" description="admin.home.editConfig.description">
                 <div class="ah-state"><#if testInstallation><b><@s.text name="admin.home.state.testMode"/></b><#else><@s.text name="admin.home.state.production"/></#if> · ${iptBaseUrl!}</div>
             </@card>
-            <@card href="/admin/uiManagement.do" iconName="palette" title="admin.home.manageUI" description="admin.home.manageUI.description">
-                <div class="ah-state"><@s.text name="admin.home.state.colours"><@s.param><#if customColours><@s.text name="admin.home.state.custom"/><#else><@s.text name="admin.home.state.default"/></#if></@s.param></@s.text> · <@s.text name="admin.home.state.logo"><@s.param><#if customLogo><@s.text name="admin.home.state.custom"/><#else><@s.text name="admin.home.state.default"/></#if></@s.param></@s.text></div>
+            <@card href="/admin/appearance.do" iconName="palette" title="admin.home.manageUI" description="admin.home.manageUI.description">
+                <div class="ah-state"><#if colorSchemeReplaced><b><@s.text name="admin.home.state.coloursReplaced"/></b><#else><@s.text name="admin.home.state.colours"><@s.param><#if customColours><@s.text name="admin.home.state.custom"/><#else><@s.text name="admin.home.state.default"/></#if></@s.param></@s.text></#if> · <@s.text name="admin.home.state.logo"><@s.param><#if customLogo><@s.text name="admin.home.state.custom"/><#else><@s.text name="admin.home.state.default"/></#if></@s.param></@s.text></div>
             </@card>
             <@card href="/admin/logs.do" iconName="article" title="admin.home.manageLogs" description="admin.home.manageLogs.description"/>
         </div>

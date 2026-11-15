@@ -89,6 +89,7 @@ const ICONS = [
   'palette',
   'people',
   'radio_button_unchecked',
+  'save',
   'settings',
   'update',
   'upload',

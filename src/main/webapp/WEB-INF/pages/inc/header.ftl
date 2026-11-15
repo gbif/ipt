@@ -25,17 +25,18 @@
     <!-- IPT CSS -->
     <style>
         :root {
-            --color-gbif-primary: ${primaryColor!"97, 168, 97"};
+            --color-gbif-primary: ${primaryColor!"61, 125, 37"};
             --color-gbif-danger: ${"227, 99, 112"};
             /* done, OK, public: fixed GBIF green (#3d7d25), not set in Appearance, so a tick never takes a custom primary colour */
             --color-gbif-success: ${"61, 125, 37"};
             --color-gbif-secondary: ${"78, 86, 95"};
             --color-gbif-warning: ${"255, 193, 8"};
-            --navbar-color: ${navbarColor!"120, 181, 120"};
-            --navbar-link-color: ${navbarLinkColor!"255, 255, 255"};
-            --navbar-gbif-logo-color: ${navbarGbifLogoColor!"255, 255, 255"};
-            --navbar-active-tab-color: ${navbarActiveTabColor!"255, 255, 255"};
-            --link-color: ${linkColor!"97, 168, 97"};
+            --navbar-color: ${navbarColor!"255, 255, 255"};
+            --navbar-stripe-color: ${navbarStripeColor!"240, 240, 240"};
+            --navbar-link-color: ${navbarLinkColor!"78, 86, 95"};
+            --navbar-gbif-logo-color: ${navbarGbifLogoColor!"76, 156, 46"};
+            --navbar-active-tab-color: ${navbarActiveTabColor!"76, 156, 46"};
+            --link-color: ${linkColor!"61, 125, 37"};
         }
     </style>
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />

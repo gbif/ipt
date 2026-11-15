@@ -36,7 +36,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * The administration home page: a card per administration page, most with one line about the IPT's state.
@@ -48,7 +47,6 @@ public class HomeAction extends BaseAction {
   private static final long serialVersionUID = 6041482193930893683L;
 
   // the link colour's default before it became the primary green (#3294)
-  private static final String OLD_LINK_COLOR_DEFAULT = "#4ba2ce";
 
   private final ResourceManager resourceManager;
   private final UserAccountManager userManager;
@@ -210,17 +208,17 @@ public class HomeAction extends BaseAction {
   }
 
   /**
-   * @return true when any colour differs from the defaults. The old blue link default counts as default: existing
-   * installations have it in their colour scheme file.
+   * @return true when any colour differs from the defaults
    */
   public boolean isCustomColours() {
-    IptColorScheme scheme = cfg.getColorSchemeConfig();
-    return !(StringUtils.equalsIgnoreCase(scheme.getPrimaryColor(), IptColorScheme.PRIMARY_COLOR_DEFAULT_VALUE)
-        && StringUtils.equalsIgnoreCase(scheme.getNavbarColor(), IptColorScheme.NAVBAR_COLOR_DEFAULT_VALUE)
-        && StringUtils.equalsIgnoreCase(scheme.getNavbarLinkColor(), IptColorScheme.NAVBAR_LINK_COLOR_DEFAULT_VALUE)
-        && StringUtils.equalsIgnoreCase(scheme.getNavbarGbifLogoColor(), IptColorScheme.NAVBAR_GBIF_LOGO_COLOR_DEFAULT_VALUE)
-        && StringUtils.equalsIgnoreCase(scheme.getNavbarActiveTabColor(), IptColorScheme.NAVBAR_ACTIVE_TAB_COLOR_DEFAULT_VALUE)
-        && StringUtils.equalsAnyIgnoreCase(scheme.getLinkColor(), IptColorScheme.LINK_COLOR_DEFAULT_VALUE, OLD_LINK_COLOR_DEFAULT));
+    return !new IptColorScheme().equals(cfg.getColorSchemeConfig());
+  }
+
+  /**
+   * @return true while the new default colours replace the administrator's own colours, until Appearance is saved
+   */
+  public boolean isColorSchemeReplaced() {
+    return cfg.isColorSchemeReplaced();
   }
 
   /**
