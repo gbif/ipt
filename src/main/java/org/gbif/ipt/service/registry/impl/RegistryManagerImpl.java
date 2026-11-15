@@ -414,11 +414,17 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   @Override
   public List<Extension> getExtensions() throws RegistryException {
-    Map<String, List<Extension>> jSONExtensions = gson
-      .fromJson(requestHttpGetFromRegistry(getExtensionsURL(true)).getContent(),
-        new TypeToken<Map<String, List<Extension>>>() {
-        }.getType());
-    return (jSONExtensions.get("extensions") == null) ? new ArrayList<>() : jSONExtensions.get("extensions");
+    String url = getExtensionsURL(true);
+    try {
+      Map<String, List<Extension>> jSONExtensions = gson
+        .fromJson(requestHttpGetFromRegistry(url).getContent(),
+          new TypeToken<Map<String, List<Extension>>>() {
+          }.getType());
+      return (jSONExtensions == null || jSONExtensions.get("extensions") == null) ? new ArrayList<>() : jSONExtensions.get("extensions");
+    } catch (JsonSyntaxException e) {
+      // e.g. an HTML error page from a proxy, or a JSON error response
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Unexpected, non-parsable response format encountered.");
+    }
   }
 
   @Override
@@ -721,11 +727,17 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   @Override
   public List<Vocabulary> getVocabularies() throws RegistryException {
-    Map<String, List<Vocabulary>> jSONVocabularies = gson
-      .fromJson(requestHttpGetFromRegistry(getVocabulariesURL(true)).getContent(),
-      new TypeToken<Map<String, List<Vocabulary>>>() {
-      }.getType());
-    return (jSONVocabularies.get("thesauri") == null) ? new ArrayList<>() : jSONVocabularies.get("thesauri");
+    String url = getVocabulariesURL(true);
+    try {
+      Map<String, List<Vocabulary>> jSONVocabularies = gson
+        .fromJson(requestHttpGetFromRegistry(url).getContent(),
+        new TypeToken<Map<String, List<Vocabulary>>>() {
+        }.getType());
+      return (jSONVocabularies == null || jSONVocabularies.get("thesauri") == null) ? new ArrayList<>() : jSONVocabularies.get("thesauri");
+    } catch (JsonSyntaxException e) {
+      // e.g. an HTML error page from a proxy, or a JSON error response
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Unexpected, non-parsable response format encountered.");
+    }
   }
 
   @Override

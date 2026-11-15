@@ -32,6 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -220,6 +221,13 @@ public class AppConfig {
    */
   public static boolean isCore(String rowType) {
     return coreRowTypes.contains(rowType);
+  }
+
+  /**
+   * @return the row types suitable for use as a core, the default ones first
+   */
+  public static List<String> getCoreRowTypes() {
+    return Collections.unmodifiableList(coreRowTypes);
   }
 
   public boolean debug() {

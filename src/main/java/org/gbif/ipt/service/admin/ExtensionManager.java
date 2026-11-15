@@ -144,4 +144,12 @@ public interface ExtensionManager {
    * Checks whether the extension is the latest.
    */
   boolean isLatest(Extension extension, List<Extension> latestExtensions);
+
+  /**
+   * Checks whether an extension can be added to a core type, by its subject, the same way as {@link #list(String)}.
+   * An extension with an empty subject suits every core type.
+   *
+   * @return true if the extension is not a core type and suits the core type
+   */
+  boolean isSuitableFor(Extension extension, String coreRowType);
 }

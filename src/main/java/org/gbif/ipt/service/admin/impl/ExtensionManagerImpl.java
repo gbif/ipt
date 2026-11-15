@@ -716,6 +716,30 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
   }
 
   @Override
+  public boolean isSuitableFor(Extension extension, String coreRowType) {
+    if (extension == null || coreRowType == null || extension.isCore()) {
+      return false;
+    }
+    String subject = StringUtils.trimToNull(extension.getSubject());
+    if (subject == null) {
+      return true;
+    }
+    List<String> keywords;
+    if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_OCCURRENCE)) {
+      keywords = List.of(OCCURRENCE_KEYWORD);
+    } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_TAXON)) {
+      keywords = List.of(TAXON_KEYWORD);
+    } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_EVENT)) {
+      keywords = List.of(EVENT_KEYWORD);
+    } else if (coreRowType.equalsIgnoreCase(Constants.DWC_ROWTYPE_MATERIAL_ENTITY)) {
+      keywords = List.of(MATERIAL_ENTITY_KEYWORD, OCCURRENCE_KEYWORD);
+    } else {
+      keywords = List.of(coreRowType);
+    }
+    return keywords.stream().anyMatch(k -> Strings.CI.contains(subject, k));
+  }
+
+  @Override
   public List<String> getRedundantGroups(Extension extension, Extension core) {
     List<String> groups = extension.getGroups();
     List<String> coreGroups = core.getGroups();

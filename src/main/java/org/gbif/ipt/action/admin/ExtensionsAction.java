@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -63,6 +64,8 @@ public class ExtensionsAction extends POSTAction {
   private final ExtensionManager extensionManager;
   private final VocabulariesManager vocabManager;
   private final RegistryManager registryManager;
+  // all registered extensions (latest and older versions), loaded once per request in prepare()
+  private List<Extension> registeredExtensions;
   // list of the latest registered extension versions
   @Getter
   private List<Extension> latestExtensionVersions;
@@ -82,9 +85,30 @@ public class ExtensionsAction extends POSTAction {
   private List<Extension> newExtensions;
   private ConfigWarnings configWarnings;
   private ResourceManager resourceManager;
-  // true if all installed extensions are the latest version, false otherwise
+  // true if all installed core types and extensions (not vocabularies) are the latest version
   @Getter
-  private boolean upToDate = true;
+  private boolean extensionsUpToDate = true;
+  // true if the list of registered extensions or vocabularies couldn't be loaded from the Registry
+  @Getter
+  private boolean registryUnreachable;
+  // issued date of the newer registered version, by row type, for installed extensions that aren't the latest
+  @Getter
+  private final Map<String, Date> newerIssued = new HashMap<>();
+  // issued date of the newer registered version, by URI, for installed vocabularies that aren't the latest
+  @Getter
+  private final Map<String, Date> newerVocabularyIssued = new HashMap<>();
+  // resources that map each installed extension, by row type
+  @Getter
+  private final Map<String, List<Resource>> usedBy = new HashMap<>();
+  // short names of the core types each extension (installed or not) can be added to, by row type
+  @Getter
+  private final Map<String, List<String>> worksWith = new HashMap<>();
+  // installed extensions that use each vocabulary, by vocabulary URI
+  @Getter
+  private final Map<String, List<Extension>> vocabularyUsedBy = new HashMap<>();
+  // number of languages of each vocabulary's labels, by vocabulary URI
+  @Getter
+  private final Map<String, Integer> vocabularyLanguages = new HashMap<>();
 
   @Inject
   public ExtensionsAction(
@@ -135,10 +159,15 @@ public class ExtensionsAction extends POSTAction {
    */
   @RequirePost
   public String update() throws Exception {
+    // a blank or unknown id: prepare() found no installed extension
+    if (notFound) {
+      return NOT_FOUND;
+    }
     try {
       LOG.info("Updating extension {} to latest version...", id);
       Extension installed = extensionManager.get(id);
       Extension latestVersion = extensionManager.update(id);
+      List<Resource> migrated = new ArrayList<>();
       if (installed != null && latestVersion != null) {
         if (latestVersion.getUrl() != null) {
           // check if there are any associated resource mappings
@@ -155,13 +184,20 @@ public class ExtensionsAction extends POSTAction {
               LOG.info("Updating {} mappings for resource: {}...", id, r.getTitleAndShortname());
               extensionManager.migrateResourceToNewExtensionVersion(r, installed, latestVersion);
               resourceManager.save(r);
+              migrated.add(r);
               LOG.info("Updated {} mappings successfully for resource: {}", id, r.getTitleAndShortname());
             }
           }
         }
       }
 
-      addActionMessage(getText("admin.extension.update.success", new String[]{id}));
+      String title = latestVersion != null ? latestVersion.getTitle() : id;
+      if (migrated.isEmpty()) {
+        addActionMessage(getText("admin.extension.update.success", new String[]{title}));
+      } else {
+        String names = migrated.stream().map(this::titleOf).collect(Collectors.joining(", "));
+        addActionMessage(getText("admin.extension.update.success.resources", new String[]{title, names}));
+      }
     } catch (Exception e) {
       LOG.error(e);
       addActionWarning(getText("admin.extension.update.error", new String[]{e.getMessage()}), e);
@@ -221,7 +257,84 @@ public class ExtensionsAction extends POSTAction {
       }
     }
 
+    populateUsage();
+
     return SUCCESS;
+  }
+
+  /**
+   * Populates what the list page shows about use: the resources mapping each installed extension, the core types each
+   * extension can be added to, and the installed extensions using each vocabulary.
+   */
+  private void populateUsage() {
+    List<Resource> resources = resourceManager.list();
+    for (Extension ext : extensions) {
+      List<Resource> mapping = resources.stream()
+          .filter(r -> !r.getMappings(ext.getRowType()).isEmpty())
+          .sorted(Comparator.comparing(this::titleOf, String.CASE_INSENSITIVE_ORDER))
+          .collect(Collectors.toList());
+      usedBy.put(ext.getRowType(), mapping);
+
+      for (Vocabulary v : ext.listVocabularies()) {
+        if (v.getUriString() != null) {
+          List<Extension> using = vocabularyUsedBy.computeIfAbsent(v.getUriString(), k -> new ArrayList<>());
+          if (!using.contains(ext)) {
+            using.add(ext);
+          }
+        }
+      }
+    }
+    vocabularyUsedBy.values().forEach(l -> l.sort(Comparator.comparing(Extension::getTitle)));
+
+    List<Extension> all = new ArrayList<>(extensions);
+    all.addAll(newExtensions);
+    for (Extension ext : all) {
+      if (ext.getRowType() != null && !ext.isCore()) {
+        worksWith.put(ext.getRowType(), AppConfig.getCoreRowTypes().stream()
+            .filter(core -> extensionManager.isSuitableFor(ext, core))
+            .map(ExtensionsAction::shortName)
+            .collect(Collectors.toList()));
+      }
+    }
+
+    for (Vocabulary v : vocabularies) {
+      long languages = v.getConcepts().stream()
+          .flatMap(c -> c.getPreferredTerms().stream())
+          .map(t -> StringUtils.trimToNull(t.getLang()))
+          .filter(Objects::nonNull)
+          .distinct()
+          .count();
+      vocabularyLanguages.put(v.getUriString(), (int) languages);
+    }
+  }
+
+  /**
+   * @return the resource's title, or its shortname if it has none
+   */
+  public String titleOf(Resource r) {
+    return StringUtils.defaultIfBlank(r.getTitle(), r.getShortname());
+  }
+
+  /**
+   * @return the last part of a row type, e.g. Occurrence for http://rs.tdwg.org/dwc/terms/Occurrence
+   */
+  private static String shortName(String rowType) {
+    int i = Math.max(rowType.lastIndexOf('/'), rowType.lastIndexOf('#'));
+    return i >= 0 && i < rowType.length() - 1 ? rowType.substring(i + 1) : rowType;
+  }
+
+  /**
+   * @return short names of the row types that can be cores, for the filters of the extensions not installed
+   */
+  public List<String> getCoreNames() {
+    return AppConfig.getCoreRowTypes().stream().map(ExtensionsAction::shortName).distinct().collect(Collectors.toList());
+  }
+
+  /**
+   * @return true if the IPT installs the vocabulary itself and keeps it at the latest version
+   */
+  public boolean isDefaultVocabulary(String uri) {
+    return vocabManager.isDefault(uri);
   }
 
   @Override
@@ -251,13 +364,14 @@ public class ExtensionsAction extends POSTAction {
    * one extension is not up-to-date).
    * </br>
    * Works by iterating through list of installed extensions. Updates each one, indicating if it is the latest version
-   * or not. Plus, updates boolean "upToDate", set to false if there is at least one extension that is not up-to-date.
+   * or not. Plus, updates boolean "extensionsUpToDate", set to false if there is at least one extension that is not up-to-date.
    */
   protected void updateIsLatest(List<Extension> extensions) {
-    if (!extensions.isEmpty()) {
+    // the Registry already failed in prepare(): don't wait for it a second time, the versions show as not checked
+    if (!extensions.isEmpty() && !registryUnreachable) {
       try {
-        // complete list of registered extensions (latest and non-latest versions)
-        List<Extension> registered = registryManager.getExtensions();
+        // complete list of registered extensions (latest and non-latest versions), as loaded in prepare()
+        List<Extension> registered = registeredExtensions != null ? registeredExtensions : registryManager.getExtensions();
         for (Extension extension : extensions) {
           extension.setLatest(true);
           for (Extension rExtension : registered) {
@@ -266,11 +380,13 @@ public class ExtensionsAction extends POSTAction {
               Date issuedOne = extension.getIssued();
               Date issuedTwo = rExtension.getIssued();
               if (issuedOne == null && issuedTwo != null) {
-                setUpToDate(false);
+                extensionsUpToDate = false;
+                newerIssued.put(extension.getRowType(), issuedTwo);
                 extension.setLatest(false);
                 LOG.debug("Installed extension with rowType {} has no issued date. A newer version issued {} exists.", extension.getRowType(), issuedTwo);
               } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
-                setUpToDate(false);
+                extensionsUpToDate = false;
+                newerIssued.put(extension.getRowType(), issuedTwo);
                 extension.setLatest(false);
                 LOG.debug("Installed extension with rowType {} was issued {}. A newer version issued {} exists.", extension.getRowType(), issuedOne, issuedTwo);
               } else {
@@ -281,6 +397,7 @@ public class ExtensionsAction extends POSTAction {
           }
         }
       } catch (RegistryException e) {
+        registryUnreachable = true;
         // add startup error message about Registry error
         String msg = RegistryException.logRegistryException(e, this);
         configWarnings.addStartupError(msg);
@@ -307,11 +424,11 @@ public class ExtensionsAction extends POSTAction {
               Date issuedOne = vocabulary.getIssued();
               Date issuedTwo = rVocabulary.getIssued();
               if (issuedOne == null && issuedTwo != null) {
-                setUpToDate(false);
+                newerVocabularyIssued.put(vocabulary.getUriString(), issuedTwo);
                 vocabulary.setLatest(false);
                 LOG.debug("Installed vocabulary {} has no issued date. A newer version issued {} exists.", vocabulary.getUriString(), issuedTwo);
               } else if (issuedTwo != null && issuedTwo.compareTo(issuedOne) > 0) {
-                setUpToDate(false);
+                newerVocabularyIssued.put(vocabulary.getUriString(), issuedTwo);
                 vocabulary.setLatest(false);
                 LOG.debug("Installed vocabulary {} was issued {}. A newer version issued {} exists.", vocabulary.getUriString(), issuedOne, issuedTwo);
               } else {
@@ -322,6 +439,7 @@ public class ExtensionsAction extends POSTAction {
           }
         }
       } catch (RegistryException e) {
+        registryUnreachable = true;
         // add startup error message about Registry error
         String msg = RegistryException.logRegistryException(e, this);
         configWarnings.addStartupError(msg);
@@ -342,11 +460,13 @@ public class ExtensionsAction extends POSTAction {
     try {
       // list of all registered extensions
       List<Extension> all = registryManager.getExtensions();
+      registeredExtensions = all;
       if (!all.isEmpty()) {
         // list of latest extension versions
         setLatestExtensionVersions(getLatestVersions(all));
       }
     } catch (RegistryException e) {
+      registryUnreachable = true;
       // add startup error message that explains why the Registry error occurred
       String msg = RegistryException.logRegistryException(e, this);
       configWarnings.addStartupError(msg);
@@ -453,8 +573,5 @@ public class ExtensionsAction extends POSTAction {
     this.latestExtensionVersions = latestExtensionVersions;
   }
 
-  public void setUpToDate(boolean upToDate) {
-    this.upToDate = upToDate;
-  }
 
 }

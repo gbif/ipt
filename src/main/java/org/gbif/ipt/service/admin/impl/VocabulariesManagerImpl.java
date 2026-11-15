@@ -631,4 +631,9 @@ public class VocabulariesManagerImpl extends BaseManager implements Vocabularies
       }
     }
   }
+
+  @Override
+  public boolean isDefault(String uri) {
+    return uri != null && DEFAULT_VOCABS.contains(uri);
+  }
 }

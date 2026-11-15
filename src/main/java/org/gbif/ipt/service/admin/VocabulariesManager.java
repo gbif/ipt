@@ -46,6 +46,13 @@ public interface VocabulariesManager {
   Vocabulary get(URL url);
 
   /**
+   * @param uri unique URI of a vocabulary
+   *
+   * @return true if the IPT installs this vocabulary itself and keeps it at the latest version
+   */
+  boolean isDefault(String uri);
+
+  /**
    * Download and install a vocabulary into local file. The final filename is based on the vocabulary's identifier.
    *
    * @param url the URL of the XML based vocabulary definition
