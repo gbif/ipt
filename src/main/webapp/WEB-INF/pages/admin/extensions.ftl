@@ -48,7 +48,7 @@
     <#assign resources = (usedBy[ext.rowType])![]/>
     <tr class="ex-row" data-search="${(ext.title + ' ' + ext.rowType + ' ' + ext.description!'')?lower_case}" data-update="${(!registryUnreachable && !ext.latest)?c}">
         <td class="ex-name">
-            <b>${ext.title}</b>
+            <a class="resource-table-link" href="extension.do?id=${ext.rowType?url}">${ext.title}</a>
             <span class="ex-rowtype">${ext.rowType}</span>
             <#if ext.description?has_content><div class="ex-desc">${ext.description?truncate(240)}</div></#if>
             <@worksWithLine ext/>
@@ -80,14 +80,11 @@
                         <@icon name="update"/><@s.text name="button.update"/>
                     </button>
                 </#if>
-                <a href="extension.do?id=${ext.rowType?url}" class="ex-act custom-link" title="<@s.text name='admin.extensions.viewTerms'/>"><@icon name="visibility"/><@s.text name="button.view"/><span class="visually-hidden">: ${ext.title}</span></a>
                 <div class="dropdown">
                     <button type="button" class="ex-icon-btn" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='admin.extensions.moreActions'/>" aria-label="<@s.text name='admin.extensions.moreActions'/>: ${ext.title}"><@icon name="more_horiz"/></button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item custom-link" href="extension.do?id=${ext.rowType?url}"><@s.text name="admin.extensions.viewTerms"/></a></li>
                         <#if ext.link??><li><a class="dropdown-item custom-link" href="${ext.link}" target="_blank" rel="noopener"><@s.text name="admin.extensions.documentation"/> <@icon name="open_in_new"/></a></li></#if>
-                        <#if ext.url??><li><a class="dropdown-item custom-link" href="${ext.url}" target="_blank" rel="noopener"><@s.text name="admin.extensions.definition"/> <@icon name="open_in_new"/></a></li></#if>
-                        <li><hr class="dropdown-divider"></li>
+                        <#if ext.link??><li><hr class="dropdown-divider"></li></#if>
                         <li>
                             <#if resources?has_content>
                                 <span class="dropdown-item disabled" aria-disabled="true">
@@ -96,7 +93,7 @@
                                 </span>
                             <#else>
                                 <button type="button" class="dropdown-item ex-danger" data-bs-toggle="modal" data-bs-target="#ex-remove-modal" data-id="${ext.rowType}" data-title="${ext.title}">
-                                    <@s.text name="button.remove"/>…
+                                    <@s.text name="button.remove"/>
                                 </button>
                             </#if>
                         </li>
@@ -158,7 +155,7 @@
     <div class="container main-content-container">
         <main class="pt-2 pb-5">
             <#if registryUnreachable>
-                <div class="ex-banner ex-banner-danger" role="status">
+                <div class="ex-banner ex-banner-danger mt-3" role="status">
                     <@icon name="error" class="ex-banner-icon"/>
                     <div class="ex-banner-body">
                         <h2><@s.text name="admin.extensions.registry.title"/></h2>
@@ -169,7 +166,7 @@
             </#if>
 
             <#if !coreTypes?has_content>
-                <div class="ex-banner ex-banner-warning" role="status">
+                <div class="ex-banner ex-banner-warning mt-3" role="status">
                     <@icon name="warning" class="ex-banner-icon"/>
                     <div class="ex-banner-body">
                         <h2><@s.text name="admin.extension.no.coreTypes.installed"/></h2>
@@ -286,7 +283,6 @@
                             <th class="ov-num ex-hide-md"><@s.text name="admin.extensions.col.concepts"/></th>
                             <th class="ov-num ex-hide-md"><@s.text name="admin.extensions.col.languages"/></th>
                             <th><@s.text name="admin.extensions.col.usedBy"/></th>
-                            <th><span class="visually-hidden"><@s.text name="admin.extensions.col.actions"/></span></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -296,7 +292,7 @@
                             <#assign filters = [(!registryUnreachable && !v.latest)?then("update", ""), isDefault?then("default", ""), usingExtensions?has_content?then("", "unused")]?filter(f -> f?has_content)?join(" ")/>
                             <tr class="ex-row" data-search="${(v.title + ' ' + v.uriString)?lower_case}" data-filters="${filters}">
                                 <td class="ex-name">
-                                    <b>${v.title}</b><#if isDefault> <span class="ov-pill grey" title="<@s.text name='admin.extensions.default.help'/>"><@s.text name="admin.extensions.default"/></span></#if>
+                                    <a class="resource-table-link" href="vocabulary.do?id=${v.uriString?url}">${v.title}</a><#if isDefault> <span class="ov-pill grey" title="<@s.text name='admin.extensions.default.help'/>"><@s.text name="admin.extensions.default"/></span></#if>
                                     <span class="ex-rowtype">${v.uriString}</span>
                                 </td>
                                 <td class="ex-ver">
@@ -313,11 +309,6 @@
                                     <#else>
                                         <span class="ex-muted"><@s.text name="admin.extensions.usedBy.noExtension"/></span>
                                     </#if>
-                                </td>
-                                <td>
-                                    <div class="ex-acts">
-                                        <a href="vocabulary.do?id=${v.uriString?url}" class="ex-act custom-link" title="<@s.text name='admin.extensions.viewConcepts'/>"><@icon name="visibility"/><@s.text name="button.view"/><span class="visually-hidden">: ${v.title}</span></a>
-                                    </div>
                                 </td>
                             </tr>
                         </#list>

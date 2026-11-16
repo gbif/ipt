@@ -17,7 +17,9 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -36,12 +38,17 @@ import java.io.IOException;
 import java.io.Serial;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -109,6 +116,15 @@ public class ExtensionsAction extends POSTAction {
   // number of languages of each vocabulary's labels, by vocabulary URI
   @Getter
   private final Map<String, Integer> vocabularyLanguages = new HashMap<>();
+  // extension page: the resources mapping the extension, with how many of its terms each maps, by resource title
+  @Getter
+  private final List<ResourceUsage> extensionUsage = new ArrayList<>();
+  // extension page: the resources mapping each term, by qualified name
+  @Getter
+  private final Map<String, List<Resource>> termUsedBy = new HashMap<>();
+  // extension page: number of terms with a label in each language, by language name
+  @Getter
+  private final Map<String, Integer> labelTranslations = new LinkedHashMap<>();
 
   @Inject
   public ExtensionsAction(
@@ -288,14 +304,7 @@ public class ExtensionsAction extends POSTAction {
 
     List<Extension> all = new ArrayList<>(extensions);
     all.addAll(newExtensions);
-    for (Extension ext : all) {
-      if (ext.getRowType() != null && !ext.isCore()) {
-        worksWith.put(ext.getRowType(), AppConfig.getCoreRowTypes().stream()
-            .filter(core -> extensionManager.isSuitableFor(ext, core))
-            .map(ExtensionsAction::shortName)
-            .collect(Collectors.toList()));
-      }
-    }
+    all.forEach(this::putWorksWith);
 
     for (Vocabulary v : vocabularies) {
       long languages = v.getConcepts().stream()
@@ -305,6 +314,99 @@ public class ExtensionsAction extends POSTAction {
           .distinct()
           .count();
       vocabularyLanguages.put(v.getUriString(), (int) languages);
+    }
+  }
+
+  private void putWorksWith(Extension ext) {
+    if (ext.getRowType() != null && !ext.isCore()) {
+      worksWith.put(ext.getRowType(), AppConfig.getCoreRowTypes().stream()
+          .filter(core -> extensionManager.isSuitableFor(ext, core))
+          .map(ExtensionsAction::shortName)
+          .collect(Collectors.toList()));
+    }
+  }
+
+  /**
+   * The extension page: a GET with an installed extension's id.
+   */
+  @Override
+  public String execute() throws Exception {
+    String result = super.execute();
+    if (INPUT.equals(result) && extension != null) {
+      populateExtensionPage();
+    }
+    return result;
+  }
+
+  /**
+   * Populates what the extension page shows besides the extension itself: whether it is the latest version, the core
+   * types it can be added to, the resources mapping it and the terms each maps, and the languages of its labels.
+   * A term counts as mapped when it has a source column or a default value, as in {@link ExtensionMapping#isMapped}.
+   */
+  void populateExtensionPage() {
+    updateIsLatest(Collections.singletonList(extension));
+    putWorksWith(extension);
+
+    Set<String> terms = extension.getProperties().stream()
+        .map(ExtensionProperty::getQualname)
+        .filter(Objects::nonNull)
+        .collect(Collectors.toSet());
+    List<Resource> resources = new ArrayList<>(resourceManager.list());
+    resources.sort(Comparator.comparing(this::titleOf, String.CASE_INSENSITIVE_ORDER));
+    for (Resource r : resources) {
+      List<ExtensionMapping> mappings = r.getMappings(extension.getRowType());
+      if (mappings.isEmpty()) {
+        continue;
+      }
+      // a resource can map the same extension more than once, e.g. from two sources
+      Set<String> mapped = new HashSet<>();
+      for (ExtensionMapping m : mappings) {
+        for (PropertyMapping pm : m.getFields()) {
+          if (pm.getTerm() != null && (pm.getIndex() != null || pm.getDefaultValue() != null)
+              && terms.contains(pm.getTerm().qualifiedName())) {
+            mapped.add(pm.getTerm().qualifiedName());
+          }
+        }
+      }
+      extensionUsage.add(new ResourceUsage(r, mapped.size()));
+      mapped.forEach(t -> termUsedBy.computeIfAbsent(t, k -> new ArrayList<>()).add(r));
+    }
+
+    Map<String, Integer> counts = new HashMap<>();
+    for (ExtensionProperty p : extension.getProperties()) {
+      p.getTranslations().forEach((lang, t) -> {
+        if (lang != null && t != null && StringUtils.isNotBlank(t.getLabel())) {
+          counts.merge(lang, 1, Integer::sum);
+        }
+      });
+    }
+    counts.entrySet().stream()
+        .sorted(Comparator.comparing(e -> languageName(e.getKey()), String.CASE_INSENSITIVE_ORDER))
+        .forEach(e -> labelTranslations.put(e.getKey(), e.getValue()));
+  }
+
+  /**
+   * @return a language's name in the interface language, e.g. French for fr; the code if Java doesn't know it
+   */
+  public String languageName(String code) {
+    Locale locale = getLocale() != null ? getLocale() : Locale.ENGLISH;
+    Locale language = Locale.forLanguageTag(code);
+    String name = StringUtils.trimToNull(language.getDisplayLanguage(locale));
+    // an unknown language comes back as its own code
+    return name == null || name.equalsIgnoreCase(language.getLanguage()) ? code : StringUtils.capitalize(name);
+  }
+
+  /**
+   * A resource mapping the extension shown on the extension page, with the number of its terms the resource maps.
+   */
+  @Getter
+  public static class ResourceUsage {
+    private final Resource resource;
+    private final int termsMapped;
+
+    public ResourceUsage(Resource resource, int termsMapped) {
+      this.resource = resource;
+      this.termsMapped = termsMapped;
     }
   }
 
@@ -353,8 +455,9 @@ public class ExtensionsAction extends POSTAction {
         // set notFound flag to true so POSTAction will return a NOT_FOUND 404 result name
         notFound = true;
       } else {
+        // groups in the order of the extension's definition
         propertiesByGroup = extension.getProperties().stream()
-            .collect(Collectors.groupingBy(prop -> StringUtils.trimToEmpty(prop.getGroup())));
+            .collect(Collectors.groupingBy(prop -> StringUtils.trimToEmpty(prop.getGroup()), LinkedHashMap::new, Collectors.toList()));
       }
     }
   }

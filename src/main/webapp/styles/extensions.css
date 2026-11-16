@@ -99,3 +99,86 @@
 .ex-install-form .btn { display: inline-flex; align-items: center; }
 .ex-install-form .btn > span { display: inline-flex; align-items: center; gap: 4px; }
 .ex-install-form .btn > span[hidden] { display: none; }
+
+/* Extension page (admin/extension.ftl): Details box, "Used by" table, then the terms with search, filters and details */
+.ext-mono { font-family: var(--bs-font-monospace); font-size: 0.75rem; overflow-wrap: anywhere; }
+.ext-version .material-icon { font-size: 0.85rem; vertical-align: -2px; margin-right: 3px; }
+.ext-copy { border: 0; background: none; padding: 0 2px; margin-left: 4px; color: #6c757d; cursor: pointer; display: inline-flex; vertical-align: -2px; line-height: 1; }
+.ext-copy:hover { color: #212529; }
+.ext-copy .material-icon { font-size: 0.85rem; }
+.ext-copy.ext-copied { color: rgb(var(--color-gbif-success)); }
+.ext-section { margin-top: 1.5rem; scroll-margin-top: var(--navbar-height); }
+/* scrollspy anchors (js/scrollspy.js): no height, the sections have scroll-margin-top */
+.ext-anchor { display: block; height: 0; }
+/* section heading as on the mapping page: title, short summary, a rule underneath */
+.ext-sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #dee2e6; padding-bottom: 6px; margin-bottom: 14px; }
+.ext-sec-head h2 { font-size: 1.1rem; font-weight: 500; color: #4e565f; margin: 0; }
+.ext-sec-head > span { color: #6c757d; font-size: 0.78rem; flex: 1; }
+.ext-desc { font-size: 0.875rem; max-width: 860px; overflow-wrap: anywhere; }
+.ext-boxes { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.ext-box { border: 1px solid #dee2e6; border-radius: 6px; padding: 10px 14px; font-size: 0.8rem; min-width: 0; }
+.ext-box h3 { margin: 0 0 8px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; font-weight: 600; }
+.ext-kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 5px 16px; margin: 0; align-items: baseline; line-height: 1.4; }
+.ext-kv dt { color: #6c757d; font-weight: 400; }
+.ext-kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.ext-kv dd.ex-works { margin: 0; font-size: inherit; }
+/* Details: two label/value columns side by side on wide screens */
+@media (min-width: 992px) { .ext-kv-2 { grid-template-columns: max-content minmax(0, 1fr) max-content minmax(0, 1fr); column-gap: 16px; } .ext-kv-2 dt:nth-of-type(even) { padding-left: 24px; } }
+.ext-list { margin: 0; padding: 0; list-style: none; }
+.ext-bar { height: 7px; background: #f1f3f5; border-radius: 4px; overflow: hidden; }
+.ext-bar i { display: block; height: 100%; background: rgb(var(--color-gbif-primary)); }
+.ext-n { color: #6c757d; text-align: right; font-variant-numeric: tabular-nums; }
+
+.ext-toc small { color: #6c757d; font-variant-numeric: tabular-nums; }
+.ext-toc .ext-toc-sub { padding-left: 10px; font-size: 0.8rem; }
+.ext-toc .ext-zero { opacity: .45; }
+/* toolbar under the heading: filters, search, then "show all details" on the right */
+.ext-toolbar { display: flex; gap: 8px 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.ext-toolbar .ex-chips { margin: 0; }
+.ext-toolbar input[type=search] { width: 240px; max-width: 100%; }
+#ext-all-details { font-size: 0.8rem; }
+@media (max-width: 767.98px) { .ext-toolbar input[type=search] { width: 100%; } }
+
+.ext-group { margin-bottom: 1.25rem; scroll-margin-top: var(--navbar-height); }
+.ext-group[hidden] { display: none; }
+.ext-group-title { font-size: 0.95rem; font-weight: 600; color: #4e565f; margin: 0; padding: 6px 0; border-bottom: 1px solid #dee2e6; text-transform: capitalize; }
+.ext-group-title small { font-weight: 400; color: #6c757d; font-size: 0.75rem; margin-left: 4px; text-transform: none; }
+.ext-term { display: grid; grid-template-columns: minmax(180px, 28%) minmax(0, 1fr); gap: 4px 20px; padding: 10px 0; border-bottom: 1px solid #f1f3f5; scroll-margin-top: calc(var(--navbar-height) + 10px); font-size: 0.85rem; }
+.ext-term:last-child { border-bottom: 0; }
+.ext-term[hidden] { display: none; }
+@media (max-width: 767.98px) { .ext-term { grid-template-columns: minmax(0, 1fr); } }
+.ext-term:target, .ext-term.ext-here { background: rgba(var(--color-gbif-primary), .06); box-shadow: inset 3px 0 0 rgb(var(--color-gbif-primary)); padding-left: 10px; }
+.ext-term-name b { font-weight: 600; overflow-wrap: anywhere; display: block; }
+.ext-term-name .ext-mono { display: block; color: #6c757d; }
+.ext-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+.ext-tag { font-size: 0.68rem; border-radius: 8px; padding: 0 6px; font-weight: 600; white-space: nowrap; border: 1px solid #dee2e6; color: #495057; background: #fff; text-decoration: none; }
+.ext-tag-req { border-color: rgba(var(--color-gbif-danger), .45); color: rgb(var(--color-gbif-danger)); }
+a.ext-tag-voc { border-color: #c9d8ee; color: #2d4f8a; background: #f3f7fc; }
+a.ext-tag-voc:hover { text-decoration: underline; }
+.ext-tag-fallback { color: #6c757d; font-weight: 400; }
+.ext-term-body { min-width: 0; overflow-wrap: anywhere; }
+.ext-term-body p { margin: 0 0 4px; }
+.ext-comments, .ext-examples { color: #495057; }
+.ext-examples em { color: #6c757d; }
+.ext-details > summary { list-style: none; display: flex; flex-wrap: wrap; gap: 2px 14px; align-items: center; font-size: 0.75rem; color: #6c757d; cursor: pointer; margin-top: 4px; }
+.ext-details > summary::-webkit-details-marker { display: none; }
+.ext-details-toggle { display: inline-flex; align-items: center; gap: 2px; color: #4e565f; text-decoration: underline; text-decoration-color: #ced4da; text-underline-offset: 2px; }
+.ext-details-toggle .material-icon { transition: transform .15s; }
+.ext-details[open] .ext-details-toggle .material-icon { transform: rotate(180deg); }
+.ext-details .ext-kv { margin-top: 6px; background: #f8f9fa; border-radius: 4px; padding: 8px 10px; font-size: 0.75rem; }
+.ext-chipv { display: inline-block; font-size: 0.7rem; background: #f1f3f5; border-radius: 8px; padding: 0 7px; margin: 0 3px 2px 0; color: #495057; }
+.ext-term-body code, .ext-kv code { color: #343a40; background: #f1f3f5; padding: 0 3px; border-radius: 3px; font-size: 0.75rem; }
+/* the sidebar sticks just under the navbar, level with the section a link jumps to */
+@media (min-width: 768px) { .bd-toc.ext-side { top: var(--navbar-height); height: calc(100vh - var(--navbar-height) - 1rem); } }
+/* "Used by": resource and how many of the terms it maps */
+.ext-usage { font-size: 0.85rem; }
+.ext-usage td { vertical-align: middle; }
+.ext-usage .ext-mapped { width: 260px; white-space: nowrap; }
+.ext-usage .ext-mapped .ext-bar { display: inline-block; width: 140px; vertical-align: middle; margin-right: 8px; }
+.ext-usage tr[hidden] { display: none; }
+.ext-shortname { font-size: 0.75rem; color: #6c757d; }
+.ext-usage-all { font-size: 0.8rem; margin-top: 8px; }
+@media (max-width: 767.98px) { .ext-usage .ext-mapped { width: auto; } .ext-usage .ext-mapped .ext-bar { display: none; } }
+/* Remove in the heading's ⋯ menu: red as Delete on the resource overview, faded while a resource maps the extension */
+.ov-acts .dropdown-item.text-gbif-danger.disabled { opacity: .55; }
+.ov-acts .dropdown-item small { display: block; font-size: 0.75rem; white-space: normal; }

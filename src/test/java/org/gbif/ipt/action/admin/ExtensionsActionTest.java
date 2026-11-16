@@ -13,12 +13,19 @@
  */
 package org.gbif.ipt.action.admin;
 
+import org.gbif.dwc.terms.DwcTerm;
+import org.gbif.dwc.terms.Term;
 import org.gbif.ipt.IptBaseTest;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Extension;
+import org.gbif.ipt.model.ExtensionMapping;
+import org.gbif.ipt.model.ExtensionProperty;
+import org.gbif.ipt.model.ExtensionPropertyTranslation;
+import org.gbif.ipt.model.PropertyMapping;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -41,8 +48,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -205,5 +214,115 @@ public class ExtensionsActionTest extends IptBaseTest {
       verify(vocabManager, times(expected)).updateIfChanged();
       verify(extensionManager, times(expected)).updateIfChanged();
     }
+  }
+
+  /**
+   * The extension page (a GET of extension.do): groups in the definition's order, the resources mapping the extension
+   * with how many of its terms each maps, the resources mapping each term, and the languages of the term labels.
+   * A term counts as mapped with a source column or a default value only, and only if the extension has it.
+   */
+  @Test
+  public void testExtensionPage() throws Exception {
+    String rowType = "http://rs.tdwg.org/dwc/terms/ResourceRelationship";
+    Extension ext = new Extension();
+    ext.setRowType(rowType);
+    ext.setTitle("Resource Relationship");
+    // groups deliberately not in alphabetical order
+    ext.addProperty(property(DwcTerm.resourceID, "Relationship", "Resource ID",
+        new ExtensionPropertyTranslation("fr", "Identifiant de la ressource", null, null, null),
+        new ExtensionPropertyTranslation("zh", "資源ID", null, null, null),
+        new ExtensionPropertyTranslation("es", " ", null, null, null)));
+    ext.addProperty(property(DwcTerm.relatedResourceID, "Relationship", "Related Resource ID",
+        new ExtensionPropertyTranslation("fr", "Identifiant de la ressource liée", null, null, null)));
+    ext.addProperty(property(DwcTerm.relationshipRemarks, "Remarks", "Relationship Remarks"));
+    ext.addProperty(property(DwcTerm.relationshipAccordingTo, "Agent", "Relationship According To"));
+
+    // "Beta" maps the extension twice: a column in one mapping, a default value in the other; a field with neither
+    // and a term the extension doesn't have don't count
+    Resource beta = resource("beta", "Beta",
+        mapping(ext, field(DwcTerm.resourceID, 0, null), field(DwcTerm.relationshipRemarks, null, null),
+            field(DwcTerm.occurrenceID, 1, null)),
+        mapping(ext, field(DwcTerm.relatedResourceID, null, "urn:x")));
+    Resource alpha = resource("alpha", "alpha", mapping(ext, field(DwcTerm.resourceID, 3, null)));
+    Extension other = new Extension();
+    other.setRowType("http://rs.tdwg.org/dwc/terms/Occurrence");
+    Resource unrelated = resource("other", "Another", mapping(other, field(DwcTerm.occurrenceID, 0, null)));
+
+    ExtensionManager extensionManager = mock(ExtensionManager.class);
+    when(extensionManager.get(rowType)).thenReturn(ext);
+    ResourceManager resourceManager = mock(ResourceManager.class);
+    when(resourceManager.list()).thenReturn(List.of(beta, unrelated, alpha));
+    RegistryManager registryManager = mock(RegistryManager.class);
+    when(registryManager.getExtensions()).thenReturn(new ArrayList<>());
+
+    ExtensionsAction pageAction = new ExtensionsAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
+        mock(RegistrationManager.class), extensionManager, mock(VocabulariesManager.class), registryManager,
+        mock(ConfigWarnings.class), resourceManager);
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getMethod()).thenReturn("GET");
+    // prepare() reads the id from the request
+    when(req.getParameter("id")).thenReturn(rowType);
+    pageAction.withServletRequest(req);
+    pageAction.prepare();
+
+    assertEquals("input", pageAction.execute());
+
+    assertEquals(List.of("Relationship", "Remarks", "Agent"), new ArrayList<>(pageAction.getPropertiesByGroup().keySet()));
+
+    // sorted by title, ignoring case; the resource not mapping the extension is left out
+    List<String> users = pageAction.getExtensionUsage().stream()
+        .map(u -> u.getResource().getShortname() + ":" + u.getTermsMapped())
+        .collect(Collectors.toList());
+    assertEquals(List.of("alpha:1", "beta:2"), users);
+
+    assertEquals(List.of("alpha", "beta"), shortnames(pageAction.getTermUsedBy().get(DwcTerm.resourceID.qualifiedName())));
+    assertEquals(List.of("beta"), shortnames(pageAction.getTermUsedBy().get(DwcTerm.relatedResourceID.qualifiedName())));
+    assertFalse(pageAction.getTermUsedBy().containsKey(DwcTerm.relationshipRemarks.qualifiedName()));
+    assertFalse(pageAction.getTermUsedBy().containsKey(DwcTerm.occurrenceID.qualifiedName()));
+
+    // by language name (Chinese, French); the blank Spanish label doesn't count
+    assertEquals(List.of("zh", "fr"), new ArrayList<>(pageAction.getLabelTranslations().keySet()));
+    assertEquals(1, pageAction.getLabelTranslations().get("zh"));
+    assertEquals(2, pageAction.getLabelTranslations().get("fr"));
+    assertEquals("French", pageAction.languageName("fr"));
+    assertEquals("xx-unknown", pageAction.languageName("xx-unknown"));
+    assertEquals("xx", pageAction.languageName("xx"));
+  }
+
+  private static ExtensionProperty property(Term term, String group, String label, ExtensionPropertyTranslation... translations) {
+    ExtensionProperty p = new ExtensionProperty(term.qualifiedName());
+    p.setGroup(group);
+    p.setLabel(label);
+    for (ExtensionPropertyTranslation t : translations) {
+      p.addTranslation(t);
+    }
+    return p;
+  }
+
+  private static PropertyMapping field(Term term, Integer index, String defaultValue) {
+    PropertyMapping pm = new PropertyMapping();
+    pm.setTerm(term);
+    pm.setIndex(index);
+    pm.setDefaultValue(defaultValue);
+    return pm;
+  }
+
+  private static ExtensionMapping mapping(Extension ext, PropertyMapping... fields) {
+    ExtensionMapping m = new ExtensionMapping();
+    m.setExtension(ext);
+    m.setFields(new LinkedHashSet<>(List.of(fields)));
+    return m;
+  }
+
+  private static Resource resource(String shortname, String title, ExtensionMapping... mappings) {
+    Resource r = new Resource();
+    r.setShortname(shortname);
+    r.setTitle(title);
+    r.setMappings(new ArrayList<>(List.of(mappings)));
+    return r;
+  }
+
+  private static List<String> shortnames(List<Resource> resources) {
+    return resources == null ? null : resources.stream().map(Resource::getShortname).collect(Collectors.toList());
   }
 }
