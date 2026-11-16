@@ -73,7 +73,7 @@
         <td>
             <div class="ex-acts">
                 <#if !registryUnreachable && !ext.latest>
-                    <button type="button" class="ex-act" data-bs-toggle="modal" data-bs-target="#ex-update-modal"
+                    <button type="button" class="ex-act ex-act-primary" data-bs-toggle="modal" data-bs-target="#ex-update-modal"
                             data-id="${ext.rowType}" data-title="${ext.title}"
                             data-from="<@issued date=ext.issued!""/>" data-to="<@issued date=newerIssued[ext.rowType]!""/>"
                             data-resources="<#if resources?has_content>ex-used-${ext.rowType?replace("[^A-Za-z0-9]+", "-", "r")}</#if>">
