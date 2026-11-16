@@ -133,6 +133,8 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   @Setter
   @Getter
   private PropertyMapping mappingCoreid;
+  // fields the page filled in from matching column names on this visit, not saved yet (0 when none)
+  private int automappedFields;
   @Setter
   @Getter
   private boolean doiUsedForDatasetId;
@@ -388,12 +390,14 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     if (!cancel && !delete && mapping != null && mapping.getExtension() != null) {
 
       // is the source assigned yet?
+      boolean sourceChosenNow = false;
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
         String source = StringUtils.trimToNull(req.getParameter("source"));
         if (source != null) {
           Source src = resource.getSource(source);
           mapping.setSource(src);
+          sourceChosenNow = src != null;
         } else {
           // show set source form
           defaultResult = "source";
@@ -458,9 +462,20 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
 
       // finally, do automapping if no fields are found
       if (mapping.getFields().isEmpty()) {
-        int automapped = automap();
-        if (automapped > 0) {
-          addActionMessage(getText("manage.mapping.automaped", new String[]{String.valueOf(automapped)}));
+        automap();
+        // only fields count: the link to the core (and the field that mirrors it) is in its own section and usually
+        // saved already, so saying so on every visit of a mapping without fields is just noise
+        int filled = (int) fields.stream()
+          .filter(f -> f.getIndex() != null && f.getIndex() >= 0)
+          .filter(f -> mappingCoreid == null || !f.getTerm().equals(mappingCoreid.getTerm()))
+          .count();
+        if (filled > 0 && sourceChosenNow) {
+          // the source form posts here: save() keeps these fields, and the message goes along with its redirect
+          addActionMessage(getText("manage.mapping.automaped", new String[]{String.valueOf(filled)}));
+        } else if (filled > 0 && !isHttpPost()) {
+          // the page is shown with fields that aren't saved (other POSTs redirect, and the message would go along)
+          automappedFields = filled;
+          addActionMessage(getText("manage.mapping.automaped.unsaved", new String[]{String.valueOf(filled)}));
         }
       }
 
@@ -595,6 +610,14 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
    * @return the other mappings deleted together with this one: all of them when this is the only core mapping
    * (see Resource.deleteMapping), none otherwise
    */
+  /**
+   * @return how many fields the page filled in from matching column names on this visit; they aren't saved yet, so the
+   * page starts with its "unsaved changes" bar (js/mapping.js)
+   */
+  public int getAutomappedFields() {
+    return automappedFields;
+  }
+
   public List<ExtensionMapping> getMappingsDeletedWithThis() {
     List<ExtensionMapping> others = new ArrayList<>();
     if (mapping != null && isCoreMapping() && resource.getMappings(resource.getCoreRowType()).size() == 1) {

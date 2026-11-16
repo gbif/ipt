@@ -453,13 +453,14 @@
         }
 
         // ---------- dirty state ----------
-        var dirty = false, submitting = false, saved = null;
+        // fields filled in from matching column names on this visit (MappingAction) aren't saved: unsaved from the start
+        var dirty = false, submitting = false, saved = null, automapped = +i18n.automapped > 0;
         function formState() {
             // disabled fields (the mirrored core ID) aren't submitted, so they don't count
             return $form.serialize();
         }
         function markDirty() {
-            dirty = saved !== null && formState() !== saved;
+            dirty = automapped || (saved !== null && formState() !== saved);
             $('#mp-savebar').toggleClass('show', dirty).attr('aria-hidden', dirty ? 'false' : 'true');
             $('body').toggleClass('mp-dirty', dirty);
         }
@@ -608,6 +609,7 @@
 
         // the state to compare with, once renderAll has filled in the values the page computes (idColumn, mirrored IDs)
         saved = formState();
+        if (automapped) markDirty();
 
         if (window.IptScrollSpy) IptScrollSpy.init({tocSelector: '.bd-toc nav a'});
     });

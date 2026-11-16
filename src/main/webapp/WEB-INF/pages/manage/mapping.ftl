@@ -190,6 +190,7 @@
 
     <#-- texts for js/mapping.js -->
     <div id="mp-i18n" hidden
+         data-automapped="${automappedFields?c}"
          data-sprite="${baseURL}/images/icons/material-icons.svg"
          data-status-id="<@s.text name='manage.mapping.status.id'/>"
          data-status-link="<@s.text name='manage.mapping.status.link'/>"
