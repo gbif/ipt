@@ -7,7 +7,8 @@
 <#assign isCoreMapping = action.isCoreMapping()/>
 <title><#if isCoreMapping><@s.text name="manage.mapping.title.core"><@s.param>${extensionTitle}</@s.param></@s.text><#else><@s.text name="manage.mapping.title.extension"><@s.param>${extensionTitle}</@s.param></@s.text></#if>: ${resource.title!resource.shortname}</title>
 <style>
-    :root { --navbar-height: 120px; }
+    /* --ov-bars-height: where the sidebar sticks (overview.css), just under the fixed navbar, as there is no resource bar here */
+    :root { --navbar-height: 120px; --ov-bars-height: 57px; }
 </style>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
@@ -149,17 +150,39 @@
                             </ol>
                         </nav>
                     </div>
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal"><#if isCoreMapping><@s.text name="manage.mapping.title.core"><@s.param>${extensionTitle}</@s.param></@s.text><#else><@s.text name="manage.mapping.title.extension"><@s.param>${extensionTitle}</@s.param></@s.text></#if></h1>
+                    <#-- the core / extension's name; "core" or "extension" is the pill below -->
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">${extensionTitle}</h1>
+                    <#-- the resource it belongs to -->
                     <div class="ov-meta">
                         <span>${resource.title!resource.shortname}</span>
                     </div>
+                    <#-- core or extension, and its source; "Columns not used" (js/mapping.js) opens the by-column view -->
+                    <div class="ov-meta mp-source-line">
+                        <span class="mp-kind-pill"><#if isCoreMapping><@s.text name="manage.overview.data.group.core"/><#else><@s.text name="extension"/></#if></span>
+                        <span><@s.text name="manage.mapping.overview.source"/>: <a href="source.do?r=${resource.shortname}&id=${mapping.source.name?url}">${mapping.source.name}</a> · <#t>
+                            <#if !mapping.source.readable><span class="ov-missing"><@s.text name="manage.source.notReadable"/></span><#t>
+                            <#elseif mapping.source.isSqlSource()>${columns?size} <@s.text name="manage.overview.source.columns"/><#t>
+                            <#else><#attempt>${mapping.source.rows?string.number} <@s.text name="manage.overview.source.rows"/> · <#recover></#attempt>${columns?size} <@s.text name="manage.overview.source.columns"/></#if><#t>
+                            <span id="mp-unused" hidden> · <button type="button" class="ov-link-btn mu" data-goto-view="column"></button></span><#t>
+                        </span>
+                    </div>
+                    <#-- what still needs fixing (js/mapping.js), red / orange; empty and hidden otherwise -->
+                    <#-- a newer core / extension in the registry is listed there too: administrators get the extension page,
+                         where it's updated; others can't update it, so no link -->
+                    <div class="ov-meta mp-status" id="mp-status" aria-live="polite"<#if !mapping.extension.latest> data-newer="<@s.text name='manage.mapping.extension.newer'/>"<#if adminRights> data-newer-url="${baseURL}/admin/extension.do?id=${mapping.extension.rowType?url}"</#if></#if>></div>
                 </div>
 
                 <div class="ov-acts">
-                    <button type="submit" class="btn btn-sm btn-gbif-solid" name="save" value="save"><@s.text name="button.save"/></button>
-                    <button type="submit" class="btn btn-sm btn-outline-secondary" name="cancel" value="cancel"><@s.text name="button.back"/></button>
-                    <#-- confirmed in #mp-delete-modal, which lists the mappings deleted with it -->
-                    <button type="button" class="btn btn-sm btn-outline-gbif-danger" data-bs-toggle="modal" data-bs-target="#mp-delete-modal"><@s.text name="button.delete"/></button>
+                    <button type="submit" class="btn btn-sm btn-gbif-solid top-button" name="save" value="save"><@icon name="save"/> <@s.text name="button.save"/></button>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary top-button" name="cancel" value="cancel"><@s.text name="button.back"/></button>
+                    <#-- more actions last, as on the resource overview -->
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-sm btn-outline-secondary top-button ov-more-btn" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.moreActions'/>" aria-label="<@s.text name='manage.overview.moreActions'/>"><@icon name="more_horiz"/></button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <#-- confirmed in #mp-delete-modal, which lists the mappings deleted with it -->
+                            <li><button type="button" class="dropdown-item text-gbif-danger" data-bs-toggle="modal" data-bs-target="#mp-delete-modal"><@s.text name="button.delete"/></button></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,14 +190,12 @@
 
     <#-- texts for js/mapping.js -->
     <div id="mp-i18n" hidden
-         data-fields-mapped="<@s.text name='manage.mapping.fact.fieldsValue'/>"
-         data-required-missing="<@s.text name='manage.mapping.fact.requiredMissing'/>"
-         data-none="<@s.text name='manage.mapping.fact.none'/>"
-         data-not-set="<@s.text name='manage.mapping.fact.notSet'/>"
-         data-no-id="<@s.text name='manage.mapping.id.none'/>"
-         data-line-number="<@s.text name='manage.mapping.id.line'/>"
-         data-uuid="<@s.text name='manage.mapping.id.uuid'/>"
-         data-translations-value="<@s.text name='manage.mapping.fact.translationsValue'/>"
+         data-sprite="${baseURL}/images/icons/material-icons.svg"
+         data-status-id="<@s.text name='manage.mapping.status.id'/>"
+         data-status-link="<@s.text name='manage.mapping.status.link'/>"
+         data-status-required="<@s.text name='manage.mapping.status.required'/>"
+         data-status-problems="<@s.text name='manage.mapping.status.problems'/>"
+         data-status-unused="<@s.text name='manage.mapping.status.unused'/>"
          data-filter-on="<@s.text name='manage.mapping.filter.on'/>"
          data-msg-required="<@s.text name='manage.mapping.msg.required'/>"
          data-msg-vocab="<@s.text name='manage.mapping.msg.vocab'/>"
@@ -184,6 +205,9 @@
          data-msg-uri="<@s.text name='manage.mapping.msg.type.uri'/>"
          data-sample="<@s.text name='manage.mapping.field.sample'/>"
          data-empty="<@s.text name='manage.mapping.field.empty'/>"
+         data-all-empty="<@s.text name='manage.mapping.field.allEmpty'/>"
+         data-const-all="<@s.text name='manage.mapping.field.constant.placeholder'/>"
+         data-const-fallback="<@s.text name='manage.mapping.field.constant.fallback'/>"
          data-id-ok="<@s.text name='manage.mapping.id.sample.ok'/>"
          data-id-filled="<@s.text name='manage.mapping.id.sample.filled'/>"
          data-suffix-integer="<@s.text name='validation.mapping.coreid.linenumber.integer'/>"
@@ -198,6 +222,8 @@
          data-group-more="<@s.text name='manage.mapping.group.more'/>"
          data-group-mapped="<@s.text name='manage.mapping.group.mapped'/>"
          data-group-problems="<@s.text name='manage.mapping.group.problems'/>"
+         data-hide-samples="<@s.text name='manage.mapping.fields.hideSamples'/>"
+         data-show-samples="<@s.text name='manage.mapping.fields.showSamples'/>"
          data-expand-all="<@s.text name='manage.mapping.fields.expandAll'/>"
          data-collapse-all="<@s.text name='manage.mapping.fields.collapseAll'/>"
          data-search-field="<@s.text name='manage.mapping.fields.search'/>"
@@ -228,7 +254,6 @@
                     <div class="fw-semibold text-gbif-header-2 mb-2 text-smaller"><@s.text name="manage.overview.onThisPage"/></div>
                     <nav id="sidebar-content" aria-label="<@s.text name='manage.overview.onThisPage'/>">
                         <ul>
-                            <li><a href="#anchor-mp-overview" class="sidebar-navigation-link"><span class="ov-dot" id="mp-dot-overview"></span><@s.text name="manage.mapping.overview.title"/></a></li>
                             <li><a href="#anchor-mp-id" class="sidebar-navigation-link"><span class="ov-dot" id="mp-dot-id"></span><#if isCoreMapping><@s.text name="manage.mapping.id.title"/><#else><@s.text name="manage.mapping.id.title.extension"/></#if></a></li>
                             <li><a href="#anchor-mp-filter" class="sidebar-navigation-link"><span class="ov-dot off" id="mp-dot-filter"></span><@s.text name="manage.mapping.filter.title"/></a></li>
                             <li><a href="#anchor-mp-fields" class="sidebar-navigation-link"><span class="ov-dot" id="mp-dot-fields"></span><@s.text name="manage.mapping.fields.title"/></a></li>
@@ -242,42 +267,6 @@
                 </div>
 
                 <div class="bd-content ps-lg-4 pt-4">
-
-                    <#-- OVERVIEW -->
-                    <span class="mp-anchor" id="anchor-mp-overview"></span>
-                    <section id="mp-overview" class="mp-section">
-                        <div class="mp-sec-head"><h2><@s.text name="manage.mapping.overview.title"/></h2><span><@s.text name="manage.mapping.overview.desc"/></span></div>
-                        <div class="mp-summary">
-                            <div>
-                                <div class="mp-flow">
-                                    <div class="mp-node">
-                                        <div class="k"><@s.text name="manage.mapping.overview.source"/></div>
-                                        <div class="v"><a href="source.do?r=${resource.shortname}&id=${mapping.source.name?url}">${mapping.source.name}</a></div>
-                                        <div class="m">
-                                            <#if !mapping.source.readable><span class="ov-missing"><@s.text name="manage.source.notReadable"/></span>
-                                            <#elseif mapping.source.isSqlSource()>${columns?size} <@s.text name="manage.overview.source.columns"/>
-                                            <#else><#attempt>${mapping.source.rows?string.number} <@s.text name="manage.overview.source.rows"/> · <#recover></#attempt>${columns?size} <@s.text name="manage.overview.source.columns"/></#if>
-                                        </div>
-                                    </div>
-                                    <span class="mp-arrow"><@icon name="arrow_forward"/></span>
-                                    <div class="mp-node">
-                                        <div class="k"><#if isCoreMapping><@s.text name="manage.mapping.overview.core"/><#elseif coreExtensionTitle?has_content><@s.text name="manage.mapping.overview.extensionOf"><@s.param>${coreExtensionTitle}</@s.param></@s.text><#else><@s.text name="manage.mapping.overview.extension"/></#if></div>
-                                        <div class="v"><a href="${baseURL}/admin/extension.do?id=${mapping.extension.rowType?url}" target="_blank">${extensionTitle}</a></div>
-                                        <div class="m"><#if mapping.extension.issued??>${mapping.extension.issued?date?string("yyyy-MM-dd")} · </#if><#if mapping.extension.latest><@s.text name="manage.mapping.overview.latest"/><#else><span class="mp-warn-text"><@s.text name="manage.mapping.overview.outdated"/></span></#if></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mp-facts">
-                                <div><span><@s.text name="manage.mapping.fact.fields"/></span><span id="mp-fact-fields"></span></div>
-                                <div><span><@s.text name="manage.mapping.overview.columns"/></span><span id="mp-fact-columns"></span></div>
-                                <div><span><@s.text name="manage.mapping.fact.required"/></span><span id="mp-fact-required"></span></div>
-                                <div><span><@s.text name="manage.mapping.fact.problems"/></span><span id="mp-fact-problems"></span></div>
-                                <div id="mp-fact-translations-row" hidden><span><@s.text name="manage.mapping.fact.translations"/></span><span id="mp-fact-translations"></span></div>
-                                <div><span><#if isCoreMapping><@s.text name="manage.mapping.fact.recordId"/><#else><@s.text name="manage.mapping.fact.linkedBy"/></#if></span><span id="mp-fact-id"></span></div>
-                                <div><span><@s.text name="manage.mapping.fact.filter"/></span><span id="mp-fact-filter"></span></div>
-                            </div>
-                        </div>
-                    </section>
 
                     <#-- RECORD ID / LINK TO THE CORE -->
                     <#assign idColumn = mapping.idColumn!-99999/>
@@ -432,12 +421,15 @@
                     <#list fieldsByGroup?keys as g><#if fieldsByGroup.get(g)?has_content><#assign groupCount = groupCount + 1/></#if></#list>
                     <span class="mp-anchor" id="anchor-mp-fields"></span>
                     <section id="mp-fields" class="mp-section">
-                        <div class="mp-sec-head"><h2><@s.text name="manage.mapping.fields.title"/></h2><span><@s.text name="manage.mapping.fields.desc"><@s.param>${extensionTitle}</@s.param><@s.param>${fields?size}</@s.param><@s.param>${groupCount}</@s.param></@s.text></span></div>
-                        <div class="mp-toolbar">
+                        <div class="mp-sec-head"><h2><@s.text name="manage.mapping.fields.title"/></h2><span><@s.text name="manage.mapping.fields.desc"><@s.param>${extensionTitle}</@s.param><@s.param>${fields?size}</@s.param><@s.param>${groupCount}</@s.param></@s.text></span>
+                            <#-- two views of the whole section, so with its title rather than in the toolbar -->
                             <div class="mp-seg" id="mp-view" role="group">
                                 <button type="button" data-view="field" class="on"><@s.text name="manage.mapping.fields.byField"/></button>
                                 <button type="button" data-view="column"><@s.text name="manage.mapping.fields.byColumn"/></button>
                             </div>
+                        </div>
+                        <#-- sticky: what narrows the list -->
+                        <div class="mp-toolbar">
                             <div class="mp-seg" id="mp-show" role="group">
                                 <button type="button" data-show="default" class="on"><@s.text name="manage.mapping.show.default"/><span class="mp-count"></span></button>
                                 <button type="button" data-show="problems"><@s.text name="manage.mapping.show.problems"/><span class="mp-count"></span></button>
@@ -445,12 +437,11 @@
                                 <button type="button" data-show="all"><@s.text name="manage.mapping.show.all"/><span class="mp-count"></span></button>
                             </div>
                             <input type="search" id="mp-q" class="form-control form-control-sm" form="mp-ui" placeholder="<@s.text name='manage.mapping.fields.search'/>" aria-label="<@s.text name='manage.mapping.fields.search'/>">
-                            <span class="ov-sp"></span>
-                            <button type="button" class="ov-link-btn" id="mp-expand-all"><@s.text name="manage.mapping.fields.expandAll"/></button>
                         </div>
 
                         <div id="mp-byfield">
-                            <div class="mp-fhead"><span><@s.text name="manage.mapping.fields.head.field"/></span><span><@s.text name="manage.mapping.fields.head.column"/></span><span><@s.text name="manage.mapping.fields.head.constant"/></span></div>
+                            <div class="mp-fhead"><span><@s.text name="manage.mapping.fields.head.field"/></span><span><@s.text name="manage.mapping.fields.head.column"/></span><span><span class="mp-fhead-l"><@s.text name="manage.mapping.fields.head.constant"/></span><#-- display options for the list below; the samples choice is kept in the browser (js/mapping.js) -->
+                                <span class="mp-fhead-acts"><button type="button" class="ov-link-btn" id="mp-samples-toggle"><@s.text name="manage.mapping.fields.hideSamples"/></button> · <button type="button" class="ov-link-btn" id="mp-expand-all"><@s.text name="manage.mapping.fields.expandAll"/></button></span></span></div>
                             <#list fieldsByGroup?keys as g>
                                 <#assign groupFields = fieldsByGroup.get(g)/>
                                 <#if groupFields?has_content>
@@ -493,7 +484,7 @@
         <div class="container">
             <span class="ov-grow"><@s.text name="manage.mapping.savebar.unsaved"/></span>
             <a class="btn btn-sm btn-outline-secondary" href="mapping.do?r=${resource.shortname}&id=${mapping.extension.rowType?url}&mid=${(mid?c)!}" id="mp-discard"><@s.text name="manage.mapping.savebar.discard"/></a>
-            <button type="submit" class="btn btn-sm btn-gbif-solid" name="save" value="save"><@s.text name="button.save"/></button>
+            <button type="submit" class="btn btn-sm btn-gbif-solid" name="save" value="save"><@icon name="save"/> <@s.text name="button.save"/></button>
         </div>
     </div>
 </form>

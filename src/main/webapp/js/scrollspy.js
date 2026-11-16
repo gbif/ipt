@@ -101,6 +101,13 @@
                     current = el;
                 }
             });
+            // the line is in the gap between two sections (their margins): the last one that started above it
+            if (!current) {
+                var line = getNavbarOffset();
+                sectionToLink.forEach(function (_link, el) {
+                    if (el.getBoundingClientRect().top <= line && el.offsetParent !== null) current = el;
+                });
+            }
 
             $tocLinks.removeClass(settings.activeClass);
             if (current) {

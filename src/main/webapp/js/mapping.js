@@ -207,7 +207,7 @@
                     return v ? '<span class="mp-sv' + (dup.indexOf(v) >= 0 ? ' bad' : '') + '" title="' + esc(v) + '">' + esc(v) + '</span>' : '<span class="mp-sv bad empty">' + esc(i18n.empty) + '</span>';
                 }).join('') + '</div>' +
                     '<div class="mp-msg ' + (dup.length || empty ? 'bad' : 'ok') + '">' +
-                    esc(dup.length ? fmt(i18n.idDup, dup.join(', ')) : empty ? fmt(i18n.idEmpty, empty) : fmt(isCore ? i18n.idOk : i18n.idFilled, rows.length)) + '</div>';
+                    esc(dup.length ? fmt(i18n.idDup, dup.join(', ')) : empty ? fmt(i18n.idEmpty, empty) : (isCore ? i18n.idOk : i18n.idFilled)) + '</div>';
             }
             $('#mp-id-samples').html(h);
 
@@ -265,13 +265,16 @@
         function renderField(f) {
             var ci = colOf(f), pr = problems(f);
             f.$row.toggleClass('miss', pr.some(function (p) { return p.cls === 'bad'; }));
+            // publishing uses the constant only where the column is empty (GenerateDwca)
+            if (f.$const.is('input')) f.$const.attr('placeholder', ci >= 0 ? i18n.constFallback : i18n.constAll);
             if (ci >= 0 && !f.mirrored && rows.length) {
-                var constVal = $.trim(f.$const.val() || '');
-                f.$samples.html('<span class="lab">' + esc(i18n.sample) + ':</span>' + checkedSamples(f).map(function (s) {
+                var constVal = $.trim(f.$const.val() || ''), checked = checkedSamples(f);
+                var allEmpty = !constVal && checked.every(function (s) { return s.state === 'empty'; });
+                f.$samples.html('<span class="lab">' + esc(i18n.sample) + ':</span>' + (allEmpty ? '<span class="mp-sv-none">' + esc(i18n.allEmpty) + '</span>' : checked.map(function (s) {
                     if (s.state === 'empty') return '<span class="mp-sv empty">' + esc(constVal || i18n.empty) + '</span>';
                     if (s.t != null) return '<span class="mp-sv tr' + (s.state === 'bad' ? ' w' : '') + '"><span class="from">' + esc(s.v) + '</span>' + esc(s.t) + '</span>';
                     return '<span class="mp-sv' + (s.state === 'bad' ? ' w' : '') + '" title="' + esc(s.v) + '">' + esc(s.v) + '</span>';
-                }).join('')).prop('hidden', false);
+                }).join(''))).prop('hidden', false);
                 // the translation link sits at the end of the sample line
                 if (f.$translate.length) f.$samples.append(f.$translate);
             } else {
@@ -333,14 +336,17 @@
             $groups.each(function () {
                 var $g = $(this), g = $g.attr('data-g');
                 options += '<optgroup label="' + esc($g.find('.mp-group-h h3').text()) + '">' + fields.filter(function (f) { return f.group === g && !f.mirrored; }).map(function (f) {
-                    return '<option value="' + f.i + '">' + esc(f.label) + '</option>';
+                    // a field takes one column: say which one it has, as choosing it here takes it from there
+                    var c = colOf(f);
+                    return '<option value="' + f.i + '">' + esc(f.label) + (c >= 0 && columns[c] != null ? ' (' + esc(columns[c]) + ')' : '') + '</option>';
                 }).join('') + '</optgroup>';
             });
             var html = columns.map(function (c, ci) {
                 if (query && c.toLowerCase().indexOf(query) < 0) return '';
                 var isId = mode === 'column' && ic === ci, unused = !isId && !feeds[ci].length;
                 return '<tr class="' + (unused ? 'un' : '') + '"><td class="c"><b>' + esc(c) + '</b><small>' + esc(fmt(i18n.columnN, ci + 1)) + (unused ? ' \u00b7 ' + esc(i18n.notUsed) : '') + '</small></td>' +
-                    '<td><div class="mp-samples">' + rows.map(function (r, ri) { var v = sample(ci, ri).v; return v ? '<span class="mp-sv" title="' + esc(v) + '">' + esc(v) + '</span>' : '<span class="mp-sv empty">' + esc(i18n.empty) + '</span>'; }).join('') + '</div></td>' +
+                    '<td><div class="mp-samples">' + (rows.every(function (r, ri) { return !$.trim(sample(ci, ri).v); }) ? '<span class="mp-sv-none">' + esc(i18n.allEmpty) + '</span>'
+                        : rows.map(function (r, ri) { var v = sample(ci, ri).v; return v ? '<span class="mp-sv" title="' + esc(v) + '">' + esc(v) + '</span>' : '<span class="mp-sv empty">' + esc(i18n.empty) + '</span>'; }).join('')) + '</div></td>' +
                     '<td>' + (isId ? '<span class="mp-chip id">' + esc(i18n.recordId) + '</span>' : '') +
                     feeds[ci].map(function (f) {
                         return '<span class="mp-chip"><button type="button" class="mp-jump" data-jump="' + f.i + '">' + esc(f.label) + (hasTranslations(f) ? ' \u00b7 ' + esc(i18n.translated) : '') + '</button>' +
@@ -348,22 +354,22 @@
                     }).join('') +
                     '<div><select class="form-select form-select-sm" form="mp-ui" data-map-column="' + ci + '" aria-label="' + esc(c + ': ' + i18n.mapTo) + '">' + options + '</select></div></td></tr>';
             }).join('');
-            $('#mp-bycolumn tbody').html(html);
+            var $body = $('#mp-bycolumn tbody');
+            $body.find('select[data-map-column]').each(function () { if ($(this).data('select2')) $(this).select2('destroy'); });
+            $body.html(html);
+            select2($body.find('select[data-map-column]'), {placeholder: i18n.mapTo});
         }
 
-        // ---------- overview, sidebar and counts ----------
-        function setFact(id, html) { $('#' + id).html(html); }
+        // ---------- status line, sidebar and counts ----------
         function renderSummary() {
-            var mapped = 0, reqMissing = 0, reqTotal = 0, withProblems = 0, translated = 0;
+            var reqMissing = 0, withProblems = 0;
             var groupMapped = {}, groupProblems = {}, groupMissing = {}, groupTotal = {};
             var counts = {default: 0, problems: 0, unmapped: 0, all: fields.length};
             var used = {};
             fields.forEach(function (f) {
                 var m = isMapped(f), pr = problems(f), c = colOf(f);
-                if (m && !f.mirrored) mapped++;
-                if (f.required) { reqTotal++; if (!m) reqMissing++; }
+                if (f.required && !m) reqMissing++;
                 if (pr.length) withProblems++;
-                if (hasTranslations(f)) translated++;
                 if (c >= 0) used[c] = true;
                 groupTotal[f.group] = (groupTotal[f.group] || 0) + 1;
                 if (m) groupMapped[f.group] = (groupMapped[f.group] || 0) + 1;
@@ -375,24 +381,31 @@
             });
             var mode = idMode(), ic = idCol(), idMissing = mode === 'column' && ic < 0;
             if (mode === 'column' && ic >= 0) used[ic] = true;
-            var usedN = Object.keys(used).length;
-
-            setFact('mp-fact-fields', '<b>' + esc(fmt(i18n.fieldsMapped, mapped, fields.filter(function (f) { return !f.mirrored; }).length)) + '</b>');
-            // opens the by-column view, which lists the unused columns
-            setFact('mp-fact-columns', '<button type="button" class="ov-link-btn" data-goto-view="column">' + esc(fmt(i18n.fieldsMapped, usedN, columns.length)) + '</button>');
-            setFact('mp-fact-required', !reqTotal ? esc(i18n.none) : reqMissing ? '<button type="button" class="ov-link-btn bad" data-goto-show="problems">' + esc(fmt(i18n.requiredMissing, reqMissing)) + '</button>' : esc(fmt(i18n.fieldsMapped, reqTotal, reqTotal)));
+            var unused = columns.length - Object.keys(used).length;
             var valueProblems = withProblems - reqMissing;
-            setFact('mp-fact-problems', valueProblems > 0 ? '<button type="button" class="ov-link-btn w" data-goto-show="problems">' + valueProblems + '</button>' : esc(i18n.none));
-            // only worth a line when there are some
-            setFact('mp-fact-translations', esc(fmt(i18n.translationsValue, translated)));
-            $('#mp-fact-translations-row').prop('hidden', !translated);
-            setFact('mp-fact-id', mode === 'column' ? (ic >= 0 ? '<code>' + esc(columns[ic]) + '</code>' : '<span class="bad">' + esc(i18n.notSet) + '</span>')
-                : esc(mode === 'none' ? i18n.noId : mode === 'line' ? i18n.lineNumber : i18n.uuid));
-            var fc = $fCol.val() === '' ? -1 : +$fCol.val();
-            setFact('mp-fact-filter', $filterOn.is(':checked') && fc >= 0 ? esc(columns[fc] + ' ' + $fCmp.find('option:selected').text() + ($fParam.val() ? ' ' + $fParam.val() : '')) : esc(i18n.none));
 
-            var bad = reqMissing > 0 || idMissing || idBad;
-            $('#mp-dot-overview').attr('class', 'ov-dot ' + (bad ? 'bad' : valueProblems > 0 ? 'warn' : 'ok'));
+            // under the heading: only what needs doing, each part a way to it. No "all fine": the value checks see
+            // only the sample rows, so they can't vouch for the whole source
+            // red: error icon, orange: warning icon, as in the alerts (the same markup as the <@icon> macro)
+            function part(cls, attr, text) {
+                var icon = '<svg class="material-icon" aria-hidden="true" focusable="false"><use href="' + esc(i18n.sprite) + '#' + (cls === 'bad' ? 'error' : 'warning') + '"/></svg>';
+                return '<button type="button" class="ov-link-btn ' + cls + '" ' + attr + '>' + icon + esc(text) + '</button>';
+            }
+            var parts = [];
+            if (idMissing || idBad) parts.push(part('bad', 'data-goto-id', isCore ? i18n.statusId : i18n.statusLink));
+            if (reqMissing) parts.push(part('bad', 'data-goto-show="problems"', fmt(i18n.statusRequired, reqMissing)));
+            if (valueProblems > 0) parts.push(part('w', 'data-goto-show="problems"', fmt(i18n.statusProblems, valueProblems)));
+            // not about this mapping but its core / extension: a newer version in the registry (mapping.ftl)
+            var $status = $('#mp-status'), newer = $status.attr('data-newer'), newerUrl = $status.attr('data-newer-url');
+            if (newer) {
+                var warn = '<svg class="material-icon" aria-hidden="true" focusable="false"><use href="' + esc(i18n.sprite) + '#warning"/></svg>';
+                parts.push(newerUrl ? '<a class="ov-link-btn w custom-link" href="' + esc(newerUrl) + '">' + warn + esc(newer) + '</a>'
+                    : '<span class="mp-status-note w">' + warn + esc(newer) + '</span>');
+            }
+            $status.html(parts.join('<span class="mp-status-sep" aria-hidden="true">\u00b7</span>'));
+            // in the source line: not a problem (one source can feed several mappings), but data that isn't published
+            $('#mp-unused').prop('hidden', unused <= 0).children('button').text(fmt(i18n.statusUnused, unused));
+
             $('#mp-dot-id').attr('class', 'ov-dot ' + (idMissing || idBad ? 'bad' : 'ok'));
             $('#mp-dot-filter').attr('class', 'ov-dot ' + ($filterOn.is(':checked') ? 'ok' : 'off'));
             $('#mp-dot-fields').attr('class', 'ov-dot ' + (reqMissing ? 'bad' : valueProblems > 0 ? 'warn' : 'ok'));
@@ -402,9 +415,12 @@
                 var $g = $(this), g = $g.attr('data-g'), np = groupProblems[g] || 0, missing = !!groupMissing[g];
                 $g.find('[data-group-mapped]').text(fmt(i18n.groupMapped, groupMapped[g] || 0, groupTotal[g] || 0));
                 $g.find('[data-group-problems]').text(fmt(i18n.groupProblems, np)).prop('hidden', !np).toggleClass('bad', missing).toggleClass('w', !missing);
-                $('[data-group-count="' + g + '"]').text(np || groupMapped[g] || 0).toggleClass('bad', np > 0 && missing).toggleClass('w', np > 0 && !missing);
+                var title = fmt(i18n.groupMapped, groupMapped[g] || 0, groupTotal[g] || 0) + (np ? ' \u00b7 ' + fmt(i18n.groupProblems, np) : '');
+                $('[data-group-count="' + g + '"]').text((groupMapped[g] || 0) + '/' + (groupTotal[g] || 0)).attr('title', title)
+                    .toggleClass('bad', np > 0 && missing).toggleClass('w', np > 0 && !missing);
             });
-            $('#mp-show button').each(function () { $(this).find('.mp-count').text(counts[$(this).attr('data-show')]).toggleClass('bad', $(this).attr('data-show') === 'problems' && reqMissing > 0).toggleClass('w', $(this).attr('data-show') === 'problems' && counts.problems > 0 && !reqMissing); });
+            // no "0" on Problems: an empty count only draws the eye
+            $('#mp-show button').each(function () { var k = $(this).attr('data-show'); $(this).find('.mp-count').text(k === 'problems' && !counts[k] ? '' : counts[k]).toggleClass('bad', $(this).attr('data-show') === 'problems' && reqMissing > 0).toggleClass('w', $(this).attr('data-show') === 'problems' && counts.problems > 0 && !reqMissing); });
         }
 
         function renderAll() {
@@ -421,7 +437,6 @@
             $('#mp-byfield').prop('hidden', v !== 'field');
             $('#mp-bycolumn').prop('hidden', v !== 'column');
             $('#mp-show').prop('hidden', v !== 'field');
-            $('#mp-expand-all').prop('hidden', v !== 'field');
             $('#mp-q').attr('placeholder', v === 'field' ? i18n.searchField : i18n.searchColumn).attr('aria-label', v === 'field' ? i18n.searchField : i18n.searchColumn);
             if (v === 'column') renderByColumn(); else applyShow(!!query);
         }
@@ -438,12 +453,15 @@
         }
 
         // ---------- dirty state ----------
-        var dirty = false, submitting = false;
+        var dirty = false, submitting = false, saved = null;
+        function formState() {
+            // disabled fields (the mirrored core ID) aren't submitted, so they don't count
+            return $form.serialize();
+        }
         function markDirty() {
-            if (dirty) return;
-            dirty = true;
-            $('#mp-savebar').addClass('show').attr('aria-hidden', 'false');
-            $('body').addClass('mp-dirty');
+            dirty = saved !== null && formState() !== saved;
+            $('#mp-savebar').toggleClass('show', dirty).attr('aria-hidden', dirty ? 'false' : 'true');
+            $('body').toggleClass('mp-dirty', dirty);
         }
         $(window).on('beforeunload', function (e) {
             if (dirty && !submitting) {
@@ -507,10 +525,26 @@
             $('#mp-q').val('');
             applyShow(false);
         });
+        // samples on or off, remembered in this browser; storage can be unavailable (private window, blocked)
+        function setSamples(hidden) {
+            $('#mp-byfield').toggleClass('mp-no-samples', hidden);
+            $('#mp-samples-toggle').text(hidden ? i18n.showSamples : i18n.hideSamples);
+        }
+        var samplesHidden = false;
+        try { samplesHidden = localStorage.getItem('ipt.mapping.hideSamples') === '1'; } catch (e) { /* default: shown */ }
+        setSamples(samplesHidden);
+        $('#mp-samples-toggle').on('click', function () {
+            samplesHidden = !samplesHidden;
+            setSamples(samplesHidden);
+            try { localStorage.setItem('ipt.mapping.hideSamples', samplesHidden ? '1' : '0'); } catch (e) { /* not remembered */ }
+        });
         $('#mp-expand-all').on('click', function () {
             var $visible = $groups.filter(':not([hidden])'), allOpen = $visible.length && $visible.filter('.open').length === $visible.length;
             $visible.each(function () { setOpen($(this), !allOpen); });
             $(this).text(allOpen ? i18n.expandAll : i18n.collapseAll);
+        });
+        $(document).on('click', '[data-goto-id]', function () {
+            document.getElementById('mp-id').scrollIntoView({behavior: 'smooth'});
         });
         $(document).on('click', '[data-goto-view]', function () {
             setView($(this).attr('data-goto-view'));
@@ -531,8 +565,11 @@
             byIndex[$(this).attr('data-unmap')].$col.val('').trigger('change');
         });
         $('#mp-bycolumn').on('change', '[data-map-column]', function () {
-            var f = byIndex[$(this).val()];
-            if (f) f.$col.val($(this).attr('data-map-column')).trigger('change');
+            var ci = $(this).attr('data-map-column'), f = byIndex[$(this).val()];
+            if (!f) return;
+            f.$col.val(ci).trigger('change');
+            // the table was drawn again: back to the same column's dropdown, for the keyboard
+            $('#mp-bycolumn select[data-map-column="' + ci + '"]').next('.select2').find('.select2-selection').trigger('focus');
         });
         $('[data-group-link]').on('click', function () {
             if (view !== 'field') setView('field');
@@ -568,6 +605,9 @@
         });
         // a field named in the URL, e.g. from a validation message
         if (location.hash && /^#field-\d+$/.test(location.hash) && byIndex[location.hash.slice(7)]) jumpTo(byIndex[location.hash.slice(7)]);
+
+        // the state to compare with, once renderAll has filled in the values the page computes (idColumn, mirrored IDs)
+        saved = formState();
 
         if (window.IptScrollSpy) IptScrollSpy.init({tocSelector: '.bd-toc nav a'});
     });

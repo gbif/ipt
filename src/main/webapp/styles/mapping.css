@@ -4,6 +4,7 @@
 .mp-sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #dee2e6; padding-bottom: 6px; margin-bottom: 14px; }
 .mp-sec-head h2 { font-size: 1.1rem; font-weight: 500; color: #4e565f; margin: 0; }
 .mp-sec-head > span { color: #6c757d; font-size: 0.78rem; flex: 1; }
+.mp-sec-head > .mp-seg { align-self: center; }
 
 #sections .bd-toc nav a.sidebar-navigation-link .mp-count { margin-left: auto; }
 #sections .bd-toc li.mp-toc-group a { padding-left: 20px; font-size: 0.78rem; }
@@ -12,7 +13,6 @@
 .mp-count { background: #f1f3f5; border-radius: 10px; padding: 0 7px; font-size: 0.68rem; color: #6c757d; white-space: nowrap; font-weight: 500; }
 .mp-count.bad { background: rgba(var(--color-gbif-danger), .12); color: rgb(var(--color-gbif-danger)); }
 .mp-count.w { background: rgba(var(--alert-warning-icon-color), .12); color: rgb(var(--alert-warning-icon-color)); }
-.mp-warn-text { color: rgb(var(--alert-warning-icon-color)); }
 
 .mp-msg { font-size: 0.78rem; margin-top: 4px; display: flex; gap: 6px; align-items: flex-start; }
 .mp-msg .material-icon { margin-top: 2px; flex: none; }
@@ -22,30 +22,28 @@
 .mp-msg.mu { color: #6c757d; }
 .mp-msg[hidden] { display: none; }
 
-/* overview */
-/* source above its core / extension, as tall as the facts beside them */
-.mp-summary { border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-@media (max-width: 991px) { .mp-summary { grid-template-columns: 1fr; } }
-.mp-flow { display: flex; flex-direction: column; gap: 2px; height: 100%; }
-.mp-arrow { align-self: center; color: #adb5bd; line-height: 1; transform: rotate(90deg); }
-.mp-node { flex: 1; min-width: 0; border: 1px solid #dee2e6; border-radius: 6px; padding: 6px 10px; overflow-wrap: anywhere; display: flex; flex-direction: column; justify-content: center; }
-.mp-node .k { font-size: 0.65rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; font-weight: 600; }
-.mp-node .v { font-weight: 600; font-size: 0.875rem; }
-/* names link like on the resource overview: dark, green on hover */
-#sections .mp-node .v a { color: #343a40 !important; text-decoration: none; }
-#sections .mp-node .v a:hover { color: rgb(var(--color-gbif-primary)) !important; }
-.mp-node .m { font-size: 0.75rem; color: #6c757d; }
-.mp-facts { font-size: 0.82rem; align-self: start; }
-.mp-facts > div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px solid #f1f3f5; padding: 3px 0; }
-.mp-facts > div:last-child { border-bottom: 0; }
-.mp-facts > div[hidden] { display: none; }
-.mp-facts > div > span:first-child { color: #6c757d; }
-.mp-facts > div > span:last-child { text-align: right; min-width: 0; overflow-wrap: anywhere; }
-.mp-facts .bad { color: rgb(var(--color-gbif-danger)); font-weight: 600; }
-.mp-facts .w { color: rgb(var(--alert-warning-icon-color)); font-weight: 600; }
-.mp-facts button.ov-link-btn { font-weight: 600; }
-.mp-facts button.bad { color: rgb(var(--color-gbif-danger)); }
-.mp-facts button.w { color: rgb(var(--alert-warning-icon-color)); }
+/* heading: the "Core" / "Extension" pill and the source line, then the status line (js/mapping.js renderSummary) */
+.mp-kind-pill { font-size: 0.72rem; font-weight: 500; color: #495057; background: #f1f3f5; border-radius: 10px; padding: 1px 8px; line-height: 18px; }
+/* as far from the resource name as the title is, so the name sits evenly between them */
+.ov-meta.mp-source-line { margin-top: 12px; }
+.mp-source-line .ov-link-btn { font-size: inherit; }
+/* "Columns not used": a quiet link */
+.ov-meta .ov-link-btn.mu { color: #6c757d; font-weight: 400; text-decoration: underline dotted #adb5bd; text-underline-offset: 3px; }
+.ov-meta .ov-link-btn.mu:hover { color: rgb(var(--color-gbif-primary)); }
+/* status line: red / orange items with an icon, hidden when empty */
+.mp-status { gap: 6px 8px; margin-top: 8px; }
+.mp-status:empty { display: none; }
+.mp-status-sep { color: #ced4da; }
+.mp-status .ov-link-btn { font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.mp-status .ov-link-btn .material-icon { font-size: 1rem; }
+.mp-status .ov-link-btn.bad { color: rgb(var(--color-gbif-danger)); }
+.mp-status .ov-link-btn.w { color: rgb(var(--alert-warning-icon-color)); }
+/* "Newer version available": a link for administrators (custom-link keeps main.css's green link rule off it), text otherwise */
+.mp-status a.ov-link-btn { text-decoration: none; }
+.mp-status a.ov-link-btn:hover { text-decoration: underline; }
+.mp-status-note { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; }
+.mp-status-note .material-icon { font-size: 1rem; }
+.mp-status-note.w { color: rgb(var(--alert-warning-icon-color)); }
 
 /* record ID choice cards */
 .mp-cards { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
@@ -83,9 +81,9 @@
 .mp-preview tr.skip td:first-child { text-decoration: none; }
 
 /* toolbar */
-.mp-toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; position: sticky; top: var(--mp-navbar, 68px); background: #fff; z-index: 5; padding: 6px 0; }
-@media (max-width: 1199px) { .mp-toolbar { --mp-navbar: 57px; } }
-.mp-toolbar input[type=search] { width: 230px; }
+/* sticky, flush with the fixed navbar (57px), so the rows don't show through above it */
+.mp-toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: -11px 0 10px; position: sticky; top: 57px; background: #fff; z-index: 5; padding: 17px 0 6px; }
+.mp-toolbar input[type=search] { width: 300px; }
 .mp-seg { display: inline-flex; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; }
 .mp-seg[hidden] { display: none; }
 .mp-seg button { border: 0; background: #fff; font-size: 0.78rem; padding: 3px 10px; cursor: pointer; color: #6c757d; border-right: 1px solid #dee2e6; display: inline-flex; gap: 5px; align-items: center; }
@@ -94,7 +92,16 @@
 
 /* field groups */
 .mp-fhead { display: grid; grid-template-columns: minmax(170px, 1fr) minmax(170px, 1fr) minmax(150px, .9fr); gap: 12px; padding: 0 13px 4px; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #6c757d; }
-@media (max-width: 991px) { .mp-fhead { display: none; } }
+/* narrow: the fields stack, so no column labels; the display options stay */
+@media (max-width: 991px) {
+    .mp-fhead { display: flex; justify-content: flex-end; }
+    .mp-fhead > span:not(:last-child), .mp-fhead .mp-fhead-l { display: none; }
+}
+.mp-fhead > span:last-child { display: flex; align-items: baseline; gap: 8px; }
+.mp-fhead-acts { margin-left: auto; text-transform: none; letter-spacing: 0; font-weight: 400; color: #ced4da; white-space: nowrap; }
+.mp-fhead-acts .ov-link-btn { font-size: 0.75rem; color: #6c757d; }
+.mp-fhead-acts .ov-link-btn:hover { color: rgb(var(--color-gbif-primary)); }
+.mp-seg .mp-count:empty { display: none; }
 .mp-group { border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 10px; scroll-margin-top: calc(var(--navbar-height) + 10px); }
 .mp-group[hidden] { display: none; }
 .mp-group-h { display: flex; gap: 10px; align-items: center; padding: 8px 12px; cursor: pointer; background: #fafafa; border: 0; border-radius: 8px; width: 100%; text-align: left; }
@@ -125,10 +132,8 @@
 .mp-def { font-size: 0.75rem; color: #495057; margin-top: 4px; overflow-wrap: anywhere; }
 .mp-def p { margin: 0 0 4px; }
 .mp-badge { font-size: 0.65rem; border-radius: 3px; padding: 0 5px; white-space: nowrap; font-weight: 500; font-style: normal; display: inline-flex; gap: 2px; align-items: center; }
-.mp-badge.t { color: #3d5a80; background: #eef2f7; }
-.mp-badge.v { color: #6b4fa0; background: #f2eefa; }
-.mp-badge.r { color: rgb(var(--color-gbif-danger)); background: rgba(var(--color-gbif-danger), .08); }
-.mp-badge.lock { color: #6c757d; background: #f1f3f5; }
+/* type, vocabulary, required, locked: all grey, the text says which; red is kept for what needs fixing */
+.mp-badge.t, .mp-badge.v, .mp-badge.r, .mp-badge.lock { color: #6c757d; background: #f1f3f5; }
 select.mp-locked { pointer-events: none; background-color: #f6f7f8; color: #6c757d; }
 .mp-doi { font-size: 0.78rem; margin-top: 4px; }
 .mp-samples, .mp-msgs { grid-column: 1 / -1; }
@@ -137,6 +142,7 @@ select.mp-locked { pointer-events: none; background-color: #f6f7f8; color: #6c75
 .mp-samples .lab { color: #6c757d; margin-right: 2px; }
 .mp-sv { font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.72rem; border-radius: 3px; padding: 0 5px; background: #f1f3f5; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .mp-sv.empty { color: #adb5bd; font-style: italic; font-family: inherit; }
+.mp-sv-none { color: #adb5bd; font-style: italic; }
 .mp-sv.bad { background: rgba(var(--color-gbif-danger), .1); color: rgb(var(--color-gbif-danger)); }
 .mp-sv.w { background: rgba(var(--alert-warning-icon-color), .12); color: rgb(var(--alert-warning-icon-color)); }
 .mp-sv.tr { background: rgba(var(--color-gbif-primary), .12); color: rgb(55, 110, 55); }
@@ -148,6 +154,9 @@ select.mp-locked { pointer-events: none; background-color: #f6f7f8; color: #6c75
 .mp-field a.mp-translate.quiet { visibility: hidden; }
 .mp-field:hover a.mp-translate.quiet, .mp-field a.mp-translate.quiet:focus { visibility: visible; }
 .mp-field a.mp-translate[hidden] { display: none; }
+/* samples switched off: the line stays only for a "Translate values" link that is always shown */
+#mp-byfield.mp-no-samples .mp-samples > :not(.mp-translate) { display: none; }
+#mp-byfield.mp-no-samples .mp-samples:not(:has(> a.mp-translate:not(.quiet):not([hidden]))) { display: none; }
 
 /* by source column */
 .mp-cols td.c b { font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.78rem; overflow-wrap: anywhere; }
@@ -185,3 +194,6 @@ body.mp-dirty { padding-bottom: 60px; }
 .mp-id-nolink { margin-top: 6px; }
 .mp-id-nolink[hidden], .mp-id-none[hidden] { display: none; }
 .mp-id-none .ov-link-btn { margin-top: 6px; }
+
+/* "Map to a field…" in the by-column view: select2 as in the field rows */
+#mp-bycolumn .select2-container { max-width: 260px; }

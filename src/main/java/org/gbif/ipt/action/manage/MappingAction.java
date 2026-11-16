@@ -376,11 +376,8 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
           notFound("manage.404.mapping.title", "manage.404.mapping.body", resource.getShortname());
           return;
         }
-
-        Extension ext = extensionManager.get(id);
-        if (ext != null && !ext.isLatest()) {
-          addActionWarning(getText("manage.overview.mappings.extension.outdated"));
-        }
+        // an outdated extension is shown in the page heading (mapping.ftl): an action warning added here would be
+        // carried by the redirect after delete, save or back onto the next page
       }
     } else {
       // worst case, just redirect to resource not found page
