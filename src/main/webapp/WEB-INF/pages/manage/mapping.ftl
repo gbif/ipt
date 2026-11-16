@@ -12,6 +12,7 @@
 </style>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
 <link rel="stylesheet" href="${baseURL}/styles/overview.css">
 <link rel="stylesheet" href="${baseURL}/styles/mapping.css">
 <script src="${baseURL}/js/scrollspy.js"></script>

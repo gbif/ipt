@@ -6,6 +6,7 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     <#include "/WEB-INF/pages/macros/docbook_editor.ftl"/>
@@ -221,25 +222,12 @@
             border-radius: .2rem;
         }
 
-        .select2-container--bootstrap4 .select2-selection--single {
-            height: calc(1.5em + .5rem + 2px) !important;
-            font-size: .875rem !important;
-        }
-
-        .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
-            line-height: calc(1.5em + .5rem) !important;
-        }
-
-        .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
-            line-height: calc(1.5em + .5rem) !important;
-        }
-
-        .select2-container--bootstrap4 .select2-selection__clear {
-            margin-top: .625em !important;
-        }
-
-        .select2-results__option, .select2-search__field {
-            font-size: .875rem;
+        /* select2 at the same size (select2-ipt.css) */
+        body .select2-container--bootstrap4 {
+            --s2-font-size: .875rem;
+            --s2-height: calc(1.5em + .5rem + 2px);
+            --s2-padding-x: .5rem;
+            --s2-radius: .2rem;
         }
     </style>
     <#assign currentMenu="manage"/>

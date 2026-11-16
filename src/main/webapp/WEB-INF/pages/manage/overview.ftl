@@ -85,6 +85,7 @@
 <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+<link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
 <link rel="stylesheet" href="${baseURL}/styles/overview.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 <script src="${baseURL}/js/scrollspy.js"></script>

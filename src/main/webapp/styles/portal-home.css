@@ -45,12 +45,8 @@ button.ph-chip-clear { font-size: 0.75rem; border: 1px dashed #adb5bd; backgroun
 .ph-bar .ph-count b { color: #212529; font-weight: 600; }
 .ph-bar label { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
 .ph-bar select { width: auto; }
-/* select2 on the sort, styled as the organisation filter on Manage resources (manage-home.css) but at the height of the List/Table toggle */
-.ph-bar .select2-container--bootstrap4 .select2-selection--single { height: 26px !important; border-color: #dee2e6; border-radius: 4px; font-size: 0.8125rem; }
-.ph-bar .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered { line-height: 24px; padding-left: 8px; padding-right: 28px; color: #4E565F; }
-.ph-bar .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow { top: 0; height: 24px; }
-.ph-bar .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { top: 50%; }
-.select2-container--bootstrap4 .select2-dropdown .select2-results__option { font-size: 0.8125rem; }
+/* select2 on the sort, at the height of the List/Table toggle (select2-ipt.css) */
+.ph-bar .select2-container--bootstrap4 { --s2-font-size: .8125rem; --s2-height: 26px; --s2-padding-x: .5rem; --s2-radius: 4px; }
 .ph-seg { display: inline-flex; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; }
 .ph-seg button { border: 0; background: #fff; font-size: 0.8125rem; padding: 2px 10px; cursor: pointer; color: #6c757d; }
 .ph-seg button + button { border-left: 1px solid #dee2e6; }

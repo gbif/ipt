@@ -3,13 +3,9 @@
 /* the organisation filter, next to the search */
 .mh-toolbar { display: flex; align-items: center; }
 .mh-organisation-filter { width: auto; max-width: 260px; }
-/* select2 on the organisation filter, at the height of form-select-sm and the search box */
+/* select2 on the organisation filter, at the height of form-select-sm and the search box (select2-ipt.css) */
 .mh-toolbar .select2-container { max-width: 260px; }
-.mh-toolbar .select2-container--bootstrap4 .select2-selection--single { height: 31px !important; border-color: #dee2e6; border-radius: 4px; font-size: 14px; }
-.mh-toolbar .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered { line-height: 29px; padding-left: 8px; padding-right: 28px; color: #4E565F; }
-.mh-toolbar .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow { top: 0; height: 29px; }
-.mh-toolbar .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow b { top: 50%; }
-.select2-container--bootstrap4 .select2-dropdown .select2-results__option { font-size: 14px; }
+.mh-toolbar .select2-container--bootstrap4 { --s2-font-size: .875rem; --s2-height: calc(1.5em + .5rem + 2px); --s2-padding-x: .5rem; --s2-radius: .2rem; }
 /* the search box the size and look of the select (Bootstrap form-select-sm); this stylesheet is only on this page */
 div.dt-container .dt-search { display: flex; align-items: center; }
 div.dt-container .dt-search input.dt-input { height: 31px; margin-left: 0; padding: 4px 8px; font-size: 14px; color: #4E565F; border: 1px solid #dee2e6; border-radius: 4px; }

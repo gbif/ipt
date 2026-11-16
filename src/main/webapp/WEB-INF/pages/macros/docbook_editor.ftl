@@ -49,6 +49,7 @@
     <#if loadSelect2>
         <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
         <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
+        <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
         <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
     </#if>
     <script src="${baseURL}/js/docbook/multilingual-fields.js"></script>
