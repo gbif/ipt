@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gbif.ipt.action.admin;
+package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.dwc.terms.DwcTerm;
 import org.gbif.ipt.IptBaseTest;
@@ -24,6 +24,7 @@ import org.gbif.ipt.config.TestBeanProvider;
 import org.gbif.ipt.mock.MockAppConfig;
 import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
+import org.gbif.ipt.model.BulkPublication;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.Organisation;
@@ -50,8 +51,6 @@ import org.gbif.ipt.service.admin.ExtensionManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
-import org.gbif.ipt.service.admin.impl.ExtensionsHolder;
-import org.gbif.ipt.service.admin.impl.VocabulariesManagerImpl;
 import org.gbif.ipt.service.manage.InferredMetadataManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceImportService;
@@ -82,6 +81,7 @@ import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwcaFactory;
 import org.gbif.ipt.task.ReportHandler;
 import org.gbif.ipt.validation.DataPackageMetadataValidator;
+import org.gbif.ipt.validation.EmlValidator;
 import org.gbif.metadata.eml.ipt.EmlFactory;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.HttpClient;
@@ -91,6 +91,7 @@ import jakarta.inject.Provider;
 import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -116,12 +117,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class PublishAllResourcesActionTest extends IptBaseTest {
+public class BulkPublicationManagerImplTest extends IptBaseTest {
 
   private static final String DATASET_SUBTYPE_SPECIMEN_IDENTIFIER = "specimen";
   private static final String RESOURCE_SHORTNAME = "res2";
 
-  private PublishAllResourcesAction action;
+  private BulkPublicationManagerImpl manager;
+  private ResourceManager resourceManager;
+  private ResourcePublicationManagerImpl publicationManager;
   private final DataPackageMetadataValidator mockDataPackageMetadataValidator = mock(DataPackageMetadataValidator.class);
 
   private final AppConfig mockAppConfig = MockAppConfig.buildMock();
@@ -145,8 +148,8 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
 
   @BeforeEach
   public void setup() throws Exception {
-    ResourceManager mockResourceManager = getResourceManagerImpl();
-    ResourcePublicationManagerImpl mockResourcePublicationManager = getResourcePublicationManagerImpl(mockResourceManager);
+    resourceManager = getResourceManagerImpl();
+    publicationManager = getResourcePublicationManagerImpl(resourceManager);
     // prepare and add resource
     Resource resource = getNonRegisteredMetadataOnlyResource();
     // ensure resource has mandatory metadata filled in, meaning its EML validates and it has a valid publishing org
@@ -164,9 +167,9 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     RegistrationManager mockRegistrationManager = mock(RegistrationManager.class);
     when(mockRegistrationManager.get(any(UUID.class))).thenReturn(o);
 
-    mockResourceManager.save(resource);
+    resourceManager.save(resource);
     // mock generateDwca() throwing PublicationException, not actually possible, but used to test failed publications
-    GenerateDwcaFactory mockDwcaFactory = mockResourcePublicationManager.getDwcaFactory();
+    GenerateDwcaFactory mockDwcaFactory = publicationManager.getDwcaFactory();
     when(mockDwcaFactory.create(any(Resource.class), any(ReportHandler.class)))
         .thenThrow(new PublicationException(PublicationException.TYPE.DWCA, "Mock exception"));
 
@@ -178,20 +181,36 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     File rtf = File.createTempFile("short-1.1", ".rtf");
     when(mockedDataDir.resourceRtfFile(anyString(), any(BigDecimal.class))).thenReturn(rtf);
 
-    // mock action
-    action = new PublishAllResourcesAction(
-        mock(SimpleTextProvider.class),
+    manager = new BulkPublicationManagerImpl(
         mock(AppConfig.class),
+        mock(SimpleTextProvider.class),
         mockRegistrationManager,
-        mockResourceManager,
-        mockResourcePublicationManager,
-        mock(RegistryManager.class),
+        resourceManager,
+        publicationManager,
+        new EmlValidator(mock(AppConfig.class), mockRegistrationManager, mock(SimpleTextProvider.class)),
         mockDataPackageMetadataValidator);
   }
 
+  /**
+   * Starts a run with all resources and waits until it has finished.
+   */
+  private BulkPublication runAll() throws InterruptedException {
+    BulkPublication run = manager.start(BulkPublication.Scope.ALL, null, null, "Admin");
+    long until = System.currentTimeMillis() + 10_000;
+    while (!run.isFinished() && System.currentTimeMillis() < until) {
+      Thread.sleep(20);
+    }
+    assertTrue(run.isFinished(), "the run should have finished");
+    return run;
+  }
+
+  private BulkPublication.Item item(BulkPublication run) {
+    return run.getItems().stream().filter(i -> RESOURCE_SHORTNAME.equals(i.getShortname())).findFirst().orElseThrow();
+  }
+
   @Test
-  public void testExecuteFailsOnPublish() throws Exception {
-    Resource resource = action.resourceManager.get("res2");
+  public void testRunFailsOnPublish() throws Exception {
+    Resource resource = resourceManager.get(RESOURCE_SHORTNAME);
 
     // make a few pre-publication assertions
     assertEquals(BigDecimal.valueOf(1.0), resource.getReplacedMetadataVersion());
@@ -214,84 +233,98 @@ public class PublishAllResourcesActionTest extends IptBaseTest {
     em.setExtension(extension);
     resource.addMapping(em);
 
-    // trigger publish all
-    String result = action.execute();
+    // trigger bulk publication
+    BulkPublication run = runAll();
 
-    // make some post-failed-publication assertions
-    assertEquals("success", result);
-
-    // PublicationException logged in ActionError
-    assertEquals(2, action.getActionErrors().size());
+    // the failure is the resource's result, with the reason
+    assertEquals(BulkPublication.State.FAILED, item(run).getState());
+    assertEquals("Mock exception", item(run).getError());
+    assertFalse(manager.isRunning());
     // a single failure captured for the resource
-    assertEquals(1, action.resourcePublicationManager.getProcessFailures().size());
-    assertEquals(1, action.resourcePublicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
-    assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
+    assertEquals(1, publicationManager.getProcessFailures().size());
+    assertEquals(1, publicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
+    assertFalse(publicationManager.hasMaxProcessFailures(resource));
     assertEquals(BigDecimal.valueOf(3.0), resource.getEml().getEmlVersion());
     assertNull(resource.getNextPublished());
     assertNull(resource.getLastPublished());
 
-    // trigger publish all again - a manual bulk publish gives the resource a fresh start (#3191),
+    // run again - a manual bulk publish gives the resource a fresh start (#3191),
     // so the previous failure is cleared and only the new one is recorded
-    action.execute();
-    assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
-    assertEquals(1, action.resourcePublicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
+    runAll();
+    assertFalse(publicationManager.hasMaxProcessFailures(resource));
+    assertEquals(1, publicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
 
     // repeated bulk publications never disable the resource, regardless of how often publishing fails
-    action.execute();
-    assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
-    assertEquals(1, action.resourcePublicationManager.getProcessFailures().size());
+    runAll();
+    assertFalse(publicationManager.hasMaxProcessFailures(resource));
+    assertEquals(1, publicationManager.getProcessFailures().size());
 
-    // trigger publish all once more - still a fresh start, still not disabled
-    action.execute();
-    assertFalse(action.resourcePublicationManager.hasMaxProcessFailures(resource));
-    assertEquals(1, action.resourcePublicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
+    // once more - still a fresh start, still not disabled
+    runAll();
+    assertFalse(publicationManager.hasMaxProcessFailures(resource));
+    assertEquals(1, publicationManager.getProcessFailures().get(RESOURCE_SHORTNAME).size());
   }
 
   /**
    * Like on the resource overview, a resource without its mandatory metadata isn't published.
    */
   @Test
-  public void testExecuteSkipsResourceWithInvalidMetadata() throws Exception {
-    Resource resource = action.resourceManager.get(RESOURCE_SHORTNAME);
+  public void testRunSkipsResourceWithInvalidMetadata() throws Exception {
+    Resource resource = resourceManager.get(RESOURCE_SHORTNAME);
     resource.setEml(new Eml());
 
-    action.execute();
+    assertEquals(BulkPublication.NotReady.METADATA, manager.notReady(resource));
+    BulkPublication run = runAll();
 
-    assertEquals(1, action.getActionErrors().size());
+    assertEquals(BulkPublication.State.SKIPPED, item(run).getState());
+    assertEquals(BulkPublication.NotReady.METADATA, item(run).getNotReady());
     assertNull(resource.getLastPublished());
-    assertTrue(action.resourcePublicationManager.getProcessFailures().isEmpty());
+    assertTrue(publicationManager.getProcessFailures().isEmpty());
   }
 
   /**
    * Like on the resource overview, a data package without mappings isn't published, even with valid metadata.
    */
   @Test
-  public void testExecuteSkipsDataPackageWithoutMappings() throws Exception {
-    Resource resource = action.resourceManager.get(RESOURCE_SHORTNAME);
+  public void testRunSkipsDataPackageWithoutMappings() throws Exception {
+    Resource resource = resourceManager.get(RESOURCE_SHORTNAME);
     resource.setCoreType(Constants.COL_DP);
     resource.setDataPackageIdentifier("http://rs.gbif.org/data-packages/coldp");
     resource.setDataPackageMetadata(new ColMetadata());
     when(mockDataPackageMetadataValidator.isValid(resource)).thenReturn(true);
 
-    action.execute();
+    BulkPublication run = runAll();
 
-    assertEquals(1, action.getActionErrors().size());
+    assertEquals(BulkPublication.NotReady.MAPPINGS, item(run).getNotReady());
     assertNull(resource.getLastPublished());
-    assertTrue(action.resourcePublicationManager.getProcessFailures().isEmpty());
+    assertTrue(publicationManager.getProcessFailures().isEmpty());
   }
 
   /**
    * Like on the resource overview, a DwC-DP's metadata is its EML.
    */
   @Test
-  public void testExecuteValidatesDwcDpMetadataAsEml() throws Exception {
-    Resource resource = action.resourceManager.get(RESOURCE_SHORTNAME);
+  public void testRunValidatesDwcDpMetadataAsEml() throws Exception {
+    Resource resource = resourceManager.get(RESOURCE_SHORTNAME);
     resource.setCoreType(Constants.DWC_DP);
     resource.setDataPackageIdentifier("http://rs.gbif.org/data-packages/dwc-dp");
 
-    action.execute();
+    runAll();
 
     verify(mockDataPackageMetadataValidator, never()).isValid(any(Resource.class));
+  }
+
+  /**
+   * "Selected" or "excluding" with nothing picked: nothing or everything, not a NullPointerException.
+   */
+  @Test
+  public void testScopeWithoutPickedResources() {
+    assertTrue(manager.resourcesInScope(BulkPublication.Scope.SELECTED, null, null).isEmpty());
+    assertEquals(1, manager.resourcesInScope(BulkPublication.Scope.EXCLUDED, null, null).size());
+    assertEquals(1, manager.resourcesInScope(BulkPublication.Scope.SELECTED, Collections.singletonList(RESOURCE_SHORTNAME), null).size());
+    assertTrue(manager.resourcesInScope(BulkPublication.Scope.EXCLUDED, null, Collections.singletonList(RESOURCE_SHORTNAME)).isEmpty());
+    // never published, so it's changed
+    assertEquals(1, manager.resourcesInScope(BulkPublication.Scope.CHANGED, null, null).size());
   }
 
   public ResourceManagerImpl getResourceManagerImpl() throws Exception {

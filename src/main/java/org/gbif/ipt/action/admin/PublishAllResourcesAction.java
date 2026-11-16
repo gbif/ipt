@@ -15,207 +15,72 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.model.Ipt;
-import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.voc.PublicationStatus;
-import org.gbif.ipt.service.InvalidConfigException;
-import org.gbif.ipt.service.PublicationException;
-import org.gbif.ipt.service.RegistryException;
+import org.gbif.ipt.model.BulkPublication;
+import org.gbif.ipt.model.User;
+import org.gbif.ipt.service.admin.BulkPublicationManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
-import org.gbif.ipt.service.manage.ResourceManager;
-import org.gbif.ipt.service.manage.ResourcePublicationManager;
-import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.validation.DataPackageMetadataValidator;
-import org.gbif.ipt.validation.EmlValidator;
 
 import jakarta.inject.Inject;
 
 import java.io.Serial;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
-import lombok.Getter;
-
+/**
+ * Starts a bulk publication in the background and returns at once to the bulk publishing page, which shows its
+ * progress.
+ */
 public class PublishAllResourcesAction extends BaseAction {
 
   @Serial
   private static final long serialVersionUID = -2717994514136947049L;
 
-  private static final Logger LOG = LogManager.getLogger(PublishAllResourcesAction.class);
-
-  protected ResourceManager resourceManager;
-  protected ResourcePublicationManager resourcePublicationManager;
-  protected RegistryManager registryManager;
-  private final EmlValidator emlValidator;
-  private final DataPackageMetadataValidator dpMetadataValidator;
-  @Getter
-  private List<Resource> resources;
+  private final BulkPublicationManager bulkPublicationManager;
   private List<String> selectedResources;
   private List<String> excludedResources;
-  private BulkPublicationType publishMode;
+  private BulkPublication.Scope publishMode;
 
   @Inject
   public PublishAllResourcesAction(
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
-      ResourceManager resourceManager,
-      ResourcePublicationManager resourcePublicationManager,
-      RegistryManager registryManager,
-      DataPackageMetadataValidator dpMetadataValidator) {
+      BulkPublicationManager bulkPublicationManager) {
     super(textProvider, cfg, registrationManager);
-    this.resourceManager = resourceManager;
-    this.resourcePublicationManager = resourcePublicationManager;
-    this.registryManager = registryManager;
-    this.dpMetadataValidator = dpMetadataValidator;
-    this.emlValidator = new EmlValidator(cfg, registrationManager, textProvider);
+    this.bulkPublicationManager = bulkPublicationManager;
   }
 
   @Override
   @RequirePost
   public String execute() throws Exception {
-    // if cancel was set to true then call cancel method
-    if (cancel) {
-      return cancel();
-    }
-
-    resources = resourceManager.list();
-
-    // start with IPT registration update, provided the IPT has been registered already
-    try {
-      Ipt ipt = registrationManager.getIpt();
-      if (ipt != null) {
-        registryManager.updateIpt(ipt);
-        updateResources(ipt);
-      }
-    } catch (RegistryException e) {
-      // log as specific error message as possible about why the Registry error occurred
-      String msg = RegistryException.logRegistryException(e, this);
-      addActionError(msg);
-      LOG.error(msg);
-    }
-
-    resourcePublicationManager.clearProcessReports();
-    List<Resource> allResources = resourceManager.list();
-    List<Resource> resources;
-    boolean skipIfNotChanged = false;
-
-    if (publishMode == BulkPublicationType.SELECTED) {
-      resources = allResources.stream()
-          .filter(res -> selectedResources.contains(res.getShortname()))
-          .collect(Collectors.toList());
-    } else if (publishMode == BulkPublicationType.EXCLUDED) {
-      resources = allResources.stream()
-          .filter(res -> !excludedResources.contains(res.getShortname()))
-          .collect(Collectors.toList());
-    } else if (publishMode == BulkPublicationType.CHANGED) {
-      resources = allResources;
-      skipIfNotChanged = true;
-    } else {
-      resources = allResources;
-    }
-
-    if (resources.isEmpty()) {
-      this.addActionWarning(getText("admin.config.updateMetadata.none"));
+    BulkPublication.Scope scope = publishMode != null ? publishMode : BulkPublication.Scope.CHANGED;
+    if (bulkPublicationManager.isRunning()) {
+      addActionWarning(getText("admin.bulk.alreadyRunning"));
       return SUCCESS;
     }
-
-    // kick off publishing for all resources like on the resource overview, unless
-    // a) the mandatory metadata has not been provided for the resource
-    // b) the data package resource doesn't have any mappings
-    for (Resource resource : resources) {
-      // next version number - the version of newly published eml/rtf/archive
-      BigDecimal nextVersion = new BigDecimal(resource.getNextVersion().toPlainString());
-      try {
-        // manual bulk publish is an explicit admin action, so don't skip resources that hit the
-        // max failures limit for auto-publishing; give them a fresh start instead
-        resourcePublicationManager.getProcessFailures().remove(resource.getShortname());
-
-        // DwC-DP metadata is EML, like for DwC-A
-        boolean isValidMetadata = resource.isDataPackage() && !resource.isDwcDp()
-            ? dpMetadataValidator.isValid(resource)
-            : emlValidator.isValid(resource, null);
-
-        if (!isValidMetadata) {
-          addActionError(getText("publishing.failed",
-              new String[]{nextVersion.toPlainString(), resource.getShortname(),
-                  getText("manage.overview.published.missing.metadata")}));
-          continue;
-        }
-
-        if (resource.isDataPackage() && resource.getDataPackageMappings().isEmpty()) {
-          addActionError(getText("publishing.failed",
-              new String[]{nextVersion.toPlainString(), resource.getShortname(),
-                  getText("manage.overview.published.missing.mappings")}));
-          continue;
-        }
-
-        // publish a new version of the resource - dwca gets published asynchronously
-        resourcePublicationManager.publish(resource, nextVersion, this, skipIfNotChanged);
-      } catch (PublicationException e) {
-        if (PublicationException.TYPE.LOCKED == e.getType()) {
-          addActionError(
-              getText("manage.overview.resource.being.published", new String[]{resource.getTitleAndShortname()}));
-        } else {
-          // alert user publication failed
-          addActionError(
-              getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()}));
-          // restore the previous version since publication was unsuccessful
-          resourcePublicationManager.restoreVersion(resource, nextVersion, this);
-          // keep track of how many failures on auto publication have happened
-          resourcePublicationManager.getProcessFailures()
-              .computeIfAbsent(resource.getShortname(), k -> new CopyOnWriteArrayList<>())
-              .add(new Date());
-        }
-      } catch (InvalidConfigException e) {
-        // with this type of error, the version cannot be rolled back - just alert user publication failed
-        String msg =
-            getText("publishing.failed", new String[]{nextVersion.toPlainString(), resource.getShortname(), e.getMessage()});
-        LOG.error(msg, e);
-        addActionError(msg);
-      } catch (Exception e) {
-        LOG.error(e.getMessage(), e);
-      }
+    if (bulkPublicationManager.resourcesInScope(scope, selectedResources, excludedResources).isEmpty()) {
+      addActionWarning(getText("admin.config.updateMetadata.none"));
+      return SUCCESS;
     }
-
-    // wait around for all resources to finish publishing
-    // PublishingMonitor thread is running in the background completing asynchronous publishing tasks
-    while (!resourcePublicationManager.getProcessFutures().isEmpty()) {
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        LOG.error("Thread waiting during publish all resources was interrupted", e);
-      }
+    try {
+      bulkPublicationManager.start(scope, selectedResources, excludedResources, startedBy());
+    } catch (IllegalStateException e) {
+      // another admin started one meanwhile
+      addActionWarning(getText("admin.bulk.alreadyRunning"));
     }
-
-    // only display sinlge message: that publish all finished
-    clearMessages();
-    addActionMessage(getText("admin.config.updateMetadata.summary"));
     return SUCCESS;
   }
 
-  private void updateResources(Ipt ipt) {
-    List<Resource> resources = resourceManager.list(PublicationStatus.REGISTERED);
-    if (!resources.isEmpty()) {
-      LOG.info("Next, update {} resource registrations...", resources.size());
-      for (Resource resource : resources) {
-        try {
-          registryManager.updateResource(resource, ipt.getKey().toString());
-        } catch (IllegalArgumentException e) {
-          LOG.error(e.getMessage());
-        }
-      }
-      LOG.info("Resource registrations updated successfully!");
+  private String startedBy() {
+    User user = getCurrentUser();
+    if (user == null) {
+      return null;
     }
+    String name = user.getName() != null ? user.getName().trim() : "";
+    return name.isEmpty() ? user.getEmail() : name;
   }
 
   @StrutsParameter
@@ -229,11 +94,7 @@ public class PublishAllResourcesAction extends BaseAction {
   }
 
   @StrutsParameter
-  public void setPublishMode(BulkPublicationType publishMode) {
+  public void setPublishMode(BulkPublication.Scope publishMode) {
     this.publishMode = publishMode;
-  }
-
-  public enum BulkPublicationType {
-    ALL, SELECTED, EXCLUDED, CHANGED
   }
 }

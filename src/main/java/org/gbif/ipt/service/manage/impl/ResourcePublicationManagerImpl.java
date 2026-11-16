@@ -268,7 +268,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
           getTaskMessages(shortname).add(new TaskMessage(Level.ERROR, message));
         } else {
           LOG.debug("No significant drop in records detected.");
-          getTaskMessages(shortname).add(new TaskMessage(Level.ERROR,
+          getTaskMessages(shortname).add(new TaskMessage(Level.INFO,
               "No significant drop in records detected."));
         }
       }
@@ -368,7 +368,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         // update StatusReport on publishing page
         String msg =
             action.getText("publishing.success", new String[]{version.toPlainString(), resource.getShortname()});
-        StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname)).withStepStarts(stepStarts);
+        StatusReport updated = new StatusReport(true, msg, getTaskMessages(shortname)).withStepStarts(stepStarts)
+            .withOutcome(StatusReport.Outcome.PUBLISHED);
         processReports.put(shortname, updated);
         resourcesToNotifyPublicationFailure.remove(resource.getShortname());
       } else {
@@ -400,7 +401,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         if (failedDueToDataNotChanged) {
           String dataNotChanged = action.getText("publishing.dataNotChanged.revert");
           StatusReport updated = new StatusReport(true, dataNotChanged, getTaskMessages(shortname))
-              .withStepStarts(stepStarts);
+              .withStepStarts(stepStarts).withOutcome(StatusReport.Outcome.NOT_CHANGED);
           processReports.put(shortname, updated);
           updateNextPublishedDate(new Date(), resource);
         }
@@ -408,7 +409,7 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         if (failedDueToRecordsDrop) {
           String dropInRecords = action.getText("publishing.dropInRecords.revert");
           StatusReport updated = new StatusReport(true, dropInRecords, getTaskMessages(shortname))
-              .withStepStarts(stepStarts);
+              .withStepStarts(stepStarts).withOutcome(StatusReport.Outcome.RECORDS_DROPPED);
           processReports.put(shortname, updated);
           updateNextPublishedDate(new Date(), resource);
         }
@@ -1127,11 +1128,6 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     return processReports;
   }
 
-  @Override
-  public void clearProcessReports() {
-    processReports.clear();
-  }
-
   /**
    * Update the resource's registration (if registered) and persist any changes to the resource.
    * </br>
@@ -1332,7 +1328,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
    * Whether the modification dates show that a published resource has not changed since its last publication, so a
    * new version doesn't need to be generated. Resources with database or URL sources can't be judged by dates.
    */
-  boolean isUnchangedSinceLastPublication(@NotNull Resource resource) {
+  @Override
+  public boolean isUnchangedSinceLastPublication(@NotNull Resource resource) {
     if (resource.getLastPublished() == null || resource.getPendingStatus() != null) {
       return false;
     }
@@ -1351,7 +1348,8 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
     LOG.info("Resource {} has not changed since the last publication, skipping", shortname);
 
     String key = resource.isMetadataOnly() ? "publishing.metadataNotChanged" : "publishing.notChanged";
-    processReports.put(shortname, new StatusReport(true, action.getText(key), getTaskMessages(shortname)));
+    processReports.put(shortname, new StatusReport(true, action.getText(key), getTaskMessages(shortname))
+        .withOutcome(StatusReport.Outcome.NOT_CHANGED));
     resourcesToSkip.remove(shortname);
     resourcesToNotifyPublicationFailure.remove(shortname);
 

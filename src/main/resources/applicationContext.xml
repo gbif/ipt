@@ -242,6 +242,16 @@
     <constructor-arg ref="resourceDoiService"/>
   </bean>
 
+  <bean id="bulkPublicationManager" class="org.gbif.ipt.service.admin.impl.BulkPublicationManagerImpl">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="simpleTextProvider"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="resourcePublicationManager"/>
+    <constructor-arg ref="emlValidator"/>
+    <constructor-arg ref="dataPackageMetadataValidator"/>
+  </bean>
+
   <bean id="resourceDoiService" class="org.gbif.ipt.service.manage.impl.ResourceDoiServiceImpl">
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="dataDir"/>

@@ -236,6 +236,17 @@ public interface ResourcePublicationManager {
   boolean hasMaxProcessFailures(Resource resource);
 
   /**
+   * Whether the modification dates show that a published resource has not changed since its last publication, so a
+   * publication with "skip if not changed" would skip it. Resources with database or URL sources can't be judged by
+   * dates: they're never unchanged here, and are compared by archive checksum after they're generated.
+   *
+   * @param resource resource
+   *
+   * @return true if the resource is unchanged since its last publication
+   */
+  boolean isUnchangedSinceLastPublication(Resource resource);
+
+  /**
    * Check if the maximum number of publish event failures has occurred for a resource.
    *
    * @param resource resource
@@ -281,11 +292,6 @@ public interface ResourcePublicationManager {
    * @return map of publication reports
    */
   Map<String, StatusReport> getProcessReports();
-
-  /**
-   * Clear the report map.
-   */
-  void clearProcessReports();
 
   List<String> detectDuplicateUsesOfUUID(UUID candidate, String shortname);
 

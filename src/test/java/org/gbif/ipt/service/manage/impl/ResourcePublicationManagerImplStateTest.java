@@ -286,17 +286,6 @@ public class ResourcePublicationManagerImplStateTest {
   }
 
   @Test
-  public void testClearProcessReports() {
-    manager.report(SHORTNAME, new StatusReport(true, "Done", List.of()));
-    manager.report("ants", new StatusReport(false, "Failed", List.of()));
-
-    manager.clearProcessReports();
-
-    assertTrue(manager.getProcessReports().isEmpty());
-    assertNull(manager.status(SHORTNAME));
-  }
-
-  @Test
   public void testHasMaxProcessFailures() {
     Resource resource = resource();
     assertFalse(manager.hasMaxProcessFailures(resource));

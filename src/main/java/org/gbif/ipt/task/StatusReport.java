@@ -36,6 +36,20 @@ public class StatusReport {
   // when each step started (epoch milliseconds), in the order the steps ran; empty for tasks without steps
   private final Map<String, Long> stepStarts;
   private final List<TaskMessage> messages;
+  // how a finished publication ended, null while it's running or for tasks that aren't publications
+  private final Outcome outcome;
+
+  /**
+   * How a finished publication ended. A failure or cancellation also has the exception.
+   */
+  public enum Outcome {
+    // a new version was published
+    PUBLISHED,
+    // nothing changed since the last publication, so the previous version was kept
+    NOT_CHANGED,
+    // the number of records dropped more than the resource allows, so the previous version was kept
+    RECORDS_DROPPED
+  }
 
   public StatusReport(boolean completed, String state, List<TaskMessage> messages) {
     this(completed, state, null, messages);
@@ -58,17 +72,18 @@ public class StatusReport {
   }
 
   private StatusReport(boolean completed, Throwable exception, String state, String step, List<TaskMessage> messages) {
-    this(completed, exception, state, step, messages, Collections.emptyMap());
+    this(completed, exception, state, step, messages, Collections.emptyMap(), null);
   }
 
   private StatusReport(boolean completed, Throwable exception, String state, String step, List<TaskMessage> messages,
-                       Map<String, Long> stepStarts) {
+                       Map<String, Long> stepStarts, Outcome outcome) {
     this.completed = completed;
     this.exception = exception;
     this.state = state;
     this.step = step;
     this.messages = messages;
     this.stepStarts = Collections.unmodifiableMap(new LinkedHashMap<>(stepStarts));
+    this.outcome = outcome;
     this.timestamp = new Date().getTime();
   }
 
@@ -77,7 +92,14 @@ public class StatusReport {
    */
   public StatusReport withStepStarts(Map<String, Long> starts) {
     Map<String, Long> times = starts != null ? starts : Collections.emptyMap();
-    return new StatusReport(completed, exception, state, step, messages, times);
+    return new StatusReport(completed, exception, state, step, messages, times, outcome);
+  }
+
+  /**
+   * @return a copy of this report with this outcome
+   */
+  public StatusReport withOutcome(Outcome value) {
+    return new StatusReport(completed, exception, state, step, messages, stepStarts, value);
   }
 
   /**
