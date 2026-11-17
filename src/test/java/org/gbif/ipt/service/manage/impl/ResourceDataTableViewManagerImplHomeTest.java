@@ -230,10 +230,10 @@ class ResourceDataTableViewManagerImplHomeTest {
     HomeSearchResult result = manager.searchPublishedPublicResources(new HomeSearchRequest());
     List<HomeSearchResult.FacetValue> organisations = result.getFacets().get(ResourceDataTableViewManagerImpl.FACET_ORGANISATIONS);
     assertEquals(2, organisations.size());
-    // "not set" last
+    // "No organization" last
     assertEquals(Constants.DEFAULT_ORG_KEY.toString(), organisations.get(1).getValue());
     assertEquals(2, organisations.get(1).getCount());
-    assertEquals("Organization not set", organisations.get(1).getLabel());
+    assertEquals("No organization", organisations.get(1).getLabel());
     result.getItems().stream()
         .filter(item -> !item.getShortname().equals("c"))
         .forEach(item -> assertNull(item.getOrganisation()));

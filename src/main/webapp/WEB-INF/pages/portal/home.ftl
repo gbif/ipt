@@ -180,8 +180,10 @@
                 const f = box.dataset.facet, values = last.facets[f] || [];
                 labels[f] = {};
                 values.forEach(v => labels[f][v.value] = v.label);
-                // an organisation filter only when there are two or more
-                box.hidden = f === "organisations" ? values.length < 2 : values.length === 0;
+                // a filter with a single value would only repeat the total, so it shows from two values on (the
+                // values are those of all public resources, not just the matching ones); one that's in use always
+                // shows, so it can be cleared; the last publication filter always has its three periods
+                box.hidden = !SINGLE[f] && values.length < 2 && !state.filters[f].length;
                 const type = SINGLE[f] ? "radio" : "checkbox";
                 box.querySelector(".ph-values").innerHTML = values.map(v => {
                     const on = state.filters[f].includes(v.value);

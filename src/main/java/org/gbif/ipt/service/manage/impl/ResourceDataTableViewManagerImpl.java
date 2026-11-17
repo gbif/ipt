@@ -179,7 +179,7 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
         .collect(Collectors.toMap(
             ResourceDataTableViewManagerImpl::homeOrganisationKey,
             res -> StringUtils.defaultIfBlank(homeOrganisationName(res),
-                text(locale, "manage.home.organisation.notSet", "Organization not set")),
+                text(locale, "eml.publishingOrganisation.none", "No organization")),
             (first, second) -> first));
     result.getFacets().put(FACET_ORGANISATIONS, facet(searched, request, FACET_ORGANISATIONS, now,
         sortedByLabel(organisationLabels, Constants.DEFAULT_ORG_KEY.toString())));
