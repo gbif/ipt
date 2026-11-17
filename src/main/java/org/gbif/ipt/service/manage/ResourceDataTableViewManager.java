@@ -18,6 +18,7 @@ import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.datatable.HomeSearchRequest;
 import org.gbif.ipt.model.datatable.HomeSearchResult;
+import org.gbif.ipt.model.datatable.HomeTotals;
 
 import java.util.Map;
 
@@ -44,6 +45,14 @@ public interface ResourceDataTableViewManager {
    * @return the page, the counts and the filter values
    */
   HomeSearchResult searchPublishedPublicResources(HomeSearchRequest request);
+
+  /**
+   * The totals of the public resources (as {@link #listPublishedPublicResourceSummaries}) for the home page: how many,
+   * their published records, and how many are registered with GBIF.
+   *
+   * @return the totals
+   */
+  HomeTotals homeTotals();
 
   /**
    * list all resource that can be managed by a given user, in the organisation the request asks for (all if none).

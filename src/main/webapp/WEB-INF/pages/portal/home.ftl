@@ -2,6 +2,7 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
@@ -14,9 +15,41 @@
 
 <main class="container main-content-container border rounded my-4">
     <div class="py-md-4 py-3 px-md-5 px-3">
-        <#-- no visible title: the filters, search and count say what the page is; the heading stays for screen readers
-             and search engines -->
-        <h1 class="visually-hidden"><@s.text name="portal.home.title"/></h1>
+        <#-- the installation name is the heading; without one, a hidden heading for screen readers and search engines -->
+        <#assign iptName = (registeredIpt.name)!""/>
+        <#if !iptName?has_content>
+            <h1 class="visually-hidden"><@s.text name="portal.home.title"/></h1>
+        </#if>
+        <#-- who runs this IPT (registration, as on the About page) and the totals of its public resources -->
+        <#if registeredIpt?? || (totals.resources > 0)>
+            <section class="ph-intro" aria-label="<@s.text name="portal.home.about"/>">
+                <#if registeredIpt??>
+                    <#-- the page title style (fs-3), without the heading box -->
+                    <#if iptName?has_content><h1 class="text-gbif-header fs-3 fw-normal">${iptName}</h1></#if>
+                    <#if (hostingOrganisation.name)?has_content>
+                        <p class="ph-where"><@s.text name="portal.home.hostedBy"><@s.param><#if hostingOrganisationGbifUrl??><a href="${hostingOrganisationGbifUrl}">${hostingOrganisation.name}</a><#else>${hostingOrganisation.name}</#if></@s.param></@s.text></p>
+                    </#if>
+                    <#if iptDescriptionLead??>
+                        <p class="ph-lead">${iptDescriptionLead}</p>
+                    </#if>
+                </#if>
+                <p class="ph-facts">
+                    <#if (totals.resources > 0)>
+                        <span><@s.text name="portal.home.count.all"><@s.param><b>${totals.resources?string.number}</b></@s.param></@s.text></span>
+                        <span><@s.text name="portal.home.total.records"><@s.param><b>${totals.records?string.number}</b></@s.param></@s.text></span>
+                        <#if (totals.onGbif > 0)>
+                            <span><@s.text name="portal.home.total.onGbif"><@s.param><b>${totals.onGbif?string.number}</b></@s.param></@s.text></span>
+                        </#if>
+                    </#if>
+                    <#if registeredYear??>
+                        <span><@s.text name="portal.home.registeredSince"><@s.param>${registeredYear?c}</@s.param></@s.text></span>
+                    </#if>
+                    <#if iptGbifUrl??>
+                        <a href="${iptGbifUrl}"><@s.text name="portal.home.ipt.onGbif"/> <@icon name="open_in_new"/></a>
+                    </#if>
+                </p>
+            </section>
+        </#if>
         <#if (resourcesSize>0)>
             <div class="ph-layout" id="ph">
                 <aside aria-label="<@s.text name="portal.home.filters"/>">
@@ -61,7 +94,6 @@
             <#-- texts for the script; {0} and {1} are filled in there -->
             <template id="ph-texts">
                 <span data-k="count"><@s.text name="portal.home.count"><@s.param>{0}</@s.param><@s.param>{1}</@s.param></@s.text></span>
-                <span data-k="countAll"><@s.text name="portal.home.count.all"><@s.param>{0}</@s.param></@s.text></span>
                 <span data-k="remove"><@s.text name="portal.home.filter.remove"><@s.param>{0}</@s.param></@s.text></span>
                 <span data-k="clear"><@s.text name="portal.home.filter.clear"/></span>
                 <span data-k="noMatch"><@s.text name="portal.home.noMatch"/></span>
@@ -264,10 +296,9 @@
         function render() {
             renderFacets();
             renderChips();
+            // the total is at the top of the page, so only a narrowed list is counted here
             const filtered = state.q || Object.keys(FACETS).some(f => state.filters[f].length);
-            $("ph-count").innerHTML = filtered
-                ? fmt(esc(T.count), "<b>" + last.matched + "</b>", last.total)
-                : fmt(esc(T.countAll), "<b>" + last.total + "</b>");
+            $("ph-count").innerHTML = filtered ? fmt(esc(T.count), "<b>" + last.matched + "</b>", last.total) : "";
             $("ph-results").removeAttribute("aria-busy");
             $("ph-results").innerHTML = !last.items.length
                 ? '<div class="ph-empty"><h3>' + esc(T.noMatch) + '</h3><p>' + esc(T.noMatchHint) + '</p></div>'

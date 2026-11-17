@@ -8,6 +8,19 @@
     .ph-machines { order: 2; }
 }
 
+/* who runs this IPT and the totals, above the filters and results */
+.ph-intro { display: flex; flex-direction: column; gap: 4px; padding-bottom: 18px; margin-bottom: 22px; border-bottom: 1px solid #dee2e6; }
+.ph-intro p { margin: 0; }
+.ph-intro h1 { margin: 0; text-wrap: balance; }
+.ph-intro .ph-where { color: #6c757d; font-size: 0.875rem; margin-bottom: 4px; }
+/* main.css colours every link with !important */
+.ph-where a { color: inherit !important; text-decoration: underline; text-decoration-color: #dee2e6; }
+.ph-where a:hover, .ph-where a:focus-visible { color: rgb(var(--color-gbif-primary)) !important; }
+.ph-lead { color: #495057; font-size: 0.875rem; max-width: 72ch; }
+.ph-intro .ph-facts { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 0.8125rem; color: #6c757d; }
+.ph-facts b { color: #212529; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ph-facts .material-icon { vertical-align: -0.15em; }
+
 /* filters: always open on wide screens, a collapsed "Filters" disclosure on narrow ones */
 .ph-filters > summary { display: none; }
 @media (max-width: 767.98px) {

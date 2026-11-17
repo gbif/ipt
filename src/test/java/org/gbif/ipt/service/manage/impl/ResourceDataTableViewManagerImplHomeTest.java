@@ -20,6 +20,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.ResourceSummaryView;
 import org.gbif.ipt.model.datatable.HomeSearchRequest;
 import org.gbif.ipt.model.datatable.HomeSearchResult;
+import org.gbif.ipt.model.datatable.HomeTotals;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
@@ -301,5 +302,25 @@ class ResourceDataTableViewManagerImplHomeTest {
 
     eml.setDescription(null);
     assertNull(ResourceManagerImpl.summaryDescription(resource));
+  }
+
+  @Test
+  void totalsCountPublicResourcesRecordsAndRegistered() {
+    ResourceSummaryView registered = resource("b", "checklist", ORG_B, "CC-BY-4.0", 100, 10);
+    registered.setGbifKey(UUID.fromString("33333333-3333-3333-3333-333333333333"));
+    seed(resource("a", "occurrence", ORG_A, "CC0-1.0", 5, 100), registered, resource("c", "occurrence", null, null, 800, 1000));
+    HomeTotals totals = manager.homeTotals();
+    assertEquals(3, totals.getResources());
+    assertEquals(1110, totals.getRecords());
+    assertEquals(1, totals.getOnGbif());
+  }
+
+  @Test
+  void totalsOfNoResourcesAreZero() {
+    seed();
+    HomeTotals totals = manager.homeTotals();
+    assertEquals(0, totals.getResources());
+    assertEquals(0, totals.getRecords());
+    assertEquals(0, totals.getOnGbif());
   }
 }

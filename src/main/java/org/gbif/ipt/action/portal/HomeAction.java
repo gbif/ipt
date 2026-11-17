@@ -16,10 +16,13 @@ package org.gbif.ipt.action.portal;
 import org.gbif.ipt.action.BaseAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
+import org.gbif.ipt.model.Ipt;
+import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.datatable.HomeSearchRequest;
 import org.gbif.ipt.model.datatable.HomeSearchResult;
+import org.gbif.ipt.model.datatable.HomeTotals;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -31,13 +34,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.annotations.JSON;
+import org.jsoup.Jsoup;
 
 import java.io.Serial;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
 
 public class HomeAction extends BaseAction {
 
@@ -47,6 +54,7 @@ public class HomeAction extends BaseAction {
   private final ResourceDataTableViewManager resourceManager;
   private DatatableResult resources = new DatatableResult();
   private HomeSearchResult searchResult = new HomeSearchResult();
+  private HomeTotals totals = new HomeTotals(0, 0, 0);
 
   @Inject
   public HomeAction(
@@ -62,6 +70,7 @@ public class HomeAction extends BaseAction {
   public String execute() {
     DatatableRequest dr = getRequestParameters(ServletActionContext.getRequest());
     resources = resourceManager.listPublishedPublicResourceSummaries(dr);
+    totals = resourceManager.homeTotals();
 
     return SUCCESS;
   }
@@ -152,5 +161,75 @@ public class HomeAction extends BaseAction {
 
   public int getResourcesSize() {
     return resources != null ? resources.getTotalRecords() : 0;
+  }
+
+  /**
+   * The totals of all public resources, for the line at the top of the home page.
+   */
+  public HomeTotals getTotals() {
+    return totals;
+  }
+
+  /**
+   * The organisation hosting this IPT, or null if the IPT isn't registered.
+   */
+  @Nullable
+  public Organisation getHostingOrganisation() {
+    return getRegisteredIpt() != null ? registrationManager.getHostingOrganisation() : null;
+  }
+
+  /**
+   * The first line of the registered installation description, as plain text (the About page shows all of it), or
+   * null if the IPT isn't registered or has no description.
+   */
+  @Nullable
+  public String getIptDescriptionLead() {
+    Ipt ipt = getRegisteredIpt();
+    return ipt != null ? descriptionLead(ipt.getDescription()) : null;
+  }
+
+  /**
+   * The first line of a description that has text, without markup (the About page shows the description as HTML).
+   */
+  @Nullable
+  static String descriptionLead(@Nullable String description) {
+    if (StringUtils.isBlank(description)) {
+      return null;
+    }
+    return Arrays.stream(description.split("\\R"))
+        .map(line -> Jsoup.parse(line).text().strip())
+        .filter(StringUtils::isNotEmpty)
+        .findFirst()
+        .orElse(null);
+  }
+
+  /**
+   * The page of this IPT on GBIF.org, or null if the IPT isn't registered.
+   */
+  @Nullable
+  public String getIptGbifUrl() {
+    Ipt ipt = getRegisteredIpt();
+    return ipt != null && ipt.getKey() != null ? cfg.getPortalUrl() + "/installation/" + ipt.getKey() : null;
+  }
+
+  /**
+   * The page of the hosting organisation on GBIF.org, or null if the IPT isn't registered.
+   */
+  @Nullable
+  public String getHostingOrganisationGbifUrl() {
+    Organisation org = getHostingOrganisation();
+    return org != null && org.getKey() != null ? cfg.getPortalUrl() + "/publisher/" + org.getKey() : null;
+  }
+
+  /**
+   * The year this IPT was registered with GBIF, or null if it isn't registered or the date isn't known.
+   */
+  @Nullable
+  public Integer getRegisteredYear() {
+    Ipt ipt = getRegisteredIpt();
+    if (ipt == null || ipt.getCreated() == null) {
+      return null;
+    }
+    return ipt.getCreated().toInstant().atZone(ZoneOffset.UTC).getYear();
   }
 }

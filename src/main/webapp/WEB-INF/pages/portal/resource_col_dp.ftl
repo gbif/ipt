@@ -57,7 +57,7 @@
             </div>
 
             <div class="text-center">
-                <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 property="dc:title" class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-3 fw-normal">
                     ${dpMetadata.title!resource.shortname}
                 </h1>
 

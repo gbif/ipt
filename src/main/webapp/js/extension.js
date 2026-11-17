@@ -1,6 +1,6 @@
 /*
  * Extension page (admin/extension.ftl): sidebar scroll-spy, "Used by" show all, term search and filter chips,
- * "show all details", copy buttons, and opening at the term in the URL fragment (extension.do?id=…#<qualified name>).
+ * "show all details", copy buttons, and opening at the term in the URL fragment (extension.do?id=...#<qualified name>).
  */
 document.addEventListener("DOMContentLoaded", function () {
     var search = document.getElementById("ext-q");

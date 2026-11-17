@@ -191,7 +191,7 @@ body.mp-dirty { padding-bottom: 60px; }
 .mp-id-nolink[hidden], .mp-id-none[hidden] { display: none; }
 .mp-id-none .ov-link-btn { margin-top: 6px; }
 
-/* "Map to a field…" in the by-column view: select2 as in the field rows */
+/* "Map to a field..." in the by-column view: select2 as in the field rows */
 #mp-bycolumn .select2-container { max-width: 260px; }
 
 /* data package mappings (dataPackageMapping.ftl): one list of fields without a header, key badges, fields not in the

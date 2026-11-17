@@ -1,7 +1,7 @@
 /* Public resource pages (portal/resource_*.ftl, macros/portal_resource.ftl) */
 
 .rp-section { margin-bottom: 2.5rem; }
-/* below the fixed navbar when scrolled to: the anchor by a #anchor-… link (e.g. the record count on the home page), the
+/* below the fixed navbar when scrolled to: the anchor by a #anchor-... link (e.g. the record count on the home page), the
    section by the sidebar (js/scrollspy.js) */
 .rp-section, .anchor-home-resource-page { scroll-margin-top: var(--navbar-height); }
 .rp-h { font-size: 1.25rem; font-weight: 400; color: #4E565F; margin: 0 0 .75rem; padding: .5rem 0 .4rem; border-bottom: 1px solid #dee2e6; }

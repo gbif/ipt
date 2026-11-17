@@ -50,7 +50,7 @@ public class SimpleTextProviderTest {
   public void testPlaceholdersAreFilled() {
     assertEquals("Failed to validate Description. Please see logs for more details.",
         textProvider.getText(Locale.ENGLISH, "validation.failed.see.logs", null, new String[]{"Description"}));
-    assertEquals("Failed to analyze the source: No such file",
+    assertEquals("Failed to analyse the source: No such file",
         textProvider.getText(Locale.ENGLISH, "manage.source.analyzed.problem", null, new String[]{"No such file"}));
   }
 

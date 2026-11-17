@@ -27,6 +27,7 @@ import org.gbif.ipt.model.datatable.DatatableRequest;
 import org.gbif.ipt.model.datatable.DatatableResult;
 import org.gbif.ipt.model.datatable.HomeSearchRequest;
 import org.gbif.ipt.model.datatable.HomeSearchResult;
+import org.gbif.ipt.model.datatable.HomeTotals;
 import org.gbif.ipt.model.voc.IdentifierStatus;
 import org.gbif.ipt.model.voc.PublicationStatus;
 import org.gbif.ipt.task.StatusReport;
@@ -137,6 +138,15 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
     result.setData(data);
 
     return result;
+  }
+
+  @Override
+  public HomeTotals homeTotals() {
+    List<ResourceSummaryView> all = resourceManager.listPublishedPublicResourceSummaries();
+    return new HomeTotals(
+        all.size(),
+        all.stream().mapToLong(ResourceSummaryView::getRecordsPublished).sum(),
+        (int) all.stream().filter(res -> res.getGbifKey() != null).count());
   }
 
   @Override

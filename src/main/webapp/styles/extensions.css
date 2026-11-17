@@ -179,6 +179,6 @@ a.ext-tag-voc:hover { text-decoration: underline; }
 .ext-shortname { font-size: 0.75rem; color: #6c757d; }
 .ext-usage-all { font-size: 0.8rem; margin-top: 8px; }
 @media (max-width: 767.98px) { .ext-usage .ext-mapped { width: auto; } .ext-usage .ext-mapped .ext-bar { display: none; } }
-/* Remove in the heading's ⋯ menu: red as Delete on the resource overview, faded while a resource maps the extension */
+/* Remove in the heading's ... menu: red as Delete on the resource overview, faded while a resource maps the extension */
 .ov-acts .dropdown-item.text-gbif-danger.disabled { opacity: .55; }
 .ov-acts .dropdown-item small { display: block; font-size: 0.75rem; white-space: normal; }
