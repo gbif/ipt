@@ -16,9 +16,11 @@ package org.gbif.ipt.action.manage;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageField;
+import org.gbif.ipt.model.DataPackageFieldConstraints;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageTableSchema;
+import org.gbif.ipt.model.DataPackageTableSchemaForeignKey;
 import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Source;
@@ -29,9 +31,10 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.ipt.validation.DataPackageMappingValidator;
+import org.gbif.ipt.task.GenerateDataPackage;
 
 import jakarta.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
@@ -42,15 +45,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.interceptor.ValidationErrorAware;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
+
+import io.frictionlessdata.tableschema.field.Field;
+import io.frictionlessdata.tableschema.schema.Schema;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -64,6 +73,8 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
 
   @Serial
   private static final long serialVersionUID = -2005597864256786458L;
+
+  private static final Logger LOG = LogManager.getLogger(DataPackageMappingAction.class);
 
   private static final Pattern NAME_IGNORED_CHARACTERS_PATTERN = Pattern.compile("[\\W_]+");
 
@@ -100,6 +111,13 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
   // what to do with field mappings of fields not in the installed schema, by field name: kept unless "discard", or
   // moved to the field named after "field:"
   private final Map<String, String> unresolvedFieldActions = new HashMap<>();
+  // fields filled in from matching column names on this visit, not saved yet
+  @Getter
+  private int automappedFields;
+  // the sample values publishing rejects, see checkSamples()
+  private Map<String, String> badSampleCells;
+  private Map<String, List<String>> badTranslations;
+  private Map<String, String> badConstants;
 
   @Inject
   public DataPackageMappingAction(
@@ -124,7 +142,8 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
     mapping.setVersion(dataPackageSchema.getVersion());
 
     // a new mapping?
-    if (resource.getDataPackageMapping(mid) == null) {
+    boolean isNew = resource.getDataPackageMapping(mid) == null;
+    if (isNew) {
       mid = resource.addDataPackageMapping(mapping);
     } else {
       // save field mappings, and the ones of fields not in the installed schema unless discarded or moved
@@ -156,10 +175,13 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
 
     // save entire resource config
     saveResource();
-    // report validation without skipping this save
-    validateAndReport();
+    // missing required fields and values publishing rejects are shown on the fields (dataPackageMapping.ftl)
+    if (!isNew) {
+      addActionMessage(getText("manage.mapping.saved"));
+    }
 
-    return defaultResult;
+    // back to the page with a GET, which shows the saved mapping
+    return "save";
   }
 
   /**
@@ -378,7 +400,7 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
       readSource();
 
       // prepare fields
-      DataPackageTableSchema tableSchema = mapping.getDataPackageSchema().tableSchemaByName(mapping.getDataPackageTableSchemaName().getName());
+      DataPackageTableSchema tableSchema = getTableSchema();
       fieldsIndices = new HashMap<>();
       int index = 0;
       if (tableSchema != null) {
@@ -395,32 +417,238 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
 
       if (mappingEmpty) {
         int automapped = automap(fields, columns);
-        if (automapped > 0) {
-          addActionMessage(getText("manage.mapping.automaped", new String[]{String.valueOf(automapped)}));
+        // not on a POST: the message would be carried over to the page it redirects to
+        if (automapped > 0 && !isHttpPost()) {
+          // the page is shown with fields that aren't saved: it starts with its save bar (js/mapping.js)
+          automappedFields = automapped;
+          addActionMessage(getText("manage.mapping.automaped.unsaved", new String[]{String.valueOf(automapped)}));
         }
-      }
-
-      if (!isHttpPost()) {
-        validateAndReport();
       }
     }
   }
 
   /**
-   * Validate the mapping and report any warning or errors, shown on the mapping page.
+   * @return the table schema of this mapping in the installed schema, null if it isn't there
    */
-  private void validateAndReport() {
-    if (mapping.getSource() == null) {
-      return;
+  public DataPackageTableSchema getTableSchema() {
+    if (dataPackageSchema == null || mapping == null || mapping.getDataPackageTableSchemaName() == null) {
+      return null;
     }
+    return dataPackageSchema.tableSchemaByName(mapping.getDataPackageTableSchemaName().getName());
+  }
 
-    DataPackageMappingValidator validator = new DataPackageMappingValidator();
-    DataPackageMappingValidator.ValidationStatus v = validator.validate(mapping, resource, columns);
-    if (v != null && !v.isValid()) {
-      for (DataPackageField field : v.getMissingRequiredFields()) {
-        addActionWarning(getText("validation.required", new String[]{field.getName()}));
+  /**
+   * @return the fields of the table's primary key, empty if it has none
+   */
+  public List<String> getPrimaryKey() {
+    DataPackageTableSchema tableSchema = getTableSchema();
+    if (tableSchema == null || StringUtils.isBlank(tableSchema.getPrimaryKey())) {
+      return new ArrayList<>();
+    }
+    List<String> keys = new ArrayList<>();
+    for (String key : tableSchema.getPrimaryKey().split(",")) {
+      if (StringUtils.isNotBlank(key)) {
+        keys.add(key.trim());
       }
     }
+    return keys;
+  }
+
+  /**
+   * @return per field, the table and field its values refer to, e.g. "event.event_pk"; only fields that are a foreign
+   * key on their own
+   */
+  public Map<String, String> getForeignKeys() {
+    Map<String, String> references = new HashMap<>();
+    DataPackageTableSchema tableSchema = getTableSchema();
+    if (tableSchema == null || tableSchema.getForeignKeys() == null) {
+      return references;
+    }
+    for (DataPackageTableSchemaForeignKey fk : tableSchema.getForeignKeys()) {
+      if (fk.getFields() == null || fk.getFields().contains(",") || fk.getReference() == null) {
+        continue;
+      }
+      // a reference to no table is one to this table
+      String table = StringUtils.defaultIfBlank(fk.getReference().getResource(), tableSchema.getName());
+      references.put(fk.getFields().trim(), table + "." + StringUtils.trimToEmpty(fk.getReference().getFields()));
+    }
+    return references;
+  }
+
+  /**
+   * What a field accepts, besides its enum, for the message about values it doesn't: e.g. "integer, minimum 0".
+   * Type, format and constraint names are the schema's.
+   *
+   * @return per field name, empty for a string field without constraints
+   */
+  public Map<String, String> getFieldExpectations() {
+    Map<String, String> expectations = new HashMap<>();
+    for (DataPackageFieldMapping fm : fields) {
+      DataPackageField field = fm.getField();
+      List<String> parts = new ArrayList<>();
+      String type = StringUtils.defaultIfBlank(field.getType(), "string");
+      String format = field.getFormat();
+      boolean defaultFormat = StringUtils.isBlank(format) || "default".equals(format);
+      if (!"string".equals(type) || !defaultFormat) {
+        parts.add(defaultFormat ? type : type + " (" + format + ")");
+      }
+      parts.addAll(limits(field));
+      expectations.put(field.getName(), String.join(", ", parts));
+    }
+    return expectations;
+  }
+
+  /**
+   * @return per field name, its constraints for the field definition, e.g. "required", "minimum 0"; enum values aren't
+   * included, the page lists them on their own
+   */
+  public Map<String, List<String>> getFieldConstraints() {
+    Map<String, List<String>> constraints = new HashMap<>();
+    for (DataPackageFieldMapping fm : fields) {
+      DataPackageField field = fm.getField();
+      List<String> parts = new ArrayList<>();
+      if (field.getConstraints() != null) {
+        if (Boolean.TRUE.equals(field.getConstraints().getRequired())) {
+          parts.add("required");
+        }
+        if (Boolean.TRUE.equals(field.getConstraints().getUnique())) {
+          parts.add("unique");
+        }
+      }
+      parts.addAll(limits(field));
+      constraints.put(field.getName(), parts);
+    }
+    return constraints;
+  }
+
+  /**
+   * @return a field's minimum, maximum and pattern, named as in the schema
+   */
+  private static List<String> limits(DataPackageField field) {
+    List<String> limits = new ArrayList<>();
+    DataPackageFieldConstraints c = field.getConstraints();
+    if (c != null) {
+      if (c.getMinimum() != null) {
+        limits.add("minimum " + number(c.getMinimum()));
+      }
+      if (c.getMaximum() != null) {
+        limits.add("maximum " + number(c.getMaximum()));
+      }
+      if (StringUtils.isNotBlank(c.getPattern())) {
+        limits.add("pattern " + c.getPattern());
+      }
+    }
+    return limits;
+  }
+
+  private static String number(Double d) {
+    return d == Math.rint(d) && !Double.isInfinite(d) ? String.valueOf(d.longValue()) : String.valueOf(d);
+  }
+
+  /**
+   * The sample values publishing rejects, per field, for every column, so the page can flag them after the column is
+   * changed.
+   *
+   * @return per field name, the rejected cells as "column.row", separated by spaces
+   */
+  public Map<String, String> getBadSampleCells() {
+    checkSamples();
+    return badSampleCells;
+  }
+
+  /**
+   * @return per field name, the translated values (of its saved translations) publishing rejects
+   */
+  public Map<String, List<String>> getBadTranslations() {
+    checkSamples();
+    return badTranslations;
+  }
+
+  /**
+   * @return per field name, its saved constant if publishing rejects it
+   */
+  public Map<String, String> getBadConstants() {
+    checkSamples();
+    return badConstants;
+  }
+
+  /**
+   * Checks the sample values, saved translations and saved constants as publishing does
+   * (GenerateDataPackage.checkValues): trimmed, written as in the field's enum, and read by the installed table
+   * schema's field, constraints included. Empty values aren't checked here: a constant can fill them in, and a required
+   * field's empty values are flagged by the page.
+   */
+  private void checkSamples() {
+    if (badSampleCells != null) {
+      return;
+    }
+    badSampleCells = new HashMap<>();
+    badTranslations = new HashMap<>();
+    badConstants = new HashMap<>();
+    DataPackageTableSchema tableSchema = getTableSchema();
+    if (tableSchema == null || fields == null) {
+      return;
+    }
+    Schema schema;
+    try {
+      File schemaFile = schemaManager.getTableSchemaFile(dataPackageSchema, tableSchema.getName());
+      if (!schemaFile.exists()) {
+        return;
+      }
+      schema = Schema.fromJson(schemaFile, true);
+    } catch (Exception e) {
+      LOG.debug("Can't read table schema {} to check the sample values", tableSchema.getName(), e);
+      return;
+    }
+    for (DataPackageFieldMapping fm : fields) {
+      DataPackageField schemaField = fm.getField();
+      Field<?> field = schema.getField(schemaField.getName());
+      if (field == null) {
+        continue;
+      }
+      UnaryOperator<String> asWritten = GenerateDataPackage.EnumValues.asWritten(schemaField);
+      Map<String, Boolean> checked = new HashMap<>();
+      List<String> cells = new ArrayList<>();
+      for (int r = 0; peek != null && r < peek.size(); r++) {
+        String[] row = peek.get(r);
+        for (int c = 0; row != null && c < row.length && c < columns.size(); c++) {
+          if (!accepts(field, asWritten, row[c], checked)) {
+            cells.add(c + "." + r);
+          }
+        }
+      }
+      if (!cells.isEmpty()) {
+        badSampleCells.put(schemaField.getName(), String.join(" ", cells));
+      }
+      if (fm.getTranslation() != null) {
+        List<String> bad = fm.getTranslation().values().stream()
+            .filter(v -> !accepts(field, asWritten, v, checked))
+            .distinct()
+            .toList();
+        if (!bad.isEmpty()) {
+          badTranslations.put(schemaField.getName(), bad);
+        }
+      }
+      if (!accepts(field, asWritten, fm.getDefaultValue(), checked)) {
+        badConstants.put(schemaField.getName(), fm.getDefaultValue().trim());
+      }
+    }
+  }
+
+  private static boolean accepts(Field<?> field, UnaryOperator<String> asWritten, String value,
+                                 Map<String, Boolean> checked) {
+    if (StringUtils.isBlank(value)) {
+      return true;
+    }
+    return checked.computeIfAbsent(value, v -> {
+      try {
+        field.castValue(asWritten.apply(v.trim()));
+        return true;
+      } catch (Exception e) {
+        // a cast or constraint error, or any other: publishing fails on all of them
+        return false;
+      }
+    });
   }
 
   /**

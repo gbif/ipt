@@ -193,3 +193,16 @@ body.mp-dirty { padding-bottom: 60px; }
 
 /* "Map to a field…" in the by-column view: select2 as in the field rows */
 #mp-bycolumn .select2-container { max-width: 260px; }
+
+/* data package mappings (dataPackageMapping.ftl): one list of fields without a header, key badges, fields not in the
+   installed schema */
+.mp-group.single .mp-group-b { display: block; }
+.mp-badge.k { color: #6c757d; background: #f1f3f5; }
+.mp-msg > span { flex: 1; }
+.mp-unres-list { border: 1px solid #dee2e6; border-radius: 8px; }
+.mp-unres { display: grid; grid-template-columns: minmax(170px, 1fr) minmax(170px, 1.9fr); gap: 4px 12px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #f1f3f5; font-size: 0.82rem; }
+.mp-unres:last-child { border-bottom: 0; }
+/* Readiness card in the sidebar (overview.css .ov-ready): its items are links to the problem; the heading's status line
+   lists the same, so it's only shown where the sidebar isn't */
+.ov-ready li .ov-link-btn { font-size: inherit; text-align: left; color: inherit; padding: 0; }@media (min-width: 768px) { .mp-status.mp-status-sm { display: none; } }
+@media (max-width: 991px) { .mp-unres { grid-template-columns: 1fr; } }

@@ -295,6 +295,7 @@
     <action name="dataPackageMapping" class="org.gbif.ipt.action.manage.DataPackageMappingAction">
       <result name="input">/WEB-INF/pages/manage/dataPackageMapping.ftl</result>
       <result name="source">/WEB-INF/pages/manage/dataPackageMappingSourceSelector.ftl</result>
+      <result name="save" type="redirect">${baseURL}/manage/dataPackageMapping.do?r=%{#parameters.r}&amp;id=%{#parameters.id}&amp;mid=%{mid}</result>
       <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
       <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>

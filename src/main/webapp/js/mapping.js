@@ -1,10 +1,15 @@
 /**
- * Mapping page (manage/mapping.ftl): record ID choice, filter sentence and preview, counts, checks of the sample
- * values, the show / search tools for the fields and the by-source-column view.
+ * Mapping pages (manage/mapping.ftl for DwC-A, manage/dataPackageMapping.ftl for data packages): record ID choice,
+ * filter sentence and preview, counts, checks of the sample values, the show / search tools for the fields and the
+ * by-source-column view.
  *
  * Everything is read from the page: the columns (#mp-columns), the 5 sample rows with the data types each value
  * fails on the server (#mp-peek), the field rows (.mp-field) and the texts (#mp-i18n). The form posts the same
  * parameters as before; controls with form="mp-ui" aren't submitted.
+ *
+ * A data package mapping has no record ID section (#mp-id) and one list of fields; its fields carry the sample cells
+ * publishing rejects (data-bad="column.row ...", checked on the server against the table schema) instead of #mp-peek's
+ * data types.
  */
 (function ($) {
     'use strict';
@@ -49,8 +54,17 @@
         var fields = $('.mp-field').map(function () {
             var $row = $(this);
             var $const = $row.find('.mp-const');
-            var tr = {};
-            $row.find('.mp-tr').each(function () { tr[$(this).attr('data-from')] = $(this).attr('data-to'); });
+            var tr = {}, trBad = {};
+            $row.find('.mp-tr').each(function () {
+                tr[$(this).attr('data-from')] = $(this).attr('data-to');
+                if ($(this).attr('data-bad') === 'true') trBad[$(this).attr('data-to')] = true;
+            });
+            // data packages: the cells the field rejects, by "column.row"
+            var cells = null;
+            if ($row.attr('data-bad') !== undefined) {
+                cells = {};
+                String($row.attr('data-bad')).split(' ').forEach(function (c) { if (c) cells[c] = true; });
+            }
             var vocab = null;
             if ($row.attr('data-vocab') !== undefined && $const.is('select')) {
                 vocab = {};
@@ -79,9 +93,17 @@
                 $samples: $row.find('.mp-samples'),
                 $msgs: $row.find('.mp-msgs'),
                 $translate: $row.find('.mp-translate'),
-                tr: tr
+                tr: tr,
+                trBad: trBad,
+                cells: cells,
+                badConst: $row.attr('data-bad-const'),
+                unique: $row.attr('data-unique') === 'true',
+                hasEnum: $row.attr('data-enum') === 'true',
+                expect: $row.attr('data-expect') || ''
             };
         }).get();
+        // a data package mapping: its fields' values are checked on the server (data-bad)
+        var isDp = fields.length > 0 && fields[0].cells !== null;
         var byIndex = {};
         fields.forEach(function (f) { byIndex[f.i] = f; });
 
@@ -105,6 +127,7 @@
                 var s = sample(ci, ri), v = s.v, t = Object.prototype.hasOwnProperty.call(f.tr, v) ? f.tr[v] : null;
                 var pub = t != null ? t : v, state = 'ok';
                 if ($.trim(pub) === '') state = 'empty';
+                else if (f.cells) state = (t == null ? f.cells[ci + '.' + ri] : f.trBad[t]) ? 'bad' : 'ok';
                 else if (t == null && TYPES.indexOf(f.type) >= 0 && s.bad.indexOf(f.type) >= 0) state = 'bad';
                 else if (f.vocab && !f.vocab[$.trim(pub).toLowerCase()]) state = 'bad';
                 return {v: v, t: t, pub: pub, state: state};
@@ -115,13 +138,29 @@
             var out = [];
             if (f.mirrored) return out;
             if (f.required && !isMapped(f)) out.push({cls: 'bad', text: i18n.msgRequired});
-            var bad = [];
-            checkedSamples(f).forEach(function (s) {
+            var bad = [], samples = checkedSamples(f);
+            samples.forEach(function (s) {
                 if (s.state === 'bad' && bad.indexOf(s.pub) < 0) bad.push(s.pub);
             });
+            // data packages: the saved constant, if the server rejected it; a changed one is checked once saved
+            var constant = $.trim(f.$const.val() || '');
+            if (f.badConst != null && constant === f.badConst && bad.indexOf(constant) < 0) bad.push(constant);
             if (bad.length) {
-                var text = f.vocab ? fmt(i18n.msgVocab, f.vocabTitle, quoted(bad)) : fmt(i18n[{integer: 'msgInteger', decimal: 'msgDecimal', date: 'msgDate', uri: 'msgUri'}[f.type]], quoted(bad));
-                out.push({cls: 'w', text: text});
+                var text = f.cells ? (f.hasEnum ? fmt(i18n.msgEnum, quoted(bad)) : fmt(i18n.msgInvalid, f.expect || f.type, quoted(bad)))
+                    : f.vocab ? fmt(i18n.msgVocab, f.vocabTitle, quoted(bad)) : fmt(i18n[{integer: 'msgInteger', decimal: 'msgDecimal', date: 'msgDate', uri: 'msgUri'}[f.type]], quoted(bad));
+                // a data package isn't published with a value its schema rejects
+                out.push({cls: f.cells ? 'bad' : 'w', text: text});
+            }
+            if (f.cells && samples.length) {
+                // publishing fails on these too: an empty required value without a constant, a repeated unique one
+                var noConst = $.trim(f.$const.val() || '') === '';
+                var empty = samples.filter(function (s) { return s.state === 'empty'; }).length;
+                if (f.required && noConst && empty) out.push({cls: 'bad', text: fmt(i18n.msgRequiredEmpty, empty)});
+                if (f.unique) {
+                    var vals = samples.map(function (s) { return $.trim(s.pub); });
+                    var dup = vals.filter(function (v, k) { return v && vals.indexOf(v) !== k; });
+                    if (dup.length) out.push({cls: 'bad', text: fmt(i18n.idDup, dup.filter(function (v, k) { return dup.indexOf(v) === k; }).join(', '))});
+                }
             }
             return out;
         }
@@ -131,6 +170,8 @@
         var isCore = $idSection.attr('data-core') === 'true';
         var $idCol = $('#mp-idcol');
         function idMode() {
+            // a data package mapping has no record ID: its key fields are fields like the others
+            if (!$idSection.length) return 'none';
             return $('input[name=mp-idmode]:checked').val() || 'column';
         }
         function idCol() {
@@ -174,6 +215,7 @@
         }
 
         function renderId() {
+            if (!$idSection.length) return;
             var mode = idMode(), ci = idCol();
             $idSection.find('.mp-choice').each(function () {
                 $(this).toggleClass('on', $(this).find('input').is(':checked'));
@@ -335,11 +377,13 @@
             var options = '<option value="">' + esc(i18n.mapTo) + '</option>';
             $groups.each(function () {
                 var $g = $(this), g = $g.attr('data-g');
-                options += '<optgroup label="' + esc($g.find('.mp-group-h h3').text()) + '">' + fields.filter(function (f) { return f.group === g && !f.mirrored; }).map(function (f) {
+                var opts = fields.filter(function (f) { return f.group === g && !f.mirrored; }).map(function (f) {
                     // a field takes one column: say which one it has, as choosing it here takes it from there
                     var c = colOf(f);
                     return '<option value="' + f.i + '">' + esc(f.label) + (c >= 0 && columns[c] != null ? ' (' + esc(columns[c]) + ')' : '') + '</option>';
-                }).join('') + '</optgroup>';
+                }).join('');
+                // one list of fields (data packages): no group to name
+                options += $groups.length > 1 ? '<optgroup label="' + esc($g.find('.mp-group-h h3').text()) + '">' + opts + '</optgroup>' : opts;
             });
             var html = columns.map(function (c, ci) {
                 if (query && c.toLowerCase().indexOf(query) < 0) return '';
@@ -384,35 +428,53 @@
             var unused = columns.length - Object.keys(used).length;
             var valueProblems = withProblems - reqMissing;
 
-            // under the heading: only what needs doing, each part a way to it. No "all fine": the value checks see
-            // only the sample rows, so they can't vouch for the whole source
-            // red: error icon, orange: warning icon, as in the alerts (the same markup as the <@icon> macro)
-            function part(cls, attr, text) {
-                var icon = '<svg class="material-icon" aria-hidden="true" focusable="false"><use href="' + esc(i18n.sprite) + '#' + (cls === 'bad' ? 'error' : 'warning') + '"/></svg>';
-                return '<button type="button" class="ov-link-btn ' + cls + '" ' + attr + '>' + icon + esc(text) + '</button>';
+            // what needs doing, each item a way to it: red (bad) or orange (w)
+            var items = [];
+            if (idMissing || idBad) items.push({cls: 'bad', attr: 'data-goto-id', text: isCore ? i18n.statusId : i18n.statusLink});
+            if (reqMissing) items.push({cls: 'bad', attr: 'data-goto-show="problems"', text: fmt(i18n.statusRequired, reqMissing)});
+            // a data package isn't published with values its schema rejects: red there, orange for DwC-A
+            if (valueProblems > 0) items.push({cls: isDp ? 'bad' : 'w', attr: 'data-goto-show="problems"', text: fmt(i18n.statusProblems, valueProblems)});
+            // what the page knows from the server (dataPackageMapping.ftl): fields or a table not in the installed schema,
+            // a mapping made against an older version
+            $('#mp-status-extra li').each(function () {
+                var $li = $(this);
+                items.push({cls: $li.attr('data-cls'), attr: 'data-goto-section="' + esc($li.attr('data-goto')) + '"', text: $li.text()});
+            });
+            // not about this mapping but its core / extension / schema: a newer version in the registry, a link for
+            // administrators
+            var $status = $('#mp-status'), newer = $status.attr('data-newer');
+            if (newer) items.push({cls: 'w', href: $status.attr('data-newer-url'), text: newer});
+
+            // a button, a link, or text when there's nowhere to go
+            function link(item, cls, content) {
+                if (item.attr) return '<button type="button" class="' + cls + '" ' + item.attr + '>' + content + '</button>';
+                if (item.href) return '<a class="' + cls + ' custom-link" href="' + esc(item.href) + '">' + content + '</a>';
+                return '<span class="mp-status-note ' + item.cls + '">' + content + '</span>';
             }
-            var parts = [];
-            if (idMissing || idBad) parts.push(part('bad', 'data-goto-id', isCore ? i18n.statusId : i18n.statusLink));
-            if (reqMissing) parts.push(part('bad', 'data-goto-show="problems"', fmt(i18n.statusRequired, reqMissing)));
-            if (valueProblems > 0) parts.push(part('w', 'data-goto-show="problems"', fmt(i18n.statusProblems, valueProblems)));
-            // not about this mapping but its core / extension: a newer version in the registry (mapping.ftl)
-            var $status = $('#mp-status'), newer = $status.attr('data-newer'), newerUrl = $status.attr('data-newer-url');
-            if (newer) {
-                var warn = '<svg class="material-icon" aria-hidden="true" focusable="false"><use href="' + esc(i18n.sprite) + '#warning"/></svg>';
-                parts.push(newerUrl ? '<a class="ov-link-btn w custom-link" href="' + esc(newerUrl) + '">' + warn + esc(newer) + '</a>'
-                    : '<span class="mp-status-note w">' + warn + esc(newer) + '</span>');
+            // under the heading: error / warning icon, as in the alerts (the same markup as the <@icon> macro)
+            $status.html(items.map(function (item) {
+                var icon = '<svg class="material-icon" aria-hidden="true" focusable="false"><use href="' + esc(i18n.sprite) + '#' + (item.cls === 'bad' ? 'error' : 'warning') + '"/></svg>';
+                return link(item, 'ov-link-btn ' + item.cls, icon + esc(item.text));
+            }).join('<span class="mp-status-sep" aria-hidden="true">\u00b7</span>'));
+            // the sidebar card (dataPackageMapping.ftl), as on the resource overview. With nothing to fix it doesn't say
+            // "all fine": the value checks see only the sample rows, so they can't vouch for the whole source
+            var $ready = $('#mp-ready');
+            if ($ready.length) {
+                $ready.children('b').text(items.length ? fmt(i18n.readyTitle, items.length) : i18n.ready);
+                $ready.children('ul').html(items.length ? items.map(function (item) {
+                    return '<li><span class="ov-dot ' + (item.cls === 'bad' ? 'bad' : 'warn') + '"></span>' + (item.attr || item.href ? link(item, 'ov-link-btn', esc(item.text)) : '<span>' + esc(item.text) + '</span>') + '</li>';
+                }).join('') : '<li><span class="ov-dot ok"></span><span>' + esc(i18n.readyNone) + '</span></li>');
             }
-            $status.html(parts.join('<span class="mp-status-sep" aria-hidden="true">\u00b7</span>'));
             // in the source line: not a problem (one source can feed several mappings), but data that isn't published
             $('#mp-unused').prop('hidden', unused <= 0).children('button').text(fmt(i18n.statusUnused, unused));
 
             $('#mp-dot-id').attr('class', 'ov-dot ' + (idMissing || idBad ? 'bad' : 'ok'));
             $('#mp-dot-filter').attr('class', 'ov-dot ' + ($filterOn.is(':checked') ? 'ok' : 'off'));
-            $('#mp-dot-fields').attr('class', 'ov-dot ' + (reqMissing ? 'bad' : valueProblems > 0 ? 'warn' : 'ok'));
+            $('#mp-dot-fields').attr('class', 'ov-dot ' + (reqMissing || (isDp && valueProblems > 0) ? 'bad' : valueProblems > 0 ? 'warn' : 'ok'));
 
             $groups.each(function () {
                 // red for a missing required field, orange for values to check
-                var $g = $(this), g = $g.attr('data-g'), np = groupProblems[g] || 0, missing = !!groupMissing[g];
+                var $g = $(this), g = $g.attr('data-g'), np = groupProblems[g] || 0, missing = !!groupMissing[g] || isDp;
                 $g.find('[data-group-mapped]').text(fmt(i18n.groupMapped, groupMapped[g] || 0, groupTotal[g] || 0));
                 $g.find('[data-group-problems]').text(fmt(i18n.groupProblems, np)).prop('hidden', !np).toggleClass('bad', missing).toggleClass('w', !missing);
                 var title = fmt(i18n.groupMapped, groupMapped[g] || 0, groupTotal[g] || 0) + (np ? ' \u00b7 ' + fmt(i18n.groupProblems, np) : '');
@@ -420,7 +482,7 @@
                     .toggleClass('bad', np > 0 && missing).toggleClass('w', np > 0 && !missing);
             });
             // no "0" on Problems: an empty count only draws the eye
-            $('#mp-show button').each(function () { var k = $(this).attr('data-show'); $(this).find('.mp-count').text(k === 'problems' && !counts[k] ? '' : counts[k]).toggleClass('bad', $(this).attr('data-show') === 'problems' && reqMissing > 0).toggleClass('w', $(this).attr('data-show') === 'problems' && counts.problems > 0 && !reqMissing); });
+            $('#mp-show button').each(function () { var k = $(this).attr('data-show'); $(this).find('.mp-count').text(k === 'problems' && !counts[k] ? '' : counts[k]).toggleClass('bad', $(this).attr('data-show') === 'problems' && (reqMissing > 0 || (isDp && counts.problems > 0))).toggleClass('w', $(this).attr('data-show') === 'problems' && counts.problems > 0 && !reqMissing && !isDp); });
         }
 
         function renderAll() {
@@ -544,6 +606,10 @@
             $visible.each(function () { setOpen($(this), !allOpen); });
             $(this).text(allOpen ? i18n.expandAll : i18n.collapseAll);
         });
+        $(document).on('click', '[data-goto-section]', function () {
+            var el = document.getElementById($(this).attr('data-goto-section'));
+            if (el) el.scrollIntoView({behavior: 'smooth'});
+        });
         $(document).on('click', '[data-goto-id]', function () {
             document.getElementById('mp-id').scrollIntoView({behavior: 'smooth'});
         });
@@ -599,7 +665,8 @@
         $('#mp-nomatch b').data('t', $('#mp-nomatch b').text());
         renderAll();
         applyShow(false);
-        // open the classes with something to see; probably redundant ones stay closed
+        // open the classes with something to see; probably redundant ones stay closed. One list of fields (data
+        // packages, .mp-group.single) is always open, see mapping.css
         $groups.each(function () {
             var $g = $(this);
             setOpen($g, !$g.hasClass('redundant') && $g.find('.mp-field:not(.mp-off)').length > 0);

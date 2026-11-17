@@ -16,6 +16,8 @@ package org.gbif.ipt.model;
 import java.io.Serial;
 import java.io.Serializable;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,9 +36,15 @@ public class DataPackageField implements Serializable {
   private static final long serialVersionUID = 2049952968649028260L;
 
   private String name;
+  // a label, e.g. "Media ID" (DwC-DP, ColDP), shown on the mapping page; not every schema has them
+  private String title;
   private String type;
   private String format;
   private String description;
+  // usage notes (DwC-DP)
+  private String comments;
+  // "example" (Camtrap DP) or "examples" (DwC-DP), the same thing: a string, a number, a boolean or a list
+  @SerializedName(value = "example", alternate = "examples")
   private Object example;
   private DataPackageFieldConstraints constraints;
 

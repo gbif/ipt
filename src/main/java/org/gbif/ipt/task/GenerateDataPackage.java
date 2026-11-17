@@ -62,6 +62,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -778,7 +779,19 @@ public class GenerateDataPackage extends ReportingTask implements Callable<Map<S
    * exports often have them like that. Values matching none are left as they are, for validation to reject. Fields of
    * other types are left as they are too: there a - can be a minus sign or part of a date.
    */
-  static class EnumValues {
+  public static class EnumValues {
+
+    /**
+     * @return a field's values as written when published, for the mapping page to check sample values like publishing
+     */
+    public static UnaryOperator<String> asWritten(DataPackageField field) {
+      EnumValues enumValues = new EnumValues(List.of(field));
+      return value -> {
+        String[] values = {value};
+        enumValues.normalise(values);
+        return values[0];
+      };
+    }
 
     private static final Pattern SEPARATORS = Pattern.compile("[\\s_-]");
 
