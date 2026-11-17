@@ -353,6 +353,16 @@ public class AppConfig {
   }
 
   /**
+   * @return the GBIF API base URL ending in /v1, different depending on the IPT's mode
+   */
+  public String getApiUrl() {
+    if (REGISTRY_TYPE.PRODUCTION == type) {
+      return getProperty("dev.api.url");
+    }
+    return getProperty("dev.apidev.url");
+  }
+
+  /**
    * @return DataCite base URL, depends on the IPT's mode
    */
   public String getDataCiteUrl() {

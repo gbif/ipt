@@ -29,6 +29,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceCitationsManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.IptEmlWriter;
 import org.gbif.metadata.eml.ipt.model.TaxonKeyword;
@@ -160,7 +161,7 @@ public class ResourceActionTest extends IptBaseTest {
     when(container.getInstance(LocaleProviderFactory.class)).thenReturn(localeProviderFactory);
 
     action = new ResourceAction(textProvider, mockCfg, mockRegistrationManager, mockResourceManager, mockVocabManager,
-        mockDataDir, mock(ExtensionManager.class), mock(MetadataReader.class));
+        mockDataDir, mock(ExtensionManager.class), mock(MetadataReader.class), mock(ResourceCitationsManager.class));
     action.setResource(resource);
     action.setContainer(container);
   }
@@ -255,7 +256,7 @@ public class ResourceActionTest extends IptBaseTest {
 
     ResourceAction action = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
         mock(RegistrationManager.class), resourceManager, mock(VocabulariesManager.class), mock(DataDir.class),
-        mock(ExtensionManager.class), mock(MetadataReader.class));
+        mock(ExtensionManager.class), mock(MetadataReader.class), mock(ResourceCitationsManager.class));
     action.setServletRequest(mock(HttpServletRequest.class));
     Map<String, Object> session = new HashMap<>();
     session.put("curr_resource", RESOURCE_SHORT_NAME);
@@ -273,7 +274,7 @@ public class ResourceActionTest extends IptBaseTest {
   public void testPreviewWithoutResource() {
     ResourceAction action = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
         mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class),
-        mock(DataDir.class), mock(ExtensionManager.class), mock(MetadataReader.class));
+        mock(DataDir.class), mock(ExtensionManager.class), mock(MetadataReader.class), mock(ResourceCitationsManager.class));
     action.setServletRequest(mock(HttpServletRequest.class));
     action.prepare();
     assertEquals(BaseAction.NOT_FOUND, action.preview());
@@ -286,7 +287,7 @@ public class ResourceActionTest extends IptBaseTest {
   public void testRssForUnknownResource() {
     ResourceAction action = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
         mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class),
-        mock(DataDir.class), mock(ExtensionManager.class), mock(MetadataReader.class));
+        mock(DataDir.class), mock(ExtensionManager.class), mock(MetadataReader.class), mock(ResourceCitationsManager.class));
     HttpServletRequest req = mock(HttpServletRequest.class);
     when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn("unknown");
     action.setServletRequest(req);
@@ -307,7 +308,7 @@ public class ResourceActionTest extends IptBaseTest {
     when(dataDir.resourceEmlFile(anyString(), any(BigDecimal.class))).thenReturn(new File("no-such-dir", "eml-1.0.xml"));
     ResourceAction draftAction = new ResourceAction(new SimpleTextProvider(), mock(AppConfig.class),
         mock(RegistrationManager.class), mock(ResourceManager.class), mock(VocabulariesManager.class), dataDir,
-        mock(ExtensionManager.class), mock(MetadataReader.class));
+        mock(ExtensionManager.class), mock(MetadataReader.class), mock(ResourceCitationsManager.class));
     draftAction.setResource(draft);
     Container container = mock(Container.class);
     when(container.getInstance(LocaleProviderFactory.class)).thenReturn(new DefaultLocaleProviderFactory());

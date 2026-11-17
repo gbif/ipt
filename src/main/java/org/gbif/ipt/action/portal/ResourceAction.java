@@ -30,6 +30,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourceCitationsManager;
 import org.gbif.ipt.struts2.RequireManagerInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.DocBookLanguages;
@@ -71,6 +72,7 @@ import java.util.stream.Stream;
 
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
+import javax.annotation.Nullable;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -94,6 +96,7 @@ public class ResourceAction extends PortalBaseAction {
   private static final Set<String> ISO_COUNTRY_CODES = Set.of(Locale.getISOCountries());
 
   private final MetadataReader metadataReader;
+  private final ResourceCitationsManager citationsManager;
   private final VocabulariesManager vocabManager;
 
   // ExtensionManager, to retrieve Extension by rowType in template
@@ -204,12 +207,23 @@ public class ResourceAction extends PortalBaseAction {
       VocabulariesManager vocabManager,
       DataDir dataDir,
       ExtensionManager extensionManager,
-      MetadataReader metadataReader) {
+      MetadataReader metadataReader,
+      ResourceCitationsManager citationsManager) {
     super(textProvider, cfg, registrationManager, resourceManager);
     this.vocabManager = vocabManager;
     this.dataDir = dataDir;
     this.extensionManager = extensionManager;
     this.metadataReader = metadataReader;
+    this.citationsManager = citationsManager;
+  }
+
+  /**
+   * The papers citing the resource, for the version line; null if it isn't registered or the count hasn't been
+   * fetched yet.
+   */
+  @Nullable
+  public Long getGbifCitations() {
+    return resource != null && resource.isRegistered() ? citationsManager.getCitations(resource.getKey()) : null;
   }
 
   @Override

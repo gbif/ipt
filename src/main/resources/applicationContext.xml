@@ -268,6 +268,14 @@
     <constructor-arg ref="resourcePublicationManager"/>
   </bean>
 
+  <!-- GBIF citations of the registered resources, fetched in the background about once a day -->
+  <bean id="resourceCitationsManager" class="org.gbif.ipt.service.manage.impl.ResourceCitationsManagerImpl"
+        init-method="start" destroy-method="stop">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="resourceManager"/>
+    <constructor-arg ref="httpClient"/>
+  </bean>
   <bean id="resourceManagerProvider"
         class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
     <property name="targetBeanName" value="resourceManager"/>
@@ -407,6 +415,7 @@
     <constructor-arg ref="appConfig"/>
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="resourceDataTableViewManager"/>
+    <constructor-arg ref="resourceCitationsManager"/>
   </bean>
 
   <bean id="healthAction" class="org.gbif.ipt.action.HealthAction" scope="prototype">
@@ -426,6 +435,7 @@
     <constructor-arg ref="dataDir"/>
     <constructor-arg ref="extensionManager"/>
     <constructor-arg ref="metadataReader"/>
+    <constructor-arg ref="resourceCitationsManager"/>
   </bean>
 
   <bean id="organisationSupport" class="org.gbif.ipt.validation.OrganisationSupport">

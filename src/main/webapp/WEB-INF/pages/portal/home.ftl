@@ -39,6 +39,10 @@
                         <span><@s.text name="portal.home.total.records"><@s.param><b>${totals.records?string.number}</b></@s.param></@s.text></span>
                         <#if (totals.onGbif > 0)>
                             <span><@s.text name="portal.home.total.onGbif"><@s.param><b>${totals.onGbif?string.number}</b></@s.param></@s.text></span>
+                            <#-- papers citing any registered resource, each once; fetched daily -->
+                            <#if citationsTotal??>
+                                <span><@s.text name="portal.home.total.citations"><@s.param><b>${citationsTotal?string.number}</b></@s.param></@s.text></span>
+                            </#if>
                         </#if>
                     </#if>
                     <#if registeredYear??>

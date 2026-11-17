@@ -25,6 +25,7 @@ import org.gbif.ipt.model.datatable.HomeSearchResult;
 import org.gbif.ipt.model.datatable.HomeTotals;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
+import org.gbif.ipt.service.manage.ResourceCitationsManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
@@ -52,6 +53,7 @@ public class HomeAction extends BaseAction {
   private static final long serialVersionUID = 8504283506326312600L;
 
   private final ResourceDataTableViewManager resourceManager;
+  private final ResourceCitationsManager citationsManager;
   private DatatableResult resources = new DatatableResult();
   private HomeSearchResult searchResult = new HomeSearchResult();
   private HomeTotals totals = new HomeTotals(0, 0, 0);
@@ -61,9 +63,11 @@ public class HomeAction extends BaseAction {
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager registrationManager,
-      ResourceDataTableViewManager resourceManager) {
+      ResourceDataTableViewManager resourceManager,
+      ResourceCitationsManager citationsManager) {
     super(textProvider, cfg, registrationManager);
     this.resourceManager = resourceManager;
+    this.citationsManager = citationsManager;
   }
 
   @Override
@@ -168,6 +172,15 @@ public class HomeAction extends BaseAction {
    */
   public HomeTotals getTotals() {
     return totals;
+  }
+
+  /**
+   * The papers citing any of the registered resources, each counted once; null if none are registered or the count
+   * hasn't been fetched yet.
+   */
+  @Nullable
+  public Long getCitationsTotal() {
+    return citationsManager.getCitationsTotal();
   }
 
   /**

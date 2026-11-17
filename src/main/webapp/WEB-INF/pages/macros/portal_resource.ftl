@@ -115,6 +115,11 @@
         <#if resource.status == "REGISTERED" && resource.key??>
             <span class="rp-sep">·</span>
             <a href="${cfg.portalUrl}/dataset/${resource.key}"><@s.text name='portal.resource.versionLine.viewOnGbif'/></a>
+            <#-- papers citing it; fetched daily, none before the first fetch -->
+            <#if (action.gbifCitations)??>
+                <span class="rp-sep">·</span>
+                <span><@s.text name='portal.resource.versionLine.citations'><@s.param>${action.gbifCitations?string.number}</@s.param></@s.text></span>
+            </#if>
         </#if>
     </div>
 </#macro>
