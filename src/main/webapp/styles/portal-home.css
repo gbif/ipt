@@ -23,7 +23,6 @@
 .ph-facet label.ph-zero { color: #adb5bd; }
 .ph-facet label.ph-zero .ph-n { color: #adb5bd; }
 .ph-machines { border-top: 1px solid #dee2e6; padding-top: 12px; font-size: 0.8125rem; }
-.ph-machines h2 { font-size: 0.8125rem; font-weight: 600; color: #4E565F; margin: 0 0 4px; }
 .ph-machines a { display: block; padding: 2px 0; }
 
 /* search */
@@ -104,3 +103,9 @@ table.ph-table td a:hover { color: rgb(var(--color-gbif-primary)) !important; }
 .ph-empty p:last-child { margin-bottom: 0; }
 
 mark.ph-mark { background: rgba(var(--color-gbif-primary), .22); padding: 0 1px; border-radius: 2px; color: inherit; }
+
+/* the record count links to the resource page's Data records section; it keeps the text colours until hovered */
+a.ph-records { color: inherit !important; text-decoration: none; }
+a.ph-records:hover, a.ph-records:focus-visible { color: rgb(var(--color-gbif-primary)) !important; }
+a.ph-records:hover b, a.ph-records:focus-visible b { color: inherit; }
+table.ph-table td a.ph-records { font-weight: normal; }

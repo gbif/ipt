@@ -674,7 +674,8 @@ public class ResourceDataTableViewManagerImpl extends BaseManager implements Res
     // never published: say so in records and last publication, rather than "--"
     String notPublishedYet = resource.isPublished() ? null
         : "<span class=\"mh-muted\">" + escapeHtml(text(locale, "manage.home.notPublishedYet", "not published yet")) + "</span>";
-    result.add(notPublishedYet != null ? notPublishedYet : toUiRecordsPublished(resource, locale));
+    // a plain number here: the records are a link on the public pages, not on the manager's list
+    result.add(notPublishedYet != null ? notPublishedYet : NumberFormat.getInstance(locale).format(resource.getRecordsPublished()));
     result.add(notPublishedYet != null ? notPublishedYet : toUiDate(resource.getLastPublished()));
     result.add(toManageNextPublished(resource, locale, frequencies));
     result.add(toUiDateTime(resource.getModified()));

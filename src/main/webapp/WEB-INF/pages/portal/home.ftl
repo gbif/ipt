@@ -29,7 +29,6 @@
                         <section class="ph-facet" data-facet="updated" hidden><h2><@s.text name="portal.home.last.publication"/></h2><div class="ph-values"></div></section>
                     </details>
                     <div class="ph-machines">
-                        <h2><@s.text name="portal.home.machines"/></h2>
                         <a href="${baseURL}/rss.do"><@s.text name="portal.home.machines.rss"/></a>
                         <a href="${baseURL}/dcat"><@s.text name="portal.home.machines.dcat"/></a>
                         <a href="${baseURL}/inventory/dataset"><@s.text name="portal.home.machines.inventory"/></a>
@@ -100,6 +99,7 @@
     (function () {
         const API = "${baseURL?js_string?no_esc}/api/home-resources";
         const RESOURCE = "${baseURL?js_string?no_esc}/resource?r=";
+        const RECORDS_ANCHOR = "#anchor-dataRecords";
         const ICONS = "${baseURL?js_string?no_esc}/images/icons/material-icons.svg#";
         const PER_PAGE = 10;
         const FACETS = {types: "type", organisations: "organisation", licences: "licence", updated: "updated"};
@@ -217,7 +217,9 @@
                 const logo = item.logoUrl
                     ? '<a class="ph-logo" href="' + esc(url) + '" tabindex="-1" aria-hidden="true"><img src="' + esc(item.logoUrl) + '" alt="" loading="lazy"></a>'
                     : '<a class="ph-logo ph-logo-none" href="' + esc(url) + '" tabindex="-1" aria-hidden="true" title="' + esc(T.noLogo) + '">' + icon("hide_image") + '</a>';
-                const records = item.metadataOnly ? "<b>—</b>" + esc(T.metadataOnly) : "<b>" + esc(item.recordsLabel) + "</b>" + esc(T.records);
+                // the record count links to the resource page's Data records section
+                const records = item.metadataOnly ? "<b>—</b>" + esc(T.metadataOnly)
+                    : '<a class="ph-records" href="' + esc(url + RECORDS_ANCHOR) + '"><b>' + esc(item.recordsLabel) + "</b>" + esc(T.records) + "</a>";
                 return '<article class="ph-res">' + logo
                     + '<div><h3><a href="' + esc(url) + '">' + hl(item.title) + '</a></h3>'
                     + (item.organisation ? '<div class="ph-org">' + hl(item.organisation) + '</div>' : "")
@@ -237,7 +239,7 @@
                     + '<td>' + hl(item.organisation || "") + '</td>'
                     + '<td>' + (item.typeLabel ? '<span class="dt-content-pill fs-smaller-2 text-nowrap type-' + esc(item.type) + '">' + esc(item.typeLabel) + '</span>' : "") + '</td>'
                     + '<td class="text-nowrap">' + esc(item.licenceLabel || "") + '</td>'
-                    + '<td class="ph-num">' + (item.metadataOnly ? "—" : esc(item.recordsLabel)) + '</td>'
+                    + '<td class="ph-num">' + (item.metadataOnly ? "—" : '<a class="ph-records" href="' + esc(RESOURCE + encodeURIComponent(item.shortname) + RECORDS_ANCHOR) + '">' + esc(item.recordsLabel) + '</a>') + '</td>'
                     + '<td class="ph-num" title="' + esc(item.lastPublishedTime || "") + '">' + esc(item.lastPublished || "") + '</td></tr>').join("")
                 + '</tbody></table></div>';
         }

@@ -204,11 +204,11 @@
                             <div class="rp-version-summary">
                                 <#if v.changeSummary?has_content>${v.changeSummary}<#else><@s.text name="publishing.changeSummary.default"/></#if>
                                 <#if managerRights && !isPreviewPage>
-                                    <a class="ms-1" href="${baseURL}/manage/history.do?r=${resource.shortname}&amp;v=${v.version}"><@s.text name='button.edit'/></a>
+                                    <a class="rp-version-action" href="${baseURL}/manage/history.do?r=${resource.shortname}&amp;v=${v.version}"><@icon name="edit"/><@s.text name='button.edit'/></a>
                                 </#if>
                                 <#-- deleting a version is admin only (struts-admin.xml); never the latest -->
                                 <#if adminRights && !isPreviewPage && v.version != latestVersion>
-                                    <a class="confirmDeleteVersion rp-version-delete ms-1" data-post href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&amp;v=${v.version}"><@s.text name='button.delete'/></a>
+                                    <a class="confirmDeleteVersion rp-version-action rp-version-delete" data-post href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&amp;v=${v.version}"><@icon name="delete"/><@s.text name='button.delete'/></a>
                                 </#if>
                             </div>
                         </li>

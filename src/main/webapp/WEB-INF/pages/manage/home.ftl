@@ -65,7 +65,6 @@
             displayStart: start,
             pageLength: 10,
             lengthChange: false,
-            autoWidth: false,
             layout: {
                 topStart: document.getElementById("mh-count"),
                 topEnd: [document.getElementById("mh-toolbar"), "search", document.getElementById("mh-create")].filter(Boolean),

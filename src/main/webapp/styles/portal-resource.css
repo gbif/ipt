@@ -1,6 +1,9 @@
 /* Public resource pages (portal/resource_*.ftl, macros/portal_resource.ftl) */
 
 .rp-section { margin-bottom: 2.5rem; }
+/* below the fixed navbar when scrolled to: the anchor by a #anchor-… link (e.g. the record count on the home page), the
+   section by the sidebar (js/scrollspy.js) */
+.rp-section, .anchor-home-resource-page { scroll-margin-top: var(--navbar-height); }
 .rp-h { font-size: 1.25rem; font-weight: 400; color: #4E565F; margin: 0 0 .75rem; padding: .5rem 0 .4rem; border-bottom: 1px solid #dee2e6; }
 .rp-h3 { font-size: .875rem; font-weight: 600; color: #4E565F; margin: 1rem 0 .4rem; }
 .rp-section > .rp-h + .rp-h3, .rp-coverage .rp-h3:first-child { margin-top: 0; }
@@ -43,7 +46,12 @@
 .rp-version-head { display: flex; gap: 4px 12px; align-items: baseline; flex-wrap: wrap; }
 .rp-version-head > span { color: #6c757d; font-size: .8125rem; }
 .rp-version-summary { color: #495057; margin-top: 2px; }
-.rp-version-summary a.rp-version-delete { color: rgb(var(--color-gbif-danger)) !important; } /* main.css forces link colour with !important */
+/* Edit / Delete after the change summary: small, grey, with an icon; darker on hover, Delete red on hover only
+   (main.css forces link colours with !important). Plain inline, not flex, so the text shares the summary's baseline */
+.rp-version-summary a.rp-version-action { margin-inline-start: 10px; font-size: .75rem; color: #6c757d !important; text-decoration: none; white-space: nowrap; }
+.rp-version-summary a.rp-version-action .material-icon { width: 14px; height: 14px; margin-inline-end: 3px; vertical-align: -2px; }
+.rp-version-summary a.rp-version-action:hover, .rp-version-summary a.rp-version-action:focus-visible { color: #212529 !important; }
+.rp-version-summary a.rp-version-delete:hover, .rp-version-summary a.rp-version-delete:focus-visible { color: rgb(var(--color-gbif-danger)) !important; }
 .rp-pill { font-size: .6875rem !important; border: 1px solid #dee2e6; border-radius: 10px; padding: 0 8px; color: #495057 !important; }
 /* the version line under the heading (macro versionLine) */
 .rp-version-line { font-size: .8125rem; color: #6c757d; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 6px; }
