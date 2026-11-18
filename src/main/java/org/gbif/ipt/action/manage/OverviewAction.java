@@ -310,6 +310,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
    * The data package mappings whose result rows (the first rows of their source, as on the mapping page) fail a check
    * that stops publishing: rows with the same key but different values, broken links... Only a sample, so an empty
    * map doesn't mean publishing works.
+   * <p>
+   * The overview is opened often, so it reads sources sparingly: a mapping's last check is reused until the resource's
+   * sources or mappings change, and only file and Excel sources are read here. A database or URL source is read when
+   * its mapping page shows the Result, which remembers the count for the overview.
    *
    * @return mapping label to the number of failed checks, in mapping order
    */
@@ -317,23 +321,32 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     if (dataPackageResultProblems == null) {
       dataPackageResultProblems = new LinkedHashMap<>();
       if (resource != null && resource.getDataPackageMappings() != null && sourceManager != null) {
+        Date changed = latest(resource.getSourcesModified(), resource.getMappingsModified());
         for (DataPackageMapping m : resource.getDataPackageMappings()) {
           if (m.getSource() == null || !m.getSource().isReadable() || m.getDataPackageTableSchemaName() == null
               || m.getTableSchema() == null) {
             continue;
           }
-          try {
-            int n = new DataPackageRowsPreview(m, resource.getDataPackageMappings(), sourceManager, 50, 0).getProblemCount();
-            if (n > 0) {
-              dataPackageResultProblems.merge(m.getSource().getName() + " \u2192 " + m.getDataPackageTableSchemaName().getName(), n, Integer::sum);
+          Integer n = m.getResultProblems(changed);
+          if (n == null && (m.getSource().isFileSource() || m.getSource().isExcelSource())) {
+            try {
+              n = new DataPackageRowsPreview(m, resource.getDataPackageMappings(), sourceManager, 50, 0).getProblemCount();
+              m.rememberResultProblems(n);
+            } catch (Exception e) {
+              LOG.debug("Couldn't check the result rows of a mapping of source {}: {}", m.getSource().getName(), e.getMessage());
             }
-          } catch (Exception e) {
-            LOG.debug("Couldn't check the result rows of a mapping of source {}: {}", m.getSource().getName(), e.getMessage());
+          }
+          if (n != null && n > 0) {
+            dataPackageResultProblems.merge(m.getSource().getName() + " \u2192 " + m.getDataPackageTableSchemaName().getName(), n, Integer::sum);
           }
         }
       }
     }
     return dataPackageResultProblems;
+  }
+
+  private static Date latest(Date a, Date b) {
+    return a == null ? b : b == null || a.after(b) ? a : b;
   }
 
   /**

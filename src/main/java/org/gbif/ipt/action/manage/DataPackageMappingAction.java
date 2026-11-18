@@ -253,6 +253,8 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
     if (preview == null && mapping != null && mid != null && resource.getDataPackageMapping(mid) != null
         && mapping.getSource() != null && mapping.getSource().isReadable()) {
       preview = new DataPackageRowsPreview(mapping, resource.getDataPackageMappings(), sourceManager, 50, 20);
+      // the overview shows the count without reading the source again
+      mapping.rememberResultProblems(preview.getProblemCount());
     }
     return preview;
   }

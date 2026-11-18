@@ -24,10 +24,15 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @Builder
@@ -59,6 +64,18 @@ public class DataPackageMapping implements Serializable {
   // DISTINCT (and optionally ITEMS): rows with the same value of this field merge into one; WHOLE_ROW: identical rows do
   private String mergeKey;
   private Date lastModified;
+  // the problem count of the last Result check and when it was made, in memory only: the overview shows it without
+  // reading the source again (see getResultProblems)
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  private transient Integer resultProblems;
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  private transient Date resultChecked;
 
   /**
    * @param peek Peek of File source.
@@ -162,6 +179,25 @@ public class DataPackageMapping implements Serializable {
    */
   public DataPackageRowMode getRowModeOrDefault() {
     return rowMode == null ? DataPackageRowMode.ROW : rowMode;
+  }
+
+  /**
+   * Remembers the problem count of a Result check of this mapping (DataPackageRowsPreview), made now.
+   */
+  public void rememberResultProblems(int problems) {
+    resultProblems = problems;
+    resultChecked = new Date();
+  }
+
+  /**
+   * @param changedSince when the resource's sources or mappings last changed; a check made before that is outdated
+   * @return the problem count of the last Result check, null if there's none or it's outdated
+   */
+  public Integer getResultProblems(Date changedSince) {
+    if (resultChecked == null || (changedSince != null && resultChecked.before(changedSince))) {
+      return null;
+    }
+    return resultProblems;
   }
 
   /**
