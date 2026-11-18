@@ -37,6 +37,10 @@ public class DataPackageFieldMapping implements Serializable, Comparable<DataPac
   private String defaultValue;
   private DataPackageField field;
   private Map<String, String> translation;
+  // a generated value instead of the column or fixed value; null: the column or fixed value
+  private DataPackageValueKind valueKind;
+  // TEMPLATE: e.g. "{occurrenceID}-id"
+  private String template;
 
   public DataPackageFieldMapping(Integer index, DataPackageField field) {
     this.index = index;
@@ -56,6 +60,6 @@ public class DataPackageFieldMapping implements Serializable, Comparable<DataPac
   }
 
   public boolean isMapped() {
-    return index != null || StringUtils.isNotBlank(defaultValue);
+    return index != null || StringUtils.isNotBlank(defaultValue) || valueKind != null;
   }
 }

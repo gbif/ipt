@@ -21,11 +21,15 @@
 <script src="${baseURL}/js/scrollspy.js"></script>
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
 <script src="${baseURL}/js/mapping.js"></script>
+<script src="${baseURL}/js/dp-rows.js"></script>
 
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl"/>
 
 <#assign primaryKey = action.getPrimaryKey()/>
+<#assign rowMode = (mapping.rowMode.name())!"ROW"/>
+<#assign splitColumns = mapping.splitColumns![]/>
+<#assign mergeKey = mapping.mergeKey!""/>
 <#assign foreignKeys = action.getForeignKeys()/>
 <#assign expectations = action.getFieldExpectations()/>
 <#assign fieldConstraints = action.getFieldConstraints()/>
@@ -77,8 +81,8 @@
             <#-- the name is the label already when the schema has no titles (Camtrap DP) -->
             <div class="mp-term"><#if label != f.name>${f.name}</#if>
                 <#if type != "string" && type != "any"><span class="mp-badge t">${type}</span><#elseif format?has_content><span class="mp-badge t">${format}</span></#if>
-                <#if isPk><span class="mp-badge k"><@s.text name="manage.mapping.field.pk"/></span></#if>
-                <#if fk?has_content><span class="mp-badge k" title="<@s.text name='manage.mapping.field.fk'/>: ${fk}">→ ${fk?keep_before_last(".")}</span></#if>
+                <#if isPk><span class="mp-badge k" title="<@s.text name='manage.tables.key.help'/>"><@s.text name="manage.mapping.field.pk"/></span></#if>
+                <#if fk?has_content><span class="mp-badge k" title="<@s.text name='manage.tables.link.help'><@s.param>${fk?keep_before_last(".")}</@s.param></@s.text>">→ ${fk?keep_before_last(".")}</span></#if>
                 <#if f.required><span class="mp-badge r"><@s.text name="manage.mapping.field.required"/></span></#if>
             </div>
             <div class="mp-def" id="field-def-${i?c}" hidden>
@@ -91,9 +95,31 @@
             </div>
         </div>
         <div>
-            <select id="fIdx${i?c}" class="form-select form-select-sm mp-col" name="fields[${i?c}].index" aria-label="${label}: <@s.text name='manage.mapping.fields.head.column'/>">
-                <@columnOptions (fm.index)!-99999/>
-            </select>
+            <#local gen = (fm.valueKind.name())!""/>
+            <#-- open when set, and on keys, which are often generated; other fields behind "Generate a value" -->
+            <#local showGen = gen?has_content || isPk || fk?has_content/>
+            <div class="mp-colcell<#if gen?has_content && gen != "ID"> mp-generated</#if>">
+                <select id="fIdx${i?c}" class="form-select form-select-sm mp-col" name="fields[${i?c}].index" aria-label="${label}: <@s.text name='manage.mapping.fields.head.column'/>">
+                    <@columnOptions (fm.index)!-99999/>
+                </select>
+            </div>
+            <div class="mp-gen"<#if !showGen> hidden</#if>>
+                <select id="fGen${i?c}" class="form-select form-select-sm mp-gen-kind" name="valueKind_${i?c}" aria-label="${label}: <@s.text name='manage.mapping.gen.label'/>">
+                    <option value=""><@s.text name="manage.mapping.gen.none"/></option>
+                    <option value="ITEM"<#if gen == "ITEM"> selected</#if>><@s.text name="manage.mapping.gen.ITEM"/></option>
+                    <option value="POSITION"<#if gen == "POSITION"> selected</#if>><@s.text name="manage.mapping.gen.POSITION"/></option>
+                    <option value="ID"<#if gen == "ID"> selected</#if>><@s.text name="manage.mapping.gen.ID"/></option>
+                    <#if fk?has_content><option value="LINK"<#if gen == "LINK"> selected</#if>><@s.text name="manage.mapping.gen.LINK"><@s.param>${fk?keep_before_last(".")}</@s.param></@s.text></option></#if>
+                    <option value="TEMPLATE"<#if gen == "TEMPLATE"> selected</#if>><@s.text name="manage.mapping.gen.TEMPLATE"/></option>
+                </select>
+                <input id="fTpl${i?c}" class="form-control form-control-sm mp-gen-tpl" name="template_${i?c}" value="${fm.template!}" placeholder="{occurrenceID}-id" aria-label="${label}: <@s.text name='manage.mapping.gen.TEMPLATE'/>"<#if gen != "TEMPLATE"> hidden</#if>/>
+                <div class="mp-gen-help" data-kind-help="ITEM"<#if gen != "ITEM"> hidden</#if>><@s.text name="manage.mapping.gen.ITEM.help"/></div>
+                <div class="mp-gen-help" data-kind-help="POSITION"<#if gen != "POSITION"> hidden</#if>><@s.text name="manage.mapping.gen.POSITION.help"/></div>
+                <#if fk?has_content><div class="mp-gen-help" data-kind-help="LINK"<#if gen != "LINK"> hidden</#if>><@s.text name="manage.mapping.gen.LINK.help"><@s.param>${fk?keep_before_last(".")}</@s.param></@s.text></div></#if>
+                <div class="mp-gen-help" data-kind-help="ID"<#if gen != "ID"> hidden</#if>><@s.text name="manage.mapping.gen.ID.help"/></div>
+                <div class="mp-gen-help" data-kind-help="TEMPLATE"<#if gen != "TEMPLATE"> hidden</#if>><@s.text name="manage.mapping.gen.TEMPLATE.help"><@s.param>{occurrenceID}-id, {item}, {position}</@s.param></@s.text></div>
+            </div>
+            <button type="button" class="ov-link-btn mp-gen-open"<#if showGen> hidden</#if>><@s.text name="manage.mapping.gen.open"/></button>
         </div>
         <div>
             <#if vocabulary?has_content || type == "boolean">
@@ -171,6 +197,12 @@
                     <ul id="mp-status-extra" hidden>
                         <#if tableMissing><li data-cls="bad" data-goto="mp-table-missing"><@s.text name="manage.overview.mappings.tableMissing"/></li></#if>
                         <#if unresolved?has_content && !tableMissing><li data-cls="w" data-goto="mp-unresolved"><@s.text name="manage.mapping.status.unresolved"><@s.param>${unresolved?size}</@s.param></@s.text></li></#if>
+                        <#-- the Result's red checks (rows with the same key but different values, broken links...): they stop publishing too -->
+                        <#assign pvTop = action.getPreview()!/>
+                        <#if pvTop?has_content && pvTop.columns?has_content>
+                            <#assign resultProblems = pvTop.problemCount/>
+                            <#if resultProblems gt 0><li data-cls="bad" data-goto="mp-result"><@s.text name="manage.mapping.status.result"><@s.param>${resultProblems?c}</@s.param></@s.text></li></#if>
+                        </#if>
                         <#if schemaChanged && !tableMissing><li data-cls="w" data-goto="mp-fields"><@s.text name="manage.mapping.status.schemaChanged"><@s.param>${mapping.version}</@s.param><@s.param>${dataPackageSchema.version}</@s.param></@s.text></li></#if>
                     </ul>
                 </div>
@@ -250,8 +282,10 @@
                                 <#if unresolved?has_content>
                                     <li><a href="#anchor-mp-unresolved" class="sidebar-navigation-link"><span class="ov-dot warn"></span><@s.text name="manage.mapping.unresolved.title"/></a></li>
                                 </#if>
+                                <li><a href="#anchor-mp-rows" class="sidebar-navigation-link"><span class="ov-dot<#if rowMode == "ROW"> off</#if>"></span><@s.text name="manage.mapping.rows.title"/></a></li>
                                 <li><a href="#anchor-mp-filter" class="sidebar-navigation-link"><span class="ov-dot off" id="mp-dot-filter"></span><@s.text name="manage.mapping.filter.title"/></a></li>
                                 <li><a href="#anchor-mp-fields" class="sidebar-navigation-link"><span class="ov-dot" id="mp-dot-fields"></span><span><@s.text name="manage.mapping.fields.title"/></span><span class="mp-count" data-group-count="0"></span></a></li>
+                                <#if (mid)??><li><a href="#anchor-mp-result" class="sidebar-navigation-link"><span class="ov-dot <#if !(resultProblems??)>off<#elseif resultProblems gt 0>bad<#else>ok</#if>"></span><@s.text name="manage.mapping.result.title"/></a></li></#if>
                             </#if>
                         </ul>
                     </nav>
@@ -311,6 +345,43 @@
                                 </div>
                             </section>
                         </#if>
+
+                        <#-- ROWS: how the rows of the table are made from the source rows -->
+                        <span class="mp-anchor" id="anchor-mp-rows"></span>
+                        <section id="mp-rows" class="mp-section">
+                            <div class="mp-sec-head"><h2><@s.text name="manage.mapping.rows.title"/></h2><span><@s.text name="manage.mapping.rows.desc"/></span></div>
+                            <div class="mp-cards mp-rowmodes">
+                                <#list ["ROW", "DISTINCT", "ITEMS"] as m>
+                                    <label class="mp-choice<#if rowMode == m> on</#if>">
+                                        <input type="radio" name="rowMode" value="${m}"<#if rowMode == m> checked</#if>>
+                                        <span class="t"><@s.text name="manage.mapping.rows.${m}"/></span>
+                                        <span class="d"><@s.text name="manage.mapping.rows.${m}.desc"/></span>
+                                    </label>
+                                </#list>
+                            </div>
+                            <div class="mp-rows-opts">
+                                <div class="mp-sentence" data-for="ITEMS"<#if rowMode != "ITEMS"> hidden</#if>>
+                                    <span><@s.text name="manage.mapping.rows.lists"/></span>
+                                    <select id="mp-split" name="splitColumns" multiple class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.rows.lists'/>">
+                                        <#list columns as col>
+                                            <option value="${col_index}"<#if splitColumns?seq_contains(col_index)> selected</#if>>${col}</option>
+                                        </#list>
+                                    </select>
+                                    <span><@s.text name="manage.mapping.rows.separator"/></span>
+                                    <input id="mp-separator" name="separator" class="form-control form-control-sm mp-sep" value="${mapping.separator!"|"}" aria-label="<@s.text name='manage.mapping.rows.separator'/>"/>
+                                </div>
+                                <div class="mp-sentence" data-for="DISTINCT ITEMS"<#if rowMode == "ROW"> hidden</#if>>
+                                    <label class="mp-merge-on"><input type="checkbox" class="form-check-input" id="mp-merge" name="merge" value="true"<#if mergeKey?has_content || rowMode == "DISTINCT"> checked</#if><#if rowMode == "DISTINCT"> disabled</#if>> <@s.text name="manage.mapping.rows.merge"/></label>
+                                    <select id="mp-mergekey" name="mergeKey" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.rows.merge'/>">
+                                        <#assign defaultKey = mergeKey?has_content?then(mergeKey, (primaryKey[0])!"")/>
+                                        <#list fields as fm>
+                                            <option value="${fm.field.name}"<#if fm.field.name == defaultKey> selected</#if>>${fm.field.name}<#if primaryKey?seq_contains(fm.field.name)> (<@s.text name="manage.mapping.field.pk"/>)</#if></option>
+                                        </#list>
+                                    </select>
+                                </div>
+                                <div id="mp-merge-info" class="ov-banner info compact" role="note"<#if rowMode == "ROW" || (rowMode == "ITEMS" && !mergeKey?has_content)> hidden</#if>><@icon name="info" class="ov-ic"/><span class="ov-grow"><@s.text name="manage.mapping.rows.merge.info"/></span></div>
+                            </div>
+                        </section>
 
                         <#-- FILTER -->
                         <#assign filterOn = mapping.filter.column?? && mapping.filter.comparator??/>
@@ -382,6 +453,50 @@
                                 </table>
                             </div>
                         </section>
+
+                        <#-- RESULT: the rows the saved mapping makes from the first source rows -->
+                        <#assign pv = action.getPreview()!/>
+                        <#if pv?has_content>
+                            <span class="mp-anchor" id="anchor-mp-result"></span>
+                            <section id="mp-result" class="mp-section">
+                                <div class="mp-sec-head"><h2><@s.text name="manage.mapping.result.title"/></h2><span><@s.text name="manage.mapping.result.desc"/></span></div>
+                                <#if !pv.columns?has_content>
+                                    <div class="mp-msg mu"><@icon name="info"/><span><@s.text name="manage.mapping.result.nothing"/></span></div>
+                                <#else>
+                                    <div class="mp-result-counts">
+                                        <span><@s.text name="manage.mapping.result.sourceRows"/>: <b>${pv.sourceRows?c}</b></span>
+                                        <#-- after merging: the rows the table gets -->
+                                        <span><@s.text name="manage.mapping.result.rowsMade"/>: <b>${(pv.rowsMade - pv.merged)?c}</b></span>
+                                        <#if pv.merged gt 0><span><@s.text name="manage.mapping.result.merged"/>: <b>${pv.merged?c}</b></span></#if>
+                                    </div>
+                                    <ul class="mp-checks">
+                                        <#list pv.problems as p><li class="bad"><@icon name="error"/><span>${action.problemText(p)}</span></li></#list>
+                                        <#list pv.conflicts as c>
+                                            <li class="bad"><@icon name="error"/><span><@s.text name="manage.mapping.result.conflict"><@s.param>${mapping.mergeKey!}</@s.param><@s.param>${c.key()}</@s.param><@s.param>${c.field()}</@s.param><@s.param>${c.first()!}</@s.param><@s.param>${c.firstLine()?c}</@s.param><@s.param>${c.other()!}</@s.param><@s.param>${c.otherLine()?c}</@s.param></@s.text></span></li>
+                                        </#list>
+                                        <#list pv.emptyRequired as f, n><li class="bad"><@icon name="error"/><span><@s.text name="manage.mapping.result.emptyRequired"><@s.param>${f}</@s.param><@s.param>${n?c}</@s.param></@s.text></span></li></#list>
+                                        <#list pv.linkChecks as l>
+                                            <#if l.missing()?has_content>
+                                                <li class="bad"><@icon name="error"/><span><@s.text name="manage.mapping.result.linkMissing"><@s.param>${l.field()}</@s.param><@s.param>${l.target()}</@s.param><@s.param>${l.missing()?size?c}</@s.param><@s.param><#list l.missing() as v><#if v?index lt 3>${v}<#sep>, </#sep></#if></#list></@s.param></@s.text></span></li>
+                                            <#else>
+                                                <li class="ok"><@icon name="check_circle"/><span><@s.text name="manage.mapping.result.linkOk"><@s.param>${l.field()}</@s.param><@s.param>${l.target()}</@s.param></@s.text></span></li>
+                                            </#if>
+                                        </#list>
+                                    </ul>
+                                    <div class="mp-result-table">
+                                        <table class="ov-table">
+                                            <thead><tr><th class="mp-rn"><@s.text name="manage.mapping.result.line"/></th><#list pv.columns as c><th>${c}</th></#list></tr></thead>
+                                            <tbody>
+                                                <#list pv.rows as r>
+                                                    <tr><td class="mp-rn">${r.line()?c}</td><#list r.values() as v><td>${v!}</td></#list></tr>
+                                                </#list>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <#if pv.rows?size lt pv.rowsMade - pv.merged><div class="mp-msg mu"><@s.text name="manage.mapping.result.shown"/>: ${pv.rows?size?c}</div></#if>
+                                </#if>
+                            </section>
+                        </#if>
                     </#if>
                 </div>
             </main>

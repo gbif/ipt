@@ -111,6 +111,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.io.TempDir;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -1055,6 +1056,42 @@ public class ResourceManagerImplTest extends IptBaseTest {
             + StringUtils.substringBefore(String.valueOf(e.getMessage()), "\n"));
       }
     }
+  }
+
+  /**
+   * resource.xml is written to a temporary file and moved into place: a save that fails while writing, e.g. on a value
+   * XStream can't convert, leaves the saved file as it was, and no temporary file behind.
+   */
+  @Test
+  public void testFailedSaveKeepsResourceXml(@TempDir java.nio.file.Path dir) throws Exception {
+    ResourceManagerImpl manager = getResourceManagerImpl();
+    File cfgFile = dir.resolve("res/resource.xml").toFile();
+    assertTrue(cfgFile.getParentFile().mkdirs());
+    Files.writeString(cfgFile.toPath(), "<resource/>");
+    Resource resource = new Resource();
+    resource.setShortname("res");
+    when(mockedDataDir.resourceFile(resource)).thenReturn(cfgFile);
+
+    // writes part of the file, then fails
+    ResourcePersister failing = mock(ResourcePersister.class);
+    org.mockito.Mockito.doAnswer(invocation -> {
+      ((java.io.Writer) invocation.getArgument(1)).write("<resource><half");
+      throw new com.thoughtworks.xstream.converters.ConversionException("No converter available");
+    }).when(failing).save(any(Resource.class), any(java.io.Writer.class));
+    java.lang.reflect.Field field = ResourceManagerImpl.class.getDeclaredField("resourcePersister");
+    field.setAccessible(true);
+    Object original = field.get(manager);
+    field.set(manager, failing);
+
+    assertThrows(InvalidConfigException.class, () -> manager.save(resource));
+    assertEquals("<resource/>", Files.readString(cfgFile.toPath()));
+    assertArrayEquals(new String[] {"resource.xml"}, cfgFile.getParentFile().list());
+
+    // and a save that works replaces it, again without a temporary file left
+    field.set(manager, original);
+    manager.save(resource);
+    assertTrue(Files.readString(cfgFile.toPath()).contains("<resource>"));
+    assertArrayEquals(new String[] {"resource.xml"}, cfgFile.getParentFile().list());
   }
 
   /**

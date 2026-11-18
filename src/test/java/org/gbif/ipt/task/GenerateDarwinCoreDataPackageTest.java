@@ -150,6 +150,64 @@ public class GenerateDarwinCoreDataPackageTest {
   }
 
   /**
+   * One row per distinct eventID: repeated identical rows become one, sorted by key.
+   */
+  @Test
+  public void testDistinctRowsMerge() throws Exception {
+    Source source = source("flat",
+        new String[] {"e2", "2020-01-02", "Aarhus"},
+        new String[] {"e1", "2020-01-01", "Copenhagen"},
+        new String[] {"e2", "2020-01-02", "Aarhus"},
+        new String[] {"e1", "2020-01-01", "Copenhagen"});
+    DataPackageMapping m = mapping(source,
+        new DataPackageFieldMapping(0, field("eventID")),
+        new DataPackageFieldMapping(1, field("eventDate")),
+        new DataPackageFieldMapping(2, field("locality")));
+    m.setRowMode(org.gbif.ipt.model.DataPackageRowMode.DISTINCT);
+    m.setMergeKey("eventID");
+
+    generator.addDataResource(eventTableSchema, List.of(m), true);
+
+    List<String> lines = Files.readAllLines(new File(dataPackageFolder, "event.csv").toPath(), StandardCharsets.UTF_8);
+    assertEquals(List.of(
+        "eventID,eventDate,locality",
+        "e1,2020-01-01,Copenhagen",
+        "e2,2020-01-02,Aarhus"), lines);
+  }
+
+  /**
+   * Rows with the same key but different values stop publishing: the IPT doesn't pick one.
+   */
+  @Test
+  public void testDistinctRowsConflictStopsPublishing() throws Exception {
+    Source source = source("flat",
+        new String[] {"e1", "2020-01-01"},
+        new String[] {"e1", "2020-01-05"});
+    DataPackageMapping m = mapping(source,
+        new DataPackageFieldMapping(0, field("eventID")),
+        new DataPackageFieldMapping(1, field("eventDate")));
+    m.setRowMode(org.gbif.ipt.model.DataPackageRowMode.DISTINCT);
+    m.setMergeKey("eventID");
+
+    GeneratorException e = assertThrows(GeneratorException.class,
+        () -> generator.addDataResource(eventTableSchema, List.of(m), true));
+    assertTrue(e.getMessage().contains("different values"), e.getMessage());
+  }
+
+  /**
+   * Merge lines keep tabs, line breaks, the separator and empty values.
+   */
+  @Test
+  public void testMergeLinesRoundTrip() {
+    String[] values = {"a\tb", null, "line\nbreak", "x\u001Fy", "back\\slash", ""};
+    String line = GenerateDarwinCoreDataPackage.MergeLines.write("k\t1", 42, values);
+    GenerateDarwinCoreDataPackage.MergeLines read = GenerateDarwinCoreDataPackage.MergeLines.read(line.substring(0, line.length() - 1));
+    assertEquals("k\t1", read.key());
+    assertEquals(42, read.line());
+    assertEquals(Arrays.asList(values), Arrays.asList(read.values()));
+  }
+
+  /**
    * The table schema is read from the installed file, not downloaded from its URL.
    */
   @Test

@@ -48,6 +48,13 @@ public class DataPackageMapping implements Serializable {
   private List<DataPackageFieldMapping> fields = new ArrayList<>();
   private int fieldsMapped;
   private RecordFilter filter;
+  // how the rows are made; null: one row per source row
+  private DataPackageRowMode rowMode;
+  // ITEMS: the source columns holding lists, and what separates their items
+  private List<Integer> splitColumns;
+  private String separator;
+  // DISTINCT (and optionally ITEMS): rows with the same value of this field merge into one
+  private String mergeKey;
   private Date lastModified;
 
   /**
@@ -138,6 +145,31 @@ public class DataPackageMapping implements Serializable {
   public String getLabel() {
     return (source != null ? source.getName() : "?") + " → "
         + (dataPackageTableSchemaName != null ? dataPackageTableSchemaName.getName() : "?");
+  }
+
+  /**
+   * @param splitColumns the source columns holding lists, copied: the resource file can't hold an immutable list
+   */
+  public void setSplitColumns(List<Integer> splitColumns) {
+    this.splitColumns = splitColumns == null ? null : new ArrayList<>(splitColumns);
+  }
+
+  /**
+   * @return how the rows are made, ROW when not set
+   */
+  public DataPackageRowMode getRowModeOrDefault() {
+    return rowMode == null ? DataPackageRowMode.ROW : rowMode;
+  }
+
+  /**
+   * @return the field rows merge by, null when they don't merge
+   */
+  public String getEffectiveMergeKey() {
+    DataPackageRowMode mode = getRowModeOrDefault();
+    if (mode == DataPackageRowMode.ROW || mergeKey == null || mergeKey.isBlank()) {
+      return null;
+    }
+    return mergeKey;
   }
 
   public DataPackageTableSchema getTableSchema() {

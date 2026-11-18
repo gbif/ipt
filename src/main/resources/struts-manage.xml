@@ -301,6 +301,12 @@
       <result name="error" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
     </action>
 
+    <action name="dataPackageTables" class="org.gbif.ipt.action.manage.DataPackageTablesAction">
+      <result name="input">/WEB-INF/pages/manage/dataPackageTables.ftl</result>
+      <result name="success" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+      <result name="cancel" type="redirect">${baseURL}/manage/resource.do?r=%{#parameters.r}</result>
+    </action>
+
     <action name="validationReport" class="org.gbif.ipt.action.manage.ValidationReportAction">
       <result>/WEB-INF/pages/manage/dp_validation_report.ftl</result>
     </action>

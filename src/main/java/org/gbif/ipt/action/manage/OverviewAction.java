@@ -61,9 +61,11 @@ import org.gbif.ipt.service.admin.UserAccountManager;
 import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.MetadataReader;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.DataPackageRowsPreview;
 import org.gbif.ipt.task.GenerateDataPackageFactory;
 import org.gbif.ipt.task.GenerateDwca;
 import org.gbif.ipt.task.GenerateDwcaFactory;
@@ -291,6 +293,47 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     this.schemaManager = schemaManager;
     this.resourcePublicationManager = resourcePublicationManager;
     this.metadataReader = metadataReader;
+  }
+
+  // set by Guice; not in the constructor, so the tests constructing this action stay as they are
+  private SourceManager sourceManager;
+
+  @Inject
+  public void setSourceManager(SourceManager sourceManager) {
+    this.sourceManager = sourceManager;
+  }
+
+  // mapping label, e.g. "messy \u2192 event", to the number of failed checks in its result rows; computed once
+  private Map<String, Integer> dataPackageResultProblems;
+
+  /**
+   * The data package mappings whose result rows (the first rows of their source, as on the mapping page) fail a check
+   * that stops publishing: rows with the same key but different values, broken links... Only a sample, so an empty
+   * map doesn't mean publishing works.
+   *
+   * @return mapping label to the number of failed checks, in mapping order
+   */
+  public Map<String, Integer> getDataPackageResultProblems() {
+    if (dataPackageResultProblems == null) {
+      dataPackageResultProblems = new LinkedHashMap<>();
+      if (resource != null && resource.getDataPackageMappings() != null && sourceManager != null) {
+        for (DataPackageMapping m : resource.getDataPackageMappings()) {
+          if (m.getSource() == null || !m.getSource().isReadable() || m.getDataPackageTableSchemaName() == null
+              || m.getTableSchema() == null) {
+            continue;
+          }
+          try {
+            int n = new DataPackageRowsPreview(m, resource.getDataPackageMappings(), sourceManager, 50, 0).getProblemCount();
+            if (n > 0) {
+              dataPackageResultProblems.merge(m.getSource().getName() + " \u2192 " + m.getDataPackageTableSchemaName().getName(), n, Integer::sum);
+            }
+          } catch (Exception e) {
+            LOG.debug("Couldn't check the result rows of a mapping of source {}: {}", m.getSource().getName(), e.getMessage());
+          }
+        }
+      }
+    }
+    return dataPackageResultProblems;
   }
 
   /**

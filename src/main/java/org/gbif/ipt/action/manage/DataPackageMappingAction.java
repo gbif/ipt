@@ -19,11 +19,13 @@ import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldConstraints;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageRowMode;
 import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataPackageTableSchemaForeignKey;
 import org.gbif.ipt.model.DataPackageTableSchemaName;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Source;
+import org.gbif.ipt.model.DataPackageValueKind;
 import org.gbif.ipt.model.SourceWithHeader;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -31,6 +33,8 @@ import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.task.DataPackageRowBuilder;
+import org.gbif.ipt.task.DataPackageRowsPreview;
 import org.gbif.ipt.task.GenerateDataPackage;
 
 import jakarta.inject.Inject;
@@ -42,13 +46,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
@@ -96,7 +100,6 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
   private DataPackageSchema dataPackageSchema;
   @Getter
   private Integer mid;
-  @Getter
   private DataPackageMapping mapping;
   @Getter
   private List<String> columns;
@@ -114,6 +117,8 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
   // fields filled in from matching column names on this visit, not saved yet
   @Getter
   private int automappedFields;
+  // the rows the saved mapping makes from the first source rows, see getPreview()
+  private DataPackageRowsPreview preview;
   // the sample values publishing rejects, see checkSamples()
   private Map<String, String> badSampleCells;
   private Map<String, List<String>> badTranslations;
@@ -160,14 +165,12 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
           savedFields.add(unresolved);
         }
       }
+      readGeneratedValues();
       mapping.setFields(savedFields);
-      int fieldsMapped = fields.stream()
-          .map(DataPackageFieldMapping::getIndex)
-          .filter(Objects::nonNull)
-          .map(f -> 1)
-          .reduce(0, Integer::sum);
+      int fieldsMapped = (int) fields.stream().filter(DataPackageFieldMapping::isMapped).count();
       mapping.setFieldsMapped(fieldsMapped);
     }
+    readRows();
     // update last modified dates
     Date lastModified = new Date();
     mapping.setLastModified(lastModified);
@@ -182,6 +185,77 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
 
     // back to the page with a GET, which shows the saved mapping
     return "save";
+  }
+
+  /**
+   * Reads how the rows are made (the Rows section) from the request. Read here, not bound by Struts: a list of columns
+   * that's emptied or a merge that's turned off posts nothing, which must clear the saved value.
+   */
+  private void readRows() {
+    if (req == null) {
+      return;
+    }
+    DataPackageRowMode mode = EnumUtils.getEnum(DataPackageRowMode.class, StringUtils.trimToNull(req.getParameter("rowMode")));
+    mapping.setRowMode(mode == DataPackageRowMode.ROW ? null : mode);
+    List<Integer> splitColumns = new ArrayList<>();
+    String[] split = req.getParameterValues("splitColumns");
+    if (split != null) {
+      for (String c : split) {
+        int i = NumberUtils.toInt(c, -1);
+        if (i >= 0 && !splitColumns.contains(i)) {
+          splitColumns.add(i);
+        }
+      }
+    }
+    mapping.setSplitColumns(mode == DataPackageRowMode.ITEMS && !splitColumns.isEmpty() ? splitColumns : null);
+    String separator = req.getParameter("separator");
+    mapping.setSeparator(mode == DataPackageRowMode.ITEMS && StringUtils.isNotEmpty(separator)
+        && !DataPackageRowBuilder.DEFAULT_SEPARATOR.equals(separator) ? separator : null);
+    boolean merge = mode == DataPackageRowMode.DISTINCT || (mode == DataPackageRowMode.ITEMS && req.getParameter("merge") != null);
+    mapping.setMergeKey(merge ? StringUtils.trimToNull(req.getParameter("mergeKey")) : null);
+  }
+
+  /**
+   * Reads the generated values of the fields (valueKind_N, template_N) from the request, for the same reason as
+   * {@link #readRows()}, and because an empty choice isn't an enum value Struts can convert.
+   */
+  private void readGeneratedValues() {
+    if (req == null || fields == null) {
+      return;
+    }
+    for (int i = 0; i < fields.size(); i++) {
+      DataPackageFieldMapping fm = fields.get(i);
+      DataPackageValueKind kind = EnumUtils.getEnum(DataPackageValueKind.class,
+          StringUtils.trimToNull(req.getParameter("valueKind_" + i)));
+      fm.setValueKind(kind);
+      fm.setTemplate(kind == DataPackageValueKind.TEMPLATE ? StringUtils.trimToNull(req.getParameter("template_" + i)) : null);
+      // a generated value replaces the column, except an ID made from it
+      if (kind != null && kind != DataPackageValueKind.ID) {
+        fm.setIndex(null);
+      }
+    }
+  }
+
+  /**
+   * @return the rows the saved mapping makes from the first 50 source rows, null for a new mapping
+   */
+  public DataPackageRowsPreview getPreview() {
+    if (preview == null && mapping != null && mid != null && resource.getDataPackageMapping(mid) != null
+        && mapping.getSource() != null && mapping.getSource().isReadable()) {
+      preview = new DataPackageRowsPreview(mapping, resource.getDataPackageMappings(), sourceManager, 50, 20);
+    }
+    return preview;
+  }
+
+  /**
+   * @return the text of a problem a mapping has making its rows
+   */
+  public String problemText(DataPackageRowBuilder.Problem problem) {
+    return getText(problem.key(), problem.params());
+  }
+
+  public DataPackageRowMode[] getRowModes() {
+    return DataPackageRowMode.values();
   }
 
   /**
@@ -801,6 +875,11 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
     ActionInvocation invocation = ActionContext.getContext().getActionInvocation();
     String actionMethod = invocation.getProxy().getMethod();
     return "delete".equals(actionMethod);
+  }
+
+  @StrutsParameter(depth = 2)
+  public DataPackageMapping getMapping() {
+    return mapping;
   }
 
   @StrutsParameter(depth = 2)

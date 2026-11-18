@@ -7,6 +7,9 @@
     --s2-font-size: 1rem;
     --s2-height: calc(1.5em + .75rem + 2px);
     --s2-padding-x: .75rem;
+    /* where the chevron sits: .75rem from the right edge at every size, as on a Bootstrap 5 form-select (form-select-sm
+       makes only the text padding smaller), so select2 and plain selects line up */
+    --s2-chevron-x: .75rem;
     --s2-radius: var(--bs-border-radius);
     --s2-color: #4e565f;
     --s2-muted: #6c757d;
@@ -63,12 +66,12 @@ select.is-invalid ~ .select2-container--bootstrap4.select2-container--open .sele
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered {
     line-height: calc(var(--s2-height) - 2px);
     padding-left: var(--s2-padding-x);
-    padding-right: calc(var(--s2-padding-x) + 16px + .5rem);
+    padding-right: calc(var(--s2-chevron-x) + 16px + .5rem);
     color: var(--s2-color);
 }
 
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__rendered:has(.select2-selection__clear) {
-    padding-right: calc(var(--s2-padding-x) + 16px + .5rem + 1.5rem);
+    padding-right: calc(var(--s2-chevron-x) + 16px + .5rem + 1.5rem);
 }
 
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__placeholder {
@@ -79,7 +82,7 @@ select.is-invalid ~ .select2-container--bootstrap4.select2-container--open .sele
 /* the chevron of a Bootstrap 5 form-select, turned over while the list is open */
 .select2-container--bootstrap4 .select2-selection--single .select2-selection__arrow {
     top: 0;
-    right: var(--s2-padding-x);
+    right: var(--s2-chevron-x);
     width: 16px;
     height: 100%;
     background: var(--s2-chevron) no-repeat center / 16px 12px;
@@ -111,7 +114,7 @@ select.is-invalid ~ .select2-container--bootstrap4.select2-container--open .sele
     display: block;
     position: absolute;
     top: 50%;
-    right: calc(var(--s2-padding-x) + 16px + .25rem);
+    right: calc(var(--s2-chevron-x) + 16px + .25rem);
     float: none;
     width: 1.5rem;
     height: 1.5rem;

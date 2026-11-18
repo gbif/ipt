@@ -88,6 +88,8 @@
                 mirrored: $row.attr('data-mirrored') === 'true',
                 search: $row.attr('data-search') || '',
                 $col: $row.find('.mp-col'),
+                // data package mappings: a generated value (list item, key, template...), js/dp-rows.js
+                $gen: $row.find('.mp-gen-kind'),
                 $const: $const,
                 $doi: $row.find('#doiUsedForDatasetId'),
                 $samples: $row.find('.mp-samples'),
@@ -107,13 +109,20 @@
         var byIndex = {};
         fields.forEach(function (f) { byIndex[f.i] = f; });
 
+        // a generated value other than an ID made from the column doesn't use the column
+        function generated(f) {
+            var g = f.$gen && f.$gen.length ? f.$gen.val() : '';
+            return g ? g : '';
+        }
         function colOf(f) {
+            var g = generated(f);
+            if (g && g !== 'ID') return -1;
             var v = f.$col.val();
             return v === '' || v == null ? -1 : +v;
         }
         function isMapped(f) {
             if (f.mirrored) return idMode() === 'column' && idCol() >= 0;
-            return colOf(f) >= 0 || $.trim(f.$const.val() || '') !== '' || f.$doi.is(':checked');
+            return colOf(f) >= 0 || generated(f) !== '' || $.trim(f.$const.val() || '') !== '' || f.$doi.is(':checked');
         }
         function hasTranslations(f) {
             return colOf(f) >= 0 && Object.keys(f.tr).length > 0;
@@ -156,7 +165,9 @@
                 var noConst = $.trim(f.$const.val() || '') === '';
                 var empty = samples.filter(function (s) { return s.state === 'empty'; }).length;
                 if (f.required && noConst && empty) out.push({cls: 'bad', text: fmt(i18n.msgRequiredEmpty, empty)});
-                if (f.unique) {
+                // rows merged by key or made per list item aren't the source rows: their samples can repeat
+                var perRow = ($('#mp-rows input[name=rowMode]:checked').val() || 'ROW') === 'ROW';
+                if (f.unique && perRow) {
                     var vals = samples.map(function (s) { return $.trim(s.pub); });
                     var dup = vals.filter(function (v, k) { return v && vals.indexOf(v) !== k; });
                     if (dup.length) out.push({cls: 'bad', text: fmt(i18n.idDup, dup.filter(function (v, k) { return dup.indexOf(v) === k; }).join(', '))});
@@ -266,7 +277,7 @@
         var $filterOn = $('#mp-filter-on'), $fCol = $('#filterName'), $fCmp = $('#filterComp'), $fParam = $('#filterParam'), $fTime = $('#filterTime');
         function renderFilter() {
             var on = $filterOn.is(':checked');
-            $('.mp-sentence').toggleClass('off', !on);
+            $('#mp-filter .mp-sentence').toggleClass('off', !on);
             $('#mp-filter-off').prop('hidden', on);
             if (!on) {
                 // submitted empty, so a saved filter is removed
@@ -296,7 +307,7 @@
                         v = $.trim(v);
                         var keep = cmp === 'IsNULL' ? !v : cmp === 'IsNotNULL' ? !!v : cmp === 'Equals' ? !!v && v === param : !v || v !== param;
                         if (keep) kept++;
-                        return '<tr class="' + (keep ? '' : 'skip') + '"><td>' + esc(keep ? '\u2713 ' + i18n.filterKept : '\u2717 ' + i18n.filterSkipped) + '</td>' +
+                        return '<tr class="' + (keep ? '' : 'skip') + '"><td class="mp-keep">' + spriteIcon(keep ? 'check' : 'close') + esc(keep ? i18n.filterKept : i18n.filterSkipped) + '</td>' +
                             shown.map(function (c) { var x = sample(c, ri).v; return '<td>' + (x ? esc(x) : '<i>' + esc(i18n.empty) + '</i>') + '</td>'; }).join('') + '</tr>';
                     }).join('') + '</table></div><div class="mp-msg mu">' + esc(fmt(i18n.filterPreview, kept, rows.length)) + '</div>';
             }
@@ -453,7 +464,7 @@
             }
             // under the heading: error / warning icon, as in the alerts (the same markup as the <@icon> macro)
             $status.html(items.map(function (item) {
-                var icon = '<svg class="material-icon" aria-hidden="true" focusable="false"><use href="' + esc(i18n.sprite) + '#' + (item.cls === 'bad' ? 'error' : 'warning') + '"/></svg>';
+                var icon = spriteIcon(item.cls === 'bad' ? 'error' : 'warning');
                 return link(item, 'ov-link-btn ' + item.cls, icon + esc(item.text));
             }).join('<span class="mp-status-sep" aria-hidden="true">\u00b7</span>'));
             // the sidebar card (dataPackageMapping.ftl), as on the resource overview. With nothing to fix it doesn't say
@@ -538,7 +549,9 @@
         $('#mp-discard').on('click', function () { submitting = true; });
 
         // ---------- events ----------
-        $form.on('change input', '.mp-col, .mp-const, #doiUsedForDatasetId', function () {
+        // how the rows are made (data package mappings): only saved, nothing to render here
+        $('#mp-rows').on('change input', 'input, select', function () { renderAll(); markDirty(); });
+        $form.on('change input', '.mp-col, .mp-const, .mp-gen-kind, .mp-gen-tpl, #doiUsedForDatasetId', function () {
             var f = byIndex[$(this).closest('.mp-field').attr('data-i')];
             if (f) renderField(f);
             renderNoIdWarning();
@@ -642,6 +655,11 @@
             if (view !== 'field') setView('field');
             setOpen($('#mp-group-' + $(this).attr('data-group-link')), true);
         });
+
+        // ---------- a Material icon from the sprite, the same markup as the <@icon> macro ----------
+        function spriteIcon(name) {
+            return '<svg class="material-icon" aria-hidden="true" focusable="false"><use href="' + esc(i18n.sprite) + '#' + name + '"/></svg>';
+        }
 
         // ---------- dropdowns with search (select2), as on the other IPT pages ----------
         function select2(selector, opts) {

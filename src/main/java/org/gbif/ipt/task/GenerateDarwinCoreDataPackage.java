@@ -39,12 +39,14 @@ import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.utils.file.ClosableReportingIterator;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -74,6 +76,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.code.externalsorting.ExternalSort;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -554,7 +557,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
         if (dataPackageMapping.getDataPackageTableSchemaName().getName().equals(tableSchema.getName())) {
           // filter those that are mapped or have a default value
           dataPackageMapping.getFields().stream()
-              .filter(dpfm -> dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))
+              .filter(DataPackageFieldMapping::isMapped)
               .forEach(dpfm -> {
                 if (dpfm.getField() != null && dpfm.getField().getName() != null) {
                   mappedFieldNames.add(dpfm.getField().getName());
@@ -596,7 +599,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
             headerWritten = true;
           }
 
-          dumpData(writer, columns, dataPackageMapping);
+          dumpData(writer, columns, dataPackageMapping, allMappings);
 
           // store record number by extension rowType
           recordsByTableSchema.put(tableSchema.getName(), currRecords);
@@ -667,10 +670,12 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    * @param writer file writer for single data resource
    * @param columns output columns (field names) of the data resource, in order
    * @param schemaMapping schema mapping
+   * @param allMappings all mappings of the resource, for keys linked to another table's mapping
    * @throws GeneratorException if there was an error writing data resource for mapping.
    * @throws InterruptedException if the thread was interrupted
    */
-  private void dumpData(Writer writer, List<String> columns, DataPackageMapping schemaMapping)
+  private void dumpData(Writer writer, List<String> columns, DataPackageMapping schemaMapping,
+                        List<DataPackageMapping> allMappings)
       throws GeneratorException, InterruptedException {
     RecordFilter filter = schemaMapping.getFilter();
     long recordsWithError = 0;
@@ -683,7 +688,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     // field mappings of this mapping that are mapped or have a default value by field name
     Map<String, DataPackageFieldMapping> mappingsByFieldName = new HashMap<>();
     for (DataPackageFieldMapping dpfm : schemaMapping.getFields()) {
-      if (dpfm.getField() != null && (dpfm.getIndex() != null || StringUtils.isNotEmpty(dpfm.getDefaultValue()))) {
+      if (dpfm.getField() != null && dpfm.isMapped()) {
         mappingsByFieldName.put(dpfm.getField().getName(), dpfm);
       }
     }
@@ -694,13 +699,32 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
         .map(mappingsByFieldName::get)
         .collect(Collectors.toList());
 
-    Optional<Integer> maxColumnIndexOpt = usedMappings.stream()
-        .filter(Objects::nonNull)
-        .map(DataPackageFieldMapping::getIndex)
+    Optional<Integer> maxColumnIndexOpt = java.util.stream.Stream.concat(
+            usedMappings.stream().filter(Objects::nonNull).map(DataPackageFieldMapping::getIndex),
+            schemaMapping.getSplitColumns() == null ? java.util.stream.Stream.empty() : schemaMapping.getSplitColumns().stream())
         .filter(Objects::nonNull)
         .max(Comparator.naturalOrder());
 
+    // the rows of this mapping's table made from each source row: one, or one per list item, with generated values
+    DataPackageRowBuilder rowBuilder = new DataPackageRowBuilder(schemaMapping, columns, allMappings,
+        sourceManager.columns(schemaMapping.getSource()));
+    if (!rowBuilder.getProblems().isEmpty()) {
+      for (DataPackageRowBuilder.Problem problem : rowBuilder.getProblems()) {
+        addMessage(Level.ERROR, "Mapping " + schemaMapping.getLabel() + ": " + problem);
+      }
+      throw new GeneratorException("Mapping " + schemaMapping.getLabel() + " can't make its rows: "
+          + rowBuilder.getProblems().get(0));
+    }
+    // rows merging by a key go to a file first, sorted by key afterwards
+    boolean merging = rowBuilder.getMergeColumn() >= 0;
+    File mergeFile = null;
+    Writer mergeWriter = null;
+
     try {
+      if (merging) {
+        mergeFile = Files.createTempFile("dp-merge", ".txt").toFile();
+        mergeWriter = org.gbif.utils.file.FileUtils.startNewUtf8File(mergeFile);
+      }
       // get the source iterator
       iter = sourceManager.rowIterator(schemaMapping.getSource());
 
@@ -769,18 +793,32 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
             applyTranslations(usedMappings, in, translated);
           }
 
-          // concatenate values
-          String newRow = commaRow(translated);
+          for (String[] built : rowBuilder.build(in)) {
+            if (merging) {
+              mergeWriter.write(MergeLines.write(built[rowBuilder.getMergeColumn()], line, built));
+              continue;
+            }
+            // concatenate values
+            String newRow = commaRow(built);
 
-          // write a new row (skip if null)
-          if (newRow != null) {
-            writer.write(newRow);
-            currRecords++;
+            // write a new row (skip if null)
+            if (newRow != null) {
+              writer.write(newRow);
+              currRecords++;
+            }
           }
         }
       }
+      if (merging) {
+        mergeWriter.close();
+        mergeWriter = null;
+        writeMerged(writer, columns, schemaMapping, mergeFile);
+      }
     } catch (InterruptedException e) {
       // set the last error report!
+      setState(e);
+      throw e;
+    } catch (GeneratorException e) {
       setState(e);
       throw e;
     } catch (Exception e) {
@@ -791,6 +829,16 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       throw new GeneratorException("Error writing Data Resource for mapping " + currTableSchema
           + " in source " + schemaMapping.getSource().getName() + ", line " + line, e);
     } finally {
+      if (mergeWriter != null) {
+        try {
+          mergeWriter.close();
+        } catch (IOException e) {
+          log.error("Error while closing the merge file", e);
+        }
+      }
+      if (mergeFile != null) {
+        FileUtils.deleteQuietly(mergeFile);
+      }
       if (iter != null) {
         // Exception on advancing cursor encountered?
         if (!iter.hasRowError() && iter.getErrorMessage() != null) {
@@ -834,6 +882,126 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
           + " line(s) did not match the filter criteria and got skipped " + mp);
     } else {
       writePublicationLogMessage("All lines match the filter criteria" + mp);
+    }
+  }
+
+  /**
+   * Writes the rows of a merging mapping: sorted by key, one row per key. Rows with the same key and the same values
+   * are one row; rows with the same key but different values stop publishing, the IPT doesn't pick a value.
+   */
+  private void writeMerged(Writer writer, List<String> columns, DataPackageMapping schemaMapping, File mergeFile)
+      throws IOException, GeneratorException, InterruptedException {
+    File sorted = Files.createTempFile("dp-merge-sorted", ".txt").toFile();
+    long merged = 0;
+    long conflicting = 0;
+    try {
+      List<File> batches = ExternalSort.sortInBatch(mergeFile, ExternalSort.defaultcomparator,
+          ExternalSort.DEFAULTMAXTEMPFILES, StandardCharsets.UTF_8, null, false);
+      ExternalSort.mergeSortedFiles(batches, sorted, ExternalSort.defaultcomparator, StandardCharsets.UTF_8);
+      try (BufferedReader reader = Files.newBufferedReader(sorted.toPath(), StandardCharsets.UTF_8)) {
+        MergeLines first = null;
+        boolean firstConflicting = false;
+        long n = 0;
+        for (String l = reader.readLine(); l != null; l = reader.readLine()) {
+          if (++n % 1000 == 0) {
+            checkForInterruption(n);
+          }
+          MergeLines row = MergeLines.read(l);
+          if (first != null && first.key().equals(row.key())) {
+            merged++;
+            List<DataPackageRowBuilder.Conflict> conflicts = DataPackageRowBuilder.compare(columns, row.key(),
+                first.values(), first.line(), row.values(), row.line());
+            if (!conflicts.isEmpty()) {
+              if (!firstConflicting) {
+                conflicting++;
+                firstConflicting = true;
+                if (conflicting <= 20) {
+                  DataPackageRowBuilder.Conflict c = conflicts.get(0);
+                  addMessage(Level.ERROR, schemaMapping.getLabel() + ": " + schemaMapping.getEffectiveMergeKey() + " "
+                      + c.key() + " has different values for " + c.field() + ": \"" + StringUtils.defaultString(c.first())
+                      + "\" (line " + c.firstLine() + ") and \"" + StringUtils.defaultString(c.other()) + "\" (line "
+                      + c.otherLine() + ")");
+                }
+              }
+            }
+            continue;
+          }
+          first = row;
+          firstConflicting = false;
+          String newRow = commaRow(row.values());
+          if (newRow != null) {
+            writer.write(newRow);
+            currRecords++;
+          }
+        }
+      }
+    } finally {
+      Files.deleteIfExists(sorted.toPath());
+    }
+    if (merged > 0) {
+      addMessage(Level.INFO, merged + " repeated row(s) merged by " + schemaMapping.getEffectiveMergeKey()
+          + " for mapping " + schemaMapping.getLabel());
+    }
+    if (conflicting > 0) {
+      throw new GeneratorException(conflicting + " " + schemaMapping.getEffectiveMergeKey() + " value(s) of mapping "
+          + schemaMapping.getLabel() + " have rows with different values. Make the source agree, or map the fields "
+          + "that differ elsewhere.");
+    }
+  }
+
+  /**
+   * A row of a merging mapping in the merge file: key, source line and values on one line, so the file sorts by key and,
+   * within a key, by line.
+   */
+  record MergeLines(String key, long line, String[] values) {
+    private static final char SEP = '\u001F';
+    private static final String NULL = "\\0";
+
+    static String write(String key, long line, String[] values) {
+      StringBuilder sb = new StringBuilder(escape(key)).append('\t').append(String.format(Locale.ROOT, "%015d", line));
+      for (String v : values) {
+        sb.append(SEP).append(v == null ? NULL : escape(v));
+      }
+      return sb.append('\n').toString();
+    }
+
+    static MergeLines read(String l) {
+      int tab = l.indexOf('\t');
+      String key = unescape(l.substring(0, tab));
+      String[] parts = l.substring(tab + 1).split(String.valueOf(SEP), -1);
+      String[] values = new String[parts.length - 1];
+      for (int i = 1; i < parts.length; i++) {
+        values[i - 1] = NULL.equals(parts[i]) ? null : unescape(parts[i]);
+      }
+      return new MergeLines(key, Long.parseLong(parts[0]), values);
+    }
+
+    private static String escape(String v) {
+      if (v == null) {
+        return "";
+      }
+      return v.replace("\\", "\\\\").replace("\t", "\\t").replace("\n", "\\n").replace("\r", "\\r")
+          .replace(String.valueOf(SEP), "\\u");
+    }
+
+    private static String unescape(String v) {
+      StringBuilder sb = new StringBuilder(v.length());
+      for (int i = 0; i < v.length(); i++) {
+        char c = v.charAt(i);
+        if (c == '\\' && i + 1 < v.length()) {
+          char n = v.charAt(++i);
+          switch (n) {
+            case 't' -> sb.append('\t');
+            case 'n' -> sb.append('\n');
+            case 'r' -> sb.append('\r');
+            case 'u' -> sb.append(SEP);
+            default -> sb.append(n);
+          }
+        } else {
+          sb.append(c);
+        }
+      }
+      return sb.toString();
     }
   }
 

@@ -1,370 +1,203 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMappingAction" -->
+<#-- "Map tables": the one way into new data package mappings. Asks how to map: one table at a time (source + table
+     pairs, dataPackageMappingSourceCreate.do), or, for DwC-DP, split a flat source into tables (dataPackageTables.do).
+     ?from=<source> preselects a source, ?how=SPLIT opens the second card -->
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
-<title><@s.text name='manage.mapping.title'/></title>
+<title><@s.text name="manage.mapping.new.title"/>: ${resource.title!resource.shortname}</title>
 <#assign currentMenu = "manage"/>
-<link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
+<link rel="stylesheet" href="${baseURL}/styles/overview.css">
+<link rel="stylesheet" href="${baseURL}/styles/mapping.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
 <script src="${baseURL}/js/select2/select2-4.0.13.full.min.js"></script>
-
-<style>
-    .select2-container--default .select2-results__option--highlighted[aria-selected] {
-        background-color: rgba(0, 0, 0, .08) !important;
-    }
-
-    .select2-results__option--highlighted .select2-result__title {
-        color: #575757 !important;
-    }
-
-    .select2-result__title {
-        color: #575757;
-        font-weight: 700;
-        word-wrap: break-word;
-        line-height: 1.1;
-        margin-bottom: 4px;
-    }
-
-    .select2-results__option--highlighted .select2-result__title {
-        color: white;
-    }
-
-    .select2-result {
-        padding-top: 4px;
-        padding-bottom: 3px;
-    }
-
-    .select2-result__meta {
-        margin-left: 10px;
-    }
-
-    .select2-result__description, .select2-result__comments {
-        font-size: 13px;
-        color: #777;
-        margin-top: 4px;
-    }
-
-    .select2-result__comments {
-        font-style: italic;
-    }
-
-    .select2-result__type {
-        display: inline-block;
-        color: #777;
-        font-size: 11px;
-    }
-
-    .select2-result__type {
-        margin-right: 1em;
-    }
-</style>
-
-<script>
-    $(document).ready(function () {
-        <#if dataPackageSchema.name == "dwc-dp">
-        const dataPackageTables = [
-            <#list dataPackageSchema.tableSchemas as tableSchema>
-            {
-                "identifier": "${tableSchema.identifier?js_string}",
-                "name": "${tableSchema.name?js_string}",
-                "title": "${(tableSchema.title!"")?js_string}",
-                "description": "${(tableSchema.description!"")?js_string}",
-                "comments": "${(tableSchema.comments!"")?js_string}",
-                "examples": "${(tableSchema.examples!"")?js_string}",
-                "totalFields": ${tableSchema.fields?size}
-            }<#if tableSchema_has_next>, </#if>
-            </#list>
-        ];
-
-        var tables;
-
-        fetch('${baseURL}/js/dwc-dp/dwc-dp-types-minimal.json')
-            .then(response => response.json())
-            .then(dataPackageTypes => {
-                tables = dataPackageTables.map(schema => ({
-                    id: schema.name,
-                    text: schema.title,
-                    name: schema.name,
-                    description: schema.description,
-                    totalFields: schema.totalFields,
-                    comments: schema.comments,
-                    examples: schema.examples,
-                    type: dataPackageTypes[schema.name]?.type || ""
-                }));
-
-                $("#newTableSchemas\\[0\\]").select2({
-                    data: tables,
-                    placeholder: 'Select a table schema',
-                    templateResult: formatDataPackage,
-                    templateSelection: formatDataPackageSelection,
-                    width: "100%",
-                    theme: 'bootstrap4'
-                });
-            });
-
-        $("#newSources\\[0\\]").select2({
-            placeholder: 'Select a source',
-            language: {
-                noResults: function () {
-                    return '${selectNoResultsFound}';
-                }
-            },
-            width: "100%",
-            theme: 'bootstrap4'
-        });
-
-        function formatDataPackage (schema) {
-            var $container = $(
-                "<div class='select2-result clearfix'>" +
-                "<div class='select2-result__meta'>" +
-                "<div class='select2-result__title'></div>" +
-                "<div class='select2-result__description'></div>" +
-                "<div class='select2-result__comments'></div>" +
-                "<div class='select2-result__statistics'>" +
-                "<div class='select2-result__type'>" +
-                "<i class='bi bi-circle-fill fs-smaller-2 color-dwc-dp-" + schema.type + "'></i>" +
-                "<span class='ms-1'>" + schema.type + "</span>" +
-                "<span class='ms-1'>|</span>" +
-                "<span class='ms-1'>" + schema.totalFields + " fields</span>" +
-                "</div>" +
-                "</div>" +
-                "</div>" +
-                "</div>"
-            );
-
-            $container.find(".select2-result__title").text(schema.text);
-            $container.find(".select2-result__description").text(schema.description);
-            $container.find(".select2-result__comments").text(schema.comments);
-
-            return $container;
-        }
-
-        function formatDataPackageSelection (repo) {
-            return repo.full_name || repo.text;
-        }
-        </#if>
-
-        $("#schemaFile").select2({
-            placeholder: '',
-            language: {
-                noResults: function () {
-                    return '${selectNoResultsFound}';
-                }
-            },
-            width: "100%",
-            minimumResultsForSearch: 15,
-            theme: 'bootstrap4'
-        });
-        $("#source").select2({
-            placeholder: '',
-            language: {
-                noResults: function () {
-                    return '${selectNoResultsFound}';
-                }
-            },
-            width: "100%",
-            minimumResultsForSearch: 15,
-            theme: 'bootstrap4'
-        });
-
-        function calculateNumberOfItems(name) {
-            return $("#mappings .item").length + 1;
-        }
-
-        $("#plus-mapping").click(function (event) {
-            event.preventDefault();
-            addNewMappingItem(true);
-        });
-
-        function addNewMappingItem(effects) {
-            var mappingItems = calculateNumberOfItems("mapping");
-            var newItem = $('#baseItem').clone();
-            if (effects) newItem.hide();
-            newItem.appendTo('#mappings');
-
-            if (effects) {
-                newItem.slideDown('slow');
-            }
-
-            setMappingItemIndex(newItem, mappingItems);
-
-            <#if dataPackageSchema.name == 'dwc-dp'>
-            $("#newTableSchemas\\[" + mappingItems + "\\]").select2({
-                data: tables,
-                placeholder: 'Select a table schema',
-                templateResult: formatDataPackage,
-                templateSelection: formatDataPackageSelection,
-                width: "100%",
-                theme: 'bootstrap4'
-            });
-
-            $("#newSources\\[" + mappingItems + "\\]").select2({
-                placeholder: 'Select a source',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                theme: 'bootstrap4'
-            });
-            </#if>
-        }
-
-        $(".removeMappingLink").click(function (event) {
-            removeMappingItem(event);
-        });
-
-        function removeMappingItem(event) {
-            event.preventDefault();
-            var $target = $(event.target);
-            if (!$target.is('a')) {
-                $target = $(event.target).closest('a');
-            }
-            $('#mapping-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
-                $(this).remove();
-                $("#mappings .item").each(function (index) {
-                    setMappingItemIndex($(this), index + 1);
-                });
-
-            });
-        }
-
-        function setMappingItemIndex(item, index) {
-            item.attr("id", "mapping-item-" + index);
-
-            $("#mapping-item-" + index + " [id^='mapping-removeLink']").attr("id", "mapping-removeLink-" + index);
-            $("#mapping-removeLink-" + index).click(function (event) {
-                removeMappingItem(event);
-            });
-
-            $("#mapping-item-" + index + " [id^='newTableSchemas']").attr("id", "newTableSchemas[" + index + "]").attr("name", function () {
-                return $(this).attr("id");
-            });
-            $("#mapping-item-" + index + " [for^='newTableSchemas']").attr("for", "newTableSchemas[" + index + "]");
-
-            $("#mapping-item-" + index + " [id^='newSources']").attr("id", "newSources[" + index + "]").attr("name", function () {
-                return $(this).attr("id");
-            });
-            $("#mapping-item-" + index + " [for^='newSources']").attr("for", "additionalSource[" + index + "]");
-        }
-    });
-</script>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<#include "/WEB-INF/pages/macros/forms.ftl"/>
 
-<div class="container px-0">
+<#assign isDwcDp = dataPackageSchema.name == "dwc-dp"/>
+<#assign from = (Parameters.from)!""/>
+<#assign how = (isDwcDp && ((Parameters.how)!"") == "SPLIT")?then("SPLIT", "ONE")/>
+<#assign readableSources = resource.sources?filter(x -> x.readable)/>
+
+<#macro sourceOptions selected>
+    <#list resource.sources as src>
+        <option value="${src.name}"<#if src.name == selected> selected</#if>>${src.name}</option>
+    </#list>
+</#macro>
+
+<#macro pairRow i selected>
+    <div class="mt-pair" data-i="${i}">
+        <div>
+            <label class="mt-label" for="newSources[${i}]"><@s.text name="manage.mapping.source"/></label>
+            <select id="newSources[${i}]" name="newSources[${i}]" class="form-select form-select-sm mt-source">
+                <@sourceOptions selected/>
+            </select>
+        </div>
+        <div>
+            <label class="mt-label" for="newTableSchemas[${i}]"><@s.text name="manage.mapping.new.table"/></label>
+            <select id="newTableSchemas[${i}]" name="newTableSchemas[${i}]" class="form-select form-select-sm mt-table">
+                <#list dataPackageSchema.tableSchemas as t>
+                    <option value="${t.name}">${t.title!t.name}</option>
+                </#list>
+            </select>
+        </div>
+        <button type="button" class="ov-link-btn mt-remove" title="<@s.text name='manage.mapping.delete'/>"<#if i == 0> hidden</#if>><@icon name="close"/></button>
+    </div>
+</#macro>
+
+<div class="container px-0 ov-alerts">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
-<form class="topForm" action="dataPackageMappingSourceCreate.do" method="post">
-    <div class="container-fluid bg-body border-bottom">
-        <div class="container bg-body border rounded-2 mb-4">
-            <div class="container p-3 my-3">
-                <div class="text-center fs-smaller">
+<div class="container-fluid border-bottom">
+    <div class="container bg-body border rounded-2 mb-4">
+        <div class="container my-3 p-3 ov-head">
+            <div class="ov-grow">
+                <div class="fs-smaller">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                            <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping"/></li>
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item"><a href="resource.do?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="manage.mapping.new.title"/></li>
                         </ol>
                     </nav>
                 </div>
-
-                <div class="text-center">
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                        <@s.text name="manage.mapping.title"/>
-                    </h1>
-
-                    <div class="text-center fs-smaller">
-                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                    </div>
-
-                    <div class="my-2">
-                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save"/>
-                        <a href="resource.do?r=${resource.shortname}" class="button btn btn-sm btn-outline-secondary top-button"><@s.text name="button.cancel"/></a>
-                    </div>
-
-                </div>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-3 fw-normal"><@s.text name="manage.mapping.new.title"/></h1>
+                <div class="ov-meta"><span>${resource.title!resource.shortname}</span></div>
+            </div>
+            <div class="ov-acts">
+                <button type="submit" id="mt-continue" form="mt-one" class="btn btn-sm btn-gbif-solid top-button"><@s.text name="manage.mapping.new.continue"/></button>
+                <a class="btn btn-sm btn-outline-secondary top-button" href="resource.do?r=${resource.shortname}"><@s.text name="button.back"/></a>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="container-fluid bg-body">
-        <div class="container pt-4">
-            <p class="fst-italic text-center">${dataPackageSchema.description}</p>
-
-            <input type="hidden" name="r" value="${resource.shortname}" />
-            <input type="hidden" name="id" value="${dataPackageSchema.identifier}" />
-            <input type="hidden" name="schemaName" value="${dataPackageSchema.name}" />
-            <input type="hidden" name="mid" value="${mid!}" />
-            <input id="showAllValue" type="hidden" name="showAll" value="${Parameters.showAll!"true"}" />
-
-            <p class="text-center"><@s.text name='manage.mapping.source.help'/></p>
-
-            <div id="mappings">
-                <div class="row">
-                    <#if dataPackageSchema.name=="dwc-dp">
-                        <div class="col-sm-6">
-                            <@selectList name="newSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
-                        </div>
-                        <div class="col-sm-6">
-                            <@selectList name="newTableSchemas[0]" options="" objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
-                        </div>
-                    <#else>
-                        <div class="col-sm-6">
-                            <@selectList name="newTableSchemas[0]" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
-                        </div>
-                        <div class="col-sm-6">
-                            <@selectList name="newSources[0]" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
-                        </div>
-                    </#if>
-                </div>
-            </div>
-
-            <div class="mb-4">
-                <div class="addNew my-2">
-                    <a id="plus-mapping" href="" class="metadata-action-link">
-                        <span>
-                            <svg viewBox="0 0 24 24" class="link-icon">
-                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                            </svg>
-                        </span>
-                        <span><@s.text name="manage.mapping.add"/></span>
-                    </a>
-                </div>
-            </div>
-
-
-            <div id="baseItem" class="row item" style="display: none;">
-                <div class="columnLinks mt-2 d-flex justify-content-end">
-                    <a id="mapping-removeLink" href="" class="metadata-action-link removeMappingLink">
-                        <span>
-                            <svg viewBox="0 0 24 24" style="fill: rgb(var(--link-color));height: 1em;vertical-align: -0.125em !important;">
-                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
-                            </svg>
-                        </span>
-                        <span><@s.text name="manage.mapping.delete"/></span>
-                    </a>
-                </div>
-                <#if dataPackageSchema.name=="dwc-dp">
-                    <div class="col-sm-6">
-                        <@selectList name="newSourcesBase" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
-                    </div>
-                    <div class="col-sm-6">
-                        <@selectList name="newTableSchemasBase" options="" objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
-                    </div>
-                <#else>
-                    <div class="col-sm-6">
-                        <@selectList name="newTableSchemasBase" options=dataPackageSchema.tableSchemas objValue="name" objTitle="name" i18nkey="${dataPackageSchema.shortTitle!'manage.mapping.tableSchema'}" requiredField=true />
-                    </div>
-                    <div class="col-sm-6">
-                        <@selectList name="newSourcesBase" options=resource.sources objValue="name" objTitle="name" i18nkey="manage.mapping.source" requiredField=true />
-                    </div>
-                </#if>
-            </div>
+<div class="container-fluid bg-body">
+    <div class="container main-content-container mb-md-4 pt-3">
+        <p class="text-smaller mb-2"><@s.text name="manage.mapping.new.how"/></p>
+        <div class="mp-cards mt-hows mb-3">
+            <label class="mp-choice<#if how == "ONE"> on</#if>">
+                <input type="radio" name="how" value="ONE"<#if how == "ONE"> checked</#if>>
+                <span class="t"><@s.text name="manage.mapping.new.ONE"/><span class="tick"></span></span>
+                <span class="d"><@s.text name="manage.mapping.new.ONE.desc"/></span>
+            </label>
+            <#if isDwcDp>
+                <label class="mp-choice<#if how == "SPLIT"> on</#if><#if !readableSources?has_content> off</#if>">
+                    <input type="radio" name="how" value="SPLIT"<#if how == "SPLIT"> checked</#if><#if !readableSources?has_content> disabled</#if>>
+                    <span class="t"><@s.text name="manage.mapping.new.SPLIT"/><span class="tick"></span></span>
+                    <span class="d"><@s.text name="manage.mapping.new.SPLIT.desc"/></span>
+                </label>
+            </#if>
         </div>
+
+        <#-- one table at a time: source + table pairs, as many as wanted -->
+        <form id="mt-one" action="dataPackageMappingSourceCreate.do" method="post"<#if how != "ONE"> hidden</#if>>
+            <input type="hidden" name="r" value="${resource.shortname}"/>
+            <input type="hidden" name="id" value="${dataPackageSchema.identifier}"/>
+            <input type="hidden" name="schemaName" value="${dataPackageSchema.name}"/>
+            <input type="hidden" name="mid" value="${mid!}"/>
+            <input type="hidden" name="showAll" value="${Parameters.showAll!"true"}"/>
+            <div id="mt-pairs">
+                <@pairRow 0 from/>
+            </div>
+            <button type="button" id="mt-add" class="ov-link-btn mt-2"><@icon name="add"/> <@s.text name="manage.mapping.add"/></button>
+            <p class="text-smaller text-muted mt-3 mb-0"><@s.text name="manage.mapping.new.ONE.after"/></p>
+        </form>
+
+        <#-- split a flat source: on to the "Split into tables" page -->
+        <#if isDwcDp>
+            <form id="mt-split" action="dataPackageTables.do" method="get"<#if how != "SPLIT"> hidden</#if>>
+                <input type="hidden" name="r" value="${resource.shortname}"/>
+                <div class="mt-pair">
+                    <div>
+                        <label class="mt-label" for="mt-split-source"><@s.text name="manage.mapping.source"/></label>
+                        <select id="mt-split-source" name="source" class="form-select form-select-sm mt-source">
+                            <#list readableSources as src>
+                                <option value="${src.name}"<#if src.name == from> selected</#if>>${src.name}</option>
+                            </#list>
+                        </select>
+                    </div>
+                </div>
+                <p class="text-smaller text-muted mt-3 mb-0"><@s.text name="manage.mapping.new.SPLIT.after"/></p>
+            </form>
+        </#if>
     </div>
-</form>
+</div>
+
+<#-- copied for "Add another" -->
+<template id="mt-pair-template"><@pairRow 999 ""/></template>
+
+<style>
+    .mt-hows { max-width: 760px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    .mt-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 24px; gap: 12px; align-items: end; max-width: 760px; margin-bottom: 10px; }
+    #mt-split .mt-pair { grid-template-columns: minmax(0, 1fr); max-width: 360px; }
+    .mt-label { font-size: 0.8rem; color: #495057; margin-bottom: 3px; }
+    .mt-remove { padding-bottom: 6px; color: #6c757d; }
+    .mt-t-name { font-weight: 600; }
+    .mt-t-desc { font-size: 0.75rem; color: #6c757d; }
+    @media (max-width: 600px) { .mt-pair { grid-template-columns: 1fr 24px; } .mt-pair > div:nth-child(2) { grid-column: 1; } }
+</style>
+<script>
+    $(function () {
+        'use strict';
+        // table descriptions, for the searchable table dropdown
+        var tables = {
+            <#list dataPackageSchema.tableSchemas as t>
+            "${t.name?js_string}": {name: "${t.name?js_string}", description: "${(t.description!"")?js_string}", fields: ${t.fields?size?c}}<#sep>,</#sep>
+            </#list>
+        };
+        <#assign fieldsLabel><@s.text name="manage.mapping.new.fields"/></#assign>
+        var fieldsLabel = "${fieldsLabel?js_string}";
+        var noResults = {noResults: function () { return '${selectNoResultsFound?js_string}'; }};
+
+        function tableOption(o) {
+            if (!o.id || !tables[o.id]) return o.text;
+            var t = tables[o.id];
+            var $r = $('<div><div class="mt-t-name"></div><div class="mt-t-desc"></div></div>');
+            $r.find('.mt-t-name').text(o.text + (o.text !== t.name ? ' (' + t.name + ')' : ''));
+            $r.find('.mt-t-desc').text(t.description + ' ' + fieldsLabel + ': ' + t.fields);
+            return $r;
+        }
+
+        function init($scope) {
+            if (!$.fn.select2) return;
+            $scope.find('.mt-source').select2({theme: 'bootstrap4', width: '100%', minimumResultsForSearch: 10, language: noResults});
+            $scope.find('.mt-table').select2({theme: 'bootstrap4', width: '100%', templateResult: tableOption, language: noResults});
+        }
+        init($(document));
+
+        // the chosen card shows its form, and Continue submits it
+        $('.mt-hows').on('change', 'input[name=how]', function () {
+            var how = $('.mt-hows input[name=how]:checked').val();
+            $('.mt-hows .mp-choice').each(function () { $(this).toggleClass('on', $(this).find('input').is(':checked')); });
+            $('#mt-one').prop('hidden', how !== 'ONE');
+            $('#mt-split').prop('hidden', how !== 'SPLIT');
+            $('#mt-continue').attr('form', how === 'SPLIT' ? 'mt-split' : 'mt-one');
+        });
+        $('.mt-hows input[name=how]:checked').trigger('change');
+
+        function renumber() {
+            $('#mt-pairs .mt-pair').each(function (i) {
+                $(this).attr('data-i', i);
+                $(this).find('.mt-source').attr({id: 'newSources[' + i + ']', name: 'newSources[' + i + ']'})
+                    .closest('div').find('label').attr('for', 'newSources[' + i + ']');
+                $(this).find('.mt-table').attr({id: 'newTableSchemas[' + i + ']', name: 'newTableSchemas[' + i + ']'})
+                    .closest('div').find('label').attr('for', 'newTableSchemas[' + i + ']');
+                $(this).find('.mt-remove').prop('hidden', i === 0);
+            });
+        }
+        $('#mt-add').on('click', function () {
+            var $row = $($('#mt-pair-template').html());
+            $('#mt-pairs').append($row);
+            renumber();
+            init($row);
+        });
+        $('#mt-pairs').on('click', '.mt-remove', function () {
+            $(this).closest('.mt-pair').remove();
+            renumber();
+        });
+    });
+</script>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

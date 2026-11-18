@@ -79,6 +79,9 @@
 .mp-preview tr:last-child td { border-bottom: 0; }
 .mp-preview tr.skip td { color: #adb5bd; text-decoration: line-through; }
 .mp-preview tr.skip td:first-child { text-decoration: none; }
+.mp-preview td.mp-keep { white-space: nowrap; }
+.mp-preview td.mp-keep .material-icon { margin-right: 4px; vertical-align: -2px; color: rgb(var(--color-gbif-primary)); }
+.mp-preview tr.skip td.mp-keep .material-icon { color: #adb5bd; }
 
 /* toolbar */
 /* sticky, flush with the fixed navbar (57px), so the rows don't show through above it */
@@ -206,3 +209,25 @@ body.mp-dirty { padding-bottom: 60px; }
    lists the same, so it's only shown where the sidebar isn't */
 .ov-ready li .ov-link-btn { font-size: inherit; text-align: left; color: inherit; padding: 0; }@media (min-width: 768px) { .mp-status.mp-status-sm { display: none; } }
 @media (max-width: 991px) { .mp-unres { grid-template-columns: 1fr; } }
+
+/* data package mappings: how the rows are made, generated values, the result preview (js/dp-rows.js) */
+.mp-rowmodes { margin-bottom: 10px; }
+.mp-rows-opts { display: flex; flex-direction: column; gap: 8px; }
+.mp-rows-opts .mp-sentence > select[multiple], .mp-rows-opts .select2-container { min-width: 240px; max-width: 420px; }
+.mp-rows-opts .mp-sentence .mp-sep { width: 4rem; min-width: 0; flex: none; text-align: center; font-family: monospace; }
+.mp-rows-opts .mp-merge-on { display: inline-flex; gap: 6px; align-items: center; }
+.mp-gen { margin-top: 4px; display: flex; flex-direction: column; gap: 4px; }
+.mp-gen-help { font-size: 0.72rem; color: #6c757d; }
+.mp-gen-open { font-size: 0.72rem; margin-top: 2px; }
+.mp-colcell.mp-generated { display: none; }
+/* the column is hidden, so the generated value is the first control in the cell: level with the constant value */
+.mp-colcell.mp-generated + .mp-gen { margin-top: 0; }
+.mp-result-counts { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.85rem; margin-bottom: 8px; }
+.mp-checks { list-style: none; padding: 0; margin: 0 0 10px; display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; }
+.mp-checks li { display: flex; gap: 6px; align-items: flex-start; }
+.mp-checks li .material-icon { margin-top: 2px; flex: none; }
+.mp-checks li.bad { color: rgb(var(--color-gbif-danger)); }
+.mp-checks li.ok { color: rgb(55, 115, 55); }
+.mp-result-table { overflow-x: auto; border: 1px solid #dee2e6; border-radius: 6px; }
+.mp-result-table td, .mp-result-table th { white-space: nowrap; }
+.mp-result-table .mp-rn { color: #adb5bd; width: 1%; }

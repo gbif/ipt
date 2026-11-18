@@ -98,6 +98,7 @@
                     <@sourceCell src/>
                     <span class="ov-sp"></span>
                     <#if src.readable && !isDataPackage><button type="button" class="ov-link-btn ov-open-add-mapping" data-source="${src.name}"><@s.text name="manage.overview.data.mapTo"/></button></#if>
+                    <#if src.readable && isDataPackage><a class="ov-link-btn" href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${resource.dataPackageIdentifier?url}&from=${src.name?url}"><@s.text name="manage.overview.data.map"/></a></#if>
                     <div class="ov-rowacts"><@sourceMenu src idPrefix + src?index/></div>
                 </div>
             </#list>

@@ -267,21 +267,6 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     return cfg.isAutoPublishingEnabled() ? resource.getNextPublished() : null;
   }
 
-  /**
-   * Close the file writer if the writer is not null.
-   *
-   * @param writer file writer
-   */
-  private void closeWriter(Writer writer) {
-    if (writer != null) {
-      try {
-        writer.close();
-      } catch (IOException e) {
-        LOG.error(e);
-      }
-    }
-  }
-
   @Override
   public Resource create(String shortname, String type, File archiveOrSingleFile, User creator, BaseAction action)
       throws AlreadyExistingException, ImportException, InvalidFilenameException {
@@ -843,12 +828,10 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
     try {
       // make sure resource dir exists
       FileUtils.forceMkdir(cfgFile.getParentFile());
-      // persist data
-      try (Writer writer = IptFileUtils.startNewUtf8File(cfgFile)) {
-        resourcePersister.save(resource, writer);
-        // add to internal map
-        addResource(resource);
-      }
+      // persist data: a failure while writing leaves the saved resource.xml as it was
+      writeInPlaceOf(cfgFile, writer -> resourcePersister.save(resource, writer));
+      // add to internal map
+      addResource(resource);
     } catch (IllegalArgumentException e) {
       LOG.error(e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, e.getMessage());
@@ -861,19 +844,42 @@ public class ResourceManagerImpl extends BaseManager implements ResourceManager 
   @Override
   public synchronized void saveInferredMetadata(Resource resource) throws InvalidConfigException {
     File cfgFile = dataDir.resourceInferredMetadataFile(resource.getShortname());
-    Writer writer = null;
     try {
       // make sure resource dir exists
       FileUtils.forceMkdir(cfgFile.getParentFile());
-      // persist data
-      writer = IptFileUtils.startNewUtf8File(cfgFile);
-      resourcePersister.saveInferredMetadata(resource.getInferredMetadata(), writer);
+      // persist data: a failure while writing leaves the saved file as it was
+      writeInPlaceOf(cfgFile, writer -> resourcePersister.saveInferredMetadata(resource.getInferredMetadata(), writer));
     } catch (IOException e) {
       LOG.error(e);
       throw new InvalidConfigException(TYPE.CONFIG_WRITE, "Can't write inferred metadata file");
+    }
+  }
+
+  /** Writes a file's content. */
+  @FunctionalInterface
+  private interface FileContentWriter {
+    void write(Writer writer) throws IOException;
+  }
+
+  /**
+   * Writes a file to a temporary file next to it, then moves it into place, as eml.xml and the data package metadata
+   * are saved (#3285). An exception while writing, e.g. something XStream can't convert, or a full disk, leaves the
+   * existing file as it was instead of half-written, which the IPT couldn't load.
+   *
+   * @param target the file to write
+   * @param content writes the content
+   */
+  private void writeInPlaceOf(File target, FileContentWriter content) throws IOException {
+    File tmpFile = createTempSibling(target);
+    try {
+      try (Writer writer = IptFileUtils.startNewUtf8File(tmpFile)) {
+        content.write(writer);
+      }
+      moveIntoPlace(tmpFile, target);
     } finally {
-      if (writer != null) {
-        closeWriter(writer);
+      // gone after a move, left when writing failed
+      if (tmpFile.exists() && !tmpFile.delete()) {
+        LOG.warn("Could not delete {}", tmpFile);
       }
     }
   }

@@ -61,6 +61,16 @@
 .ov-banner ul li { margin: 2px 0; }
 .ov-banner.bad { background: rgba(var(--color-gbif-danger), .05); border: 1px solid rgba(var(--color-gbif-danger), .4); }
 .ov-banner.del { background: #f6f7f8; border: 1px solid #dee2e6; }
+/* info: a rule worth knowing, nothing wrong. Neutral box, the colour only in the icon, text in the body colour */
+/* warning: something to look at before going on, as the admin home and bulk publishing banners */
+.ov-banner.warn { background: rgba(var(--alert-warning-icon-color), .05); border: 1px solid rgba(var(--alert-warning-icon-color), .4); align-items: flex-start; }
+.ov-banner.warn .ov-ic { color: rgb(var(--alert-warning-icon-color)); }
+.ov-banner.info { background: #f8f9fa; border: 1px solid #dee2e6; align-items: flex-start; }
+.ov-banner.info .ov-ic { color: rgb(var(--color-gbif-primary)); }
+/* inside a form section, under the control it explains */
+.ov-banner.compact { padding: 8px 12px; margin: 0; font-size: 0.82rem; gap: 8px; }
+.ov-banner.compact .ov-ic { font-size: 1.1rem; margin-top: 1px; }
+.ov-banner[hidden] { display: none; }
 
 /* cards */
 .ov-card { border: 1px solid #dee2e6; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; scroll-margin-top: var(--navbar-height); }

@@ -195,6 +195,14 @@
         <#assign t><@s.text name="manage.overview.attention.emptyMapping"><@s.param>${r.ext.title}</@s.param></@s.text></#assign>
         <#assign attention = attention + [["warn", t]]>
     </#list>
+    <#-- the first source rows of each mapping, as its Result section checks them: these stop publishing -->
+    <#if isDataPackage>
+        <#assign resultProblems = action.getDataPackageResultProblems()>
+        <#if resultProblems?has_content>
+            <#assign t><@s.text name="manage.overview.attention.resultProblems"><@s.param>${resultProblems?keys?join(", ")}</@s.param></@s.text></#assign>
+            <#assign attention = attention + [["bad", t]]>
+        </#if>
+    </#if>
     <#if dataPackageMappingsWithIssues?has_content>
         <#assign t><@s.text name="manage.overview.attention.mappingIssues"><@s.param>${dataPackageMappingsWithIssues?size}</@s.param></@s.text></#assign>
         <#assign attention = attention + [["warn", t]]>
