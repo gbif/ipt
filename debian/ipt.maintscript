@@ -1,0 +1,6 @@
+# https://www.debian.org/doc/manuals/maint-guide/dother.en.html#maintscript
+#
+# Up to 3.2.x the context file was shipped as a conffile under /etc/tomcat9.
+# Since 3.3.0 it is shipped in /usr/share/ipt and the postinst installs it into
+# the detected /etc/tomcatN, so dpkg must be told to drop the stale conffile.
+rm_conffile /etc/tomcat9/Catalina/localhost/ipt.xml 3.3.8~
