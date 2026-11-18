@@ -37,7 +37,7 @@
                 <#if !resource.dataPackage??><br><br><@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></#if>
                 <br><br><@s.text name='manage.resource.status.intro.public.gbifWarning'/>
             </#assign>
-            <@popoverTextInfo visibilityTitleInfo/>
+            <@popoverTextInfo visibilityTitleInfo true/>
             <@s.text name="manage.overview.sharing.title"/>
         </h2>
         <span class="ov-sp"></span>
@@ -154,7 +154,7 @@
             </#if>
             <div class="ov-r">
                 <span>
-                    <@popoverPropertyInfo "manage.overview.networks.description"/>
+                    <@popoverPropertyInfo "manage.overview.networks.description" true/>
                     <@s.text name="manage.overview.networks.title"/>
                 </span>
                 <span>

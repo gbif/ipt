@@ -31,7 +31,7 @@
                     </@s.text>
                 </#if>
             </#assign>
-            <@popoverTextInfo metadataHeaderInfo/>
+            <@popoverTextInfo metadataHeaderInfo true/>
             <@s.text name='manage.overview.metadata'/>
         </h2>
         <#if missingBasicMetadata>

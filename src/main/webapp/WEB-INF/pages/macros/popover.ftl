@@ -10,14 +10,15 @@
     </a>
 </#macro>
 
-<#macro popoverPropertyInfo propertyName>
+<#-- material: the outlined Material info icon (needs macros/icon.ftl) instead of Bootstrap Icons, for pages already redesigned -->
+<#macro popoverPropertyInfo propertyName material=false>
     <a tabindex="0" role="button"
        class="popover-link"
        data-bs-toggle="popover"
        data-bs-trigger="focus"
        data-bs-html="true"
        data-bs-content="<@s.text name="${propertyName}" escapeHtml=true/>">
-        <i class="bi bi-info-circle text-gbif-primary"></i>
+        <#if material><@icon name="info_outlined" class="text-gbif-primary"/><#else><i class="bi bi-info-circle text-gbif-primary"></i></#if>
     </a>
 </#macro>
 
@@ -32,13 +33,13 @@
     </a>
 </#macro>
 
-<#macro popoverTextInfo text>
+<#macro popoverTextInfo text material=false>
     <a tabindex="0" role="button"
        class="popover-link"
        data-bs-toggle="popover"
        data-bs-trigger="focus"
        data-bs-html="true"
        data-bs-content="${text?markup_string}">
-        <i class="bi bi-info-circle text-gbif-primary"></i>
+        <#if material><@icon name="info_outlined" class="text-gbif-primary"/><#else><i class="bi bi-info-circle text-gbif-primary"></i></#if>
     </a>
 </#macro>

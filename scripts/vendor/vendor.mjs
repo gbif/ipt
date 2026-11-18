@@ -101,6 +101,7 @@ const ICONS_OUTLINED = [
   'description',
   'dns',
   'grid_on',
+  'info',
   'link',
 ];
 

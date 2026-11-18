@@ -45,7 +45,7 @@
                     <@s.text name="manage.overview.published.description.noDoiAccount"/>
                 </#if>
             </#assign>
-            <@popoverTextInfo overviewTitleInfo/>
+            <@popoverTextInfo overviewTitleInfo true/>
             <@s.text name='manage.overview.published'/>
         </h2>
         <#-- the one status of this card -->
@@ -230,7 +230,7 @@
 <section class="ov-card section" id="managers">
     <div class="ov-ch">
         <h2>
-            <@popoverPropertyInfo "manage.overview.resource.managers.description"/>
+            <@popoverPropertyInfo "manage.overview.resource.managers.description" true/>
             <@s.text name="manage.overview.resource.managers"/>
         </h2>
         <span class="ov-sp"></span>

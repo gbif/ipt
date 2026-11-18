@@ -79,6 +79,10 @@
 /* warning: something to look at before going on, as the admin home and bulk publishing banners */
 .ov-banner.warn { background: rgba(var(--alert-warning-icon-color), .05); border: 1px solid rgba(var(--alert-warning-icon-color), .4); align-items: flex-start; }
 .ov-banner.warn .ov-ic { color: rgb(var(--alert-warning-icon-color)); }
+/* links in a red or orange banner: the way to fix it, in the banner text's grey with a soft underline, not in the green
+   that means OK. !important: main.css colours every link with !important */
+.ov-banner.bad a:not(.btn), .ov-banner.warn a:not(.btn) { color: #495057 !important; text-decoration: underline !important; text-decoration-color: rgba(73, 80, 87, .5) !important; text-underline-offset: 2px; }
+.ov-banner.bad a:not(.btn):hover, .ov-banner.warn a:not(.btn):hover { color: #212529 !important; text-decoration-color: currentColor !important; filter: none; }
 /* info: a rule worth knowing, nothing wrong. Neutral box, the colour only in the icon, text in the body colour */
 .ov-banner.info { background: #f8f9fa; border: 1px solid #dee2e6; align-items: flex-start; }
 .ov-banner.info .ov-ic { color: rgb(var(--color-gbif-primary)); }

@@ -156,7 +156,7 @@
             <#assign sourcesInfo>
                 <@s.text name='manage.overview.source.description1'/>&nbsp;<@s.text name='manage.overview.source.description2'/>&nbsp;<@s.text name='manage.overview.source.description3'><@s.param><@s.text name='button.add'/></@s.param></@s.text><br><br><@s.text name='manage.overview.source.description4'><@s.param><@s.text name="button.connectDB"/></@s.param></@s.text><br><br><#if isDataPackage><@s.text name='manage.overview.mappings.info'/><#else><@s.text name='manage.overview.DwC.Mappings.coretype.description1'/></#if>
             </#assign>
-            <@popoverTextInfo sourcesInfo/>
+            <@popoverTextInfo sourcesInfo true/>
             <#if isDataPackage><@s.text name="manage.overview.data.title.dp"/><#else><@s.text name="manage.overview.data.title"/></#if>
         </h2>
         <span class="ov-sp"></span>
