@@ -290,8 +290,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
         !r.foreignKeyViolations().isEmpty()
             || r.primaryKeyViolation() != null
             || !r.dataTypeViolations().isEmpty())
-        || !validationResult.result().emlValidation().valid()
-        || !validationResult.result().descriptorValidation().valid();
+        || !validationResult.result().emlValidation().isValid()
+        || !validationResult.result().descriptorValidation().isValid();
 
     if (hasViolations) {
       addMessage(Level.ERROR, "Data package failed validation, see validation report for details");

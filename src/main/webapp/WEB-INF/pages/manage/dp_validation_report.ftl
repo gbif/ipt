@@ -170,7 +170,7 @@
                     <div class="me-3"><i class="bi bi-exclamation-circle <#if dvErrorCount gt 0>alert-red-2</#if> fs-bigger-2 me-2"></i></div>
                     <div class="overflow-x-hidden pt-1">
                         <span><@s.text name="manage.validation.descriptor.someIssues"><@s.param>${dvIssueCount}</@s.param></@s.text></span>
-                        <#if !dv.canProceedToDataAnalysis>
+                        <#if !dv.hasDataAnalysis()>
                             <br/><strong><@s.text name="manage.validation.descriptor.blocking"/></strong>
                         </#if>
                     </div>
@@ -204,7 +204,7 @@
 
             <h5 class="py-2 mb-3 text-gbif-header fw-400"><@s.text name="manage.validation.eml.title"/></h5>
 
-            <#if !ev.emlPresent>
+            <#if !ev.isPresent()>
                 <div class="alert alert-secondary alert-dismissible fade show d-flex mb-4" role="alert">
                     <div class="me-3"><i class="bi bi-info-circle fs-bigger-2 me-2"></i></div>
                     <div class="overflow-x-hidden pt-1">
@@ -446,7 +446,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <#list t.columnAnalyses as col>
+                                        <#list t.columnStatistics as col>
                                             <#assign pct = (t.totalRows gt 0)?then((col.populatedValues / t.totalRows * 100)?round, 0)>
                                             <tr>
                                                 <td><code>${col.name}</code></td>

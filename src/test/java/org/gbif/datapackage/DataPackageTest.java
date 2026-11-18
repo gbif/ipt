@@ -66,10 +66,11 @@ public class DataPackageTest {
 
     DatapackageAnalysisResult result = dataPackage.validate(dir).result();
 
-    assertFalse(result.descriptorValidation().valid());
+    assertFalse(result.descriptorValidation().isValid());
+    // since 0.0.15 the analyser reports it twice: from the Frictionless check and from its DwC-DP foreign key check
     List<ValidationIssue> fkIssues = foreignKeyIssues(result);
-    assertEquals(1, fkIssues.size());
-    assertEquals(ValidationIssue.Severity.ERROR, fkIssues.get(0).severity());
+    assertFalse(fkIssues.isEmpty());
+    assertTrue(fkIssues.stream().allMatch(i -> i.severity() == ValidationIssue.Severity.ERROR), fkIssues.toString());
   }
 
   @Test

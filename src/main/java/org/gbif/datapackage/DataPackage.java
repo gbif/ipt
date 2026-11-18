@@ -99,6 +99,8 @@ public class DataPackage {
   private final DuckDbDialectRenderer dialectRenderer = new DuckDbDialectRenderer();
   private final DuckDbResourceLoader loader = new DuckDbResourceLoader(dialectRenderer);
   private final DataAnalyser analyser = new DuckDbDataPackageAnalyser(parser, loader);
+  // the DwC-DP schemas the analyser doesn't bundle (1.0 and later) are fetched from rs.tdwg.org and cached for a day
+  // (SchemaFetchPolicy.defaults()); without access, a 1.0 package gets UNRECOGNIZED_PROFILE_VERSION
   private final DataPackageAnalysisOrchestrator dpAnalysisOrchestrator = new DefaultDataPackageAnalysisOrchestrator(
       analyser, new DwcDpDescriptorValidator(SEVERITY_OVERRIDES), new EmlValidator());
 
