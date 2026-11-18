@@ -4,9 +4,6 @@
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl"/>
 <title><@s.text name="manage.tables.title"/>: ${resource.title!resource.shortname}</title>
-<style>
-    :root { --navbar-height: 120px; }
-</style>
 <link rel="stylesheet" href="${baseURL}/styles/overview.css">
 <link rel="stylesheet" href="${baseURL}/styles/mapping.css">
 <#assign currentMenu = "manage"/>

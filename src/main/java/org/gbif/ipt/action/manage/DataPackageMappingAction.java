@@ -354,17 +354,28 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
   public record SourceMatch(Source source, DataPackageSourceMatcher.Match match, List<String> mappedTo) {}
 
   private List<SourceMatch> sourceMatches;
+  // readable database sources left out of the matches: read only when matching is chosen (?how=MATCH)
+  private final List<Source> sourcesNotRead = new ArrayList<>();
 
   /**
-   * @return every readable source with its suggested table, for matching several sources at once
+   * Every readable source with its suggested table, for matching several sources at once. Reading a database source's
+   * columns runs a query, so database sources are only read when matching is chosen (?how=MATCH); otherwise they're
+   * left out (see {@link #getSourcesNotRead()}).
+   *
+   * @return the sources read, with their suggested tables
    */
   public List<SourceMatch> getSourceMatches() {
     if (sourceMatches == null) {
       sourceMatches = new ArrayList<>();
       DataPackageSchema schema = mapping == null ? null : mapping.getDataPackageSchema();
+      boolean readDatabases = req != null && "MATCH".equals(req.getParameter("how"));
       if (schema != null) {
         for (Source src : resource.getSources()) {
           if (!src.isReadable()) {
+            continue;
+          }
+          if (src.isSqlSource() && !readDatabases) {
+            sourcesNotRead.add(src);
             continue;
           }
           try {
@@ -383,6 +394,14 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
       }
     }
     return sourceMatches;
+  }
+
+  /**
+   * @return the readable database sources {@link #getSourceMatches()} left out, empty when matching was chosen
+   */
+  public List<Source> getSourcesNotRead() {
+    getSourceMatches();
+    return sourcesNotRead;
   }
 
   public String source() {

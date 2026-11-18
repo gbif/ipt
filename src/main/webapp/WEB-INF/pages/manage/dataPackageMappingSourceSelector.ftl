@@ -3,7 +3,8 @@
      table pairs, as many as wanted) or match sources to tables (a table suggested per source from its columns), both
      created by dataPackageMappingSourceCreate.do; or, for DwC-DP, split a flat source into tables (dataPackageTables.do).
      ?from=<source> preselects a source and ?how=PICK|MATCH|SPLIT picks the card; otherwise MATCH opens when several
-     unmapped sources match a table -->
+     unmapped sources match a table. Database sources are only read for MATCH: choosing that card reloads with
+     ?how=MATCH when there are any -->
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="manage.mapping.new.title"/>: ${resource.title!resource.shortname}</title>
@@ -20,6 +21,7 @@
 <#assign from = (Parameters.from)!""/>
 <#assign readableSources = resource.sources?filter(x -> x.readable)/>
 <#assign matches = sourceMatches/>
+<#assign notRead = sourcesNotRead/>
 <#-- matching lists the unmapped sources a table was found for; the others are only named under the list -->
 <#assign toMatch = matches?filter(x -> !x.mappedTo()?has_content && x.match().table()??)/>
 <#assign noMatch = matches?filter(x -> !x.mappedTo()?has_content && !x.match().table()??)/>
@@ -92,8 +94,8 @@
                 <span class="t"><@s.text name="manage.mapping.new.PICK"/><span class="tick"></span></span>
                 <span class="d"><@s.text name="manage.mapping.new.PICK.desc"/></span>
             </label>
-            <label class="mp-choice<#if how == "MATCH"> on</#if><#if !matches?has_content> off</#if>">
-                <input type="radio" name="how" value="MATCH"<#if how == "MATCH"> checked</#if><#if !matches?has_content> disabled</#if>>
+            <label class="mp-choice<#if how == "MATCH"> on</#if><#if !readableSources?has_content> off</#if>">
+                <input type="radio" name="how" value="MATCH"<#if how == "MATCH"> checked</#if><#if !readableSources?has_content> disabled</#if><#if notRead?has_content> data-reload="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=MATCH"</#if>>
                 <span class="t"><@s.text name="manage.mapping.new.MATCH"/><span class="tick"></span></span>
                 <span class="d"><@s.text name="manage.mapping.new.MATCH.desc"/></span>
             </label>
@@ -147,6 +149,10 @@
             <#else>
                 <div class="ov-banner info compact" role="status"><@icon name="info" class="ov-ic"/><div class="ov-grow"><@s.text name="manage.mapping.new.nothingToMatch"/></div></div>
             </#if>
+            <#if notRead?has_content>
+                <p class="mt-rest"><@s.text name="manage.mapping.new.notRead"><@s.param>${notRead?map(x -> x.name)?join(", ")}</@s.param></@s.text>
+                    <a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=MATCH"><@s.text name="manage.mapping.new.readNow"/></a></p>
+            </#if>
             <#if noMatch?has_content>
                 <p class="mt-rest"><@s.text name="manage.mapping.new.noMatch"><@s.param><#list noMatch as sm><a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=PICK&from=${sm.source().name?url}">${sm.source().name}</a><#sep>, </#sep></#list></@s.param></@s.text></p>
             </#if>
@@ -176,7 +182,7 @@
     </div>
 </div>
 
-<#-- copied for "Add another" -->
+<#-- copied for "Add mapping" -->
 <template id="mt-pair-template"><@pairRow 999 ""/></template>
 
 <style>
@@ -233,8 +239,15 @@
         init($(document));
 
         // the chosen card shows its form, and Continue submits it
-        $('.mt-hows').on('change', 'input[name=how]', function () {
+        $('.mt-hows').on('change', 'input[name=how]', function (e, initial) {
             var how = $('.mt-hows input[name=how]:checked').val();
+            // matching database sources needs their columns, read only when the card is chosen: reload with ?how=MATCH.
+            // Not when the page opens on the card by itself: then the line under the list offers it
+            var reload = $(this).filter(':checked').attr('data-reload');
+            if (how === 'MATCH' && reload && !initial) {
+                window.location.href = reload;
+                return;
+            }
             $('.mt-hows .mp-choice').each(function () { $(this).toggleClass('on', $(this).find('input').is(':checked')); });
             $('#mt-pick').prop('hidden', how !== 'PICK');
             $('#mt-split').prop('hidden', how !== 'SPLIT');
@@ -280,7 +293,7 @@
                 }
             });
         });
-        $('.mt-hows input[name=how]:checked').trigger('change');
+        $('.mt-hows input[name=how]:checked').trigger('change', [true]);
 
         function renumber() {
             $('#mt-pairs .mt-pair').each(function (i) {

@@ -19,6 +19,7 @@ import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,12 @@ public final class DataPackageSourceMatcher {
     int bestHint = 0;
     String name = DataPackageMappingAction.normalizeName(Objects.toString(sourceName, ""));
 
-    for (DataPackageTableSchema table : schema.getTableSchemas()) {
+    // by name, so a tie (e.g. a role file fitting both occurrence-agent-role and event-agent-role) goes the same way
+    // every time: the schema's tables are a set
+    List<DataPackageTableSchema> tables = schema.getTableSchemas().stream()
+        .sorted(Comparator.comparing(DataPackageTableSchema::getName, Comparator.nullsLast(Comparator.naturalOrder())))
+        .toList();
+    for (DataPackageTableSchema table : tables) {
       int count = matchedColumns(table, columns);
       if (count > 0) {
         matched.put(table.getName(), count);

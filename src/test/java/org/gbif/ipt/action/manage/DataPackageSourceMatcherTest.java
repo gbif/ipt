@@ -52,8 +52,8 @@ public class DataPackageSourceMatcherTest {
   }
 
   @Test
-  public void testKeyDecidesBetweenTablesWithTheSameColumns() {
-    // survey_fk and surveyTarget_fk fit survey-survey-target; the file name says so too, not survey
+  public void testTableKeyOrFullFitDecides() {
+    // survey_fk and surveyTarget_fk are all fields of survey-survey-target, which has no key; survey would need survey_pk
     DataPackageSourceMatcher.Match m = DataPackageSourceMatcher.match("surveysurveytargettable",
         List.of("survey_fk", "surveyTarget_fk"), SCHEMA);
     assertEquals("survey-survey-target", m.table());
@@ -77,6 +77,23 @@ public class DataPackageSourceMatcherTest {
         List.of("occurrenceID", "eventID", "eventDate", "locality", "scientificName", "recordedBy"), SCHEMA);
     assertNull(m.table());
     assertEquals(3, m.matched().get("event"));
+  }
+
+  @Test
+  public void testTieGoesTheSameWayEveryTime() {
+    // a role file fits both role tables fully; the first by name wins, whatever order the schema's set gives
+    DataPackageSchema roles = DataPackageSchema.builder().name("dwc-dp").version("1.0")
+        .tableSchemas(Set.of(
+            table("occurrence-agent-role", null, "occurrence_fk", "agent_fk", "agentRole"),
+            table("event-agent-role", null, "event_fk", "agent_fk", "agentRole")))
+        .build();
+    for (int i = 0; i < 5; i++) {
+      assertEquals("event-agent-role",
+          DataPackageSourceMatcher.match("roles", List.of("agent_fk", "agentRole"), roles).table());
+    }
+    // the file name breaks the tie
+    assertEquals("occurrence-agent-role",
+        DataPackageSourceMatcher.match("occurrence_agent_roles", List.of("agent_fk", "agentRole"), roles).table());
   }
 
   @Test
