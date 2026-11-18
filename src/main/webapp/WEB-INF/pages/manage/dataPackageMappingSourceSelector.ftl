@@ -63,19 +63,18 @@
 
 <div class="container-fluid border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3 ov-head">
+        <div class="container my-3 p-3 ov-head ov-head-left">
             <div class="ov-grow">
                 <div class="fs-smaller">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
+                        <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                            <li class="breadcrumb-item"><a href="resource.do?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
+                            <li class="breadcrumb-item ov-crumb-resource"><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="manage.mapping.new.title"/></li>
                         </ol>
                     </nav>
                 </div>
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-3 fw-normal"><@s.text name="manage.mapping.new.title"/></h1>
-                <div class="ov-meta"><span>${resource.title!resource.shortname}</span></div>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="manage.mapping.new.title"/></h1>
             </div>
             <div class="ov-acts">
                 <button type="submit" id="mt-continue" form="mt-pick" class="btn btn-sm btn-gbif-solid top-button"><@s.text name="manage.mapping.new.continue"/></button>

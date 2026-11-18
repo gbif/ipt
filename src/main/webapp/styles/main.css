@@ -1374,8 +1374,9 @@ div.dt-container .dt-paging .dt-paging-button:active{
     border-color: #5EA642C0 !important;
 }
 
-/* Resource type and subtype pills: one neutral grey for all, so the colours on a page are left to what they mean
-   (status, errors). Dark text on light grey (9:1) */
+/* Resource type and subtype pills: a light tint of a GBIF palette colour (2025 colour guidelines) with dark text (about 8:1).
+   The colour says the group, the label says the type: Darwin Core types in green / blue / purple, data packages in
+   tints of Fawn. Subtypes and "other" stay neutral grey. Tints are the palette colour mixed with white. */
 .type-occurrence, .type-camtrap-dp, .type-coldp, .type-dwc-dp, .type-material-dp, .type-interaction-dp,
 .type-checklist, .type-metadata, .type-samplingevent, .type-materialentity, .type-other,
 .type-taxonomicauthority, .type-nomenclatorauthority, .type-inventorythematic, .type-inventoryregional,
@@ -1384,6 +1385,22 @@ div.dt-container .dt-paging .dt-paging-button:active{
     color: #3d4349 !important;
     border-color: #eef0f2 !important;
 }
+
+/* GBIF green #4C9C2E, 20% */
+.type-occurrence { background: #dbebd5 !important; border-color: #dbebd5 !important; }
+/* Matisse #0078B4, 20% */
+.type-samplingevent { background: #cce4f0 !important; border-color: #cce4f0 !important; }
+/* Kingfisher daisy #664192, 20% */
+.type-checklist { background: #e0d9e9 !important; border-color: #e0d9e9 !important; }
+/* Purple sky #6885C0, 20% */
+.type-metadata { background: #e1e7f2 !important; border-color: #e1e7f2 !important; }
+/* Cerulean #00B7EE, 20% */
+.type-materialentity { background: #ccf1fc !important; border-color: #ccf1fc !important; }
+/* data packages: Fawn #ECAC7C at 50% (DwC-DP), 35% (Camtrap DP and the other DwC-DP profiles), 20% (ColDP).
+   Japonica was tried first, but its tints read as error chips */
+.type-dwc-dp { background: #f6d6be !important; border-color: #f6d6be !important; }
+.type-camtrap-dp, .type-material-dp, .type-interaction-dp { background: #f8e2d1 !important; border-color: #f8e2d1 !important; }
+.type-coldp { background: #fbeee5 !important; border-color: #fbeee5 !important; }
 
 .user-admin, .user-manager, .user-publisher, .user-user {
     background: white !important;
