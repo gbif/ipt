@@ -15,7 +15,9 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldConstraints;
+import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageFieldReference;
+import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageRowMode;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -77,8 +80,78 @@ public class DataPackageTablesActionTest {
     assertEquals(3, agent.getRows());
     assertEquals(List.of(6, 7), agent.getMapping().getSplitColumns());
 
-    assertEquals(9, byId.get("occurrence-agent-role-recordedBy").getRows());
+    // recorders differ inside E1: linked to each occurrence, not to the event
+    DataPackageTablesAction.Suggestion recorders = byId.get("occurrence-agent-role-recordedBy");
+    assertEquals(9, recorders.getRows());
+    assertEquals("manage.tables.why.role.varies", recorders.getWhyKey());
+    assertNull(ev.getMapping().getField("recordedBy").getIndex());
+    assertFalse(byId.containsKey("event-agent-role-recordedBy"));
     assertEquals(6, byId.get("occurrence-agent-role-identifiedBy").getRows());
+    // no catalogue numbers: no material
+    assertFalse(byId.containsKey("material"));
+  }
+
+  @Test
+  public void testRecordersOfTheEventWithTheirIds() {
+    TextFileSource source = new TextFileSource();
+    source.setName("ids.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "recordedBy", "recordedByID", "identifiedBy");
+    List<String[]> sample = List.of(
+        new String[] {"O1", "E1", "Anna Berg | Jonas Lind", "orcid-A | orcid-J", "Anna Berg"},
+        new String[] {"O2", "E1", "Anna Berg | Jonas Lind", "orcid-A | orcid-J", "Maja Ek"},
+        new String[] {"O3", "E2", "Anna Berg", "orcid-A", "Anna Berg"});
+    Map<String, DataPackageTablesAction.Suggestion> byId = DataPackageTablesAction.suggest(schema(), source, columns, sample)
+        .stream().collect(Collectors.toMap(DataPackageTablesAction.Suggestion::getId, x -> x));
+
+    // the same recorders inside every event: on the event, the names and IDs as written
+    DataPackageTablesAction.Suggestion ev = byId.get("event");
+    assertEquals(2, ev.getMapping().getField("recordedBy").getIndex());
+    assertEquals(3, ev.getMapping().getField("recordedByID").getIndex());
+    assertTrue(ev.getWarnings().isEmpty(), ev.getWarnings().toString());
+    DataPackageTablesAction.Suggestion roles = byId.get("event-agent-role-recordedBy");
+    assertEquals("manage.tables.why.role.event", roles.getWhyKey());
+    assertEquals(DataPackageMapping.WHOLE_ROW, roles.getMapping().getMergeKey());
+    assertEquals(DataPackageValueKind.LINK, roles.getMapping().getField("event_fk").getValueKind());
+    // E1: Anna, Jonas; E2: Anna; the second row of E1 repeats the first
+    assertEquals(3, roles.getRows());
+    assertFalse(byId.containsKey("occurrence-agent-role-recordedBy"));
+
+    // a person's ID at the same place as their name; identifiedBy has no IDs
+    DataPackageTablesAction.Suggestion agent = byId.get("agent");
+    assertEquals("manage.tables.why.agent.ids", agent.getWhyKey());
+    DataPackageFieldMapping agentId = agent.getMapping().getField("agentID");
+    assertEquals(DataPackageValueKind.PAIRED, agentId.getValueKind());
+    assertEquals(java.util.Arrays.asList(3, null), agentId.getPairColumns());
+    assertTrue(agent.getPreview().stream().anyMatch(r -> java.util.Arrays.asList(r).containsAll(List.of("Jonas Lind", "orcid-J"))),
+        agent.getPreview().stream().map(java.util.Arrays::toString).toList().toString());
+  }
+
+  @Test
+  public void testSpecimensMakeMaterial() {
+    TextFileSource source = new TextFileSource();
+    source.setName("specimens.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "institutionCode", "catalogNumber", "preparations",
+        "scientificName");
+    List<String[]> sample = List.of(
+        new String[] {"O1", "E1", "NHMD", "12", "ethanol", "Pica pica"},
+        new String[] {"O2", "E1", "NHMD", "13", "dried", "Corvus corax"});
+    Map<String, DataPackageTablesAction.Suggestion> byId = DataPackageTablesAction.suggest(schema(), source, columns, sample)
+        .stream().collect(Collectors.toMap(DataPackageTablesAction.Suggestion::getId, x -> x));
+
+    DataPackageTablesAction.Suggestion mat = byId.get("material");
+    assertEquals("manage.tables.why.material", mat.getWhyKey());
+    assertEquals(2, mat.getRows());
+    DataPackageMapping m = mat.getMapping();
+    // no materialEntityID: a key from the institution and the catalogue number
+    assertEquals("{institutionCode}:{catalogNumber}", m.getField("materialEntity_pk").getTemplate());
+    assertEquals(DataPackageValueKind.LINK, m.getField("evidenceForOccurrence_fk").getValueKind());
+    assertEquals(DataPackageValueKind.LINK, m.getField("collectionEvent_fk").getValueKind());
+    assertEquals(4, m.getField("preparations").getIndex());
+    // the identification stays with the occurrence
+    assertNull(m.getField("scientificName").getIndex());
+    assertEquals(5, byId.get("occurrence").getMapping().getField("scientificName").getIndex());
+    assertTrue(DataPackageTablesAction.unused(columns,
+        byId.values().stream().map(DataPackageTablesAction.Suggestion::getMapping).toList()).isEmpty());
   }
 
   @Test
@@ -127,18 +200,30 @@ public class DataPackageTablesActionTest {
     assertEquals(DataPackageValueKind.LINK, byId.get("occurrence").getMapping().getField("event_fk").getValueKind());
   }
 
+  /**
+   * The parts of DwC-DP 1.0 the suggestions use: recorders on the event, identifiers on the occurrence, material.
+   */
   private static DataPackageSchema schema() {
-    DataPackageTableSchema event = table("event", "event_pk", List.of("event_pk", "eventID", "eventCategory", "eventDate", "locality"),
-        Set.of("event_pk", "eventCategory"));
+    DataPackageTableSchema event = table("event", "event_pk", List.of("event_pk", "eventID", "eventCategory", "eventDate",
+        "locality", "recordedBy", "recordedBy_fk", "recordedByID"), Set.of("event_pk", "eventCategory"));
     DataPackageTableSchema occurrence = table("occurrence", "occurrence_pk",
         List.of("occurrence_pk", "occurrenceID", "event_fk", "occurrenceStatus", "scientificName", "organismQuantity",
-            "recordedBy", "identifiedBy"), Set.of("occurrence_pk", "event_fk", "occurrenceStatus"));
+            "identifiedBy", "identifiedByID"), Set.of("occurrence_pk", "event_fk", "occurrenceStatus"));
     occurrence.setForeignKeys(List.of(fk("event_fk", "event", "event_pk")));
     DataPackageTableSchema agent = table("agent", "agent_pk", List.of("agent_pk", "agentID", "preferredAgentName"), Set.of("agent_pk"));
     DataPackageTableSchema role = table("occurrence-agent-role", null,
         List.of("occurrence_fk", "agent_fk", "agentRole", "agentRoleOrder"), Set.of("occurrence_fk", "agent_fk", "agentRoleOrder"));
     role.setForeignKeys(List.of(fk("occurrence_fk", "occurrence", "occurrence_pk"), fk("agent_fk", "agent", "agent_pk")));
-    return DataPackageSchema.builder().name("dwc-dp").version("1.0").tableSchemas(Set.of(event, occurrence, agent, role)).build();
+    DataPackageTableSchema eventRole = table("event-agent-role", null,
+        List.of("event_fk", "agent_fk", "agentRole", "agentRoleOrder"), Set.of("event_fk", "agent_fk", "agentRoleOrder"));
+    eventRole.setForeignKeys(List.of(fk("event_fk", "event", "event_pk"), fk("agent_fk", "agent", "agent_pk")));
+    DataPackageTableSchema material = table("material", "materialEntity_pk",
+        List.of("materialEntity_pk", "materialEntityID", "collectionEvent_fk", "evidenceForOccurrence_fk", "institutionCode",
+            "collectionCode", "catalogNumber", "preparations", "scientificName"), Set.of("materialEntity_pk"));
+    material.setForeignKeys(List.of(fk("collectionEvent_fk", "event", "event_pk"),
+        fk("evidenceForOccurrence_fk", "occurrence", "occurrence_pk")));
+    return DataPackageSchema.builder().name("dwc-dp").version("1.0")
+        .tableSchemas(Set.of(event, occurrence, agent, role, eventRole, material)).build();
   }
 
   private static DataPackageTableSchema table(String name, String pk, List<String> fields, Set<String> required) {

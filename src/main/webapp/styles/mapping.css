@@ -218,6 +218,10 @@ body.mp-dirty { padding-bottom: 60px; }
 .mp-rows-opts .mp-merge-on { display: inline-flex; gap: 6px; align-items: center; }
 .mp-gen { margin-top: 4px; display: flex; flex-direction: column; gap: 4px; }
 .mp-gen-help { font-size: 0.72rem; color: #6c757d; }
+/* "Item at the same place in another list": one list choice per list column */
+.mp-gen-pairs .mp-pair { display: flex; align-items: center; gap: 6px; margin: 4px 0 0; }
+.mp-gen-pairs .mp-pair span { white-space: nowrap; }
+.mp-gen-pairs .mp-pair select { flex: 1; min-width: 0; }
 .mp-gen-open { font-size: 0.72rem; margin-top: 2px; }
 .mp-colcell.mp-generated { display: none; }
 /* the column is hidden, so the generated value is the first control in the cell: level with the constant value */

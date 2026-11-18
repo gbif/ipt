@@ -26,5 +26,10 @@ public enum DataPackageValueKind {
   /** a foreign key: the same rule as the primary key of the table it links to, applied to the same source row */
   LINK,
   /** a template with {column name}, {item} and {position} placeholders */
-  TEMPLATE
+  TEMPLATE,
+  /**
+   * the item at the same place in another list: for an item of the k-th list column, the item at the same position in
+   * the field mapping's k-th pair column, e.g. a person's ID in recordedByID for their name in recordedBy
+   */
+  PAIRED
 }

@@ -131,13 +131,65 @@ public class DataPackageRowBuilderTest {
   }
 
   @Test
-  public void testCompareFindsDifferingFields() {
+  public void testCompareFindsDifferingFieldsAndFillsEmptyOnes() {
     List<DataPackageRowBuilder.Conflict> c = DataPackageRowBuilder.compare(List.of("a", "b"), "k",
-        new String[] {"1", null}, 3, new String[] {"1", "x"}, 7);
+        new String[] {"1", "x"}, 3, new String[] {"1", "y"}, 7);
     assertEquals(1, c.size());
     assertEquals("b", c.get(0).field());
     assertEquals(7, c.get(0).otherLine());
-    assertTrue(DataPackageRowBuilder.compare(List.of("a"), "k", new String[] {null}, 1, new String[] {""}, 2).isEmpty());
+
+    // an empty value differs from nothing: a person's ID given on some rows only is filled in
+    String[] merged = {"1", null};
+    assertTrue(DataPackageRowBuilder.compare(List.of("a", "b"), "k", merged, 1, new String[] {"1", "x"}, 2).isEmpty());
+    DataPackageRowBuilder.fill(merged, new String[] {"1", "x"});
+    assertArrayEquals(new String[] {"1", "x"}, merged);
+    DataPackageRowBuilder.fill(merged, new String[] {"1", null});
+    assertArrayEquals(new String[] {"1", "x"}, merged);
+  }
+
+  @Test
+  public void testPairedItemsTakeTheSamePlaceInTheirOwnList() {
+    // names and their IDs in two pairs of lists; an empty name keeps its place, an ID can be missing
+    List<String> cols = List.of("occurrenceID", "recordedBy", "recordedByID", "identifiedBy", "identifiedByID");
+    String[] row = {"O1", "Anna Berg | | Jonas Lind", " | | orcid-J", "Maja Ek", "orcid-M"};
+    DataPackageFieldMapping agentId = kind("agentID", DataPackageValueKind.PAIRED);
+    agentId.setPairColumns(java.util.Arrays.asList(2, 4));
+    DataPackageMapping agent = mapping("agent", source,
+        kind("agent_pk", DataPackageValueKind.ID), kind("preferredAgentName", DataPackageValueKind.ITEM), agentId);
+    agent.setRowMode(DataPackageRowMode.ITEMS);
+    agent.setSplitColumns(List.of(1, 3));
+
+    DataPackageRowBuilder b = new DataPackageRowBuilder(agent, List.of("preferredAgentName", "agentID"), List.of(agent), cols);
+    assertTrue(b.getProblems().isEmpty(), b.getProblems().toString());
+    List<String[]> rows = b.build(row);
+    assertEquals(3, rows.size());
+    assertArrayEquals(new String[] {"Anna Berg", null}, rows.get(0));
+    assertArrayEquals(new String[] {"Jonas Lind", "orcid-J"}, rows.get(1));
+    assertArrayEquals(new String[] {"Maja Ek", "orcid-M"}, rows.get(2));
+
+    DataPackageMapping noPairs = mapping("agent", source, kind("agentID", DataPackageValueKind.PAIRED));
+    noPairs.setRowMode(DataPackageRowMode.ITEMS);
+    noPairs.setSplitColumns(List.of(1));
+    assertEquals("manage.mapping.rows.problem.noPairs",
+        new DataPackageRowBuilder(noPairs, List.of("agentID"), List.of(noPairs), cols).getProblems().get(0).key());
+  }
+
+  @Test
+  public void testWholeRowMergeKey() {
+    DataPackageMapping role = mapping("occurrence-agent-role", source,
+        constant("agentRole", "recorder"), kind("agentRoleOrder", DataPackageValueKind.POSITION));
+    role.setRowMode(DataPackageRowMode.ITEMS);
+    role.setSplitColumns(List.of(2));
+    role.setMergeKey(DataPackageMapping.WHOLE_ROW);
+    DataPackageRowBuilder b = new DataPackageRowBuilder(role, List.of("agentRole", "agentRoleOrder"), List.of(role), COLUMNS);
+    assertTrue(b.getProblems().isEmpty(), b.getProblems().toString());
+    assertTrue(b.isMerging());
+    assertEquals(b.mergeKey(new String[] {"recorder", "1"}), b.mergeKey(new String[] {"recorder", "1"}));
+    assertNotEquals(b.mergeKey(new String[] {"recorder", "1"}), b.mergeKey(new String[] {"recorder", "2"}));
+
+    // one row per source row never merges
+    role.setRowMode(null);
+    assertTrue(!new DataPackageRowBuilder(role, List.of("agentRole"), List.of(role), COLUMNS).isMerging());
   }
 
   // ---------- helpers ----------

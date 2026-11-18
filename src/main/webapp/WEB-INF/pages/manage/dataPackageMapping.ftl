@@ -111,8 +111,27 @@
                     <option value="ID"<#if gen == "ID"> selected</#if>><@s.text name="manage.mapping.gen.ID"/></option>
                     <#if fk?has_content><option value="LINK"<#if gen == "LINK"> selected</#if>><@s.text name="manage.mapping.gen.LINK"><@s.param>${fk?keep_before_last(".")}</@s.param></@s.text></option></#if>
                     <option value="TEMPLATE"<#if gen == "TEMPLATE"> selected</#if>><@s.text name="manage.mapping.gen.TEMPLATE"/></option>
+                    <option value="PAIRED"<#if gen == "PAIRED"> selected</#if>><@s.text name="manage.mapping.gen.PAIRED"/></option>
                 </select>
                 <input id="fTpl${i?c}" class="form-control form-control-sm mp-gen-tpl" name="template_${i?c}" value="${fm.template!}" placeholder="{occurrenceID}-id" aria-label="${label}: <@s.text name='manage.mapping.gen.TEMPLATE'/>"<#if gen != "TEMPLATE"> hidden</#if>/>
+                <#-- PAIRED: for each list column of the saved Rows, the list whose item at the same place is taken -->
+                <div class="mp-gen-help mp-gen-pairs" data-kind-help="PAIRED"<#if gen != "PAIRED"> hidden</#if>>
+                    <@s.text name="manage.mapping.gen.PAIRED.help"/>
+                    <#if splitColumns?has_content>
+                        <#local pairs = fm.pairColumns![]/>
+                        <#list splitColumns as sc>
+                            <#local chosen = (pairs[sc?index])!-1/>
+                            <label class="mp-pair"><span><@s.text name="manage.mapping.gen.PAIRED.for"><@s.param>${columns[sc]!sc}</@s.param></@s.text></span>
+                                <select class="form-select form-select-sm" name="pair_${i?c}_${sc?index}">
+                                    <option value=""></option>
+                                    <#list columns as col><option value="${col_index}"<#if col_index == chosen> selected</#if>>${col}</option></#list>
+                                </select>
+                            </label>
+                        </#list>
+                    <#else>
+                        <div><@s.text name="manage.mapping.gen.PAIRED.noLists"/></div>
+                    </#if>
+                </div>
                 <div class="mp-gen-help" data-kind-help="ITEM"<#if gen != "ITEM"> hidden</#if>><@s.text name="manage.mapping.gen.ITEM.help"/></div>
                 <div class="mp-gen-help" data-kind-help="POSITION"<#if gen != "POSITION"> hidden</#if>><@s.text name="manage.mapping.gen.POSITION.help"/></div>
                 <#if fk?has_content><div class="mp-gen-help" data-kind-help="LINK"<#if gen != "LINK"> hidden</#if>><@s.text name="manage.mapping.gen.LINK.help"><@s.param>${fk?keep_before_last(".")}</@s.param></@s.text></div></#if>
@@ -374,6 +393,8 @@
                                     <label class="mp-merge-on"><input type="checkbox" class="form-check-input" id="mp-merge" name="merge" value="true"<#if mergeKey?has_content || rowMode == "DISTINCT"> checked</#if><#if rowMode == "DISTINCT"> disabled</#if>> <@s.text name="manage.mapping.rows.merge"/></label>
                                     <select id="mp-mergekey" name="mergeKey" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.rows.merge'/>">
                                         <#assign defaultKey = mergeKey?has_content?then(mergeKey, (primaryKey[0])!"")/>
+                                        <#-- tables without a key (roles): identical rows once -->
+                                        <option value="*"<#if defaultKey == "*"> selected</#if>><@s.text name="manage.mapping.rows.merge.wholeRow"/></option>
                                         <#list fields as fm>
                                             <option value="${fm.field.name}"<#if fm.field.name == defaultKey> selected</#if>>${fm.field.name}<#if primaryKey?seq_contains(fm.field.name)> (<@s.text name="manage.mapping.field.pk"/>)</#if></option>
                                         </#list>

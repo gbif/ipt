@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,13 @@ public class DataPackageRowBuilder {
   /** a field mapping and the table it belongs to, which names the namespace of the keys it makes */
   private record Rule(DataPackageFieldMapping mapping, String table) {}
 
-  private record Item(String value, int position) {}
+  /**
+   * @param value the item, normalized
+   * @param position its place among the non-empty items of its list, 1 for the first
+   * @param list which of the mapping's list columns it comes from (index into the split columns)
+   * @param index its place in the list as written, empty items included, for pairing with another list
+   */
+  private record Item(String value, int position, int list, int index) {}
 
   private final DataPackageMapping mapping;
   private final String table;
@@ -78,6 +85,7 @@ public class DataPackageRowBuilder {
   private final List<Problem> problems = new ArrayList<>();
   private final Pattern separator;
   private final int mergeColumn;
+  private final boolean wholeRowMerge;
 
   /**
    * @param mapping the mapping whose rows are made
@@ -109,10 +117,11 @@ public class DataPackageRowBuilder {
 
     DataPackageRowMode mode = mapping.getRowModeOrDefault();
     String mergeKey = mapping.getEffectiveMergeKey();
-    this.mergeColumn = mergeKey == null ? -1 : columns.indexOf(mergeKey);
+    this.wholeRowMerge = mapping.isWholeRowMerge();
+    this.mergeColumn = mergeKey == null || wholeRowMerge ? -1 : columns.indexOf(mergeKey);
     if (mode == DataPackageRowMode.DISTINCT && mergeKey == null) {
       problems.add(new Problem("manage.mapping.rows.problem.noKey"));
-    } else if (mergeKey != null && mergeColumn < 0) {
+    } else if (mergeKey != null && !wholeRowMerge && mergeColumn < 0) {
       problems.add(new Problem("manage.mapping.rows.problem.keyNotMapped", mergeKey));
     }
     if (mode == DataPackageRowMode.ITEMS && (mapping.getSplitColumns() == null || mapping.getSplitColumns().isEmpty())) {
@@ -128,6 +137,13 @@ public class DataPackageRowBuilder {
         case ITEM, POSITION -> {
           if (mode != DataPackageRowMode.ITEMS) {
             problems.add(new Problem("manage.mapping.rows.problem.itemWithoutList", name));
+          }
+        }
+        case PAIRED -> {
+          if (mode != DataPackageRowMode.ITEMS) {
+            problems.add(new Problem("manage.mapping.rows.problem.itemWithoutList", name));
+          } else if (fm.getPairColumns() == null || fm.getPairColumns().stream().allMatch(Objects::isNull)) {
+            problems.add(new Problem("manage.mapping.rows.problem.noPairs", name));
           }
         }
         case ID -> {
@@ -187,10 +203,20 @@ public class DataPackageRowBuilder {
   }
 
   /**
-   * @return the output column rows merge by, -1 if they don't merge
+   * @return true if rows merge: by a key field, or identical rows
    */
-  public int getMergeColumn() {
-    return mergeColumn;
+  public boolean isMerging() {
+    return wholeRowMerge || mergeColumn >= 0;
+  }
+
+  /**
+   * @return the value rows merge by: the key field's, or the whole row for identical rows; null if they don't merge
+   */
+  public String mergeKey(String[] row) {
+    if (wholeRowMerge) {
+      return String.join("\u001F", Arrays.stream(row).map(StringUtils::defaultString).toList());
+    }
+    return mergeColumn >= 0 ? StringUtils.defaultString(row[mergeColumn]) : null;
   }
 
   /**
@@ -214,15 +240,18 @@ public class DataPackageRowBuilder {
     if (mapping.getSplitColumns() == null) {
       return items;
     }
-    for (Integer column : mapping.getSplitColumns()) {
+    List<Integer> lists = mapping.getSplitColumns();
+    for (int k = 0; k < lists.size(); k++) {
+      Integer column = lists.get(k);
       if (column == null || column < 0 || column >= in.length || in[column] == null) {
         continue;
       }
       int position = 0;
-      for (String part : separator.split(in[column])) {
-        String value = normalize(part);
+      String[] parts = separator.split(in[column]);
+      for (int i = 0; i < parts.length; i++) {
+        String value = normalize(parts[i]);
         if (!value.isEmpty()) {
-          items.add(new Item(value, ++position));
+          items.add(new Item(value, ++position, k, i));
         }
       }
     }
@@ -254,11 +283,29 @@ public class DataPackageRowBuilder {
         yield StringUtils.isBlank(from) ? null : key(rule.table(), from);
       }
       case TEMPLATE -> template(fm.getTemplate(), in, item);
+      case PAIRED -> paired(fm, in, item);
       case LINK -> {
         Rule target = links.get(fm.getField().getName());
         yield target == null ? null : value(target, in, item);
       }
     };
+  }
+
+  /**
+   * @return the item at the same place, as written, in the list column paired with the item's list; null if none
+   */
+  private String paired(DataPackageFieldMapping fm, String[] in, Item item) {
+    List<Integer> pairs = fm.getPairColumns();
+    if (item == null || pairs == null || item.list() >= pairs.size()) {
+      return null;
+    }
+    String list = column(in, pairs.get(item.list()));
+    if (list == null) {
+      return null;
+    }
+    String[] parts = separator.split(list);
+    String value = item.index() < parts.length ? normalize(parts[item.index()]) : "";
+    return value.isEmpty() ? null : value;
   }
 
   private static String column(String[] in, Integer index) {
@@ -334,16 +381,28 @@ public class DataPackageRowBuilder {
   public record Conflict(String key, String field, String first, long firstLine, String other, long otherLine) {}
 
   /**
-   * @return the fields whose values differ between two rows with the same key
+   * @return the fields whose values differ between two rows with the same key; an empty value differs from nothing,
+   * it's filled from the other row ({@link #fill})
    */
   public static List<Conflict> compare(List<String> columns, String key, String[] first, long firstLine,
                                        String[] other, long otherLine) {
     List<Conflict> conflicts = new ArrayList<>();
     for (int i = 0; i < first.length; i++) {
-      if (!Objects.equals(StringUtils.defaultString(first[i]), StringUtils.defaultString(other[i]))) {
+      if (StringUtils.isNotEmpty(first[i]) && StringUtils.isNotEmpty(other[i]) && !first[i].equals(other[i])) {
         conflicts.add(new Conflict(key, columns.get(i), first[i], firstLine, other[i], otherLine));
       }
     }
     return conflicts;
+  }
+
+  /**
+   * Fills the empty values of a merged row from another row with the same key: a person's ID given on some rows only.
+   */
+  public static void fill(String[] merged, String[] other) {
+    for (int i = 0; i < merged.length && i < other.length; i++) {
+      if (StringUtils.isEmpty(merged[i]) && StringUtils.isNotEmpty(other[i])) {
+        merged[i] = other[i];
+      }
+    }
   }
 }

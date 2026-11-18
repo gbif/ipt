@@ -176,6 +176,53 @@ public class GenerateDarwinCoreDataPackageTest {
   }
 
   /**
+   * An empty value doesn't conflict: the merged row takes it from another row with the same key, whichever comes first.
+   */
+  @Test
+  public void testDistinctRowsFillEmptyValues() throws Exception {
+    Source source = source("flat",
+        new String[] {"e1", "", "Copenhagen"},
+        new String[] {"e1", "2020-01-01", ""},
+        new String[] {"e2", "2020-01-02", "Aarhus"});
+    DataPackageMapping m = mapping(source,
+        new DataPackageFieldMapping(0, field("eventID")),
+        new DataPackageFieldMapping(1, field("eventDate")),
+        new DataPackageFieldMapping(2, field("locality")));
+    m.setRowMode(org.gbif.ipt.model.DataPackageRowMode.DISTINCT);
+    m.setMergeKey("eventID");
+
+    generator.addDataResource(eventTableSchema, List.of(m), true);
+
+    List<String> lines = Files.readAllLines(new File(dataPackageFolder, "event.csv").toPath(), StandardCharsets.UTF_8);
+    assertEquals(List.of(
+        "eventID,eventDate,locality",
+        "e1,2020-01-01,Copenhagen",
+        "e2,2020-01-02,Aarhus"), lines);
+  }
+
+  /**
+   * Identical rows once ("*" as merge key), for tables without a key: here a list repeated on two source rows.
+   */
+  @Test
+  public void testIdenticalRowsMerge() throws Exception {
+    Source source = source("flat",
+        new String[] {"e1", "Copenhagen|Aarhus"},
+        new String[] {"e1", "Copenhagen|Aarhus"});
+    DataPackageMapping m = mapping(source,
+        new DataPackageFieldMapping(0, field("eventID")),
+        DataPackageFieldMapping.builder().field(field("locality")).valueKind(org.gbif.ipt.model.DataPackageValueKind.ITEM).build());
+    m.setRowMode(org.gbif.ipt.model.DataPackageRowMode.ITEMS);
+    m.setSplitColumns(List.of(1));
+    m.setMergeKey(DataPackageMapping.WHOLE_ROW);
+
+    generator.addDataResource(eventTableSchema, List.of(m), true);
+
+    List<String> lines = Files.readAllLines(new File(dataPackageFolder, "event.csv").toPath(), StandardCharsets.UTF_8);
+    assertEquals(3, lines.size(), lines.toString());
+    assertTrue(lines.contains("e1,Aarhus") && lines.contains("e1,Copenhagen"), lines.toString());
+  }
+
+  /**
    * Rows with the same key but different values stop publishing: the IPT doesn't pick one.
    */
   @Test

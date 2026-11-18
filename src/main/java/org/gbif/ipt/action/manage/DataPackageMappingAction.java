@@ -216,7 +216,7 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
   }
 
   /**
-   * Reads the generated values of the fields (valueKind_N, template_N) from the request, for the same reason as
+   * Reads the generated values of the fields (valueKind_N, template_N, pair_N_K) from the request, for the same reason as
    * {@link #readRows()}, and because an empty choice isn't an enum value Struts can convert.
    */
   private void readGeneratedValues() {
@@ -229,6 +229,16 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
           StringUtils.trimToNull(req.getParameter("valueKind_" + i)));
       fm.setValueKind(kind);
       fm.setTemplate(kind == DataPackageValueKind.TEMPLATE ? StringUtils.trimToNull(req.getParameter("template_" + i)) : null);
+      // PAIRED: pair_N_K is the list matching the K-th list column, one select per list column the page shows
+      List<Integer> pairs = null;
+      if (kind == DataPackageValueKind.PAIRED) {
+        pairs = new ArrayList<>();
+        for (int k = 0; req.getParameter("pair_" + i + "_" + k) != null; k++) {
+          String v = StringUtils.trimToNull(req.getParameter("pair_" + i + "_" + k));
+          pairs.add(v == null ? null : NumberUtils.toInt(v, -1) < 0 ? null : NumberUtils.toInt(v));
+        }
+      }
+      fm.setPairColumns(pairs);
       // a generated value replaces the column, except an ID made from it
       if (kind != null && kind != DataPackageValueKind.ID) {
         fm.setIndex(null);
@@ -338,16 +348,6 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
     return columns;
   }
 
-  public String source() {
-    if (notFound) {
-      return NOT_FOUND;
-    }
-    return INPUT;
-  }
-
-  /**
-   * Create new mappings. One mapping is required and optional number of additional mappings.
-   */
   /**
    * A readable source with the table it most likely fills ("Map tables", several sources at once).
    *
@@ -387,6 +387,16 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
     return sourceMatches;
   }
 
+  public String source() {
+    if (notFound) {
+      return NOT_FOUND;
+    }
+    return INPUT;
+  }
+
+  /**
+   * Create new mappings. One mapping is required and optional number of additional mappings.
+   */
   @RequirePost
   public String create() {
     if (!isHttpPost()) {
@@ -433,6 +443,11 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
       mid = resource.addDataPackageMapping(newMapping);
     }
 
+    // without this the new mappings only live in memory until something else saves the resource
+    if (newMappingsNumber > 0) {
+      saveResource();
+    }
+
     addActionMessage(getText("manage.mapping.multiple.created", new String[]{String.valueOf(newMappingsNumber)}));
 
     return SUCCESS;
@@ -443,11 +458,6 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
     super.prepare();
 
     // get mapping sequence id from parameters as setters are not called yet
-    // without this the new mappings only live in memory until something else saves the resource
-    if (newMappingsNumber > 0) {
-      saveResource();
-    }
-
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));
     if (midStr != null) {
       // not a number: -1, which matches no mapping (404)

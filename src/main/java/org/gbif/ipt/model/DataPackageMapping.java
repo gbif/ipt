@@ -51,9 +51,12 @@ public class DataPackageMapping implements Serializable {
   // how the rows are made; null: one row per source row
   private DataPackageRowMode rowMode;
   // ITEMS: the source columns holding lists, and what separates their items
+  /** merge key for "keep identical rows once": the whole row is the key, for tables without a key such as roles */
+  public static final String WHOLE_ROW = "*";
+
   private List<Integer> splitColumns;
   private String separator;
-  // DISTINCT (and optionally ITEMS): rows with the same value of this field merge into one
+  // DISTINCT (and optionally ITEMS): rows with the same value of this field merge into one; WHOLE_ROW: identical rows do
   private String mergeKey;
   private Date lastModified;
 
@@ -164,6 +167,10 @@ public class DataPackageMapping implements Serializable {
   /**
    * @return the field rows merge by, null when they don't merge
    */
+  public boolean isWholeRowMerge() {
+    return WHOLE_ROW.equals(getEffectiveMergeKey());
+  }
+
   public String getEffectiveMergeKey() {
     DataPackageRowMode mode = getRowModeOrDefault();
     if (mode == DataPackageRowMode.ROW || mergeKey == null || mergeKey.isBlank()) {

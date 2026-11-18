@@ -101,8 +101,7 @@ public class DataPackageRowsPreview {
     List<Row> made = make(mapping, builder, sample);
     rowsMade = made.size();
 
-    int mergeColumn = builder.getMergeColumn();
-    List<Row> result = mergeColumn < 0 ? made : merge(made, mergeColumn);
+    List<Row> result = builder.isMerging() ? merge(made, builder) : made;
     for (int i = 0; i < Math.min(shown, result.size()); i++) {
       rows.add(result.get(i));
     }
@@ -183,14 +182,15 @@ public class DataPackageRowsPreview {
     return in;
   }
 
-  private List<Row> merge(List<Row> made, int mergeColumn) {
+  private List<Row> merge(List<Row> made, DataPackageRowBuilder builder) {
     Map<String, Row> byKey = new LinkedHashMap<>();
     Set<String> conflicting = new HashSet<>();
     for (Row r : made) {
-      String key = StringUtils.defaultString(r.values()[mergeColumn]);
+      String key = builder.mergeKey(r.values());
       Row first = byKey.get(key);
       if (first == null) {
-        byKey.put(key, r);
+        // a copy: empty values get filled from later rows
+        byKey.put(key, new Row(r.line(), r.values().clone()));
         continue;
       }
       merged++;
@@ -199,6 +199,7 @@ public class DataPackageRowsPreview {
       if (!c.isEmpty() && conflicting.add(key)) {
         conflicts.add(c.get(0));
       }
+      DataPackageRowBuilder.fill(first.values(), r.values());
     }
     return new ArrayList<>(byKey.values());
   }

@@ -715,8 +715,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       throw new GeneratorException("Mapping " + schemaMapping.getLabel() + " can't make its rows: "
           + rowBuilder.getProblems().get(0));
     }
-    // rows merging by a key go to a file first, sorted by key afterwards
-    boolean merging = rowBuilder.getMergeColumn() >= 0;
+    // rows merging by a key (or identical rows) go to a file first, sorted by key afterwards
+    boolean merging = rowBuilder.isMerging();
     File mergeFile = null;
     Writer mergeWriter = null;
 
@@ -795,7 +795,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
 
           for (String[] built : rowBuilder.build(in)) {
             if (merging) {
-              mergeWriter.write(MergeLines.write(built[rowBuilder.getMergeColumn()], line, built));
+              mergeWriter.write(MergeLines.write(rowBuilder.mergeKey(built), line, built));
               continue;
             }
             // concatenate values
@@ -886,8 +886,9 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
   }
 
   /**
-   * Writes the rows of a merging mapping: sorted by key, one row per key. Rows with the same key and the same values
-   * are one row; rows with the same key but different values stop publishing, the IPT doesn't pick a value.
+   * Writes the rows of a merging mapping: sorted by key, one row per key. Rows with the same key are one row, its empty
+   * values filled from the others; rows with the same key but different values stop publishing, the IPT doesn't pick a
+   * value. A row is written once its key's last row is read.
    */
   private void writeMerged(Writer writer, List<String> columns, DataPackageMapping schemaMapping, File mergeFile)
       throws IOException, GeneratorException, InterruptedException {
@@ -900,6 +901,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
       ExternalSort.mergeSortedFiles(batches, sorted, ExternalSort.defaultcomparator, StandardCharsets.UTF_8);
       try (BufferedReader reader = Files.newBufferedReader(sorted.toPath(), StandardCharsets.UTF_8)) {
         MergeLines first = null;
+        String[] current = null;
         boolean firstConflicting = false;
         long n = 0;
         for (String l = reader.readLine(); l != null; l = reader.readLine()) {
@@ -910,7 +912,8 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
           if (first != null && first.key().equals(row.key())) {
             merged++;
             List<DataPackageRowBuilder.Conflict> conflicts = DataPackageRowBuilder.compare(columns, row.key(),
-                first.values(), first.line(), row.values(), row.line());
+                current, first.line(), row.values(), row.line());
+            DataPackageRowBuilder.fill(current, row.values());
             if (!conflicts.isEmpty()) {
               if (!firstConflicting) {
                 conflicting++;
@@ -926,26 +929,36 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
             }
             continue;
           }
+          writeMergedRow(writer, current);
           first = row;
+          current = row.values().clone();
           firstConflicting = false;
-          String newRow = commaRow(row.values());
-          if (newRow != null) {
-            writer.write(newRow);
-            currRecords++;
-          }
         }
+        writeMergedRow(writer, current);
       }
     } finally {
       Files.deleteIfExists(sorted.toPath());
     }
     if (merged > 0) {
-      addMessage(Level.INFO, merged + " repeated row(s) merged by " + schemaMapping.getEffectiveMergeKey()
+      addMessage(Level.INFO, merged + " repeated row(s) merged "
+          + (schemaMapping.isWholeRowMerge() ? "as identical rows" : "by " + schemaMapping.getEffectiveMergeKey())
           + " for mapping " + schemaMapping.getLabel());
     }
     if (conflicting > 0) {
       throw new GeneratorException(conflicting + " " + schemaMapping.getEffectiveMergeKey() + " value(s) of mapping "
           + schemaMapping.getLabel() + " have rows with different values. Make the source agree, or map the fields "
           + "that differ elsewhere.");
+    }
+  }
+
+  private void writeMergedRow(Writer writer, String[] values) throws IOException {
+    if (values == null) {
+      return;
+    }
+    String newRow = commaRow(values);
+    if (newRow != null) {
+      writer.write(newRow);
+      currRecords++;
     }
   }
 

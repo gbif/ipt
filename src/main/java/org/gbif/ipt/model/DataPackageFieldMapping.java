@@ -15,6 +15,8 @@ package org.gbif.ipt.model;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +43,8 @@ public class DataPackageFieldMapping implements Serializable, Comparable<DataPac
   private DataPackageValueKind valueKind;
   // TEMPLATE: e.g. "{occurrenceID}-id"
   private String template;
+  // PAIRED: per list column of the mapping (same order), the column holding the matching list; null where there's none
+  private List<Integer> pairColumns;
 
   public DataPackageFieldMapping(Integer index, DataPackageField field) {
     this.index = index;
@@ -57,6 +61,13 @@ public class DataPackageFieldMapping implements Serializable, Comparable<DataPac
   @Override
   public int compareTo(DataPackageFieldMapping fieldMapping) {
     return field.getName().compareTo(fieldMapping.getField().getName());
+  }
+
+  /**
+   * @param pairColumns the pair columns, copied: the resource file can't hold an immutable list
+   */
+  public void setPairColumns(List<Integer> pairColumns) {
+    this.pairColumns = pairColumns == null ? null : new ArrayList<>(pairColumns);
   }
 
   public boolean isMapped() {

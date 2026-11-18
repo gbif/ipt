@@ -79,15 +79,26 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   static final String EVENT = "event";
   static final String AGENT = "agent";
   static final String OCCURRENCE_AGENT_ROLE = "occurrence-agent-role";
+  static final String EVENT_AGENT_ROLE = "event-agent-role";
   static final String IDENTIFICATION = "identification";
+  static final String MATERIAL = "material";
+  static final String RECORDED_BY = "recordedBy";
 
-  // DwC agent-name terms in occurrence, and the role of the person in each
+  // DwC agent-name terms, the role of the person in each, and the term with their IDs in the same order
   private static final Map<String, String> NAME_COLUMNS = new LinkedHashMap<>();
+  private static final Map<String, String> ID_COLUMNS = new LinkedHashMap<>();
 
   static {
-    NAME_COLUMNS.put("recordedBy", "recorder");
+    NAME_COLUMNS.put(RECORDED_BY, "recorder");
     NAME_COLUMNS.put("identifiedBy", "identifier");
+    ID_COLUMNS.put(RECORDED_BY, "recordedByID");
+    ID_COLUMNS.put("identifiedBy", "identifiedByID");
   }
+
+  // a source with one of these columns describes specimens: each row is also a material
+  private static final List<String> MATERIAL_TERMS = List.of("materialEntityID", "catalogNumber");
+  // the material key when there's no materialEntityID, from the ones present, e.g. "NHMD:INV:12345"
+  private static final List<String> MATERIAL_KEY_TERMS = List.of("institutionCode", "collectionCode", "catalogNumber");
 
   private final DataPackageSchemaManager schemaManager;
   private final SourceManager sourceManager;
@@ -237,6 +248,10 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         if (fm.getIndex() != null && fm.getIndex() >= 0 && fm.getIndex() < columns.size()) {
           used.add(columns.get(fm.getIndex()));
         }
+        if (fm.getPairColumns() != null) {
+          fm.getPairColumns().stream().filter(c -> c != null && c >= 0 && c < columns.size())
+              .forEach(c -> used.add(columns.get(c)));
+        }
         if (fm.getValueKind() == DataPackageValueKind.TEMPLATE && fm.getTemplate() != null) {
           Matcher matcher = PLACEHOLDER.matcher(fm.getTemplate());
           while (matcher.find()) {
@@ -272,7 +287,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     DataPackageTableSchema eventTable = schema.tableSchemaByName(EVENT);
     DataPackageTableSchema agentTable = schema.tableSchemaByName(AGENT);
     DataPackageTableSchema roleTable = schema.tableSchemaByName(OCCURRENCE_AGENT_ROLE);
+    DataPackageTableSchema eventRoleTable = schema.tableSchemaByName(EVENT_AGENT_ROLE);
     DataPackageTableSchema identificationTable = schema.tableSchemaByName(IDENTIFICATION);
+    DataPackageTableSchema materialTable = schema.tableSchemaByName(MATERIAL);
 
     int occCol = column(columns, "occurrenceID");
     if (occTable == null || occCol < 0) {
@@ -286,6 +303,16 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         nameCols.put(term, c);
       }
     }
+    // the people's IDs, in lists matching the names: recordedByID for recordedBy
+    Map<String, Integer> idCols = new LinkedHashMap<>();
+    for (String term : nameCols.keySet()) {
+      int c = column(columns, ID_COLUMNS.get(term));
+      if (c >= 0) {
+        idCols.put(term, c);
+      }
+    }
+    Set<Integer> peopleCols = new HashSet<>(nameCols.values());
+    peopleCols.addAll(idCols.values());
 
     // the event key: the eventID column, otherwise the date and place columns (one event per date and place),
     // otherwise none (every row in one event)
@@ -301,24 +328,29 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         groups.computeIfAbsent(eventKey(row, eventKeyCols), k -> new ArrayList<>()).add(row);
       }
       for (int c = 0; c < columns.size(); c++) {
-        if (c == occCol || c == eventCol || nameCols.containsValue(c) || !matchesField(columns.get(c), eventFields)) {
+        if (c == occCol || c == eventCol || !matchesField(columns.get(c), eventFields)) {
           continue;
         }
-        List<String> differ = new ArrayList<>();
-        for (Map.Entry<String, List<String[]>> g : groups.entrySet()) {
-          final int col = c;
-          if (g.getValue().stream().map(r -> value(r, col)).distinct().count() > 1) {
-            differ.add(StringUtils.defaultIfEmpty(g.getKey(), "-"));
-          }
-        }
+        List<String> differ = differInside(groups, c);
         if (differ.isEmpty()) {
           eventCols.add(c);
-        } else {
+        } else if (!peopleCols.contains(c)) {
+          // people that differ inside an event aren't lost: they're linked to each occurrence instead (roles below)
           varying.put(columns.get(c), differ);
         }
       }
     }
     boolean withEvent = eventTable != null;
+    // in DwC-DP 1.0 the recorders belong to the event: there when they're the same inside every event
+    Integer recordedByCol = nameCols.get(RECORDED_BY);
+    List<String> recordersDiffer = recordedByCol == null || !withEvent ? List.of() : differInside(groups, recordedByCol);
+    boolean recordersOnEvent = recordedByCol != null && withEvent && eventRoleTable != null
+        && eventCols.contains(recordedByCol);
+    if (!recordersOnEvent) {
+      // recorders per occurrence: their names and IDs don't go to the event
+      eventCols.remove(recordedByCol);
+      eventCols.remove(idCols.get(RECORDED_BY));
+    }
 
     // occurrence: one per row
     DataPackageMapping occ = mapping(schema, source, occTable);
@@ -390,6 +422,13 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       ag.setMergeKey(agentTable.getPrimaryKey());
       setKind(ag, agentTable.getPrimaryKey(), DataPackageValueKind.ID);
       setKind(ag, "preferredAgentName", DataPackageValueKind.ITEM);
+      DataPackageFieldMapping agentId = ag.getField("agentID");
+      boolean withIds = agentId != null && !idCols.isEmpty();
+      if (withIds) {
+        // the ID at the same place as the name: recordedByID for recordedBy, identifiedByID for identifiedBy
+        setKind(ag, "agentID", DataPackageValueKind.PAIRED);
+        agentId.setPairColumns(nameCols.keySet().stream().map(idCols::get).toList());
+      }
       Set<String> names = new HashSet<>();
       for (String[] row : sample) {
         for (Integer c : nameCols.values()) {
@@ -401,30 +440,86 @@ public class DataPackageTablesAction extends ManagerBaseAction {
           }
         }
       }
-      Suggestion agS = new Suggestion(AGENT, ag, true, "manage.tables.why.agent",
+      Suggestion agS = new Suggestion(AGENT, ag, true, withIds ? "manage.tables.why.agent.ids" : "manage.tables.why.agent",
           String.join(", ", nameCols.keySet().stream().map(t -> columns.get(nameCols.get(t))).toList()), separator,
-          String.valueOf(names.size()));
+          String.valueOf(names.size()), String.join(", ", idCols.values().stream().map(columns::get).toList()));
       addAsks(agS);
       result.add(agS);
 
-      if (roleTable != null) {
-        for (Map.Entry<String, Integer> e : nameCols.entrySet()) {
-          DataPackageMapping role = mapping(schema, source, roleTable);
-          role.setRowMode(DataPackageRowMode.ITEMS);
-          // a mutable list: XStream can't write the immutable ones
-          role.setSplitColumns(new ArrayList<>(List.of(e.getValue())));
-          role.setSeparator(ag.getSeparator());
-          setKind(role, foreignKeyTo(roleTable, OCCURRENCE), DataPackageValueKind.LINK);
-          setKind(role, foreignKeyTo(roleTable, AGENT), DataPackageValueKind.LINK);
-          setDefault(role, "agentRole", NAME_COLUMNS.get(e.getKey()));
-          setKind(role, "agentRoleOrder", DataPackageValueKind.POSITION);
-          Suggestion roleS = new Suggestion(OCCURRENCE_AGENT_ROLE + "-" + e.getKey(), role, true,
-              "manage.tables.why.role", columns.get(e.getValue()), NAME_COLUMNS.get(e.getKey()));
-          roleS.role = NAME_COLUMNS.get(e.getKey());
-          addAsks(roleS);
-          result.add(roleS);
+      // a role row per name: recorders on the event when they're the same inside every event, otherwise per occurrence
+      for (Map.Entry<String, Integer> e : nameCols.entrySet()) {
+        boolean onEvent = recordersOnEvent && RECORDED_BY.equals(e.getKey());
+        DataPackageTableSchema table = onEvent ? eventRoleTable : roleTable;
+        if (table == null) {
+          continue;
+        }
+        String roleName = NAME_COLUMNS.get(e.getKey());
+        DataPackageMapping role = mapping(schema, source, table);
+        role.setRowMode(DataPackageRowMode.ITEMS);
+        // a mutable list: XStream can't write the immutable ones
+        role.setSplitColumns(new ArrayList<>(List.of(e.getValue())));
+        role.setSeparator(ag.getSeparator());
+        setKind(role, foreignKeyTo(table, onEvent ? EVENT : OCCURRENCE), DataPackageValueKind.LINK);
+        setKind(role, foreignKeyTo(table, AGENT), DataPackageValueKind.LINK);
+        setDefault(role, "agentRole", roleName);
+        setKind(role, "agentRoleOrder", DataPackageValueKind.POSITION);
+        String id = (onEvent ? EVENT_AGENT_ROLE : OCCURRENCE_AGENT_ROLE) + "-" + e.getKey();
+        Suggestion roleS;
+        if (onEvent) {
+          // every occurrence of the event repeats its recorders: each row once
+          role.setMergeKey(DataPackageMapping.WHOLE_ROW);
+          roleS = new Suggestion(id, role, true, "manage.tables.why.role.event", columns.get(e.getValue()), roleName);
+        } else if (RECORDED_BY.equals(e.getKey()) && !recordersDiffer.isEmpty()) {
+          roleS = new Suggestion(id, role, true, "manage.tables.why.role.varies", columns.get(e.getValue()), roleName,
+              String.join(", ", recordersDiffer.subList(0, Math.min(3, recordersDiffer.size()))));
+        } else {
+          roleS = new Suggestion(id, role, true, "manage.tables.why.role", columns.get(e.getValue()), roleName);
+        }
+        roleS.role = roleName;
+        addAsks(roleS);
+        result.add(roleS);
+      }
+    }
+
+    // material: each row is also a specimen when there's a materialEntityID or catalogNumber
+    int materialIdCol = column(columns, "materialEntityID");
+    List<Integer> keyCols = MATERIAL_KEY_TERMS.stream().map(t -> column(columns, t)).filter(c -> c >= 0).toList();
+    boolean specimens = MATERIAL_TERMS.stream().anyMatch(t -> column(columns, t) >= 0);
+    if (materialTable != null && specimens) {
+      DataPackageMapping mat = mapping(schema, source, materialTable);
+      // the columns occurrence and event don't take: the identification stays with the occurrence
+      Set<Integer> taken = new HashSet<>(eventCols);
+      taken.add(occCol);
+      if (eventCol >= 0) {
+        taken.add(eventCol);
+      }
+      occ.getFields().stream().map(DataPackageFieldMapping::getIndex).filter(Objects::nonNull).forEach(taken::add);
+      List<String> matColumns = new ArrayList<>();
+      for (int c = 0; c < columns.size(); c++) {
+        matColumns.add(taken.contains(c) && c != materialIdCol ? "" : columns.get(c));
+      }
+      DataPackageMappingAction.automap(mat.getFields(), matColumns);
+      String key;
+      if (materialIdCol >= 0) {
+        setColumn(mat, materialTable.getPrimaryKey(), materialIdCol);
+        key = columns.get(materialIdCol);
+      } else {
+        DataPackageFieldMapping pk = mat.getField(materialTable.getPrimaryKey());
+        key = keyCols.stream().map(c -> "{" + columns.get(c) + "}").collect(Collectors.joining(":"));
+        if (pk != null) {
+          pk.setIndex(null);
+          pk.setValueKind(DataPackageValueKind.TEMPLATE);
+          pk.setTemplate(key);
         }
       }
+      setKind(mat, foreignKeyTo(materialTable, OCCURRENCE), DataPackageValueKind.LINK);
+      if (withEvent) {
+        setKind(mat, foreignKeyTo(materialTable, EVENT), DataPackageValueKind.LINK);
+      }
+      Suggestion matS = new Suggestion(MATERIAL, mat, true, "manage.tables.why.material",
+          String.join(", ", MATERIAL_TERMS.stream().filter(t -> column(columns, t) >= 0).toList()), key);
+      addAsks(matS);
+      result.add(matS);
     }
 
     if (identificationTable != null) {
@@ -450,6 +545,19 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       s.rows = countRows(s, all, columns, sample);
     }
     return result;
+  }
+
+  /**
+   * @return the keys of the events a column has more than one value inside, empty if it's the same inside every event
+   */
+  private static List<String> differInside(Map<String, List<String[]>> groups, int col) {
+    List<String> differ = new ArrayList<>();
+    for (Map.Entry<String, List<String[]>> g : groups.entrySet()) {
+      if (g.getValue().stream().map(r -> value(r, col)).distinct().count() > 1) {
+        differ.add(StringUtils.defaultIfEmpty(g.getKey(), "-"));
+      }
+    }
+    return differ;
   }
 
   /**
@@ -498,12 +606,11 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     s.previewFields.addAll(out);
     s.preview.clear();
     DataPackageRowBuilder builder = new DataPackageRowBuilder(m, out, all, columns);
-    int mergeColumn = builder.getMergeColumn();
     Set<String> keys = new HashSet<>();
     int rows = 0;
     for (String[] in : sample) {
       for (String[] r : builder.build(in)) {
-        if (mergeColumn < 0 || keys.add(StringUtils.defaultString(r[mergeColumn]))) {
+        if (!builder.isMerging() || keys.add(builder.mergeKey(r))) {
           rows++;
           if (s.preview.size() < PREVIEW_ROWS) {
             s.preview.add(r);
@@ -706,7 +813,8 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       case ITEMS -> {
         List<String> lists = m.getSplitColumns() == null ? List.of()
             : m.getSplitColumns().stream().map(c -> c < columns.size() ? columns.get(c) : "#" + c).toList();
-        yield getText(m.getEffectiveMergeKey() != null ? "manage.tables.rule.ITEMS.merged" : "manage.tables.rule.ITEMS",
+        yield getText(m.isWholeRowMerge() ? "manage.tables.rule.ITEMS.identical"
+            : m.getEffectiveMergeKey() != null ? "manage.tables.rule.ITEMS.merged" : "manage.tables.rule.ITEMS",
             new String[] {String.join(", ", lists)});
       }
     };
@@ -781,6 +889,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
           ? columns.get(fm.getIndex()) : getText("manage.tables.field.listItem")});
       case LINK -> getText("manage.tables.field.link", new String[] {linkTable(m, field)});
       case TEMPLATE -> getText("manage.tables.field.template", new String[] {StringUtils.defaultString(fm.getTemplate())});
+      case PAIRED -> getText("manage.tables.field.paired", new String[] {fm.getPairColumns() == null ? ""
+          : fm.getPairColumns().stream().filter(Objects::nonNull).map(c -> c < columns.size() ? columns.get(c) : "#" + c)
+              .collect(Collectors.joining(", "))});
     };
   }
 
