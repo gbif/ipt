@@ -2,23 +2,23 @@
 <#-- Data & mappings section of the resource overview: sources and what they're mapped to in one table. Needs overview_status.ftl -->
 <#assign lastModifiedNotSet><@s.text name='basic.lastModified.not.set'/></#assign>
 
-<#-- what a data package mapping needs reviewed for: made against another schema version than the installed one,
-     or its table or fields aren't in the installed schema (anymore) -->
+<#-- what a data package mapping needs reviewed for, as on its mapping page: a table not in the installed schema stops
+     publishing (error); made against another schema version, or fields the installed schema doesn't have, which are
+     published without them (warning) -->
 <#macro dataPackageMappingIssues m>
-    <#local issues = []>
+    <#local warnings = []>
     <#if (m.version!"") != (m.dataPackageSchema.version)!"">
-        <#local issue><@s.text name="manage.overview.mappings.outdated"><@s.param>${m.version!"?"}</@s.param></@s.text></#local>
-        <#local issues = issues + [issue]>
+        <#local issue><@s.text name="manage.overview.mappings.outdated"><@s.param>${m.version!"?"}</@s.param><@s.param>${(m.dataPackageSchema.version)!"?"}</@s.param></@s.text></#local>
+        <#local warnings = warnings + [issue]>
     </#if>
     <#if m.tableSchemaMissing>
-        <#local issue><@s.text name="manage.overview.mappings.tableMissing"/></#local>
-        <#local issues = issues + [issue]>
+        <span class="ov-small bad"><@icon name="error"/> <@s.text name="manage.overview.mappings.tableMissing"/></span>
     <#elseif m.unresolvedFieldNames?has_content>
         <#local issue><@s.text name="manage.overview.mappings.fieldsMissing"><@s.param>${m.unresolvedFieldNames?join(", ")}</@s.param></@s.text></#local>
-        <#local issues = issues + [issue]>
+        <#local warnings = warnings + [issue]>
     </#if>
-    <#if issues?has_content>
-        <span class="ov-small bad"><@icon name="warning"/> <#list issues as issue>${issue}<#sep>; </#sep></#list></span>
+    <#if warnings?has_content>
+        <span class="ov-small warn"><@icon name="warning"/> <#list warnings as issue>${issue}<#sep>; </#sep></#list></span>
     </#if>
 </#macro>
 
@@ -72,9 +72,9 @@
     </div>
 </#macro>
 
-<#-- a problem with a mapping, under its name -->
-<#macro problemNote key>
-    <span class="ov-small bad"><@icon name="warning"/> <@s.text name=key/></span>
+<#-- a problem with a mapping, under its name: an error stops publishing, a warning doesn't -->
+<#macro problemNote key level="error">
+    <span class="ov-small <#if level == "error">bad<#else>warn</#if>"><@icon name=level/> <@s.text name=key/></span>
 </#macro>
 
 <#-- sources no mapping uses: under the table, each with "Map to…" and its menu. More than a few are folded into one
@@ -195,16 +195,6 @@
         </#if>
         <#if isPublished>${liveSourcesNote}</#if>
     </div>
-
-    <#if isDataPackage && !dataPackageMappingsMissing && dataPackageSchemaChanged>
-        <p class="text-gbif-danger text-smaller">
-            <@s.text name='manage.overview.mappings.schemaChanged'>
-                <@s.param><b>${installedSchemaName!"?"}</b></@s.param>
-                <@s.param><b>v${outdatedMappingVersions!"?"}</b></@s.param>
-                <@s.param><b>v${installedSchemaVersion!"?"}</b></@s.param>
-            </@s.text>
-        </p>
-    </#if>
 
     <#if !resource.sources?has_content>
         <div class="ov-empty">
@@ -337,7 +327,7 @@
                         data-ov-unmapped="false" data-ov-problem="${g.problem?c}">
                         <td>
                             <span class="ov-name fw-semibold">${g.ext.title}</span><#if showChangedTags && anyMappingChanged><@changedTag/></#if>
-                            <#if g.rows?filter(r -> r.m.fields?size == 0)?has_content><@problemNote "manage.overview.data.status.noTerms"/></#if>
+                            <#if g.rows?filter(r -> r.m.fields?size == 0)?has_content><@problemNote "manage.overview.data.status.noTerms" "warning"/></#if>
                         </td>
                         <td>
                             <button type="button" class="ov-link-btn ov-toggle-sources" aria-expanded="${g.problem?c}" aria-controls="${groupId}">
@@ -376,9 +366,9 @@
         <td>
             <#if withClass>
                 <a href="${editUrl}" class="ov-name fw-semibold">${r.ext.title}</a><#if showChangedTags && isMappingChanged(m)><@changedTag/></#if>
-                <#if m.fields?size == 0><@problemNote "manage.overview.data.status.noTerms"/></#if>
+                <#if m.fields?size == 0><@problemNote "manage.overview.data.status.noTerms" "warning"/></#if>
             <#elseif m.fields?size == 0>
-                <@problemNote "manage.overview.data.status.noTerms"/>
+                <@problemNote "manage.overview.data.status.noTerms" "warning"/>
             <#elseif showChildChangedTags && isMappingChanged(m)>
                 <@changedTag/>
             </#if>

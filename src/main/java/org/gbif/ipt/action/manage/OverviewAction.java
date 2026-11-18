@@ -227,18 +227,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   @Getter
   private String freeDiscSpaceReadable;
   @Getter
-  private boolean dataPackageSchemaChanged;
-  @Getter
   private boolean allRequiredFieldsMappedDataPackage;
   @Getter
   private Map<String, List<DataPackageField>> missingRequiredFieldsDataPackage;
   @Getter
   private String installedSchemaVersion;
-  @Getter
-  private String installedSchemaName;
-  // versions the outdated mappings were made against, e.g. "1.0, v1.1"
-  @Getter
-  private String outdatedMappingVersions;
   // labels of the mappings to tables not in the installed schema, preventing publication
   @Getter
   private List<String> dataPackageMappingsWithMissingTable = new ArrayList<>();
@@ -2138,28 +2131,14 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   }
 
   /**
-   * Sets the installed schema name and version, and the versions of the mappings made against another version.
+   * Sets the installed schema version, shown next to the resource type.
    */
   void loadDataPackageSchemaVersions() {
     DataPackageSchema dataPackageSchema = schemaManager.get(resource.getDataPackageIdentifier());
     if (dataPackageSchema == null) {
       return;
     }
-    installedSchemaName = dataPackageSchema.getName();
     installedSchemaVersion = dataPackageSchema.getVersion();
-
-    // versions of the mappings made against another version than the installed one
-    List<String> mappedVersions = resource.getDataPackageMappings().stream()
-        .map(DataPackageMapping::getVersion)
-        .filter(v -> !Objects.equals(v, dataPackageSchema.getVersion()))
-        .map(v -> Objects.toString(v, "?"))
-        .distinct()
-        .sorted()
-        .toList();
-    if (!mappedVersions.isEmpty()) {
-      dataPackageSchemaChanged = true;
-      outdatedMappingVersions = String.join(", v", mappedVersions);
-    }
   }
 
   private Map<String, List<DataPackageField>> computeAllRequiredFieldsMappedDataPackage() {

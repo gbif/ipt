@@ -134,6 +134,7 @@ tr.ov-parent.open .ov-toggle-sources::after { transform: rotate(90deg); }
 .ov-ftype.bad { background: rgba(var(--color-gbif-danger), .12); color: rgb(var(--color-gbif-danger)); }
 .ov-small { font-size: 0.72rem; color: #6c757d; display: block; }
 .ov-small.bad { color: rgb(var(--color-gbif-danger)); }
+.ov-small.warn { color: rgb(var(--alert-warning-icon-color)); }
 .ov-chg { font-size: 0.62rem; font-weight: 700; background: rgba(var(--alert-warning-icon-color), .12); color: rgb(var(--alert-warning-icon-color)); border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }
 .ov-maps { display: flex; flex-direction: column; gap: 3px; }
 .ov-rowacts { white-space: nowrap; text-align: right; }
