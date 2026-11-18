@@ -61,3 +61,6 @@ table.dataTable.mh-table { --dt-column-ordering_alpha: 0; --dt-row_alpha-stripe:
 .mh-attention-danger { color: rgb(var(--color-gbif-danger)); }
 .mh-attention-warning { color: rgb(var(--alert-warning-icon-color)); }
 .mh-attention-info { color: #3d5a80; }
+
+/* messages above the table: the box below already has its own top margin */
+#action-alerts .alert:last-child { margin-bottom: 0; }

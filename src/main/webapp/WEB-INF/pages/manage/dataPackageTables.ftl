@@ -142,7 +142,8 @@
     .tb-note { font-size: 0.75rem; color: #6c757d; margin-top: 4px; }
     .tb-ask { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 6px; font-size: 0.8rem; }
     .tb-ask input { width: 12rem; }
-    .tb-warn { display: flex; gap: 6px; font-size: 0.78rem; color: rgb(var(--alert-warning-icon-color)); margin-top: 4px; }
+    .tb-warn { display: flex; align-items: flex-start; gap: 6px; font-size: 0.78rem; line-height: 1.4; color: rgb(var(--alert-warning-icon-color)); margin-top: 4px; }
+    .tb-warn > .material-icon { margin-top: 0.2em; }
     .tb-count { font-size: 0.8rem; color: #6c757d; white-space: nowrap; }
     @media (max-width: 760px) { .tb-sugg { grid-template-columns: 22px 1fr; } .tb-sugg > :nth-child(n+3) { grid-column: 2; } }
 </style>
