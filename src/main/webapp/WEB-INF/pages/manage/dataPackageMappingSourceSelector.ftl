@@ -1,7 +1,9 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMappingAction" -->
-<#-- "Map tables": the one way into new data package mappings. Asks how to map: one table at a time (source + table
-     pairs, dataPackageMappingSourceCreate.do), or, for DwC-DP, split a flat source into tables (dataPackageTables.do).
-     ?from=<source> preselects a source, ?how=SPLIT opens the second card -->
+<#-- "Map tables": the one way into new data package mappings. Asks how to map: choose the tables yourself (source +
+     table pairs, as many as wanted), match sources to tables (a table suggested per source from its columns; both create through
+     dataPackageMappingSourceCreate.do), or, for DwC-DP, split a flat source into tables (dataPackageTables.do).
+     ?from=<source> preselects a source, ?how=PICK|MATCH|SPLIT picks the card; otherwise several unmapped sources open
+     MATCH -->
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="manage.mapping.new.title"/>: ${resource.title!resource.shortname}</title>
@@ -16,8 +18,16 @@
 
 <#assign isDwcDp = dataPackageSchema.name == "dwc-dp"/>
 <#assign from = (Parameters.from)!""/>
-<#assign how = (isDwcDp && ((Parameters.how)!"") == "SPLIT")?then("SPLIT", "ONE")/>
 <#assign readableSources = resource.sources?filter(x -> x.readable)/>
+<#assign matches = sourceMatches/>
+<#-- matching lists the unmapped sources a table was found for; the others are only named under the list -->
+<#assign toMatch = matches?filter(x -> !x.mappedTo()?has_content && x.match().table()??)/>
+<#assign noMatch = matches?filter(x -> !x.mappedTo()?has_content && !x.match().table()??)/>
+<#assign alreadyMapped = matches?filter(x -> x.mappedTo()?has_content)/>
+<#assign how = (Parameters.how)!""/>
+<#if !(how == "PICK" || how == "MATCH" || (how == "SPLIT" && isDwcDp))>
+    <#assign how = (!from?has_content && (toMatch?size > 1))?then("MATCH", "PICK")/>
+</#if>
 
 <#macro sourceOptions selected>
     <#list resource.sources as src>
@@ -41,7 +51,7 @@
                 </#list>
             </select>
         </div>
-        <button type="button" class="ov-link-btn mt-remove" title="<@s.text name='manage.mapping.delete'/>"<#if i == 0> hidden</#if>><@icon name="close"/></button>
+        <button type="button" class="ov-link-btn mt-remove" title="<@s.text name='manage.mapping.delete'/>" aria-label="<@s.text name='manage.mapping.delete'/>"<#if i == 0> hidden</#if>><@icon name="delete"/></button>
     </div>
 </#macro>
 
@@ -66,7 +76,7 @@
                 <div class="ov-meta"><span>${resource.title!resource.shortname}</span></div>
             </div>
             <div class="ov-acts">
-                <button type="submit" id="mt-continue" form="mt-one" class="btn btn-sm btn-gbif-solid top-button"><@s.text name="manage.mapping.new.continue"/></button>
+                <button type="submit" id="mt-continue" form="mt-pick" class="btn btn-sm btn-gbif-solid top-button"><@s.text name="manage.mapping.new.continue"/></button>
                 <a class="btn btn-sm btn-outline-secondary top-button" href="resource.do?r=${resource.shortname}"><@s.text name="button.back"/></a>
             </div>
         </div>
@@ -77,10 +87,15 @@
     <div class="container main-content-container mb-md-4 pt-3">
         <p class="text-smaller mb-2"><@s.text name="manage.mapping.new.how"/></p>
         <div class="mp-cards mt-hows mb-3">
-            <label class="mp-choice<#if how == "ONE"> on</#if>">
-                <input type="radio" name="how" value="ONE"<#if how == "ONE"> checked</#if>>
-                <span class="t"><@s.text name="manage.mapping.new.ONE"/><span class="tick"></span></span>
-                <span class="d"><@s.text name="manage.mapping.new.ONE.desc"/></span>
+            <label class="mp-choice<#if how == "PICK"> on</#if>">
+                <input type="radio" name="how" value="PICK"<#if how == "PICK"> checked</#if>>
+                <span class="t"><@s.text name="manage.mapping.new.PICK"/><span class="tick"></span></span>
+                <span class="d"><@s.text name="manage.mapping.new.PICK.desc"/></span>
+            </label>
+            <label class="mp-choice<#if how == "MATCH"> on</#if><#if !matches?has_content> off</#if>">
+                <input type="radio" name="how" value="MATCH"<#if how == "MATCH"> checked</#if><#if !matches?has_content> disabled</#if>>
+                <span class="t"><@s.text name="manage.mapping.new.MATCH"/><span class="tick"></span></span>
+                <span class="d"><@s.text name="manage.mapping.new.MATCH.desc"/></span>
             </label>
             <#if isDwcDp>
                 <label class="mp-choice<#if how == "SPLIT"> on</#if><#if !readableSources?has_content> off</#if>">
@@ -91,8 +106,8 @@
             </#if>
         </div>
 
-        <#-- one table at a time: source + table pairs, as many as wanted -->
-        <form id="mt-one" action="dataPackageMappingSourceCreate.do" method="post"<#if how != "ONE"> hidden</#if>>
+        <#-- choose the tables yourself: source + table pairs, as many as wanted -->
+        <form id="mt-pick" action="dataPackageMappingSourceCreate.do" method="post"<#if how != "PICK"> hidden</#if>>
             <input type="hidden" name="r" value="${resource.shortname}"/>
             <input type="hidden" name="id" value="${dataPackageSchema.identifier}"/>
             <input type="hidden" name="schemaName" value="${dataPackageSchema.name}"/>
@@ -102,7 +117,48 @@
                 <@pairRow 0 from/>
             </div>
             <button type="button" id="mt-add" class="ov-link-btn mt-2"><@icon name="add"/> <@s.text name="manage.mapping.add"/></button>
-            <p class="text-smaller text-muted mt-3 mb-0"><@s.text name="manage.mapping.new.ONE.after"/></p>
+            <p class="text-smaller text-muted mt-3 mb-0"><@s.text name="manage.mapping.new.PICK.after"/></p>
+        </form>
+
+        <#-- match sources to tables: each unmapped source with the table its columns match best, ticked; only ticked rows
+             are sent, numbered on submit. Sources no table matches link to "Choose the tables yourself" -->
+        <form id="mt-match" action="dataPackageMappingSourceCreate.do" method="post"<#if how != "MATCH"> hidden</#if>>
+            <input type="hidden" name="r" value="${resource.shortname}"/>
+            <input type="hidden" name="id" value="${dataPackageSchema.identifier}"/>
+            <input type="hidden" name="schemaName" value="${dataPackageSchema.name}"/>
+            <input type="hidden" name="showAll" value="${Parameters.showAll!"true"}"/>
+            <#if toMatch?has_content>
+            <div class="mt-matches">
+                <#list toMatch as sm>
+                    <#assign mt = sm.match()/>
+                    <div class="mt-match" data-columns="${mt.columns()?c}" data-matched="{<#list mt.matched() as t, n>&quot;${t?js_string}&quot;:${n?c}<#sep>,</#sep></#list>}">
+                        <input type="checkbox" class="form-check-input mt-use" id="mt-use-${sm?index}" aria-label="${sm.source().name}" checked>
+                        <input type="hidden" class="mt-src" value="${sm.source().name}"/>
+                        <label class="mt-src-name" for="mt-use-${sm?index}">${sm.source().name}
+                            <span class="mt-src-meta"><@s.text name="manage.overview.source.columns"/>: ${mt.columns()?c}</span>
+                        </label>
+                        <div>
+                            <select class="form-select form-select-sm mt-table mt-match-table" aria-label="${sm.source().name}: <@s.text name='manage.mapping.new.table'/>">
+                                <option value=""><@s.text name="manage.mapping.new.chooseTable"/></option>
+                                <#list dataPackageSchema.tableSchemas as t>
+                                    <option value="${t.name}"<#if t.name == (mt.table())!""> selected</#if>>${t.title!t.name}</option>
+                                </#list>
+                            </select>
+                        </div>
+                        <span class="mt-count"></span>
+                    </div>
+                </#list>
+            </div>
+            <#else>
+                <div class="ov-banner info compact" role="status"><@icon name="info" class="ov-ic"/><div class="ov-grow"><@s.text name="manage.mapping.new.nothingToMatch"/></div></div>
+            </#if>
+            <#if noMatch?has_content>
+                <p class="mt-rest"><@s.text name="manage.mapping.new.noMatch"><@s.param><#list noMatch as sm><a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=PICK&from=${sm.source().name?url}">${sm.source().name}</a><#sep>, </#sep></#list></@s.param></@s.text></p>
+            </#if>
+            <#if alreadyMapped?has_content>
+                <p class="mt-rest"><@s.text name="manage.mapping.new.alreadyMapped"><@s.param><#list alreadyMapped as sm>${sm.source().name} &rarr; ${sm.mappedTo()?join(", ")}<#sep>, </#sep></#list></@s.param></@s.text></p>
+            </#if>
+            <#if toMatch?has_content><p class="text-smaller text-muted mt-3 mb-0"><@s.text name="manage.mapping.new.MATCH.after"/></p></#if>
         </form>
 
         <#-- split a flat source: on to the "Split into tables" page -->
@@ -129,11 +185,24 @@
 <template id="mt-pair-template"><@pairRow 999 ""/></template>
 
 <style>
-    .mt-hows { max-width: 760px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-    .mt-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 24px; gap: 12px; align-items: end; max-width: 760px; margin-bottom: 10px; }
-    #mt-split .mt-pair { grid-template-columns: minmax(0, 1fr); max-width: 360px; }
+    /* the ways to map side by side, as wide as the page: three for DwC-DP, two for other data packages */
+    .mt-hows { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .mt-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 24px; gap: 12px; align-items: end; margin-bottom: 10px; }
+    #mt-split .mt-pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 24px; }
     .mt-label { font-size: 0.8rem; color: #495057; margin-bottom: 3px; }
-    .mt-remove { padding-bottom: 6px; color: #6c757d; }
+    .mt-matches { border: 1px solid #dee2e6; border-radius: 8px; padding: 0 14px; }
+    .mt-match { display: grid; grid-template-columns: 22px minmax(140px, 1fr) minmax(0, 1.4fr) minmax(150px, auto); gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid #f1f3f5; }
+    .mt-match:first-child { border-top: 0; }
+    .mt-src-name { font-weight: 600; font-size: 0.875rem; margin: 0; cursor: pointer; }
+    .mt-src-meta { display: block; font-weight: 400; font-size: 0.75rem; color: #6c757d; }
+    .mt-rest { font-size: 0.8rem; color: #6c757d; margin: 10px 0 0; }
+    .mt-count { font-size: 0.78rem; color: #6c757d; }
+    .mt-count.none { color: rgb(var(--alert-warning-icon-color)); }
+    @media (max-width: 760px) { .mt-match { grid-template-columns: 22px 1fr; } .mt-match > :nth-child(n+4) { grid-column: 2; } }
+    /* as tall as the dropdowns beside it (--s2-height in select2-ipt.css, set on the select2 container only), the bin
+       centred in it */
+    .mt-remove { height: calc(1.5rem + .75rem + 2px); padding: 0; display: flex; align-items: center; justify-content: center; color: #6c757d; font-size: 1.25rem; line-height: 1; }
+    .mt-remove:hover { color: rgb(var(--color-gbif-danger)); }
     .mt-t-name { font-weight: 600; }
     .mt-t-desc { font-size: 0.75rem; color: #6c757d; }
     @media (max-width: 600px) { .mt-pair { grid-template-columns: 1fr 24px; } .mt-pair > div:nth-child(2) { grid-column: 1; } }
@@ -144,12 +213,13 @@
         // table descriptions, for the searchable table dropdown
         var tables = {
             <#list dataPackageSchema.tableSchemas as t>
-            "${t.name?js_string}": {name: "${t.name?js_string}", description: "${(t.description!"")?js_string}", fields: ${t.fields?size?c}}<#sep>,</#sep>
+            "${t.name?js_string?no_esc}": {name: "${t.name?js_string?no_esc}", description: "${(t.description!"")?js_string?no_esc}", fields: ${t.fields?size?c}}<#sep>,</#sep>
             </#list>
         };
-        <#assign fieldsLabel><@s.text name="manage.mapping.new.fields"/></#assign>
-        var fieldsLabel = "${fieldsLabel?js_string}";
-        var noResults = {noResults: function () { return '${selectNoResultsFound?js_string}'; }};
+        var fieldsLabel = "${action.getText('manage.mapping.new.fields')?js_string?no_esc}";
+        var matchedText = "${action.getText('manage.mapping.new.matched', ['%N%', '%C%'])?js_string?no_esc}";
+        var noneMatchedText = "${action.getText('manage.mapping.new.noneMatched')?js_string?no_esc}";
+        var noResults = {noResults: function () { return "${action.getText('select.noResults')?js_string?no_esc}"; }};
 
         function tableOption(o) {
             if (!o.id || !tables[o.id]) return o.text;
@@ -171,9 +241,49 @@
         $('.mt-hows').on('change', 'input[name=how]', function () {
             var how = $('.mt-hows input[name=how]:checked').val();
             $('.mt-hows .mp-choice').each(function () { $(this).toggleClass('on', $(this).find('input').is(':checked')); });
-            $('#mt-one').prop('hidden', how !== 'ONE');
+            $('#mt-pick').prop('hidden', how !== 'PICK');
             $('#mt-split').prop('hidden', how !== 'SPLIT');
-            $('#mt-continue').attr('form', how === 'SPLIT' ? 'mt-split' : 'mt-one');
+            $('#mt-match').prop('hidden', how !== 'MATCH');
+            $('#mt-continue').attr('form', how === 'SPLIT' ? 'mt-split' : how === 'MATCH' ? 'mt-match' : 'mt-pick');
+            renderMatchContinue();
+        });
+        // several sources: how many columns the chosen table maps, and Continue only with something to create
+        function renderMatch($row) {
+            var table = $row.find('.mt-match-table').val();
+            var n = table ? ($row.data('matched')[table] || 0) : 0;
+            var $count = $row.find('.mt-count');
+            if (!table) $count.text('').removeClass('none');
+            else if (n === 0) $count.text(noneMatchedText).addClass('none');
+            else $count.text(matchedText.replace('%N%', n).replace('%C%', $row.data('columns'))).removeClass('none');
+        }
+        function renderMatchContinue() {
+            if ($('#mt-match').prop('hidden')) { $('#mt-continue').prop('disabled', false); return; }
+            var any = $('#mt-match .mt-match').filter(function () {
+                return $(this).find('.mt-use').is(':checked') && $(this).find('.mt-match-table').val();
+            }).length > 0;
+            $('#mt-continue').prop('disabled', !any);
+        }
+        $('#mt-match').on('change', '.mt-match-table', function () {
+            var $row = $(this).closest('.mt-match');
+            // choosing a table ticks the source
+            if ($(this).val()) $row.find('.mt-use').prop('checked', true);
+            renderMatch($row);
+            renderMatchContinue();
+        });
+        $('#mt-match').on('change', '.mt-use', renderMatchContinue);
+        $('#mt-match .mt-match').each(function () { renderMatch($(this)); });
+        $('#mt-match').on('submit', function () {
+            var i = 0;
+            $(this).find('.mt-match').each(function () {
+                var $src = $(this).find('.mt-src'), $table = $(this).find('.mt-match-table');
+                $src.removeAttr('name');
+                $table.removeAttr('name');
+                if ($(this).find('.mt-use').is(':checked') && $table.val()) {
+                    $src.attr('name', 'newSources[' + i + ']');
+                    $table.attr('name', 'newTableSchemas[' + i + ']');
+                    i++;
+                }
+            });
         });
         $('.mt-hows input[name=how]:checked').trigger('change');
 

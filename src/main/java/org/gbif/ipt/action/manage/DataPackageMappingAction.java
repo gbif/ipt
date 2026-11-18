@@ -315,7 +315,10 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
   }
 
   private List<String> readSource(DataPackageMapping mapping) {
-    Source src = mapping.getSource();
+    return columnsOf(mapping.getSource(), mapping);
+  }
+
+  private List<String> columnsOf(Source src, DataPackageMapping mapping) {
     List<String> columns;
 
     if (src == null) {
@@ -345,6 +348,45 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
   /**
    * Create new mappings. One mapping is required and optional number of additional mappings.
    */
+  /**
+   * A readable source with the table it most likely fills ("Map tables", several sources at once).
+   *
+   * @param mappedTo the tables already mapped from the source, each once, empty when none
+   */
+  public record SourceMatch(Source source, DataPackageSourceMatcher.Match match, List<String> mappedTo) {}
+
+  private List<SourceMatch> sourceMatches;
+
+  /**
+   * @return every readable source with its suggested table, for matching several sources at once
+   */
+  public List<SourceMatch> getSourceMatches() {
+    if (sourceMatches == null) {
+      sourceMatches = new ArrayList<>();
+      DataPackageSchema schema = mapping == null ? null : mapping.getDataPackageSchema();
+      if (schema != null) {
+        for (Source src : resource.getSources()) {
+          if (!src.isReadable()) {
+            continue;
+          }
+          try {
+            List<String> columns = columnsOf(src, new DataPackageMapping());
+            List<String> mappedTo = resource.getDataPackageMappings().stream()
+                .filter(m -> m.getSource() != null && src.getName().equals(m.getSource().getName())
+                    && m.getDataPackageTableSchemaName() != null)
+                .map(m -> m.getDataPackageTableSchemaName().getName())
+                .distinct()
+                .toList();
+            sourceMatches.add(new SourceMatch(src, DataPackageSourceMatcher.match(src.getName(), columns, schema), mappedTo));
+          } catch (Exception e) {
+            LOG.warn("Can't read the columns of source {} to suggest its table", src.getName(), e);
+          }
+        }
+      }
+    }
+    return sourceMatches;
+  }
+
   @RequirePost
   public String create() {
     if (!isHttpPost()) {
@@ -401,6 +443,11 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
     super.prepare();
 
     // get mapping sequence id from parameters as setters are not called yet
+    // without this the new mappings only live in memory until something else saves the resource
+    if (newMappingsNumber > 0) {
+      saveResource();
+    }
+
     String midStr = StringUtils.trimToNull(req.getParameter("mid"));
     if (midStr != null) {
       // not a number: -1, which matches no mapping (404)
