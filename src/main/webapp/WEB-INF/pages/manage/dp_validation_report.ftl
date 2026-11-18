@@ -1,482 +1,393 @@
-<#setting url_escaping_charset="UTF-8">
-
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.ValidationReportAction" -->
+<#-- The DwC-DP analyser's report from the last publishing: descriptor, EML and per-table checks -->
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
+<#include "/WEB-INF/pages/macros/duration.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
-<title><@s.text name="manage.validation.data.title"/></title>
+<title><@s.text name="manage.validation.title"/>: ${resource.title!resource.shortname}</title>
+<link rel="stylesheet" href="${baseURL}/styles/overview.css">
+<link rel="stylesheet" href="${baseURL}/styles/publishing.css">
+<link rel="stylesheet" href="${baseURL}/styles/validation-report.css">
+<style>
+    /* --ov-bars-height: where the sidebar sticks (overview.css), just under the fixed navbar, as there is no resource bar here */
+    :root { --navbar-height: 120px; --ov-bars-height: 57px; }
+</style>
+<script src="${baseURL}/js/scrollspy.js"></script>
+<script>
+    $(document).ready(function () {
+        var spy = window.IptScrollSpy ? IptScrollSpy.init({tocSelector: ".bd-toc nav a"}) : null;
+
+        // "Only tables with problems" hides the clean tables and their sidebar links
+        $("#vr-only-problems").on("change", function () {
+            $("#vr-data .vr-tables").toggleClass("only-problems", this.checked);
+            $(".bd-toc li.vr-toc-table.clean").prop("hidden", this.checked);
+            if (spy) spy.refresh();
+        });
+
+        // a table picked in the sidebar is opened
+        $(".bd-toc").on("click", "a[data-table]", function () {
+            var table = document.getElementById("vr-t-" + $(this).data("table"));
+            if (table) table.open = true;
+        });
+    });
+</script>
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
-<style>
-    :root {
-        --gbif-primary: #509E2F;
-        --gbif-primary-dark: #3d7a24;
-        --gbif-danger: #C0392B;
-    }
 
-    .card {
-        border: 1px solid #e3e5e0;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
-    }
+<#-- a sample value as it is in the file: numbers without grouping -->
+<#macro val v><#if !v??><span class="vr-null">null</span><#elseif v?is_number>${v?c}<#elseif v?is_boolean>${v?c}<#else>${v}</#if></#macro>
 
-    .accordion-button {
-        color: #4E565F !important;
-    }
+<#-- "Errors: 2" / "Warnings: 1" / "No problems", with the icon of the worst -->
+<#macro status errors warnings>
+    <#if errors gt 0>
+        <span class="vr-status bad"><@icon name="error"/> <@s.text name="manage.validation.errors"><@s.param>${errors}</@s.param></@s.text></span>
+    </#if>
+    <#if warnings gt 0>
+        <span class="vr-status warn"><@icon name="warning"/> <@s.text name="manage.validation.warnings"><@s.param>${warnings}</@s.param></@s.text></span>
+    </#if>
+    <#if errors == 0 && warnings == 0>
+        <span class="vr-status ok"><@icon name="check_circle"/> <@s.text name="manage.validation.noProblems"/></span>
+    </#if>
+</#macro>
 
-    .accordion-button:not(.collapsed) {
-        background: rgb(var(--alert-success-background-color));
-        color: #2c2c2c;
-        box-shadow: none;
-    }
+<#-- descriptor and EML problems -->
+<#macro issuesTable issues>
+    <table class="ov-table vr-issues">
+        <thead>
+        <tr>
+            <th><@s.text name="manage.validation.problem"/></th>
+            <th><@s.text name="manage.validation.location"/></th>
+        </tr>
+        </thead>
+        <tbody>
+        <#list issues as issue>
+            <#assign sev = issue.severity?string>
+            <tr>
+                <td>
+                    <span class="vr-issue ${(sev == 'ERROR')?then('bad', (sev == 'WARNING')?then('warn', 'info'))}">
+                        <@icon name=(sev == 'ERROR')?then('error', (sev == 'WARNING')?then('warning', 'info'))/>
+                        <span>
+                            <span class="visually-hidden"><@s.text name="manage.validation.severity.${sev}"/>:</span>
+                            ${issue.message!}
+                            <span class="vr-code">${issue.violationType!}</span>
+                        </span>
+                    </span>
+                </td>
+                <td><#if issue.location?has_content><code class="vr-loc">${issue.location}</code></#if></td>
+            </tr>
+        </#list>
+        </tbody>
+    </table>
+</#macro>
 
-    .accordion-item:has(.alert-danger) .accordion-button:not(.collapsed) {
-        background: rgb(var(--alert-danger-background-color)) !important;
-    }
+<div class="container px-0">
+    <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+</div>
 
-    .accordion-item:has(.text-bg-warning) .accordion-button:not(.collapsed) {
-        background: rgb(var(--alert-warning-background-color)) !important;
-    }
-
-    .accordion-item:has(.text-bg-danger) .accordion-button:not(.collapsed) {
-        background: rgb(var(--alert-danger-background-color)) !important;
-    }
-
-    .accordion-button:focus {
-        box-shadow: none;
-        border-color: #e3e5e0;
-    }
-
-    .accordion-item {
-        border-color: #e3e5e0;
-        margin-bottom: .5rem;
-        border-radius: .375rem;
-        overflow: hidden;
-    }
-
-    .accordion-item:not(:first-of-type) {
-        border-top: 1px solid rgba(0,0,0,.125) !important;
-    }
-
-    .badge.text-bg-success {
-        background-color: rgb(var(--alert-success-background-color)) !important;
-        color: rgb(var(--alert-success-text-color)) !important;
-        font-weight: 400;
-    }
-
-    .badge.text-bg-danger {
-        background-color: rgb(var(--alert-danger-background-color)) !important;
-        color: rgb(var(--alert-danger-text-color)) !important;
-        font-weight: 400;
-    }
-
-    .badge.text-bg-warning {
-        background-color: rgb(var(--alert-warning-background-color)) !important;
-        color: rgb(var(--alert-warning-text-color)) !important;
-        font-weight: 400;
-    }
-
-    code {
-        color: #5a5a5a;
-        background: #f1f1ef;
-        padding: .1rem .35rem;
-        border-radius: .25rem;
-        font-size: .8em;
-    }
-
-    .progress {
-        background-color: #eceeea;
-    }
-
-    .bg-info {
-        background-color: #7fb0d8 !important;
-    }
-</style>
-
-<div class="container-fluid border-bottom">
+<div class="container-fluid bg-body border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3">
-            <div class="text-center fs-smaller">
-                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                        <li class="breadcrumb-item"><a href="${baseURL}/manage/resource?r=${shortname!}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Validation report</li>
-                    </ol>
-                </nav>
-            </div>
-
-            <div class="text-center mt-1">
-                <h1 class="rtitle pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="manage.validation.title"/>
-                </h1>
-
-                <div class="text-smaller">
-                    <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
+        <div class="container my-3 p-3 ov-head ov-head-left">
+            <div class="ov-grow">
+                <div class="fs-smaller">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                            <li class="breadcrumb-item ov-crumb-resource"><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="manage.validation.title"/></li>
+                        </ol>
+                    </nav>
                 </div>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="manage.validation.title"/></h1>
+                <#if checkedAt??>
+                    <div class="ov-meta">
+                        <span><@s.text name="manage.validation.checked"><@s.param>${checkedAt}</@s.param></@s.text></span>
+                        <#if durationMs??><span><@s.text name="manage.validation.took"><@s.param><@duration durationMs/></@s.param></@s.text></span></#if>
+                    </div>
+                </#if>
+            </div>
+            <div class="ov-acts">
+                <a class="btn btn-sm btn-outline-secondary top-button" href="${baseURL}/manage/resource.do?r=${resource.shortname}"><@s.text name="manage.report.toOverview"/></a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container py-4">
-    <#if (validationReport.result)?has_content>
+<#if (validationReport.result)??>
+        <#assign result = validationReport.result>
+        <#assign tables = result.resourceAnalysisResults![]>
 
-        <#-- helper macro: severity badge-->
-        <#macro severityBadge severity>
-            <span class="badge rounded-pill <#if severity == 'ERROR'>text-bg-danger<#elseif severity == 'WARNING'>text-bg-warning<#else>text-bg-secondary</#if>">${severity}</span>
-        </#macro>
-
-        <#-- helper macro: issues table used by descriptor + EML sections-->
-        <#macro issuesTable issues>
-            <div class="table-responsive">
-                <table class="table table-sm table-hover align-middle mb-0">
-                    <thead>
-                    <tr>
-                        <th style="width: 100px;"><@s.text name="manage.validation.severity"/></th>
-                        <th style="width: 220px;"><@s.text name="manage.validation.type"/></th>
-                        <th><@s.text name="manage.validation.message"/></th>
-                        <th><@s.text name="manage.validation.location"/></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <#list issues as issue>
-                        <tr>
-                            <td><@severityBadge issue.severity/></td>
-                            <td class="small text-muted">${issue.violationType}</td>
-                            <td class="small">${issue.message}</td>
-                            <td class="small"><#if issue.location?has_content><code>${issue.location!}</code></#if></td>
-                        </tr>
-                    </#list>
-                    </tbody>
-                </table>
-            </div>
-        </#macro>
-
-        <#-- Metadata (descriptor) validation-->
-        <#if validationReport.result.descriptorValidation??>
-            <#assign dv = validationReport.result.descriptorValidation>
-            <#assign dvIssueCount = dv.issues?size>
-            <#assign dvErrorCount = 0>
-            <#list dv.issues as issue><#if issue.severity == 'ERROR'><#assign dvErrorCount = dvErrorCount + 1></#if></#list>
-
-            <h5 class="py-2 mb-3 text-gbif-header fw-400"><@s.text name="manage.validation.descriptor.title"/></h5>
-
-            <#if dvIssueCount == 0>
-                <div class="alert alert-success alert-dismissible fade show d-flex mb-4" role="alert">
-                    <div class="me-3"><i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i></div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.validation.descriptor.allClean"/></span>
-                    </div>
-                </div>
-            <#else>
-                <div class="alert <#if dvErrorCount gt 0>alert-danger<#else>alert-warning</#if> alert-dismissible fade show d-flex mb-3" role="alert">
-                    <div class="me-3"><i class="bi bi-exclamation-circle <#if dvErrorCount gt 0>alert-red-2</#if> fs-bigger-2 me-2"></i></div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.validation.descriptor.someIssues"><@s.param>${dvIssueCount}</@s.param></@s.text></span>
-                        <#if !dv.hasDataAnalysis()>
-                            <br/><strong><@s.text name="manage.validation.descriptor.blocking"/></strong>
-                        </#if>
-                    </div>
-                </div>
-
-                <div class="accordion mb-4" id="descriptorAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading-descriptor-issues">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#descriptor-issues" aria-expanded="false" aria-controls="descriptor-issues">
-                                <span class="me-2 fw-500"><@s.text name="manage.validation.descriptor.issuesHeading"/></span>
-                                <span class="badge rounded-pill <#if dvErrorCount gt 0>text-bg-danger<#else>text-bg-warning</#if>"><@s.text name="manage.validation.issuesLower"><@s.param>${dvIssueCount}</@s.param></@s.text></span>
-                            </button>
-                        </h2>
-                        <div id="descriptor-issues" class="accordion-collapse collapse" aria-labelledby="heading-descriptor-issues" data-bs-parent="#descriptorAccordion">
-                            <div class="accordion-body">
-                                <@issuesTable dv.issues/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </#if>
-        </#if>
-
-        <#-- EML validation-->
-        <#if validationReport.result.emlValidation??>
-            <#assign ev = validationReport.result.emlValidation>
-            <#assign evIssueCount = ev.issues?size>
-            <#assign evErrorCount = 0>
-            <#list ev.issues as issue><#if issue.severity == 'ERROR'><#assign evErrorCount = evErrorCount + 1></#if></#list>
-
-            <h5 class="py-2 mb-3 text-gbif-header fw-400"><@s.text name="manage.validation.eml.title"/></h5>
-
-            <#if !ev.isPresent()>
-                <div class="alert alert-secondary alert-dismissible fade show d-flex mb-4" role="alert">
-                    <div class="me-3"><i class="bi bi-info-circle fs-bigger-2 me-2"></i></div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.validation.eml.notPresent"/></span>
-                    </div>
-                </div>
-            <#elseif evIssueCount == 0>
-                <div class="alert alert-success alert-dismissible fade show d-flex mb-4" role="alert">
-                    <div class="me-3"><i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i></div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.validation.eml.allClean"/></span>
-                    </div>
-                </div>
-            <#else>
-                <div class="alert <#if evErrorCount gt 0>alert-danger<#else>alert-warning</#if> alert-dismissible fade show d-flex mb-3" role="alert">
-                    <div class="me-3"><i class="bi bi-exclamation-circle <#if evErrorCount gt 0>alert-red-2</#if> fs-bigger-2 me-2"></i></div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.validation.eml.someIssues"><@s.param>${evIssueCount}</@s.param></@s.text></span>
-                    </div>
-                </div>
-
-                <div class="accordion mb-4" id="emlAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading-eml-issues">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#eml-issues" aria-expanded="false" aria-controls="eml-issues">
-                                <span class="me-2 fw-500"><@s.text name="manage.validation.eml.issuesHeading"/></span>
-                                <span class="badge rounded-pill <#if evErrorCount gt 0>text-bg-danger<#else>text-bg-warning</#if>"><@s.text name="manage.validation.issuesLower"><@s.param>${evIssueCount}</@s.param></@s.text></span>
-                            </button>
-                        </h2>
-                        <div id="eml-issues" class="accordion-collapse collapse" aria-labelledby="heading-eml-issues" data-bs-parent="#emlAccordion">
-                            <div class="accordion-body">
-                                <@issuesTable ev.issues/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </#if>
-        </#if>
-
-        <#if validationReport.result.resourceAnalysisResults?has_content>
-            <h5 class="py-2 mb-3 text-gbif-header fw-400"><@s.text name="manage.validation.data.title"/></h5>
-            <#assign totalTables = validationReport.result.resourceAnalysisResults?size>
-            <#assign totalRowsAllTables = 0>
-            <#assign totalIssues = 0>
-            <#assign tablesWithIssues = 0>
-            <#list validationReport.result.resourceAnalysisResults as t>
-                <#assign totalRowsAllTables = totalRowsAllTables + t.totalRows>
-                <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
-                <#assign totalIssues = totalIssues + tableIssueCount>
-                <#if tableIssueCount gt 0><#assign tablesWithIssues = tablesWithIssues + 1></#if>
+        <#-- counts. Every table problem is an error; descriptor and EML issues have their own severity.
+             Publishing stops at any error (GenerateDarwinCoreDataPackage), warnings don't stop it -->
+        <#assign descErrors = 0><#assign descWarnings = 0>
+        <#if result.descriptorValidation??>
+            <#list result.descriptorValidation.issues as i>
+                <#if i.severity?string == "ERROR"><#assign descErrors++><#elseif i.severity?string == "WARNING"><#assign descWarnings++></#if>
             </#list>
+        </#if>
+        <#assign emlErrors = 0><#assign emlWarnings = 0>
+        <#if result.emlValidation??>
+            <#list result.emlValidation.issues as i>
+                <#if i.severity?string == "ERROR"><#assign emlErrors++><#elseif i.severity?string == "WARNING"><#assign emlWarnings++></#if>
+            </#list>
+        </#if>
+        <#assign totalRows = 0><#assign tableErrors = 0><#assign tablesWithProblems = 0>
+        <#list tables as t>
+            <#assign totalRows = totalRows + t.totalRows>
+            <#assign n = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
+            <#assign tableErrors = tableErrors + n>
+            <#if n gt 0><#assign tablesWithProblems++></#if>
+        </#list>
+        <#assign errors = descErrors + emlErrors + tableErrors>
+        <#assign warnings = descWarnings + emlWarnings>
+        <#assign blocked = result.descriptorValidation?? && !result.descriptorValidation.hasDataAnalysis()>
 
-            <#-- Summary cards-->
-            <div class="row row-cols-2 row-cols-md-4 g-3 mb-4">
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="small text-muted text-uppercase"><@s.text name="manage.validation.tables"/></div>
-                            <div class="fs-3 fw-500">${totalTables}</div>
-                        </div>
-                    </div>
+        <#-- a dot per section: red for errors, orange for warnings, grey when not checked -->
+        <#function dot errors warnings><#return (errors gt 0)?then('bad', (warnings gt 0)?then('warn', 'ok'))></#function>
+
+    <div id="sections" class="container-fluid bg-body vr-page">
+        <div class="container main-content-container mb-md-4 bd-layout">
+            <main class="bd-main">
+                <div class="bd-toc bd-toc-overview mt-4 pt-3 ps-3 mb-lg-5 text-muted">
+                    <div class="fw-semibold text-gbif-header-2 mb-2 text-smaller"><@s.text name="manage.overview.onThisPage"/></div>
+                    <nav id="sidebar-content" aria-label="<@s.text name='manage.overview.onThisPage'/>">
+                        <ul>
+                            <#if result.descriptorValidation??>
+                                <li><a href="#anchor-vr-descriptor" class="sidebar-navigation-link"><span class="ov-dot ${dot(descErrors, descWarnings)}"></span><@s.text name="manage.validation.descriptor.title"/></a></li>
+                            </#if>
+                            <#if result.emlValidation??>
+                                <li><a href="#anchor-vr-eml" class="sidebar-navigation-link"><span class="ov-dot ${result.emlValidation.isPresent()?then(dot(emlErrors, emlWarnings), 'off')}"></span><@s.text name="manage.validation.eml.title"/></a></li>
+                            </#if>
+                            <li><a href="#anchor-vr-data" class="sidebar-navigation-link"><span class="ov-dot ${blocked?then('off', dot(tableErrors, 0))}"></span><@s.text name="manage.validation.data.title"/></a></li>
+                            <#list tables as t>
+                                <#assign n = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
+                                <li class="vr-toc-table ${(n gt 0)?then('has-problems', 'clean')}"><a href="#anchor-vr-t-${t?index}" class="sidebar-navigation-link" data-table="${t?index}"><span class="ov-dot ${dot(n, 0)}"></span><span class="vr-toc-name">${t.name}</span></a></li>
+                            </#list>
+                        </ul>
+                    </nav>
                 </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="small text-muted text-uppercase"><@s.text name="manage.validation.rows"/></div>
-                            <div class="fs-3 fw-500">${totalRowsAllTables?string.number}</div>
-                        </div>
-                    </div>
+
+                <div class="bd-content ps-lg-4 pt-4">
+
+        <#-- outcome -->
+        <div class="pub-head">
+            <h2 class="${(errors == 0)?then('ok', 'bad')}">
+                <#if errors == 0>
+                    <@icon name="check_circle"/> <@s.text name="manage.validation.passed"/>
+                <#else>
+                    <@icon name="error"/> <@s.text name="manage.validation.failed"/>
+                </#if>
+            </h2>
+            <span class="pub-meta">
+                <@s.text name="manage.validation.errors"><@s.param>${errors}</@s.param></@s.text>
+                · <@s.text name="manage.validation.warnings"><@s.param>${warnings}</@s.param></@s.text>
+            </span>
+        </div>
+        <p class="vr-lead">
+            <#if errors gt 0><@s.text name="manage.validation.failed.text"/><#elseif warnings gt 0><@s.text name="manage.validation.passed.warnings"/><#else><@s.text name="manage.validation.passed.text"/></#if>
+        </p>
+
+        <#-- the package descriptor: datapackage.json -->
+        <#if result.descriptorValidation??>
+            <#assign dv = result.descriptorValidation>
+            <span class="vr-anchor" id="anchor-vr-descriptor"></span>
+            <section class="ov-card" id="vr-descriptor">
+                <div class="ov-ch">
+                    <h2><@s.text name="manage.validation.descriptor.title"/></h2>
+                    <span class="vr-file">datapackage.json</span>
+                    <span class="ov-sp"></span>
+                    <@status descErrors descWarnings/>
                 </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="small text-muted text-uppercase"><@s.text name="manage.validation.tablesClean"/></div>
-                            <div class="fs-3 fw-500 <#if tablesWithIssues == 0>text-gbif-primary<#else>text-gbif-danger</#if>">
-                                ${totalTables - tablesWithIssues} / ${totalTables}
-                            </div>
-                        </div>
+                <#if blocked>
+                    <div class="ov-banner bad compact mt-3">
+                        <@icon name="error" class="ov-ic"/>
+                        <div class="ov-grow"><@s.text name="manage.validation.descriptor.blocking"/></div>
                     </div>
+                </#if>
+                <#if dv.issues?has_content>
+                    <div class="vr-body"><@issuesTable dv.issues/></div>
+                </#if>
+            </section>
+        </#if>
+
+        <#-- the metadata: eml.xml -->
+        <#if result.emlValidation??>
+            <#assign ev = result.emlValidation>
+            <span class="vr-anchor" id="anchor-vr-eml"></span>
+            <section class="ov-card" id="vr-eml">
+                <div class="ov-ch">
+                    <h2><@s.text name="manage.validation.eml.title"/></h2>
+                    <span class="vr-file">eml.xml</span>
+                    <span class="ov-sp"></span>
+                    <#if ev.isPresent()>
+                        <@status emlErrors emlWarnings/>
+                    <#else>
+                        <span class="vr-status neutral"><@icon name="info"/> <@s.text name="manage.validation.eml.notPresent"/></span>
+                    </#if>
                 </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="small text-muted text-uppercase"><@s.text name="manage.validation.issues"/></div>
-                            <div class="fs-3 fw-500 <#if totalIssues == 0>text-gbif-primary<#else>text-gbif-danger</#if>">
-                                ${totalIssues}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <#if ev.issues?has_content>
+                    <div class="vr-body"><@issuesTable ev.issues/></div>
+                </#if>
+            </section>
+        </#if>
+
+        <#-- the data: one line per table, opened when it has problems -->
+        <span class="vr-anchor" id="anchor-vr-data"></span>
+        <section class="ov-card" id="vr-data">
+            <div class="ov-ch">
+                <h2><@s.text name="manage.validation.data.title"/></h2>
+                <span class="ov-sp"></span>
+                <#if blocked>
+                    <span class="vr-status neutral"><@icon name="info"/> <@s.text name="manage.validation.data.notChecked"/></span>
+                <#else>
+                    <@status tableErrors 0/>
+                </#if>
             </div>
-
-            <#if totalIssues == 0>
-                <div class="alert alert-success alert-dismissible fade show d-flex" role="alert">
-                    <div class="me-3">
-                        <i class="bi bi-check2-circle alert-green-2 fs-bigger-2 me-2"></i>
-                    </div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.validation.allClean"/></span>
-                    </div>
+            <#if tables?has_content>
+                <div class="vr-sub">
+                    <dl class="pub-facts">
+                        <div><dt><@s.text name="manage.validation.tables"/></dt><dd>${tables?size}</dd></div>
+                        <div><dt><@s.text name="manage.validation.rows"/></dt><dd>${totalRows?string.number}</dd></div>
+                        <div><dt><@s.text name="manage.validation.tablesWithProblems"/></dt><dd>${tablesWithProblems}</dd></div>
+                    </dl>
+                    <#if tablesWithProblems gt 0 && tablesWithProblems lt tables?size>
+                        <label class="pub-filter vr-filter fs-smaller-2">
+                            <input type="checkbox" class="form-check-input mt-0" id="vr-only-problems">
+                            <@s.text name="manage.validation.onlyProblems"/>
+                        </label>
+                    </#if>
                 </div>
-            <#else>
-                <div class="alert alert-danger alert-dismissible fade show d-flex" role="alert">
-                    <div class="me-3">
-                        <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-                    </div>
-                    <div class="overflow-x-hidden pt-1">
-                        <span><@s.text name="manage.validation.someIssues"><@s.param>${totalIssues}</@s.param><@s.param>${tablesWithIssues}</@s.param></@s.text></span>
-                    </div>
-                </div>
-            </#if>
 
-            <#-- per table accordion-->
-            <div class="accordion" id="validationAccordion">
-                <#list validationReport.result.resourceAnalysisResults as t>
-                    <#assign tableIssueCount = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
-                    <#assign panelId = "table-" + t.name?replace("[^a-zA-Z0-9]", "-", "r")>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading-${panelId}">
-                            <button class="accordion-button <#if tableIssueCount == 0>collapsed</#if>" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#${panelId}"
-                                    aria-expanded="<#if tableIssueCount gt 0>true<#else>false</#if>" aria-controls="${panelId}">
-                                <span class="me-2 fw-500">${t.name}</span>
-                                <span class="small text-muted me-3"><@s.text name="manage.validation.rowsLower"><@s.param>${t.totalRows?string.number}</@s.param></@s.text></span>
-                                <#if tableIssueCount == 0>
-                                    <span class="badge rounded-pill text-bg-success"><i class="bi bi-check2-circle"></i> <@s.text name="manage.validation.ok"/></span>
-                                <#else>
-                                    <span class="badge rounded-pill text-bg-danger"><@s.text name="manage.validation.issuesLower"><@s.param>${tableIssueCount}</@s.param></@s.text></span>
-                                </#if>
-                            </button>
-                        </h2>
-                        <div id="${panelId}" class="accordion-collapse collapse <#if tableIssueCount gt 0>show</#if>"
-                             aria-labelledby="heading-${panelId}" data-bs-parent="#validationAccordion">
-                            <div class="accordion-body">
-
-                                <#-- integrity violations -->
-                                <#if t.primaryKeyViolation??>
-                                    <#assign pk = t.primaryKeyViolation>
-                                    <div class="mb-3">
-                                        <div class="alert alert-danger d-flex" role="alert">
-                                            <div class="me-3">
-                                                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-                                            </div>
-                                            <div class="overflow-x-hidden pt-1">
-                                                <span><@s.text name="manage.validation.pkViolation"/></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="table-responsive">
-                                            <table class="table table-sm table-hover align-middle mb-0">
-                                                <thead>
-                                                <tr>
-                                                    <th><@s.text name="manage.validation.pk.fields">Field(s)</@s.text></th>
-                                                    <th class="text-end" style="width: 90px;"><@s.text name="manage.validation.pk.count">Violations</@s.text></th>
-                                                    <th><@s.text name="manage.validation.pk.sample">Sample values</@s.text></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td><code><#list pk.fields as f>${f}<#sep>, </#sep></#list></code></td>
-                                                    <td class="text-end">
-                                                        <span class="badge rounded-pill text-bg-danger">${pk.violationCount?string.number}</span>
-                                                    </td>
-                                                    <td class="small">
+                <div class="vr-tables">
+                    <#list tables as t>
+                        <#assign n = t.foreignKeyViolations?size + t.dataTypeViolations?size + (t.primaryKeyViolation??)?then(1, 0)>
+                        <span class="vr-anchor" id="anchor-vr-t-${t?index}"></span>
+                        <details class="vr-table ${(n gt 0)?then('has-problems', 'clean')}" id="vr-t-${t?index}"<#if n gt 0> open</#if>>
+                            <summary>
+                                <@icon name="expand_more" class="vr-chev"/>
+                                <span class="vr-name">${t.name}</span>
+                                <span class="vr-rows"><@s.text name="manage.validation.rowsCount"><@s.param>${t.totalRows?string.number}</@s.param></@s.text></span>
+                                <span class="ov-sp"></span>
+                                <@status n 0/>
+                            </summary>
+                            <div class="vr-table-body">
+                                <#if n gt 0>
+                                    <ul class="vr-problems">
+                                        <#if t.primaryKeyViolation??>
+                                            <#assign pk = t.primaryKeyViolation>
+                                            <li>
+                                                <div class="vr-issue bad">
+                                                    <@icon name="error"/>
+                                                    <span>
+                                                        <@s.text name="manage.validation.pkViolation"><@s.param><code><#list pk.fields as f>${f}<#sep>, </#sep></#list></code></@s.param></@s.text>
+                                                        <span class="vr-count"><@s.text name="manage.validation.violations"><@s.param>${pk.violationCount?string.number}</@s.param></@s.text></span>
+                                                    </span>
+                                                </div>
+                                                <#if pk.sampleRows?has_content>
+                                                    <div class="vr-samples"><span class="vr-samples-label"><@s.text name="manage.validation.examples"/></span>
+                                                        <#assign seen = []>
                                                         <#list pk.sampleRows as row>
-                                                            <div><code><#list row?keys as k>${k}=${row[k]!"NULL"}<#sep>, </#sep></#list></code></div>
+                                                            <#assign key><#list row?keys as k><#if row?keys?size gt 1>${k}=</#if><@val row[k]/><#sep>, </#sep></#list></#assign>
+                                                            <#assign key = key?markup_string><#if !seen?seq_contains(key)><#assign seen = seen + [key]><code>${key?no_esc}</code></#if>
                                                         </#list>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </#if>
-                                <#if t.foreignKeyViolations?has_content>
-                                    <div class="mb-3">
-                                        <div class="alert alert-danger d-flex" role="alert">
-                                            <div class="me-3">
-                                                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-                                            </div>
-                                            <div class="overflow-x-hidden pt-1">
-                                                <span><@s.text name="manage.validation.fkViolations"/></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="table-responsive">
-                                            <table class="table table-sm table-hover align-middle mb-0">
-                                                <thead>
-                                                <tr>
-                                                    <th><@s.text name="manage.validation.fk.fields"/></th>
-                                                    <th><@s.text name="manage.validation.fk.reference"/></th>
-                                                    <th class="text-end" style="width: 90px;"><@s.text name="manage.validation.fk.count"/></th>
-                                                    <th><@s.text name="manage.validation.fk.sample"/></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <#list t.foreignKeyViolations as fk>
-                                                    <tr>
-                                                        <td><code><#list fk.fields as f>${f}<#sep>, </#sep></#list></code></td>
-                                                        <td>
-                                                            <span class="text-muted">${fk.referenceResource}</span>.<code><#list fk.referenceFields as rf>${rf}<#sep>, </#sep></#list></code>
-                                                        </td>
-                                                        <td class="text-end">
-                                                            <span class="badge rounded-pill text-bg-danger">${fk.violationCount?string.number}</span>
-                                                        </td>
-                                                        <td class="small">
-                                                            <#list fk.sampleRows as row>
-                                                                <div><code><#list row?keys as k>${k}=${row[k]!"NULL"}<#sep>, </#sep></#list></code></div>
-                                                            </#list>
-                                                        </td>
-                                                    </tr>
-                                                </#list>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </#if>
-                                <#if t.dataTypeViolations?has_content>
-                                    <div class="alert alert-danger py-2 mb-2">
-                                        <strong><@s.text name="manage.validation.typeViolations"/>:</strong>
-                                        <ul class="mb-0">
-                                            <#list t.dataTypeViolations as dt>
-                                                <li>${dt}</li>
-                                            </#list>
-                                        </ul>
-                                    </div>
+                                                    </div>
+                                                </#if>
+                                            </li>
+                                        </#if>
+                                        <#list t.foreignKeyViolations as fk>
+                                            <li>
+                                                <div class="vr-issue bad">
+                                                    <@icon name="error"/>
+                                                    <span>
+                                                        <@s.text name="manage.validation.fkViolation">
+                                                            <@s.param><code><#list fk.fields as f>${f}<#sep>, </#sep></#list></code></@s.param>
+                                                            <@s.param><code>${fk.referenceResource}.<#list fk.referenceFields as f>${f}<#sep>, </#sep></#list></code></@s.param>
+                                                        </@s.text>
+                                                        <span class="vr-count"><@s.text name="manage.validation.violations"><@s.param>${fk.violationCount?string.number}</@s.param></@s.text></span>
+                                                    </span>
+                                                </div>
+                                                <#if fk.sampleRows?has_content>
+                                                    <div class="vr-samples"><span class="vr-samples-label"><@s.text name="manage.validation.examples"/></span>
+                                                        <#assign seen = []>
+                                                        <#list fk.sampleRows as row>
+                                                            <#assign key><#list row?keys as k><#if row?keys?size gt 1>${k}=</#if><@val row[k]/><#sep>, </#sep></#list></#assign>
+                                                            <#assign key = key?markup_string><#if !seen?seq_contains(key)><#assign seen = seen + [key]><code>${key?no_esc}</code></#if>
+                                                        </#list>
+                                                    </div>
+                                                </#if>
+                                            </li>
+                                        </#list>
+                                        <#list t.dataTypeViolations as dt>
+                                            <li>
+                                                <div class="vr-issue bad">
+                                                    <@icon name="error"/>
+                                                    <span>
+                                                        <@s.text name="manage.validation.typeViolation">
+                                                            <@s.param><code>${dt.field}</code></@s.param>
+                                                            <@s.param><code>${dt.declaredType}</code></@s.param>
+                                                        </@s.text>
+                                                        <span class="vr-count"><@s.text name="manage.validation.violations"><@s.param>${dt.violationCount?string.number}</@s.param></@s.text></span>
+                                                    </span>
+                                                </div>
+                                                <#if dt.sampleValues?has_content>
+                                                    <div class="vr-samples"><span class="vr-samples-label"><@s.text name="manage.validation.examples"/></span>
+                                                        <#assign seen = []>
+                                                        <#list dt.sampleValues as v>
+                                                            <#assign key><@val v/></#assign>
+                                                            <#assign key = key?markup_string><#if !seen?seq_contains(key)><#assign seen = seen + [key]><code>${key?no_esc}</code></#if>
+                                                        </#list>
+                                                    </div>
+                                                </#if>
+                                            </li>
+                                        </#list>
+                                    </ul>
                                 </#if>
 
-                                <#-- column analysis -->
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-hover align-middle mb-0">
+                                <#-- how full each column is -->
+                                <#if t.columnStatistics?has_content>
+                                    <table class="ov-table vr-columns">
                                         <thead>
                                         <tr>
                                             <th><@s.text name="manage.validation.column"/></th>
-                                            <th style="width: 30%;"><@s.text name="manage.validation.completeness"/></th>
-                                            <th class="text-end"><@s.text name="manage.validation.unique"/></th>
-                                            <th class="text-end"><@s.text name="manage.validation.note"/></th>
+                                            <th class="vr-fill-col"><@s.text name="manage.validation.completeness"/></th>
+                                            <th class="ov-num"><@s.text name="manage.validation.unique"/></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <#list t.columnStatistics as col>
-                                            <#assign pct = (t.totalRows gt 0)?then((col.populatedValues / t.totalRows * 100)?round, 0)>
+                                            <#assign pct = (t.totalRows gt 0)?then((col.populatedValues / t.totalRows * 100)?floor, 0)>
+                                            <#-- under 1% but not empty still shows a sliver -->
+                                            <#assign shown = (col.populatedValues gt 0 && pct lt 1)?then(1, pct)>
                                             <tr>
-                                                <td><code>${col.name}</code></td>
+                                                <td><code class="vr-col">${col.name}</code></td>
                                                 <td>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="progress flex-grow-1" style="height: 6px;">
-                                                            <div class="progress-bar <#if pct == 100>bg-success<#elseif pct == 0>bg-secondary<#else>bg-info</#if>"
-                                                                 role="progressbar" style="width: ${pct}%;"
-                                                                 aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <span class="small text-muted" style="min-width: 3.5em; text-align: right;">${pct}%</span>
+                                                    <div class="vr-fill">
+                                                        <div class="vr-bar" role="presentation"><span class="${(pct == 100)?then('full', '')}" style="width: ${shown?c}%"></span></div>
+                                                        <span class="vr-pct">${pct?c}%</span>
                                                     </div>
                                                 </td>
-                                                <td class="text-end">${col.uniqueValues?string.number}</td>
-                                                <td class="text-end small text-muted">
-                                                </td>
+                                                <td class="ov-num">${col.uniqueValues?string.number}</td>
                                             </tr>
                                         </#list>
                                         </tbody>
                                     </table>
-                                </div>
+                                </#if>
                             </div>
-                        </div>
-                    </div>
-                </#list>
-            </div>
-        </#if>
-    <#else>
-        <div class="text-center">No validation report found</div>
-    </#if>
-</div>
+                        </details>
+                    </#list>
+                </div>
+            <#elseif !blocked>
+                <p class="vr-sub mb-0"><@s.text name="manage.validation.data.none"/></p>
+            </#if>
+        </section>
+
+                </div>
+            </main>
+        </div>
+    </div>
+<#else>
+    <main class="container main-content-container">
+        <#-- the action error above says why; the heading leads back to the overview -->
+        <div class="mb-4"></div>
+    </main>
+</#if>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -24,6 +24,9 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
+import java.time.Duration;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,9 +50,6 @@ public class ValidationReportAction extends ManagerBaseAction {
   private static final long serialVersionUID = 1L;
 
   private static final Logger LOG = LogManager.getLogger(ValidationReportAction.class);
-
-  // Adjust to wherever your validation step actually writes the report.
-  private static final String REPORT_FILENAME = "datapackage-validation-report.json";
 
   private static final ObjectMapper MAPPER = JsonMapper.builder()
       .addModule(new JavaTimeModule())
@@ -81,7 +81,7 @@ public class ValidationReportAction extends ManagerBaseAction {
     File reportFile = dataDir.resourceDataPackageValidationReportFile(shortname);
 
     if (reportFile == null || !reportFile.exists()) {
-      addActionError(getText("manage.validation.notFound", new String[] {REPORT_FILENAME}));
+      addActionError(getText("manage.validation.notFound"));
       LOG.warn("No validation report found for resource {} at {}", shortname,
           reportFile == null ? "(null path)" : reportFile.getAbsolutePath());
       return SUCCESS;
@@ -100,5 +100,27 @@ public class ValidationReportAction extends ManagerBaseAction {
     }
 
     return SUCCESS;
+  }
+
+  /**
+   * @return when the check started, formatted for the user's locale, or null
+   */
+  public String getCheckedAt() {
+    if (validationReport == null || validationReport.metadata() == null || validationReport.metadata().started() == null) {
+      return null;
+    }
+    return validationReport.metadata().started()
+        .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(getLocale()));
+  }
+
+  /**
+   * @return how long the check took in milliseconds, or null
+   */
+  public Long getDurationMs() {
+    if (validationReport == null || validationReport.metadata() == null
+        || validationReport.metadata().started() == null || validationReport.metadata().finished() == null) {
+      return null;
+    }
+    return Duration.between(validationReport.metadata().started(), validationReport.metadata().finished()).toMillis();
   }
 }

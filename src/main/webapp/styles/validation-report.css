@@ -1,0 +1,67 @@
+/* Data package validation report: manage/dp_validation_report.ftl, on top of overview.css and publishing.css */
+
+.vr-lead { font-size: 0.875rem; margin: -6px 0 16px; }
+
+/* card headers */
+.vr-file { font-family: var(--bs-font-monospace); font-size: 0.75rem; color: #6c757d; }
+.vr-status { display: inline-flex; align-items: center; gap: 4px; font-size: 0.8rem; color: #212529; white-space: nowrap; }
+.vr-status.ok .material-icon { color: rgb(var(--color-gbif-success)); }
+.vr-status.bad .material-icon { color: rgb(var(--color-gbif-danger)); }
+.vr-status.warn .material-icon { color: rgb(var(--alert-warning-icon-color)); }
+.vr-status.neutral { color: #6c757d; }
+.vr-body { margin-top: 10px; overflow-x: auto; }
+.vr-sub { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 24px; margin-top: 10px; font-size: 0.875rem; }
+.vr-sub .pub-facts { margin: 0; }
+.vr-filter { margin-left: auto; }
+
+/* a problem: severity in the icon, text in the body colour */
+.vr-issue { display: flex; gap: 6px; align-items: flex-start; }
+.vr-issue > .material-icon { flex: none; margin-top: 2px; }
+.vr-issue.bad > .material-icon { color: rgb(var(--color-gbif-danger)); }
+.vr-issue.warn > .material-icon { color: rgb(var(--alert-warning-icon-color)); }
+.vr-issue.info > .material-icon { color: #6c757d; }
+.vr-code { display: block; font-family: var(--bs-font-monospace); font-size: 0.7rem; color: #6c757d; }
+.vr-loc { font-size: 0.75rem; overflow-wrap: anywhere; }
+.vr-issues td:last-child { width: 40%; }
+.vr-count { margin-left: 8px; font-size: 0.75rem; color: #6c757d; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.vr-page code { color: #495057; background: #f1f3f5; padding: 1px 5px; border-radius: 4px; font-size: 0.8em; }
+
+/* tables: a block each, opened to its problems and columns */
+.vr-tables { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+.vr-table { border: 1px solid #dee2e6; border-radius: 6px; background: #fff; }
+.vr-table > summary { display: flex; align-items: center; gap: 6px 12px; flex-wrap: wrap; padding: 10px 14px; cursor: pointer; list-style: none; border-radius: 6px; }
+.vr-table > summary::-webkit-details-marker { display: none; }
+.vr-table > summary:hover { background: #f8f9fa; }
+.vr-table[open] > summary { border-bottom: 1px solid #dee2e6; border-radius: 6px 6px 0 0; }
+.vr-chev { color: #6c757d; transform: rotate(-90deg); transition: transform .15s; }
+.vr-table[open] > summary .vr-chev { transform: none; }
+.vr-name { font-weight: 500; font-size: 0.9rem; }
+.vr-rows { font-size: 0.8rem; color: #6c757d; font-variant-numeric: tabular-nums; }
+.vr-table-body { padding: 12px 14px; overflow-x: auto; }
+.vr-tables.only-problems .vr-table.clean { display: none; }
+
+.vr-problems { list-style: none; margin: 0 0 12px; padding: 0; font-size: 0.85rem; display: flex; flex-direction: column; gap: 10px; }
+.vr-samples { margin: 4px 0 0 22px; display: flex; flex-wrap: wrap; gap: 4px; align-items: baseline; font-size: 0.8rem; }
+.vr-samples-label { color: #6c757d; font-size: 0.75rem; margin-right: 2px; }
+.vr-null { font-style: italic; color: #6c757d; }
+
+/* column completeness */
+.vr-col { font-size: 0.75rem; }
+.vr-fill-col { width: 50%; }
+.vr-fill { display: flex; align-items: center; gap: 8px; }
+.vr-bar { flex: 1; height: 6px; background: #eceeea; border-radius: 3px; overflow: hidden; }
+.vr-bar > span { display: block; height: 100%; background: rgba(var(--color-gbif-primary), .55); }
+.vr-bar > span.full { background: rgb(var(--color-gbif-primary)); }
+.vr-pct { min-width: 3em; text-align: right; font-size: 0.75rem; color: #6c757d; font-variant-numeric: tabular-nums; }
+
+@media (max-width: 575.98px) {
+    .vr-filter { margin-left: 0; }
+    .vr-issues td:last-child { width: auto; }
+}
+
+/* sidebar: the tables under Data, indented; a link scrolls to the section under the fixed navbar */
+.vr-anchor { display: block; height: 0; }
+#sections .bd-toc li.vr-toc-table a { padding-left: 20px; font-size: 0.78rem; }
+#sections .bd-toc li.vr-toc-table[hidden] { display: none; }
+.vr-toc-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.vr-page .ov-card, .vr-table { scroll-margin-top: var(--navbar-height); }

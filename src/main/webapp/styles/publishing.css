@@ -57,7 +57,7 @@
 .pub-facts dt { display: block; font-size: 0.75rem; font-weight: 400; color: #6c757d; }
 .pub-facts dd { display: block; margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
 .pub-reason { background: #fff; border: 1px solid rgba(var(--color-gbif-danger), .4); border-radius: 4px; padding: 8px 10px; margin: 8px 0; font-family: var(--bs-font-monospace); font-size: 0.8rem; overflow-wrap: anywhere; }
-.pub-warn { color: rgb(var(--alert-warning-icon-color)); }
+.pub-warn .material-icon { color: rgb(var(--alert-warning-icon-color)); vertical-align: -2px; }
 .pub-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
 /* log */

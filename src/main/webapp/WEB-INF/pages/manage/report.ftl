@@ -1,16 +1,7 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#-- Publishing status, loaded into locked.ftl every second until publishing has ended -->
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
-
-<#-- how long something took, e.g. "12 s" or "3 min 5 s" -->
-<#macro duration ms>
-    <#local sec = (ms / 1000)?floor>
-    <#if sec lt 1><@s.text name="manage.report.duration.underSecond"/><#t>
-    <#elseif sec lt 60><@s.text name="manage.report.duration.s"><@s.param>${sec?c}</@s.param></@s.text><#t>
-    <#elseif sec lt 3600><@s.text name="manage.report.duration.m"><@s.param>${(sec / 60)?floor?c}</@s.param><@s.param>${(sec % 60)?c}</@s.param></@s.text><#t>
-    <#else><@s.text name="manage.report.duration.h"><@s.param>${(sec / 3600)?floor?c}</@s.param><@s.param>${((sec % 3600) / 60)?floor?c}</@s.param></@s.text><#t>
-    </#if>
-</#macro>
+<#include "/WEB-INF/pages/macros/duration.ftl"/>
 
 <#if report??>
     <#assign version = resource.metadataVersion.toPlainString()>
@@ -152,7 +143,8 @@
                     </#if>
                 </dl>
                 <#if warnings gt 0>
-                    <p class="pub-warn"><@icon name="warning"/> <@s.text name="manage.report.warnings"><@s.param>${warnings}</@s.param></@s.text></p>
+                    <#-- published is still the outcome, so the box stays green: only the icon is orange; the link filters the log -->
+                    <p class="pub-warn"><@icon name="warning"/> <@s.text name="manage.report.warnings"><@s.param>${warnings}</@s.param></@s.text> · <a href="#log-list" class="pub-show-warnings"><@s.text name="manage.report.showWarnings"/></a></p>
                 </#if>
                 <div class="pub-acts">
                     <a class="btn btn-sm btn-outline-gbif-primary" href="${baseURL}/resource?r=${resource.shortname}"><@s.text name="manage.overview.viewPage"/></a>
