@@ -695,6 +695,6 @@
         saved = formState();
         if (automapped) markDirty();
 
-        if (window.IptScrollSpy) IptScrollSpy.init({tocSelector: '.bd-toc nav a'});
+        if (window.IptScrollSpy) IptScrollSpy.init({tocSelector: '.bd-toc nav a', stickySelector: '.mp-toolbar'});
     });
 })(jQuery);

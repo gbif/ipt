@@ -1,6 +1,8 @@
 /* Mapping page (manage/mapping.ftl), on top of overview.css (heading, sidebar, pills, buttons) */
 
-.mp-section { margin-bottom: 36px; scroll-margin-top: var(--navbar-height); }
+/* where a link lands: a section 16px under the navbar, as on the overview (the toolbar isn't stuck there yet); a class
+   10px under the toolbar, which is stuck by then (57px from the top, 54px tall on one line) */
+.mp-section { margin-bottom: 36px; scroll-margin-top: calc(var(--ov-bars-height) + 16px); }
 .mp-sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #dee2e6; padding-bottom: 6px; margin-bottom: 14px; }
 .mp-sec-head h2 { font-size: 1.1rem; font-weight: 500; color: #4e565f; margin: 0; }
 .mp-sec-head > span { color: #6c757d; font-size: 0.78rem; flex: 1; }
@@ -105,7 +107,7 @@
 .mp-fhead-acts .ov-link-btn { font-size: 0.75rem; color: #6c757d; }
 .mp-fhead-acts .ov-link-btn:hover { color: rgb(var(--color-gbif-primary)); }
 .mp-seg .mp-count:empty { display: none; }
-.mp-group { border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 10px; scroll-margin-top: calc(var(--navbar-height) + 10px); }
+.mp-group { border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 10px; scroll-margin-top: calc(var(--ov-bars-height) + 54px + 10px); }
 .mp-group[hidden] { display: none; }
 .mp-group-h { display: flex; gap: 10px; align-items: center; padding: 8px 12px; cursor: pointer; background: #fafafa; border: 0; border-radius: 8px; width: 100%; text-align: left; }
 .mp-group.open .mp-group-h { border-bottom: 1px solid #dee2e6; border-radius: 8px 8px 0 0; }
@@ -207,7 +209,8 @@ body.mp-dirty { padding-bottom: 60px; }
 .mp-unres:last-child { border-bottom: 0; }
 /* Readiness card in the sidebar (overview.css .ov-ready): its items are links to the problem; the heading's status line
    lists the same, so it's only shown where the sidebar isn't */
-.ov-ready li .ov-link-btn { font-size: inherit; text-align: left; color: inherit; padding: 0; }@media (min-width: 768px) { .mp-status.mp-status-sm { display: none; } }
+.ov-ready li .ov-link-btn { font-size: inherit; text-align: left; color: inherit; padding: 0; }
+@media (min-width: 768px) { .mp-status.mp-status-sm { display: none; } }
 @media (max-width: 991px) { .mp-unres { grid-template-columns: 1fr; } }
 
 /* data package mappings: how the rows are made, generated values, the result preview (js/dp-rows.js) */

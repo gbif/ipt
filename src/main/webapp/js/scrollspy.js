@@ -16,6 +16,8 @@
  *     tocSelector: '.bd-toc nav a',       // required: TOC links
  *     navbarHeightVar: '--navbar-height', // optional: CSS custom property (px), default shown
  *     activeClass: 'active',              // optional
+ *     stickySelector: '.mp-toolbar',      // optional: a sticky bar under the navbar; while stuck, sections
+ *                                         // count as current once they pass its bottom edge
  *     onActivate: function ($link) {}     // optional: called whenever the active link changes
  *   });
  *
@@ -35,6 +37,7 @@
             tocSelector: '.bd-toc nav a',
             navbarHeightVar: '--navbar-height',
             activeClass: 'active',
+            stickySelector: null,
             onActivate: null
         }, options);
 
@@ -70,6 +73,38 @@
         // can't scroll up to the activation line, so the observer alone would never pick them
         var pinnedLink = null;
 
+        // the shown section latest in document order that starts at or above the line
+        function lastSectionAbove(line) {
+            var found = null;
+            sectionToLink.forEach(function (_link, el) {
+                if (el.offsetParent === null || el.getBoundingClientRect().top > line + 1) return;
+                if (!found || (found.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)) found = el;
+            });
+            return found;
+        }
+
+        // the shown section earliest in document order
+        function firstShownSection() {
+            var found = null;
+            sectionToLink.forEach(function (_link, el) {
+                if (el.offsetParent === null) return;
+                if (!found || (el.compareDocumentPosition(found) & Node.DOCUMENT_POSITION_FOLLOWING)) found = el;
+            });
+            return found;
+        }
+
+        // under the navbar, or under the sticky bar while it's stuck there
+        function getActivationLine() {
+            var line = getNavbarOffset();
+            var bar = settings.stickySelector ? document.querySelector(settings.stickySelector) : null;
+            if (bar && bar.offsetParent !== null) {
+                var rect = bar.getBoundingClientRect();
+                var stuckAt = parseFloat(getComputedStyle(bar).top) || 0;
+                if (rect.top <= stuckAt + 1) line = Math.max(line, rect.bottom);
+            }
+            return line;
+        }
+
         function isAtBottom() {
             return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
         }
@@ -91,22 +126,26 @@
                 }
             }
 
-            // Prefer the section that appears latest in document order among
-            // those currently crossing the activation line — that's the one
-            // the user has most recently scrolled into.
             var current = null;
-            sectionToLink.forEach(function (_link, el) {
-                if (!visibleSections.has(el)) return;
-                if (!current || (current.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)) {
-                    current = el;
-                }
-            });
-            // the line is in the gap between two sections (their margins): the last one that started above it
-            if (!current) {
-                var line = getNavbarOffset();
+            if (settings.stickySelector) {
+                // a sticky bar under the navbar (the mapping pages' toolbar) covers what's just under it: the
+                // current section is the last one that starts above the bar's bottom while it's stuck. The line
+                // moves, so it's measured here rather than by the observer
+                current = lastSectionAbove(getActivationLine());
+                // above the first section (the top of the page): that section, the first thing on screen
+                if (!current) current = firstShownSection();
+            } else {
+                // Prefer the section that appears latest in document order among
+                // those currently crossing the activation line — that's the one
+                // the user has most recently scrolled into.
                 sectionToLink.forEach(function (_link, el) {
-                    if (el.getBoundingClientRect().top <= line && el.offsetParent !== null) current = el;
+                    if (!visibleSections.has(el)) return;
+                    if (!current || (current.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+                        current = el;
+                    }
                 });
+                // the line is in the gap between two sections (their margins): the last one that started above it
+                if (!current) current = lastSectionAbove(getNavbarOffset());
             }
 
             $tocLinks.removeClass(settings.activeClass);

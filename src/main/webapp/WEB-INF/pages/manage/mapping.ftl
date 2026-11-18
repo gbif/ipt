@@ -166,7 +166,7 @@
                     <#-- what still needs fixing (js/mapping.js), red / orange; empty and hidden otherwise -->
                     <#-- a newer core / extension in the registry is listed there too: administrators get the extension page,
                          where it's updated; others can't update it, so no link -->
-                    <div class="ov-meta mp-status" id="mp-status" aria-live="polite"<#if !mapping.extension.latest> data-newer="<@s.text name='manage.mapping.extension.newer'/>"<#if adminRights> data-newer-url="${baseURL}/admin/extension.do?id=${mapping.extension.rowType?url}"</#if></#if>></div>
+                    <div class="ov-meta mp-status mp-status-sm" id="mp-status" aria-live="polite"<#if !mapping.extension.latest> data-newer="<@s.text name='manage.mapping.extension.newer'/>"<#if adminRights> data-newer-url="${baseURL}/admin/extension.do?id=${mapping.extension.rowType?url}"</#if></#if>></div>
                 </div>
 
                 <div class="ov-acts">
@@ -189,6 +189,9 @@
     <div id="mp-i18n" hidden
          data-automapped="${automappedFields?c}"
          data-sprite="${baseURL}/images/icons/material-icons.svg"
+         data-ready="<@s.text name='manage.overview.attention.readiness'/>"
+         data-ready-title="<@s.text name='manage.overview.attention.title'/>"
+         data-ready-none="<@s.text name='manage.mapping.ready.none'/>"
          data-status-id="<@s.text name='manage.mapping.status.id'/>"
          data-status-link="<@s.text name='manage.mapping.status.link'/>"
          data-status-required="<@s.text name='manage.mapping.status.required'/>"
@@ -262,6 +265,9 @@
                             </#list>
                         </ul>
                     </nav>
+
+                    <#-- what needs fixing, as on the data package mapping page and the resource overview; filled by js/mapping.js -->
+                    <div class="ov-ready" id="mp-ready" aria-live="polite"><b></b><ul></ul></div>
                 </div>
 
                 <div class="bd-content ps-lg-4 pt-4">
