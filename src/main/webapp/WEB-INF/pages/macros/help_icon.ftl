@@ -6,6 +6,7 @@
        data-bs-trigger="focus"
        data-bs-html="true"
        data-bs-content="<#include '/WEB-INF/pages/macros/help_icon_popover.ftl'>">
-        <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+        <#-- pages already on Material icons set materialHelpIcons (and include macros/icon.ftl) -->
+        <#if materialHelpIcons!false><@icon name="info_outlined" class="text-gbif-primary help-icon-m"/><#else><i class="bi bi-info-circle text-gbif-primary px-1"></i></#if>
     </a>
 </#if>
