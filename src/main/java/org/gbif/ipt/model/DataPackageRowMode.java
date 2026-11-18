@@ -21,6 +21,6 @@ public enum DataPackageRowMode {
   ROW,
   /** one row per distinct value of the merge key: rows repeating the same key merge into one */
   DISTINCT,
-  /** one row per item of the list columns, e.g. "Anna Berg | Jonas Lind" gives two rows */
+  /** one row per item of the list columns, e.g. "Collector A | Collector B" gives two rows */
   ITEMS
 }

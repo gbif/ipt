@@ -45,12 +45,12 @@ public class DataPackageTablesActionTest {
       "scientificName", "organismQuantity", "recordedBy", "identifiedBy");
 
   private static final List<String[]> SAMPLE = List.of(
-      new String[] {"OBS-001", "E1", "2024-05-12", "Fulltofta", "Erithacus rubecula", "2", "Anna Berg | Jonas Lind", "Anna Berg"},
-      new String[] {"OBS-002", "E1", "2024-05-12", "Fulltofta", "Fringilla coelebs", "5", "Anna Berg | Jonas Lind", "Anna Berg"},
-      new String[] {"OBS-003", "E1", "2024-05-12", "Fulltofta", "Parus major", "1", "Anna Berg", "Anna Berg"},
-      new String[] {"OBS-004", "E2", "2024-05-13", "Söderåsen", "Sitta europaea", "1", "Jonas Lind", "Jonas Lind"},
-      new String[] {"OBS-005", "E2", "2024-05-15", "Söderåsen", "Dendrocopos major", "2", "Jonas Lind", "Anna Berg"},
-      new String[] {"OBS-006", "E3", "2024-05-14", "Stenshuvud", "Phylloscopus collybita", "3", "Anna Berg|Maja Ek", "Maja Ek"});
+      new String[] {"OBS-001", "E1", "2024-05-12", "Fulltofta", "Erithacus rubecula", "2", "Collector A | Collector B", "Collector A"},
+      new String[] {"OBS-002", "E1", "2024-05-12", "Fulltofta", "Fringilla coelebs", "5", "Collector A | Collector B", "Collector A"},
+      new String[] {"OBS-003", "E1", "2024-05-12", "Fulltofta", "Parus major", "1", "Collector A", "Collector A"},
+      new String[] {"OBS-004", "E2", "2024-05-13", "Söderåsen", "Sitta europaea", "1", "Collector B", "Collector B"},
+      new String[] {"OBS-005", "E2", "2024-05-15", "Söderåsen", "Dendrocopos major", "2", "Collector B", "Collector A"},
+      new String[] {"OBS-006", "E3", "2024-05-14", "Stenshuvud", "Phylloscopus collybita", "3", "Collector A|Collector C", "Collector C"});
 
   @Test
   public void testSuggestionsFromAFlatSource() {
@@ -98,9 +98,9 @@ public class DataPackageTablesActionTest {
     source.setName("ids.csv");
     List<String> columns = List.of("occurrenceID", "eventID", "recordedBy", "recordedByID", "identifiedBy");
     List<String[]> sample = List.of(
-        new String[] {"O1", "E1", "Anna Berg | Jonas Lind", "orcid-A | orcid-J", "Anna Berg"},
-        new String[] {"O2", "E1", "Anna Berg | Jonas Lind", "orcid-A | orcid-J", "Maja Ek"},
-        new String[] {"O3", "E2", "Anna Berg", "orcid-A", "Anna Berg"});
+        new String[] {"O1", "E1", "Collector A | Collector B", "orcid-A | orcid-J", "Collector A"},
+        new String[] {"O2", "E1", "Collector A | Collector B", "orcid-A | orcid-J", "Collector C"},
+        new String[] {"O3", "E2", "Collector A", "orcid-A", "Collector A"});
     Map<String, DataPackageTablesAction.Suggestion> byId = DataPackageTablesAction.suggest(schema(), source, columns, sample)
         .stream().collect(Collectors.toMap(DataPackageTablesAction.Suggestion::getId, x -> x));
 
@@ -113,7 +113,7 @@ public class DataPackageTablesActionTest {
     assertEquals("manage.tables.why.role.event", roles.getWhyKey());
     assertEquals(DataPackageMapping.WHOLE_ROW, roles.getMapping().getMergeKey());
     assertEquals(DataPackageValueKind.LINK, roles.getMapping().getField("event_fk").getValueKind());
-    // E1: Anna, Jonas; E2: Anna; the second row of E1 repeats the first
+    // E1: Collector A, Collector B; E2: Collector A; the second row of E1 repeats the first
     assertEquals(3, roles.getRows());
     assertFalse(byId.containsKey("occurrence-agent-role-recordedBy"));
 
@@ -123,7 +123,7 @@ public class DataPackageTablesActionTest {
     DataPackageFieldMapping agentId = agent.getMapping().getField("agentID");
     assertEquals(DataPackageValueKind.PAIRED, agentId.getValueKind());
     assertEquals(Arrays.asList(3, null), agentId.getPairColumns());
-    assertTrue(agent.getPreview().stream().anyMatch(r -> Arrays.asList(r).containsAll(List.of("Jonas Lind", "orcid-J"))),
+    assertTrue(agent.getPreview().stream().anyMatch(r -> Arrays.asList(r).containsAll(List.of("Collector B", "orcid-J"))),
         agent.getPreview().stream().map(Arrays::toString).toList().toString());
   }
 

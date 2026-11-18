@@ -44,7 +44,7 @@ public class DataPackageRowBuilderTest {
 
   // occurrenceID, eventID, recordedBy
   private static final List<String> COLUMNS = List.of("occurrenceID", "eventID", "recordedBy");
-  private static final String[] ROW = {"OBS-1", "E1", "Anna Berg |  Jonas  Lind"};
+  private static final String[] ROW = {"OBS-1", "E1", "Collector A |  Collector  B"};
 
   private DataPackageSchema schema;
   private Source source;
@@ -73,18 +73,18 @@ public class DataPackageRowBuilderTest {
     assertTrue(b.getProblems().isEmpty(), b.getProblems().toString());
     List<String[]> rows = b.build(ROW);
     assertEquals(2, rows.size());
-    assertEquals("Anna Berg", rows.get(0)[1]);
-    assertEquals("Jonas Lind", rows.get(1)[1]);
-    assertEquals(DataPackageRowBuilder.key("agent", "Anna Berg"), rows.get(0)[0]);
+    assertEquals("Collector A", rows.get(0)[1]);
+    assertEquals("Collector B", rows.get(1)[1]);
+    assertEquals(DataPackageRowBuilder.key("agent", "Collector A"), rows.get(0)[0]);
     // UUID version 5
     assertEquals(5, UUID.fromString(rows.get(0)[0]).version());
   }
 
   @Test
   public void testKeysAreStableAndPerTable() {
-    assertEquals(DataPackageRowBuilder.key("agent", "Anna Berg"), DataPackageRowBuilder.key("agent", " Anna   Berg "));
-    assertNotEquals(DataPackageRowBuilder.key("agent", "Anna Berg"), DataPackageRowBuilder.key("event", "Anna Berg"));
-    assertNotEquals(DataPackageRowBuilder.key("agent", "Anna Berg"), DataPackageRowBuilder.key("agent", "A. Berg"));
+    assertEquals(DataPackageRowBuilder.key("agent", "Collector A"), DataPackageRowBuilder.key("agent", " Collector   A "));
+    assertNotEquals(DataPackageRowBuilder.key("agent", "Collector A"), DataPackageRowBuilder.key("event", "Collector A"));
+    assertNotEquals(DataPackageRowBuilder.key("agent", "Collector A"), DataPackageRowBuilder.key("agent", "A. Berg"));
   }
 
   @Test
@@ -104,7 +104,7 @@ public class DataPackageRowBuilderTest {
         List.of("occurrence_fk", "agent_fk", "agentRole", "agentRoleOrder"), all, COLUMNS);
     assertTrue(b.getProblems().isEmpty(), b.getProblems().toString());
     List<String[]> rows = b.build(ROW);
-    assertArrayEquals(new String[] {"OBS-1", DataPackageRowBuilder.key("agent", "Jonas Lind"), "recorder", "2"}, rows.get(1));
+    assertArrayEquals(new String[] {"OBS-1", DataPackageRowBuilder.key("agent", "Collector B"), "recorder", "2"}, rows.get(1));
 
     List<String[]> agents = new DataPackageRowBuilder(agent, List.of("agent_pk"), all, COLUMNS).build(ROW);
     assertEquals(agents.get(1)[0], rows.get(1)[1]);
@@ -152,7 +152,7 @@ public class DataPackageRowBuilderTest {
   public void testPairedItemsTakeTheSamePlaceInTheirOwnList() {
     // names and their IDs in two pairs of lists; an empty name keeps its place, an ID can be missing
     List<String> cols = List.of("occurrenceID", "recordedBy", "recordedByID", "identifiedBy", "identifiedByID");
-    String[] row = {"O1", "Anna Berg | | Jonas Lind", " | | orcid-J", "Maja Ek", "orcid-M"};
+    String[] row = {"O1", "Collector A | | Collector B", " | | orcid-J", "Collector C", "orcid-M"};
     DataPackageFieldMapping agentId = kind("agentID", DataPackageValueKind.PAIRED);
     agentId.setPairColumns(Arrays.asList(2, 4));
     DataPackageMapping agent = mapping("agent", source,
@@ -164,9 +164,9 @@ public class DataPackageRowBuilderTest {
     assertTrue(b.getProblems().isEmpty(), b.getProblems().toString());
     List<String[]> rows = b.build(row);
     assertEquals(3, rows.size());
-    assertArrayEquals(new String[] {"Anna Berg", null}, rows.get(0));
-    assertArrayEquals(new String[] {"Jonas Lind", "orcid-J"}, rows.get(1));
-    assertArrayEquals(new String[] {"Maja Ek", "orcid-M"}, rows.get(2));
+    assertArrayEquals(new String[] {"Collector A", null}, rows.get(0));
+    assertArrayEquals(new String[] {"Collector B", "orcid-J"}, rows.get(1));
+    assertArrayEquals(new String[] {"Collector C", "orcid-M"}, rows.get(2));
 
     DataPackageMapping noPairs = mapping("agent", source, kind("agentID", DataPackageValueKind.PAIRED));
     noPairs.setRowMode(DataPackageRowMode.ITEMS);
