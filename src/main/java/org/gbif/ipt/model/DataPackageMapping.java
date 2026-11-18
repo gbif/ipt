@@ -40,6 +40,9 @@ public class DataPackageMapping implements Serializable {
 
   private static final Logger LOG = LogManager.getLogger(DataPackageMapping.class);
 
+  /** merge key for "keep identical rows once": the whole row is the key, for tables without a key such as roles */
+  public static final String WHOLE_ROW = "*";
+
   private Source source;
   private DataPackageSchema dataPackageSchema;
   // version of the schema the mapping was made against, the installed one may be newer
@@ -51,9 +54,6 @@ public class DataPackageMapping implements Serializable {
   // how the rows are made; null: one row per source row
   private DataPackageRowMode rowMode;
   // ITEMS: the source columns holding lists, and what separates their items
-  /** merge key for "keep identical rows once": the whole row is the key, for tables without a key such as roles */
-  public static final String WHOLE_ROW = "*";
-
   private List<Integer> splitColumns;
   private String separator;
   // DISTINCT (and optionally ITEMS): rows with the same value of this field merge into one; WHOLE_ROW: identical rows do
@@ -165,12 +165,15 @@ public class DataPackageMapping implements Serializable {
   }
 
   /**
-   * @return the field rows merge by, null when they don't merge
+   * @return true when identical rows merge ({@link #WHOLE_ROW}), not rows with the same key
    */
   public boolean isWholeRowMerge() {
     return WHOLE_ROW.equals(getEffectiveMergeKey());
   }
 
+  /**
+   * @return the field rows merge by, {@link #WHOLE_ROW} for identical rows, null when they don't merge
+   */
   public String getEffectiveMergeKey() {
     DataPackageRowMode mode = getRowModeOrDefault();
     if (mode == DataPackageRowMode.ROW || mergeKey == null || mergeKey.isBlank()) {

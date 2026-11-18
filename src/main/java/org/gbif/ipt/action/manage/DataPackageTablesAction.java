@@ -37,6 +37,7 @@ import org.gbif.utils.file.ClosableReportingIterator;
 import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,14 +55,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import lombok.Getter;
 
 /**
- * "Split into tables" (reached from "Map tables"): suggests DwC-DP mappings of one flat source, one per table, from what's in the data, and creates
- * the ones the user ticks. Each is an ordinary data package mapping: its rows are made by a rule
- * ({@link DataPackageRowMode}) and its keys and links by generated values ({@link DataPackageValueKind}).
+ * "Split into tables" (reached from "Map tables"): suggests DwC-DP mappings of one flat source, one per table, from
+ * what's in the data, and creates the ones the user ticks. Each is an ordinary data package mapping: its rows are made
+ * by a rule ({@link DataPackageRowMode}) and its keys and links by generated values ({@link DataPackageValueKind}).
  */
 public class DataPackageTablesAction extends ManagerBaseAction {
 
@@ -100,10 +100,17 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   // the material key when there's no materialEntityID, from the ones present, e.g. "NHMD:INV:12345"
   private static final List<String> MATERIAL_KEY_TERMS = List.of("institutionCode", "collectionCode", "catalogNumber");
 
+  // the date and place terms an event key is made from when there's no eventID, best first
+  private static final List<List<String>> DATE_TERMS = List.of(List.of("eventDate"), List.of("year", "month", "day"),
+      List.of("verbatimEventDate"));
+  private static final List<List<String>> PLACE_TERMS = List.of(List.of("locationID"),
+      List.of("decimalLatitude", "decimalLongitude"), List.of("locality"), List.of("verbatimLocality"));
+
+  private static final Pattern PLACEHOLDER = Pattern.compile("\\{([^{}]+)}");
+
   private final DataPackageSchemaManager schemaManager;
   private final SourceManager sourceManager;
 
-  private String sourceName;
   @Getter
   private Source source;
   @Getter
@@ -149,7 +156,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     private final String[] whyParams;
     private final List<String> warnings = new ArrayList<>();
     private final List<Ask> asks = new ArrayList<>();
-    // a fixed value filled in from the data, with the text key saying why
+    // fields given a fixed value because of the data (occurrenceStatus "detected"), with the column that shows why
     private final Map<String, String> filledFromData = new LinkedHashMap<>();
     private int rows;
     // the first rows it makes from the rows read, to show what the table looks like
@@ -183,15 +190,6 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     this.sourceManager = sourceManager;
   }
 
-  @StrutsParameter
-  public void setSource(String source) {
-    this.sourceName = StringUtils.trimToNull(source);
-  }
-
-  public String getSourceName() {
-    return sourceName;
-  }
-
   @Override
   public void prepare() {
     super.prepare();
@@ -204,7 +202,6 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       notFound("manage.404.source.title", "manage.404.source.body", resource.getShortname(), StringUtils.defaultString(name));
       return;
     }
-    sourceName = source.getName();
     dataPackageSchema = resource.getDataPackageIdentifier() == null ? null : schemaManager.get(resource.getDataPackageIdentifier());
     suggest();
     markExisting();
@@ -232,8 +229,6 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     }
     unusedColumns = unused(columns, suggestions.stream().map(Suggestion::getMapping).toList());
   }
-
-  private static final Pattern PLACEHOLDER = Pattern.compile("\\{([^{}]+)}");
 
   /**
    * @return the columns none of the mappings reads: by its column, its list columns or a template
@@ -456,8 +451,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         String roleName = NAME_COLUMNS.get(e.getKey());
         DataPackageMapping role = mapping(schema, source, table);
         role.setRowMode(DataPackageRowMode.ITEMS);
-        // a mutable list: XStream can't write the immutable ones
-        role.setSplitColumns(new ArrayList<>(List.of(e.getValue())));
+        role.setSplitColumns(List.of(e.getValue()));
         role.setSeparator(ag.getSeparator());
         setKind(role, foreignKeyTo(table, onEvent ? EVENT : OCCURRENCE), DataPackageValueKind.LINK);
         setKind(role, foreignKeyTo(table, AGENT), DataPackageValueKind.LINK);
@@ -696,12 +690,6 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     return -1;
   }
 
-  // the date and place terms an event key is made from when there's no eventID, best first
-  private static final List<List<String>> DATE_TERMS = List.of(List.of("eventDate"), List.of("year", "month", "day"),
-      List.of("verbatimEventDate"));
-  private static final List<List<String>> PLACE_TERMS = List.of(List.of("locationID"),
-      List.of("decimalLatitude", "decimalLongitude"), List.of("locality"), List.of("verbatimLocality"));
-
   /**
    * @return the columns of the first date terms the source has, eventTime, and the first place terms it has
    */
@@ -741,7 +729,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   /**
    * @return the separator the name lists use: "|" or ";" when found, "|" otherwise
    */
-  private static String separator(List<String[]> sample, java.util.Collection<Integer> cols) {
+  private static String separator(List<String[]> sample, Collection<Integer> cols) {
     for (String sep : List.of("|", ";")) {
       for (String[] row : sample) {
         for (Integer c : cols) {

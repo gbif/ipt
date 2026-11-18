@@ -47,7 +47,7 @@ public class DataPackageRowsPreview {
 
   private static final Logger LOG = LogManager.getLogger(DataPackageRowsPreview.class);
 
-  /** a source row read, and the rows it made */
+  /** a row made, with the source line it was made from */
   public record Row(long line, String[] values) {}
 
   /** a foreign key checked against the rows the linked table's mapping makes from the same source rows */

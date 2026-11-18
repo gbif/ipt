@@ -1,6 +1,6 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageTablesAction" -->
-<#-- "Split into tables" (from "Map tables"): DwC-DP mappings suggested from one flat source (DataPackageTablesAction). Each ticked line becomes
-     an ordinary mapping, opened and changed on the mapping page -->
+<#-- "Split into tables" (from "Map tables"): DwC-DP mappings suggested from one flat source (DataPackageTablesAction).
+     Each ticked line becomes an ordinary mapping, opened and changed on the mapping page -->
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl"/>
 <title><@s.text name="manage.tables.title"/>: ${resource.title!resource.shortname}</title>

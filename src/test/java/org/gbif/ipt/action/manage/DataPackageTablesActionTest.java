@@ -26,6 +26,7 @@ import org.gbif.ipt.model.DataPackageValueKind;
 import org.gbif.ipt.model.TextFileSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -121,9 +122,9 @@ public class DataPackageTablesActionTest {
     assertEquals("manage.tables.why.agent.ids", agent.getWhyKey());
     DataPackageFieldMapping agentId = agent.getMapping().getField("agentID");
     assertEquals(DataPackageValueKind.PAIRED, agentId.getValueKind());
-    assertEquals(java.util.Arrays.asList(3, null), agentId.getPairColumns());
-    assertTrue(agent.getPreview().stream().anyMatch(r -> java.util.Arrays.asList(r).containsAll(List.of("Jonas Lind", "orcid-J"))),
-        agent.getPreview().stream().map(java.util.Arrays::toString).toList().toString());
+    assertEquals(Arrays.asList(3, null), agentId.getPairColumns());
+    assertTrue(agent.getPreview().stream().anyMatch(r -> Arrays.asList(r).containsAll(List.of("Jonas Lind", "orcid-J"))),
+        agent.getPreview().stream().map(Arrays::toString).toList().toString());
   }
 
   @Test

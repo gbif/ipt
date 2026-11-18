@@ -14,7 +14,7 @@
 package org.gbif.ipt.model;
 
 /**
- * Where a generated field value comes from. A field mapping without one takes its column or fixed value, as before.
+ * Where a generated field value comes from. A field mapping without one takes its column or fixed value.
  */
 public enum DataPackageValueKind {
   /** the list item, in a mapping with one row per list item */

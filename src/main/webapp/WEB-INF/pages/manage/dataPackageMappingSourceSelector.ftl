@@ -1,9 +1,9 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageMappingAction" -->
 <#-- "Map tables": the one way into new data package mappings. Asks how to map: choose the tables yourself (source +
-     table pairs, as many as wanted), match sources to tables (a table suggested per source from its columns; both create through
-     dataPackageMappingSourceCreate.do), or, for DwC-DP, split a flat source into tables (dataPackageTables.do).
-     ?from=<source> preselects a source, ?how=PICK|MATCH|SPLIT picks the card; otherwise several unmapped sources open
-     MATCH -->
+     table pairs, as many as wanted) or match sources to tables (a table suggested per source from its columns), both
+     created by dataPackageMappingSourceCreate.do; or, for DwC-DP, split a flat source into tables (dataPackageTables.do).
+     ?from=<source> preselects a source and ?how=PICK|MATCH|SPLIT picks the card; otherwise MATCH opens when several
+     unmapped sources match a table -->
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title><@s.text name="manage.mapping.new.title"/>: ${resource.title!resource.shortname}</title>
@@ -36,7 +36,7 @@
 </#macro>
 
 <#macro pairRow i selected>
-    <div class="mt-pair" data-i="${i}">
+    <div class="mt-pair">
         <div>
             <label class="mt-label" for="newSources[${i}]"><@s.text name="manage.mapping.source"/></label>
             <select id="newSources[${i}]" name="newSources[${i}]" class="form-select form-select-sm mt-source">
@@ -110,9 +110,6 @@
         <form id="mt-pick" action="dataPackageMappingSourceCreate.do" method="post"<#if how != "PICK"> hidden</#if>>
             <input type="hidden" name="r" value="${resource.shortname}"/>
             <input type="hidden" name="id" value="${dataPackageSchema.identifier}"/>
-            <input type="hidden" name="schemaName" value="${dataPackageSchema.name}"/>
-            <input type="hidden" name="mid" value="${mid!}"/>
-            <input type="hidden" name="showAll" value="${Parameters.showAll!"true"}"/>
             <div id="mt-pairs">
                 <@pairRow 0 from/>
             </div>
@@ -125,8 +122,6 @@
         <form id="mt-match" action="dataPackageMappingSourceCreate.do" method="post"<#if how != "MATCH"> hidden</#if>>
             <input type="hidden" name="r" value="${resource.shortname}"/>
             <input type="hidden" name="id" value="${dataPackageSchema.identifier}"/>
-            <input type="hidden" name="schemaName" value="${dataPackageSchema.name}"/>
-            <input type="hidden" name="showAll" value="${Parameters.showAll!"true"}"/>
             <#if toMatch?has_content>
             <div class="mt-matches">
                 <#list toMatch as sm>
@@ -289,7 +284,6 @@
 
         function renumber() {
             $('#mt-pairs .mt-pair').each(function (i) {
-                $(this).attr('data-i', i);
                 $(this).find('.mt-source').attr({id: 'newSources[' + i + ']', name: 'newSources[' + i + ']'})
                     .closest('div').find('label').attr('for', 'newSources[' + i + ']');
                 $(this).find('.mt-table').attr({id: 'newTableSchemas[' + i + ']', name: 'newTableSchemas[' + i + ']'})

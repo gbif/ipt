@@ -17,7 +17,7 @@ package org.gbif.ipt.model;
  * How a data package mapping makes the rows of its table from the rows of its source.
  */
 public enum DataPackageRowMode {
-  /** one row per source row, as before */
+  /** one row per source row */
   ROW,
   /** one row per distinct value of the merge key: rows repeating the same key merge into one */
   DISTINCT,

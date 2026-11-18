@@ -67,6 +67,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
@@ -76,10 +77,10 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.code.externalsorting.ExternalSort;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.google.code.externalsorting.ExternalSort;
 
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_EXTENSION;
 import static org.gbif.ipt.config.Constants.DATA_PACKAGE_NAME;
@@ -699,9 +700,9 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
         .map(mappingsByFieldName::get)
         .collect(Collectors.toList());
 
-    Optional<Integer> maxColumnIndexOpt = java.util.stream.Stream.concat(
+    Optional<Integer> maxColumnIndexOpt = Stream.concat(
             usedMappings.stream().filter(Objects::nonNull).map(DataPackageFieldMapping::getIndex),
-            schemaMapping.getSplitColumns() == null ? java.util.stream.Stream.empty() : schemaMapping.getSplitColumns().stream())
+            schemaMapping.getSplitColumns() == null ? Stream.empty() : schemaMapping.getSplitColumns().stream())
         .filter(Objects::nonNull)
         .max(Comparator.naturalOrder());
 

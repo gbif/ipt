@@ -411,18 +411,18 @@
                             <div class="mp-sec-head"><h2><@s.text name="manage.mapping.filter.title"/></h2><span><@s.text name="manage.mapping.filter.desc"/></span></div>
                             <div class="mp-sentence">
                                 <label class="mp-filter-on"><input type="checkbox" class="form-check-input" id="mp-filter-on" form="mp-ui"<#if filterOn> checked</#if>> <@s.text name="manage.mapping.filter.sentence"/></label>
-                                <select id="filterName" name="mapping.filter.column" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.fields.head.column'/>">
+                                <select id="filterName" name="filter.column" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.fields.head.column'/>">
                                     <@columnOptions (mapping.filter.column)!-99999/>
                                 </select>
-                                <select id="filterComp" name="mapping.filter.comparator" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.filter.comparator'/>">
+                                <select id="filterComp" name="filter.comparator" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.filter.comparator'/>">
                                     <option value=""></option>
                                     <#list comparators as cmp>
                                         <option value="${cmp}"<#if cmp == mapping.filter.comparator!""> selected</#if>><@s.text name="manage.mapping.filter.${cmp}"/></option>
                                     </#list>
                                 </select>
-                                <input id="filterParam" name="mapping.filter.param" class="form-control form-control-sm" value="${mapping.filter.param!}" placeholder="<@s.text name='manage.mapping.filter.value'/>" aria-label="<@s.text name='manage.mapping.filter.value'/>"/>
+                                <input id="filterParam" name="filter.param" class="form-control form-control-sm" value="${mapping.filter.param!}" placeholder="<@s.text name='manage.mapping.filter.value'/>" aria-label="<@s.text name='manage.mapping.filter.value'/>"/>
                                 <span class="mp-filter-when"><@s.text name="manage.mapping.filter.checked"/></span>
-                                <select id="filterTime" name="mapping.filter.filterTime" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.filter.time'/>">
+                                <select id="filterTime" name="filter.filterTime" class="form-select form-select-sm" aria-label="<@s.text name='manage.mapping.filter.time'/>">
                                     <#list ["BeforeTranslation", "AfterTranslation"] as t>
                                         <option value="${t}"<#if t == (mapping.filter.filterTime!"")?string> selected</#if>><#if t == "BeforeTranslation"><@s.text name="manage.mapping.filter.time.before"/><#else><@s.text name="manage.mapping.filter.time.after"/></#if></option>
                                     </#list>

@@ -111,8 +111,7 @@
 
         // a generated value other than an ID made from the column doesn't use the column
         function generated(f) {
-            var g = f.$gen && f.$gen.length ? f.$gen.val() : '';
-            return g ? g : '';
+            return (f.$gen && f.$gen.length && f.$gen.val()) || '';
         }
         function colOf(f) {
             var g = generated(f);
@@ -549,9 +548,9 @@
         $('#mp-discard').on('click', function () { submitting = true; });
 
         // ---------- events ----------
-        // how the rows are made (data package mappings): only saved, nothing to render here
+        // how the rows are made (data package mappings): changes which checks apply, e.g. unique samples
         $('#mp-rows').on('change input', 'input, select', function () { renderAll(); markDirty(); });
-        $form.on('change input', '.mp-col, .mp-const, .mp-gen-kind, .mp-gen-tpl, #doiUsedForDatasetId', function () {
+        $form.on('change input', '.mp-col, .mp-const, .mp-gen-kind, .mp-gen-tpl, .mp-gen-pairs select, #doiUsedForDatasetId', function () {
             var f = byIndex[$(this).closest('.mp-field').attr('data-i')];
             if (f) renderField(f);
             renderNoIdWarning();

@@ -23,9 +23,9 @@ import org.gbif.ipt.model.DataPackageRowMode;
 import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataPackageTableSchemaForeignKey;
 import org.gbif.ipt.model.DataPackageTableSchemaName;
+import org.gbif.ipt.model.DataPackageValueKind;
 import org.gbif.ipt.model.RecordFilter;
 import org.gbif.ipt.model.Source;
-import org.gbif.ipt.model.DataPackageValueKind;
 import org.gbif.ipt.model.SourceWithHeader;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
@@ -262,10 +262,6 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
    */
   public String problemText(DataPackageRowBuilder.Problem problem) {
     return getText(problem.key(), problem.params());
-  }
-
-  public DataPackageRowMode[] getRowModes() {
-    return DataPackageRowMode.values();
   }
 
   /**
@@ -934,9 +930,17 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
     return "delete".equals(actionMethod);
   }
 
-  @StrutsParameter(depth = 2)
   public DataPackageMapping getMapping() {
     return mapping;
+  }
+
+  /**
+   * The Filter section's fields (filter.column, filter.comparator, filter.param, filter.filterTime): the only part of the
+   * mapping set from the request, so a request can't reach the source or the shared schema through it.
+   */
+  @StrutsParameter(depth = 1)
+  public RecordFilter getFilter() {
+    return mapping == null ? null : mapping.getFilter();
   }
 
   @StrutsParameter(depth = 2)

@@ -19,9 +19,11 @@ import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
+import org.gbif.ipt.model.DataPackageRowMode;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataPackageTableSchemaName;
+import org.gbif.ipt.model.DataPackageValueKind;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
@@ -163,7 +165,7 @@ public class GenerateDarwinCoreDataPackageTest {
         new DataPackageFieldMapping(0, field("eventID")),
         new DataPackageFieldMapping(1, field("eventDate")),
         new DataPackageFieldMapping(2, field("locality")));
-    m.setRowMode(org.gbif.ipt.model.DataPackageRowMode.DISTINCT);
+    m.setRowMode(DataPackageRowMode.DISTINCT);
     m.setMergeKey("eventID");
 
     generator.addDataResource(eventTableSchema, List.of(m), true);
@@ -188,7 +190,7 @@ public class GenerateDarwinCoreDataPackageTest {
         new DataPackageFieldMapping(0, field("eventID")),
         new DataPackageFieldMapping(1, field("eventDate")),
         new DataPackageFieldMapping(2, field("locality")));
-    m.setRowMode(org.gbif.ipt.model.DataPackageRowMode.DISTINCT);
+    m.setRowMode(DataPackageRowMode.DISTINCT);
     m.setMergeKey("eventID");
 
     generator.addDataResource(eventTableSchema, List.of(m), true);
@@ -210,8 +212,8 @@ public class GenerateDarwinCoreDataPackageTest {
         new String[] {"e1", "Copenhagen|Aarhus"});
     DataPackageMapping m = mapping(source,
         new DataPackageFieldMapping(0, field("eventID")),
-        DataPackageFieldMapping.builder().field(field("locality")).valueKind(org.gbif.ipt.model.DataPackageValueKind.ITEM).build());
-    m.setRowMode(org.gbif.ipt.model.DataPackageRowMode.ITEMS);
+        DataPackageFieldMapping.builder().field(field("locality")).valueKind(DataPackageValueKind.ITEM).build());
+    m.setRowMode(DataPackageRowMode.ITEMS);
     m.setSplitColumns(List.of(1));
     m.setMergeKey(DataPackageMapping.WHOLE_ROW);
 
@@ -233,7 +235,7 @@ public class GenerateDarwinCoreDataPackageTest {
     DataPackageMapping m = mapping(source,
         new DataPackageFieldMapping(0, field("eventID")),
         new DataPackageFieldMapping(1, field("eventDate")));
-    m.setRowMode(org.gbif.ipt.model.DataPackageRowMode.DISTINCT);
+    m.setRowMode(DataPackageRowMode.DISTINCT);
     m.setMergeKey("eventID");
 
     GeneratorException e = assertThrows(GeneratorException.class,

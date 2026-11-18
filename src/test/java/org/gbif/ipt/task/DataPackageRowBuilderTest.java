@@ -27,6 +27,7 @@ import org.gbif.ipt.model.Source;
 import org.gbif.ipt.model.TextFileSource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -153,7 +154,7 @@ public class DataPackageRowBuilderTest {
     List<String> cols = List.of("occurrenceID", "recordedBy", "recordedByID", "identifiedBy", "identifiedByID");
     String[] row = {"O1", "Anna Berg | | Jonas Lind", " | | orcid-J", "Maja Ek", "orcid-M"};
     DataPackageFieldMapping agentId = kind("agentID", DataPackageValueKind.PAIRED);
-    agentId.setPairColumns(java.util.Arrays.asList(2, 4));
+    agentId.setPairColumns(Arrays.asList(2, 4));
     DataPackageMapping agent = mapping("agent", source,
         kind("agent_pk", DataPackageValueKind.ID), kind("preferredAgentName", DataPackageValueKind.ITEM), agentId);
     agent.setRowMode(DataPackageRowMode.ITEMS);
