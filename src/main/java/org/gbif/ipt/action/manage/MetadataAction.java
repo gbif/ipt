@@ -107,7 +107,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   private static final String DIRECTORIES_PROPFILE_PATH = "/org/gbif/metadata/eml/UserDirectories.properties";
 
   private MetadataSection section = MetadataSection.BASIC_SECTION;
-  private MetadataSection next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
+  private MetadataSection next = MetadataSection.COVERAGE_SECTION;
   @Getter
   private Map<String, String> languages;
   // ISO 639-2 vocabulary, and the languages that can be added as translations (language tag to name)
@@ -327,7 +327,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
     // the coverage pages infer the metadata if requested, never inferred, or outdated: big datasets in the background
-    boolean coverageSection = section == MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
+    boolean coverageSection = section == MetadataSection.COVERAGE_SECTION;
     InferredMetadata current = coverageSection
         ? inferredMetadataManager.getInferredMetadata(resource, reinferMetadata)
         : resource.getInferredMetadata();
@@ -412,7 +412,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
         }
         break;
 
-      case GEOGRAPHIC_COVERAGE_SECTION:
+      case COVERAGE_SECTION:
         // ranks list, derived from XML vocabulary, for the taxonomic coverage (was a page of its own, #3319)
         ranks = new LinkedHashMap<>();
         ranks.put("", getText("eml.rank.selection"));
@@ -590,9 +590,9 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           next = MetadataSection.CONTACTS_SECTION;
           break;
         case CONTACTS_SECTION:
-          next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
+          next = MetadataSection.COVERAGE_SECTION;
           break;
-        case GEOGRAPHIC_COVERAGE_SECTION:
+        case COVERAGE_SECTION:
           next = MetadataSection.PROJECT_SECTION;
           break;
         case PROJECT_SECTION:

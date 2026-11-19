@@ -20,7 +20,7 @@
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="manage.metadata.${currentMetadataPage}.title"/></h1>
             </div>
             <div class="ov-acts">
-                <#-- id top-save: geocoverage.ftl checks the coordinates before submitting -->
+                <#-- id top-save: coverage.ftl checks the coordinates before submitting -->
                 <button type="submit" id="top-save" class="btn btn-sm btn-gbif-solid top-button" name="save" value="save"><@icon name="save"/> <@s.text name="button.save"/></button>
                 <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();"><@s.text name="button.back"/></button>
             </div>

@@ -80,7 +80,7 @@ public class MetadataActionInferringTest {
     when(inferringService.countRowsToRead(any(Resource.class))).thenReturn(OptionalLong.of(0));
 
     req = mock(HttpServletRequest.class);
-    when(req.getRequestURI()).thenReturn("/ipt/manage/metadata-geocoverage.do");
+    when(req.getRequestURI()).thenReturn("/ipt/manage/metadata-coverage.do");
     when(req.getParameter(Constants.REQ_PARAM_RESOURCE)).thenReturn(SHORTNAME);
     when(req.getMethod()).thenReturn("GET");
 

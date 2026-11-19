@@ -371,109 +371,103 @@ public class EmlValidator extends BaseValidator {
 
           break;
 
-        case GEOGRAPHIC_COVERAGE_SECTION:
-          // at least one field has to have had data entered into it to qualify for validation
-          if (!isGeoPageEmpty(eml)) {
-            Double coord1;
-            Double coord2;
-            for (int index = 0; index < eml.getGeospatialCoverages().size(); index++) {
-              // The Bounding coordinates and description are mandatory.
-              if (!eml.getGeospatialCoverages().isEmpty()) {
-                coord1 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude();
-                if (coord1 == null) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
-                      i18n.getText(
-                          "validation.required",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")));
-                } else if (Double.isNaN(coord1)) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")));
-                }
-
-                coord2 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude();
-                if (coord2 == null) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
-                      i18n.getText(
-                          "validation.required",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")));
-                } else if (Double.isNaN(coord2)) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")));
-                }
-
-                coord1 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude();
-                if (coord1 == null) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
-                      i18n.getText(
-                          "validation.required",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")));
-                } else if (Double.isNaN(coord1)) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")));
-                }
-
-                coord2 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude();
-                if (coord2 == null) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
-                      i18n.getText(
-                          "validation.required",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")));
-                } else if (Double.isNaN(coord2)) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
-                      i18n.getText(
-                          "validation.invalid",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")));
-                }
-
-                if (coord1 != null && coord2 != null && coord1 < coord2) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
-                      i18n.getText(
-                          "validation.coordinates.swapped.less",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude"),
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")));
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
-                      i18n.getText(
-                          "validation.coordinates.swapped.greater",
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude"),
-                          i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")));
-                }
-
-              /* description - mandatory and greater than 2 chars */
-                if (StringUtils.isBlank(eml.getGeospatialCoverages().get(index).getDescription())) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].description",
-                      i18n.getText(
-                          "validation.required",
-                          i18n.getText("eml.geospatialCoverages.description")));
-                } else if (!exists(eml.getGeospatialCoverages().get(index).getDescription(), 2)) {
-                  ec.addFieldError(
-                      "eml.geospatialCoverages[" + index + "].description",
-                      i18n.getText(
-                          "validation.short",
-                          i18n.getText("eml.geospatialCoverages.description"),
-                          "2"));
-                }
-              }
+        case COVERAGE_SECTION:
+          // areas without any data entered are dropped; if none is left, the <coverage> label in eml.xml is removed
+          eml.getGeospatialCoverages().removeIf(EmlValidator::isGeoAreaEmpty);
+          Double coord1;
+          Double coord2;
+          for (int index = 0; index < eml.getGeospatialCoverages().size(); index++) {
+            // The Bounding coordinates and description are mandatory.
+            coord1 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLongitude();
+            if (coord1 == null) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")));
+            } else if (Double.isNaN(coord1)) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.longitude",
+                  i18n.getText(
+                      "validation.invalid",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.longitude")));
             }
-          } else {
-            // If all fields are empty, the <coverage> label in eml.xml will be removed.
-            eml.getGeospatialCoverages().clear();
+
+            coord2 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLongitude();
+            if (coord2 == null) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")));
+            } else if (Double.isNaN(coord2)) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.longitude",
+                  i18n.getText(
+                      "validation.invalid",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.longitude")));
+            }
+
+            coord1 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMax().getLatitude();
+            if (coord1 == null) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")));
+            } else if (Double.isNaN(coord1)) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
+                  i18n.getText(
+                      "validation.invalid",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")));
+            }
+
+            coord2 = eml.getGeospatialCoverages().get(index).getBoundingCoordinates().getMin().getLatitude();
+            if (coord2 == null) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")));
+            } else if (Double.isNaN(coord2)) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
+                  i18n.getText(
+                      "validation.invalid",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")));
+            }
+
+            if (coord1 != null && coord2 != null && coord1 < coord2) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.min.latitude",
+                  i18n.getText(
+                      "validation.coordinates.swapped.less",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude"),
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude")));
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].boundingCoordinates.max.latitude",
+                  i18n.getText(
+                      "validation.coordinates.swapped.greater",
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.max.latitude"),
+                      i18n.getText("eml.geospatialCoverages.boundingCoordinates.min.latitude")));
+            }
+
+            // description - mandatory and greater than 2 chars
+            if (StringUtils.isBlank(eml.getGeospatialCoverages().get(index).getDescription())) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].description",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.geospatialCoverages.description")));
+            } else if (!exists(eml.getGeospatialCoverages().get(index).getDescription(), 2)) {
+              ec.addFieldError(
+                  "eml.geospatialCoverages[" + index + "].description",
+                  i18n.getText(
+                      "validation.short",
+                      i18n.getText("eml.geospatialCoverages.description"),
+                      "2"));
+            }
           }
 
           // the taxonomic coverages (were a page of their own, #3319)
@@ -1249,32 +1243,18 @@ public class EmlValidator extends BaseValidator {
   }
 
   /**
-   * Determine if the Geo page is empty. In other words, the user hasn't entered any information for a single
-   * field yet. The geo coverages can be multiple.
-   *
-   * @param eml EML
-   * @return whether the Geo page is empty or not.
+   * An area of the geographic coverage that has neither coordinates nor a description: nothing was entered for it.
    */
-  private boolean isGeoPageEmpty(Eml eml) {
-    if (!eml.getGeospatialCoverages().isEmpty()) {
-      GeospatialCoverage cov1 = eml.getGeospatialCoverages().get(0);
-      String description = cov1.getDescription();
-      BBox bbox = cov1.getBoundingCoordinates();
-      Point p1 = bbox.getMin();
-      Point p2 = bbox.getMax();
-
-      if (p1 != null && p2 != null) {
-        Double lat1 = p1.getLatitude();
-        Double lon1 = p1.getLongitude();
-        Double lat2 = p2.getLatitude();
-        Double lon2 = p2.getLongitude();
-
-        return (lat1 == null && lon1 == null && lat2 == null && lon2 == null && StringUtils.isBlank(description));
-      } else {
-        return StringUtils.isBlank(description);
-      }
+  private static boolean isGeoAreaEmpty(GeospatialCoverage cov) {
+    if (cov == null) {
+      return true;
     }
-    return true;
+    BBox bbox = cov.getBoundingCoordinates();
+    Point p1 = bbox == null ? null : bbox.getMin();
+    Point p2 = bbox == null ? null : bbox.getMax();
+    boolean noCoordinates = (p1 == null || (p1.getLatitude() == null && p1.getLongitude() == null))
+        && (p2 == null || (p2.getLatitude() == null && p2.getLongitude() == null));
+    return noCoordinates && StringUtils.isBlank(cov.getDescription());
   }
 
   /**

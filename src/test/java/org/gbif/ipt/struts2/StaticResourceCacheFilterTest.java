@@ -65,7 +65,7 @@ class StaticResourceCacheFilterTest {
     "/js/jquery/jquery-3.7.1.min.js",
     "/js/bootstrap/bootstrap-5.3.8.bundle.min.js",
     "/js/select2/select2-4.0.13.full.min.js",
-    "/js/leaflet/locationfilter-0.1-leaflet1.js",
+    "/js/leaflet/leaflet-1.9.4.js",
     "/styles/dataTables/dataTables-3.1.5.min.css"
   })
   void versionedFilesAreImmutable(String path) throws Exception {

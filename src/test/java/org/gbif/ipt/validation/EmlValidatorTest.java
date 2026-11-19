@@ -29,6 +29,7 @@ import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.Collection;
 import org.gbif.metadata.eml.ipt.model.Eml;
+import org.gbif.metadata.eml.ipt.model.GeospatialCoverage;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 import org.gbif.metadata.eml.ipt.model.Party;
 import org.gbif.metadata.eml.ipt.model.UserId;
@@ -416,14 +417,14 @@ public class EmlValidatorTest extends IptBaseTest {
   @Test
   public void testGeoPart() {
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
   }
 
   @Test
   public void testGeoPartDescriptionIncomplete() {
     // invalid
     eml.getGeospatialCoverages().get(0).setDescription("");
-    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
   }
 
   @Test
@@ -432,26 +433,64 @@ public class EmlValidatorTest extends IptBaseTest {
     BBox box = new BBox();
     box.getMin().setLongitude(null);
     eml.getGeospatialCoverages().get(0).setBoundingCoordinates(box);
-    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
+  }
+
+  // a box as the form posts it: corners as entered, not reordered like BBox(Point, Point) does
+  private static BBox box(Double south, Double west, Double north, Double east) {
+    BBox box = new BBox();
+    box.getMin().setLatitude(south);
+    box.getMin().setLongitude(west);
+    box.getMax().setLatitude(north);
+    box.getMax().setLongitude(east);
+    return box;
+  }
+
+  @Test
+  public void testGeoPartSecondAreaChecked() {
+    // every area is checked, not only the first (#3317)
+    GeospatialCoverage second = new GeospatialCoverage();
+    second.setBoundingCoordinates(box(53.0, 4.7, 53.5, 5.4));
+    eml.addGeospatialCoverage(second);
+    assertFalse(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
+    second.setDescription("Western Wadden Sea islands");
+    assertTrue(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
+    assertEquals(2, eml.getGeospatialCoverages().size());
+  }
+
+  @Test
+  public void testGeoPartSouthNorthSwapped() {
+    eml.getGeospatialCoverages().get(0).setBoundingCoordinates(box(50.0, 4.0, 40.0, 6.0));
+    assertFalse(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
+  }
+
+  @Test
+  public void testGeoPartEmptyAreaDropped() {
+    // an area with nothing entered is removed, the others stay
+    GeospatialCoverage empty = new GeospatialCoverage();
+    empty.setBoundingCoordinates(box(null, null, null, null));
+    eml.getGeospatialCoverages().add(0, empty);
+    assertTrue(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
+    assertEquals(1, eml.getGeospatialCoverages().size());
   }
 
   @Test
   public void testTaxCovPart() {
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
   }
 
   @Test
   public void testTaxCovPartScientificNameIncomplete() {
     // invalid
     eml.getTaxonomicCoverages().get(0).getTaxonKeywords().get(0).setScientificName(null);
-    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
   }
 
   @Test
   public void testTempCovPart() {
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
   }
 
   @Test
@@ -459,7 +498,7 @@ public class EmlValidatorTest extends IptBaseTest {
     // invalid
     eml.getTemporalCoverages().get(0).setStartDate(null);
     eml.getTemporalCoverages().get(0).setEndDate(new Date());
-    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
   }
 
   @Test
@@ -469,7 +508,7 @@ public class EmlValidatorTest extends IptBaseTest {
     eml.getTemporalCoverages().get(0).setEndDate(null);
     eml.getTemporalCoverages().get(0).setFormationPeriod(null);
     eml.getTemporalCoverages().get(0).setLivingTimePeriod(null);
-    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.COVERAGE_SECTION));
   }
 
   @Test

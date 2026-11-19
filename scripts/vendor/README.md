@@ -40,10 +40,9 @@ The `UI libraries` GitHub workflow runs `npm audit` and `npm run vendor -- --che
 
 These aren't on npm in the form used, or have IPT changes:
 
-- `js/leaflet/locationfilter-0.1-leaflet1.js`, `styles/leaflet/locationfilter.css`: Leaflet.locationfilter 0.1 (2012, unmaintained), updated for Leaflet 1.x
-- `images/leaflet/`: IPT marker and filter images
+- `images/leaflet/`: IPT marker images
 - `js/jconfirmation.jquery.js`: jQuery plugin, extended for the IPT
 - `styles/fonts/gbificons.*`: GBIF icon font
 - `styles/bootstrap/bootstrap-borders.css`: IPT additions to Bootstrap
 
-A file with a version in its name, such as `locationfilter-0.1-leaflet1.js`, is cached by browsers for a year. Rename it when you change it, and update the FTL pages.
+A file with a version in its name, such as `leaflet-1.9.4.js`, is cached by browsers for a year. Rename it when you change it, and update the FTL pages.

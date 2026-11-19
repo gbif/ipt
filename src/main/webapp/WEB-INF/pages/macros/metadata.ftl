@@ -254,7 +254,7 @@ $(document).ready(function(){
 
 	function setSubItemIndex(baseItem, subItem, subBaseIndex) {
 		<#switch "${section}">
-  			<#case "geocoverage">
+  			<#case "coverage">
                 var itemIndex = baseItem[0].id.split("-")[1];
                 subItem.attr("id", "subItem-" + itemIndex + "-" + subBaseIndex);
                 $("#" + baseItem.attr("id") + " #" + subItem.attr("id")).find("[id$='scientificName']").attr("id", "eml.taxonomicCoverages[" + baseItem.attr("id").split("-")[1] + "].taxonKeywords[" + subBaseIndex + "].scientificName").attr("name", function () {
@@ -700,7 +700,7 @@ $(document).ready(function(){
 
 
 
-            <#case "geocoverage">
+            <#case "coverage">
                 $("#item-" + index + " .subItems").attr("id", "subItems-" + index);
                 $("#item-" + index + " [id^='plus-subItem']").attr("id", "plus-subItem-" + index);
                 $("#plus-subItem-" + index).unbind();

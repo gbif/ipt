@@ -22,7 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 public enum MetadataSection {
   BASIC_SECTION("basic"),
   CONTACTS_SECTION("contacts"),
-  GEOGRAPHIC_COVERAGE_SECTION ("geocoverage"),
+  COVERAGE_SECTION ("coverage"),
   PROJECT_SECTION ("project"),
   METHODS_SECTION ("methods"),
   CITATIONS_SECTION ("citations"),

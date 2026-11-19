@@ -2545,7 +2545,7 @@
         <#assign metadataSections = {
         "BASIC_SECTION": "basic",
         "CONTACTS_SECTION": "contacts",
-        "GEOGRAPHIC_COVERAGE_SECTION": "geocoverage",
+        "COVERAGE_SECTION": "coverage",
         "PROJECT_SECTION": "project",
         "METHODS_SECTION": "methods",
         "CITATIONS_SECTION": "citations",
