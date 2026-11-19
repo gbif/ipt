@@ -211,6 +211,30 @@
                 theme: 'bootstrap4'
             });
 
+            // the logo (was the Additional Metadata page, #3319) is uploaded when the form is saved, show a preview of the chosen file until then
+            var logoPreviewUrl = null;
+            $("#file").on("change", function () {
+                if (logoPreviewUrl) {
+                    URL.revokeObjectURL(logoPreviewUrl);
+                    logoPreviewUrl = null;
+                }
+                var file = this.files[0];
+                if (file) {
+                    logoPreviewUrl = URL.createObjectURL(file);
+                    $("#resourcelogo").empty().append($("<img>").attr("src", logoPreviewUrl));
+                    $("#removeLogo").val("false");
+                }
+            });
+
+            $("#buttonRemove").click(function (event) {
+                event.preventDefault();
+                $("#resourcelogo").empty();
+                $("#eml\\.logoUrl").val("");
+                $("#file").val("");
+                $("#removeLogo").val("true");
+                this.dispatchEvent(new Event("input", {bubbles: true}));
+            });
+
             // reordering the keyword sets (were the Keywords page, #3319)
             function initAndGetSortable(selector) {
                 return sortable(selector, {
@@ -283,7 +307,9 @@
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
-<form id="basic-metadata-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
+<form id="basic-metadata-form" class="needs-validation track-unsaved" action="metadata-${section}.do?r=${resource.shortname}" method="post" enctype="multipart/form-data" novalidate>
+    <#-- the logo is uploaded with this form (was the Additional Metadata page, #3319) -->
+    <input id="removeLogo" name="removeLogo" type="hidden" value="false" />
     <input type="hidden" name="r" value="${resource.shortname}" />
 
     <#include "eml_heading.ftl"/>
@@ -458,6 +484,15 @@
                         </div>
                     </div>
 
+                    <!-- Additional information (was the Additional Metadata page, #3319) -->
+                    <div class="my-3 p-3" id="s-additional-info" data-toc="${action.getText('eml.additionalInfo')}">
+                        <@textinline name="eml.additionalInfo" help="i18n"/>
+
+                        <div class="mt-2">
+                            <textarea id="eml.additionalInfo" name="eml.additionalInfo" class="form-control" rows="5" aria-label="${action.getText('eml.additionalInfo')}">${eml.additionalInfo!}</textarea>
+                        </div>
+                    </div>
+
                     <!-- Keywords (were a page of their own, #3319) -->
                     <div class="my-3 p-3" id="s-keywords" data-toc="${action.getText('manage.metadata.keywords.title')}">
                         <@textinline name="manage.metadata.keywords.title"/>
@@ -516,6 +551,32 @@
                             </div>
                             <@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true/>
                             <@text name="keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
+                        </div>
+                    </div>
+
+                    <div class="my-3 p-3" id="s-logo" data-toc="${action.getText('manage.metadata.section.logo')}">
+                        <@textinline name="manage.metadata.section.logo"/>
+
+                        <div class="row g-3 mt-0">
+                            <div class="col-lg-6">
+                                <@input name="eml.logoUrl" value=eml.logoUrl! i18nkey="eml.logoUrl" help="i18n" type="url" />
+                                <@s.file cssClass="form-control my-1" name="file" id="file" accept="image/jpeg,image/png,image/gif"/>
+                                <@s.fielderror cssClass="invalid-feedback d-block list-unstyled my-1" fieldName="file"/>
+                                <a href="#" class="action-link-button action-link-button-danger" id="buttonRemove">
+                                    <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
+                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                    </svg>
+                                    <@s.text name="button.remove"/>
+                                </a>
+                            </div>
+
+                            <div class="col-lg-3 d-flex justify-content-start align-items-center">
+                                <div id="resourcelogo">
+                                    <#if resource.eml.logoUrl?has_content>
+                                        <img src="${resource.eml.logoUrl}" />
+                                    </#if>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

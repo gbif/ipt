@@ -134,6 +134,11 @@
                 <dl class="ov-kv">
                     <dt><@s.text name="manage.overview.published.released"/></dt>
                     <dd>${resource.lastPublished?datetime?string.medium}</dd>
+                    <#-- the date of the first version, shown on the Additional Metadata page before #3319 -->
+                    <#if (resource.eml.dateStamp)??>
+                        <dt><@s.text name="eml.dateStamp"/></dt>
+                        <dd>${resource.eml.dateStamp?date?string.medium}</dd>
+                    </#if>
                     <dt><@s.text name="manage.overview.publication.records"/></dt>
                     <dd><#if isMetadataOnly><@s.text name="manage.overview.publication.metadataOnly"/><#else>${resource.recordsPublished?string.number}</#if></dd>
                     <dt><@s.text name="manage.overview.publication.visibleTo"/></dt>

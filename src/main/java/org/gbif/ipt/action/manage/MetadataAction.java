@@ -563,8 +563,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
   @Override
   public String save() throws Exception {
-    // the logo is uploaded with the additional metadata form, and points the logo URL at the IPT's copy
-    File logo = section == MetadataSection.ADDITIONAL_SECTION ? uploadedLogo() : null;
+    // the logo is uploaded with the basic metadata form (#3319), and points the logo URL at the IPT's copy
+    File logo = section == MetadataSection.BASIC_SECTION ? uploadedLogo() : null;
     String logoType = logo == null ? null : IptFileUtils.imageType(logo);
     if (logo != null) {
       if (logoType == null) {
@@ -587,7 +587,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           return INPUT;
         }
         dataDir.removeResourceLogoFiles(resource.getShortname(), logoType);
-      } else if (removeLogo && section == MetadataSection.ADDITIONAL_SECTION) {
+      } else if (removeLogo && section == MetadataSection.BASIC_SECTION) {
         dataDir.removeResourceLogoFiles(resource.getShortname(), null);
       }
       // Save metadata information (eml.xml)

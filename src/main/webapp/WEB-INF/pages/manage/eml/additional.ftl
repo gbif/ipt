@@ -6,30 +6,6 @@
     <title><@s.text name='manage.metadata.additional.title'/></title>
     <script>
         $(document).ready(function () {
-            // the logo is uploaded when the form is saved, show a preview of the chosen file until then
-            var logoPreviewUrl = null;
-            $("#file").on("change", function () {
-                if (logoPreviewUrl) {
-                    URL.revokeObjectURL(logoPreviewUrl);
-                    logoPreviewUrl = null;
-                }
-                var file = this.files[0];
-                if (file) {
-                    logoPreviewUrl = URL.createObjectURL(file);
-                    $("#resourcelogo").empty().append($("<img>").attr("src", logoPreviewUrl));
-                    $("#removeLogo").val("false");
-                }
-            });
-
-            $("#buttonRemove").click(function (event) {
-                event.preventDefault();
-                $("#resourcelogo").empty();
-                $("#eml\\.logoUrl").val("");
-                $("#file").val("");
-                $("#removeLogo").val("true");
-                this.dispatchEvent(new Event("input", {bubbles: true}));
-            });
-
             $('#metadata-section').change(function () {
                 var metadataSection = $('#metadata-section').find(':selected').val()
                 $(location).attr('href', 'metadata-' + metadataSection + '.do?r=${resource.shortname!r!}');
@@ -100,8 +76,7 @@
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation track-unsaved" action="metadata-${section}.do?r=${resource.shortname}" method="post" enctype="multipart/form-data" novalidate>
-        <input id="removeLogo" name="removeLogo" type="hidden" value="false" />
+    <form class="needs-validation track-unsaved" action="metadata-${section}.do?r=${resource.shortname}" method="post" novalidate>
 
         <#include "eml_heading.ftl"/>
 
@@ -115,51 +90,6 @@
                     </div>
 
                     <div class="bd-content">
-                        <div class="my-md-3 p-3">
-                            <p class="mb-0">
-                                <@s.text name='manage.metadata.additional.intro'/>
-                            </p>
-
-                            <!-- Resource Logo -->
-                            <div id="logofields" class="row g-3 pb-1 mt-1" data-toc="${action.getText('manage.metadata.section.datesLogo')}">
-                                <div class="col-lg-6">
-                                    <@input name="dateStamp" value=(eml.dateStamp??)?then(eml.dateStamp?date?string("yyyy-MM-dd"), "") i18nkey="eml.dateStamp" help="i18n" disabled=true />
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <@input name="eml.pubDate" value=(eml.pubDate??)?then(eml.pubDate?date?string("yyyy-MM-dd"), "") i18nkey="eml.pubDate" help="i18n" disabled=true />
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <@input name="eml.logoUrl" value=eml.logoUrl! i18nkey="eml.logoUrl" help="i18n" type="url" />
-                                    <@s.file cssClass="form-control my-1" name="file" id="file" accept="image/jpeg,image/png,image/gif"/>
-                                    <@s.fielderror cssClass="invalid-feedback d-block list-unstyled my-1" fieldName="file"/>
-                                    <a href="#" class="action-link-button action-link-button-danger" id="buttonRemove">
-                                        <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                        </svg>
-                                        <@s.text name="button.remove"/>
-                                    </a>
-                                </div>
-
-                                <div class="col-lg-3 d-flex justify-content-start align-items-center">
-                                    <div id="resourcelogo">
-                                        <#if resource.eml.logoUrl?has_content>
-                                            <img src="${resource.eml.logoUrl}" />
-                                        </#if>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row g-3 mt-1" id="s-additional-info" data-toc="${action.getText('eml.additionalInfo')}">
-                                <!-- Additional info -->
-                                <div>
-                                    <@text name="eml.additionalInfo" i18nkey="eml.additionalInfo" help="i18n"/>
-                                </div>
-                            </div>
-
-                        </div>
-
                         <div class="my-md-3 p-3" id="s-alternative-identifiers" data-toc="${action.getText('manage.metadata.alternateIdentifiers.title')}">
                             <!-- Alternative identifiers -->
                             <div class="listBlock">
