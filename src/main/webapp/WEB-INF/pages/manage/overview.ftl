@@ -375,8 +375,8 @@
                 addButton.attr("value", '<@s.text name="button.add" escapeJavaScript="true"/>');
                 addButton.show();
 
-                // display "Check URL"
-                urlInput.on('input', function () {
+                // display "Check URL" (namespaced: every switch to this tab binds again, replacing the last one)
+                urlInput.off('input.checkUrl').on('input.checkUrl', function () {
                     urlSourceInfoBlock.show();
                     const value = $(this).val().trim();
 
@@ -393,7 +393,7 @@
                 });
 
                 // "Check URL" button
-                urlSourceCheckLink.on('click', async function (e) {
+                urlSourceCheckLink.off('click.checkUrl').on('click.checkUrl', async function (e) {
                     e.preventDefault();
                     const url = urlInput.val().trim();
                     const urlMetadata = await checkUrlMetadata(url);
@@ -1033,8 +1033,6 @@
             // set file name and file size
             fileName.innerText = file.name;
             fileStatus.innerText = formatFileSize(file.size);
-
-            totalFilesSize = totalFilesSize + file.size;
 
             // make sure source with the name does not exist (case-insensitive check)
             var isSourceAlreadyExist = sourceNames.includes(fileNameWithoutSpaces.toLowerCase());
