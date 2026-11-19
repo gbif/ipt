@@ -29,27 +29,25 @@
         'metadata.yaml',
     ]);
 
-    // Darker than the theme colours, so text on the tinted backgrounds stays readable
+    // Panel states as the page banners (.ov-banner in overview.css): a tint and border of the state's colour, the
+    // colour itself only on the icon
     const STATUS = {
-        success: { bg: '#EEF6EE', fg: '#2F6B2F', border: '#CFE3CF', icon: 'bi-check-circle' },
-        warning: { bg: '#FFF6DD', fg: '#6B4A00', border: '#F1DDA4', icon: 'bi-exclamation-circle' },
-        danger: { bg: '#FDEEEF', fg: '#A12F3B', border: '#F0C8CD', icon: 'bi-x-circle' },
+        success: { bg: 'rgba(var(--color-gbif-success), .05)', border: 'rgba(var(--color-gbif-success), .4)', color: 'rgb(var(--color-gbif-success))', icon: 'check_circle' },
+        warning: { bg: 'rgba(var(--alert-warning-icon-color), .05)', border: 'rgba(var(--alert-warning-icon-color), .4)', color: 'rgb(var(--alert-warning-icon-color))', icon: 'warning' },
+        danger: { bg: 'rgba(var(--color-gbif-danger), .05)', border: 'rgba(var(--color-gbif-danger), .4)', color: 'rgb(var(--color-gbif-danger))', icon: 'error' },
     };
 
-    // Row and problem levels: icon and colours
+    // Row and problem levels: icon and its colour; notes stay grey, the severity is in the icon only
     const LEVELS = {
-        ok: { color: '#3E8E3E', text: '#6C757D', icon: 'bi-check2' },
-        warning: { color: '#8A6100', text: '#6B4A00', icon: 'bi-exclamation-triangle' },
-        danger: { color: '#B8384A', text: '#A12F3B', icon: 'bi-x-circle' },
-        muted: { color: '#ADB5BD', text: '#6C757D', icon: 'bi-dash' },
+        ok: { color: 'rgb(var(--color-gbif-success))', icon: 'check' },
+        warning: { color: 'rgb(var(--alert-warning-icon-color))', icon: 'warning' },
+        danger: { color: 'rgb(var(--color-gbif-danger))', icon: 'error' },
+        muted: { color: '#ADB5BD', icon: 'remove' },
     };
 
     const LEVEL_ORDER = ['ok', 'muted', 'warning', 'danger'];
 
     const MONO = "'Roboto Mono', SFMono-Regular, Menlo, monospace";
-
-    // The header starts where the text of the upload progress (create_input.ftl, #fileList) does
-    const HEADER_INDENT = 36;
 
     // Data from this size on takes a while to upload and to be read by the server
     const LARGE_ARCHIVE_SIZE = 100 * 1000 * 1000;
@@ -62,6 +60,12 @@
 
     let messages = {};
     let options = {};
+
+    // A Material icon from the sprite the page gives (options.iconSprite, images/icons/material-icons.svg), as the
+    // icon macro (WEB-INF/pages/macros/icon.ftl) draws it
+    function icon(name, style, cls) {
+        return `<svg class="material-icon${cls ? ' ' + cls : ''}" style="${style ?? ''}" aria-hidden="true" focusable="false"><use href="${escapeHtml(options.iconSprite ?? '')}#${name}"/></svg>`;
+    }
 
     // Translated text as escaped HTML, with {0}, {1}... replaced by the arguments
     function msg(key, ...args) {
@@ -439,7 +443,7 @@
 
     function iconMarkup(level) {
         const l = LEVELS[level];
-        return `<i class="bi ${l.icon}" style="font-size:16px; line-height:1; color:${l.color};" aria-hidden="true"></i>`;
+        return icon(l.icon, `font-size:16px; color:${l.color}; vertical-align:middle;`);
     }
 
     // One button per kind of thing to install, on the first problem of that kind, e.g. "Install extensions"
@@ -468,17 +472,17 @@
             .map((chip) => `<span style="font-size:12px; line-height:16px; padding:3px 9px; border-radius:999px; background:#FFFFFF; border:1px solid #DEE2E6; color:#4E565F;">${chip}</span>`)
             .join('');
         return `
-    <div style="padding:16px 18px 16px ${HEADER_INDENT}px; background:${s.bg};">
+    <div style="padding:16px 18px; background:${s.bg};">
       <div style="display:flex; flex-direction:column; gap:8px; min-width:0;">
-        <div style="display:flex; align-items:center; gap:8px; font-size:16px; font-weight:500; line-height:28px; color:${s.fg};">
-          <i class="bi ${s.icon}" style="font-size:16px; line-height:1;" aria-hidden="true"></i>
+        <div style="display:flex; align-items:center; gap:8px; font-size:16px; font-weight:500; line-height:28px; color:#212529;">
+          ${icon(s.icon, `font-size:20px; color:${s.color};`)}
           <span>${title}</span>
         </div>
         <div style="display:flex; flex-wrap:wrap; gap:6px;">${chips}</div>
         ${view.note ? `<div style="font-size:13px; color:#5C636A;">${view.note}</div>` : ''}
         ${totalSize >= LARGE_ARCHIVE_SIZE ? `
         <div style="display:flex; align-items:baseline; gap:6px; font-size:13px; color:#5C636A;">
-          <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+          ${icon('hourglass_empty', 'font-size:16px; align-self:center;')}
           <span>${totalSize === archiveSize && view.plain
               ? msg('large.plain', formatSize(archiveSize))
               : msg('large', formatSize(totalSize), formatSize(archiveSize))}</span>
@@ -509,7 +513,7 @@
       <div style="padding:12px 18px 4px; font-size:11px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:#6C757D;">${r.group}</div>`;
         }
         const notes = r.notes.length
-            ? `<div style="font-size:12px;">${r.notes.map(([level, html]) => `<span style="color:${LEVELS[level].text};">${html}</span>`).join('; ')}</div>`
+            ? `<div style="font-size:12px; color:#6C757D;">${r.notes.map(([, html]) => html).join('; ')}</div>`
             : '';
         return `
       <div style="display:grid; grid-template-columns:16px minmax(0,1fr) auto 64px; column-gap:10px; align-items:center; padding:7px 18px 7px ${r.indent ? 44 : 18}px;">
@@ -530,7 +534,7 @@
         if (!paths.length) return '';
         const chips = paths.map((p) => `
         <span style="display:inline-flex; align-items:center; gap:4px; font-size:12px; font-family:${MONO}; padding:2px 8px; border-radius:4px; background:#F1F3F5; color:#4E565F;">
-          <i class="bi bi-file-earmark-text" aria-hidden="true"></i>${escapeHtml(p)}</span>`).join('');
+          ${icon('description_outlined', 'font-size:14px;')}${escapeHtml(p)}</span>`).join('');
         return `
       <span style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
         <span style="font-size:12px; color:#5C636A;">${msg('metadata')}</span>${chips}
@@ -546,8 +550,8 @@
         return `
     <details class="precheck-contents"${open ? ' open' : ''}>
       <summary style="${bar} cursor:pointer;">
-        <span style="display:flex; align-items:center; gap:8px; font-size:14px; color:#2C6E9E;">
-          <i class="bi bi-chevron-right precheck-chevron" aria-hidden="true"></i>
+        <span style="display:flex; align-items:center; gap:8px; font-size:14px; color:#495057;">
+          ${icon('expand_more', 'font-size:20px;', 'precheck-chevron')}
           <span class="precheck-show">${msg('contents.show')} · ${view.count}</span>
           <span class="precheck-hide">${msg('contents.hide')} · ${view.count}</span>
         </span>

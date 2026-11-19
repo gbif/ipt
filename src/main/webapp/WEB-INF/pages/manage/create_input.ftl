@@ -1,9 +1,13 @@
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
 	<title><@s.text name="manage.resource.create.title"/></title>
- <#assign currentMenu = "manage"/>
+<#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl">
+<#-- field help icons as Material outlined, see macros/help_icon.ftl -->
+<#assign materialHelpIcons = true/>
+<link rel="stylesheet" href="${baseURL}/styles/overview.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
@@ -13,63 +17,28 @@
 <script src="${baseURL}/js/datapackage-precheck-render.js"></script>
 
 <style>
-    :root {
-        --radius: 8px;
-        --border-color: #ced4da;
-    }
+    /* field help icons, Material outlined (see macros/help_icon.ftl) */
+    .help-icon-m { width: 16px; height: 16px; margin: 0 4px 0 2px; vertical-align: -3px; }
 
-    /* path selector */
-    .path-select {
-        margin: 18px 0 6px;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-        overflow: hidden;
-    }
+    .cr-section { margin-bottom: 32px; }
+    .cr-sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #dee2e6; padding-bottom: 6px; margin-bottom: 14px; }
+    .cr-sec-head h2 { font-size: 1.1rem; font-weight: 500; color: #4e565f; margin: 0; }
+    .cr-sec-head > span { color: #6c757d; font-size: 0.78rem; flex: 1; }
 
-    .path-option {
-        display: flex;
-        gap: 12px;
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--border-color);
-        cursor: pointer;
-        align-items: flex-start;
-        transition: background .1s ease;
-    }
+    /* the two ways to start, side by side */
+    .cr-paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .path-option { display: flex; gap: 12px; align-items: flex-start; margin: 0; padding: 14px 16px; border: 1px solid #dee2e6; border-radius: 8px; cursor: pointer; transition: background .1s ease, border-color .1s ease; }
+    .path-option:hover { background: #f8f9fa; }
+    .path-option.selected { border-color: rgb(var(--color-gbif-primary)); background: rgba(var(--color-gbif-primary), .06); }
+    .path-option .form-check-input { margin-top: 3px; }
+    .path-option .cr-path-ic { width: 22px; height: 22px; flex: none; color: #6c757d; }
+    .path-option.selected .cr-path-ic { color: rgb(var(--color-gbif-primary)); }
+    .path-option .path-label { font-weight: 500; color: #212529; margin-bottom: 2px; }
+    .path-option .path-desc { font-size: 0.82rem; color: #6c757d; }
 
-    .path-option:last-child {
-        border-bottom: none;
-    }
-
-    .path-option:hover {
-        background: #fafaf7;
-    }
-
-    .path-option.selected {
-        background: rgba(var(--color-gbif-primary), 0.1);
-    }
-
-    .path-option .path-label {
-        font-weight: 600;
-        color: #575757;
-        margin-bottom: 2px;
-    }
-
-    .path-option .path-desc {
-        font-size: 13px;
-    }
-
-    .import-block {
-        margin-top: 22px;
-        padding: 16px;
-        background: #fafafa;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-        display: none;
-    }
-
-    .import-block.show {
-        display: block;
-    }
+    .import-block { margin-top: 16px; display: none; }
+    .import-block.show { display: block; }
+    #importNote { margin-top: 12px; }
 
     /* nothing can be changed while an archive is uploaded: the start method, link buttons (Cancel, Install) */
     #create-form.uploading .path-option,
@@ -80,27 +49,12 @@
     }
 
     /* precheck panel contents, a <details> */
-    .precheck-contents > summary {
-        list-style: none;
-    }
-
-    .precheck-contents > summary::-webkit-details-marker {
-        display: none;
-    }
-
-    .precheck-contents .precheck-chevron {
-        display: inline-block;
-        transition: transform .15s ease;
-    }
-
-    .precheck-contents[open] .precheck-chevron {
-        transform: rotate(90deg);
-    }
-
+    .precheck-contents > summary { list-style: none; }
+    .precheck-contents > summary::-webkit-details-marker { display: none; }
+    .precheck-contents .precheck-chevron { transition: transform .15s ease; transform: rotate(-90deg); }
+    .precheck-contents[open] .precheck-chevron { transform: none; }
     .precheck-contents:not([open]) .precheck-hide,
-    .precheck-contents[open] .precheck-show {
-        display: none;
-    }
+    .precheck-contents[open] .precheck-show { display: none; }
 </style>
 
 <script>
@@ -146,11 +100,12 @@
         });
 
         // Only admins can install a missing extension or data package type, so only they get links to do it
-        const precheckOptions = <#if adminRights>{
+        const precheckOptions = {
             typeLabels: typeLabels,
+            iconSprite: '${baseURL?js_string?no_esc}/images/icons/material-icons.svg'<#if adminRights>,
             extensionsUrl: '${baseURL?js_string?no_esc}/admin/extensions.do',
-            dataPackagesUrl: '${baseURL?js_string?no_esc}/admin/dataPackages.do'
-        }<#else>{ typeLabels: typeLabels }</#if>;
+            dataPackagesUrl: '${baseURL?js_string?no_esc}/admin/dataPackages.do'</#if>
+        };
 
         const datasetTypeMap = {
             "Occurrence": "occurrence",
@@ -581,67 +536,75 @@
     });
 </script>
 
-<div class="container px-0">
+<div class="container px-0 ov-alerts">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
 <form id="create-form" class="needs-validation" action="create.do" method="post" enctype="multipart/form-data" novalidate>
-    <div class="container-fluid bg-body border-bottom">
+    <div class="container-fluid border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
-            <div class="container my-3 p-3">
-                <div class="text-center fs-smaller">
-                    <@s.text name="menu.manage.short"/>
-                </div>
+            <div class="container my-3 p-3 ov-head ov-head-left">
+                <div class="ov-grow">
+                    <div class="fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="manage.resource.create.title"/></li>
+                            </ol>
+                        </nav>
+                    </div>
 
-                <div class="text-center">
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
                         <@s.text name="manage.resource.create.title"/>
                     </h1>
+                </div>
 
-                    <#if (organisations?size==0)>
-                        <div class="text-smaller text-gbif-danger">
-                            <@s.text name="manage.resource.create.forbidden"/>
-                        </div>
+                <div class="ov-acts">
+                    <#if (organisations?size>0)>
+                        <button type="submit" id="create" class="btn btn-sm btn-gbif-solid top-button" name="create" value="create"><@icon name="add"/> <@s.text name="button.create"/></button>
                     </#if>
-
-                    <div class="mt-2">
-                        <#if (organisations?size>0) >
-                            <@s.submit form="create-form" cssClass="btn btn-sm btn-outline-gbif-primary top-button" name="create" key="button.create"/>
-                        </#if>
-                        <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button">
-                            <@s.text name="button.cancel"/>
-                        </a>
-                    </div>
+                    <a href="${baseURL}/manage/" class="btn btn-sm btn-outline-secondary top-button">
+                        <@s.text name="button.cancel"/>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <main class="container main-content-container">
-        <div class="my-3 p-3">
-            <p class="pt-2"><@s.text name="manage.resource.create.intro"/></p>
+    <div class="container-fluid bg-body">
+        <main class="container main-content-container mb-md-4 pt-4">
+            <#if (organisations?size==0)>
+                <div class="ov-banner bad" role="status"><@icon name="error" class="ov-ic text-gbif-danger"/><div class="ov-grow"><@s.text name="manage.resource.create.forbidden"/></div></div>
+            </#if>
 
-            <div class="body-pad">
-                <div class="path-select" role="radiogroup" aria-label="Resource start method">
+            <section class="cr-section">
+                <div class="cr-sec-head">
+                    <h2><@s.text name="manage.resource.create.start.title"/></h2>
+                    <span><@s.text name="manage.resource.create.intro"/></span>
+                </div>
+
+                <div class="cr-paths" role="radiogroup" aria-label="<@s.text name='manage.resource.create.start.title'/>">
                     <label class="path-option selected" data-path="blank">
                         <input type="radio" class="form-check-input flex-shrink-0" name="startMethod" value="blank" checked>
-                        <div>
+                        <div class="flex-grow-1">
                             <div class="path-label"><@s.text name="manage.resource.create.option.blank"/></div>
-                            <div class="path-desc text-muted"><@s.text name="manage.resource.create.option.blank.help"/></div>
+                            <div class="path-desc"><@s.text name="manage.resource.create.option.blank.help"/></div>
                         </div>
+                        <@icon name="add" class="cr-path-ic"/>
                     </label>
 
                     <label class="path-option" data-path="archive">
                         <input type="radio" class="form-check-input flex-shrink-0" name="startMethod" value="archive">
-                        <div>
+                        <div class="flex-grow-1">
                             <div class="path-label"><@s.text name="manage.resource.create.option.archive"/></div>
-                            <div class="path-desc text-muted"><@s.text name="manage.resource.create.option.archive.help"/></div>
+                            <div class="path-desc"><@s.text name="manage.resource.create.option.archive.help"/></div>
                         </div>
+                        <@icon name="upload" class="cr-path-ic"/>
                     </label>
                 </div>
 
                 <div class="import-block" id="importBlock">
-                    <div class="file-row">
+                    <div>
                         <@s.fielderror cssClass="fielderror" fieldName="file"/>
                         <label for="file" class="form-label"><@s.text name="manage.resource.create.file"/> <span class="text-gbif-danger">*</span> </label>
                         <@s.file name="file" cssClass="form-control" key="manage.resource.create.file" />
@@ -651,7 +614,7 @@
                         <div class="fileItem">
                             <div class="fileItem-inner">
                                 <div class="fileInfo">
-                                    <div class="fileDoneIcon"><i class="bi bi-check2 text-gbif-success"></i></div>
+                                    <div class="fileDoneIcon"><@icon name="check" class="text-gbif-success"/></div>
                                     <div class="fileMeta">
                                         <div class="fileName" id="uploadFileName"></div>
                                         <div class="fileStatus" id="uploadStatus" role="status" aria-live="polite"></div>
@@ -666,37 +629,28 @@
                     </div>
 
                     <div id="precheckPanel"></div>
-                </div>
 
-                <div id="importNote" class="border rounded px-3 py-1 mt-3" style="display: none;">
-                    <div class="simpleCallout">
-                        <div class="simpleCallout-inner">
-                            <div class="simpleCalloutInfo simpleCalloutInfo-neutral">
-                                <div class="simpleCalloutIcon">
-                                    <i class="bi bi-info-circle text-gbif-primary"></i>
-                                </div>
-                                <div class="simpleCalloutMeta">
-                                    <div class="simpleCalloutMessage">
-                                        <@s.text name="manage.resource.create.import.note"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="importNote" class="ov-banner info compact" role="status" style="display: none;">
+                        <@icon name="info" class="ov-ic"/>
+                        <div class="ov-grow"><@s.text name="manage.resource.create.import.note"/></div>
                     </div>
                 </div>
+            </section>
 
-            </div>
-
-            <div class="row g-3 mt-0 mb-2">
-                <div class="col-md-6" id="shortnameField">
-                    <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" requiredField=true size=40/>
-                    <div id="shortnameFeedback" class="invalid-feedback my-1" role="alert"></div>
+            <section class="cr-section">
+                <div class="cr-sec-head">
+                    <h2><@s.text name="manage.resource.create.details.title"/></h2>
                 </div>
 
-                <div class="col-md-6" id="typeField">
-                    <div>
+                <div class="row g-3">
+                    <div class="col-md-6" id="shortnameField">
+                        <@input name="shortname" i18nkey="resource.shortname" help="i18n" errorfield="resource.shortname" requiredField=true size=40/>
+                        <div id="shortnameFeedback" class="invalid-feedback my-1" role="alert"></div>
+                    </div>
+
+                    <div class="col-md-6" id="typeField">
                         <div class="d-flex text-smaller">
-                            <@popoverPropertyInfo "manage.resource.create.coreType.help" />
+                            <@popoverPropertyInfo propertyName="manage.resource.create.coreType.help" material=true/>
                             <label for="resourceType" class="form-label px-1">
                                 <@s.text name='resource.coreType'/> <span class="text-gbif-danger">*</span>
                             </label>
@@ -719,9 +673,9 @@
                         <@s.fielderror id="field-error-resourceType" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="resourceType"/>
                     </div>
                 </div>
-            </div>
-        </div>
-    </main>
+            </section>
+        </main>
+    </div>
 </form>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
