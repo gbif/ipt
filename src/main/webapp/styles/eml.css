@@ -15,6 +15,7 @@
 #eml-other .eml-side-title { padding-left: 8px; margin-bottom: 4px; }
 .bd-toc nav.eml-side #eml-other a { display: block; padding: 2px 8px; color: #6c757d !important; text-decoration: none; line-height: 1.35; }
 .bd-toc nav.eml-side #eml-other a:hover { color: #212529 !important; }
+.bd-toc nav.eml-side #eml-other a.current { color: #212529 !important; font-weight: 600; }
 
 /* the parts "On this page" jumps to stop below the fixed navbar */
 .bd-content [data-toc] { scroll-margin-top: 80px; }
