@@ -589,17 +589,12 @@ public class GenerateDCAT {
 
     // dct:spatial
     // Uses geoJSON to represent the geospatial coverage, this can easily be verified at http://geojsonlint.com/
-    // Note, a Polygon's first and last points must be equivalent
     for (GeospatialCoverage coverage : eml.getGeospatialCoverages()) {
-      BBox bb = coverage.getBoundingCoordinates();
-      addPredicateToBuilder(datasetBuilder, "dct:spatial");
-      String spatial =
-          " a dct:Location ; locn:geometry \"" + "{ \\\"type\\\": \\\"Polygon\\\", \\\"coordinates\\\": [ [ [" + bb
-              .getMin().getLongitude() + "," + bb.getMin().getLatitude() + "], [" + bb.getMin().getLongitude() + "," + bb
-              .getMax().getLatitude() + "], [" + bb.getMax().getLongitude() + "," + bb.getMax().getLatitude() + "], [" + bb
-              .getMax().getLongitude() + "," + bb.getMin().getLatitude() + "], [" + bb.getMin().getLongitude() + "," + bb
-              .getMin().getLatitude() + "] ] ] }" + "\" ";
-      addObjectToBuilder(datasetBuilder, spatial, ObjectTypes.OBJECT);
+      String geometry = geoJsonGeometry(coverage.getBoundingCoordinates());
+      if (geometry != null) {
+        addPredicateToBuilder(datasetBuilder, "dct:spatial");
+        addObjectToBuilder(datasetBuilder, " a dct:Location ; locn:geometry \"" + geometry + "\" ", ObjectTypes.OBJECT);
+      }
     }
 
     //adms:versionInfo
@@ -659,6 +654,38 @@ public class GenerateDCAT {
 
     datasetBuilder.append(" .\n");
     return datasetBuilder.toString();
+  }
+
+  /**
+   * The GeoJSON geometry of a bounding box, with its quotes escaped for the Turtle string. A box crossing the 180th
+   * meridian (west greater than east) is cut there into a MultiPolygon, as RFC 7946 asks: a single Polygon from west
+   * to east would cover the rest of the world instead (#3320). Rings are counterclockwise, and their first and last
+   * points are the same.
+   *
+   * @return the geometry, or null when a coordinate is missing
+   */
+  protected static String geoJsonGeometry(BBox bb) {
+    if (bb == null || bb.getMin() == null || bb.getMax() == null) {
+      return null;
+    }
+    Double west = bb.getMin().getLongitude();
+    Double east = bb.getMax().getLongitude();
+    Double south = bb.getMin().getLatitude();
+    Double north = bb.getMax().getLatitude();
+    if (west == null || east == null || south == null || north == null) {
+      return null;
+    }
+    if (west > east) {
+      return "{ \\\"type\\\": \\\"MultiPolygon\\\", \\\"coordinates\\\": [ "
+          + geoJsonPolygon(west, 180d, south, north) + ", " + geoJsonPolygon(-180d, east, south, north) + " ] }";
+    }
+    return "{ \\\"type\\\": \\\"Polygon\\\", \\\"coordinates\\\": "
+        + geoJsonPolygon(west, east, south, north) + " }";
+  }
+
+  private static String geoJsonPolygon(double west, double east, double south, double north) {
+    return "[ [ [" + west + "," + south + "], [" + east + "," + south + "], [" + east + "," + north + "], ["
+        + west + "," + north + "], [" + west + "," + south + "] ] ]";
   }
 
   /**

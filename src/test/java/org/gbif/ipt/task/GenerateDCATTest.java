@@ -65,6 +65,7 @@ import org.gbif.ipt.service.manage.impl.XStreamResourcePersister;
 import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.metadata.eml.ipt.model.Agent;
+import org.gbif.metadata.eml.ipt.model.BBox;
 import org.gbif.metadata.eml.ipt.model.KeywordSet;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
@@ -88,6 +89,7 @@ import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -182,6 +184,40 @@ public class GenerateDCATTest extends IptBaseTest {
     assertTrue(dcat.contains(
         "dct:spatial [ a dct:Location ; locn:geometry \"{ \\\"type\\\": \\\"Point\\\", \\\"coordinates\\\": [ 0.0,0.0 ] }\" ]"));
     assertTrue(dcat.contains("a skos:ConceptScheme"));
+  }
+
+  // a box as stored: west and east as written, not reordered like the BBox constructors do
+  private static BBox box(Double south, Double west, Double north, Double east) {
+    BBox box = new BBox();
+    box.getMin().setLatitude(south);
+    box.getMin().setLongitude(west);
+    box.getMax().setLatitude(north);
+    box.getMax().setLongitude(east);
+    return box;
+  }
+
+  @Test
+  public void testGeometryPolygon() {
+    assertEquals(
+        "{ \\\"type\\\": \\\"Polygon\\\", \\\"coordinates\\\": "
+            + "[ [ [4.7,53.0], [5.4,53.0], [5.4,53.5], [4.7,53.5], [4.7,53.0] ] ] }",
+        GenerateDCAT.geoJsonGeometry(box(53.0, 4.7, 53.5, 5.4)));
+  }
+
+  @Test
+  public void testGeometryCrossingAntimeridian() {
+    // west 163.486, east -165.591: cut at 180 into two polygons (#3320)
+    assertEquals(
+        "{ \\\"type\\\": \\\"MultiPolygon\\\", \\\"coordinates\\\": [ "
+            + "[ [ [163.486,4.565], [180.0,4.565], [180.0,30.449], [163.486,30.449], [163.486,4.565] ] ], "
+            + "[ [ [-180.0,4.565], [-165.591,4.565], [-165.591,30.449], [-180.0,30.449], [-180.0,4.565] ] ] ] }",
+        GenerateDCAT.geoJsonGeometry(box(4.565, 163.486, 30.449, -165.591)));
+  }
+
+  @Test
+  public void testGeometryMissingCoordinate() {
+    assertNull(GenerateDCAT.geoJsonGeometry(box(53.0, null, 53.5, 5.4)));
+    assertNull(GenerateDCAT.geoJsonGeometry(null));
   }
 
   @Test
