@@ -297,6 +297,38 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
+
+          // purpose, introduction, getting started (were the Additional Description page, #3319); without the profile
+          // validator the description check above has already said validation can't be performed
+          if (emlProfileValidator != null) {
+            validateDocBook(eml.getPurpose(), Eml::setPurpose, "eml.purpose", ec, i18n);
+            validateDocBook(eml.getGettingStarted(), Eml::setGettingStarted, "manage.metadata.gettingStarted", ec, i18n);
+            validateDocBook(eml.getIntroduction(), Eml::setIntroduction, "manage.metadata.introduction", ec, i18n);
+          }
+
+          // the keyword sets (were the Keywords page, #3319)
+          // at least one field has to have had data entered into it to qualify for validation
+          if (!isKeywordsPageEmpty(eml)) {
+            int index = 0;
+            for (KeywordSet ks : eml.getKeywords()) {
+              if (!exists(ks.getKeywordsString())) {
+                ec.addFieldError(
+                    "eml.keywords[" + index + "].keywordsString",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.keywords.keywordsString")));
+              }
+              if (!exists(ks.getKeywordThesaurus())) {
+                ec.addFieldError(
+                    "eml.keywords[" + index + "].keywordThesaurus",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.keywords.keywordThesaurus")));
+              }
+              index++;
+            }
+          }
+
           break;
 
         case CONTACTS_SECTION:
@@ -520,40 +552,6 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
-          break;
-
-        case ADDITIONAL_DESCRIPTION_SECTION:
-          if (emlProfileValidator == null) {
-            ec.addActionError(i18n.getText("validation.cannnot.be.performed"));
-          } else {
-            validateDocBook(eml.getPurpose(), Eml::setPurpose, "eml.purpose", ec, i18n);
-            validateDocBook(eml.getGettingStarted(), Eml::setGettingStarted, "manage.metadata.gettingStarted", ec, i18n);
-            validateDocBook(eml.getIntroduction(), Eml::setIntroduction, "manage.metadata.introduction", ec, i18n);
-          }
-          break;
-
-        case KEYWORDS_SECTION:
-          // at least one field has to have had data entered into it to qualify for validation
-          if (!isKeywordsPageEmpty(eml)) {
-            int index = 0;
-            for (KeywordSet ks : eml.getKeywords()) {
-              if (!exists(ks.getKeywordsString())) {
-                ec.addFieldError(
-                    "eml.keywords[" + index + "].keywordsString",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.keywords.keywordsString")));
-              }
-              if (!exists(ks.getKeywordThesaurus())) {
-                ec.addFieldError(
-                    "eml.keywords[" + index + "].keywordThesaurus",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.keywords.keywordThesaurus")));
-              }
-              index++;
-            }
-          }
           break;
 
         case PROJECT_SECTION:

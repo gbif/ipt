@@ -400,6 +400,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
 
         if (isHttpPost()) {
           resource.getEml().setIntellectualRights(null);
+          // the keyword sets (were the Keywords page, #3319)
+          resource.getEml().getKeywords().clear();
         }
         break;
 
@@ -431,12 +433,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
       case TEMPORAL_COVERAGE_SECTION:
         if (isHttpPost()) {
           resource.getEml().getTemporalCoverages().clear();
-        }
-        break;
-
-      case KEYWORDS_SECTION:
-        if (isHttpPost()) {
-          resource.getEml().getKeywords().clear();
         }
         break;
 
@@ -617,12 +613,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           next = MetadataSection.TEMPORAL_COVERAGE_SECTION;
           break;
         case TEMPORAL_COVERAGE_SECTION:
-          next = MetadataSection.ADDITIONAL_DESCRIPTION_SECTION;
-          break;
-        case ADDITIONAL_DESCRIPTION_SECTION:
-          next = MetadataSection.KEYWORDS_SECTION;
-          break;
-        case KEYWORDS_SECTION:
           next = MetadataSection.PROJECT_SECTION;
           break;
         case PROJECT_SECTION:

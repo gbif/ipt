@@ -553,14 +553,24 @@ $(document).ready(function(){
         });
 
 	    <#switch "${section}">
-			<#case "basic">
-                $("#item-" + index + " textarea").attr("id",function() {
-                    return "eml.description[" + index + "]";
-                });
-                $("#item-" + index + " textarea").attr("name",function() {
-                    return $(this).attr("id");
-                });
-			<#break>
+            <#case "basic">
+                // the keyword sets (were the Keywords page, #3319)
+                $("#item-"+index+" input").attr("id",function() {
+                    var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+                    return "eml.keywords["+index+"]."+parts[n]; });
+                $("#item-"+index+" textarea").attr("id",function() {
+                    var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+                    return "eml.keywords["+index+"]."+parts[n]; });
+                $("#item-"+index+" select").attr("id",function() {
+                    var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
+                    return "eml.keywords["+index+"]."+parts[n]; });
+                $("#item-"+index+" label").attr("for",function() {
+                    var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
+                    return "eml.keywords["+index+"]."+parts[n]; });
+                $("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
+                $("#item-"+index+" textarea").attr("name",function() {return $(this).attr("id"); });
+                $("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
+            <#break>
 
             <#case "methods">
                 $("#item-"+index+" textarea").attr("id", "eml.methodSteps["+index+"]");
@@ -628,23 +638,6 @@ $(document).ready(function(){
             <#break>
 
 
-            <#case "keywords">
-                $("#item-"+index+" input").attr("id",function() {
-                    var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-                    return "eml.keywords["+index+"]."+parts[n]; });
-                $("#item-"+index+" textarea").attr("id",function() {
-                    var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-                    return "eml.keywords["+index+"]."+parts[n]; });
-                $("#item-"+index+" select").attr("id",function() {
-                    var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-                    return "eml.keywords["+index+"]."+parts[n]; });
-                $("#item-"+index+" label").attr("for",function() {
-                    var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
-                    return "eml.keywords["+index+"]."+parts[n]; });
-                $("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
-                $("#item-"+index+" textarea").attr("name",function() {return $(this).attr("id"); });
-                $("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
-            <#break>
 
             <#case "additional">
                 $("#item-"+index+" input").attr("id",function() {

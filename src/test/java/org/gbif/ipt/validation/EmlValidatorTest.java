@@ -475,21 +475,21 @@ public class EmlValidatorTest extends IptBaseTest {
   @Test
   public void testKeywordsPart() {
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.KEYWORDS_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test
   public void testKeywordsPartThesaurusIncomplete() {
     // invalid
     eml.getKeywords().get(0).setKeywordThesaurus(null);
-    assertFalse(validator.isValid(resource, MetadataSection.KEYWORDS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test
   public void testKeywordsPartKeywordListIncomplete() {
     // invalid
     eml.getKeywords().get(0).setKeywords(new ArrayList<>());
-    assertFalse(validator.isValid(resource, MetadataSection.KEYWORDS_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test
@@ -769,11 +769,11 @@ public class EmlValidatorTest extends IptBaseTest {
   @Test
   public void testDocBookPurposeIsValidated() {
     eml.setPurpose("<para>Purpose</para>");
-    assertTrue(validator.isValid(resource, MetadataSection.ADDITIONAL_DESCRIPTION_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.BASIC_SECTION));
 
     // a section needs at least one paragraph
     eml.setPurpose("<section><title>Title</title></section>");
-    assertFalse(validator.isValid(resource, MetadataSection.ADDITIONAL_DESCRIPTION_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.BASIC_SECTION));
   }
 
   @Test

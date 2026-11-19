@@ -25,12 +25,10 @@ public enum MetadataSection {
   GEOGRAPHIC_COVERAGE_SECTION ("geocoverage"),
   TAXANOMIC_COVERAGE_SECTION ("taxcoverage"),
   TEMPORAL_COVERAGE_SECTION ("tempcoverage"),
-  ADDITIONAL_DESCRIPTION_SECTION("additionalDescription"),
   PROJECT_SECTION ("project"),
   METHODS_SECTION ("methods"),
   CITATIONS_SECTION ("citations"),
   COLLECTIONS_SECTION ("collections"),
-  KEYWORDS_SECTION ("keywords"),
   ADDITIONAL_SECTION ("additional");
 
   /**

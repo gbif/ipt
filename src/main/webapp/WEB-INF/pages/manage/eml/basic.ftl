@@ -211,6 +211,47 @@
                 theme: 'bootstrap4'
             });
 
+            // reordering the keyword sets (were the Keywords page, #3319)
+            function initAndGetSortable(selector) {
+                return sortable(selector, {
+                    forcePlaceholderSize: true,
+                    placeholderClass: 'border',
+                    handle: '.handle'
+                });
+            }
+
+            const sortable_keywords = initAndGetSortable('#items');
+
+            sortable_keywords[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
+            sortable_keywords[0].addEventListener('drag', dragScroll);
+
+            function dragScroll(e) {
+                var cursor = e.pageY;
+                var parentWindow = parent.window;
+                var pixelsToTop = $(parentWindow).scrollTop();
+                var screenHeight = $(parentWindow).height();
+
+                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
+                    parentWindow.scrollBy(0, (screenHeight / 30));
+                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
+                    parentWindow.scrollBy(0, -(screenHeight / 30));
+                }
+            }
+
+            function changeInputNamesAfterDragging(e) {
+                displayProcessing();
+                var contactItems = $("#items div.item");
+
+                contactItems.each(function (index) {
+                    var elementId = $(this)[0].id;
+
+                    $("div#" + elementId + " input[id$='keywordThesaurus']").attr("name", "eml.keywords[" + index + "].keywordThesaurus");
+                    $("div#" + elementId + " textarea[id$='keywordsString']").attr("name", "eml.keywords[" + index + "].keywordsString");
+                });
+
+                hideProcessing();
+            }
+
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
@@ -369,6 +410,112 @@
 
                         <div class="mt-3">
                             <@docBookEditor name="eml.description" id="description" value=eml.description! label=action.getText("eml.description") translatable=true translationHint=action.getText("manage.metadata.translations.hint.description")/>
+                        </div>
+                    </div>
+
+                    <!-- Purpose, Introduction, Getting Started (were the Additional Description page, #3319) -->
+                    <div class="my-3 p-3" id="s-purpose" data-toc="${action.getText('eml.purpose')}">
+                        <@textinline name="eml.purpose" help="i18n"/>
+
+                        <div>
+                            <p class="mb-3 mt-3 text-smaller fst-italic">
+                                <@s.text name='eml.purpose.description'/>
+                            </p>
+                        </div>
+
+                        <div class="mt-3">
+                            <@docBookEditor name="eml.purpose" id="purpose" value=eml.purpose! label=action.getText("eml.purpose")/>
+                        </div>
+                    </div>
+
+                    <!-- Introduction -->
+                    <div class="my-3 p-3" id="s-introduction" data-toc="${action.getText('manage.metadata.introduction')}">
+                        <@textinline name="manage.metadata.introduction" help="i18n"/>
+
+                        <div>
+                            <p class="mb-3 mt-3 text-smaller fst-italic">
+                                <@s.text name='manage.metadata.introduction.description'/>
+                            </p>
+                        </div>
+
+                        <div class="mt-3">
+                            <@docBookEditor name="eml.introduction" id="introduction" value=eml.introduction! label=action.getText("manage.metadata.introduction")/>
+                        </div>
+                    </div>
+
+                    <!-- Getting Started -->
+                    <div class="my-3 p-3" id="s-getting-started" data-toc="${action.getText('manage.metadata.gettingStarted')}">
+                        <@textinline name="manage.metadata.gettingStarted" help="i18n"/>
+
+                        <div>
+                            <p class="mb-3 mt-3 text-smaller fst-italic">
+                                <@s.text name='manage.metadata.gettingStarted.description'/>
+                            </p>
+                        </div>
+
+                        <div class="mt-3">
+                            <@docBookEditor name="eml.gettingStarted" id="gettingStarted" value=eml.gettingStarted! label=action.getText("manage.metadata.gettingStarted")/>
+                        </div>
+                    </div>
+
+                    <!-- Keywords (were a page of their own, #3319) -->
+                    <div class="my-3 p-3" id="s-keywords" data-toc="${action.getText('manage.metadata.keywords.title')}">
+                        <@textinline name="manage.metadata.keywords.title"/>
+
+                        <p class="mb-0 mt-2">
+                            <@s.text name='manage.metadata.keywords.intro'/>
+                        </p>
+
+                        <div id="items">
+                            <#list eml.keywords as item>
+                                <div id="item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
+                                    <div class="handle d-flex justify-content-end mt-2">
+                                        <a id="removeLink-${item_index}" class="removeLink metadata-action-link custom-link" href="">
+                                            <span>
+                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                                </svg>
+                                            </span>
+                                            <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></span>
+                                        </a>
+                                    </div>
+                                    <@input name="eml.keywords[${item_index}].keywordThesaurus" value=(item.keywordThesaurus)! i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true />
+                                    <#-- work around for a bug that converts empty keywordsList into string "null". In this case, nothing should appear in text box -->
+                                    <#-- TODO: remove check for "null" after fixing problem in gbif-metadata-profile -->
+                                    <#assign keywordList = item.keywordsString />
+                                    <#if keywordList?has_content && keywordList?lower_case == "null">
+                                        <@text value="" name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
+                                    <#else>
+                                        <@text name="eml.keywords[${item_index}].keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true minlength=2 />
+                                    </#if>
+                                </div>
+                            </#list>
+                        </div>
+
+                        <div class="addNew col-12 mt-2">
+                            <a id="plus" href="" class="metadata-action-link custom-link">
+                                <span>
+                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                    </svg>
+                                </span>
+                                <span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.keywords.item'/></span>
+                            </a>
+                        </div>
+
+                        <div id="baseItem" class="item row g-3 border-bottom pb-3 mt-1" style="display:none;">
+                            <div class="handle d-flex justify-content-end mt-2">
+                                <a id="removeLink" class="removeLink metadata-action-link custom-link" href="">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
+                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
+                                        </svg>
+                                    </span>
+                                    <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.keywords.item'/></span>
+                                </a>
+                            </div>
+                            <@input name="keywordThesaurus" i18nkey="eml.keywords.keywordThesaurus" help="i18n" requiredField=true/>
+                            <@text name="keywordsString" i18nkey="eml.keywords.keywordsString" help="i18n" requiredField=true/>
                         </div>
                     </div>
 
