@@ -4,10 +4,13 @@ $(document).ready(function(){
     var personnelItemsCount = -1;
     var collectionItemsCount = -1;
     var specimenPreservationMethodItemsCount = -1;
+    // other data formats on the citations page (#3319)
+    var physicalDataItemsCount = -1;
 
     calcIndexOfLastItem();
     calcNumberOfCollectionItems();
     calcNumberOfSpecimenPreservationMethodItems();
+    calcNumberOfPhysicalDataItems();
 
     function calcIndexOfLastItem() {
         var lastItem = $("#items .item:last-child").attr("id");
@@ -31,6 +34,14 @@ $(document).ready(function(){
             specimenPreservationMethodItemsCount = parseInt(lastItem.split("-")[2]);
         else
             specimenPreservationMethodItemsCount = -1;
+    }
+
+    function calcNumberOfPhysicalDataItems() {
+        var lastItem = $("#physicalData-items .item:last-child").attr("id");
+        if (lastItem !== undefined)
+            physicalDataItemsCount = parseInt(lastItem.split("-")[2]);
+        else
+            physicalDataItemsCount = -1;
     }
 
     let $inferTaxCoverageAutomaticallyCheckbox = $("#resource\\.inferTaxonomicCoverageAutomatically");
@@ -130,6 +141,15 @@ $(document).ready(function(){
 
     $(".removeLink").click(function(event) {
         removeItem(event);
+    });
+
+    $("#plus-physicalData").click(function (event) {
+        event.preventDefault();
+        addNewPhysicalDataItem(true);
+    });
+
+    $(".removePhysicalDataLink").click(function (event) {
+        removePhysicalDataItem(event);
     });
 
     $(".removeAwardlLink").click(function (event) {
@@ -373,6 +393,51 @@ $(document).ready(function(){
         });
     }
 
+    function addNewPhysicalDataItem(effects) {
+        var newItem = $('#baseItem-physicalData').clone();
+        if (effects) newItem.hide();
+        newItem.appendTo('#physicalData-items');
+
+        if (effects) {
+            newItem.slideDown('slow');
+        }
+
+        setPhysicalDataItemIndex(newItem, ++physicalDataItemsCount);
+
+        initInfoPopovers(newItem[0]);
+    }
+
+    function removePhysicalDataItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        $('#physicalData-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+            $(this).remove();
+            $("#physicalData-items .item").each(function (index) {
+                setPhysicalDataItemIndex($(this), index);
+            });
+            calcNumberOfPhysicalDataItems();
+        });
+    }
+
+    // fields are named eml.physicalData[index].<field>; the template's are named <field>
+    function setPhysicalDataItemIndex(item, index) {
+        item.attr("id", "physicalData-item-" + index);
+        item.find("[id^='physicalData-removeLink']").attr("id", "physicalData-removeLink-" + index)
+            .off("click").click(function (event) {
+                removePhysicalDataItem(event);
+            });
+        var field = function (value) {
+            var parts = value.split(".");
+            return "eml.physicalData[" + index + "]." + parts[parts.length - 1];
+        };
+        item.find("input").attr("id", function () { return field($(this).attr("id")); })
+            .attr("name", function () { return $(this).attr("id"); });
+        item.find("label[for]").attr("for", function () { return field($(this).attr("for")); });
+    }
+
     function removeCollectionItem(event) {
         event.preventDefault();
         var $target = $(event.target);
@@ -562,19 +627,6 @@ $(document).ready(function(){
                 }
             <#break>
 
-            <#case "physical">
-                $("#item-"+index+" input").attr("id",function() {
-                    var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-                    return "eml.physicalData["+index+"]."+parts[n]; });
-                $("#item-"+index+" select").attr("id",function() {
-                    var parts=$(this).attr("id").split(".");var n=parseInt(parts.length)-1;
-                    return "eml.physicalData["+index+"]."+parts[n]; });
-                $("#item-"+index+" label").attr("for",function() {
-                    var parts=$(this).attr("for").split(".");var n=parseInt(parts.length)-1;
-                    return "eml.physicalData["+index+"]."+parts[n]; });
-                $("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
-                $("#item-"+index+" select").attr("name",function() {return $(this).attr("id"); });
-            <#break>
 
             <#case "keywords">
                 $("#item-"+index+" input").attr("id",function() {

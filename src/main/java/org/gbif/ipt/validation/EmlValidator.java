@@ -330,9 +330,7 @@ public class EmlValidator extends BaseValidator {
             ec.addActionError(i18n.getText("validation.lastname.organisation.position"));
           }
 
-          break;
-
-        case ACKNOWLEDGEMENTS_SECTION:
+          // the acknowledgements (were a page of their own, #3319)
           if (emlProfileValidator == null) {
             ec.addActionError(i18n.getText("validation.cannnot.be.performed"));
           } else {
@@ -788,6 +786,75 @@ public class EmlValidator extends BaseValidator {
               index++;
             }
           }
+
+          // the resource homepage and the other data formats (were the External links page, #3319)
+          // at least one field has to have had data entered into it to qualify for validation
+          if (!isPhysicalPageEmpty(eml)) {
+            // null or empty URLs bypass validation
+            if (StringUtils.isNotBlank(eml.getDistributionUrl())) {
+              // retrieve a formatted homepage URL including scheme component
+              String formattedUrl = formatURL(eml.getDistributionUrl());
+              if (!isWellFormedURI(formattedUrl)) {
+                ec.addFieldError(
+                    "eml.distributionUrl",
+                    i18n.getText(
+                        "validation.invalid",
+                        i18n.getText("eml.distributionUrl")));
+              } else {
+                eml.setDistributionUrl(formattedUrl);
+              }
+            }
+
+            // character set, download URL, and data format are required
+            int index = 0;
+            for (PhysicalData pd : eml.getPhysicalData()) {
+              // name required
+              if (!exists(pd.getName())) {
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].name",
+                    i18n.getText("validation.required", i18n.getText("eml.physicalData.name")));
+              }
+              // character set required
+              if (!exists(pd.getCharset())) {
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].charset",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.physicalData.charset")));
+              }
+              // download URL required
+              if (!exists(pd.getDistributionUrl())) {
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].distributionUrl",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.physicalData.distributionUrl")));
+              }
+              // data format required
+              if (!exists(pd.getFormat())) {
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].format",
+                    i18n.getText(
+                        "validation.required",
+                        i18n.getText("eml.physicalData.format")));
+              }
+
+              // data format version is optional - so skip
+
+            /* Validate distribution URL form each Physical data */
+              String formattedDistributionUrl = formatURL(pd.getDistributionUrl());
+              if (!isWellFormedURI(formattedDistributionUrl)) {
+                ec.addFieldError(
+                    "eml.physicalData[" + index + "].distributionUrl",
+                    i18n.getText(
+                        "validation.invalid",
+                        i18n.getText("eml.physicalData.distributionUrl")));
+              } else {
+                pd.setDistributionUrl(formattedDistributionUrl);
+              }
+              index++;
+            }
+          }
           break;
 
         case COLLECTIONS_SECTION:
@@ -867,76 +934,6 @@ public class EmlValidator extends BaseValidator {
                       i18n.getText(
                           "validation.required",
                           i18n.getText("eml.jgtiCuratorialUnits.unitType")));
-              }
-              index++;
-            }
-          }
-          break;
-
-        case PHYSICAL_SECTION:
-          // at least one field has to have had data entered into it to qualify for validation
-          if (!isPhysicalPageEmpty(eml)) {
-            // null or empty URLs bypass validation
-            if (StringUtils.isNotBlank(eml.getDistributionUrl())) {
-              // retrieve a formatted homepage URL including scheme component
-              String formattedUrl = formatURL(eml.getDistributionUrl());
-              if (!isWellFormedURI(formattedUrl)) {
-                ec.addFieldError(
-                    "eml.distributionUrl",
-                    i18n.getText(
-                        "validation.invalid",
-                        i18n.getText("eml.distributionUrl")));
-              } else {
-                eml.setDistributionUrl(formattedUrl);
-              }
-            }
-
-            // character set, download URL, and data format are required
-            int index = 0;
-            for (PhysicalData pd : eml.getPhysicalData()) {
-              // name required
-              if (!exists(pd.getName())) {
-                ec.addFieldError(
-                    "eml.physicalData[" + index + "].name",
-                    i18n.getText("validation.required", i18n.getText("eml.physicalData.name")));
-              }
-              // character set required
-              if (!exists(pd.getCharset())) {
-                ec.addFieldError(
-                    "eml.physicalData[" + index + "].charset",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.physicalData.charset")));
-              }
-              // download URL required
-              if (!exists(pd.getDistributionUrl())) {
-                ec.addFieldError(
-                    "eml.physicalData[" + index + "].distributionUrl",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.physicalData.distributionUrl")));
-              }
-              // data format required
-              if (!exists(pd.getFormat())) {
-                ec.addFieldError(
-                    "eml.physicalData[" + index + "].format",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.physicalData.format")));
-              }
-
-              // data format version is optional - so skip
-
-            /* Validate distribution URL form each Physical data */
-              String formattedDistributionUrl = formatURL(pd.getDistributionUrl());
-              if (!isWellFormedURI(formattedDistributionUrl)) {
-                ec.addFieldError(
-                    "eml.physicalData[" + index + "].distributionUrl",
-                    i18n.getText(
-                        "validation.invalid",
-                        i18n.getText("eml.physicalData.distributionUrl")));
-              } else {
-                pd.setDistributionUrl(formattedDistributionUrl);
               }
               index++;
             }

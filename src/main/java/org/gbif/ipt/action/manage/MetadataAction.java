@@ -458,6 +458,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
       case CITATIONS_SECTION:
         if (isHttpPost()) {
           resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
+          // the other data formats (were the External links page, #3319)
+          resource.getEml().getPhysicalData().clear();
         }
         doiReservedOrAssigned = hasDoiReservedOrAssigned(resource);
         if (doiReservedOrAssigned && !isHttpPost()) {
@@ -476,12 +478,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           resource.getEml().getCollections().clear();
           resource.getEml().getSpecimenPreservationMethods().clear();
           resource.getEml().getJgtiCuratorialUnits().clear();
-        }
-        break;
-
-      case PHYSICAL_SECTION:
-        if (isHttpPost()) {
-          resource.getEml().getPhysicalData().clear();
         }
         break;
 
@@ -612,9 +608,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           next = MetadataSection.CONTACTS_SECTION;
           break;
         case CONTACTS_SECTION:
-          next = MetadataSection.ACKNOWLEDGEMENTS_SECTION;
-          break;
-        case ACKNOWLEDGEMENTS_SECTION:
           next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
           break;
         case GEOGRAPHIC_COVERAGE_SECTION:
@@ -642,9 +635,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           next = MetadataSection.COLLECTIONS_SECTION;
           break;
         case COLLECTIONS_SECTION:
-          next = MetadataSection.PHYSICAL_SECTION;
-          break;
-        case PHYSICAL_SECTION:
           next = MetadataSection.ADDITIONAL_SECTION;
           break;
         case ADDITIONAL_SECTION:

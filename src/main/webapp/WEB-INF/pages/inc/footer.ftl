@@ -75,6 +75,11 @@
                 markUnsaved();
             });
 
+            // adding or removing an item of a list (macros/metadata.ftl links: ids plus*, classes remove*)
+            $(form).on('click', 'a[id^="plus"], a[class*="remove"]', function () {
+                markUnsaved();
+            });
+
             // dropdowns (select2)
             $(document).on('select2:select select2:unselect change', 'select', function () {
                 if ($(this).data('select2')) {

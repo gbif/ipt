@@ -674,49 +674,49 @@ public class EmlValidatorTest extends IptBaseTest {
   @Test
   public void testPhysicalPart() {
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testPhysicalPartDistributionUrlInvalid() {
     // invalid
     eml.getPhysicalData().get(0).setDistributionUrl("[hppt]");
-    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testPhysicalPartNameIncomplete() {
     // invalid
     eml.getPhysicalData().get(0).setName(null);
-    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testPhysicalCharSetIncomplete() {
     // invalid
     eml.getPhysicalData().get(0).setCharset(null);
-    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testPhysicalDistributionIncomplete() {
     // invalid
     eml.getPhysicalData().get(0).setDistributionUrl(null);
-    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testPhysicalFormatIncomplete() {
     // invalid
     eml.getPhysicalData().get(0).setFormat(null);
-    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testPhysicalResourceHomepageInvalid() {
     // invalid
     eml.setDistributionUrl("[]");
-    assertFalse(validator.isValid(resource, MetadataSection.PHYSICAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test

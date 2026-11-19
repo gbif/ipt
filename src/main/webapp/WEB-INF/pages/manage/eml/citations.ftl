@@ -101,6 +101,18 @@
                 hideProcessing();
             }
 
+            // other data formats (were the External links page): reordering renumbers their fields
+            const sortable_physical_data = initAndGetSortable('#physicalData-items');
+            sortable_physical_data[0].addEventListener('sortupdate', function () {
+                $("#physicalData-items div.item").each(function (index) {
+                    var elementId = $(this)[0].id;
+                    ["name", "charset", "distributionUrl", "format", "formatVersion"].forEach(function (field) {
+                        $("div#" + elementId + " input[id$='" + field + "']").attr("name", "eml.physicalData[" + index + "]." + field);
+                    });
+                });
+            });
+            sortable_physical_data[0].addEventListener('drag', dragScroll);
+
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
@@ -235,6 +247,89 @@
                                 </div>
                                 <@text name="citation" help="i18n" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.citation"  value="" size=40 requiredField=true />
                                 <@input name="identifier" help="i18n" i18nkey="eml.bibliographicCitationSet.bibliographicCitations.identifier" />
+                            </div>
+                        </div>
+
+                        <#-- were the External links page (#3319); the list's ids are
+                             prefixed physicalData-, so they don't clash with the bibliography's (macros/metadata.ftl) -->
+                        <div class="my-md-3 p-3" id="s-physical" data-toc="${action.getText('eml.distributionUrl')}">
+                            <p class="mb-0">
+                                <@s.text name='manage.metadata.physical.intro'/>
+                            </p>
+
+                            <div class="mt-2">
+                                <@input name="eml.distributionUrl" value=eml.distributionUrl! i18nkey="eml.distributionUrl" type="url" />
+                            </div>
+                        </div>
+
+                        <div class="my-md-3 p-3" id="s-other-formats" data-toc="${action.getText('eml.physicalData.other')}">
+                            <div class="listBlock">
+                                <@textinline name="eml.physicalData.other" help="i18n"/>
+
+                                <div id="physicalData-items">
+                                    <#list eml.physicalData as item>
+                                        <div id="physicalData-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
+                                            <div class="handle mt-2 d-flex justify-content-end">
+                                                <a id="physicalData-removeLink-${item_index}" class="removePhysicalDataLink metadata-action-link custom-link" href="">
+                                                    <span>
+                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                                                    </span>
+                                                    <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></span>
+                                                </a>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="eml.physicalData[${item_index}].name" value=item.name! i18nkey="eml.physicalData.name" requiredField=true />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="eml.physicalData[${item_index}].charset" value=item.charset! i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
+                                            </div>
+                                            <div class="fullcolumn">
+                                                <@input name="eml.physicalData[${item_index}].distributionUrl" value=item.distributionUrl! i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true type="url" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="eml.physicalData[${item_index}].format" value=item.format! i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <@input name="eml.physicalData[${item_index}].formatVersion" value=item.formatVersion! i18nkey="eml.physicalData.formatVersion" help="i18n"/>
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </div>
+
+                                <div class="addNew col-12 mt-2">
+                                    <a id="plus-physicalData" href="" class="metadata-action-link custom-link">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                            </svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div id="baseItem-physicalData" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
+                                <div class="handle mt-2 d-flex justify-content-end">
+                                    <a id="physicalData-removeLink" class="removePhysicalDataLink metadata-action-link custom-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.physical.item'/></span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-6">
+                                    <@input name="name" i18nkey="eml.physicalData.name" requiredField=true />
+                                </div>
+                                <div class="col-lg-6">
+                                    <@input name="charset" i18nkey="eml.physicalData.charset" help="i18n" requiredField=true />
+                                </div>
+                                <@input name="distributionUrl" i18nkey="eml.physicalData.distributionUrl" help="i18n" requiredField=true />
+                                <div class="col-lg-6">
+                                    <@input name="format" i18nkey="eml.physicalData.format" help="i18n" requiredField=true />
+                                </div>
+                                <div class="col-lg-6">
+                                    <@input name="formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
+                                </div>
                             </div>
                         </div>
                     </div>

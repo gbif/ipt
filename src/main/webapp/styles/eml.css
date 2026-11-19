@@ -1,6 +1,10 @@
 /* EML metadata pages (manage/eml/*.ftl): left column and save bar. The heading is overview.css's .ov-head-left. */
 
 /* left column: "On this page", then "Other metadata pages" (eml_sidebar.ftl, js/eml-sidebar.js) */
+/* as tall as its links, not the viewport (main.css), so it isn't pushed up under the navbar at the end of the page */
+@media (min-width: 768px) {
+    .bd-toc:has(> nav.eml-side) { height: auto; max-height: calc(100vh - 7rem); align-self: start; }
+}
 .bd-toc nav.eml-side { font-size: 0.8125rem; }
 .eml-side ul { padding-left: 0; margin: 0; list-style: none; }
 .eml-side-title { font-weight: 600; color: #4e565f; margin-bottom: 8px; font-size: 0.8125rem; }
