@@ -957,6 +957,87 @@
             }
         });
 
+        // The file uploads in flight (#3264). While they run, closing the dialog (Cancel, the close button, Esc or a
+        // click outside) doesn't close it: it asks whether to stop the upload, so a slip doesn't lose a long upload.
+        // A file the server already has (iptSent) is being processed there, which the browser can't stop: it is still
+        // added, so the dialog says so rather than pretending it was cancelled.
+        var activeUploads = [];
+        var uploadsCancelled = false;
+
+        function runningUploads() {
+            return activeUploads.filter(function (xhr) {
+                return xhr.readyState !== XMLHttpRequest.DONE;
+            });
+        }
+
+        var sourceDialogFooter = $("#source-data-modal .modal-footer");
+
+        function showStopPrompt(withProcessing) {
+            $("#upload-stop-processing").prop("hidden", !withProcessing);
+            sourceDialogFooter.children().not("#upload-stop-prompt").addClass("d-none");
+            $("#upload-stop-prompt").css("display", "flex");
+            $("#upload-keep").trigger("focus");
+        }
+
+        function hideStopPrompt() {
+            $("#upload-stop-prompt").hide();
+            sourceDialogFooter.children().not("#upload-stop-prompt").removeClass("d-none");
+        }
+
+        // asks to stop the upload, or, once every file is on the server, says that processing can't be stopped;
+        // returns whether there was anything left to stop
+        function askToStopUploads() {
+            var running = runningUploads();
+            var sending = running.filter(function (xhr) {
+                return !xhr.iptSent;
+            });
+            if (sending.length === 0) {
+                // everything is on the server: nothing to stop, the dialog closes itself when processing is done
+                hideStopPrompt();
+                $("#upload-processing-note").prop("hidden", false);
+                return false;
+            }
+            showStopPrompt(sending.length < running.length);
+            return true;
+        }
+
+        $("#source-data-modal").on("hide.bs.modal", function (e) {
+            if (runningUploads().length === 0 || uploadsCancelled) {
+                return;
+            }
+            // only processing left and the note already said so: the dialog closes, the requests go on, and the page
+            // reloads with the "Source created" message when they are done
+            var processingNote = document.getElementById("upload-processing-note");
+            var sending = runningUploads().filter(function (xhr) {
+                return !xhr.iptSent;
+            });
+            if (sending.length === 0 && !processingNote.hidden) {
+                return;
+            }
+            e.preventDefault();
+            askToStopUploads();
+        });
+
+        $("#upload-keep").on("click", hideStopPrompt);
+
+        $("#upload-stop").on("click", function () {
+            // the last file may have reached the server while the question was open
+            if (!askToStopUploads()) {
+                return;
+            }
+            uploadsCancelled = true;
+            runningUploads().forEach(function (xhr) {
+                if (!xhr.iptSent) {
+                    xhr.abort();
+                }
+            });
+            sessionStorage.removeItem("uploadStatus");
+            sessionStorage.removeItem("uploadedFiles");
+            sessionStorage.removeItem("uploadWarnings");
+            // shows the files that were already added, and opens a fresh dialog next time
+            window.location.reload();
+        });
+
         $("#sendButton").on("click", async function () {
             $(this).addClass("clicked");
             $(this).hide();
@@ -995,6 +1076,10 @@
                 closeModal();
                 window.location.reload();
             } catch (error) {
+                if (uploadsCancelled) {
+                    // the dialog was closed, and the page is reloading
+                    return;
+                }
                 sessionStorage.setItem("uploadStatus", "fail");
                 console.log(error);
             }
@@ -1175,6 +1260,7 @@
                 formData.append("file", file);
 
                 var xhr = new XMLHttpRequest();
+                activeUploads.push(xhr);
                 xhr.open("POST", "addsource.do", true);
                 xhr.setRequestHeader(IPT_CSRF.header, IPT_CSRF.token());
                 // an expired session then gets a 401 instead of the login page, which would look like success
@@ -1253,6 +1339,19 @@
                 xhr.onerror = function () {
                     console.error("An error occurred during the request:", xhr.status, xhr.statusText);
                     reject(new Error("An error occurred during the request: " + xhr.status + " " + xhr.statusText));
+                };
+
+                xhr.onabort = function () {
+                    reject(new Error("Upload cancelled"));
+                };
+
+                // all of the file is on the server, which now processes it: aborting can't stop that any more
+                xhr.upload.onload = function () {
+                    xhr.iptSent = true;
+                    // an open "Stop the upload?" question becomes the processing note once nothing is left to stop
+                    if ($("#upload-stop-prompt").is(":visible")) {
+                        askToStopUploads();
+                    }
                 };
 
                 xhr.upload.onprogress = function (event) {
@@ -2027,6 +2126,10 @@
 
                 <input id="fileInput" type="file" multiple style="display: none;" />
                 <div id="fileList"></div>
+                <#-- shown when the dialog is closed while the server processes the uploaded files, which can't be stopped (#3264) -->
+                <div aria-live="polite">
+                    <p id="upload-processing-note" class="fs-smaller text-discreet mt-2 mb-0" hidden><@s.text name="manage.overview.source.upload.processing"/></p>
+                </div>
 
                 <ul id="field-error-file" class="invalid-feedback list-unstyled field-error my-1">
                     <li class="text-start">
@@ -2081,6 +2184,17 @@
             <@dialogCancel/>
             <a id="sendButton" href="#" class="btn btn-sm btn-gbif-solid" style="display: none;"><@s.text name="button.upload"/></a>
             <input type="submit" form="addSourceForm" value="<@s.text name='button.add'/>" id="add" name="add" class="btn btn-sm btn-gbif-solid" style="display: none;">
+            <#-- replaces the buttons above when the dialog is closed during an upload (#3264) -->
+            <div id="upload-stop-prompt" class="w-100 align-items-center gap-2" style="display: none;">
+                <#-- read out with the focused "Keep uploading" button -->
+                <span id="upload-stop-question" class="me-auto fs-smaller">
+                    <strong><@s.text name="manage.overview.source.upload.stop.question"/></strong>
+                    <@s.text name="manage.overview.source.upload.stop.text"/>
+                    <span id="upload-stop-processing" hidden><@s.text name="manage.overview.source.upload.stop.processing"/></span>
+                </span>
+                <button type="button" id="upload-keep" class="btn btn-sm btn-outline-secondary text-nowrap" aria-describedby="upload-stop-question"><@s.text name="manage.overview.source.upload.keep"/></button>
+                <button type="button" id="upload-stop" class="btn btn-sm btn-danger text-nowrap"><@s.text name="manage.overview.source.upload.stop"/></button>
+            </div>
         </div>
     </@dialog>
 
