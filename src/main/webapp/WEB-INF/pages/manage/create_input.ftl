@@ -17,9 +17,6 @@
 <script src="${baseURL}/js/datapackage-precheck-render.js"></script>
 
 <style>
-    /* field help icons, Material outlined (see macros/help_icon.ftl) */
-    .help-icon-m { width: 16px; height: 16px; margin: 0 4px 0 2px; vertical-align: -3px; }
-
     .cr-section { margin-bottom: 32px; }
     .cr-sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #dee2e6; padding-bottom: 6px; margin-bottom: 14px; }
     .cr-sec-head h2 { font-size: 1.1rem; font-weight: 500; color: #4e565f; margin: 0; }

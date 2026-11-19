@@ -179,24 +179,3 @@
 
     <#-- Adds the CC icon. Only CC-BY-NC, CC-BY, and CC0 are supported -->
     <#-- license: the GBIF-supported license, see BaseAction.getGbifLicense -->
-    <#macro licenseLogoClass license>
-        <#if license == "CC_BY_NC_4_0">
-            <a rel="license" id="cc_by_nc" class="cc_logo cc_by_nc"
-               href="http://creativecommons.org/licenses/by-nc/4.0/legalcode"
-               title="Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0 License">
-                <img src="${baseURL}/images/icons/cc-by-nc.svg" alt="CC-BY-NC 4.0">
-            </a>
-        <#elseif license == "CC_BY_4_0">
-            <a rel="license" id="cc_by" class="cc_logo cc_by"
-               href="http://creativecommons.org/licenses/by/4.0/legalcode"
-               title="Creative Commons Attribution (CC-BY) 4.0 License">
-                <img src="${baseURL}/images/icons/cc-by.svg" alt="CC-BY 4.0">
-            </a>
-        <#elseif license == "CC0_1_0">
-            <a rel="license" id="cc_zero" class="cc_logo cc_zero"
-               href="http://creativecommons.org/publicdomain/zero/1.0/legalcode"
-               title="Creative Commons CCZero (CC0) 1.0 License">
-                <img src="${baseURL}/images/icons/cc-zero.svg" alt="CC0 1.0">
-            </a>
-        </#if>
-    </#macro>

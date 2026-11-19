@@ -1555,27 +1555,6 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 }
 
 
-/* Licence logos styling START */
-.cc_main_container {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    padding: 1rem;
-    margin: 2rem auto;
-    gap: 1rem;
-}
-
-.cc_logo {
-    display: block;
-    max-width: 100px;
-    height: auto;
-}
-
-.cc_text {
-    flex: 1;
-}
-/* Licence logos styling END */
 
 
 /* Version table pointer styling */
@@ -1616,11 +1595,6 @@ div#record_graph .color-bar {
     margin-top: 18px;
 }
 
-
-/* Metadata image size */
-#resourcelogo img {
-    max-width: 150px;
-}
 
 /* IPT logo image size */
 #applogo img {
@@ -3196,3 +3170,8 @@ span.contact-citation-banner {
 .ipt-ml-hint {
     font-size: .8125rem;
 }
+
+/* Material info icon of the help popovers (macros/help_icon.ftl, pages that set materialHelpIcons) */
+.help-icon-m { width: 16px; height: 16px; margin: 0 4px 0 2px; vertical-align: -3px; }
+/* in section headings (forms.ftl textinline): as big as the heading text */
+.textinline .help-icon-m { width: 1em; height: 1em; margin: 0 6px 0 0; vertical-align: -0.125em; }

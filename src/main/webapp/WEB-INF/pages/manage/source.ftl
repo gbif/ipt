@@ -454,7 +454,6 @@
     </form>
 
 <style>
-    .help-icon-m { width: 16px; height: 16px; margin: 0 4px 0 2px; vertical-align: -3px; }
     .sp-kind-pill { font-size: 0.72rem; font-weight: 500; color: #495057; background: #f1f3f5; border-radius: 10px; padding: 1px 8px; line-height: 18px; }
     .ov-head-left .ov-meta + .ov-meta { margin-top: 4px; }
     .sp-url a { overflow-wrap: anywhere; }
