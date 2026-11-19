@@ -485,6 +485,9 @@
                 if (window.checkTaxonomicCoverage && !window.checkTaxonomicCoverage()) {
                     return;
                 }
+                if (window.checkTemporalCoverage && !window.checkTemporalCoverage()) {
+                    return;
+                }
                 $form.submit();
             }
 
@@ -810,335 +813,213 @@
             };
         });
     </script>
-    <#-- temporal coverage (was a page of its own, #3319); its ids are prefixed temporal- where the geographic part uses the same -->
+    <#-- temporal coverage: where it comes from (inferred or by hand) and one or more periods -->
     <script>
-        var DATE_RANGE = "DATE_RANGE";
-        var FORMATION_PERIOD = "FORMATION_PERIOD";
-        var LIVING_TIME_PERIOD = "LIVING_TIME_PERIOD";
-        var SINGLE_DATE = "SINGLE_DATE";
-        var count;
-        // a function called when adding new temporal coverages
-        // an element is cloned and the IDs reset etc etc
         $(document).ready(function () {
-            function updateQueryParam(param, value) {
-                const url = new URL(window.location.href);
-                url.searchParams.set(param, value);
-                history.replaceState(null, '', url);
+            var TP = {
+                required: "${action.getText('validation.required')?js_string?no_esc}",
+                endBeforeStart: "${action.getText('manage.metadata.tempcoverage.endBeforeStart')?js_string?no_esc}"
+            };
+
+            var $form = $("#coverage-form");
+            var $section = $("#s-temporal");
+            var $periods = $("#temp-periods");
+            var $fixed = $("#temp-fixed");
+            var $infer = $("#temp-infer");
+            var mode;
+
+            function format(text, args) {
+                return text.replace(/\{(\d)\}/g, function (m, i) { return args[i]; });
             }
-
-            function deleteQueryParam(param) {
-                const url = new URL(window.location.href);
-                url.searchParams.delete(param)
-                history.replaceState(null, '', url);
+            function notifyChange() {
+                // inc/footer.ftl shows the save bar on input events of the form
+                $form[0].dispatchEvent(new Event('input', {bubbles: true}));
             }
-
-            var $inferAutomaticallyCheckbox = $('#resource\\.inferTemporalCoverageAutomatically');
-
-            // Function to check if query param exists and update checkbox accordingly
-            function checkUrlParams() {
-                // if "inferTemporalAutomatically" present and true, tick the inferTemporalCoverageAutomatically checkbox
-                const urlParams = new URLSearchParams(window.location.search);
-                const checkboxParam = urlParams.get('inferTemporalAutomatically');
-                if (checkboxParam === 'true') {
-                    $inferAutomaticallyCheckbox.prop('checked', true);
-                }
-
-            }
-
-            // add/remove "inferTemporalAutomatically" param when clicking checkbox
-            $inferAutomaticallyCheckbox.change(function() {
-                if ($(this).is(':checked')) {
-                    updateQueryParam('inferTemporalAutomatically', 'true');
+            function setUrlParam(on) {
+                var url = new URL(window.location.href);
+                if (on) {
+                    url.searchParams.set("inferTemporalAutomatically", "true");
                 } else {
-                    deleteQueryParam('inferTemporalAutomatically');
+                    url.searchParams.delete("inferTemporalAutomatically");
                 }
-            });
-
-            // Check query params on page load
-            checkUrlParams();
+                history.replaceState(null, '', url);
+            }
 
             $("#temporal-re-infer-link").on('click', displayProcessing);
 
-            calculateCount();
-
-            function calculateCount() {
-                var lastChild = $("#temporals .tempo:last-child").attr("id");
-                if (lastChild !== undefined) {
-                    count = parseInt(lastChild.split("-")[1]) + 1;
-                } else {
-                    count = new Number(0);
-                }
+            function periods() {
+                return $periods.children(".temp-period");
+            }
+            function activeInputs($p) {
+                return $p.find(".temp-field[data-type=" + $p.attr("data-type") + "] input");
             }
 
-            $("#plus-temporal").click(function (event) {
-                event.preventDefault();
-                calculateCount();
-                var idNewForm = "temporal-" + count;
-                var newForm = $("#base-temporal-99999").clone().attr("id", idNewForm).css('display', '');
-                // Add the fields depending on the actual value in the select
-                var typeSubForm = $("#tempTypes").prop("value");
-                //Adding the 'sub-form' to the new form.
-                addTypeForm(newForm, typeSubForm, true);
-                $("#temporals").append(newForm);
-                newForm.hide();
-                //Updating the components of the new 'sub-form'.
-                updateFields(idNewForm, count);
-                $("#temporal-" + count).slideDown("slow").css('zoom', 1);
-
-                count++;
-            });
-
-            let $inferTempCoverageAutomaticallyCheckbox = $("#resource\\.inferTemporalCoverageAutomatically");
-            if ($inferTempCoverageAutomaticallyCheckbox.is(':checked')) {
-                $("#temporals .tempo").remove();
-                $('#s-temporal .intro').hide();
-                $('#preview-inferred-temporal').hide();
-                $('#s-temporal .addNew').hide();
-                $('#static-temporal').show();
-                $("#temporal-dateInferred").show();
-            }
-
-            $inferTempCoverageAutomaticallyCheckbox.click(function() {
-                if ($inferTempCoverageAutomaticallyCheckbox.is(':checked')) {
-                    $("#temporals .tempo").remove();
-                    $('#s-temporal .intro').hide();
-                    $('#preview-inferred-temporal').hide();
-                    $('#s-temporal .addNew').hide();
-                    $('#static-temporal').show();
-                    $("#temporal-dateInferred").show();
-                } else {
-                    $('#s-temporal .intro').show();
-                    $('#preview-inferred-temporal').show();
-                    $('#s-temporal .addNew').show();
-                    $('#static-temporal').hide();
-                    $("#temporal-dateInferred").hide();
-                }
-            });
-
-            $("#preview-inferred-temporal").click(function(event) {
-                event.preventDefault();
-
-                $("#temporal-dateInferred").show();
-
-                <#if (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size gt 0>
-                $(".temporal-error-alert").show();
-                </#if>
-
-                <#if (inferredMetadata.inferredTemporalCoverage.data)??>
-                count = 0;
-                // remove all current items
-                $("#temporals .tempo").remove();
-
-                var idNewForm = "temporal-" + count;
-                var newForm = $("#base-temporal-99999").clone().attr("id", idNewForm).css('display', '');
-
-                //Adding the 'sub-form' to the new form.
-                addTypeForm(newForm, DATE_RANGE, true);
-                $("#temporals").append(newForm);
-                newForm.hide();
-                //Updating the components of the new 'sub-form'.
-                updateFields(idNewForm, count, DATE_RANGE);
-                $("#tempTypes-" + count).val(DATE_RANGE);
-                $("#temporal-" + count).slideDown("slow").css('zoom', 1);
-                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.startDate').val("${inferredMetadata.inferredTemporalCoverage.data.startDate?string('yyyy-MM-dd')}")
-                $('#eml\\.temporalCoverages\\[' + count + '\\]\\.endDate').val("${inferredMetadata.inferredTemporalCoverage.data.endDate?string('yyyy-MM-dd')}")
-                count++;
-                </#if>
-            });
-
-            /**
-             * This method add a new subform to the form that is in the parameter.
-             */
-            function addTypeForm(theForm, typeSubForm, changeDisplay) {
-                var newSubForm;
-                if (typeSubForm === DATE_RANGE) {
-                    newSubForm = $("#date-99999").clone();
-                }
-                if (typeSubForm === FORMATION_PERIOD) {
-                    newSubForm = $("#formation-99999").clone();
-                }
-                if (typeSubForm === LIVING_TIME_PERIOD) {
-                    newSubForm = $("#living-99999").clone();
-                }
-                if (typeSubForm === SINGLE_DATE) {
-                    newSubForm = $("#single-99999").clone();
-                }
-                if (changeDisplay) {
-                    newSubForm.css("display", "");
-                }
-                theForm.append(newSubForm);
-            }
-
-            /**
-             * this method update the name and the id of the form to the consecutive number in the parameter.
-             */
-            function updateFields(idNewForm, index, typeSubFormDefault) {
-                $("#" + idNewForm + " .removeTemporalLink").attr("id", "temporal-removeLink-" + index);
-                // Remove Link (registering the event for the new links).
-                $("#" + idNewForm + " .removeTemporalLink").off("click").click(
-                    function (event) {
-                        event.preventDefault();
-                        removeTemporal(event);
-                    }
-                );
-                // Select ==> tempTypes
-                $("#" + idNewForm + " [id^='tempTypes']").attr("id", "tempTypes-" + index).attr("name", function () {
-                    return $(this).attr("id");
+            // only the fields of the chosen type are shown and posted
+            function showType($p, type) {
+                $p.attr("data-type", type);
+                $p.find(".temp-type").each(function () {
+                    var on = $(this).data("type") === type;
+                    $(this).toggleClass("on", on).attr("aria-checked", String(on));
                 });
-                // Update the fields depending of the actual value in the select
-                var typeSubForm = typeSubFormDefault ? typeSubFormDefault : $("#" + idNewForm + " #tempTypes-" + index).prop("value");
-                // Registering the event for the new selects.
-                $("#" + idNewForm + " #tempTypes-" + count).change(
-                    function () {
-                        changeForm($(this));
-                    }
-                );
-
-                if (typeSubForm === DATE_RANGE) {
-                    $("#" + idNewForm + " [id^='date-']").attr("id", "date-" + index);
-                    $("#" + idNewForm + " [id$='startDate']").attr("id", "eml.temporalCoverages[" + index + "].startDate").attr("name", function () {
-                        return $(this).attr("id");
-                    });
-                    $("#" + idNewForm + " [id$='endDate']").attr("id", "eml.temporalCoverages[" + index + "].endDate").attr("name", function () {
-                        return $(this).attr("id");
-                    });
-
-                    // replace generic 'inputName-startDate' and 'inputName-endDate' with a proper value at 'data-bs-content' attribute to be able to bind help options
-                    var popovers = $("#" + idNewForm + " a.popover-link");
-                    popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
-                    popovers[1].setAttribute("data-bs-content", popovers[1].getAttribute('data-bs-content').replace('inputName-endDate', "inputName-eml.temporalCoverages[" + index + "].endDate"))
-                }
-                if (typeSubForm === FORMATION_PERIOD) {
-                    $("#" + idNewForm + " [id^='formation-']").attr("id", "formation-" + index);
-                    $("#" + idNewForm + " [id$='formationPeriod']").attr("id", "eml.temporalCoverages[" + index + "].formationPeriod").attr("name", function () {
-                        return $(this).attr("id");
-                    });
-                }
-                if (typeSubForm === LIVING_TIME_PERIOD) {
-                    $("#" + idNewForm + " [id^='living-']").attr("id", "living-" + index);
-                    $("#" + idNewForm + " [id$='livingTimePeriod']").attr("id", "eml.temporalCoverages[" + index + "].livingTimePeriod").attr("name", function () {
-                        return $(this).attr("id");
-                    });
-                }
-                if (typeSubForm === SINGLE_DATE) {
-                    $("#" + idNewForm + " [id^='single-']").attr("id", "single-" + index);
-                    $("#" + idNewForm + " [id$='startDate']").attr("id", "eml.temporalCoverages[" + index + "].startDate").attr("name", function () {
-                        return $(this).attr("id");
-                    });
-
-                    // replace generic 'inputName-startDate' with a proper value at 'data-bs-content' attribute to be able to bind help options
-                    var popovers = $("#" + idNewForm + " a.popover-link");
-                    popovers[0].setAttribute("data-bs-content", popovers[0].getAttribute('data-bs-content').replace('inputName-startDate', "inputName-eml.temporalCoverages[" + index + "].startDate"))
-                }
-
-                initInfoPopovers($("#" + idNewForm)[0]);
-            }
-
-            // This event should work for the temporal coverage that already exist in the file.
-            $("[id^='tempTypes-']").change(function (event) {
-                changeForm($(this));
-            });
-
-            function changeForm(select) {
-                var selection = select.prop("value");
-                var index = select.attr("id").split("-")[1];
-                $("#temporal-" + index + " .typeForm").fadeOut(function () {
-                    $(this).remove();
-                    addTypeForm($("#temporal-" + index), selection, false);
-                    $("#temporal-" + index + " .typeForm").fadeIn(function () {
-                        updateFields("temporal-" + index, index);
-                    });
+                $p.find(".temp-field, .temp-help").each(function () {
+                    $(this).prop("hidden", $(this).data("type") !== type);
+                });
+                $p.find(".temp-field input").each(function () {
+                    $(this).prop("disabled", mode !== "manual" || $(this).closest(".temp-field").data("type") !== type);
                 });
             }
 
-            // This event should work for the temporal coverage that already exist in the file.
-            $(".removeTemporalLink").click(function (event) {
-                event.preventDefault();
-                removeTemporal(event);
-            });
-
-            function removeTemporal(event) {
-                var $target = $(event.target);
-                if (!$target.is('a')) {
-                    $target = $(event.target).closest('a');
-                }
-                var index = $target.attr("id").split("-").pop();
-                // removing the form in the html.
-                $('#temporal-' + index).slideUp("slow", function () {
-                    $(this).remove();
-                    $("#temporals .tempo").each(function (index) {
-                        updateFields($(this).attr("id"), index);
-                        $(this).attr("id", "temporal-" + index);
+            // names and ids follow the position in the list
+            function renumber() {
+                periods().each(function (i) {
+                    var $p = $(this);
+                    $p.attr("id", "temp-period-" + i);
+                    $p.find(".temp-field input").each(function () {
+                        var t = $(this).closest(".temp-field").data("type"), f = $(this).data("f");
+                        this.name = "eml.temporalCoverages[" + i + "]." + f;
+                        this.id = "temp-" + i + "-" + t + "-" + f;
+                        $(this).siblings("label").attr("for", this.id);
                     });
-                    calculateCount();
                 });
+                $("#temp-none").prop("hidden", mode !== "manual" || periods().length > 0);
             }
 
-            $(document.body).on('click', '.helpOptionLink', function (e) {
+            function markBad($p) {
+                var bad = $p.find(".is-invalid, .temp-srv-msg").length > 0;
+                $p.toggleClass("invalid", bad).find(".temp-period-bad").prop("hidden", !bad);
+            }
+
+            function addPeriod(type, values) {
+                var $p = $($("#baseItem-tempperiod").html().replace(/__p__/g, String(periods().length))).appendTo($periods);
+                showType($p, type || "DATE_RANGE");
+                if (values) {
+                    Object.keys(values).forEach(function (f) {
+                        activeInputs($p).filter("[data-f=" + f + "]").val(values[f]);
+                    });
+                }
+                renumber();
+                return $p;
+            }
+
+            $("#plus-tempperiod").on("click", function (e) {
                 e.preventDefault();
-                // get all link classes
-                var classes = $(this).attr('class').split(/\s+/);
-                var inputName, inputValue
-
-                for (var i = 0; i < classes.length; i++) {
-                    // get input name in order to set value
-                    if (classes[i].startsWith('inputName')) {
-                        // get rid of prefix; escape dots and brackets
-                        inputName = classes[i].replace('inputName-', '').replaceAll('.', '\\.').replaceAll('[', '\\[').replaceAll(']', '\\]');
-                    }
-
-                    // get value to be set
-                    if (classes[i].startsWith('inputValue')) {
-                        // get rid of prefix
-                        inputValue = classes[i].replace('inputValue-', '');
-                    }
-                }
-
-                $('#' + inputName).val(inputValue)
+                var $p = addPeriod();
+                activeInputs($p).first().trigger("focus");
+                notifyChange();
             });
 
-            // reordering
-            function initAndGetSortable(selector) {
-                return sortable(selector, {
-                    forcePlaceholderSize: true,
-                    placeholderClass: 'border',
-                    handle: '.handle'
-                });
-            }
+            $periods.on("click", ".removeTempPeriodLink", function (e) {
+                e.preventDefault();
+                $(this).closest(".temp-period").remove();
+                renumber();
+                notifyChange();
+            });
 
-            const sortable_temporals = initAndGetSortable('#temporals');
-
-            sortable_temporals[0].addEventListener('sortupdate', changeInputNamesAfterDragging);
-            sortable_temporals[0].addEventListener('drag', dragScroll);
-
-            function dragScroll(e) {
-                var cursor = e.pageY;
-                var parentWindow = parent.window;
-                var pixelsToTop = $(parentWindow).scrollTop();
-                var screenHeight = $(parentWindow).height();
-
-                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
-                    parentWindow.scrollBy(0, (screenHeight / 30));
-                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
-                    parentWindow.scrollBy(0, -(screenHeight / 30));
+            $periods.on("click", ".temp-type", function () {
+                var $p = $(this).closest(".temp-period");
+                var from = $p.attr("data-type"), to = $(this).data("type");
+                if (from === to) {
+                    return;
                 }
-            }
+                // a date carries over between "Date range" and "Single date"
+                var start = activeInputs($p).filter("[data-f=startDate]").val();
+                showType($p, to);
+                var $start = activeInputs($p).filter("[data-f=startDate]");
+                if (start && $start.length && !$start.val()) {
+                    $start.val(start);
+                }
+                $p.find(".temp-msg").empty();
+                $p.find(".is-invalid").removeClass("is-invalid");
+                $p.find(".temp-srv-msg").remove();
+                markBad($p);
+                notifyChange();
+            });
 
-            function changeInputNamesAfterDragging(e) {
-                displayProcessing();
-                var contactItems = $("#temporals div.tempo");
+            $periods.on("input change", ".temp-field input", function () {
+                var $p = $(this).closest(".temp-period");
+                $(this).removeClass("is-invalid");
+                $p.find(".temp-srv-msg").remove();
+                $p.find(".temp-msg").empty();
+                markBad($p);
+            });
 
-                contactItems.each(function (index) {
-                    var elementId = $(this)[0].id;
+            // the inferred range as a period to edit; publishing no longer replaces it
+            $("#temp-copy").on("click", function (e) {
+                e.preventDefault();
+                setMode("manual", false);
+                var $p = addPeriod("DATE_RANGE", {startDate: $fixed.data("start"), endDate: $fixed.data("end")});
+                notifyChange();
+                $p[0].scrollIntoView({behavior: "smooth", block: "nearest"});
+            });
 
-                    $("div#" + elementId + " input[id$='startDate']").attr("name", "eml.temporalCoverages[" + index + "].startDate");
-                    $("div#" + elementId + " input[id$='endDate']").attr("name", "eml.temporalCoverages[" + index + "].endDate");
-                    $("div#" + elementId + " input[id$='formationPeriod']").attr("name", "eml.temporalCoverages[" + index + "].formationPeriod");
-                    $("div#" + elementId + " input[id$='livingTimePeriod']").attr("name", "eml.temporalCoverages[" + index + "].livingTimePeriod");
+            function setMode(m, initial) {
+                mode = m;
+                $section.find(".temp-mode").each(function () {
+                    var on = $(this).data("mode") === m;
+                    $(this).toggleClass("selected", on).find("input").prop("checked", on);
                 });
-
-                hideProcessing();
+                $infer.val(m === "inferred" ? "true" : "false");
+                if (!initial) {
+                    setUrlParam(m === "inferred");
+                }
+                var manual = m === "manual";
+                $("#temp-infer-bar").prop("hidden", manual);
+                $fixed.prop("hidden", manual);
+                $("#temp-manual").prop("hidden", !manual);
+                periods().each(function () { showType($(this), $(this).attr("data-type")); });
+                renumber();
             }
+
+            $section.find(".temp-mode input").on("change", function () {
+                setMode($(this).val(), false);
+                notifyChange();
+            });
+
+            var urlParams = new URLSearchParams(window.location.search);
+            var initialMode = ($infer.val() === "true" || (urlParams.get('inferTemporalAutomatically') === 'true' && $section.find(".temp-mode").length))
+                ? "inferred" : "manual";
+            setMode(initialMode, true);
+            periods().each(function () { markBad($(this)); });
+
+            // before the form is posted (geographic part, top of this file): empty periods are dropped,
+            // the fields of the chosen type are required, a range ends after it starts
+            window.checkTemporalCoverage = function () {
+                if (mode !== "manual") {
+                    return true;
+                }
+                periods().filter(function () {
+                    return activeInputs($(this)).toArray().every(function (i) { return !i.value.trim(); });
+                }).remove();
+                renumber();
+                var firstBad = null;
+                periods().each(function () {
+                    var $p = $(this);
+                    var msgs = [];
+                    activeInputs($p).each(function () {
+                        if (!this.value.trim()) {
+                            $(this).addClass("is-invalid");
+                            msgs.push(format(TP.required, [$(this).siblings("label").clone().children().remove().end().text().trim()]));
+                        }
+                    });
+                    if ($p.attr("data-type") === "DATE_RANGE") {
+                        var $s = activeInputs($p).filter("[data-f=startDate]"), $e = activeInputs($p).filter("[data-f=endDate]");
+                        if ($s.val() && $e.val() && $e.val() < $s.val()) {
+                            $e.addClass("is-invalid");
+                            msgs.push(TP.endBeforeStart);
+                        }
+                    }
+                    $p.find(".temp-msg").html(msgs.map(function (m) { return $("<div>").text(m).prop("outerHTML"); }).join(""));
+                    markBad($p);
+                    if (msgs.length && firstBad === null) {
+                        firstBad = $p;
+                    }
+                });
+                if (firstBad) {
+                    firstBad[0].scrollIntoView({behavior: "smooth", block: "center"});
+                    return false;
+                }
+                return true;
+            };
         });
     </script>
     <style>
@@ -1165,29 +1046,6 @@
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
 
-        <div id="tempcoverage-no-available-data-warning" class="alert alert-warning alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
-            <div class="me-3">
-                <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-            </div>
-            <div class="overflow-x-hidden pt-1">
-                <span><@s.text name="eml.warning.reinfer"/></span>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-                <#if (inferredMetadata.inferredTemporalCoverage)??>
-                    <#list inferredMetadata.inferredTemporalCoverage.errors as error>
-                        <div class="alert alert-danger alert-dismissible fade show d-flex temporal-error-alert" role="alert" style="display: none !important;">
-                            <div class="me-3">
-                                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-                            </div>
-                            <div class="overflow-x-hidden pt-1">
-                                <span><@s.text name="${error}"/></span>
-                            </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </#list>
-                </#if>
         </div>
 
 <form id="coverage-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
@@ -1532,197 +1390,125 @@
                         <template id="baseItem-taxrow"><@taxRow g="__g__" t="__t__"/></template>
                     </div>
 
-                    <!-- Temporal coverage (was a page of its own, #3319) -->
+                    <#-- one temporal coverage: its type, then the fields of that type; the fields of the other types are disabled -->
+                    <#macro tempField index field labelKey type value="" date=false>
+                        <#local fieldName = "eml.temporalCoverages[${index}].${field}"/>
+                        <div class="temp-field" data-type="${type}">
+                            <label class="form-label" for="temp-${index}-${type}-${field}"><@s.text name="${labelKey}"/> <span class="text-gbif-danger">&#42;</span></label>
+                            <input type="<#if date>date<#else>text</#if>" class="form-control form-control-sm<#if index?is_number && (action.fieldErrors[fieldName])??> is-invalid</#if>" id="temp-${index}-${type}-${field}"
+                                   data-f="${field}" name="${fieldName}" value="${value}" autocomplete="off"/>
+                        </div>
+                    </#macro>
+                    <#macro tempPeriod index cov={}>
+                        <#local type = (cov.type)???then("${cov.type}", "DATE_RANGE")/>
+                        <#local start = ((cov.startDate)?has_content)?then(cov.startDate?date?string('yyyy-MM-dd'), "")/>
+                        <#local end = ((cov.endDate)?has_content)?then(cov.endDate?date?string('yyyy-MM-dd'), "")/>
+                        <div class="temp-period" id="temp-period-${index}" data-type="${type}">
+                            <div class="temp-period-head">
+                                <div class="temp-types" role="radiogroup" aria-label="<@s.text name='eml.temporalCoverages.type'/>">
+                                    <#list ["DATE_RANGE", "SINGLE_DATE", "FORMATION_PERIOD", "LIVING_TIME_PERIOD"] as t>
+                                        <button type="button" class="temp-type<#if t == type> on</#if>" data-type="${t}" role="radio" aria-checked="${(t == type)?c}"><@s.text name="temporalCoverageType.${t}"/></button>
+                                    </#list>
+                                </div>
+                                <span class="temp-period-bad" hidden><@icon name="error"/></span>
+                                <a href="" class="removeTempPeriodLink" title="<@s.text name='manage.metadata.tempcoverage.removePeriod'/>" aria-label="<@s.text name='manage.metadata.tempcoverage.removePeriod'/>">
+                                    <@icon name="delete"/>
+                                </a>
+                            </div>
+                            <div class="temp-fields">
+                                <@tempField index=index field="startDate" labelKey="eml.temporalCoverages.startDate" type="DATE_RANGE" value=(type == "DATE_RANGE")?then(start, "") date=true/>
+                                <@tempField index=index field="endDate" labelKey="eml.temporalCoverages.endDate" type="DATE_RANGE" value=end date=true/>
+                                <@tempField index=index field="startDate" labelKey="eml.temporalCoverages.singleDate" type="SINGLE_DATE" value=(type == "SINGLE_DATE")?then(start, "") date=true/>
+                                <@tempField index=index field="formationPeriod" labelKey="eml.temporalCoverages.formationPeriod" type="FORMATION_PERIOD" value=(cov.formationPeriod)!""/>
+                                <@tempField index=index field="livingTimePeriod" labelKey="eml.temporalCoverages.livingTimePeriod" type="LIVING_TIME_PERIOD" value=(cov.livingTimePeriod)!""/>
+                            </div>
+                            <#list ["DATE_RANGE", "SINGLE_DATE", "FORMATION_PERIOD", "LIVING_TIME_PERIOD"] as t>
+                                <#local helpKey = {"DATE_RANGE": "manage.metadata.tempcoverage.help.range", "SINGLE_DATE": "eml.temporalCoverages.singleDate.help", "FORMATION_PERIOD": "eml.temporalCoverages.formationPeriod.help", "LIVING_TIME_PERIOD": "eml.temporalCoverages.livingTimePeriod.help"}[t]/>
+                                <div class="temp-help" data-type="${t}"><@s.text name="${helpKey}"/></div>
+                            </#list>
+                            <#if index?is_number>
+                                <#list ["startDate", "endDate", "formationPeriod", "livingTimePeriod"] as f>
+                                    <@s.fielderror cssClass="list-unstyled text-gbif-danger temp-srv-msg mb-0 mt-1" fieldName="eml.temporalCoverages[${index}].${f}"/>
+                                </#list>
+                            </#if>
+                            <div class="temp-msg text-gbif-danger"></div>
+                        </div>
+                    </#macro>
+
+                    <!-- Temporal coverage (was a page of its own, #3319): where it comes from and one or more periods -->
                     <div class="my-md-3 p-3" id="s-temporal" data-toc="${action.getText('submenu.tempcoverage')}">
                         <@textinline name="submenu.tempcoverage"/>
 
-                        <#if resource.dataPackage==false || resource.dwcDp>
-                        <div class="row g-2 mt-0">
-                            <div class="col-md-6">
-                                <@checkbox name="resource.inferTemporalCoverageAutomatically" value=resource.inferTemporalCoverageAutomatically i18nkey="eml.inferAutomatically"/>
-                            </div>
+                        <#assign tempCanInfer = resource.dataPackage==false || resource.dwcDp/>
+                        <input type="hidden" id="temp-infer" name="resource.inferTemporalCoverageAutomatically" value="${(tempCanInfer && resource.inferTemporalCoverageAutomatically)?c}"/>
 
-                            <div id="temporal-preview-links" class="col-md-6">
-                                <div class="d-flex justify-content-end">
-                                    <a id="preview-inferred-temporal" class="metadata-action-link custom-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                            </svg>
-                                        </span>
-                                        <span><@s.text name="eml.previewInferred"/></span>
-                                    </a>
-                                </div>
-                                <div id="temporal-dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
-                                    <span class="fs-smaller-2 p-1">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                    <a id="temporal-re-infer-link" href="metadata-coverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferTemporalAutomatically=true#s-temporal" class="metadata-action-link custom-link p-1">
-                                        <span>
-                                            <svg class="link-icon link-icon-primary" viewBox="0 0 24 24">
-                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                            </svg>
-                                        </span>
-                                        <span><@s.text name="eml.reinfer"/></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        </#if>
-
-                        <p class="mb-0 my-3 intro">
-                            <@s.text name='manage.metadata.tempcoverage.intro'/>
-                        </p>
-
-                        <div id="temporals">
-                            <!-- Adding the temporal coverages that already exists on the file -->
-                            <#assign next_agent_index=0 />
-                            <#list eml.temporalCoverages as temporalCoverage>
-                                <div id="temporal-${temporalCoverage_index}" class="tempo clearfix row g-3 border-bottom pb-3" >
-                                    <div class="handle d-flex justify-content-end mt-4">
-                                        <a id="temporal-removeLink-${temporalCoverage_index}" class="removeTemporalLink metadata-action-link custom-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                            <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></span>
-                                        </a>
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <@select i18nkey="eml.temporalCoverages.type"  name="tempTypes-${temporalCoverage_index}" options=tempTypes value="${temporalCoverage.type}" />
-                                    </div>
-
-                                    <!-- Adding new subform -->
-                                    <#if "${temporalCoverage.type}" == "DATE_RANGE" >
-                                        <div id="date-${temporalCoverage_index}" class="typeForm col-12">
-                                            <div class="row g-3">
-                                                <div class="col-lg-6">
-                                                    <@input type="date" i18nkey="eml.temporalCoverages.startDate" value="${temporalCoverage.startDate!?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <@input type="date" i18nkey="eml.temporalCoverages.endDate" value="${temporalCoverage.endDate!?date?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].endDate" help="i18n"/>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    <#elseif "${temporalCoverage.type}" == "SINGLE_DATE" >
-                                        <div id="single-${temporalCoverage_index}" class="typeForm col-lg-6" >
-                                            <div>
-                                                <#if eml.temporalCoverages[temporalCoverage_index].startDate?has_content>
-                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="${temporalCoverage.startDate!?date!?string('yyyy-MM-dd')}" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
-                                                <#else>
-                                                    <@input type="date" i18nkey="eml.temporalCoverages.singleDate" value="" name="eml.temporalCoverages[${temporalCoverage_index}].startDate" help="i18n"/>
-                                                </#if>
-                                            </div>
-
-                                        </div>
-
-                                    <#elseif "${temporalCoverage.type}" == "FORMATION_PERIOD" >
-                                        <div id="formation-${temporalCoverage_index}" class="typeForm col-lg-6" >
-                                            <div>
-                                                <@input i18nkey="eml.temporalCoverages.formationPeriod" name="eml.temporalCoverages[${temporalCoverage_index}].formationPeriod" value=temporalCoverage.formationPeriod! help="i18n" />
-                                            </div>
-                                        </div>
-
-                                    <#else> <!-- LIVING_TIME_PERIOD -->
-                                        <div id="living-${temporalCoverage_index}" class="typeForm col-lg-6"  >
-                                            <div>
-                                                <@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="eml.temporalCoverages[${temporalCoverage_index}].livingTimePeriod" value=temporalCoverage.livingTimePeriod! help="i18n" />
-                                            </div>
-                                        </div>
-                                    </#if>
-                                </div>
-                            </#list>
-                        </div>
-
-                        <!-- Static data -->
-                        <div id="static-temporal" class="mt-4" style="display: none;">
-                            <!-- Data is inferred, preview -->
-                            <#if (inferredMetadata.inferredTemporalCoverage.data)??>
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-borderless">
-                                        <tr>
-                                            <th class="col-4"><@s.text name='eml.temporalCoverages.startDate'/> / <@s.text name='eml.temporalCoverages.endDate'/></th>
-                                            <td>${(inferredMetadata.inferredTemporalCoverage.data.startDate?date)!} / ${(inferredMetadata.inferredTemporalCoverage.data.endDate?date)!}</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            <!-- Data infer finished, but there are errors/warnings -->
-                            <#elseif (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size != 0>
-                                <#list inferredMetadata.inferredTemporalCoverage.errors as error>
-                                    <div class="callout callout-danger text-smaller">
-                                        <@s.text name="${error}"/>
-                                    </div>
-                                </#list>
-                            <!-- Other -->
-                            <#else>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="eml.warning.reinfer"/>
-                                </div>
-                            </#if>
-                        </div>
-
-                        <!-- The add link and the buttons should be first. The next div is hidden. -->
-                        <div class="addNew col-12 mt-2">
-                            <a id="plus-temporal" href="" class="metadata-action-link custom-link">
-                                <span>
-                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                </span>
-                                <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.tempcoverage.item' /></span>
-                            </a>
-                        </div>
-
-                        <!-- The base form that is going to be cloned every time an user click in the 'add' link -->
-                        <div id="base-temporal-99999" class="tempo clearfix row g-3 border-bottom pb-3" style="display:none">
-                            <div class="handle d-flex justify-content-end mt-4">
-                                <a id="temporal-removeLink" class="removeTemporalLink metadata-action-link custom-link" href="">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                        </svg>
+                        <#if tempCanInfer>
+                            <div class="geo-modes mt-2" role="radiogroup" aria-label="<@s.text name='manage.metadata.tempcoverage.source'/>">
+                                <label class="geo-mode temp-mode" data-mode="inferred">
+                                    <input type="radio" class="form-check-input flex-shrink-0" name="tempMode" value="inferred">
+                                    <span class="flex-grow-1">
+                                        <span class="geo-mode-label"><@s.text name="manage.metadata.tempcoverage.mode.inferred"/></span>
+                                        <span class="geo-mode-desc"><@s.text name="manage.metadata.tempcoverage.mode.inferred.help"/></span>
                                     </span>
-                                    <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.tempcoverage.item'/></span>
+                                </label>
+                                <label class="geo-mode temp-mode" data-mode="manual">
+                                    <input type="radio" class="form-check-input flex-shrink-0" name="tempMode" value="manual">
+                                    <span class="flex-grow-1">
+                                        <span class="geo-mode-label"><@s.text name="manage.metadata.tempcoverage.mode.manual"/></span>
+                                        <span class="geo-mode-desc"><@s.text name="manage.metadata.tempcoverage.mode.manual.help"/></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <#-- inferring failed: a warning, publishing goes on without the inferred coverage -->
+                            <#assign tempInferFailed = !(inferredMetadata.inferredTemporalCoverage.data)?? && (inferredMetadata.inferredTemporalCoverage)?? && inferredMetadata.inferredTemporalCoverage.errors?size != 0/>
+                            <div id="temp-infer-bar" class="<#if tempInferFailed>ov-banner warn compact cov-infer-warn<#else>geo-infer-bar</#if>" hidden>
+                                <#if (inferredMetadata.inferredTemporalCoverage.data)??>
+                                    <span class="flex-grow-1"><@s.text name="manage.metadata.geocoverage.inferredOn"><@s.param>${(inferredMetadata.lastModified?datetime?string.medium)!}</@s.param></@s.text></span>
+                                    <a id="temp-copy" href="" class="metadata-action-link custom-link" title="<@s.text name='manage.metadata.tempcoverage.copy.help'/>">
+                                        <@icon name="content_copy" class="link-icon-primary"/> <span><@s.text name="manage.metadata.taxcoverage.copy"/></span>
+                                    </a>
+                                <#elseif tempInferFailed>
+                                    <span class="ov-ic"><@icon name="warning"/></span>
+                                    <span class="ov-grow">
+                                        <#list inferredMetadata.inferredTemporalCoverage.errors as error>
+                                            <span class="d-block"><@s.text name="${error}"/></span>
+                                        </#list>
+                                    </span>
+                                <#else>
+                                    <span class="flex-grow-1"><@s.text name="eml.warning.reinfer"/></span>
+                                </#if>
+                                <a id="temporal-re-infer-link" href="metadata-coverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferTemporalAutomatically=true#s-temporal" class="<#if tempInferFailed>align-self-center<#else>metadata-action-link custom-link</#if>">
+                                    <#if !tempInferFailed><@icon name="autorenew" class="link-icon-primary"/> </#if><span><@s.text name="eml.reinfer"/></span>
                                 </a>
                             </div>
-                            <div class="col-lg-6">
-                                <@select i18nkey="eml.temporalCoverages.type"  name="tempTypes" options=tempTypes />
-                            </div>
-                        </div>
 
-                        <!-- DATE RANGE -->
-                        <div id="date-99999" class="typeForm col-12" style="display:none">
-                            <div class="row g-3">
-                                <div class="col-lg-6">
-                                    <@input type="date" i18nkey="eml.temporalCoverages.startDate" name="startDate" help="i18n"/>
+                            <#-- "From my data": the first and last date, read-only -->
+                            <#if (inferredMetadata.inferredTemporalCoverage.data)??>
+                                <#assign itc = inferredMetadata.inferredTemporalCoverage.data/>
+                                <div id="temp-fixed" class="temp-fixed" hidden
+                                     data-start="${(itc.startDate?date?string('yyyy-MM-dd'))!}" data-end="${(itc.endDate?date?string('yyyy-MM-dd'))!}">
+                                    <div class="temp-fixed-row">
+                                        <span><@s.text name="eml.temporalCoverages.startDate"/> <b>${(itc.startDate?date?string('yyyy-MM-dd'))!}</b></span>
+                                        <span><@s.text name="eml.temporalCoverages.endDate"/> <b>${(itc.endDate?date?string('yyyy-MM-dd'))!}</b></span>
+                                    </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <@input type="date" i18nkey="eml.temporalCoverages.endDate" name="endDate" help="i18n"/>
-                                </div>
-                            </div>
-                        </div>
+                            </#if>
+                        </#if>
 
-                        <!-- SINGLE DATE -->
-                        <div id="single-99999" class="typeForm col-lg-6" style="display:none">
-                            <div>
-                                <@input type="date" i18nkey="eml.temporalCoverages.singleDate" name="startDate" help="i18n" />
+                        <#-- "Enter by hand": any number of periods -->
+                        <div id="temp-manual">
+                            <div id="temp-periods" class="temp-periods">
+                                <#list eml.temporalCoverages as cov>
+                                    <@tempPeriod index=cov_index cov=cov/>
+                                </#list>
                             </div>
+                            <p id="temp-none" class="geo-hint mt-0" hidden><@s.text name="manage.metadata.tempcoverage.noPeriod"/></p>
+                            <a id="plus-tempperiod" href="" class="geo-add">
+                                <@icon name="add"/> <span><@s.text name="manage.metadata.tempcoverage.addPeriod"/></span>
+                            </a>
                         </div>
-
-                        <!-- FORMATION PERIOD -->
-                        <div id="formation-99999" class="typeForm col-lg-6" style="display:none">
-                            <div>
-                                <@input i18nkey="eml.temporalCoverages.formationPeriod" name="formationPeriod" help="i18n" />
-                            </div>
-                        </div>
-
-                        <!-- LIVING TIME PERIOD -->
-                        <div id="living-99999" class="typeForm col-lg-6" style="display:none">
-                            <div>
-                                <@input i18nkey="eml.temporalCoverages.livingTimePeriod" name="livingTimePeriod" help="i18n" />
-                            </div>
-                        </div>
+                        <template id="baseItem-tempperiod"><@tempPeriod index="__p__"/></template>
                     </div>
                 </div>
             </main>

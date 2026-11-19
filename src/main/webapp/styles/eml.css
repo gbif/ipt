@@ -147,3 +147,28 @@ a.tax-show-all { font-size: 0.75rem !important; color: rgb(var(--color-gbif-prim
     .tax-rank-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
 }
 .cov-infer-warn { margin-top: 10px !important; }
+
+/* Coverage page, temporal part: inferred range, periods as cards with a type switch */
+#temp-infer-bar[hidden], #temp-fixed[hidden], #temp-manual[hidden], .temp-field[hidden], .temp-help[hidden] { display: none !important; }
+.temp-fixed, #temp-manual { margin-top: 14px; }
+.temp-fixed-row { display: flex; flex-wrap: wrap; gap: 6px 24px; padding: 10px 12px; border: 1px dashed #c3c9cf; border-radius: 8px; font-size: 0.875rem; color: #6c757d; }
+.temp-fixed-row b { color: #212529; font-weight: 500; font-variant-numeric: tabular-nums; margin-left: 4px; }
+.temp-periods { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.temp-period { border: 1px solid #dee2e6; border-radius: 8px; padding: 10px 12px; background: #fff; }
+.temp-period.invalid { border-color: rgba(196, 62, 62, .6); }
+.temp-period-head { display: flex; gap: 8px; align-items: center; }
+.temp-types { display: inline-flex; flex-wrap: wrap; border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; margin-right: auto; }
+.temp-type { border: 0; border-right: 1px solid #dee2e6; background: #fff; font-size: 0.8rem; padding: 4px 10px; color: #6c757d; cursor: pointer; }
+.temp-type:last-child { border-right: 0; }
+.temp-type:hover { background: #f8f9fa; color: #212529; }
+.temp-type.on { background: rgba(var(--color-gbif-primary), .08); color: rgb(var(--color-gbif-primary)); font-weight: 600; }
+.temp-period-bad { color: #c43e3e; display: inline-flex; }
+.temp-period-bad[hidden] { display: none; }
+.temp-period .removeTempPeriodLink { color: #6c757d !important; padding: 2px 4px; border-radius: 4px; display: inline-flex; text-decoration: none; }
+.temp-period .removeTempPeriodLink:hover { color: #c43e3e !important; background: rgba(196, 62, 62, .08); }
+.temp-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 260px)); gap: 10px; margin-top: 10px; }
+.temp-period[data-type=FORMATION_PERIOD] .temp-fields, .temp-period[data-type=LIVING_TIME_PERIOD] .temp-fields { grid-template-columns: minmax(0, 540px); }
+.temp-field .form-label { font-size: 0.8rem; margin: 0 0 2px; }
+.temp-help { font-size: 0.78rem; color: #6c757d; margin-top: 6px; }
+.temp-msg, .temp-srv-msg { font-size: 0.78rem; }
+.temp-msg:not(:empty) { margin-top: 4px; }
