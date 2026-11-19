@@ -722,14 +722,14 @@ public class EmlValidatorTest extends IptBaseTest {
   @Test
   public void testAdditionalPart() {
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.ADDITIONAL_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   @Test
   public void testAdditionalPartAlternateIdIncomplete() {
     // invalid
     eml.getAlternateIdentifiers().set(0, "1");
-    assertFalse(validator.isValid(resource, MetadataSection.ADDITIONAL_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));
   }
 
   /**

@@ -34,7 +34,7 @@
             <#assign visibilityTitleInfo>
                 <@s.text name='manage.overview.visibility.description'/><br><br>
                 <@s.text name="manage.resource.status.intro.registration"/>
-                <#if !resource.dataPackage??><br><br><@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-additional.do?r=${resource.shortname}&amp;edit=Edit"><@s.text name="submenu.additional"/></a></@s.param></@s.text></#if>
+                <#if !resource.dataPackage??><br><br><@s.text name='manage.resource.status.intro.public.migration'><@s.param><a href="${baseURL}/manage/metadata-citations.do?r=${resource.shortname}#s-alternative-identifiers"><@s.text name="submenu.citations"/></a></@s.param></@s.text></#if>
                 <br><br><@s.text name='manage.resource.status.intro.public.gbifWarning'/>
             </#assign>
             <@popoverTextInfo visibilityTitleInfo true/>

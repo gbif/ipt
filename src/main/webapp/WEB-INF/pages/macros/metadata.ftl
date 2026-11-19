@@ -6,11 +6,14 @@ $(document).ready(function(){
     var specimenPreservationMethodItemsCount = -1;
     // other data formats on the citations page (#3319)
     var physicalDataItemsCount = -1;
+    // alternative identifiers on the citations page (#3319)
+    var altIdItemsCount = -1;
 
     calcIndexOfLastItem();
     calcNumberOfCollectionItems();
     calcNumberOfSpecimenPreservationMethodItems();
     calcNumberOfPhysicalDataItems();
+    calcNumberOfAltIdItems();
 
     function calcIndexOfLastItem() {
         var lastItem = $("#items .item:last-child").attr("id");
@@ -34,6 +37,14 @@ $(document).ready(function(){
             specimenPreservationMethodItemsCount = parseInt(lastItem.split("-")[2]);
         else
             specimenPreservationMethodItemsCount = -1;
+    }
+
+    function calcNumberOfAltIdItems() {
+        var lastItem = $("#altId-items .item:last-child").attr("id");
+        if (lastItem !== undefined)
+            altIdItemsCount = parseInt(lastItem.split("-")[2]);
+        else
+            altIdItemsCount = -1;
     }
 
     function calcNumberOfPhysicalDataItems() {
@@ -150,6 +161,15 @@ $(document).ready(function(){
 
     $(".removePhysicalDataLink").click(function (event) {
         removePhysicalDataItem(event);
+    });
+
+    $("#plus-altId").click(function (event) {
+        event.preventDefault();
+        addNewAltIdItem(true);
+    });
+
+    $(".removeAltIdLink").click(function (event) {
+        removeAltIdItem(event);
     });
 
     $(".removeAwardlLink").click(function (event) {
@@ -438,6 +458,46 @@ $(document).ready(function(){
         item.find("label[for]").attr("for", function () { return field($(this).attr("for")); });
     }
 
+    function addNewAltIdItem(effects) {
+        var newItem = $('#baseItem-altId').clone();
+        if (effects) newItem.hide();
+        newItem.appendTo('#altId-items');
+
+        if (effects) {
+            newItem.slideDown('slow');
+        }
+
+        setAltIdItemIndex(newItem, ++altIdItemsCount);
+
+        initInfoPopovers(newItem[0]);
+    }
+
+    function removeAltIdItem(event) {
+        event.preventDefault();
+        var $target = $(event.target);
+        if (!$target.is('a')) {
+            $target = $(event.target).closest('a');
+        }
+        $('#altId-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
+            $(this).remove();
+            $("#altId-items .item").each(function (index) {
+                setAltIdItemIndex($(this), index);
+            });
+            calcNumberOfAltIdItems();
+        });
+    }
+
+    // fields are named eml.alternateIdentifiers[index]; the template's is named alternateIdentifiers
+    function setAltIdItemIndex(item, index) {
+        item.attr("id", "altId-item-" + index);
+        item.find("[id^='altId-removeLink']").attr("id", "altId-removeLink-" + index)
+            .off("click").click(function (event) {
+                removeAltIdItem(event);
+            });
+        item.find("input").attr("id", "eml.alternateIdentifiers[" + index + "]").attr("name", "eml.alternateIdentifiers[" + index + "]");
+        item.find("label[for]").attr("for", "eml.alternateIdentifiers[" + index + "]");
+    }
+
     function removeCollectionItem(event) {
         event.preventDefault();
         var $target = $(event.target);
@@ -638,14 +698,6 @@ $(document).ready(function(){
             <#break>
 
 
-
-            <#case "additional">
-                $("#item-"+index+" input").attr("id",function() {
-                    return "eml.alternateIdentifiers["+index+"]"; });
-                $("#item-"+index+" label").attr("for",function() {
-                    return "eml.alternateIdentifiers["+index+"]"; });
-                $("#item-"+index+" input").attr("name",function() {return $(this).attr("id"); });
-            <#break>
 
             <#case "taxcoverage">
                 $("#item-" + index + " .subItems").attr("id", "subItems-" + index);

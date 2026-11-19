@@ -456,6 +456,8 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           resource.getEml().getBibliographicCitationSet().getBibliographicCitations().clear();
           // the other data formats (were the External links page, #3319)
           resource.getEml().getPhysicalData().clear();
+          // the alternative identifiers (were on the Additional Metadata page, #3319)
+          resource.getEml().getAlternateIdentifiers().clear();
         }
         doiReservedOrAssigned = hasDoiReservedOrAssigned(resource);
         if (doiReservedOrAssigned && !isHttpPost()) {
@@ -477,11 +479,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
         }
         break;
 
-      case ADDITIONAL_SECTION:
-        if (isHttpPost()) {
-          resource.getEml().getAlternateIdentifiers().clear();
-        }
-        break;
 
       default:
         break;
@@ -625,9 +622,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           next = MetadataSection.COLLECTIONS_SECTION;
           break;
         case COLLECTIONS_SECTION:
-          next = MetadataSection.ADDITIONAL_SECTION;
-          break;
-        case ADDITIONAL_SECTION:
           next = MetadataSection.BASIC_SECTION;
           break;
         default:

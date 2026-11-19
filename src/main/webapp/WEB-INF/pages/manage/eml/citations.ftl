@@ -113,6 +113,15 @@
             });
             sortable_physical_data[0].addEventListener('drag', dragScroll);
 
+            // alternative identifiers (were on the Additional Metadata page, #3319): reordering renumbers them
+            const sortable_alt_ids = initAndGetSortable('#altId-items');
+            sortable_alt_ids[0].addEventListener('sortupdate', function () {
+                $("#altId-items div.item").each(function (index) {
+                    $(this).find("input").attr("name", "eml.alternateIdentifiers[" + index + "]");
+                });
+            });
+            sortable_alt_ids[0].addEventListener('drag', dragScroll);
+
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
@@ -330,6 +339,50 @@
                                 <div class="col-lg-6">
                                     <@input name="formatVersion" i18nkey="eml.physicalData.formatVersion" help="i18n"/>
                                 </div>
+                            </div>
+                        </div>
+
+                        <#-- were on the Additional Metadata page (#3319); the list's ids are prefixed altId-, so they don't
+                             clash with the bibliography's (macros/metadata.ftl) -->
+                        <div class="my-md-3 p-3" id="s-alternative-identifiers" data-toc="${action.getText('manage.metadata.alternateIdentifiers.title')}">
+                            <@textinline name="manage.metadata.alternateIdentifiers.title" help="i18n"/>
+                            <div id="altId-items">
+                                <#list eml.alternateIdentifiers as item>
+                                    <div id="altId-item-${item_index}" class="item row g-3 border-bottom pb-3 mt-1">
+                                        <div class="handle mt-2 d-flex justify-content-end">
+                                            <a id="altId-removeLink-${item_index}" class="removeAltIdLink metadata-action-link custom-link" href="">
+                                                <span>
+                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                                                </span>
+                                                <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span>
+                                            </a>
+                                        </div>
+                                        <@input name="eml.alternateIdentifiers[${item_index}]" value=item i18nkey="eml.alternateIdentifier" help="i18n"/>
+                                    </div>
+                                </#list>
+                            </div>
+
+                            <div class="addNew col-12 mt-2">
+                                <a id="plus-altId" href="" class="metadata-action-link custom-link">
+                                    <span>
+                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
+                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                                        </svg>
+                                    </span>
+                                    <span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span>
+                                </a>
+                            </div>
+
+                            <div id="baseItem-altId" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">
+                                <div class="handle mt-2 d-flex justify-content-end">
+                                    <a id="altId-removeLink" class="removeAltIdLink metadata-action-link custom-link" href="">
+                                        <span>
+                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-danger"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                                        </span>
+                                        <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span>
+                                    </a>
+                                </div>
+                                <@input name="alternateIdentifiers" i18nkey="eml.alternateIdentifier" help="i18n"/>
                             </div>
                         </div>
                     </div>

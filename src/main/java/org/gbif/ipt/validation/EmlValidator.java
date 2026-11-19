@@ -853,6 +853,19 @@ public class EmlValidator extends BaseValidator {
               index++;
             }
           }
+
+          // the alternative identifiers (were on the Additional Metadata page, #3319)
+          int altIdIndex = 0;
+          for (String ai : eml.getAlternateIdentifiers()) {
+            if (!exists(ai)) {
+              ec.addFieldError(
+                  "eml.alternateIdentifiers[" + altIdIndex + "]",
+                  i18n.getText(
+                      "validation.required",
+                      i18n.getText("eml.alternateIdentifier")));
+            }
+            altIdIndex++;
+          }
           break;
 
         case COLLECTIONS_SECTION:
@@ -932,24 +945,6 @@ public class EmlValidator extends BaseValidator {
                       i18n.getText(
                           "validation.required",
                           i18n.getText("eml.jgtiCuratorialUnits.unitType")));
-              }
-              index++;
-            }
-          }
-          break;
-
-        case ADDITIONAL_SECTION:
-          // at least one field has to have had data entered into it to qualify for validation
-          if (!isAdditionalPageEmpty(eml)) {
-            // ensure each alternative id is longer than min length
-            int index = 0;
-            for (String ai : eml.getAlternateIdentifiers()) {
-              if (!exists(ai)) {
-                ec.addFieldError(
-                    "eml.alternateIdentifiers[" + index + "]",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.alternateIdentifier")));
               }
               index++;
             }
@@ -1194,34 +1189,6 @@ public class EmlValidator extends BaseValidator {
       return StringUtils.isBlank(set1.getKeywordsString()) && StringUtils.isBlank(set1.getKeywordThesaurus());
     }
     return true;
-  }
-
-  /**
-   * Determine if the Additional page is empty. In other words, the user hasn't entered any information for a single
-   * field yet. The alternate identifier can be multiple.
-   *
-   * @param eml EML
-   * @return whether the Additional page is empty or not.
-   */
-  private boolean isAdditionalPageEmpty(Eml eml) {
-    // total of 5 editable fields on page, including repeating alt. id
-    String logo = eml.getLogoUrl();
-    String rights = eml.getRights();
-    String info = eml.getAdditionalInfo();
-    String purpose = eml.getPurpose();
-    // skip pubDate - it's auto-set
-    // skip hierarchy - it's auto-set
-
-    for (String id : eml.getAlternateIdentifiers()) {
-      if (StringUtils.isNotBlank(id)) {
-        return false;
-      }
-    }
-
-    return (StringUtils.isBlank(logo) &&
-      StringUtils.isBlank(rights) &&
-      StringUtils.isBlank(info) && StringUtils.isBlank(purpose));
-
   }
 
   /**

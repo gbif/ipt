@@ -28,8 +28,7 @@ public enum MetadataSection {
   PROJECT_SECTION ("project"),
   METHODS_SECTION ("methods"),
   CITATIONS_SECTION ("citations"),
-  COLLECTIONS_SECTION ("collections"),
-  ADDITIONAL_SECTION ("additional");
+  COLLECTIONS_SECTION ("collections");
 
   /**
    * Section name. Used for example in URL.

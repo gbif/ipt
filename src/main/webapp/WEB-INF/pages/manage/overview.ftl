@@ -2551,8 +2551,7 @@
         "PROJECT_SECTION": "project",
         "METHODS_SECTION": "methods",
         "CITATIONS_SECTION": "citations",
-        "COLLECTIONS_SECTION": "collections",
-        "ADDITIONAL_SECTION": "additional"
+        "COLLECTIONS_SECTION": "collections"
         }/>
 
         <@dialog id="metadata-validation-result-modal" title=dlgTitle tone=isMetadataValid?then("ok", "warn") sub=dlgSub>
