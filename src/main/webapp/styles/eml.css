@@ -99,3 +99,51 @@
 a.geo-add { align-self: stretch; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; padding: 9px; border: 1px dashed #c3c9cf; border-radius: 8px; background: #fff; color: rgb(var(--color-gbif-primary)); font-size: 0.875rem; font-weight: 500; text-decoration: none; transition: border-color .1s ease, background .1s ease; }
 a.geo-add:hover, a.geo-add:focus-visible { border-color: rgb(var(--color-gbif-primary)); background: rgba(var(--color-gbif-primary), .05); color: rgb(var(--color-gbif-primary)); text-decoration: none; }
 a.geo-add .material-icon { width: 18px; height: 18px; }
+
+/* Coverage page, taxonomic part: inferred names per rank, groups as folding cards */
+#tax-infer-bar[hidden], #tax-fixed[hidden], #tax-manual[hidden], .tax-list[hidden], .tax-actions[hidden] { display: none !important; }
+.tax-fixed, #tax-manual { margin-top: 14px; }
+.tax-ranks { border: 1px solid #dee2e6; border-radius: 8px; }
+.tax-rank-row { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px; padding: 8px 12px; border-bottom: 1px solid #f1f3f5; }
+.tax-rank-row:last-child { border-bottom: 0; }
+.tax-rank-name { font-size: 0.8rem; color: #6c757d; padding-top: 1px; }
+.tax-names { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.tax-chip { font-size: 0.8rem; border-radius: 3px; padding: 1px 7px; background: #f1f3f5; }
+.tax-names:not(.all) .tax-chip-more { display: none; }
+a.tax-show-all { font-size: 0.75rem !important; color: rgb(var(--color-gbif-primary)); text-decoration: none; }
+.tax-rank-warn { font-size: 0.8rem; color: #8a5a00; display: inline-flex; gap: 4px; align-items: center; }
+.tax-groups { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.tax-group { border: 1px solid #dee2e6; border-radius: 8px; padding: 10px 12px; background: #fff; }
+.tax-group.sel { border-color: rgb(var(--color-gbif-primary)); box-shadow: 0 0 0 1px rgb(var(--color-gbif-primary)); }
+.tax-group:not(.sel):hover { border-color: #adb5bd; }
+.tax-group.invalid { border-color: rgba(196, 62, 62, .6); }
+.tax-group:not(.sel) > .tax-group-body { display: none; }
+.tax-group-head { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.tax-group-name { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.tax-group-title { font-weight: 600; font-size: 0.875rem; }
+.tax-group-sub { font-size: 0.78rem; color: #6c757d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tax-group.sel .tax-group-sub, .tax-group-sub:empty { display: none; }
+.tax-group-bad { color: #c43e3e; display: inline-flex; }
+.tax-group-bad[hidden] { display: none; }
+.tax-count { font-size: 0.72rem; border-radius: 3px; padding: 1px 6px; background: #f1f3f5; color: #6c757d; white-space: nowrap; }
+.tax-group .removeTaxGroupLink, .tax-table .tax-remove-row { color: #6c757d !important; padding: 2px 4px; border-radius: 4px; display: inline-flex; text-decoration: none; }
+.tax-group .removeTaxGroupLink:hover, .tax-table .tax-remove-row:hover { color: #c43e3e !important; background: rgba(196, 62, 62, .08); }
+.tax-group-body { margin-top: 8px; }
+.tax-group-body .form-label { font-size: 0.8rem; margin: 0 0 2px; }
+.tax-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.875rem; }
+.tax-table th { text-align: left; font-size: 0.72rem; font-weight: 600; color: #6c757d; padding: 4px 6px; border-bottom: 1px solid #dee2e6; }
+.tax-table td { padding: 3px 3px; border-bottom: 1px solid #f1f3f5; vertical-align: middle; }
+.tax-table .tax-rank-col { width: 170px; }
+.tax-table .tax-x { width: 30px; text-align: center; }
+.tax-table .tax-sci { font-style: italic; }
+.tax-table tr.dup td { background: #fff8ec; }
+.tax-msg, .tax-srv-msg { font-size: 0.78rem; }
+.tax-msg:not(:empty) { margin-top: 4px; }
+.tax-actions { display: flex; gap: 16px; margin-top: 8px; font-size: 0.875rem; }
+.tax-list { margin-top: 10px; }
+.tax-list-help { font-size: 0.78rem; color: #6c757d; margin-top: 4px; }
+@media (max-width: 575.98px) {
+    .tax-table .tax-rank-col { width: 120px; }
+    .tax-rank-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+.cov-infer-warn { margin-top: 10px !important; }

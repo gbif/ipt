@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
     <script src="${baseURL}/js/leaflet/leaflet-1.9.4.js"></script>
     <#include "/WEB-INF/pages/macros/popover.ftl"/>
-    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
-    <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
-    <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
-    <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
 
     <#assign currentLocale = .vars["locale"]/>
     <#if currentLocale == "es" || currentLocale == "fr" || currentLocale == "ru" || currentLocale == "pt" >
@@ -402,7 +398,7 @@
 
             function setMode(m, initial) {
                 mode = m;
-                $(".geo-mode").each(function () {
+                $("#s-geographic .geo-mode").each(function () {
                     var on = $(this).data("mode") === m;
                     $(this).toggleClass("selected", on).find("input").prop("checked", on);
                 });
@@ -425,7 +421,7 @@
                 draw(true);
             }
 
-            $(".geo-mode input").on("change", function () {
+            $("#s-geographic .geo-mode input").on("change", function () {
                 setMode($(this).val(), false);
             });
 
@@ -434,7 +430,7 @@
                 return KEYS.every(function (k) { return b[k] === GLOBAL[k]; });
             }
             var initialMode = "manual";
-            if ($infer.val() === "true" || (urlParams.get('inferAutomatically') === 'true' && $(".geo-mode[data-mode=inferred]").length)) {
+            if ($infer.val() === "true" || (urlParams.get('inferAutomatically') === 'true' && $("#s-geographic .geo-mode[data-mode=inferred]").length)) {
                 initialMode = "inferred";
             } else if (cards().length === 1 && isGlobal(readBox(cards().first())) && !cards().first().find(".geo-srv-error").length) {
                 initialMode = "global";
@@ -486,6 +482,9 @@
                 $form.find(".geo-compass input:enabled, #geo-fixed input:enabled").each(function () {
                     this.value = this.value.trim().replace(/[.,]/, DECIMAL);
                 });
+                if (window.checkTaxonomicCoverage && !window.checkTaxonomicCoverage()) {
+                    return;
+                }
                 $form.submit();
             }
 
@@ -504,160 +503,311 @@
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
-    <#-- taxonomic coverage (was a page of its own, #3319); its inference ids are prefixed taxonomic-, its list keeps the plain
-         ids of macros/metadata.ftl -->
+    <#-- taxonomic coverage: where it comes from (inferred or by hand) and one or more groups of taxa -->
     <script>
-        $(document).ready(function(){
-            function updateQueryParam(param, value) {
-                const url = new URL(window.location.href);
-                url.searchParams.set(param, value);
-                history.replaceState(null, '', url);
+        $(document).ready(function () {
+            <#if (inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords)??>
+            var TAX_INFERRED = [
+                <#list inferredMetadata.inferredTaxonomicCoverage.data.taxonKeywords as t>
+                {n: "${(t.scientificName!)?js_string?no_esc}", r: "${(t.rank!)?lower_case?js_string?no_esc}"}<#sep>,</#sep>
+                </#list>
+            ];
+            <#else>
+            var TAX_INFERRED = [];
+            </#if>
+            var TT = {
+                group: "${action.getText('manage.metadata.taxcoverage.group')?js_string?no_esc}",
+                taxa: "${action.getText('manage.metadata.taxcoverage.taxa')?js_string?no_esc}",
+                duplicate: "${action.getText('manage.metadata.taxcoverage.duplicate')?js_string?no_esc}",
+                sciRequired: "${action.getText('validation.required', [action.getText('eml.taxonomicCoverages.taxonKeyword.scientificName')])?js_string?no_esc}"
+            };
+
+            var $form = $("#coverage-form");
+            var $section = $("#s-taxonomic");
+            var $groups = $("#tax-groups");
+            var $fixed = $("#tax-fixed");
+            var $infer = $("#tax-infer");
+            var mode;
+            var sel = 0;
+
+            function format(text, args) {
+                return text.replace(/\{(\d)\}/g, function (m, i) { return args[i]; });
             }
-
-            function deleteQueryParam(param) {
-                const url = new URL(window.location.href);
-                url.searchParams.delete(param)
-                history.replaceState(null, '', url);
+            function notifyChange() {
+                // inc/footer.ftl shows the save bar on input events of the form
+                $form[0].dispatchEvent(new Event('input', {bubbles: true}));
             }
-
-            var $inferAutomaticallyCheckbox = $('#resource\\.inferTaxonomicCoverageAutomatically');
-
-            // Function to check if query param exists and update checkbox accordingly
-            function checkUrlParams() {
-                // if "inferTaxonomicAutomatically" present and true, tick the inferTaxonomicCoverageAutomatically checkbox
-                const urlParams = new URLSearchParams(window.location.search);
-                const checkboxParam = urlParams.get('inferTaxonomicAutomatically');
-                if (checkboxParam === 'true') {
-                    // select checkbox
-                    $inferAutomaticallyCheckbox.prop('checked', true);
-                    // enable description input
-                    $('div#static-taxanomic textarea').show().prop('disabled', false);
-                }
-            }
-
-            var isInferAutomaticallyChecked = $inferAutomaticallyCheckbox.is(":checked");
-            if (isInferAutomaticallyChecked) {
-                // enable description input
-                $('div#static-taxanomic textarea').show().prop('disabled', false);
-            }
-
-            // add/remove "inferTaxonomicAutomatically" param when clicking checkbox
-            $inferAutomaticallyCheckbox.change(function() {
-                if ($(this).is(':checked')) {
-                    updateQueryParam('inferTaxonomicAutomatically', 'true');
-                    $('div#static-taxanomic textarea').show().prop('disabled', false);
+            function setUrlParam(value) {
+                var url = new URL(window.location.href);
+                if (value) {
+                    url.searchParams.set("inferTaxonomicAutomatically", "true");
                 } else {
-                    deleteQueryParam('inferTaxonomicAutomatically');
-                    $('div#static-taxanomic textarea').hide().prop('disabled', true);
+                    url.searchParams.delete("inferTaxonomicAutomatically");
                 }
-            });
-
-            // Check query params on page load
-            checkUrlParams();
-
-            $('#plus').click(function () {
-                var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-                var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-                    return new bootstrap.Popover(popoverTriggerEl)
-                })
-                try {
-                    var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
-                        trigger: 'focus'
-                    })
-                } catch (TypeError) {
-                }
-            });
-
-            function initAndGetSortable(selector) {
-                return sortable(selector, {
-                    forcePlaceholderSize: true,
-                    placeholderClass: 'border',
-                    handle: '.handle'
-                });
-            }
-
-            const sortable_taxcoverages = initAndGetSortable('#items');
-            sortable_taxcoverages[0].addEventListener('sortupdate', changeInputNamesTaxCoverageAfterDragging);
-            sortable_taxcoverages[0].addEventListener('drag', dragScroll);
-
-            $("[id^='subItems-']").each(function (index) {
-                const sortable_taxa = initAndGetSortable("#" + $(this)[0].id);
-                sortable_taxa[0].addEventListener('sortupdate', changeInputNamesTaxonAfterDragging);
-                sortable_taxa[0].addEventListener('drag', dragScroll);
-            });
-
-            function dragScroll(e) {
-                var cursor = e.pageY;
-                var parentWindow = parent.window;
-                var pixelsToTop = $(parentWindow).scrollTop();
-                var screenHeight = $(parentWindow).height();
-
-                if ((cursor - pixelsToTop) > screenHeight * 0.9) {
-                    parentWindow.scrollBy(0, (screenHeight / 30));
-                } else if ((cursor - pixelsToTop) < screenHeight * 0.1) {
-                    parentWindow.scrollBy(0, -(screenHeight / 30));
-                }
-            }
-
-            function changeInputNamesTaxonAfterDragging(e) {
-                displayProcessing();
-                var targetId = e.target.id;
-                var parentIndex = targetId.split("-")[1];
-                var items = $("#" + e.target.id + " div.sub-item");
-
-                items.each(function (index) {
-                    var elementId = $(this)[0].id;
-
-                    $("div#" + elementId + " input[id$='scientificName']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].scientificName");
-                    $("div#" + elementId + " input[id$='commonName']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].commonName");
-                    $("div#" + elementId + " select[id$='rank']").attr("name", "eml.taxonomicCoverages[" + parentIndex + "].taxonKeywords[" + index + "].rank");
-                });
-
-                hideProcessing();
-            }
-
-            function changeInputNamesTaxCoverageAfterDragging(e) {
-                displayProcessing();
-                var items = $("#items div.item");
-
-                items.each(function (index) {
-                    var elementId = $(this)[0].id;
-
-                    $("div#" + elementId + " textarea[id$='description']").attr("name", "eml.taxonomicCoverages[" + index + "].description");
-                    $("div#" + elementId + " input[id^='add-button']").attr("name", "add-button-" + index);
-
-                    var scientificNames = $("#" + elementId + " input[id$='scientificName']");
-                    scientificNames.each(function (sub_index) {
-                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].scientificName");
-                    });
-
-                    var commonNames = $("#" + elementId + " input[id$='commonName']");
-                    commonNames.each(function (sub_index) {
-                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].commonName");
-                    });
-
-                    var ranks = $("#" + elementId + " select[id$='rank']");
-                    ranks.each(function (sub_index) {
-                        $(this).attr("name", "eml.taxonomicCoverages[" + index + "].taxonKeywords[" + sub_index + "].rank");
-                    });
-                });
-
-                hideProcessing();
+                history.replaceState(null, '', url);
             }
 
             $("#taxonomic-re-infer-link").on('click', displayProcessing);
 
-            $('[id^="eml.taxonomicCoverages"][id$=".rank"]').select2({
-                placeholder: '${action.getText("eml.rank.selection")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
+            function groups() {
+                return $groups.children(".tax-group");
+            }
+            function rowsOf($g) {
+                return $g.find(".tax-rows > .tax-row");
+            }
+            function isRowEmpty($r) {
+                return !$r.find("[data-f=scientificName]").val().trim()
+                    && !$r.find("[data-f=commonName]").val().trim()
+                    && !$r.find("[data-f=rank]").val();
+            }
+
+            // names, ids and titles follow the position in the list
+            function renumber() {
+                groups().each(function (i) {
+                    var $g = $(this);
+                    $g.attr("id", "tax-group-" + i);
+                    $g.find(".tax-group-title").text(format(TT.group, [i + 1]));
+                    $g.find(".tax-description").attr({id: "tax-" + i + "-description", name: "eml.taxonomicCoverages[" + i + "].description"});
+                    $g.find("label[for$=-description]").attr("for", "tax-" + i + "-description");
+                    $g.find(".tax-list textarea").attr("id", "tax-" + i + "-list");
+                    $g.find(".tax-list label").attr("for", "tax-" + i + "-list");
+                    rowsOf($g).each(function (j) {
+                        $(this).find("[data-f]").each(function () {
+                            this.name = "eml.taxonomicCoverages[" + i + "].taxonKeywords[" + j + "]." + $(this).data("f");
+                        });
+                    });
+                    refreshGroup($g);
+                });
+                $("#tax-none").prop("hidden", mode !== "manual" || groups().length > 0);
+            }
+
+            // count, duplicates and the folded-state warning of one group
+            function refreshGroup($g) {
+                var seen = {};
+                var n = 0;
+                rowsOf($g).each(function () {
+                    var $r = $(this);
+                    var name = $r.find("[data-f=scientificName]").val().trim().toLowerCase();
+                    $r.removeClass("dup").removeAttr("title");
+                    if (name) {
+                        n++;
+                        (seen[name] = seen[name] || []).push($r);
                     }
-                },
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
+                });
+                Object.keys(seen).forEach(function (k) {
+                    if (seen[k].length > 1) {
+                        seen[k].forEach(function ($r) { $r.addClass("dup").attr("title", TT.duplicate); });
+                    }
+                });
+                $g.find(".tax-count").text(format(TT.taxa, [n]));
+                var bad = $g.find(".is-invalid, .tax-srv-msg").length > 0;
+                $g.toggleClass("invalid", bad).find(".tax-group-bad").prop("hidden", !bad);
+            }
+
+            function select(i) {
+                sel = i;
+                groups().each(function (j) { $(this).toggleClass("sel", j === i); });
+            }
+
+            function addRow($g, taxon) {
+                var $r = $($("#baseItem-taxrow").html().replace(/__g__/g, "0").replace(/__t__/g, "0")).appendTo($g.find(".tax-rows"));
+                if (taxon) {
+                    $r.find("[data-f=scientificName]").val(taxon.n || "");
+                    $r.find("[data-f=commonName]").val(taxon.c || "");
+                    $r.find("[data-f=rank]").val(taxon.r || "");
+                }
+                return $r;
+            }
+
+            function addGroup(description, taxa) {
+                var $g = $($("#baseItem-taxgroup").html().replace(/__g__/g, String(groups().length))).appendTo($groups);
+                $g.find(".tax-description").val(description || "");
+                $g.find(".tax-group-sub").text(description || "");
+                if (taxa && taxa.length) {
+                    taxa.forEach(function (t) { addRow($g, t); });
+                } else {
+                    addRow($g);
+                }
+                renumber();
+                select(groups().length - 1);
+                return $g;
+            }
+
+            $("#plus-taxgroup").on("click", function (e) {
+                e.preventDefault();
+                var $g = addGroup();
+                $g.find(".tax-description").trigger("focus");
+                notifyChange();
             });
+
+            $groups.on("click", ".removeTaxGroupLink", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $g = $(this).closest(".tax-group");
+                var i = groups().index($g);
+                $g.remove();
+                if (sel >= i && sel > 0) {
+                    sel--;
+                }
+                renumber();
+                select(Math.min(sel, Math.max(0, groups().length - 1)));
+                notifyChange();
+            });
+
+            $groups.on("click", ".tax-group-head", function () {
+                select(groups().index($(this).closest(".tax-group")));
+            });
+            $groups.on("focusin", ".tax-group", function () {
+                var i = groups().index(this);
+                if (i !== sel) {
+                    select(i);
+                }
+            });
+
+            $groups.on("click", ".tax-add-row", function (e) {
+                e.preventDefault();
+                var $g = $(this).closest(".tax-group");
+                var $r = addRow($g);
+                renumber();
+                $r.find("[data-f=scientificName]").trigger("focus");
+                notifyChange();
+            });
+            $groups.on("click", ".tax-remove-row", function (e) {
+                e.preventDefault();
+                var $g = $(this).closest(".tax-group");
+                $(this).closest(".tax-row").remove();
+                renumber();
+                notifyChange();
+            });
+
+            // "Add several taxa": one name per line
+            $groups.on("click", ".tax-show-list", function (e) {
+                e.preventDefault();
+                var $g = $(this).closest(".tax-group");
+                $g.find(".tax-list").prop("hidden", false).find("textarea").trigger("focus");
+                $g.find(".tax-actions").prop("hidden", true);
+            });
+            function closeList($g) {
+                $g.find(".tax-list").prop("hidden", true).find("textarea").val("");
+                $g.find(".tax-actions").prop("hidden", false);
+            }
+            $groups.on("click", ".tax-list-cancel", function () {
+                closeList($(this).closest(".tax-group"));
+            });
+            $groups.on("click", ".tax-list-add", function () {
+                var $g = $(this).closest(".tax-group");
+                var lines = $g.find(".tax-list textarea").val().split("\n").map(function (l) { return l.trim(); }).filter(Boolean);
+                if (lines.length) {
+                    // the empty row a new group starts with is replaced
+                    rowsOf($g).filter(function () { return isRowEmpty($(this)); }).remove();
+                    lines.forEach(function (l) { addRow($g, {n: l}); });
+                    renumber();
+                    notifyChange();
+                }
+                closeList($g);
+            });
+
+            $groups.on("input change", ".tax-row [data-f]", function () {
+                var $g = $(this).closest(".tax-group");
+                $(this).removeClass("is-invalid tax-srv-error");
+                if ($(this).data("f") === "scientificName") {
+                    $g.find(".tax-srv-msg").remove();
+                    $g.find(".tax-msg").empty();
+                }
+                refreshGroup($g);
+            });
+            $groups.on("input", ".tax-description", function () {
+                $(this).closest(".tax-group").find(".tax-group-sub").text(this.value);
+            });
+
+            // "From my data": more than 24 names of a rank are folded
+            $fixed.on("click", ".tax-show-all", function (e) {
+                e.preventDefault();
+                $(this).closest(".tax-names").addClass("all");
+                $(this).remove();
+            });
+
+            // the inferred names as a new group to edit; publishing no longer replaces them
+            $("#tax-copy").on("click", function (e) {
+                e.preventDefault();
+                var description = $fixed.find("textarea").val();
+                setMode("manual", false);
+                addGroup(description, TAX_INFERRED);
+                notifyChange();
+                groups().last()[0].scrollIntoView({behavior: "smooth", block: "nearest"});
+            });
+
+            function setMode(m, initial) {
+                mode = m;
+                $section.find(".tax-mode").each(function () {
+                    var on = $(this).data("mode") === m;
+                    $(this).toggleClass("selected", on).find("input").prop("checked", on);
+                });
+                $infer.val(m === "inferred" ? "true" : "false");
+                if (!initial) {
+                    setUrlParam(m === "inferred");
+                }
+                var manual = m === "manual";
+                $("#tax-infer-bar").prop("hidden", manual);
+                $fixed.prop("hidden", manual).find("textarea").prop("disabled", manual);
+                $("#tax-manual").prop("hidden", !manual).find("input, select, textarea").prop("disabled", !manual);
+                if (!manual) {
+                    // the description carries over from the first group
+                    var $d = $fixed.find("textarea");
+                    if (!$d.val().trim()) {
+                        $d.val(groups().first().find(".tax-description").val() || "");
+                    }
+                }
+                renumber();
+            }
+
+            $section.find(".tax-mode input").on("change", function () {
+                setMode($(this).val(), false);
+                notifyChange();
+            });
+
+            var urlParams = new URLSearchParams(window.location.search);
+            var initialMode = ($infer.val() === "true" || (urlParams.get('inferTaxonomicAutomatically') === 'true' && $section.find(".tax-mode").length))
+                ? "inferred" : "manual";
+            setMode(initialMode, true);
+            // a group with a server error is selected first
+            var $bad = groups().filter(function () { return $(this).find(".tax-srv-msg, .tax-srv-error").length > 0; }).first();
+            select($bad.length ? groups().index($bad) : 0);
+
+            // before the form is posted (geographic part, top of this file): empty rows and groups are dropped,
+            // a taxon needs a scientific name
+            window.checkTaxonomicCoverage = function () {
+                if (mode !== "manual") {
+                    return true;
+                }
+                rowsOf($groups).filter(function () { return isRowEmpty($(this)); }).remove();
+                groups().filter(function () {
+                    return rowsOf($(this)).length === 0 && !$(this).find(".tax-description").val().trim();
+                }).remove();
+                var firstBad = null;
+                groups().each(function () {
+                    var $g = $(this);
+                    var missing = false;
+                    rowsOf($g).each(function () {
+                        var $s = $(this).find("[data-f=scientificName]");
+                        if (!$s.val().trim()) {
+                            $s.addClass("is-invalid");
+                            missing = true;
+                        }
+                    });
+                    $g.find(".tax-msg").text(missing ? TT.sciRequired : "");
+                    if (missing && firstBad === null) {
+                        firstBad = $g;
+                    }
+                });
+                renumber();
+                if (firstBad) {
+                    select(groups().index(firstBad));
+                    firstBad[0].scrollIntoView({behavior: "smooth", block: "center"});
+                    return false;
+                }
+                return true;
+            };
         });
     </script>
     <#-- temporal coverage (was a page of its own, #3319); its ids are prefixed temporal- where the geographic part uses the same -->
@@ -1014,29 +1164,6 @@
 <div class="container px-0">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 
-        <div id="taxcoverage-no-available-data-warning" class="alert alert-warning alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
-            <div class="me-3">
-                <i class="bi bi-exclamation-triangle alert-orange-2 fs-bigger-2 me-2"></i>
-            </div>
-            <div class="overflow-x-hidden pt-1">
-                <span><@s.text name="eml.warning.reinfer"/></span>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-                <#if (inferredMetadata.inferredTaxonomicCoverage)??>
-                    <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
-                        <div class="alert alert-danger alert-dismissible fade show d-flex taxonomic-error-alert" role="alert" style="display: none !important;">
-                            <div class="me-3">
-                                <i class="bi bi-exclamation-circle alert-red-2 fs-bigger-2 me-2"></i>
-                            </div>
-                            <div class="overflow-x-hidden pt-1">
-                                <span><@s.text name="${error}"/></span>
-                            </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </#list>
-                </#if>
 
         <div id="tempcoverage-no-available-data-warning" class="alert alert-warning alert-dismissible fade show d-flex" style="display: none !important;" role="alert">
             <div class="me-3">
@@ -1156,20 +1283,23 @@
                         </div>
 
                         <#if geoCanInfer>
-                            <div id="geo-infer-bar" class="geo-infer-bar" hidden>
+                            <#-- inferring failed: a warning, publishing goes on without the inferred coverage -->
+                            <#assign geoInferFailed = !(inferredMetadata.inferredGeographicCoverage.data)?? && (inferredMetadata.inferredGeographicCoverage)?? && inferredMetadata.inferredGeographicCoverage.errors?size != 0/>
+                            <div id="geo-infer-bar" class="<#if geoInferFailed>ov-banner warn compact cov-infer-warn<#else>geo-infer-bar</#if>" hidden>
                                 <#if (inferredMetadata.inferredGeographicCoverage.data)??>
                                     <span class="flex-grow-1"><@s.text name="manage.metadata.geocoverage.inferredOn"><@s.param>${(inferredMetadata.lastModified?datetime?string.medium)!}</@s.param></@s.text></span>
                                 <#elseif (inferredMetadata.inferredGeographicCoverage)?? && inferredMetadata.inferredGeographicCoverage.errors?size != 0>
-                                    <span class="flex-grow-1 text-gbif-danger">
+                                    <span class="ov-ic"><@icon name="warning"/></span>
+                                    <span class="ov-grow">
                                         <#list inferredMetadata.inferredGeographicCoverage.errors as error>
-                                            <span class="d-block"><@icon name="error"/> <@s.text name="${error}"/></span>
+                                            <span class="d-block"><@s.text name="${error}"/></span>
                                         </#list>
                                     </span>
                                 <#else>
                                     <span class="flex-grow-1"><@s.text name="eml.warning.reinfer"/></span>
                                 </#if>
-                                <a id="re-infer-link" href="metadata-coverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="metadata-action-link custom-link">
-                                    <@icon name="autorenew"/> <span><@s.text name="eml.reinfer"/></span>
+                                <a id="re-infer-link" href="metadata-coverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferAutomatically=true" class="<#if geoInferFailed>align-self-center<#else>metadata-action-link custom-link</#if>">
+                                    <#if !geoInferFailed><@icon name="autorenew" class="link-icon-primary"/> </#if><span><@s.text name="eml.reinfer"/></span>
                                 </a>
                             </div>
                             <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
@@ -1221,314 +1351,185 @@
                         <input name="r" type="hidden" value="${resource.shortname}" />
                     </div>
 
-                    <!-- Taxonomic coverage (was a page of its own, #3319) -->
+                    <#-- one taxon of a group: scientific name, common name, rank -->
+                    <#macro taxRow g t taxon={}>
+                        <#local sciField = "eml.taxonomicCoverages[${g}].taxonKeywords[${t}].scientificName"/>
+                        <#local taxRank = ((taxon.rank)!"")?lower_case/>
+                        <tr class="tax-row">
+                            <td>
+                                <input type="text" class="form-control form-control-sm tax-sci<#if (action.fieldErrors[sciField])??> is-invalid tax-srv-error</#if>" data-f="scientificName" autocomplete="off"
+                                       name="${sciField}" value="${(taxon.scientificName)!}" aria-label="<@s.text name='eml.taxonomicCoverages.taxonKeyword.scientificName'/>"/>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control form-control-sm" data-f="commonName" autocomplete="off"
+                                       name="eml.taxonomicCoverages[${g}].taxonKeywords[${t}].commonName" value="${(taxon.commonName)!}" aria-label="<@s.text name='eml.taxonomicCoverages.taxonKeyword.commonName'/>"/>
+                            </td>
+                            <td>
+                                <select class="form-select form-select-sm" data-f="rank" name="eml.taxonomicCoverages[${g}].taxonKeywords[${t}].rank" aria-label="<@s.text name='eml.taxonomicCoverages.taxonKeyword.rank'/>">
+                                    <#list ranks?keys as rk>
+                                        <option value="${rk}"<#if rk == taxRank> selected</#if>>${ranks.get(rk)?cap_first}</option>
+                                    </#list>
+                                </select>
+                            </td>
+                            <td class="tax-x">
+                                <a href="" class="tax-remove-row" title="<@s.text name='manage.metadata.taxcoverage.removeTaxon'/>" aria-label="<@s.text name='manage.metadata.taxcoverage.removeTaxon'/>"><@icon name="delete"/></a>
+                            </td>
+                        </tr>
+                    </#macro>
+                    <#-- one taxonomic coverage: a description and the taxa it covers; folds to its header when not selected -->
+                    <#macro taxGroup index group={}>
+                        <#local groupTaxa = (group.taxonKeywords)![]/>
+                        <div class="tax-group" id="tax-group-${index}">
+                            <div class="tax-group-head">
+                                <span class="tax-group-name">
+                                    <span class="tax-group-title"><@s.text name="manage.metadata.taxcoverage.group"><@s.param>${index + 1}</@s.param></@s.text></span>
+                                    <span class="tax-group-sub">${(group.description)!}</span>
+                                </span>
+                                <span class="tax-group-bad" hidden><@icon name="error"/></span>
+                                <span class="tax-count"></span>
+                                <a href="" class="removeTaxGroupLink" title="<@s.text name='manage.metadata.taxcoverage.removeGroup'/>" aria-label="<@s.text name='manage.metadata.taxcoverage.removeGroup'/>">
+                                    <@icon name="delete"/>
+                                </a>
+                            </div>
+                            <div class="tax-group-body">
+                                <label class="form-label" for="tax-${index}-description"><@s.text name="eml.taxonomicCoverages.description"/></label>
+                                <textarea class="form-control form-control-sm tax-description" id="tax-${index}-description" rows="2" name="eml.taxonomicCoverages[${index}].description">${(group.description)!}</textarea>
+
+                                <table class="tax-table">
+                                    <thead>
+                                    <tr>
+                                        <th><@s.text name="eml.taxonomicCoverages.taxonKeyword.scientificName"/> <span class="text-gbif-danger">&#42;</span></th>
+                                        <th><@s.text name="eml.taxonomicCoverages.taxonKeyword.commonName"/></th>
+                                        <th class="tax-rank-col"><@s.text name="eml.taxonomicCoverages.taxonKeyword.rank"/></th>
+                                        <th class="tax-x"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="tax-rows">
+                                    <#list groupTaxa as taxon>
+                                        <@taxRow g=index t=taxon_index taxon=taxon/>
+                                    </#list>
+                                    </tbody>
+                                </table>
+                                <#if index?is_number>
+                                    <#list groupTaxa as taxon>
+                                        <@s.fielderror cssClass="list-unstyled text-gbif-danger tax-srv-msg mb-0 mt-1" fieldName="eml.taxonomicCoverages[${index}].taxonKeywords[${taxon_index}].scientificName"/>
+                                    </#list>
+                                </#if>
+                                <div class="tax-msg text-gbif-danger"></div>
+
+                                <div class="tax-actions">
+                                    <a href="" class="tax-add-row metadata-action-link custom-link"><@icon name="add" class="link-icon-primary"/> <span><@s.text name="manage.metadata.taxcoverage.addTaxon"/></span></a>
+                                    <a href="" class="tax-show-list metadata-action-link custom-link"><@icon name="add" class="link-icon-primary"/> <span><@s.text name="manage.metadata.taxcoverage.addSeveralTaxa"/></span></a>
+                                </div>
+                                <div class="tax-list" hidden>
+                                    <label class="form-label" for="tax-${index}-list"><@s.text name="eml.taxonomicCoverages.taxonList"/></label>
+                                    <textarea class="form-control form-control-sm" id="tax-${index}-list" rows="4"></textarea>
+                                    <div class="tax-list-help"><@s.text name="eml.taxonomicCoverages.taxonList.help"/> <@s.text name="manage.metadata.taxcoverage.addSeveralTaxa.help"/></div>
+                                    <div class="d-flex gap-2 mt-2">
+                                        <button type="button" class="btn btn-sm btn-outline-gbif-primary tax-list-add"><@s.text name="button.add"/></button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary tax-list-cancel"><@s.text name="button.cancel"/></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </#macro>
+
+                    <!-- Taxonomic coverage (was a page of its own, #3319): where it comes from and one or more groups -->
                     <div class="my-md-3 p-3" id="s-taxonomic" data-toc="${action.getText('submenu.taxcoverage')}">
                         <@textinline name="submenu.taxcoverage"/>
 
-                        <#if resource.dataPackage==false || resource.dwcDp>
-                        <div class="row g-2 mt-0">
-                            <div class="col-md-6">
-                                <@checkbox name="resource.inferTaxonomicCoverageAutomatically" value=resource.inferTaxonomicCoverageAutomatically i18nkey="eml.inferAutomatically"/>
+                        <#assign taxCanInfer = resource.dataPackage==false || resource.dwcDp/>
+                        <input type="hidden" id="tax-infer" name="resource.inferTaxonomicCoverageAutomatically" value="${(taxCanInfer && resource.inferTaxonomicCoverageAutomatically)?c}"/>
+
+                        <#if taxCanInfer>
+                            <div class="geo-modes mt-2" role="radiogroup" aria-label="<@s.text name='manage.metadata.taxcoverage.source'/>">
+                                <label class="geo-mode tax-mode" data-mode="inferred">
+                                    <input type="radio" class="form-check-input flex-shrink-0" name="taxMode" value="inferred">
+                                    <span class="flex-grow-1">
+                                        <span class="geo-mode-label"><@s.text name="manage.metadata.taxcoverage.mode.inferred"/></span>
+                                        <span class="geo-mode-desc"><@s.text name="manage.metadata.taxcoverage.mode.inferred.help"/></span>
+                                    </span>
+                                </label>
+                                <label class="geo-mode tax-mode" data-mode="manual">
+                                    <input type="radio" class="form-check-input flex-shrink-0" name="taxMode" value="manual">
+                                    <span class="flex-grow-1">
+                                        <span class="geo-mode-label"><@s.text name="manage.metadata.taxcoverage.mode.manual"/></span>
+                                        <span class="geo-mode-desc"><@s.text name="manage.metadata.taxcoverage.mode.manual.help"/></span>
+                                    </span>
+                                </label>
                             </div>
 
-                            <div id="taxonomic-preview-links" class="col-md-6">
-                                <div class="d-flex justify-content-end">
-                                    <a id="preview-inferred-taxonomic" class="metadata-action-link custom-link p-1" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                                            </svg>
-                                        </span>
-                                        <span><@s.text name="eml.previewInferred"/></span>
+                            <#-- inferring failed: a warning, publishing goes on without the inferred coverage -->
+                            <#assign taxInferFailed = !(inferredMetadata.inferredTaxonomicCoverage.data)?? && (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size != 0/>
+                            <div id="tax-infer-bar" class="<#if taxInferFailed>ov-banner warn compact cov-infer-warn<#else>geo-infer-bar</#if>" hidden>
+                                <#if (inferredMetadata.inferredTaxonomicCoverage.data)??>
+                                    <span class="flex-grow-1"><@s.text name="manage.metadata.geocoverage.inferredOn"><@s.param>${(inferredMetadata.lastModified?datetime?string.medium)!}</@s.param></@s.text></span>
+                                    <a id="tax-copy" href="" class="metadata-action-link custom-link" title="<@s.text name='manage.metadata.taxcoverage.copy.help'/>">
+                                        <@icon name="content_copy" class="link-icon-primary"/> <span><@s.text name="manage.metadata.taxcoverage.copy"/></span>
                                     </a>
-                                </div>
-                                <div id="taxonomic-dateInferred" class="text-smaller mt-0 d-flex justify-content-end" style="display: none !important;">
-                                    <span class="fs-smaller-2 p-1">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                    <a id="taxonomic-re-infer-link" href="metadata-coverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferTaxonomicAutomatically=true#s-taxonomic" class="metadata-action-link custom-link p-1">
-                                        <span>
-                                            <svg class="link-icon link-icon-primary" viewBox="0 0 24 24">
-                                                <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                            </svg>
-                                        </span>
-                                        <span><@s.text name="eml.reinfer"/></span>
-                                    </a>
-                                </div>
+                                <#elseif (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size != 0>
+                                    <span class="ov-ic"><@icon name="warning"/></span>
+                                    <span class="ov-grow">
+                                        <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
+                                            <span class="d-block"><@s.text name="${error}"/></span>
+                                        </#list>
+                                    </span>
+                                <#else>
+                                    <span class="flex-grow-1"><@s.text name="eml.warning.reinfer"/></span>
+                                </#if>
+                                <a id="taxonomic-re-infer-link" href="metadata-coverage.do?r=${resource.shortname}&amp;reinferMetadata=true&amp;inferTaxonomicAutomatically=true#s-taxonomic" class="<#if taxInferFailed>align-self-center<#else>metadata-action-link custom-link</#if>">
+                                    <#if !taxInferFailed><@icon name="autorenew" class="link-icon-primary"/> </#if><span><@s.text name="eml.reinfer"/></span>
+                                </a>
                             </div>
-                        </div>
                         </#if>
 
-                        <p class="my-3 intro">
-                            <@s.text name='manage.metadata.taxcoverage.intro'/>
-                        </p>
-
-                        <div id="items">
-                            <!-- Adding the taxonomic coverages that already exists on the file -->
-                            <#assign next_agent_index=0 />
-                            <#list eml.taxonomicCoverages as item>
-                                <div id='item-${item_index}' data-ipt-item-index="${item_index}" class="item border-bottom">
-                                    <div class="handle d-flex justify-content-end mt-2">
-                                        <a id="removeLink-${item_index}" class="removeLink metadata-action-link custom-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                            <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></span>
-                                        </a>
-                                    </div>
-
-                                    <div class="mt-2">
-                                        <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[${item_index}].description" />
-                                    </div>
-
-                                    <!-- Taxon list-->
-                                    <div class="mt-3 mb-1 fs-smaller-2 d-flex justify-content-end">
-                                        <div>
-                                            <a id="taxonsLink-${item_index}" class="show-taxonList mt-1 metadata-action-link custom-link" href="">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>
-                                                    <@s.text name="manage.metadata.taxcoverage.addSeveralTaxa"/>
-                                                </span>
-                                            </a>
-                                            <@popoverPropertyInfo "manage.metadata.taxcoverage.addSeveralTaxa.help" />
-                                        </div>
-                                    </div>
-
-                                    <div id="list-${item_index}" class="half addSeveralTaxa my-2" style="display:none">
-                                        <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list-${item_index}" value="" />
-                                        <div id="addSeveralTaxaButtons" class="buttons mt-2">
-                                            <a href="" id="add-button-${item_index}" class="metadata-action-link custom-link">
-                                                <span>
-                                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>
-                                                    <@s.text name='button.add'/>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="col-lg-4">
-                                            <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" requiredField=true />
-                                        </div>
-
-                                        <div class="col-lg-4">
-                                            <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" />
-                                        </div>
-
-                                        <div class="col-lg-4">
-                                            <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.rank" />
-                                        </div>
-                                    </div>
-                                    <div id="subItems-${item_index}" class="mt-0 subItems">
-                                        <#if (item.taxonKeywords)??>
-                                            <#list item.taxonKeywords as subItem>
-                                                <div id="subItem-${item_index}-${subItem_index}" class="sub-item" data-ipt-item-index="${item_index}">
-                                                    <div class="row g-3 py-1">
-                                                        <div class="col-lg-4">
-                                                            <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].scientificName" value=subItem.scientificName! requiredField=true withLabel=false />
-                                                        </div>
-
-                                                        <div class="col-lg-4">
-                                                            <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].commonName" value=subItem.commonName! withLabel=false />
-                                                        </div>
-
-                                                        <div class="col-lg-4 d-flex">
-                                                            <div class="flex-grow-1">
-                                                                <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank" name="eml.taxonomicCoverages[${item_index}].taxonKeywords[${subItem_index}].rank" options=ranks! value="${(eml.taxonomicCoverages[item_index].taxonKeywords[subItem_index].rank)!?lower_case}" withLabel=false />
-                                                            </div>
-
-                                                            <div>
-                                                                <a id="trash-${item_index}-${subItem_index}" class="removeSubEntity metadata-action-link custom-link" href="">
-                                                                    <span>
-                                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </#list>
-                                        </#if>
-                                    </div>
-                                    <div class="pb-1 mt-1">
-                                        <a id="plus-subItem-${item_index}" href="" class="metadata-action-link custom-link">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                                </svg>
-                                            </span>
-                                            <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </#list>
-                        </div>
-
-                        <div class="addNew mt-2">
-                            <a id="plus" class="plus plus-taxcoverage metadata-action-link custom-link" href="">
-                                <span>
-                                    <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                </span>
-                                <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.item' /></span>
-                            </a>
-                        </div>
-
-                        <!-- Static data -->
-                        <div id="static-taxanomic" class="mt-4" style="display: none;">
-                            <div class="mt-2 mb-4">
-                                <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="eml.taxonomicCoverages[0].description" disabled=true />
-                            </div>
-
-                            <!-- Data is inferred, preview -->
-                            <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
-                                <div class="table-responsive fs-smaller">
-                                    <table class="table table-sm table-borderless">
+                        <#-- "From my data": the names per rank, read-only; the description is the user's -->
+                        <#if taxCanInfer>
+                            <div id="tax-fixed" class="tax-fixed" hidden>
+                                <#if (inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords)??>
+                                    <#assign taxWarnings = (inferredMetadata.inferredTaxonomicCoverage.rankWarnings)!{}/>
+                                    <div class="tax-ranks">
                                         <#list inferredMetadata.inferredTaxonomicCoverage.organizedData.keywords as k>
-                                            <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && ((k.displayNames?size > 0) || (inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content && inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)?has_content)) >
-                                                <tr>
-                                                    <#-- 1st col, write rank name once -->
-                                                    <th class="col-4">${ranks.get(k.rank)?cap_first!}</th>
-                                                    <#-- 2nd col, write comma separated list of names in format: scientific name (common name) -->
-                                                    <td>
-                                                        <#if inferredMetadata.inferredTaxonomicCoverage.rankWarnings?has_content>
-                                                            <#assign rankWarning=inferredMetadata.inferredTaxonomicCoverage.rankWarnings.get(k.rank?string)!""/>
-                                                        </#if>
-
+                                            <#assign rankWarning = (k.rank?has_content && taxWarnings?has_content)?then(taxWarnings.get(k.rank?string)!"", "")/>
+                                            <#if k.rank?has_content && ranks.get(k.rank?string)?has_content && (k.displayNames?size > 0 || rankWarning?has_content)>
+                                                <div class="tax-rank-row">
+                                                    <div class="tax-rank-name">${ranks.get(k.rank)?cap_first}</div>
+                                                    <div class="tax-names">
                                                         <#if rankWarning?has_content>
-                                                            <code><@s.text name="${rankWarning}"/></code>
+                                                            <span class="tax-rank-warn"><@icon name="warning"/> <@s.text name="${rankWarning}"/></span>
                                                         <#else>
                                                             <#list k.displayNames as name>
-                                                                &nbsp;${name}<#if name_has_next>,</#if>
+                                                                <span class="tax-chip<#if name?index gte 24> tax-chip-more</#if>">${name}</span>
                                                             </#list>
+                                                            <#if k.displayNames?size gt 24>
+                                                                <a href="" class="tax-show-all metadata-action-link custom-link"><@s.text name="manage.metadata.taxcoverage.showAll"/></a>
+                                                            </#if>
                                                         </#if>
-                                                    </td>
-                                                </tr>
+                                                    </div>
+                                                </div>
                                             </#if>
                                         </#list>
-                                    </table>
-                                </div>
-                            <!-- Data infer finished, but there are errors/warnings -->
-                            <#elseif (inferredMetadata.inferredTaxonomicCoverage)?? && inferredMetadata.inferredTaxonomicCoverage.errors?size != 0>
-                                <#list inferredMetadata.inferredTaxonomicCoverage.errors as error>
-                                    <div class="callout callout-danger text-smaller">
-                                        <@s.text name="${error}"/>
                                     </div>
+                                </#if>
+                                <label class="form-label mt-3" for="tax-fixed-description"><@s.text name="eml.taxonomicCoverages.description"/></label>
+                                <textarea class="form-control form-control-sm" id="tax-fixed-description" rows="2" name="eml.taxonomicCoverages[0].description" disabled>${(eml.taxonomicCoverages[0].description)!}</textarea>
+                            </div>
+                        </#if>
+
+                        <#-- "Enter by hand": any number of groups -->
+                        <div id="tax-manual">
+                            <div id="tax-groups" class="tax-groups">
+                                <#list eml.taxonomicCoverages as group>
+                                    <@taxGroup index=group_index group=group/>
                                 </#list>
-                            <!-- Other -->
-                            <#else>
-                                <div class="callout callout-warning text-smaller">
-                                    <@s.text name="eml.warning.reinfer"/>
-                                </div>
-                            </#if>
+                            </div>
+                            <p id="tax-none" class="geo-hint mt-0" hidden><@s.text name="manage.metadata.taxcoverage.noGroup"/></p>
+                            <a id="plus-taxgroup" href="" class="geo-add">
+                                <@icon name="add"/> <span><@s.text name="manage.metadata.taxcoverage.addGroup"/></span>
+                            </a>
                         </div>
-
-                        <!-- The base form that is going to be cloned every time a user click on the 'add' link -->
-                        <!-- The next divs are hidden. -->
-                        <div id="baseItem" class="item clearfix" style="display:none">
-                            <div class="handle d-flex justify-content-end mt-2">
-                                <a id="removeLink" class="removeLink metadata-action-link custom-link" href="">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                        </svg>
-                                    </span>
-                                    <span><@s.text name='manage.metadata.removethis'/> <@s.text name='manage.metadata.taxcoverage.item'/></span>
-                                </a>
-                            </div>
-
-                            <div class="mt-2">
-                                <@text i18nkey="eml.taxonomicCoverages.description" help="i18n" name="description" />
-                            </div>
-
-                            <!-- Taxon list-->
-                            <div class="addNew mt-3 mb-1 fs-smaller-2 d-flex justify-content-end">
-                                <a id="taxonsLink" class="show-taxonList metadata-action-link custom-link" href="">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                        </svg>
-                                    </span>
-                                    <span><@s.text name='manage.metadata.taxcoverage.addSeveralTaxa' /></span>
-                                </a>
-                            </div>
-                            <div id="list" class="mt-2" style="display:none">
-                                <@text i18nkey="eml.taxonomicCoverages.taxonList" help="i18n" name="taxon-list" value="" />
-                                <div class="buttons taxon-list my-2">
-                                    <a href="" id="add-button" class="metadata-action-link custom-link">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span><@s.text name="button.add"/></span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col-lg-4">
-                                    <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" requiredField=true />
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" />
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <@label i18nkey="eml.taxonomicCoverages.taxonKeyword.rank" />
-                                </div>
-                            </div>
-                            <div id="subItems" class="mt-0 subItems">
-                            </div>
-                            <div class="addNew border-bottom pb-1 mt-1">
-                                <a id="plus-subItem" href="" class="metadata-action-link custom-link">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                        </svg>
-                                    </span>
-                                    <span><@s.text name='manage.metadata.addnew' /> <@s.text name='manage.metadata.taxcoverage.taxon.item' /></span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div id="subItem-9999" class="sub-item" style="display:none">
-                            <div class="row g-3 py-1">
-                                <div class="col-lg-4">
-                                    <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.scientificName" name="scientificName" requiredField=true withLabel=false />
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <@input i18nkey="eml.taxonomicCoverages.taxonKeyword.commonName" name="commonName" withLabel=false />
-                                </div>
-
-                                <div class="col-lg-4 d-flex">
-                                    <div class="flex-grow-1">
-                                        <@select i18nkey="eml.taxonomicCoverages.taxonKeyword.rank"  name="rank" options=ranks! withLabel=false />
-                                    </div>
-
-                                    <div class="">
-                                        <a id="trash" class="removeSubEntity metadata-action-link custom-link" href="">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                </svg>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <template id="baseItem-taxgroup"><@taxGroup index="__g__"/></template>
+                        <template id="baseItem-taxrow"><@taxRow g="__g__" t="__t__"/></template>
                     </div>
 
                     <!-- Temporal coverage (was a page of its own, #3319) -->
