@@ -184,13 +184,26 @@ public class MappingActionTest extends IptBaseTest {
   }
 
   /**
-   * For an existing mapping, the result set in prepare() is used: the mapping has no source yet, so the source page.
+   * An existing mapping without a source (left by the former two-step "Add mapping") is never shown: back to the
+   * overview, and as it has no fields it is removed, also when there are action errors.
    */
   @Test
   public void testActionErrorForExistingMapping() {
     prepareWithMid("0");
     action.addActionError("stored for a redirect");
-    assertEquals("source", action.actionErrorOccurred(MappingAction.INPUT));
+    assertEquals(Constants.CANCEL, action.actionErrorOccurred(MappingAction.INPUT));
+    assertNull(action.getResource().getMapping(Constants.DWC_ROWTYPE_OCCURRENCE, 0));
+  }
+
+  /**
+   * A new mapping is added together with its source: without one, back to the overview with an error.
+   */
+  @Test
+  public void testNewMappingWithoutSource() {
+    prepareWithMid(null);
+    assertTrue(action.hasActionErrors());
+    assertEquals(MappingAction.ERROR, action.actionErrorOccurred(MappingAction.INPUT));
+    assertEquals(1, action.getResource().getMappings().size());
   }
 
   private void prepareWithMid(String mid) {

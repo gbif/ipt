@@ -394,13 +394,25 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
       if (mapping.getSource() == null) {
         // get source parameter as setters are not called yet
         String source = StringUtils.trimToNull(req.getParameter("source"));
-        if (source != null) {
-          Source src = resource.getSource(source);
+        Source src = source == null ? null : resource.getSource(source);
+        if (src != null) {
           mapping.setSource(src);
-          sourceChosenNow = src != null;
+          sourceChosenNow = true;
+        } else if (mid == null) {
+          // a new mapping is added together with its source (the "Add mapping" dialog on the overview)
+          addActionError(getText("manage.mapping.source.required"));
+          defaultResult = "error";
+          return;
         } else {
-          // show set source form
-          defaultResult = "source";
+          // a mapping left without a source, e.g. by the former two-step "Add mapping": back to the overview, where
+          // cancel() removes it when it has no fields
+          if (mapping.getFields().isEmpty()) {
+            addActionMessage(getText("manage.mapping.unfinished.removed",
+                new String[] {StringUtils.defaultString(mapping.getExtension().getTitle())}));
+          }
+          cancel = true;
+          validate = false;
+          return;
         }
       }
       // set empty filter if not existing
@@ -470,7 +482,8 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
           .filter(f -> mappingCoreid == null || !f.getTerm().equals(mappingCoreid.getTerm()))
           .count();
         if (filled > 0 && sourceChosenNow) {
-          // the source form posts here: save() keeps these fields, and the message goes along with its redirect
+          // the "Add mapping" dialog posts the source here: save() keeps these fields, and the message goes along
+          // with its redirect
           addActionMessage(getText("manage.mapping.automaped", new String[]{String.valueOf(filled)}));
         } else if (filled > 0 && !isHttpPost()) {
           // the page is shown with fields that aren't saved (other POSTs redirect, and the message would go along)
@@ -584,10 +597,6 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
     return "save";
   }
 
-  public String saveSetSource() {
-    return INPUT;
-  }
-
   /**
    * @return true if mapping is a core mapping, false if mapping is an extension mapping
    */
@@ -603,7 +612,11 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
   // redirect, so a request for a mapping that doesn't exist is still a 404, not the mapping page without a mapping.
   @Override
   public String actionErrorOccurred(String currentResultName) {
-    return notFound ? NOT_FOUND : defaultResult;
+    if (notFound) {
+      return NOT_FOUND;
+    }
+    // a mapping without a source is never shown: back to the overview, as execute() does
+    return cancel ? cancel() : defaultResult;
   }
 
   /**

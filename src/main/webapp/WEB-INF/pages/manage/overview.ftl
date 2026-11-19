@@ -754,12 +754,16 @@
             dialogWindow.modal('show');
         }
 
-        // "Add mapping" lets the next page ask for the source; "Map to…" on a source row maps that source
+        // "Add mapping" starts with no source chosen (or the only one), "Map to…" on a source row with that source;
+        // Add needs a source
         function setAddMappingSource(name) {
-            $('#add-mapping-source').val(name || '').prop('disabled', !name);
-            $('#add-mapping-source-name').text(name || '');
-            $('#add-mapping-source-note').toggleClass('d-none', !name);
+            var $src = $('#add-mapping-source');
+            $src.val(name || $src.attr('data-default') || '').trigger('change.select2');
+            $('#add-mapping-submit').prop('disabled', !$src.val());
         }
+        $('#add-mapping-source').on('change', function () {
+            $('#add-mapping-submit').prop('disabled', !$(this).val());
+        });
 
         $("#add-mapping-button").on('click', function (e) {
             e.preventDefault();
@@ -1494,7 +1498,8 @@
             });
         }
 
-        $("#rowType").select2({
+        // the two dropdowns of the "Add mapping" dialog
+        $("#add-mapping-source, #rowType").select2({
             placeholder: '',
             dropdownParent: $('#mapping-modal'),
             language: {
@@ -2199,15 +2204,25 @@
     </@dialog>
 
     <#assign numberOfPotentialCores=potentialCores?size />
+    <#-- a mapping is added together with its source: only sources that can be read, the only one chosen already -->
+    <#assign mappableSources = resource.sources?filter(x -> x.readable)/>
     <#assign dlgTitle><@s.text name="manage.overview.data.addMapping"/></#assign>
     <@dialog id="mapping-modal" title=dlgTitle sub=dlgSub>
         <div class="modal-body">
-            <#if (numberOfPotentialCores>0)>
+            <#if (numberOfPotentialCores>0) && mappableSources?has_content>
                 <form id="addMappingForm" action='mapping.do' method='post'>
                     <input name="r" type="hidden" value="${resource.shortname}"/>
-                    <input name="source" type="hidden" id="add-mapping-source" value="" disabled/>
-                    <p id="add-mapping-source-note" class="mb-2 d-none"><@s.text name="manage.mapping.source"/>: <b id="add-mapping-source-name"></b></p>
-                    <select name="id" class="form-select form-select-sm" id="rowType" size="1" aria-label="<@s.text name='manage.overview.data.addMapping'/>">
+                    <label class="form-label text-smaller mb-1" for="add-mapping-source"><@s.text name="manage.mapping.source"/></label>
+                    <div class="mb-3">
+                        <select name="source" class="form-select form-select-sm" id="add-mapping-source" required data-default="<#if mappableSources?size == 1>${mappableSources[0].name}</#if>">
+                            <#if (mappableSources?size > 1)><option value=""></option></#if>
+                            <#list mappableSources as src>
+                                <option value="${src.name}">${src.name}</option>
+                            </#list>
+                        </select>
+                    </div>
+                    <label class="form-label text-smaller mb-1" for="rowType"><@s.text name="manage.overview.data.mapTo"/></label>
+                    <select name="id" class="form-select form-select-sm" id="rowType" size="1">
                         <optgroup label="<@s.text name='manage.overview.DwC.Mappings.cores.select'/>">
                             <#list potentialCores as c>
                                 <#if c?has_content>
@@ -2234,7 +2249,7 @@
         </div>
         <div class="modal-footer">
             <@dialogCancel/>
-            <#if (numberOfPotentialCores>0)>
+            <#if (numberOfPotentialCores>0) && mappableSources?has_content>
                 <button type="submit" id="add-mapping-submit" name="add" value="Add" form="addMappingForm" class="btn btn-sm btn-gbif-solid"><@s.text name="button.add"/></button>
             </#if>
         </div>
