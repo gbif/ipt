@@ -1,5 +1,6 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" -->
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <#include "/WEB-INF/pages/macros/dialog.ftl"/>
     <title><@s.text name="manage.translation.title"/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
@@ -10,11 +11,11 @@
     <script>
         $(document).ready(function () {
             $('.confirm').jConfirmAction({
-                titleQuestion: "<@s.text name="basic.confirm"/>",
-                yesAnswer: "<@s.text name="basic.yes"/>",
-                cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger",
-                baseUrl: "${baseURL}"
+                titleQuestion: "<@s.text name="dialog.translation.delete.title"/>",
+                question: "<@s.text name="dialog.translation.delete.text"/>",
+                yesAnswer: "<@s.text name="button.delete"/>",
+                cancelAnswer: "<@s.text name="button.cancel"/>",
+                buttonType: "danger"
             });
             $("table input").focus(function () {
                 $(this).parent().parent().addClass("highlight");
@@ -524,31 +525,22 @@
         </#if>
     </div>
 
-    <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                </div>
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="manage.translation.title"/></h5>
-                    <div>
-                        <select name="addNewTranslation" id="addNewTranslation" class="form-select">
-                            <option value="" disabled selected><@s.text name="manage.translation.select"/></option>
-                            <#list sourceValuesMap as key, val>
-                                <#if !(tmap.get(key))??>
-                                    <option data-key="${key}" value="${val}">${val}</option>
-                                </#if>
-                            </#list>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button id="add-button" type="button" class="btn btn-sm btn-outline-gbif-primary"><@s.text name="button.add"/></button>
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                </div>
-            </div>
+    <#assign dlgTitle><@s.text name="manage.translation.addNew"/></#assign>
+    <@dialog id="dialog" title=dlgTitle>
+        <div class="modal-body">
+            <select name="addNewTranslation" id="addNewTranslation" class="form-select form-select-sm" aria-label="<@s.text name='manage.translation.select'/>">
+                <option value="" disabled selected><@s.text name="manage.translation.select"/></option>
+                <#list sourceValuesMap as key, val>
+                    <#if !(tmap.get(key))??>
+                        <option data-key="${key}" value="${val}">${val}</option>
+                    </#if>
+                </#list>
+            </select>
         </div>
-    </div>
+        <div class="modal-footer">
+            <@dialogCancel/>
+            <button id="add-button" type="button" class="btn btn-sm btn-gbif-solid"><@s.text name="button.add"/></button>
+        </div>
+    </@dialog>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

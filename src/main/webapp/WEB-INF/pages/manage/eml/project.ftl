@@ -1,4 +1,5 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <#include "/WEB-INF/pages/macros/dialog.ftl"/>
     <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
@@ -714,56 +715,39 @@
     </form>
 
     <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
-    <div id="copy-agent-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
+    <#assign dlgTitle><@s.text name="eml.metadataAgent.copy"/></#assign>
+    <@dialog id="copy-agent-modal" title=dlgTitle>
+        <div class="modal-body">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label for="resource" class="form-label"><@s.text name="eml.metadataAgent.copy.resource"/></label>
+                    <select name="resource" id="resource" size="1" class="form-select">
+                        <option value=""></option>
+                    </select>
                 </div>
-                <div class="modal-body" style="text-align: left !important;">
-                    <h5 class="modal-title w-100" id="staticBackdropLabel"><@s.text name="eml.metadataAgent.copy"/></h5>
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label for="resource" class="form-label">
-                                <@s.text name="eml.metadataAgent.copy.resource"/>
-                            </label>
-                            <select name="resource" id="resource" size="1" class="form-select">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label for="agentType" class="form-label">
-                                <@s.text name="eml.metadataAgent.copy.agentType"/>
-                            </label>
-                            <select name="agentType" id="agentType" size="1" class="form-select">
-                                <option value=""></option>
-                                <option value="creators"><@s.text name="eml.metadataAgent.copy.agentType.creator"/></option>
-                                <option value="contacts"><@s.text name="eml.metadataAgent.copy.agentType.contact"/></option>
-                                <option value="metadataProviders"><@s.text name="eml.metadataAgent.copy.agentType.metadataProvider"/></option>
-                                <option value="associatedParties"><@s.text name="eml.metadataAgent.copy.agentType.associatedParty"/></option>
-                                <option value="projectPersonnel"><@s.text name="eml.metadataAgent.copy.agentType.projectPersonnel"/></option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label for="agent" class="form-label">
-                                <@s.text name="eml.metadataAgent.copy.agent"/>
-                            </label>
-                            <select name="agent" id="agent" size="1" class="form-select">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="col-12">
+                    <label for="agentType" class="form-label"><@s.text name="eml.metadataAgent.copy.agentType"/></label>
+                    <select name="agentType" id="agentType" size="1" class="form-select">
+                        <option value=""></option>
+                        <option value="creators"><@s.text name="eml.metadataAgent.copy.agentType.creator"/></option>
+                        <option value="contacts"><@s.text name="eml.metadataAgent.copy.agentType.contact"/></option>
+                        <option value="metadataProviders"><@s.text name="eml.metadataAgent.copy.agentType.metadataProvider"/></option>
+                        <option value="associatedParties"><@s.text name="eml.metadataAgent.copy.agentType.associatedParty"/></option>
+                        <option value="projectPersonnel"><@s.text name="eml.metadataAgent.copy.agentType.projectPersonnel"/></option>
+                    </select>
                 </div>
-                <div class="modal-footer justify-content-center">
-                    <button id="copy-agent-button" type="button" class="btn btn-sm btn-outline-gbif-primary" style="display: none;">
-                        <@s.text name="button.copy"/>
-                    </button>
-                    <button id="copy-agent-cancel" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
+                <div class="col-12">
+                    <label for="agent" class="form-label"><@s.text name="eml.metadataAgent.copy.agent"/></label>
+                    <select name="agent" id="agent" size="1" class="form-select">
+                        <option value=""></option>
+                    </select>
                 </div>
             </div>
         </div>
-    </div>
+        <div class="modal-footer">
+            <button id="copy-agent-cancel" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+            <button id="copy-agent-button" type="button" class="btn btn-sm btn-gbif-solid" style="display: none;"><@s.text name="button.copy"/></button>
+        </div>
+    </@dialog>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -533,7 +533,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                    <button type="button" class="btn btn-sm btn-outline-gbif-primary" id="party-picker-ok" disabled><@s.text name="button.copy"/></button>
+                    <button type="button" class="btn btn-sm btn-gbif-solid" id="party-picker-ok" disabled><@s.text name="button.copy"/></button>
                 </div>
             </div>
         </div>

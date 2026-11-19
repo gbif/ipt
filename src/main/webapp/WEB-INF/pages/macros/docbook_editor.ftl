@@ -62,7 +62,6 @@
             confirmRemoveText: "${action.getText('manage.metadata.translations.remove.confirm.text')?js_string?no_esc}",
             confirmRemoveButton: "${action.getText('button.remove')?js_string?no_esc}",
             cancel: "${action.getText('button.cancel')?js_string?no_esc}",
-            baseUrl: "${baseURL?js_string?no_esc}",
             translationOf: "${action.getText('manage.metadata.translations.fieldLabel')?js_string?no_esc}"
         });
         <#-- JSON from Gson, which escapes <, > and & -->

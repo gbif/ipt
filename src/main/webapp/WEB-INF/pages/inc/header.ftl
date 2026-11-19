@@ -40,6 +40,7 @@
         }
     </style>
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/dialogs.css" />
 
     <!-- Custom CSS for customizations -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
@@ -54,6 +55,7 @@
     <meta name="ipt-csrf-token" content="${iptCsrfToken}" />
     [/#if]
     <script src="${baseURL}/js/csrf.js"></script>
+    <script src="${baseURL}/js/dialog.js"></script>
     <script src="${baseURL}/js/global.js"></script>
 
     <script>

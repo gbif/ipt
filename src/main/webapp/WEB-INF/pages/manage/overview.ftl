@@ -1,5 +1,10 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
+<#include "/WEB-INF/pages/macros/dialog.ftl"/>
+<#-- a publish confirmation (jConfirmAction): the version as the question, the version on the button -->
+<#macro publishConfirm cls textKey agreement=false>
+        $('.${cls}').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.publish.title'><@s.param>${resource.nextVersionPlainString}</@s.param></@s.text>", question: "<#if outdatedExtensions><@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br></#if><@s.text name=textKey><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer: "<@s.text name='manage.overview.publishVersion'><@s.param>${resource.nextVersionPlainString}</@s.param></@s.text>", cancelAnswer: "<@s.text name='button.cancel'/>", summary: "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>",<#if agreement> checkboxText: "<@s.text name='manage.overview.confirm.publish.doiAgreement'/>",</#if> buttonType: "primary", tone: "info", icon: "upload"});
+</#macro>
 <#macro dwcaValidator>
     <#if (resource.recordsPublished>0)>
         <a href="https://tools.gbif.org/dwca-validator/?archiveUrl=${baseURL}/archive.do?r=${resource.shortname}" title="<@s.text name="manage.overview.publishing.validator"/>" target="_blank" class="icon icon-validate">
@@ -9,33 +14,22 @@
 </#macro>
 
 <#macro nextDoiButtonTD>
-
-    <!-- The organisation with DOI account activated must exist,
-    the mandatory metadata must have been filled in,
-    and the user must have registration rights for any DOI operation made possible -->
+    <#-- the button of the DOI dialog: reserves, deletes or reserves a new DOI. The organisation with a DOI account must exist,
+         the mandatory metadata must be filled in, and the user must have registration rights -->
     <#if resource.identifierStatus == "UNRESERVED">
-        <form id="doiForm" action='resource-reserveDoi.do' method='post'>
+        <form id="doiForm" action='resource-reserveDoi.do' method='post' class="m-0">
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve" disabled="${missingBasicMetadata?string}"/>
-            <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                <@s.text name="button.cancel"/>
-            </button>
+            <@s.submit cssClass="btn btn-sm btn-gbif-solid" name="reserveDoi" key="button.reserve" disabled="${missingBasicMetadata?string}"/>
         </form>
     <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-        <form id="doiForm" action='resource-deleteDoi.do' method='post'>
+        <form id="doiForm" action='resource-deleteDoi.do' method='post' class="m-0">
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmDeleteDoi btn btn-sm btn-outline-gbif-danger" name="deleteDoi" key="button.delete" disabled="${missingBasicMetadata?string}"/>
-            <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                <@s.text name="button.cancel"/>
-            </button>
+            <@s.submit cssClass="btn btn-sm btn-danger" name="deleteDoi" key="button.delete" disabled="${missingBasicMetadata?string}"/>
         </form>
     <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
-        <form id="doiForm" action='resource-reserveDoi.do' method='post'>
+        <form id="doiForm" action='resource-reserveDoi.do' method='post' class="m-0">
             <input name="r" type="hidden" value="${resource.shortname}"/>
-            <@s.submit cssClass="confirmReserveDoi btn btn-sm btn-outline-gbif-primary" name="reserveDoi" key="button.reserve.new" disabled="${missingBasicMetadata?string}"/>
-            <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                <@s.text name="button.cancel"/>
-            </button>
+            <@s.submit cssClass="btn btn-sm btn-gbif-solid" name="reserveDoi" key="button.reserve.new" disabled="${missingBasicMetadata?string}"/>
         </form>
     </#if>
 </#macro>
@@ -195,31 +189,72 @@
             <#assign resourceVisibility="public" />
         </#if>
 
-        $('.confirm').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmRegistration').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.visibility.confirm.registration'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", checkboxText: "<@s.text name='manage.overview.visibility.confirm.agreement'/>",<#if resource.isDwcDp()> select: {label: "<@s.text name='manage.overview.registration.datasetType'/>", placeholder: "<@s.text name='manage.overview.registration.datasetType.select'/>", target: "#dwcDpDatasetType", options: [<#list action.getDwcDpRegistrationDatasetTypes() as datasetType>{value: "${datasetType.name()}", label: "<@s.text name='portal.resource.type.${datasetType.name()?lower_case?replace("_", "")}'/>"}<#sep>, </#sep></#list>]},</#if> buttonType: "primary", processing: true, baseUrl: "${baseURL}"});
-        $('.confirmEmlReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmDatapackageMetadataReplace').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.metadata.replace.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}"});
-        $('.confirmDeletionFromIptAndGbif').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptAndGbif.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", baseUrl: "${baseURL}"});
-        $('.confirmDeletionFromIptOnly').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/></br></br></#if><#if resource.status=='REGISTERED'><@s.text name='manage.resource.delete.fromIptOnly.confirm.registered'/></br></br></#if><@s.text name='manage.resource.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", baseUrl: "${baseURL}"});
-        $('.confirmUndeletion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.resource.undoDelete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
+        // confirmations (IPT.confirm via jConfirmAction): the question as the title, verbs on the buttons; {0} in a title is the clicked element's data-name
+        <#assign cancelText><@s.text name="button.cancel"/></#assign>
+        <@publishConfirm cls="confirmPublish" textKey="manage.overview.publishing.confirm"/>
+        <@publishConfirm cls="confirmPublishMinorVersion" textKey="manage.overview.publishing.doi.minorVersion.confirm"/>
+        <@publishConfirm cls="confirmPublishMajorVersion" textKey="manage.overview.publishing.doi.majorVersion.confirm" agreement=true/>
+        <@publishConfirm cls="confirmPublishMajorVersionWithoutDOI" textKey="manage.overview.publishing.withoutDoi.majorVersion.confirm"/>
 
-        $('.confirmReserveDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.reserve.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmDeleteDoi').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.delete.confirm'/>", yesAnswer : "<@s.text name='basic.yes'/>", cancelAnswer : "<@s.text name='basic.no'/>", baseUrl: "${baseURL}"});
-        <#if !outdatedExtensions>
-        $('.confirmPublish').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.minorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.doi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        <#else>
-        $('.confirmPublish').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br><@s.text name='manage.overview.publishing.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmPublishMinorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br><@s.text name='manage.overview.publishing.doi.minorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmPublishMajorVersion').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br><@s.text name='manage.overview.publishing.doi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", checkboxText: "<@s.text name='manage.overview.publishing.doi.register.agreement'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        $('.confirmPublishMajorVersionWithoutDOI').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br><@s.text name='manage.overview.publishing.withoutDoi.majorVersion.confirm'><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer : "<@s.text name='button.publish'/>", summary : "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>", cancelAnswer : "<@s.text name='button.cancel'/>", buttonType: "primary", baseUrl: "${baseURL}", logo: "success"});
-        </#if>
+        $('.confirmRegistration').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.registration.title'><@s.param>${resource.shortname}</@s.param></@s.text>", question: "<@s.text name='manage.overview.confirm.registration.text'/>", yesAnswer: "<@s.text name='button.register'/>", cancelAnswer: "${cancelText}", checkboxText: "<@s.text name='manage.overview.confirm.registration.agreement'/>",<#if resource.isDwcDp()> select: {label: "<@s.text name='manage.overview.registration.datasetType'/>", placeholder: "<@s.text name='manage.overview.registration.datasetType.select'/>", target: "#dwcDpDatasetType", options: [<#list action.getDwcDpRegistrationDatasetTypes() as datasetType>{value: "${datasetType.name()}", label: "<@s.text name='portal.resource.type.${datasetType.name()?lower_case?replace("_", "")}'/>"}<#sep>, </#sep></#list>]},</#if> buttonType: "primary", tone: "info", icon: "link", processing: true});
+        $('.confirmDeletionFromIptOnly').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.delete.title'><@s.param>${resource.shortname}</@s.param></@s.text>", question: "<#if resource.isAlreadyAssignedDoi()><@s.text name='manage.resource.delete.confirm.doi'/><#else><@s.text name='manage.overview.confirm.delete.text'/></#if>", yesAnswer: "<@s.text name='button.delete'/>", cancelAnswer: "${cancelText}"});
+        $('.confirmUndeletion').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.undelete.title'><@s.param>${resource.shortname}</@s.param></@s.text>", question: "<@s.text name='manage.overview.confirm.undelete.text'/>", yesAnswer: "<@s.text name='button.undelete'/>", cancelAnswer: "${cancelText}", buttonType: "primary", tone: "info", icon: "autorenew"});
 
-        $('.delete-source').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name="manage.source.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
-        $('.delete-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
-        $('.delete-core-mapping').jConfirmAction({titleQuestion : "<@s.text name="basic.confirm"/>", question : "<@s.text name ="manage.mapping.confirmation.message"/><br><br><@s.text name ="manage.mapping.confirmation.message.core"/>", yesAnswer : "<@s.text name="basic.yes"/>", cancelAnswer : "<@s.text name="basic.no"/>", buttonType: "danger", baseUrl: "${baseURL}"});
+        // replacing metadata from a file asks first; the upload dialog closes so the question isn't stacked on it
+        $("#emlReplace, #datapackageMetadataReplace").on("click", function () {
+            if (!$(this).attr("jconfirmed")) {
+                $("#metadata-modal").modal("hide");
+            }
+        }).jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.metadata.replace.title'/>", question: "<@s.text name='manage.overview.confirm.metadata.replace'/>", yesAnswer: "<@s.text name='button.replace'/>", cancelAnswer: "${cancelText}", buttonType: "primary", tone: "warn"});
+
+        $('.delete-source').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.source.delete.title'/>", question: "<@s.text name='manage.overview.confirm.source.delete.text'/>", yesAnswer: "<@s.text name='button.delete'/>", cancelAnswer: "${cancelText}"});
+        $('.delete-mapping').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.mapping.delete.title'/>", question: "<@s.text name='manage.overview.confirm.mapping.delete.text'/>", yesAnswer: "<@s.text name='button.delete'/>", cancelAnswer: "${cancelText}"});
+        $('.delete-core-mapping').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.mapping.delete.title'/>", question: "<@s.text name='manage.overview.confirm.mapping.delete.core'/>", yesAnswer: "<@s.text name='button.delete'/>", cancelAnswer: "${cancelText}"});
+
+        // delete a registered resource: pick where, and type the shortname to delete from GBIF.org too
+        (function () {
+            var shortname = "${resource.shortname?js_string?no_esc}";
+            // the texts IPT.confirm() uses too (inc/menu.ftl)
+            var texts = document.getElementById("dialog-confirm");
+            function text(key, fallback) {
+                return (texts && texts.getAttribute("data-" + key)) || fallback;
+            }
+            var parts = text("type", "Type {0} to confirm").split("{0}");
+            var label = document.querySelector("label[for='delete-type']");
+            if (!label) {
+                return;
+            }
+            label.textContent = parts[0];
+            var code = document.createElement("code");
+            code.textContent = shortname;
+            label.appendChild(code);
+            label.appendChild(document.createTextNode(parts.slice(1).join("{0}")));
+
+            var hintChoose = $("#delete-resource-hint").text();
+            var hintType = text("hint-type", "Type the name to continue");
+            function update() {
+                var where = $("input[name=deleteWhere]:checked").val();
+                var typed = $("#delete-type").val().trim() === shortname;
+                $("#delete-type-wrap").prop("hidden", where !== "gbif");
+                var why = !where ? hintChoose : (where === "gbif" && !typed ? hintType : null);
+                $("#delete-resource-confirm").prop("disabled", why !== null);
+                $("#delete-resource-hint").text(why || "").prop("hidden", why === null);
+            }
+            $("#delete-resource-modal").on("input change", update).on("show.bs.modal", function () {
+                $("input[name=deleteWhere]").prop("checked", false);
+                $("#delete-type").val("");
+                update();
+            });
+            $("#delete-resource-confirm").on("click", function () {
+                // sent once: a double click would post the delete twice
+                $(this).prop("disabled", true);
+                var where = $("input[name=deleteWhere]:checked").val();
+                var target = $(where === "gbif" ? ".confirmDeletionFromIptAndGbif" : ".confirmDeletionFromIptOnly");
+                // already confirmed here: skip the jConfirmAction question
+                target.attr("jconfirmed", true);
+                target[0].click();
+            });
+        })();
 
         // Initialize scrollspy
         IptScrollSpy.init({tocSelector: '.bd-toc nav a'});
@@ -311,7 +346,7 @@
         var confirmedFiles = [];
 
         // add new source tabs
-        $(".sources-tab-root").click(function (event) {
+        $(".source-type-opt").click(function (event) {
             var selectedTab = $(this);
             var selectedTabId = selectedTab[0].id;
 
@@ -337,14 +372,9 @@
             var urlSourceCheckLinkWrapper = $("#url-source-check-link-wrapper");
             var urlSourceCheckLink = $("#check-url-source-link");
 
-            // remove "selected" from all tabs
-            $(".sources-tab-root").removeClass("tab-selected");
-            // hide all indicators
-            $(".tabs-indicator").hide();
-            // add "selected" to clicked tab
-            selectedTab.addClass("tab-selected");
-            // show indicator for this tab
-            $("#" + selectedTabId + " .tabs-indicator").show();
+            // select the clicked option of the segmented control
+            $(".source-type-opt").removeClass("tab-selected").attr("aria-selected", "false");
+            selectedTab.addClass("tab-selected").attr("aria-selected", "true");
 
             if (selectedTabId === 'tab-source-file') {
                 sourceTypeInput.attr("value", "source-file");
@@ -564,12 +594,14 @@
             $('.icon-validate').tooltip();
         });
 
-        // load a preview of the mapping in the modal window
+        // load a preview of the mapping into the wide preview dialog
         $(".peekBtn").click(function(e) {
             e.preventDefault();
             var addressValue = $(this).attr("href");
+            $("#peek-modal-title").text($(this).attr("data-name") || "");
+            var content = $("#peek-modal-content").empty();
             displayProcessing();
-            $("#modalcontent").load(addressValue, function (response, status, xhr) {
+            content.load(addressValue, function (response, status, xhr) {
                 // the session expired: open the overview, which goes to login and returns there
                 if (xhr.status === 401) {
                     window.location.href = "${baseURL}/manage/resource.do?r=${resource.shortname}";
@@ -578,32 +610,13 @@
                 if (status === "error") {
                     // load() inserts nothing on an error status. 400/404 carry the message from peek.ftl,
                     // other errors have no fragment to show
-                    $("#modalcontent").html(xhr.status === 400 || xhr.status === 404 ? response
+                    content.html(xhr.status === 400 || xhr.status === 404 ? response
                         : $('<div class="alert alert-danger fs-smaller-2" role="alert"></div>')
                             .text('${action.getText("basic.error")?js_string} (' + xhr.status + ')'));
                 }
                 hideProcessing();
+                $("#peek-modal").modal("show");
             });
-            $("#modalbox").show();
-        });
-        $("#modalbox").click(function(e) {
-            e.preventDefault();
-            $("#modalbox").hide();
-        });
-
-        // change the doi prefix input value, as per the selected organisation
-        $( "#doi_select" ).change(function() {
-            $("#doi_prefix").prop("value", $( this).val());
-        });
-
-        $("#doi_edit").click(function() {
-            $('.doiButton').hide();
-            $('#doi_edit_block').show();
-        });
-
-        $('#doi_edit_cancel').click(function() {
-            $('.doiButton').show();
-            $('#doi_edit_block').hide();
         });
 
         $('#makePublic').click(function (e) {
@@ -730,7 +743,9 @@
             dialogWindow.modal('show');
         }
 
-        $("#add-source-button").on('click', function () {
+        $("#add-source-button").on('click', function (e) {
+            // the openers are links (href="#..."): open the dialog without jumping in the page
+            e.preventDefault();
             showAddSourceModal();
         });
 
@@ -746,7 +761,8 @@
             $('#add-mapping-source-note').toggleClass('d-none', !name);
         }
 
-        $("#add-mapping-button").on('click', function () {
+        $("#add-mapping-button").on('click', function (e) {
+            e.preventDefault();
             setAddMappingSource(null);
             showAddMappingModal();
         });
@@ -756,23 +772,9 @@
             dialogWindow.modal('show');
         }
 
-        $("#upload-metadata-button").on('click', function () {
+        $("#upload-metadata-button").on('click', function (e) {
+            e.preventDefault();
             showMetadataModal();
-        });
-
-        // close metadata modal to show confirm override modal instead
-        $("#emlReplace").on("click", function () {
-            $('#metadata-modal').modal('hide');
-        });
-
-        // close DOI modal to show confirmation modal instead
-        $("#deleteDoi").on("click", function () {
-            $('#reserve-doi-modal').modal('hide');
-        });
-
-        // close DOI modal to show confirmation modal instead
-        $("#reserveDoi").on("click", function () {
-            $('#reserve-doi-modal').modal('hide');
         });
 
         function showPublicationModal() {
@@ -791,19 +793,13 @@
 
         $("#show-visibility-disabled-modal").on('click', showVisibilityDisabledModal);
 
-        function showRegistrationModal() {
-            var dialogWindow = $("#registration-modal");
-            dialogWindow.modal('show');
-        }
-
-        $("#show-registration-disabled-modal").on('click', showRegistrationModal);
-
         function showAddNetworkModal() {
             var dialogWindow = $("#networks-modal");
             dialogWindow.modal('show');
         }
 
-        $("#add-network-button").on('click', function () {
+        $("#add-network-button").on('click', function (e) {
+            e.preventDefault();
             showAddNetworkModal();
         });
 
@@ -825,11 +821,13 @@
             dialogWindow.modal('show');
         }
 
-        $("#add-manager-button").on('click', function () {
+        $("#add-manager-button").on('click', function (e) {
+            e.preventDefault();
             showAddManagerModal();
         });
 
         $("#reserve-doi").on("click", function (e) {
+            e.preventDefault();
             showReserveDoiModal();
         });
 
@@ -927,15 +925,35 @@
             $("#fileInput").click();
         });
 
-        $("#fileInput").on("change", function () {
-            var newlySelectedFiles = Array.from(this.files);
-            selectedFiles = selectedFiles.concat(newlySelectedFiles);
+        function addSelectedFiles(files) {
+            selectedFiles = selectedFiles.concat(Array.from(files));
             refreshFileList();
 
             if (selectedFiles.length > 0) {
                 sendButton.show();
             } else {
                 sendButton.hide();
+            }
+        }
+
+        $("#fileInput").on("change", function () {
+            addSelectedFiles(this.files);
+        });
+
+        // files dropped on the "Choose files" area are added like chosen ones
+        $("#chooseFilesButton").on("dragenter dragover", function (e) {
+            e.preventDefault();
+            $(this).addClass("is-over");
+        }).on("dragleave dragend", function (e) {
+            if (!this.contains(e.relatedTarget)) {
+                $(this).removeClass("is-over");
+            }
+        }).on("drop", function (e) {
+            e.preventDefault();
+            $(this).removeClass("is-over");
+            var files = e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files;
+            if (files && files.length) {
+                addSelectedFiles(files);
             }
         });
 
@@ -1416,21 +1434,11 @@
 
 
         $(".proxy-button-delete-from-ipt").on('click', function () {
-            $("#delete-resource-modal").modal('hide');
             $(".confirmDeletionFromIptOnly").click();
-        });
-
-        $(".proxy-button-delete-from-gbif-and-ipt").on('click', function () {
-            $("#delete-resource-modal").modal('hide');
-            $(".confirmDeletionFromIptAndGbif").click();
         });
 
         $(".proxy-button-view-resource").on('click', function () {
             $("#top-button-view-resource")[0].click();
-        });
-
-        $(".proxy-button-cancel").on('click', function () {
-            $("#top-button-cancel")[0].click();
         });
 
         $(".proxy-button-undelete-resource").on('click', function () {
@@ -1447,29 +1455,6 @@
             dialogWindow.modal('show');
         });
 
-
-        $("#publishingOrganizationKey").select2({
-            placeholder: '',
-            language: {
-                noResults: function () {
-                    return '${selectNoResultsFound}';
-                }
-            },
-            dropdownParent: $('#change-publishing-organization-modal'),
-            width: "100%",
-            minimumResultsForSearch: 15,
-            theme: 'bootstrap4'
-        });
-
-        $("#change-publishing-organization").on('click', function (e) {
-            e.preventDefault();
-            showChangePublishingOrganizationModal();
-        });
-
-        function showChangePublishingOrganizationModal() {
-            var dialogWindow = $("#change-publishing-organization-modal");
-            dialogWindow.modal('show');
-        }
 
         // the resource bar replaces the heading once its actions have scrolled under the navbar (which shrinks on scroll)
         var resourceNav = document.getElementById("resource-nav");
@@ -1782,7 +1767,7 @@
                     </div>
                     </#if>
 
-                    <#-- the forms the delete actions submit, and the target of the "Cancel" button in the sticky resource bar -->
+                    <#-- the forms the delete actions submit -->
                     <div class="d-none">
                         <#if !isDeleted && disableRegistrationRights == "false">
                             <#if resource.key?? && resource.status == "REGISTERED">
@@ -1796,11 +1781,9 @@
                                 <@s.submit cssClass="confirmDeletion confirmDeletionFromIptOnly" name="deleteFlag" key="button.delete.fromIpt"/>
                             </form>
                         </#if>
-                        <a href="${baseURL}/manage/" id="top-button-cancel"><@s.text name="button.cancel"/></a>
                     </div>
                 </div>
             </div>
-            <div id="dialog" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
         </div>
     </div>
 
@@ -1917,1021 +1900,591 @@
         </div>
     </div>
 
-    <div id="make-public-modal" class="modal fade" tabindex="-1" aria-labelledby="make-public-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                </div>
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="make-public-modal-title"><@s.text name="manage.overview.visibility.change.public"/></h5>
+    <#-- dialogs (macros/dialog.ftl, styles/dialogs.css): alert dialogs ask one question, task dialogs hold a form -->
+    <#assign dlgSub = resource.title!resource.shortname>
 
-                    <div class="border rounded px-3 py-1 mt-3">
-                        <div class="simpleCallout">
-                            <div class="simpleCallout-inner">
-                                <div class="simpleCalloutInfo simpleCalloutInfo-message">
-                                    <div class="simpleCalloutIcon">
-                                        <@icon name="info" class="text-gbif-primary"/>
-                                    </div>
-                                    <div class="simpleCalloutMeta">
-                                        <div class="simpleCalloutMessage">
-                                            <@s.text name="manage.overview.visibility.change.republish"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pt-3">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="makePublicOptions" id="makePublicImmediately" value="makePublicImmediately" <#if !resource.makePublicDate?has_content>checked</#if> >
-                            <label class="form-check-label" for="inlineRadio1"><@s.text name="manage.overview.visibility.change.public.immediately"/></label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="makePublicOptions" id="makePublicAtDate" value="makePublicAtDate" <#if resource.makePublicDate?has_content>checked</#if> >
-                            <label class="form-check-label" for="inlineRadio2"><@s.text name="manage.overview.visibility.change.public.date"/></label>
-                        </div>
-                    </div>
-
-                    <div id="makePublicDateTimeWrapper" class="pt-2" style="display: none !important;">
-                        <div class="d-flex justify-content-center">
-                            <form id="make-public-modal-form" action="resource-makePublic.do" method="post">
-                                <input name="r" type="hidden" value="${resource.shortname}"/>
-                                <#if resource.makePublicDate?has_content>
-                                    <input id="makePublicDateTime" name="makePublicDateTime" class="form-control form-control-sm" type="datetime-local" value="${resource.makePublicDate?datetime?string["yyyy-MM-dd'T'HH:mm"]}" />
-                                <#else>
-                                    <input id="makePublicDateTime" name="makePublicDateTime" class="form-control form-control-sm" type="datetime-local" value="${makePublicDateTime!}" />
-                                </#if>
-                            </form>
-                            <form id="cancel-make-public" action="resource-cancelVisibilityChange.do" method="post">
-                                <input name="r" type="hidden" value="${resource.shortname}"/>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                    <button id="changeStateSubmit" type="submit" form="make-public-modal-form" class="btn btn-sm btn-outline-gbif-primary"><@s.text name="button.submit"/></button>
+    <#assign dlgTitle><@s.text name="manage.overview.sharing.makePublic"/></#assign>
+    <@dialog id="make-public-modal" title=dlgTitle sub=dlgSub>
+        <div class="modal-body">
+            <p><@s.text name="manage.overview.visibility.change.republish"/></p>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="makePublicOptions" id="makePublicImmediately" value="makePublicImmediately" <#if !resource.makePublicDate?has_content>checked</#if> >
+                <label class="form-check-label" for="makePublicImmediately"><@s.text name="manage.overview.visibility.change.public.immediately"/></label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="makePublicOptions" id="makePublicAtDate" value="makePublicAtDate" <#if resource.makePublicDate?has_content>checked</#if> >
+                <label class="form-check-label" for="makePublicAtDate"><@s.text name="manage.overview.visibility.change.public.date"/></label>
+            </div>
+            <div id="makePublicDateTimeWrapper" class="pt-2 ps-4" style="display: none !important;">
+                <form id="make-public-modal-form" action="resource-makePublic.do" method="post">
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
                     <#if resource.makePublicDate?has_content>
-                        <button id="cancelMakePublic" type="submit" form="cancel-make-public" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.reset"/></button>
+                        <input id="makePublicDateTime" name="makePublicDateTime" class="form-control form-control-sm w-auto" type="datetime-local" aria-label="<@s.text name='manage.overview.visibility.change.public.date'/>" value="${resource.makePublicDate?datetime?string["yyyy-MM-dd'T'HH:mm"]}" />
+                    <#else>
+                        <input id="makePublicDateTime" name="makePublicDateTime" class="form-control form-control-sm w-auto" type="datetime-local" aria-label="<@s.text name='manage.overview.visibility.change.public.date'/>" value="${makePublicDateTime!}" />
                     </#if>
-                </div>
+                </form>
             </div>
+            <form id="cancel-make-public" action="resource-cancelVisibilityChange.do" method="post">
+                <input name="r" type="hidden" value="${resource.shortname}"/>
+            </form>
         </div>
-    </div>
+        <div class="modal-footer">
+            <#if resource.makePublicDate?has_content>
+                <button id="cancelMakePublic" type="submit" form="cancel-make-public" class="btn btn-sm btn-outline-secondary me-auto"><@s.text name="button.reset"/></button>
+            </#if>
+            <@dialogCancel/>
+            <button type="submit" form="make-public-modal-form" class="btn btn-sm btn-gbif-solid"><@s.text name="manage.overview.sharing.makePublic"/></button>
+        </div>
+    </@dialog>
 
-    <div id="make-private-modal" class="modal fade" tabindex="-1" aria-labelledby="make-private-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
+    <#assign dlgTitle><@s.text name="manage.overview.confirm.private.title"><@s.param>${resource.shortname}</@s.param></@s.text></#assign>
+    <@dialog id="make-private-modal" title=dlgTitle tone="warn" alert=true>
+        <div class="modal-body">
+            <p><@s.text name="manage.overview.visibility.change.republish"/></p>
+            <form id="make-private-modal-form" action="resource-makePrivate.do" method="post">
+                <input name="r" type="hidden" value="${resource.shortname}"/>
+                <input name="unpublish" type="hidden" value="Change"/>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel/>
+            <button type="submit" form="make-private-modal-form" class="btn btn-sm btn-gbif-solid"><@s.text name="manage.overview.sharing.makePrivate"/></button>
+        </div>
+    </@dialog>
+
+    <#assign dlgTitle><@s.text name="manage.overview.confirm.cancelChange.title"><@s.param>${(resource.pendingStatus!)?lower_case}</@s.param></@s.text></#assign>
+    <@dialog id="cancel-visibility-change-modal" title=dlgTitle tone="warn" alert=true>
+        <div class="modal-body">
+            <p><@s.text name="manage.overview.confirm.cancelChange.text"><@s.param>${(resource.status!)?lower_case}</@s.param></@s.text></p>
+            <form id="cancel-visibility-change-modal-form" action="resource-cancelVisibilityChange.do" method="post">
+                <input name="r" type="hidden" value="${resource.shortname}"/>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel key="button.close"/>
+            <button type="submit" form="cancel-visibility-change-modal-form" class="btn btn-sm btn-gbif-solid"><@s.text name="manage.overview.sharing.cancelChange"/></button>
+        </div>
+    </@dialog>
+
+    <#assign dlgTitle><@s.text name="manage.overview.cantChangeVisibility"/></#assign>
+    <@dialog id="visibility-disabled-modal" title=dlgTitle tone="warn" alert=true>
+        <div class="modal-body">
+            <#if resource.status == "DELETED">
+                <@s.text name="manage.overview.visibility.warning.deleted"/>
+            <#elseif resource.status == "REGISTERED">
+                <@s.text name="manage.overview.visibility.warning.registered"/>
+            <#elseif resource.identifierStatus?has_content && (resource.identifierStatus == "PUBLIC" || resource.identifierStatus == "UNAVAILABLE")>
+                <@s.text name="manage.overview.visibility.warning.identifier"/>
+            <#else>
+                <@s.text name="manage.overview.visibility.warning.general"/>
+            </#if>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel key="button.close"/>
+        </div>
+    </@dialog>
+
+    <#assign dlgTitle><@s.text name="manage.overview.data.addSource"/></#assign>
+    <@dialog id="source-data-modal" title=dlgTitle sub=dlgSub>
+        <div class="modal-body">
+            <form id="addSourceForm" action='addsource.do' method='post' enctype="multipart/form-data">
+                <input name="r" type="hidden" value="${resource.shortname}"/>
+                <input name="validate" type="hidden" value="false"/>
+
+                <#-- File / URL / SQL as a segmented control; the script below switches the form under it -->
+                <div class="dlg-seg" role="tablist" aria-label="<@s.text name='manage.overview.data.addSource'/>">
+                    <button id="tab-source-file" class="source-type-opt tab-selected" type="button" role="tab" aria-selected="true">
+                        <@icon name="upload"/><@s.text name="manage.source.file"/>
+                    </button>
+                    <button id="tab-source-url" class="source-type-opt" type="button" role="tab" aria-selected="false">
+                        <@icon name="link"/>URL
+                    </button>
+                    <button id="tab-source-sql" class="source-type-opt" type="button" role="tab" aria-selected="false">
+                        <@icon name="dns_outlined"/>SQL
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="make-private-modal-title"><@s.text name="manage.overview.visibility.change.private"/></h5>
 
-                    <div class="border rounded px-3 py-1 mt-3">
-                        <div class="simpleCallout">
-                            <div class="simpleCallout-inner">
-                                <div class="simpleCalloutInfo simpleCalloutInfo-warning">
-                                    <div class="simpleCalloutIcon">
-                                        <@icon name="info" class="text-gbif-danger"/>
-                                    </div>
-                                    <div class="simpleCalloutMeta">
-                                        <div class="simpleCalloutMessage">
-                                            <@s.text name="manage.overview.visibility.change.republish"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <#-- click to choose files, or drop them here -->
+                <button type="button" id="chooseFilesButton" class="dlg-drop mt-3">
+                    <span class="dlg-drop-in">
+                        <span class="dlg-drop-icon"><@icon name="cloud_upload"/></span>
+                        <span class="dlg-drop-main"><b><@s.text name="button.chooseFiles"/></b> <@s.text name="dialog.drop.or"/></span>
+                        <span id="callout-file-upload-info" class="dlg-drop-help"><@s.text name="manage.source.file.multipleUpload"/></span>
+                    </span>
+                </button>
+
+                <div id="callout-source-exists" class="callout callout-warning text-smaller mt-3" style="display: none;">
+                    <@s.text name="manage.resource.addSource.sameName.confirm"/>
+                    <a id="btn-confirm-source-overwrite" class="confirmOverwriteSourceLink custom-link" href="#">
+                        <@s.text name="button.confirm"/>
+                    </a>
+                </div>
+
+                <div id="callout-not-enough-space" class="callout callout-danger text-smaller" style="display: none;">
+                    <@s.text name="manage.resource.addSource.notEnoughSpace"><@s.param>${freeDiscSpaceReadable}</@s.param></@s.text>
+                </div>
+
+                <input id="fileInput" type="file" multiple style="display: none;" />
+                <div id="fileList"></div>
+
+                <ul id="field-error-file" class="invalid-feedback list-unstyled field-error my-1">
+                    <li class="text-start">
+                        <span><@s.text name="manage.overview.source.file.too.big"/></span>
+                    </li>
+                </ul>
+
+                <div>
+                    <input type="text" id="sourceName" name="sourceName" class="form-control form-control-sm my-1" placeholder="<@s.text name='source.name'/>" aria-label="<@s.text name='source.name'/>" style="display: none">
+                    <ul id="field-error-sourceName" class="invalid-feedback list-unstyled field-error my-1">
+                        <li class="text-start">
+                            <span><@s.text name="manage.source.name.empty"/></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <input type="url" id="url" name="url" class="form-control form-control-sm my-1" placeholder="URL" aria-label="URL" style="display: none">
+                    <ul id="field-error-url" class="invalid-feedback list-unstyled field-error my-1">
+                        <li class="text-start">
+                            <@s.text name="validation.required"><@s.param><@s.text name="manage.source.url"/></@s.param></@s.text>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="url-source-info-block" style="display: none;">
+                    <div id="url-source-info-block-inner" class="d-flex justify-content-start fs-smaller-2">
+                        <div id="url-source-check-link-wrapper" class="me-3" style="display: none;">
+                            <a id="check-url-source-link" class="smaller-action-link-button action-link-button-primary" href="#"><@s.text name="manage.source.url.checkUrl"/></a>
+                        </div>
+                        <div id="url-source-check-status-wrapper" class="me-3" style="display: none;">
+                            <@icon name="cancel" class="text-gbif-danger" id="url-source-check-status-fail" style="display: none;"/>
+                            <@icon name="check_circle" class="text-gbif-success" id="url-source-check-status-success" style="display: none;"/>
+                        </div>
+                        <div id="url-source-size-wrapper" class="me-3" style="display: none;">
+                            <strong><@s.text name="manage.source.url.checkUrl.size"/>:</strong> <span id="url-source-size">?</span>
+                        </div>
+                        <div id="url-source-content-type-wrapper" style="display: none;">
+                            <strong><@s.text name="manage.source.url.checkUrl.type"/>:</strong> <span id="url-source-content-type">?</span>
+                        </div>
+                        <div id="url-source-error-message-wrapper" class="text-gbif-danger" style="display: none;">
+                            <@s.text name="manage.source.url.checkUrl.failed"/>
                         </div>
                     </div>
-
-                    <div class="mt-3">
-                        <form id="make-private-modal-form" action="resource-makePrivate.do" method="post">
-                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                            <input name="unpublish" type="hidden" value="Change"/>
-                        </form>
-                        <@s.text name="manage.overview.visibility.confirm.make.private"/>
-                    </div>
                 </div>
 
-                <div class="modal-footer justify-content-center">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                    <button id="changeStateSubmit" type="submit" form="make-private-modal-form" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.submit"/></button>
-                </div>
-            </div>
+                <input id="sourceType" type="hidden" name="sourceType" value="source-sql"/>
+            </form>
         </div>
-    </div>
-
-    <div id="cancel-visibility-change-modal" class="modal fade" tabindex="-1" aria-labelledby="cancel-visibility-change-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                </div>
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="cancel-visibility-change-modal-title"><@s.text name="manage.overview.visibility.change.cancel"/></h5>
-
-                    <div class="mt-3">
-                        <form id="cancel-visibility-change-modal-form" action="resource-cancelVisibilityChange.do" method="post">
-                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                        </form>
-                        <@s.text name="manage.overview.visibility.confirm.cancel.change"><@s.param>${resource.status!}</@s.param><@s.param>${resource.pendingStatus!}</@s.param></@s.text>
-                    </div>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                    <button id="changeStateSubmit" type="submit" form="cancel-visibility-change-modal-form" class="btn btn-sm btn-outline-gbif-danger"><@s.text name="button.submit"/></button>
-                </div>
-            </div>
+        <div class="modal-footer">
+            <input type="submit" form="addSourceForm" value="<@s.text name='button.clear'/>" id="clear" name="clear" class="btn btn-sm btn-outline-secondary me-auto" style="display: none;">
+            <@dialogCancel/>
+            <a id="sendButton" href="#" class="btn btn-sm btn-gbif-solid" style="display: none;"><@s.text name="button.upload"/></a>
+            <input type="submit" form="addSourceForm" value="<@s.text name='button.add'/>" id="add" name="add" class="btn btn-sm btn-gbif-solid" style="display: none;">
         </div>
-    </div>
+    </@dialog>
 
-    <div id="visibility-disabled-modal" class="modal fade" tabindex="-1" aria-labelledby="make-public-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                </div>
-
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="make-public-modal-title"><@s.text name="manage.overview.visibility"/></h5>
-                    <#if resource.status == "DELETED">
-                        <@s.text name="manage.overview.visibility.warning.deleted"/>
-                    <#elseif resource.status == "REGISTERED">
-                        <@s.text name="manage.overview.visibility.warning.registered"/>
-                    <#elseif resource.identifierStatus?has_content && (resource.identifierStatus == "PUBLIC" || resource.identifierStatus == "UNAVAILABLE")>
-                        <@s.text name="manage.overview.visibility.warning.identifier"/>
-                    <#else>
-                        <@s.text name="manage.overview.visibility.warning.general"/>
-                    </#if>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="source-data-modal" class="modal fade" tabindex="-1" aria-labelledby="source-data-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                </div>
-                <div class="modal-body">
-                    <div>
-                        <form id="addSourceForm" action='addsource.do' method='post' enctype="multipart/form-data">
-                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                            <input name="validate" type="hidden" value="false"/>
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="tabs-root">
-                                        <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
-                                            <div class="tabs-flexContainer tabs-centered" role="tablist">
-                                                <button id="tab-source-file" class="sources-tab-root tab-selected" type="button" role="tab">
-                                                    <@s.text name="manage.source.file"/>
-                                                    <span id="tab-indicator-source-file" class="tabs-indicator"></span>
-                                                </button>
-                                                <button id="tab-source-url" class="sources-tab-root" type="button" role="tab">
-                                                    URL
-                                                    <span id="tab-indicator-source-url" class="tabs-indicator" style="display: none;"></span>
-                                                </button>
-                                                <button id="tab-source-sql" class="sources-tab-root" type="button" role="tab">
-                                                    SQL
-                                                    <span id="tab-indicator-source-sql" class="tabs-indicator" style="display: none;"></span>
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div id="callout-file-upload-info" class="border rounded px-3 py-1 mt-3">
-                                        <div class="simpleCallout">
-                                            <div class="simpleCallout-inner">
-                                                <div class="simpleCalloutInfo simpleCalloutInfo-message">
-                                                    <div class="simpleCalloutIcon">
-                                                        <@icon name="info" class="text-gbif-primary"/>
-                                                    </div>
-                                                    <div class="simpleCalloutMeta">
-                                                        <div class="simpleCalloutMessage">
-                                                            <@s.text name="manage.source.file.multipleUpload"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <a id="chooseFilesButton" href="#" class="btn btn-sm btn-outline-gbif-primary mt-3"><@s.text name="button.chooseFiles"/></a>
-
-                                    <div id="callout-source-exists" class="border rounded px-3 py-1 mt-3" style="display: none;">
-                                        <div class="simpleCallout" >
-                                            <div class="simpleCallout-inner">
-                                                <div class="simpleCalloutInfo simpleCalloutInfo-warning">
-                                                    <div class="simpleCalloutIcon">
-                                                        <@icon name="error" class="text-gbif-danger"/>
-                                                    </div>
-                                                    <div class="simpleCalloutMeta">
-                                                        <div class="simpleCalloutError">
-                                                            <@s.text name="manage.resource.addSource.sameName.confirm"/>
-                                                            <a id="btn-confirm-source-overwrite" class="confirmOverwriteSourceLink custom-link" href="#">
-                                                                <@s.text name="button.confirm"/>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="callout-not-enough-space" class="callout callout-danger text-smaller" style="display: none;">
-                                        <@s.text name="manage.resource.addSource.notEnoughSpace"><@s.param>${freeDiscSpaceReadable}</@s.param></@s.text>
-                                    </div>
-
-                                    <input id="fileInput" type="file" multiple style="display: none;" />
-                                    <div id="fileList"></div>
-
-                                    <ul id="field-error-file" class="invalid-feedback list-unstyled field-error my-1">
-                                        <li class="text-start">
-                                            <span><@s.text name="manage.overview.source.file.too.big"/></span>
-                                        </li>
-                                    </ul>
-
-                                    <div>
-                                        <input type="text" id="sourceName" name="sourceName" class="form-control form-control-sm my-1" placeholder="<@s.text name='source.name'/>" style="display: none">
-                                        <ul id="field-error-sourceName" class="invalid-feedback list-unstyled field-error my-1">
-                                            <li class="text-start">
-                                                <span><@s.text name="manage.source.name.empty"/></span>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div>
-                                        <input type="url" id="url" name="url" class="form-control form-control-sm my-1" placeholder="URL" style="display: none">
-                                        <ul id="field-error-url" class="invalid-feedback list-unstyled field-error my-1">
-                                            <li class="text-start">
-                                                <@s.text name="validation.required"><@s.param><@s.text name="manage.source.url"/></@s.param></@s.text>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div id="url-source-info-block" style="display: none;">
-                                        <div id="url-source-info-block-inner" class="d-flex justify-content-start fs-smaller-2">
-                                            <div id="url-source-check-link-wrapper" class="me-3" style="display: none;">
-                                                <a id="check-url-source-link" class="smaller-action-link-button action-link-button-primary" href="#"><@s.text name="manage.source.url.checkUrl"/></a>
-                                            </div>
-                                            <div id="url-source-check-status-wrapper" class="me-3" style="display: none;">
-                                                <@icon name="cancel" class="text-gbif-danger" id="url-source-check-status-fail" style="display: none;"/>
-                                                <@icon name="check_circle" class="text-gbif-success" id="url-source-check-status-success" style="display: none;"/>
-                                            </div>
-                                            <div id="url-source-size-wrapper" class="me-3" style="display: none;">
-                                                <strong><@s.text name="manage.source.url.checkUrl.size"/>:</strong> <span id="url-source-size">?</span>
-                                            </div>
-                                            <div id="url-source-content-type-wrapper" style="display: none;">
-                                                <strong><@s.text name="manage.source.url.checkUrl.type"/>:</strong> <span id="url-source-content-type">?</span>
-                                            </div>
-                                            <div id="url-source-error-message-wrapper" class="text-gbif-danger" style="display: none;">
-                                                <@s.text name="manage.source.url.checkUrl.failed"/>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <input id="sourceType" type="hidden" name="sourceType" value="source-sql"/>
-                                </div>
-                            </div>
-                        </form>
-                        <form id="cancelOverwriteForm" action='canceloverwrite.do' method='post'>
-                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                            <input name="validate" type="hidden" value="false"/>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <a id="sendButton" href="#" class="btn btn-sm btn-outline-gbif-primary" style="display: none;"><@s.text name="button.upload"/></a>
-                    <input type="submit" form="addSourceForm" value="Add" id="add" name="add" class="btn btn-sm btn-outline-gbif-primary" style="display: none;">
-                    <input type="submit" form="addSourceForm" value="Clear" id="clear" name="clear" class="btn btn-sm btn-outline-secondary" style="display: none;">
-                    <input type="submit" form="cancelOverwriteForm" value="Cancel" id="clear" name="clear" class="btn btn-sm btn-outline-secondary" style="display: none;">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="mapping-modal" class="modal fade" tabindex="-1" aria-labelledby="mapping-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <#assign numberOfPotentialCores=potentialCores?size />
-
-                <div class="modal-header flex-column">
-                    <#if numberOfPotentialCores==0>
-                        <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                    <#else>
-                        <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                    </#if>
-                </div>
-
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="mapping-modal-title"><@s.text name="manage.mapping.title"/></h5>
-                    <div>
-                        <#if (numberOfPotentialCores>0)>
-                            <form id="addMappingForm" action='mapping.do' method='post'>
-                                <input name="r" type="hidden" value="${resource.shortname}"/>
-                                <input name="source" type="hidden" id="add-mapping-source" value="" disabled/>
-                                <p id="add-mapping-source-note" class="text-smaller mb-1 d-none"><@s.text name="manage.mapping.source"/>: <b id="add-mapping-source-name"></b></p>
-                                <select name="id" class="form-select my-1" id="rowType" size="1">
-                                    <optgroup label="<@s.text name='manage.overview.DwC.Mappings.cores.select'/>">
-                                        <#list potentialCores as c>
-                                            <#if c?has_content>
-                                                <option value="${c.rowType}">${c.title}</option>
-                                            </#if>
-                                        </#list>
-                                    </optgroup>
-                                    <#if (potentialExtensions?size>0)>
-                                        <optgroup label="<@s.text name='manage.overview.DwC.Mappings.extensions.select'/>">
-                                            <#list potentialExtensions as e>
-                                                <#if e?has_content>
-                                                    <option value="${e.rowType}">${e.title}</option>
-                                                </#if>
-                                            </#list>
-                                        </optgroup>
-                                    </#if>
-                                </select>
-                            </form>
-                        <#else>
-                            <#if isDataPackage>
-                                <@s.text name="manage.overview.mappings.cantdo"/>
-                            <#else>
-                                <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
-                            </#if>
-                        </#if>
-                    </div>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <input type="submit" value="Add" id="add" name="add" form="addMappingForm" class="btn btn-sm btn-outline-gbif-primary">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="metadata-modal" class="modal fade" tabindex="-1" aria-labelledby="metadata-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                </div>
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="metadata-modal-title"><@s.text name="manage.overview.metadata"/></h5>
-                    <div>
-                        <#if isDataPackage && !isDwcDp>
-                            <form id="upload-metadata-form" action='replace-datapackage-metadata.do' method='post' enctype="multipart/form-data">
-                                <input name="r" type="hidden" value="${resource.shortname}"/>
-                                <div class="row">
-                                    <#if resource.citationAutoGenerated>
-                                        <div class="fs-smaller">
-                                            <div id="callout-metadata-citation-override-info" class="border rounded px-3 py-1 mb-2">
-                                                <div class="simpleCallout">
-                                                    <div class="simpleCallout-inner">
-                                                        <div class="simpleCalloutInfo simpleCalloutInfo-warning">
-                                                            <div class="simpleCalloutIcon">
-                                                                <@icon name="error" class="text-gbif-danger"/>
-                                                            </div>
-                                                            <div class="simpleCalloutMeta">
-                                                                <div class="simpleCalloutMessage">
-                                                                    <@s.text name="manage.overview.metadata.citation.overridden"/>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </#if>
-
-                                    <div class="col-12">
-                                        <@s.file name="datapackageMetadataFile" cssClass="form-control form-control-sm my-1"/>
-                                    </div>
-
-                                    <div id="datapackage-metadata-validate" class="col-12 text-smaller" style="display: none;">
-                                        <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" />
-                                    </div>
-                                </div>
-                            </form>
-                        <#else>
-                            <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data">
-                                <input name="r" type="hidden" value="${resource.shortname}"/>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <@s.file name="emlFile" cssClass="form-control form-control-sm my-1"/>
-                                    </div>
-                                    <div id="eml-validate" class="col-12" style="display: none;">
-                                        <@checkbox name="validateEml" i18nkey="button.validate" />
-                                    </div>
-                                </div>
-                            </form>
-                        </#if>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <#if isDataPackage && !isDwcDp>
-                        <input type="submit" form="upload-metadata-form" value="Replace" id="datapackageMetadataReplace" name="datapackageMetadataReplace" class="btn btn-sm btn-outline-gbif-primary confirmDatapackageMetadataReplace" style="">
-                        <button id="datapackageMetadataCancel" type="button" class="btn btn-sm btn-outline-secondary " data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                    <#else>
-                        <input type="submit" form="upload-metadata-form" value="Replace" id="emlReplace" name="emlReplace" class="btn btn-sm btn-outline-gbif-primary confirmEmlReplace" style="display:none;">
-                        <button id="emlCancel" type="button" class="btn btn-sm btn-outline-secondary " data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                    </#if>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="publication-modal" class="modal fade" tabindex="-1" aria-labelledby="publication-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                </div>
-
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="publication-modal-title"><@s.text name="manage.overview.published"/></h5>
-                    <!-- resources cannot be published if it's deleted -->
-                    <#if resource.status == "DELETED">
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.published.deleted"/>
-                        </p>
-
-                        <!-- resources cannot be published if the mandatory metadata is missing -->
-                    <#elseif missingBasicMetadata>
-                        <p>
-                            <@s.text name="manage.overview.published.missing.metadata"/>
-                        </p>
-
-                        <#if !isDataPackage>
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.published.metadata.validation.report"/>
-                            </p>
-                        </#if>
-
-                        <!-- resources cannot be published if the metadata is invalid -->
-                    <#elseif !validMetadata>
-                        <p>
-                            <@s.text name="manage.overview.published.metadata.invalid"/>
-                        </p>
-
-                        <#if !isDataPackage || isColDp>
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.published.metadata.validation.report"/>
-                        </p>
-                        </#if>
-
-                        <!-- DwC-A resources cannot be published if the publishing organization is missing -->
-                    <#elseif !isDataPackage && !resource.organisation?has_content>
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.published.missing.organisation"/>
-                        </p>
-
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.published.missing.organisation.link"/>
-                        </p>
-
-                      <!-- resources cannot be published if mappings are missing (for DPs) -->
-                    <#elseif isDataPackage && dataPackageMappingsMissing>
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.published.missing.mappings"/>
-                        </p>
-
-                    <#elseif isDataPackage && !allRequiredFieldsMappedDataPackage>
-                        <p>
-                            <@s.text name="manage.overview.published.missing.requiredFields"/>
-                        </p>
-
-                        <p class="mb-0">
-                            <#list missingRequiredFieldsDataPackage as key, value>
-                                <strong>${key}</strong>:
-                                <#list value as field>
-                                    <code>${field.name}</code><#sep>, </#sep>
-                                </#list><br>
-                            </#list>
-                        </p>
-
-                        <!-- resources cannot be published if mappings refer to tables not in the installed schema (for DPs) -->
-                    <#elseif isDataPackage && dataPackageMappingsWithMissingTable?has_content>
-                        <p>
-                            <@s.text name="manage.overview.published.missing.tables"/>
-                        </p>
-
-                        <p class="mb-0">
-                            <#list dataPackageMappingsWithMissingTable as mappingLabel>
-                                <code>${mappingLabel}</code><#sep><br></#sep>
-                            </#list>
-                        </p>
-
-                        <!-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
-                    <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" />
-                        </p>
-
-                        <!-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
-                    <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
-                    || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
-                    || resource.status == "REGISTERED">
-                        <!-- the user must have registration rights -->
-                        <#if !currentUser.hasRegistrationRights()>
-                            <p class="mb-0">
-                                <@s.text name="manage.resource.status.publication.forbidden"/>
-                                &nbsp;<@s.text name="manage.resource.role.change"/>
-                            </p>
-
-                            <!-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
-                        <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
-                        || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
-                        && !organisationWithPrimaryDoiAccount??>
-                            <p class="mb-0">
-                                <@s.text name="manage.resource.status.publication.forbidden.account.missing" />
-                            </p>
-
-                            <!-- when a DOI is reserved.. -->
-                        <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                            <!-- and the resource has no existing DOI and its status is private..  -->
-                            <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
-                                <!-- and the resource has never been published before, the first publication is a new major version -->
-                                <#if !resource.lastPublished??>
-                                    <p class="mb-0">
-                                        <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/>
-                                    </p>
-
-                                    <!-- and the resource has been published before, the next publication is a new minor version -->
-                                <#else>
-                                    <p class="mb-0">
-                                        <@s.text name="manage.overview.publishing.doi.register.prevented.notPublic" />
-                                    </p>
+    <#assign numberOfPotentialCores=potentialCores?size />
+    <#assign dlgTitle><@s.text name="manage.overview.data.addMapping"/></#assign>
+    <@dialog id="mapping-modal" title=dlgTitle sub=dlgSub>
+        <div class="modal-body">
+            <#if (numberOfPotentialCores>0)>
+                <form id="addMappingForm" action='mapping.do' method='post'>
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <input name="source" type="hidden" id="add-mapping-source" value="" disabled/>
+                    <p id="add-mapping-source-note" class="mb-2 d-none"><@s.text name="manage.mapping.source"/>: <b id="add-mapping-source-name"></b></p>
+                    <select name="id" class="form-select form-select-sm" id="rowType" size="1" aria-label="<@s.text name='manage.overview.data.addMapping'/>">
+                        <optgroup label="<@s.text name='manage.overview.DwC.Mappings.cores.select'/>">
+                            <#list potentialCores as c>
+                                <#if c?has_content>
+                                    <option value="${c.rowType}">${c.title}</option>
                                 </#if>
-
-                                <!-- and its status is public (or registered), its reserved DOI can be registered during next publication  -->
-                            <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
-                                <div id="callout-doi-register-info" class="border rounded px-3 py-1 mt-3">
-                                    <div class="simpleCallout">
-                                        <div class="simpleCallout-inner">
-                                            <div class="simpleCalloutInfo simpleCalloutInfo-message">
-                                                <div class="simpleCalloutIcon">
-                                                    <@icon name="info" class="text-gbif-primary"/>
-                                                </div>
-                                                <div class="simpleCalloutMeta">
-                                                    <div class="simpleCalloutMessage">
-                                                        <@s.text name="manage.overview.publishing.doi.register.help"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </#if>
-                        </#if>
-                    </#if>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="networks-modal" class="modal fade" tabindex="-1" aria-labelledby="networks-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <#if !networksAvailable || resource.status == "DELETED" || (potentialNetworks?size==0) || !resource.key?has_content>
-                        <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                    <#else>
-                        <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                    </#if>
-                </div>
-
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="networks-modal-title"><@s.text name="manage.overview.networks.title"/></h5>
-                    <#if resource.status == "DELETED">
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.networks.deleted"/>
-                        </p>
-                    <#elseif !networksAvailable>
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.networks.registryAccess"/>
-                        </p>
-                    <#elseif (potentialNetworks?size==0)>
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.networks.select.empty"/>
-                        </p>
-                    <#elseif resource.key?has_content>
-                        <div>
-                            <div id="obis-network-validation-notification" class="callout callout-info text-smaller" style="display: none;">
-                                <@s.text name="manage.overview.networks.obis.notification"/>
-                            </div>
-                            <form id="addNetworkForm" action='resource-addNetwork.do' method='post'>
-                                <input name="r" type="hidden" value="${resource.shortname}"/>
-                                <select name="id" class="form-select my-1" id="network" size="1">
-                                    <option value="" disabled selected><@s.text name='manage.overview.networks.select'/></option>
-                                    <#list potentialNetworks?sort_by("name") as n>
-                                        <option value="${n.key}">${n.name}</option>
-                                    </#list>
-                                </select>
-                            </form>
-                        </div>
-                    <#else>
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.networks.not.registered"/>
-                        </p>
-                    </#if>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <input type="submit" form="addNetworkForm" value="Add" id="add-network" name="add" class="btn btn-sm btn-outline-gbif-primary" style="display: none;">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <#if resource.isDwcDp() && resource.status=="REGISTERED" && currentUser.hasRegistrationRights()>
-        <div id="dwc-dp-dataset-type-modal" class="modal fade" tabindex="-1" aria-labelledby="dwc-dp-dataset-type-modal-title" aria-hidden="true">
-            <div class="modal-dialog modal-confirm modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header flex-column">
-                        <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                    </div>
-
-                    <div class="modal-body">
-                        <h5 class="modal-title w-100" id="dwc-dp-dataset-type-modal-title"><@s.text name="manage.overview.registration.datasetType.change"/></h5>
-                        <p class="mb-2">
-                            <@s.text name="manage.overview.registration.datasetType.change.confirm"/>
-                        </p>
-                        <form id="dwcDpDatasetTypeForm" action="resource-updateDwcDpDatasetType.do" method="post">
-                            <input name="r" type="hidden" value="${resource.shortname}"/>
-                            <select name="dwcDpDatasetType" class="form-select my-1" id="registeredDwcDpDatasetType" size="1">
-                                <option value="" disabled <#if !resource.dwcDpDatasetType??>selected</#if>><@s.text name="manage.overview.registration.datasetType.select"/></option>
-                                <#list action.getDwcDpRegistrationDatasetTypes() as datasetType>
-                                    <option value="${datasetType.name()}" <#if resource.dwcDpDatasetType?? && resource.dwcDpDatasetType == datasetType>selected</#if>><@s.text name="portal.resource.type.${datasetType.name()?lower_case?replace('_', '')}"/></option>
+                            </#list>
+                        </optgroup>
+                        <#if (potentialExtensions?size>0)>
+                            <optgroup label="<@s.text name='manage.overview.DwC.Mappings.extensions.select'/>">
+                                <#list potentialExtensions as e>
+                                    <#if e?has_content>
+                                        <option value="${e.rowType}">${e.title}</option>
+                                    </#if>
                                 </#list>
-                            </select>
-                        </form>
-                    </div>
-
-                    <div class="modal-footer justify-content-center">
-                        <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                            <@s.text name="button.cancel"/>
-                        </button>
-                        <input type="submit" form="dwcDpDatasetTypeForm" value="<@s.text name="button.update"/>" id="update-dwc-dp-dataset-type" class="btn btn-sm btn-outline-gbif-primary" <#if !resource.dwcDpDatasetType??>style="display: none;"</#if>>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </#if>
-
-    <div id="registration-modal" class="modal fade" tabindex="-1" aria-labelledby="registration-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                </div>
-
-                <#assign hasToBePublishedFirst=false/>
-
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="registration-modal-title"><@s.text name="manage.overview.registration"/></h5>
-
-<#--                    <#if cfg.devMode() || cfg.getRegistryType()!='PRODUCTION'>-->
-<#--                        <p class="fst-italic">-->
-<#--                            <@s.text name="manage.overview.published.testmode.warning"/>-->
-<#--                        </p>-->
-<#--                    </#if>-->
-
-                    <#if resource.status=="DELETED">
-                        <!-- Show warning: resource must not be deleted -->
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.registration.deleted" />
-                        </p>
-                    <#elseif resource.status=="REGISTERED">
-                        <!-- Show warning: resource already registered -->
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.registration.registered" />
-                        </p>
-                    <#elseif resource.status=="PRIVATE">
-                        <!-- Show warning: resource must be public -->
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.registration.private" />
-                        </p>
-                    <#elseif resource.status=="PUBLIC">
-                        <#if !currentUser.hasRegistrationRights()>
-                            <!-- Show warning: user must have registration rights -->
-                            <p class="mb-0">
-                                <@s.text name="manage.resource.status.registration.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                            </p>
-                        <#elseif resource.dataPackage && resource.coreType != "camtrap-dp" && resource.coreType != "coldp" && resource.coreType != "dwc-dp">
-                            <!-- Show warning: registration is not available now -->
-                            <p class="mb-0">
-                                <@s.text name="manage.resource.status.registration.forbiddenTypes"/>
-                            </p>
-                        <#elseif missingValidPublishingOrganisation?string == "true">
-                            <!-- Show warning: user must assign valid publishing organisation -->
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.visibility.missing.organisation"/>
-                            </p>
-                        <#elseif missingRegistrationMetadata?string == "true">
-                            <!-- Show warning: user must fill in minimum registration metadata -->
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.visibility.missing.metadata" />
-                            </p>
-                        <#elseif !resource.isLastPublishedVersionPublic()>
-                            <!-- Show warning: last published version must be publicly available to register -->
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.prevented.resource.registration.notPublic" />
-                            </p>
-                            <#assign hasToBePublishedFirst=true/>
-                        <#elseif !action.isLastPublishedVersionAssignedGBIFSupportedLicense(resource)>
-                            <!-- Show warning: resource must be assigned a GBIF-supported license to register if resource has occurrence data -->
-                            <p class="mb-0">
-                                <@s.text name="manage.overview.prevented.resource.registration.noGBIFLicense" escapeHtml=true/>
-                            </p>
+                            </optgroup>
                         </#if>
-                    </#if>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <#if hasToBePublishedFirst>
-                        <button id="publish-button" type="button" class="btn btn-sm btn-outline-gbif-primary ${buttonClass!"confirmPublishMinorVersion"}" data-bs-dismiss="modal">
-                            <@s.text name="button.publish"/>
-                        </button>
-                    </#if>
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
+                    </select>
+                </form>
+            <#elseif isDataPackage>
+                <@s.text name="manage.overview.mappings.cantdo"/>
+            <#else>
+                <@s.text name="manage.overview.DwC.Mappings.cantdo"/>
+            </#if>
         </div>
-    </div>
+        <div class="modal-footer">
+            <@dialogCancel/>
+            <#if (numberOfPotentialCores>0)>
+                <button type="submit" id="add-mapping-submit" name="add" value="Add" form="addMappingForm" class="btn btn-sm btn-gbif-solid"><@s.text name="button.add"/></button>
+            </#if>
+        </div>
+    </@dialog>
 
-    <div id="managers-modal" class="modal fade" tabindex="-1" aria-labelledby="managers-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <#assign numberOfPotentialManagers=potentialManagers?size />
-
-                <div class="modal-header flex-column">
-                    <#if (numberOfPotentialManagers==0)>
-                        <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                    <#else>
-                        <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                    </#if>
-                </div>
-
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="managers-modal-title"><@s.text name="manage.overview.resource.managers"/></h5>
-                    <#if (numberOfPotentialManagers>0)>
-                        <div>
-                            <form id="addManagerForm" action='resource-addManager.do' method='post'>
-                                <input name="r" type="hidden" value="${resource.shortname}"/>
-                                <select name="id" class="form-select my-1" id="manager" size="1">
-                                    <option value="" disabled selected><@s.text name='manage.overview.resource.managers.select'/></option>
-                                    <#list potentialManagers?sort_by("name") as u>
-                                        <option value="${u.email}">${u.name}</option>
-                                    </#list>
-                                </select>
-                            </form>
+    <#assign dlgTitle><#if isEmlBased><@s.text name="manage.overview.metadata.uploadEml"/><#else><@s.text name="manage.overview.metadata.upload"/></#if></#assign>
+    <@dialog id="metadata-modal" title=dlgTitle sub=dlgSub>
+        <div class="modal-body">
+            <#if isDataPackage && !isDwcDp>
+                <form id="upload-metadata-form" action='replace-datapackage-metadata.do' method='post' enctype="multipart/form-data">
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <#if resource.citationAutoGenerated>
+                        <div id="callout-metadata-citation-override-info" class="callout callout-warning text-smaller mt-0 mb-2">
+                            <@s.text name="manage.overview.metadata.citation.overridden"/>
                         </div>
-                    <#else>
-                        <p class="mb-0">
-                            <@s.text name="manage.overview.resource.managers.select.empty"/>
-                        </p>
                     </#if>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <#if (numberOfPotentialManagers>0)>
-                    <input type="submit" form="addManagerForm" value="Add" id="add-manager" name="add" class="btn btn-sm btn-outline-gbif-primary" style="display: none;">
-                    </#if>
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
+                    <@s.file name="datapackageMetadataFile" cssClass="form-control form-control-sm my-1"/>
+                    <div id="datapackage-metadata-validate" class="text-smaller" style="display: none;">
+                        <@checkbox name="validateDatapackageMetadata" i18nkey="button.validate" />
+                    </div>
+                </form>
+            <#else>
+                <form id="upload-metadata-form" action='replace-eml.do' method='post' enctype="multipart/form-data">
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <@s.file name="emlFile" cssClass="form-control form-control-sm my-1"/>
+                    <div id="eml-validate" style="display: none;">
+                        <@checkbox name="validateEml" i18nkey="button.validate" />
+                    </div>
+                </form>
+            </#if>
         </div>
-    </div>
-
-    <div id="reserve-doi-modal" class="modal fade" tabindex="-1" aria-labelledby="reserve-doi-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <#if !organisationWithPrimaryDoiAccount?? || !currentUser.hasRegistrationRights() || resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                        <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                    <#else>
-                        <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                    </#if>
-                </div>
-
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="reserve-doi-modal-title">DOI</h5>
-                    <#if !organisationWithPrimaryDoiAccount??>
-                        <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>
-                    <#elseif !currentUser.hasRegistrationRights()>
-                        <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                    <#elseif resource.identifierStatus == "UNRESERVED">
-                        <@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>
-                    <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
-                        <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
-                    <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
-                        <@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>
-                    </#if>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <#if organisationWithPrimaryDoiAccount?? && currentUser.hasRegistrationRights()>
-                        <@nextDoiButtonTD/>
-                    <#else>
-                        <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                            <@s.text name="button.cancel"/>
-                        </button>
-                    </#if>
-                </div>
-            </div>
+        <div class="modal-footer">
+            <#if isDataPackage && !isDwcDp>
+                <button id="datapackageMetadataCancel" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                <button type="submit" form="upload-metadata-form" value="Replace" id="datapackageMetadataReplace" name="datapackageMetadataReplace" class="btn btn-sm btn-gbif-solid" style="display:none;"><@s.text name="button.replace"/></button>
+            <#else>
+                <button id="emlCancel" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                <button type="submit" form="upload-metadata-form" value="Replace" id="emlReplace" name="emlReplace" class="btn btn-sm btn-gbif-solid" style="display:none;"><@s.text name="button.replace"/></button>
+            </#if>
         </div>
-    </div>
+    </@dialog>
 
-    <div id="delete-resource-modal" class="modal fade" tabindex="-1" aria-labelledby="delete-resource-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                </div>
+    <#assign dlgTitle><@s.text name="manage.overview.cantPublish"/></#assign>
+    <@dialog id="publication-modal" title=dlgTitle tone="warn" alert=true>
+        <div class="modal-body">
+            <#-- resources cannot be published if it's deleted -->
+            <#if resource.status == "DELETED">
+                <p><@s.text name="manage.overview.published.deleted"/></p>
 
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="delete-resource-modal-title"><@s.text name="manage.overview.resource.delete"/></h5>
-                    <@s.text name="manage.overview.resource.delete.description"/>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <button class="btn btn-sm btn-outline-gbif-danger proxy-button-delete-from-ipt" name="delete"><@s.text name="button.delete.fromIpt"/></button>
-                    <button class="btn btn-sm btn-outline-gbif-danger proxy-button-delete-from-gbif-and-ipt" name="delete"><@s.text name="button.delete.fromIptAndGbif"/></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="delete-resource-disabled-modal" class="modal fade" tabindex="-1" aria-labelledby="delete-resource-disabled-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
-                </div>
-
-                <div class="modal-body">
-                    <h5 class="modal-title w-100" id="delete-resource-disabled-modal-title"><@s.text name="manage.overview.resource.delete"/></h5>
-                    <#if !currentUser.hasRegistrationRights()>
-                        <#if resource.status == "DELETED">
-                            <@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                        <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
-                            <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
-                        </#if>
-                    </#if>
-                </div>
-
-                <div class="modal-footer justify-content-center">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="datapackage-metadata-modal" class="modal fade" tabindex="-1" aria-labelledby="datapackage-metadata-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm" style="max-width: none !important; margin: 1.75rem; font-size: 12px;">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                </div>
-                <div class="modal-body" style="text-align: left !important;">
-                    <h5 class="modal-title w-100" id="datapackage-metadata-modal-title">Metadata</h5>
-                    <pre id="json-raw-data" class="fs-smaller-2">${datapackageMetadataRaw!}</pre>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <#if !isDataPackage || isDwcDp || isColDp>
-    <div id="metadata-validation-result-modal" class="modal fade" tabindex="-1" aria-labelledby="metadata-validation-result-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <#if isColDp>
-                    <#assign isMetadataValid=!colMetadataErrors?has_content />
-                <#else>
-                    <#assign isMetadataValid=!errorCollector.hasErrors() />
+            <#-- resources cannot be published if the mandatory metadata is missing -->
+            <#elseif missingBasicMetadata>
+                <p><@s.text name="manage.overview.published.missing.metadata"/></p>
+                <#if !isDataPackage>
+                    <p><@s.text name="manage.overview.published.metadata.validation.report"/></p>
                 </#if>
 
-                <div class="modal-header flex-column">
-                    <#if isMetadataValid>
-                        <img src="${baseURL}/images/logo-modal-success.png" alt="Success" class="modal-image" />
-                    <#else>
-                        <img src="${baseURL}/images/logo-modal-warning.png" alt="Warning" class="modal-image" />
+            <#-- resources cannot be published if the metadata is invalid -->
+            <#elseif !validMetadata>
+                <p><@s.text name="manage.overview.published.metadata.invalid"/></p>
+                <#if !isDataPackage || isColDp>
+                    <p><@s.text name="manage.overview.published.metadata.validation.report"/></p>
+                </#if>
+
+            <#-- DwC-A resources cannot be published if the publishing organization is missing -->
+            <#elseif !isDataPackage && !resource.organisation?has_content>
+                <p><@s.text name="manage.overview.published.missing.organisation"/></p>
+                <p><@s.text name="manage.overview.published.missing.organisation.link"/></p>
+
+            <#-- resources cannot be published if mappings are missing (for DPs) -->
+            <#elseif isDataPackage && dataPackageMappingsMissing>
+                <p><@s.text name="manage.overview.published.missing.mappings"/></p>
+
+            <#elseif isDataPackage && !allRequiredFieldsMappedDataPackage>
+                <p><@s.text name="manage.overview.published.missing.requiredFields"/></p>
+                <p>
+                    <#list missingRequiredFieldsDataPackage as key, value>
+                        <strong>${key}</strong>:
+                        <#list value as field>
+                            <code>${field.name}</code><#sep>, </#sep>
+                        </#list><br>
+                    </#list>
+                </p>
+
+            <#-- resources cannot be published if mappings refer to tables not in the installed schema (for DPs) -->
+            <#elseif isDataPackage && dataPackageMappingsWithMissingTable?has_content>
+                <p><@s.text name="manage.overview.published.missing.tables"/></p>
+                <p>
+                    <#list dataPackageMappingsWithMissingTable as mappingLabel>
+                        <code>${mappingLabel}</code><#sep><br></#sep>
+                    </#list>
+                </p>
+
+            <#-- resources that are already registered cannot be re-published if they haven't been assigned a GBIF-supported license -->
+            <#elseif resource.isRegistered() && !resource.isAssignedGBIFSupportedLicense()>
+                <p><@s.text name="manage.overview.prevented.resource.publishing.noGBIFLicense" /></p>
+
+            <#-- resources with a reserved DOI, existing registered DOI, or registered with GBIF can only be republished by managers with registration rights -->
+            <#elseif (resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")
+            || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi())
+            || resource.status == "REGISTERED">
+                <#if !currentUser.hasRegistrationRights()>
+                    <p><@s.text name="manage.resource.status.publication.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/></p>
+
+                <#-- an organisation with DOI account be activated (if resource has a reserved DOI or existing registered DOI) -->
+                <#elseif ((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION" && resource.isAlreadyAssignedDoi())
+                || (resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()))
+                && !organisationWithPrimaryDoiAccount??>
+                    <p><@s.text name="manage.resource.status.publication.forbidden.account.missing" /></p>
+
+                <#-- a reserved DOI on a private resource: it can only be registered once the resource is public -->
+                <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                    <#if !resource.isAlreadyAssignedDoi() && resource.status == "PRIVATE">
+                        <p><@s.text name="manage.overview.publishing.doi.register.prevented.notPublic"/></p>
+                    <#elseif resource.status == "PUBLIC" || resource.status == "REGISTERED">
+                        <p id="callout-doi-register-info"><@s.text name="manage.overview.publishing.doi.register.help"/></p>
                     </#if>
+                </#if>
+            </#if>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel key="button.close"/>
+        </div>
+    </@dialog>
+
+    <#assign dlgTitle><@s.text name="manage.overview.networks.title"/></#assign>
+    <@dialog id="networks-modal" title=dlgTitle sub=dlgSub>
+        <div class="modal-body">
+            <#if resource.status == "DELETED">
+                <@s.text name="manage.overview.networks.deleted"/>
+            <#elseif !networksAvailable>
+                <@s.text name="manage.overview.networks.registryAccess"/>
+            <#elseif (potentialNetworks?size==0)>
+                <@s.text name="manage.overview.networks.select.empty"/>
+            <#elseif resource.key?has_content>
+                <div id="obis-network-validation-notification" class="callout callout-info text-smaller mt-0" style="display: none;">
+                    <@s.text name="manage.overview.networks.obis.notification"/>
                 </div>
-                <div class="modal-body" style="text-align: left !important;">
-                    <h5 class="modal-title w-100 mb-0" id="metadata-validation-result-modal">
-                        <@s.text name="manage.overview.metadata.modal.result"/>:
-                        <#if isMetadataValid>
-                            <span class="text-gbif-primary"><@s.text name="manage.overview.metadata.modal.valid"/></span>
-                        <#else>
-                            <span class="text-gbif-danger"><@s.text name="manage.overview.metadata.modal.invalid"/></span>
-                        </#if>
-                    </h5>
+                <form id="addNetworkForm" action='resource-addNetwork.do' method='post'>
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <select name="id" class="form-select form-select-sm" id="network" size="1" aria-label="<@s.text name='manage.overview.networks.select'/>">
+                        <option value="" disabled selected><@s.text name='manage.overview.networks.select'/></option>
+                        <#list potentialNetworks?sort_by("name") as n>
+                            <option value="${n.key}">${n.name}</option>
+                        </#list>
+                    </select>
+                </form>
+            <#else>
+                <@s.text name="manage.overview.networks.not.registered"/>
+            </#if>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel/>
+            <button type="submit" form="addNetworkForm" value="Add" id="add-network" name="add" class="btn btn-sm btn-gbif-solid" style="display: none;"><@s.text name="button.add"/></button>
+        </div>
+    </@dialog>
 
-                    <#assign metadataSections = {
-                    "BASIC_SECTION": "basic",
-                    "CONTACTS_SECTION": "contacts",
-                    "ACKNOWLEDGEMENTS_SECTION": "acknowledgements",
-                    "GEOGRAPHIC_COVERAGE_SECTION": "geocoverage",
-                    "TAXANOMIC_COVERAGE_SECTION": "taxcoverage",
-                    "TEMPORAL_COVERAGE_SECTION": "tempcoverage",
-                    "ADDITIONAL_DESCRIPTION_SECTION": "additionalDescription",
-                    "PROJECT_SECTION": "project",
-                    "METHODS_SECTION": "methods",
-                    "CITATIONS_SECTION": "citations",
-                    "COLLECTIONS_SECTION": "collections",
-                    "PHYSICAL_SECTION": "physical",
-                    "KEYWORDS_SECTION": "keywords",
-                    "ADDITIONAL_SECTION": "additional"
-                    }/>
+    <#if resource.isDwcDp() && resource.status=="REGISTERED" && currentUser.hasRegistrationRights()>
+        <#assign dlgTitle><@s.text name="manage.overview.registration.datasetType.change"/></#assign>
+        <@dialog id="dwc-dp-dataset-type-modal" title=dlgTitle sub=dlgSub>
+            <div class="modal-body">
+                <p class="mb-2"><@s.text name="manage.overview.registration.datasetType.change.confirm"/></p>
+                <form id="dwcDpDatasetTypeForm" action="resource-updateDwcDpDatasetType.do" method="post">
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <select name="dwcDpDatasetType" class="form-select form-select-sm" id="registeredDwcDpDatasetType" size="1" aria-label="<@s.text name='manage.overview.registration.datasetType'/>">
+                        <option value="" disabled <#if !resource.dwcDpDatasetType??>selected</#if>><@s.text name="manage.overview.registration.datasetType.select"/></option>
+                        <#list action.getDwcDpRegistrationDatasetTypes() as datasetType>
+                            <option value="${datasetType.name()}" <#if resource.dwcDpDatasetType?? && resource.dwcDpDatasetType == datasetType>selected</#if>><@s.text name="portal.resource.type.${datasetType.name()?lower_case?replace('_', '')}"/></option>
+                        </#list>
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <@dialogCancel/>
+                <button type="submit" form="dwcDpDatasetTypeForm" id="update-dwc-dp-dataset-type" class="btn btn-sm btn-gbif-solid" <#if !resource.dwcDpDatasetType??>style="display: none;"</#if>><@s.text name="button.update"/></button>
+            </div>
+        </@dialog>
+    </#if>
 
+    <#assign numberOfPotentialManagers=potentialManagers?size />
+    <#assign dlgTitle><@s.text name="manage.overview.resource.managers"/></#assign>
+    <@dialog id="managers-modal" title=dlgTitle sub=dlgSub>
+        <div class="modal-body">
+            <#if (numberOfPotentialManagers>0)>
+                <form id="addManagerForm" action='resource-addManager.do' method='post'>
+                    <input name="r" type="hidden" value="${resource.shortname}"/>
+                    <select name="id" class="form-select form-select-sm" id="manager" size="1" aria-label="<@s.text name='manage.overview.resource.managers.select'/>">
+                        <option value="" disabled selected><@s.text name='manage.overview.resource.managers.select'/></option>
+                        <#list potentialManagers?sort_by("name") as u>
+                            <option value="${u.email}">${u.name}</option>
+                        </#list>
+                    </select>
+                </form>
+            <#else>
+                <@s.text name="manage.overview.resource.managers.select.empty"/>
+            </#if>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel/>
+            <#if (numberOfPotentialManagers>0)>
+                <button type="submit" form="addManagerForm" value="Add" id="add-manager" name="add" class="btn btn-sm btn-gbif-solid" style="display: none;"><@s.text name="button.add"/></button>
+            </#if>
+        </div>
+    </@dialog>
 
-                    <#if !isMetadataValid && isColDp>
-                        <ul class="mt-2">
-                            <#list colMetadataErrors as error>
-                                <li>${error}</li>
-                            </#list>
-                        </ul>
-                    <#elseif !isMetadataValid>
-                        <div class="mt-2">
-                            <#list errorCollector.result?keys as key>
-                                <#if errorCollector.result[key].hasErrors()>
-                                    <div>
-                                        <div>
-                                            <@icon name="close" class="text-gbif-danger"/>
-                                            <span class="text-gbif-danger me-2">
-                                                <b><@s.text name="submenu.${metadataSections[key]!key}"/></b>
-                                            </span>
-                                            <a class="metadata-action-link custom-link" type="button" href="${baseURL}/manage/metadata-${metadataSections[key]!key}.do?r=${resource.shortname}">
-                                                <span>
-                                                    <svg class="link-icon link-icon-primary" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span>
-                                                    <@s.text name="button.edit"/>
-                                                </span>
-                                            </a>
-                                        </div>
+    <#-- the DOI dialog explains and asks at once: its button reserves or deletes the DOI, no second confirmation -->
+    <#assign doiActionable = organisationWithPrimaryDoiAccount?? && currentUser.hasRegistrationRights()>
+    <#assign dlgTitle><#if !doiActionable>DOI<#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION"><@s.text name="manage.overview.confirm.doi.delete.title"/><#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi()><@s.text name="manage.overview.confirm.doi.reserveNew.title"><@s.param>${resource.shortname}</@s.param></@s.text><#else><@s.text name="manage.overview.confirm.doi.reserve.title"><@s.param>${resource.shortname}</@s.param></@s.text></#if></#assign>
+    <@dialog id="reserve-doi-modal" title=dlgTitle tone=doiActionable?then((resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION")?then("danger", "info"), "warn") alert=true>
+        <div class="modal-body">
+            <#if !organisationWithPrimaryDoiAccount??>
+                <@s.text name="manage.overview.publishing.doi.reserve.prevented.noOrganisation" escapeHtml=true/>
+            <#elseif !currentUser.hasRegistrationRights()>
+                <@s.text name="manage.resource.status.doi.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+            <#elseif resource.identifierStatus == "UNRESERVED">
+                <@s.text name="manage.overview.publishing.doi.reserve.help" escapeHtml=true/>
+            <#elseif resource.identifierStatus == "PUBLIC_PENDING_PUBLICATION">
+                <@s.text name="manage.overview.publishing.doi.delete.help" escapeHtml=true/>
+            <#elseif resource.identifierStatus == "PUBLIC" && resource.isAlreadyAssignedDoi() >
+                <@s.text name="manage.overview.publishing.doi.reserve.new.help" escapeHtml=true/>
+            </#if>
+        </div>
+        <div class="modal-footer">
+            <#if doiActionable>
+                <@dialogCancel/>
+                <@nextDoiButtonTD/>
+            <#else>
+                <@dialogCancel key="button.close"/>
+            </#if>
+        </div>
+    </@dialog>
 
-                                        <ul>
-                                            <#list (errorCollector.result[key].fieldErrors)! as fe>
-                                                <li>${fe}</li>
-                                            </#list>
-                                            <#list (errorCollector.result[key].actionErrors)! as ae>
-                                                <li>${ae}</li>
-                                            </#list>
-                                        </ul>
-                                    </div>
-                                </#if>
-                            </#list>
-                        </div>
-                    </#if>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                        <@s.text name="button.cancel"/>
-                    </button>
-                </div>
+    <#-- registered resources: one dialog chooses where to delete; deleting from GBIF.org asks for the shortname -->
+    <#assign dlgTitle><@s.text name="manage.overview.confirm.delete.title"><@s.param>${resource.shortname}</@s.param></@s.text></#assign>
+    <@dialog id="delete-resource-modal" title=dlgTitle tone="danger" alert=true>
+        <div class="modal-body">
+            <#if resource.isAlreadyAssignedDoi()><p><@s.text name="manage.resource.delete.confirm.doi"/></p></#if>
+            <p><@s.text name="manage.overview.confirm.delete.registered"/></p>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="deleteWhere" id="delete-where-ipt" value="ipt">
+                <label class="form-check-label" for="delete-where-ipt">
+                    <b><@s.text name="manage.overview.confirm.delete.fromIpt"/></b><br>
+                    <span class="text-muted"><@s.text name="manage.overview.confirm.delete.fromIpt.help"/></span>
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="deleteWhere" id="delete-where-gbif" value="gbif">
+                <label class="form-check-label" for="delete-where-gbif">
+                    <b><@s.text name="manage.overview.confirm.delete.fromGbif"/></b><br>
+                    <span class="text-muted"><@s.text name="manage.overview.confirm.delete.fromGbif.help"/></span>
+                </label>
+            </div>
+            <div class="dlg-extra dlg-type" id="delete-type-wrap" hidden>
+                <label class="form-label" for="delete-type"></label>
+                <input type="text" class="form-control form-control-sm" id="delete-type" autocomplete="off" spellcheck="false">
             </div>
         </div>
-    </div>
+        <div class="modal-footer">
+            <span class="dlg-hint" id="delete-resource-hint"><@s.text name="manage.overview.confirm.delete.choose"/></span>
+            <@dialogCancel/>
+            <button type="button" class="btn btn-sm btn-danger" id="delete-resource-confirm" aria-describedby="delete-resource-hint" disabled><@s.text name="button.delete"/></button>
+        </div>
+    </@dialog>
+
+    <#assign dlgTitle><#if resource.status == "DELETED"><@s.text name="manage.overview.cantUndelete"/><#else><@s.text name="manage.overview.cantDelete"/></#if></#assign>
+    <@dialog id="delete-resource-disabled-modal" title=dlgTitle tone="warn" alert=true>
+        <div class="modal-body">
+            <#if !currentUser.hasRegistrationRights()>
+                <#if resource.status == "DELETED">
+                    <@s.text name="manage.resource.status.undeletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                <#elseif resource.isAlreadyAssignedDoi()?string == "true" || resource.status == "REGISTERED">
+                    <@s.text name="manage.resource.status.deletion.forbidden"/>&nbsp;<@s.text name="manage.resource.role.change"/>
+                </#if>
+            </#if>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel key="button.close"/>
+        </div>
+    </@dialog>
+
+    <#-- mapping preview (mappingPeek.do, peek.ftl); the title is the mapping's name -->
+    <@dialog id="peek-modal" title="" sub=dlgSub size="wide">
+        <div class="modal-body">
+            <div id="peek-modal-content" class="p-3"></div>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel key="button.close"/>
+        </div>
+    </@dialog>
+
+    <#assign dlgTitle><@s.text name="manage.overview.metadata"/></#assign>
+    <@dialog id="datapackage-metadata-modal" title=dlgTitle sub=dlgSub size="wide">
+        <div class="modal-body">
+            <pre id="json-raw-data" class="fs-smaller-2 m-0 p-3">${datapackageMetadataRaw!}</pre>
+        </div>
+        <div class="modal-footer">
+            <@dialogCancel key="button.close"/>
+        </div>
+    </@dialog>
+
+    <#if !isDataPackage || isDwcDp || isColDp>
+        <#if isColDp>
+            <#assign isMetadataValid=!colMetadataErrors?has_content />
+        <#else>
+            <#assign isMetadataValid=!errorCollector.hasErrors() />
+        </#if>
+        <#assign dlgTitle><@s.text name="manage.overview.metadata.modal.result"/>: <#if isMetadataValid><@s.text name="manage.overview.metadata.modal.valid"/><#else><@s.text name="manage.overview.metadata.modal.invalid"/></#if></#assign>
+
+        <#assign metadataSections = {
+        "BASIC_SECTION": "basic",
+        "CONTACTS_SECTION": "contacts",
+        "ACKNOWLEDGEMENTS_SECTION": "acknowledgements",
+        "GEOGRAPHIC_COVERAGE_SECTION": "geocoverage",
+        "TAXANOMIC_COVERAGE_SECTION": "taxcoverage",
+        "TEMPORAL_COVERAGE_SECTION": "tempcoverage",
+        "ADDITIONAL_DESCRIPTION_SECTION": "additionalDescription",
+        "PROJECT_SECTION": "project",
+        "METHODS_SECTION": "methods",
+        "CITATIONS_SECTION": "citations",
+        "COLLECTIONS_SECTION": "collections",
+        "PHYSICAL_SECTION": "physical",
+        "KEYWORDS_SECTION": "keywords",
+        "ADDITIONAL_SECTION": "additional"
+        }/>
+
+        <@dialog id="metadata-validation-result-modal" title=dlgTitle tone=isMetadataValid?then("ok", "warn") sub=dlgSub>
+            <#if !isMetadataValid>
+            <div class="modal-body">
+                <#if isColDp>
+                    <ul class="mb-0">
+                        <#list colMetadataErrors as error>
+                            <li>${error}</li>
+                        </#list>
+                    </ul>
+                <#else>
+                    <#list errorCollector.result?keys as key>
+                        <#if errorCollector.result[key].hasErrors()>
+                            <div>
+                                <div>
+                                    <@icon name="close" class="text-gbif-danger"/>
+                                    <span class="text-gbif-danger me-2">
+                                        <b><@s.text name="submenu.${metadataSections[key]!key}"/></b>
+                                    </span>
+                                    <a class="metadata-action-link custom-link" href="${baseURL}/manage/metadata-${metadataSections[key]!key}.do?r=${resource.shortname}">
+                                        <@s.text name="button.edit"/>
+                                    </a>
+                                </div>
+                                <ul>
+                                    <#list (errorCollector.result[key].fieldErrors)! as fe>
+                                        <li>${fe}</li>
+                                    </#list>
+                                    <#list (errorCollector.result[key].actionErrors)! as ae>
+                                        <li>${ae}</li>
+                                    </#list>
+                                </ul>
+                            </div>
+                        </#if>
+                    </#list>
+                </#if>
+            </div>
+            </#if>
+            <div class="modal-footer">
+                <@dialogCancel key="button.close"/>
+            </div>
+        </@dialog>
     </#if>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -370,11 +370,10 @@
 
 <script>
     $('.confirmDeleteVersion').jConfirmAction({
-        titleQuestion: "<@s.text name="basic.confirm"/>",
-        question: "<@s.text name='portal.resource.confirm.delete.version'/><br><br><@s.text name='portal.resource.confirm.delete.version.warning.citation'/><br><br><@s.text name='portal.resource.confirm.delete.version.warning.undone'/>",
-        yesAnswer: "<@s.text name='basic.yes'/>",
-        cancelAnswer: "<@s.text name='basic.no'/>",
-        buttonType: "danger",
-        baseUrl: "${baseURL}"
+        titleQuestion: "<@s.text name="dialog.version.delete.title"/>",
+        question: "<@s.text name="dialog.version.delete.text"/>",
+        yesAnswer: "<@s.text name="button.delete"/>",
+        cancelAnswer: "<@s.text name="button.cancel"/>",
+        buttonType: "danger"
     });
 </script>

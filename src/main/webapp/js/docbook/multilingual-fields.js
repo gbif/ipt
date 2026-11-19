@@ -35,8 +35,6 @@
         confirmRemoveText: 'The {0} title and description are removed when you save.',
         confirmRemoveButton: 'Remove',
         cancel: 'Cancel',
-        // for the warning image of the confirmation dialog
-        baseUrl: '',
         translationOf: '{0} ({1})'
     };
 
@@ -57,40 +55,18 @@
     }
 
     /**
-     * Asks for confirmation in the IPT confirmation dialog (the look of js/jconfirmation.jquery.js, in the
-     * #dialog-confirm container of the page menu), then calls onConfirm. Falls back to the browser dialog if the
-     * container or Bootstrap is missing.
+     * Asks for confirmation with IPT.confirm() (js/dialog.js), then calls onConfirm. Falls back to the browser
+     * dialog if that helper or Bootstrap is missing.
      */
     function confirmDialog(title, text, yesLabel, onConfirm) {
-        const container = document.getElementById('dialog-confirm');
-        if (!container || !global.bootstrap || !global.bootstrap.Modal) {
+        if (!global.IPT || !global.IPT.confirm || !global.bootstrap || !global.bootstrap.Modal) {
             if (global.confirm(title)) onConfirm();
             return;
         }
-        const yes = el('button', {type: 'button', class: 'btn btn-sm btn-outline-gbif-danger', text: yesLabel});
-        const cancel = el('button', {
-            type: 'button', class: 'btn btn-sm btn-outline-secondary', 'data-bs-dismiss': 'modal', text: labels.cancel
-        });
-        const dialog = el('div', {class: 'modal-dialog modal-confirm modal-dialog-centered'}, [
-            el('div', {class: 'modal-content'}, [
-                el('div', {class: 'modal-header flex-column'}, [
-                    el('img', {src: labels.baseUrl + '/images/logo-modal-warning.png', alt: '', class: 'modal-image'})
-                ]),
-                el('div', {class: 'modal-body'}, [
-                    el('h5', {class: 'modal-title w-100', id: 'staticBackdropLabel', text: title}),
-                    el('p', {class: 'mb-0', text: text})
-                ]),
-                el('div', {class: 'modal-footer justify-content-center'}, [cancel, yes])
-            ])
-        ]);
-        container.replaceChildren(dialog);
-        // getOrCreateInstance is missing from the Bootstrap version the IPT ships
-        const modal = global.bootstrap.Modal.getInstance(container) || new global.bootstrap.Modal(container);
-        yes.addEventListener('click', () => {
-            modal.hide();
-            onConfirm();
-        });
-        modal.show();
+        const body = document.createElement('p');
+        body.textContent = text;
+        global.IPT.confirm({tone: 'danger', title: title, text: body.outerHTML, confirm: yesLabel, cancel: labels.cancel})
+            .then(result => { if (result) onConfirm(); });
     }
 
     function create(settings) {

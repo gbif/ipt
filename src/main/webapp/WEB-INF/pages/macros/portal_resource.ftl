@@ -213,7 +213,7 @@
                                 </#if>
                                 <#-- deleting a version is admin only (struts-admin.xml); never the latest -->
                                 <#if adminRights && !isPreviewPage && v.version != latestVersion>
-                                    <a class="confirmDeleteVersion rp-version-action rp-version-delete" data-post href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&amp;v=${v.version}"><@icon name="delete"/><@s.text name='button.delete'/></a>
+                                    <a class="confirmDeleteVersion rp-version-action rp-version-delete" data-name="${v.version}" data-post href="${baseURL}/admin/deleteVersion.do?r=${resource.shortname}&amp;v=${v.version}"><@icon name="delete"/><@s.text name='button.delete'/></a>
                                 </#if>
                             </div>
                         </li>

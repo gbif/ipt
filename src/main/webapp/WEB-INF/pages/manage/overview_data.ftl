@@ -67,7 +67,7 @@
                 <li><a class="dropdown-item" href="raw-source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.downloadSource"/></a></li>
             </#if>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-gbif-danger delete-source" data-post href="delete-source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.deleteSource"/></a></li>
+            <li><a class="dropdown-item text-gbif-danger delete-source" data-name="${src.name}" data-post href="delete-source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.deleteSource"/></a></li>
         </ul>
     </div>
 </#macro>
@@ -261,7 +261,7 @@
                                             <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
                                             <li><hr class="dropdown-divider"></li>
                                         </#if>
-                                        <li><a class="dropdown-item text-gbif-danger delete-mapping" data-post href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
+                                        <li><a class="dropdown-item text-gbif-danger delete-mapping" data-name="${tableName}" data-post href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -377,7 +377,7 @@
         <td class="ov-num<#if m.fields?size == 0> ov-missing</#if>">${m.fields?size}</td>
         <td class="ov-rowacts">
             <a href="${editUrl}"><@s.text name="button.edit"/></a>
-            <a class="peekBtn" href="mappingPeek.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="button.preview"/></a>
+            <a class="peekBtn" data-name="${r.ext.title}<#if (m.source)??> &#8592; ${m.source.name}</#if>" href="mappingPeek.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="button.preview"/></a>
             <div class="dropdown">
                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><@icon name="more_horiz"/></a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -388,7 +388,7 @@
                         </#if>
                         <li><hr class="dropdown-divider"></li>
                     </#if>
-                    <li><a class="dropdown-item text-gbif-danger ${r.core?then(deleteCoreMappingClass, 'delete-mapping')}" data-post href="delete-mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
+                    <li><a class="dropdown-item text-gbif-danger ${r.core?then(deleteCoreMappingClass, 'delete-mapping')}" data-name="${r.ext.title}" data-post href="delete-mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
                 </ul>
             </div>
         </td>

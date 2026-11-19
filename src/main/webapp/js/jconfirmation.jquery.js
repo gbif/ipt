@@ -1,170 +1,111 @@
 ﻿(function ($) {
 
-    jQuery.fn.jConfirmAction = function (options) {
-
-        // Some jConfirmAction options (limited to customize language) :
-        // titleQuestion: a text for modal title
-        // question : a text for your question.
-        // yesAnswer : a text for Yes answer.
-        // cancelAnswer : a text for Cancel/No answer.
-        // checkboxText: a text for the checkbox needed to confirm for Yes answer (optional)
-        // summary: a textarea to enter a summary for the submit
-        // select: a dropdown whose value is required for Yes answer and copied to an input (optional),
-        //         e.g. {label: "Type", placeholder: "Select", options: [{value: "A", label: "a"}], target: "#input"}
-        // buttonType: a button type (color)
-        // processing: run spinner
-        var theOptions = jQuery.extend({
-            titleQuestion: "Are you sure?",
+    // $(".x").jConfirmAction({...}): asks before a link or button does its job. Kept for the existing calls;
+    // the dialog itself is IPT.confirm() (js/dialog.js), so new code calls that directly.
+    // $.jConfirmActionOn(".x", {...}) does the same for every .x on the page, also rows a table draws later.
+    //
+    // titleQuestion: the dialog's title, the actual question; {0} in it is the clicked element's data-name
+    // question: one or two sentences of consequence
+    // yesAnswer / cancelAnswer: the button labels, verbs
+    // checkboxText: a box that must be ticked before the main button works (optional)
+    // typeToConfirm: a word that must be typed before the main button works (optional)
+    // summary: placeholder of a textarea whose text is copied into #summary (optional)
+    // select: a choice that must be made, copied to an input (optional),
+    //         e.g. {label: "Type", placeholder: "Select", options: [{value: "A", label: "a"}], target: "#input"}
+    // buttonType: "danger" for destructive actions (red button, red icon), anything else for a green button
+    // tone: overrides the colour taken from buttonType: "danger", "warn", "info" or "ok"
+    // icon: the Material icon in the tile (default: the tone's), e.g. "upload" for publishing
+    // processing: show the spinner after confirming a form submit
+    function defaults(options) {
+        return jQuery.extend({
+            titleQuestion: undefined,
             question: undefined,
-            yesAnswer: "Yes",
-            cancelAnswer: "Cancel",
+            yesAnswer: undefined,
+            cancelAnswer: undefined,
             checkboxText: undefined,
+            typeToConfirm: undefined,
             summary: undefined,
             select: undefined,
             buttonType: "danger",
-            processing: false,
-            baseUrl: "",
-            logo: "warning"
+            tone: undefined,
+            icon: undefined,
+            processing: false
         }, options);
-        return this.each(function () {
+    }
 
-            $(this).bind('click', function (e) {
-                var submitBtn = $(this);
-                var thisHref = $(this).attr('href');
+    // the click handler: asks first, then lets the element do its job (follow the link, submit the form)
+    function handler(o) {
+        return function (e) {
+            var submitBtn = $(this);
+            var thisHref = submitBtn.attr("href");
 
-                if ($(this).attr("jconfirmed")) {
-                    submitBtn.removeAttr("jconfirmed");
+            // a label with a hidden submit inside (users and organisations tables): the click the label passes on
+            // to its input bubbles back here; that one must go through
+            if (e.target !== this && $(e.target).is("input, button")) {
+                return;
+            }
+            if (submitBtn.attr("jconfirmed")) {
+                submitBtn.removeAttr("jconfirmed");
+                return;
+            }
+            e.preventDefault();
+
+            // the clicked element's name, as text: the title is read as HTML
+            var name = String(submitBtn.attr("data-name") || "").replace(/[&<>]/g, function (c) {
+                return {"&": "&amp;", "<": "&lt;", ">": "&gt;"}[c];
+            });
+            IPT.confirm({
+                tone: o.tone || (o.buttonType === "danger" ? "danger" : "info"),
+                icon: o.icon,
+                title: o.titleQuestion && o.titleQuestion.replace("{0}", function () { return name; }),
+                text: o.question,
+                confirm: o.yesAnswer,
+                cancel: o.cancelAnswer,
+                agreement: o.checkboxText,
+                typeToConfirm: o.typeToConfirm,
+                summary: o.summary,
+                select: o.select
+            }).then(function (result) {
+                if (!result) {
+                    return;
+                }
+                if (thisHref != null && submitBtn.is("[data-post]") && window.IPT_CSRF) {
+                    // the link changes state: send it as a POST with the CSRF token (see csrf.js)
+                    window.IPT_CSRF.postTo(thisHref);
+                } else if (thisHref != null) {
+                    window.location = thisHref;
                 } else {
-                    e.preventDefault();
-
-                    if (theOptions.logo !== "warning" && theOptions.logo !== "success") {
-                        theOptions.logo = "warning";
+                    if (o.summary !== undefined) {
+                        $("#summary").val(result.summary);
                     }
-                    var logo = theOptions.baseUrl + '/images/logo-modal-' + theOptions.logo + '.png';
-
-                    // get empty modal window
-                    var dialogWindow = $("#dialog-confirm");
-
-                    // prepare html content for modal window
-                    var content = '<div class="modal-dialog modal-confirm modal-dialog-centered">';
-                    content += '<div class="modal-content">';
-
-                    // header
-                    content += '<div class="modal-header flex-column">';
-                    content += '<img src="' + logo + '" alt="Warning" class="modal-image" />'
-                    content += '</div>';
-
-                    // body
-                    content += '<div class="modal-body">';
-
-                    content += '<h5 class="modal-title w-100" id="staticBackdropLabel">' + theOptions.titleQuestion + '</h5>';
-
-                    // checkbox if present
-                    if (theOptions.checkboxText !== undefined) {
-                        content += '<div class="form-check mb-2">';
-                        content += '<input id="checkbox-confirm" class="form-check-input" type="checkbox" >';
-                        content += '<label class="form-check-label" for="checkbox-confirm">';
-                        content += theOptions.checkboxText;
-                        content += '</label>';
-                        content += '</div>';
+                    if (o.select !== undefined) {
+                        $(o.select.target).val(result.select);
                     }
+                    submitBtn.attr("jconfirmed", true);
+                    submitBtn[0].click();
 
-                    // question if present
-                    if (theOptions.question !== undefined) {
-                        content += '<p class="mb-0">' + theOptions.question + '</p>';
+                    if (o.processing) {
+                        var processingDiv = $(".dataTables_processing");
+                        processingDiv.show();
+                        processingDiv.css("z-index", "1001");
+                        var div = document.createElement("div");
+                        div.className = "overlay";
+                        document.body.appendChild(div);
                     }
-
-                    // select if present
-                    if (theOptions.select !== undefined) {
-                        content += '<div class="mt-3 text-start">';
-                        content += '<label for="dialogSelect" class="form-label">' + theOptions.select.label + '</label>';
-                        content += '<select id="dialogSelect" class="form-select form-select-sm">';
-                        content += '<option value="" selected>' + (theOptions.select.placeholder || '') + '</option>';
-                        $.each(theOptions.select.options, function (i, option) {
-                            content += '<option value="' + option.value + '">' + option.label + '</option>';
-                        });
-                        content += '</select>';
-                        content += '</div>';
-                    }
-
-                    // summary if present
-                    if (theOptions.summary !== undefined) {
-                        content += '<div class="mt-3"><textarea id="dialogSummary" rows="5" class="dialog-summary form-control form-control-sm" placeholder="' + theOptions.summary + '"></textarea></div>';
-                    }
-                    content += '</div>'
-
-                    // footer
-                    content += '<div class="modal-footer justify-content-center">'
-                    content += '<button id="cancel-button" type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">' + theOptions.cancelAnswer+ '</button>';
-                    content += '<button id="yes-button" type="button" class="btn btn-sm btn-outline-gbif-' + theOptions.buttonType + '">' + theOptions.yesAnswer + '</button>';
-                    content += '</div>';
-
-                    content += '</div>';
-                    content += '</div>';
-
-                    // add content to window
-                    dialogWindow.html(content);
-
-                    var yesButton = $("#yes-button");
-                    var cancelButton = $("#cancel-button");
-
-                    // show yes button only if checkbox (if present) is selected and select (if present) has a value
-                    function toggleYesButton() {
-                        var checked = theOptions.checkboxText === undefined || $('#checkbox-confirm').prop('checked');
-                        var selected = theOptions.select === undefined || $('#dialogSelect').val() !== '';
-                        if (checked && selected) {
-                            yesButton.show();
-                        } else {
-                            yesButton.hide();
-                        }
-                    }
-
-                    toggleYesButton();
-
-                    yesButton.on("click", function () {
-                        if (thisHref != null && submitBtn.is("[data-post]") && window.IPT_CSRF) {
-                            // the link changes state: send it as a POST with the CSRF token (see csrf.js)
-                            window.IPT_CSRF.postTo(thisHref);
-                        } else if (thisHref != null) {
-                            window.location = thisHref;
-                        } else {
-                            submitBtn.attr("jconfirmed", true);
-                            var selected = $("#dialogSummary").val();
-                            $("#summary").empty().append(selected);
-                            if (theOptions.select !== undefined) {
-                                $(theOptions.select.target).val($("#dialogSelect").val());
-                            }
-                            submitBtn.click();
-
-                            // display processing spinner if enabled
-                            if (theOptions.processing) {
-                                // remove confirmation modal and background
-                                $("#dialog-confirm").remove();
-                                $(".modal-backdrop").remove();
-
-                                // processing spinner
-                                var processingDiv = $(".dataTables_processing");
-                                processingDiv.show();
-                                processingDiv.css("z-index", "1001");
-                                var div= document.createElement("div");
-                                div.className += "overlay";
-                                document.body.appendChild(div);
-                            }
-                        }
-                    });
-
-                    cancelButton.on("click", function() {
-                        submitBtn.removeAttr("jconfirmed");
-                    });
-
-                    $('#checkbox-confirm').on("click", toggleYesButton);
-                    $('#dialogSelect').on("change", toggleYesButton);
-
-                    dialogWindow.modal('show');
                 }
             });
-
-        });
+        };
     }
+
+    jQuery.fn.jConfirmAction = function (options) {
+        var onClick = handler(defaults(options));
+        return this.each(function () {
+            $(this).on("click", onClick);
+        });
+    };
+
+    jQuery.jConfirmActionOn = function (selector, options) {
+        $(document).on("click", selector, handler(defaults(options)));
+    };
 
 })(jQuery);

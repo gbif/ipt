@@ -28,12 +28,6 @@
     <div><div></div><div></div><div></div><div></div></div>
 </div>
 
-<div id="modalbox">
-    <div id="modalback"></div>
-    <div id="modalcontainer">
-        <div id="modalcontent" class="container-fluid"></div>
-    </div>
-</div>
 
 <script src="${baseURL}/js/bootstrap/bootstrap-5.3.8.bundle.min.js"></script>
 <script src="${baseURL}/js/form-validation.js"></script>

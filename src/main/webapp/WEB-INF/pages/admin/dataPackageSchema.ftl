@@ -1,5 +1,6 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.admin.DataPackageSchemaAction" -->
 <#include "/WEB-INF/pages/inc/header.ftl">
+<#include "/WEB-INF/pages/macros/dialog.ftl"/>
 <title><@s.text name="admin.home.manageDataPackageSchemas"/></title>
 <script src="${baseURL}/js/scrollspy.js"></script>
 <script>
@@ -267,18 +268,14 @@
     </div>
 </div>
 
-<div id="raw-data-modal" class="modal fade" tabindex="-1" aria-labelledby="raw-data-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-confirm" style="max-width: none !important; margin: 1.75rem; font-size: 12px;">
-        <div class="modal-content">
-            <div class="modal-header flex-column">
-                <h5 class="modal-title w-100" id="raw-data-modal-title">${dataPackageSchema.title}</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">×</button>
-            </div>
-            <div class="modal-body" style="text-align: left !important;">
-                <pre id="json-raw-data" class="fs-smaller-2">${dataPackageSchemaRawData!}</pre>
-            </div>
-        </div>
+<#assign dlgTitle>${dataPackageSchema.title}</#assign>
+<@dialog id="raw-data-modal" title=dlgTitle size="wide">
+    <div class="modal-body">
+        <pre id="json-raw-data" class="fs-smaller-2 m-0 p-3">${dataPackageSchemaRawData!}</pre>
     </div>
-</div>
+    <div class="modal-footer">
+        <@dialogCancel key="button.close"/>
+    </div>
+</@dialog>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">

@@ -197,7 +197,6 @@
          data-status-required="<@s.text name='manage.mapping.status.required'/>"
          data-status-problems="<@s.text name='manage.mapping.status.problems'/>"
          data-status-unused="<@s.text name='manage.mapping.status.unused'/>"
-         data-filter-on="<@s.text name='manage.mapping.filter.on'/>"
          data-msg-required="<@s.text name='manage.mapping.msg.required'/>"
          data-msg-vocab="<@s.text name='manage.mapping.msg.vocab'/>"
          data-msg-integer="<@s.text name='manage.mapping.msg.type.integer'/>"
@@ -493,10 +492,11 @@
     </div>
 </form>
 
-<div class="modal fade" id="mp-delete-modal" tabindex="-1" aria-labelledby="mp-delete-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="mp-delete-modal" tabindex="-1" role="alertdialog" aria-labelledby="mp-delete-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered dlg-alert">
         <div class="modal-content">
             <div class="modal-header">
+                <span class="dlg-tone danger" aria-hidden="true"><@icon name="delete"/></span>
                 <h5 class="modal-title" id="mp-delete-modal-title"><@s.text name="manage.mapping.delete.modal.title"/></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<@s.text name='button.cancel'/>"></button>
             </div>

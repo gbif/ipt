@@ -10,22 +10,19 @@
 <script>
     $(document).ready(function(){
         $('.confirm').jConfirmAction({
-            titleQuestion: "<@s.text name="basic.confirm"/>",
-            question: "<@s.text name="manage.source.confirmation.message"/>",
-            yesAnswer: "<@s.text name="basic.yes"/>",
-            cancelAnswer: "<@s.text name="basic.no"/>",
-            buttonType: "danger",
-            baseUrl: "${baseURL}"
+            titleQuestion: "<@s.text name="manage.overview.confirm.source.delete.title"><@s.param>${((source.name)!)?js_string}</@s.param></@s.text>",
+            question: "<@s.text name="manage.overview.confirm.source.delete.text"/>",
+            yesAnswer: "<@s.text name="button.delete"/>",
+            cancelAnswer: "<@s.text name="button.cancel"/>",
+            buttonType: "danger"
         });
         $('.sp-analyze').jConfirmAction({
-            titleQuestion: "<@s.text name="basic.confirm"/>",
-            question: "<@s.text name="manage.source.analyze.confirmation.message"/>",
-            yesAnswer: "<@s.text name="basic.yes"/>",
-            cancelAnswer: "<@s.text name="basic.no"/>",
+            titleQuestion: "<@s.text name="dialog.source.analyse.title"><@s.param>${((source.name)!)?js_string}</@s.param></@s.text>",
+            question: "<@s.text name="dialog.source.analyse.text"/>",
+            yesAnswer: "<@s.text name="button.analyze"/>",
+            cancelAnswer: "<@s.text name="button.cancel"/>",
             buttonType: "primary",
-            processing: true,
-            baseUrl: "${baseURL}",
-            logo: "success"
+            processing: true
         });
 
         // the first rows, read with the saved settings; a SQL source runs its query only when asked

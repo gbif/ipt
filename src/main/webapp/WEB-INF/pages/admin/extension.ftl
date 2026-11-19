@@ -295,11 +295,12 @@
 </div>
 
 <#-- update: names the resources whose mappings move; filled in by js/extensions.js from the button -->
-<div class="modal fade" id="ex-update-modal" tabindex="-1" aria-labelledby="ex-update-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="ex-update-modal" tabindex="-1" role="alertdialog" aria-labelledby="ex-update-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered dlg-alert">
         <form class="modal-content" action="updateExtension.do" method="post">
             <input type="hidden" name="id" value="">
             <div class="modal-header">
+                <span class="dlg-tone info" aria-hidden="true"><@icon name="update"/></span>
                 <h5 class="modal-title" id="ex-update-modal-title" data-template="<@s.text name='admin.extensions.update.title'/>"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<@s.text name='button.cancel'/>"></button>
             </div>
@@ -321,11 +322,12 @@
 </div>
 
 <#-- remove: only offered when no resource maps the extension -->
-<div class="modal fade" id="ex-remove-modal" tabindex="-1" aria-labelledby="ex-remove-modal-title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="ex-remove-modal" tabindex="-1" role="alertdialog" aria-labelledby="ex-remove-modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered dlg-alert">
         <form class="modal-content" action="extension.do" method="post">
             <input type="hidden" name="id" value="">
             <div class="modal-header">
+                <span class="dlg-tone danger" aria-hidden="true"><@icon name="delete"/></span>
                 <h5 class="modal-title" id="ex-remove-modal-title" data-template="<@s.text name='admin.extensions.remove.title'/>"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<@s.text name='button.cancel'/>"></button>
             </div>

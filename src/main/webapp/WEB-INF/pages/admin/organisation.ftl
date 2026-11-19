@@ -8,12 +8,11 @@
     <script>
         $(document).ready(function(){
             $('.confirm').jConfirmAction({
-                titleQuestion: "<@s.text name="basic.confirm"/>",
-                question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
-                yesAnswer: "<@s.text name="basic.yes"/>",
-                cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger",
-                baseUrl: "${baseURL}"
+                titleQuestion: "<@s.text name="dialog.organisation.delete.title"><@s.param>${((organisation.name)!)?js_string}</@s.param></@s.text>",
+                question: "<@s.text name="dialog.organisation.delete.text"/>",
+                yesAnswer: "<@s.text name="button.remove"/>",
+                cancelAnswer: "<@s.text name="button.cancel"/>",
+                buttonType: "danger"
             });
 
             $('select#organisation\\.key').select2({

@@ -3,37 +3,14 @@
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
         $(document).ready(function(){
-            var initConfirmationModal = function () {
-                if ($('.organizationConfirmDeletion').length > 0) {
-                    $('.organizationConfirmDeletion').jConfirmAction({
-                        titleQuestion: "<@s.text name="basic.confirm"/>",
-                        question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
-                        yesAnswer: "<@s.text name="basic.yes"/>",
-                        cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger",
-                        baseUrl: "${baseURL}"
-                    });
-                } else {
-                    setTimeout(initConfirmationModal, 100); // check again in a moment
-                }
-            }
-
-            initConfirmationModal();
-
-            setTimeout(initializeConfirmationWindows, 1000);
-
-            function initializeConfirmationWindows() {
-                $(".dt-paging-button").click(function () {
-                    $('.organizationConfirmDeletion').jConfirmAction({
-                        titleQuestion: "<@s.text name="basic.confirm"/>",
-                        question: "<@s.text name="admin.organisation.delete.confirmation.message"/>",
-                        yesAnswer: "<@s.text name="basic.yes"/>",
-                        cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger",
-                        baseUrl: "${baseURL}"
-                    });
-                });
-            }
+            // delegated: also the rows DataTables draws later (search, sort, other pages)
+            $.jConfirmActionOn('.organizationConfirmDeletion', {
+                titleQuestion: "<@s.text name="dialog.organisation.delete.title"/>",
+                question: "<@s.text name="dialog.organisation.delete.text"/>",
+                yesAnswer: "<@s.text name="button.remove"/>",
+                cancelAnswer: "<@s.text name="button.cancel"/>",
+                buttonType: "danger"
+            });
 
             $('#organisation\\.key').click(function() {
                 $('#organisation\\.name').val($('#organisation\\.key :selected').text());

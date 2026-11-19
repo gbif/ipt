@@ -2,7 +2,7 @@
 <#-- Visibility & registration section of the resource overview: the current visibility in one line, the actions that change it,
      and what stops registration. Needs overview_status.ftl -->
 
-<#-- the checks resource-registerResource.do makes, in the order #registration-modal reports them.
+<#-- the checks resource-registerResource.do makes, in its order.
      label: short, reads right whether the check passes or not; noKey: what to do when it fails -->
 <#assign registerChecks = []>
 <#macro registerCheck ok label noKey escape=false href="" linkKey="">

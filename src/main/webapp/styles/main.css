@@ -1516,46 +1516,7 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 /* Custom styles for cross in search inputs END*/
 
 
-/* Overlay div for modal views START */
-#modalbox {
-    display: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-}
-
-#modalback {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    filter: alpha(opacity=80);
-    opacity: 0.8;
-    -moz-opacity: 0.8;
-}
-
-#modalcontainer {
-    position: relative;
-    display: block;
-    width: 100%;
-    margin-top: 80px;
-    min-height: 50px;
-}
-
-#modalcontent {
-    display: inline-block;
-    margin: 0 auto;
-    min-width: 100px;
-    background-color: #fff;
-    border: 1px solid #000;
-    padding: 15px;
-}
-
+/* mapping preview (peek.ftl), shown in the overview's preview dialog */
 .peek-table-wrapper {
     overflow-x: auto;
     max-height: 75vh;
@@ -1575,7 +1536,6 @@ input[type="search"]:focus::-webkit-search-cancel-button {
 .peek-table tbody tr.even {
     background-color: rgba(0, 0, 0, 0.023);
 }
-/* Overlay div for modal views END */
 
 
 
@@ -1833,101 +1793,6 @@ a.popover-link, a.popover-link:hover, a.popover-link:focus {
       display: none;
     }
 }
-
-
-/* Modal windows START */
-.modal-confirm .modal-content {
-    padding: 0;
-    border: none;
-    text-align: center;
-    font-size: 16px;
-}
-
-#dialog-confirm .modal-dialog {
-    max-width: 450px !important;
-}
-
-.modal-image {
-    width: 150px;
-    margin: 0 auto;
-    display: block;
-}
-
-.modal-confirm h5 {
-    text-align: center;
-    font-size: 16px;
-    margin: 0 0 1rem 0;
-}
-
-.modal-confirm .modal-header button {
-    display: none;
-}
-
-.modal-confirm .btn {
-    min-width: 85px;
-    font-weight: 500 !important;
-}
-
-.modal-confirm .modal-header {
-    position: relative;
-    background: #fefdfa;
-}
-
-.modal-confirm .modal-footer {
-    border: none;
-    text-align: center;
-    border-radius: 5px;
-    font-size: 13px;
-    padding: 1.25rem;
-}
-
-.modal-confirm .close {
-    position: absolute;
-    top: -5px;
-    right: -2px;
-}
-
-.modal-confirm .modal-body {
-    padding: 1rem 1.5rem;
-    font-size: 14px;
-    color: #666666;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.modal-header .close {
-    padding: 1rem 1rem;
-    margin: -1rem -1rem -1rem auto;
-}
-
-#metadata-modal {
-    z-index: 1059 !important;
-}
-
-button.close {
-    padding: 0;
-    background-color: transparent;
-    border: 0;
-}
-
-.close {
-    float: right;
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: .5;
-}
-
-.close:hover {
-    color: #000;
-    text-decoration: none;
-}
-
-.close:not(:disabled):not(.disabled):focus, .close:not(:disabled):not(.disabled):hover {
-    opacity: .75;
-}
-/* Modal windows END */
 
 
 /* Anchors START */
@@ -2912,7 +2777,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background-color: rgb(var(--color-gbif-primary));
 }
 
-.sources-tab-root, .registration-tab-root, .default-button-tab-root {
+.registration-tab-root, .default-button-tab-root {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -2965,7 +2830,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   flex-direction: column;
 }
 
-.sources-tab-root.tab-selected, .registration-tab-root.tab-selected, .default-button-tab-root.tab-selected {
+.registration-tab-root.tab-selected, .default-button-tab-root.tab-selected {
   color: rgb(var(--color-gbif-primary));
 }
 

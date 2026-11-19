@@ -7,54 +7,21 @@
     <script src="${baseURL}/js/dataTables/dataTables-3.1.5.min.js"></script>
     <script>
         $(document).ready(function(){
-            var initConfirmationModal = function () {
-                if ($('.userConfirmDeletion').length > 0 && $('.confirmPasswordReset').length > 0) {
-                    $('.userConfirmDeletion').jConfirmAction({
-                        titleQuestion: "<@s.text name="basic.confirm"/>",
-                        question: "<@s.text name="admin.user.delete.confirmation.message"/>",
-                        yesAnswer: "<@s.text name="basic.yes"/>",
-                        cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger",
-                        baseUrl: "${baseURL}"
-                    });
-
-                    $('.confirmPasswordReset').jConfirmAction({
-                        titleQuestion: "<@s.text name="basic.confirm"/>",
-                        question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
-                        yesAnswer: "<@s.text name="basic.yes"/>",
-                        cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger",
-                        baseUrl: "${baseURL}"
-                    });
-                } else {
-                    setTimeout(initConfirmationModal, 100); // check again in a moment
-                }
-            }
-
-            setTimeout(initializeConfirmationWindows, 1000);
-
-            function initializeConfirmationWindows() {
-                $(".dt-paging-button").click(function () {
-                    $('.userConfirmDeletion').jConfirmAction({
-                        titleQuestion: "<@s.text name="basic.confirm"/>",
-                        question: "<@s.text name="admin.user.delete.confirmation.message"/>",
-                        yesAnswer: "<@s.text name="basic.yes"/>",
-                        cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger",
-                        baseUrl: "${baseURL}"
-                    });
-                    $('.confirmPasswordReset').jConfirmAction({
-                        titleQuestion: "<@s.text name="basic.confirm"/>",
-                        question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
-                        yesAnswer: "<@s.text name="basic.yes"/>",
-                        cancelAnswer: "<@s.text name="basic.no"/>",
-                        buttonType: "danger",
-                        baseUrl: "${baseURL}"
-                    });
-                });
-            }
-
-            initConfirmationModal();
+            // delegated: also the rows DataTables draws later (search, sort, other pages)
+            $.jConfirmActionOn('.userConfirmDeletion', {
+                titleQuestion: "<@s.text name="dialog.user.delete.title"/>",
+                question: "<@s.text name="dialog.user.delete.text"/>",
+                yesAnswer: "<@s.text name="button.delete"/>",
+                cancelAnswer: "<@s.text name="button.cancel"/>",
+                buttonType: "danger"
+            });
+            $.jConfirmActionOn('.confirmPasswordReset', {
+                titleQuestion: "<@s.text name="dialog.user.resetPassword.title"/>",
+                question: "<@s.text name="dialog.user.resetPassword.text"/>",
+                yesAnswer: "<@s.text name="button.resetPassword"/>",
+                cancelAnswer: "<@s.text name="button.cancel"/>",
+                buttonType: "primary", tone: "warn", icon: "key"
+            });
 
             // Hack needed for Internet Explorer
             $('#create').click(function() {

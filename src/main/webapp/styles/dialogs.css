@@ -1,0 +1,382 @@
+/* Dialogs: one look for every Bootstrap modal (see the "Modal windows" pattern, option B).
+   Two kinds, told apart by width and the icon tile only:
+   - alert dialog (.dlg-alert, role="alertdialog"): one question, a sentence of consequence, verb buttons
+   - task dialog (default width, .dlg-wide for previews): a form or content, the resource as a subtitle
+   Both: header with title and close button, scrolling body, footer with the actions on the right.
+   js/dialog.js builds the alert dialogs of IPT.confirm(); templates write theirs with <@dialog> (macros/dialog.ftl). */
+
+.modal-content {
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .22);
+    overflow: hidden;
+}
+
+.modal-backdrop.show {
+    opacity: .35;
+}
+
+/* rises in a little when it opens */
+.modal.show .modal-dialog {
+    animation: dlg-in .18s ease-out;
+}
+
+@keyframes dlg-in {
+    from { transform: translateY(8px) scale(.97); opacity: 0; }
+    to { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal.show .modal-dialog {
+        animation: none;
+    }
+}
+
+.modal-header {
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid #eef0f2;
+    align-items: center;
+    gap: 14px;
+}
+
+.modal-header .modal-title {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #212529;
+    margin: 0;
+    min-width: 0;
+}
+
+.modal-header .btn-close {
+    margin: 0 0 0 auto;
+    padding: 6px;
+    background-size: 11px;
+    flex-shrink: 0;
+}
+
+/* the resource or object the dialog is about, under the title */
+.dlg-titles {
+    min-width: 0;
+    flex: 1;
+}
+
+.dlg-sub {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modal-body {
+    padding: 16px 22px 20px;
+    font-size: 13.5px;
+}
+
+.modal-body > p:last-child {
+    margin-bottom: 0;
+}
+
+.modal-footer {
+    padding: 12px 22px;
+    border-top: 1px solid #eef0f2;
+    background: #fff;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.modal-footer > * {
+    margin: 0;
+}
+
+.modal-footer .btn {
+    padding: 6px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+/* why the main button is off (tick the box, type the name), on the left of the footer */
+.dlg-hint {
+    margin-right: auto !important;
+    font-size: 12.5px;
+    color: #6c757d;
+}
+
+.dlg-hint[hidden] {
+    display: none;
+}
+
+/* ---------- alert dialog ---------- */
+.modal-dialog.dlg-alert {
+    max-width: 440px;
+}
+
+/* the question sits next to the tile; the text runs full width under both */
+.dlg-alert .modal-header {
+    border-bottom: 0;
+    padding-top: 20px;
+    padding-bottom: 6px;
+}
+
+.dlg-alert .modal-body {
+    color: #495057;
+    padding-top: 10px;
+}
+
+/* icon tile in front of the question, tinted by tone: the action's icon (bin, upload...) or the tone's */
+.dlg-tone {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1;
+}
+
+.dlg-tone.danger { background: rgba(var(--color-gbif-danger), .13); color: rgb(var(--color-gbif-danger)); }
+.dlg-tone.warn { background: rgba(var(--alert-warning-icon-color), .14); color: rgb(var(--alert-warning-icon-color)); }
+/* info: the primary colour, as the icon of info banners (.ov-banner.info) */
+.dlg-tone.info { background: rgba(var(--color-gbif-primary), .13); color: rgb(var(--color-gbif-primary)); }
+.dlg-tone.ok { background: rgba(var(--color-gbif-success), .13); color: rgb(var(--color-gbif-success)); }
+
+.dlg-tone svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* agreement, summary, select and type-to-confirm under the text */
+.dlg-extra {
+    margin-top: 14px;
+}
+
+.dlg-extra .form-check-label,
+.dlg-extra .form-label {
+    color: #212529;
+}
+
+.dlg-extra .form-label {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.dlg-type code {
+    font-size: 12.5px;
+    color: #212529;
+    background: #f1f3f5;
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+/* destructive main action: solid red */
+.modal-footer .btn-danger {
+    background-color: rgb(var(--color-gbif-danger));
+    border-color: rgb(var(--color-gbif-danger));
+    color: #fff;
+}
+
+.modal-footer .btn-danger:hover,
+.modal-footer .btn-danger:focus {
+    background-color: rgb(var(--color-gbif-danger));
+    border-color: rgb(var(--color-gbif-danger));
+    color: #fff;
+    filter: brightness(0.92);
+}
+
+.modal-footer .btn:disabled {
+    opacity: .45;
+}
+
+/* ---------- segmented control: one choice out of a few (Add source: File / URL / SQL) ---------- */
+.dlg-seg {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: #f1f3f5;
+    border-radius: 10px;
+}
+
+.dlg-seg button {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #495057;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.2;
+    transition: background-color .15s, color .15s, box-shadow .15s;
+}
+
+.dlg-seg button:hover {
+    color: #212529;
+    background: rgba(255, 255, 255, .55);
+}
+
+.dlg-seg button.tab-selected {
+    background: #fff;
+    color: rgb(var(--color-gbif-primary));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 0 0 1px rgba(0, 0, 0, .04);
+}
+
+.dlg-seg button:focus-visible {
+    outline: 2px solid rgba(var(--color-gbif-primary), .5);
+    outline-offset: 1px;
+}
+
+.dlg-seg .material-icon {
+    font-size: 17px;
+}
+
+/* ---------- drop area: choose files or drop them (Add source) ---------- */
+/* the script shows and hides the button, which sets its display; the layout lives in .dlg-drop-in */
+.dlg-drop {
+    display: block;
+    width: 100%;
+    padding: 22px 20px 20px;
+    border: 1.5px dashed #ced4da;
+    border-radius: 12px;
+    background: #fafbfb;
+    color: #495057;
+    font-size: 13.5px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background-color .15s;
+}
+
+.dlg-drop-in {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+}
+
+.dlg-drop:hover,
+.dlg-drop.is-over {
+    border-color: rgb(var(--color-gbif-primary));
+    background: rgba(var(--color-gbif-primary), .04);
+}
+
+.dlg-drop:focus-visible {
+    outline: 2px solid rgba(var(--color-gbif-primary), .5);
+    outline-offset: 2px;
+}
+
+.dlg-drop-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(var(--color-gbif-primary), .12);
+    color: rgb(var(--color-gbif-primary));
+    margin-bottom: 4px;
+}
+
+.dlg-drop-icon .material-icon {
+    font-size: 24px;
+}
+
+.dlg-drop-main b {
+    color: rgb(var(--color-gbif-primary));
+    font-weight: 600;
+}
+
+.dlg-drop-help {
+    font-size: 12px;
+    color: #6c757d;
+    max-width: 380px;
+    line-height: 1.45;
+}
+
+/* ---------- task dialog, wide: data previews ---------- */
+.modal-dialog.dlg-wide {
+    max-width: 96vw;
+    height: 94vh;
+    margin: 3vh auto;
+}
+
+.dlg-wide .modal-content {
+    height: 100%;
+}
+
+.dlg-wide .modal-body {
+    overflow: auto;
+    padding: 0;
+}
+
+/* the mapping preview scrolls in the dialog body, not in its own box */
+.dlg-wide .peek-table-wrapper {
+    max-height: none;
+    overflow: visible;
+}
+
+/* ---------- phone: alerts as a bottom sheet, task dialogs full screen ---------- */
+@media (max-width: 575.98px) {
+    .modal-dialog.dlg-alert {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        max-width: none;
+        min-height: 0;
+        display: block;
+    }
+
+    .dlg-alert .modal-content {
+        border-radius: 14px 14px 0 0;
+    }
+
+    .modal.fade .modal-dialog.dlg-alert {
+        transform: translateY(40px);
+    }
+
+    .modal.show .modal-dialog.dlg-alert {
+        transform: none;
+    }
+
+    .dlg-alert .modal-footer {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .dlg-alert .modal-footer .btn {
+        width: 100%;
+    }
+
+    .dlg-alert .dlg-hint {
+        margin-right: 0 !important;
+        text-align: center;
+    }
+
+    .modal-dialog:not(.dlg-alert) {
+        margin: 0;
+        max-width: none;
+        width: 100%;
+        height: 100%;
+        min-height: 100%;
+    }
+
+    .modal-dialog:not(.dlg-alert) .modal-content {
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .modal-dialog:not(.dlg-alert) .modal-body {
+        overflow-y: auto;
+    }
+}

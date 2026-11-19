@@ -160,4 +160,12 @@
 
 </header>
 
-<div id="dialog-confirm" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"></div>
+[#-- texts for the dialogs IPT.confirm() builds (js/dialog.js) --]
+<div id="dialog-confirm" hidden
+     data-icons="${baseURL}/images/icons/material-icons.svg"
+     data-confirm="[@s.text name='button.confirm'/]"
+     data-cancel="[@s.text name='button.cancel'/]"
+     data-type="[@s.text name='dialog.type'/]"
+     data-hint-agree="[@s.text name='dialog.hint.agree'/]"
+     data-hint-type="[@s.text name='dialog.hint.type'/]"
+     data-hint-select="[@s.text name='dialog.hint.select'/]"></div>

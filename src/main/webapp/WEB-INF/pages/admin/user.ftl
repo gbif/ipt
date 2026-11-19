@@ -18,30 +18,27 @@
     <script>
         $(document).ready(function(){
             $('.userConfirmDeletion').jConfirmAction({
-                titleQuestion: "<@s.text name="basic.confirm"/>",
-                question: "<@s.text name="admin.user.delete.confirmation.message"/>",
-                yesAnswer: "<@s.text name="basic.yes"/>",
-                cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger",
-                baseUrl: "${baseURL}"
+                titleQuestion: "<@s.text name="dialog.user.delete.title"><@s.param>${((user.name)!(user.email)!)?js_string}</@s.param></@s.text>",
+                question: "<@s.text name="dialog.user.delete.text"/>",
+                yesAnswer: "<@s.text name="button.delete"/>",
+                cancelAnswer: "<@s.text name="button.cancel"/>",
+                buttonType: "danger"
             });
 
             $('.confirmDeactivation').jConfirmAction({
-                titleQuestion: "<@s.text name="basic.confirm"/>",
-                question: "<@s.text name="admin.user.deactivate.confirmation.message"/>",
-                yesAnswer: "<@s.text name="basic.yes"/>",
-                cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger",
-                baseUrl: "${baseURL}"
+                titleQuestion: "<@s.text name="dialog.user.deactivate.title"><@s.param>${((user.name)!(user.email)!)?js_string}</@s.param></@s.text>",
+                question: "<@s.text name="dialog.user.deactivate.text"/>",
+                yesAnswer: "<@s.text name="button.deactivate"/>",
+                cancelAnswer: "<@s.text name="button.cancel"/>",
+                buttonType: "primary", tone: "warn", icon: "lock"
             });
 
             $('.confirmPasswordReset').jConfirmAction({
-                titleQuestion: "<@s.text name="basic.confirm"/>",
-                question: "<@s.text name="admin.user.resetPassword.confirmation.message"/>",
-                yesAnswer: "<@s.text name="basic.yes"/>",
-                cancelAnswer: "<@s.text name="basic.no"/>",
-                buttonType: "danger",
-                baseUrl: "${baseURL}"
+                titleQuestion: "<@s.text name="dialog.user.resetPassword.title"><@s.param>${((user.name)!(user.email)!)?js_string}</@s.param></@s.text>",
+                question: "<@s.text name="dialog.user.resetPassword.text"/>",
+                yesAnswer: "<@s.text name="button.resetPassword"/>",
+                cancelAnswer: "<@s.text name="button.cancel"/>",
+                buttonType: "primary", tone: "warn", icon: "key"
             });
 
             $("#user\\.role").select2({
