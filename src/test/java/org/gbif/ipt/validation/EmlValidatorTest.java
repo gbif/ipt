@@ -438,20 +438,20 @@ public class EmlValidatorTest extends IptBaseTest {
   @Test
   public void testTaxCovPart() {
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.TAXANOMIC_COVERAGE_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
   }
 
   @Test
   public void testTaxCovPartScientificNameIncomplete() {
     // invalid
     eml.getTaxonomicCoverages().get(0).getTaxonKeywords().get(0).setScientificName(null);
-    assertFalse(validator.isValid(resource, MetadataSection.TAXANOMIC_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
   }
 
   @Test
   public void testTempCovPart() {
     // valid
-    assertTrue(validator.isValid(resource, MetadataSection.TEMPORAL_COVERAGE_SECTION));
+    assertTrue(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
   }
 
   @Test
@@ -459,7 +459,7 @@ public class EmlValidatorTest extends IptBaseTest {
     // invalid
     eml.getTemporalCoverages().get(0).setStartDate(null);
     eml.getTemporalCoverages().get(0).setEndDate(new Date());
-    assertFalse(validator.isValid(resource, MetadataSection.TEMPORAL_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
   }
 
   @Test
@@ -469,7 +469,7 @@ public class EmlValidatorTest extends IptBaseTest {
     eml.getTemporalCoverages().get(0).setEndDate(null);
     eml.getTemporalCoverages().get(0).setFormationPeriod(null);
     eml.getTemporalCoverages().get(0).setLivingTimePeriod(null);
-    assertFalse(validator.isValid(resource, MetadataSection.TEMPORAL_COVERAGE_SECTION));
+    assertFalse(validator.isValid(resource, MetadataSection.GEOGRAPHIC_COVERAGE_SECTION));
   }
 
   @Test

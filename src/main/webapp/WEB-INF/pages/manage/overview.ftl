@@ -2546,8 +2546,6 @@
         "BASIC_SECTION": "basic",
         "CONTACTS_SECTION": "contacts",
         "GEOGRAPHIC_COVERAGE_SECTION": "geocoverage",
-        "TAXANOMIC_COVERAGE_SECTION": "taxcoverage",
-        "TEMPORAL_COVERAGE_SECTION": "tempcoverage",
         "PROJECT_SECTION": "project",
         "METHODS_SECTION": "methods",
         "CITATIONS_SECTION": "citations",

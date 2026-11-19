@@ -11,7 +11,7 @@
     <div id="eml-other">
         <div class="eml-side-title"><@s.text name="manage.metadata.otherPages"/></div>
         <ul>
-            <#list ["basic", "contacts", "geocoverage", "taxcoverage", "tempcoverage", "project", "methods", "citations", "collections"] as it>
+            <#list ["basic", "contacts", "geocoverage", "project", "methods", "citations", "collections"] as it>
                 <#if it != currentMetadataPage>
                     <li><a href="metadata-${it}.do?r=${resource.shortname!r!}"><@s.text name="submenu.${it}"/></a></li>
                 </#if>

@@ -9,7 +9,7 @@
                 </label>
             </div>
             <select name="metadata-section" id="metadata-section" size="1" class="form-select" required="" >
-                <#list ["basic", "contacts", "geocoverage", "taxcoverage","tempcoverage", "project", "methods", "citations", "collections"] as it>
+                <#list ["basic", "contacts", "geocoverage", "project", "methods", "citations", "collections"] as it>
                     <option value="${it}" <#if it == currentMetadataPage>selected</#if>>
                         <@s.text name="submenu.${it}"/>
                     </option>

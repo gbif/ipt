@@ -327,9 +327,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
     boolean reinferMetadata = Boolean.parseBoolean(StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_REINFER_METADATA)));
 
     // the coverage pages infer the metadata if requested, never inferred, or outdated: big datasets in the background
-    boolean coverageSection = section == MetadataSection.GEOGRAPHIC_COVERAGE_SECTION
-        || section == MetadataSection.TAXANOMIC_COVERAGE_SECTION
-        || section == MetadataSection.TEMPORAL_COVERAGE_SECTION;
+    boolean coverageSection = section == MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
     InferredMetadata current = coverageSection
         ? inferredMetadataManager.getInferredMetadata(resource, reinferMetadata)
         : resource.getInferredMetadata();
@@ -415,23 +413,14 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
         break;
 
       case GEOGRAPHIC_COVERAGE_SECTION:
-        if (isHttpPost()) {
-          resource.getEml().getGeospatialCoverages().clear();
-        }
-        break;
-
-      case TAXANOMIC_COVERAGE_SECTION:
-        // ranks list, derived from XML vocabulary, and displayed on Taxonomic Coverage Page
+        // ranks list, derived from XML vocabulary, for the taxonomic coverage (was a page of its own, #3319)
         ranks = new LinkedHashMap<>();
         ranks.put("", getText("eml.rank.selection"));
         ranks.putAll(vocabManager.getI18nVocab(Constants.VOCAB_URI_RANKS, getLocaleLanguage(), false));
         if (isHttpPost()) {
+          resource.getEml().getGeospatialCoverages().clear();
+          // the taxonomic and temporal coverages (were pages of their own, #3319)
           resource.getEml().getTaxonomicCoverages().clear();
-        }
-        break;
-
-      case TEMPORAL_COVERAGE_SECTION:
-        if (isHttpPost()) {
           resource.getEml().getTemporalCoverages().clear();
         }
         break;
@@ -604,12 +593,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
           next = MetadataSection.GEOGRAPHIC_COVERAGE_SECTION;
           break;
         case GEOGRAPHIC_COVERAGE_SECTION:
-          next = MetadataSection.TAXANOMIC_COVERAGE_SECTION;
-          break;
-        case TAXANOMIC_COVERAGE_SECTION:
-          next = MetadataSection.TEMPORAL_COVERAGE_SECTION;
-          break;
-        case TEMPORAL_COVERAGE_SECTION:
           next = MetadataSection.PROJECT_SECTION;
           break;
         case PROJECT_SECTION:

@@ -476,9 +476,7 @@ public class EmlValidator extends BaseValidator {
             eml.getGeospatialCoverages().clear();
           }
 
-          break;
-
-        case TAXANOMIC_COVERAGE_SECTION:
+          // the taxonomic coverages (were a page of their own, #3319)
           // at least one field has to have had data entered into it to qualify for validation
           if (!isTaxonomicPageEmpty(eml)) {
             // scientific name is required
@@ -501,10 +499,7 @@ public class EmlValidator extends BaseValidator {
             }
           }
 
-          break;
-
-        case TEMPORAL_COVERAGE_SECTION:
-
+          // the temporal coverages (were a page of their own, #3319)
           // at least one field has to have had data entered into it to qualify for validation
           if (!isTemporalPageEmpty(eml)) {
             int index = 0;
