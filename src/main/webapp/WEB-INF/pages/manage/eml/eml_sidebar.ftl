@@ -1,20 +1,22 @@
 <#ftl output_format="HTML">
+<#-- left column of the EML metadata pages: "On this page" lists the page's parts (the elements marked data-toc,
+     filled in by js/eml-sidebar.js, hidden when the page has only one), "Other metadata pages" lists the rest.
+     Save and Back are in the heading (eml_heading.ftl) and the save bar (eml_savebar.ftl). -->
+<nav id="sidebar-content" class="eml-side">
+    <div id="eml-toc" hidden>
+        <div class="eml-side-title"><@s.text name="manage.overview.onThisPage"/></div>
+        <ul id="eml-toc-list"></ul>
+    </div>
 
-<nav id="sidebar-content">
-    <ul>
-        <#list ["basic", "contacts", "acknowledgements", "geocoverage", "taxcoverage", "tempcoverage", "additionalDescription", "keywords", "project", "methods", "citations", "collections", "physical", "additional"] as it>
-            <li>
-                <a class="sidebar-navigation-link <#if it == currentMetadataPage>active</#if>" href="metadata-${it}.do?r=${resource.shortname!r!}">
-                    <@s.text name="submenu.${it}"/>
-                </a>
-            </li>
-        </#list>
-    </ul>
-
-    <div class="d-flex align-content-between" style="margin-left: -10px;">
-        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary me-1" name="save" key="button.save"/>
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.history.back();">
-            <@s.text name="button.back"/>
-        </button>
+    <div id="eml-other">
+        <div class="eml-side-title"><@s.text name="manage.metadata.otherPages"/></div>
+        <ul>
+            <#list ["basic", "contacts", "acknowledgements", "geocoverage", "taxcoverage", "tempcoverage", "additionalDescription", "keywords", "project", "methods", "citations", "collections", "physical", "additional"] as it>
+                <#if it != currentMetadataPage>
+                    <li><a href="metadata-${it}.do?r=${resource.shortname!r!}"><@s.text name="submenu.${it}"/></a></li>
+                </#if>
+            </#list>
+        </ul>
     </div>
 </nav>
+<script src="${baseURL}/js/eml-sidebar.js"></script>

@@ -49,6 +49,15 @@
         // the link to follow on Leave is marked data-post (e.g. logout): it must be sent as a POST, see csrf.js
         let redirectPost = false;
         let isIntentionalUnload = false;
+        // the EML metadata pages' save bar (manage/eml/eml_savebar.ftl) comes up with the first change
+        const saveBar = document.getElementById('eml-savebar');
+        function markUnsaved() {
+            hasUnsavedChanges = true;
+            if (saveBar) {
+                saveBar.classList.add('show');
+                saveBar.setAttribute('aria-hidden', 'false');
+            }
+        }
 
         // Track form changes
         const form = document.querySelector('.track-unsaved');
@@ -63,19 +72,19 @@
         if (form) {
             // inputs
             form.addEventListener('input', () => {
-                hasUnsavedChanges = true;
+                markUnsaved();
             });
 
             // dropdowns (select2)
             $(document).on('select2:select select2:unselect change', 'select', function () {
                 if ($(this).data('select2')) {
-                    hasUnsavedChanges = true;
+                    markUnsaved();
                 }
             });
 
             // copy agent button
             document.getElementById('copy-agent-button')?.addEventListener('click', () => {
-                hasUnsavedChanges = true;
+                markUnsaved();
             });
 
             // Disable warning before submitting the form
@@ -98,6 +107,12 @@
         // Intercept internal link clicks
         document.querySelectorAll('a[href]').forEach(link => {
             link.addEventListener('click', (e) => {
+                // Discard in the save bar: reloads the page, dropping the changes on purpose
+                if (link.hasAttribute('data-discard')) {
+                    isIntentionalUnload = true;
+                    hasUnsavedChanges = false;
+                    return;
+                }
                 // Skip links that should not trigger the unsaved-changes modal
                 if (link.id === 're-infer-link') {
                     console.log("link.id=" + link.id);

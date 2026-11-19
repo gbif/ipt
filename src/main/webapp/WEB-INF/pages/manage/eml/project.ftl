@@ -159,6 +159,9 @@
     </style>
     <#assign currentMetadataPage = "project"/>
     <#assign currentMenu="manage"/>
+    <#include "/WEB-INF/pages/macros/icon.ftl"/>
+    <link rel="stylesheet" href="${baseURL}/styles/overview.css">
+    <link rel="stylesheet" href="${baseURL}/styles/eml.css">
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
@@ -169,38 +172,7 @@
     </div>
 
     <form id="project-form" class="needs-validation track-unsaved" action="metadata-${section}.do" method="post" novalidate>
-        <div class="container-fluid bg-body border-bottom">
-            <div class="container bg-body border rounded-2 mb-4">
-                <div class="container my-3 p-3">
-                    <div class="text-center fs-smaller">
-                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                            <ol class="breadcrumb justify-content-center mb-0">
-                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                <li class="breadcrumb-item"><a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                            </ol>
-                        </nav>
-                    </div>
-
-                    <div class="text-center">
-                        <h1 class="py-2 mb-0 text-gbif-header fs-2 fw-normal">
-                            <@s.text name='manage.metadata.project.title'/>
-                        </h1>
-                    </div>
-
-                    <div class="text-center fs-smaller">
-                        <a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                    </div>
-
-                    <div class="text-center mt-2">
-                        <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" name="save" key="button.save" />
-                        <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();">
-                            <@s.text name="button.back"/>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <#include "eml_heading.ftl"/>
 
         <#include "metadata_section_select.ftl"/>
 
@@ -233,7 +205,7 @@
                             <#assign addAwardLink><@s.text name='manage.metadata.addnew'/> <@s.text name='rtf.project.award'/></#assign>
                             <#assign addAwardLink = addAwardLink?markup_string>
 
-                            <div class="row g-3 mt-1 mb-2">
+                            <div class="row g-3 mt-1 mb-2" id="s-project" data-toc="${action.getText('manage.metadata.section.project')}">
                                 <@input name="eml.project.title" value=(eml.project.title)!/>
                                 <@input name="eml.project.identifier" value=(eml.project.identifier)! help="i18n"/>
                                 <@text name="eml.project.description" value=(eml.project.description)! help="i18n"/>
@@ -244,7 +216,7 @@
 
                         </div>
 
-                        <div class="my-md-3 p-3">
+                        <div class="my-md-3 p-3" id="s-awards" data-toc="${action.getText('eml.project.award')}">
                             <!-- List of project awards -->
                             <div class="listBlock">
                                 <@textinline name="eml.project.award" help="i18n"/>
@@ -296,7 +268,7 @@
                             </div>
                         </div>
 
-                        <div class="my-md-3 p-3">
+                        <div class="my-md-3 p-3" id="s-related" data-toc="${action.getText('eml.project.relatedProjects')}">
                             <!-- List of related projects -->
                             <div class="listBlock">
                                 <@textinline name="eml.project.relatedProjects" help="i18n"/>
@@ -413,7 +385,7 @@
                             </div>
                         </div>
 
-                        <div class="my-md-3 p-3">
+                        <div class="my-md-3 p-3" id="s-personnel" data-toc="${action.getText('eml.project.personnel')}">
                             <!-- List of personnel -->
                             <div class="listBlock">
                                 <@textinline name="eml.project.personnel" help="i18n" />
@@ -712,6 +684,8 @@
                 </main>
             </div>
         </div>
+
+        <#include "eml_savebar.ftl"/>
     </form>
 
     <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">

@@ -1,0 +1,23 @@
+/* EML metadata pages (manage/eml/*.ftl): left column and save bar. The heading is overview.css's .ov-head-left. */
+
+/* left column: "On this page", then "Other metadata pages" (eml_sidebar.ftl, js/eml-sidebar.js) */
+.bd-toc nav.eml-side { font-size: 0.8125rem; }
+.eml-side ul { padding-left: 0; margin: 0; list-style: none; }
+.eml-side-title { font-weight: 600; color: #4e565f; margin-bottom: 8px; font-size: 0.8125rem; }
+.bd-toc nav.eml-side #eml-toc a { display: block; padding: 4px 8px; border-left: 2px solid transparent; color: #6c757d !important; text-decoration: none; line-height: 1.35; font-weight: normal; }
+.bd-toc nav.eml-side #eml-toc a:hover { color: #212529 !important; }
+.bd-toc nav.eml-side #eml-toc a.active { border-left-color: rgb(var(--color-gbif-primary)); color: #212529 !important; font-weight: normal; }
+#eml-toc:not([hidden]) + #eml-other { margin-top: 20px; padding-top: 12px; border-top: 1px solid #dee2e6; }
+#eml-other .eml-side-title { padding-left: 8px; margin-bottom: 4px; }
+.bd-toc nav.eml-side #eml-other a { display: block; padding: 2px 8px; color: #6c757d !important; text-decoration: none; line-height: 1.35; }
+.bd-toc nav.eml-side #eml-other a:hover { color: #212529 !important; }
+
+/* the parts "On this page" jumps to stop below the fixed navbar */
+.bd-content [data-toc] { scroll-margin-top: 80px; }
+
+/* save bar, shown once something has changed (inc/footer.ftl), as on the mapping page */
+.eml-savebar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #dee2e6; box-shadow: 0 -4px 14px rgba(0, 0, 0, .06); transform: translateY(110%); transition: transform .2s; z-index: 1020; }
+.eml-savebar.show { transform: none; }
+.eml-savebar .container { padding-top: 10px; padding-bottom: 10px; display: flex; gap: 12px; align-items: center; font-size: 0.85rem; }
+.eml-savebar-msg { flex: 1; font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .eml-savebar { transition: none; } }
