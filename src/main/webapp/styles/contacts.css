@@ -14,7 +14,6 @@
 .party-ftab.active { border-color: rgb(var(--color-gbif-primary)); background: rgba(var(--color-gbif-primary), .08); color: #212529; }
 .party-ftab.missing { border-color: rgba(var(--color-gbif-danger), .7); color: rgb(var(--color-gbif-danger)); }
 .party-ftab-state { font-size: .7rem; }
-.party-ftab-state.ok { color: rgb(var(--color-gbif-success)); }
 .party-ftab.missing .party-ftab-state { font-weight: 600; }
 .party-count { background: #f1f3f5; border-radius: 10px; padding: 0 7px; font-size: .7rem; color: #6c757d; }
 
@@ -40,12 +39,11 @@
 /* the name keeps room for itself; many roles wrap onto more lines instead of squeezing it */
 .party-who { flex: 1 1 12rem; min-width: 12rem; display: flex; flex-direction: column; }
 .party-name { font-weight: 600; }
-.party-name.placeholder { color: #6c757d; font-weight: 400; font-style: italic; }
+.party-name.party-name-empty { color: #6c757d; font-weight: 400; font-style: italic; }
 .party-sub { color: #6c757d; font-size: .75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .party-sub .err { color: rgb(var(--color-gbif-danger)); }
 .party-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 .party-chip { font-size: .7rem; border-radius: 3px; padding: 1px 6px; background: #f1f3f5; color: #6c757d; white-space: nowrap; }
-.party-chip.ok { background: rgba(var(--color-gbif-success), .12); color: rgb(70, 130, 70); }
 .party-chip.err { background: rgba(var(--color-gbif-danger), .1); color: rgb(var(--color-gbif-danger)); }
 
 /* role chips: dataset roles switch on and off, other roles are removed with x */

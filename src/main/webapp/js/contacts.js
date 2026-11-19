@@ -236,8 +236,8 @@
             const missing = count === 0 && tab.dataset.required === 'true';
             tab.querySelector('[data-count]').textContent = count;
             tab.classList.toggle('missing', missing);
-            state.textContent = missing ? text.filterRequired : (count ? '\u2713' : '');
-            state.classList.toggle('ok', count > 0);
+            state.textContent = missing ? text.filterRequired : '';
+            state.hidden = !missing;
         });
         root.querySelectorAll('.party-ftab').forEach(tab => {
             const active = tab.dataset.filter === filter;
@@ -287,7 +287,7 @@
 
         const nameEl = card.querySelector('[data-summary-name]');
         nameEl.textContent = name || text.new;
-        nameEl.classList.toggle('placeholder', !name);
+        nameEl.classList.toggle('party-name-empty', !name);
 
         const sub = card.querySelector('[data-summary-sub]');
         if (!named) {
@@ -306,7 +306,7 @@
             .map(row => detect(row.querySelector('[data-id-full]').value, row.querySelector('select')))
             .find(Boolean);
         if (recognised) {
-            chips.push(`<span class="party-chip ok">${esc(recognised.directory.name)} \u2713</span>`);
+            chips.push(`<span class="party-chip">${esc(recognised.directory.name)}</span>`);
         }
         card.querySelector('[data-summary-chips]').innerHTML = chips.join('');
 
