@@ -1,6 +1,6 @@
 <#ftl output_format="HTML">
 <#-- heading of the EML metadata pages: left-aligned, as on the overview and mapping pages (styles/overview.css .ov-head-left).
-     Breadcrumb Manage / <resource title> / Metadata, the page name as the title, Save and Back bottom right.
+     Breadcrumb Manage / <resource title> / Metadata, the page name as the title, Save and Back (to the resource overview) bottom right.
      Needs currentMetadataPage (the title is manage.metadata.<page>.title) and the icon macro: each page includes
      macros/icon.ftl near the top, before inc/action_alerts.ftl, so the alerts get Material icons too -->
 
@@ -22,7 +22,7 @@
             <div class="ov-acts">
                 <#-- id top-save: coverage.ftl checks the coordinates before submitting -->
                 <button type="submit" id="top-save" class="btn btn-sm btn-gbif-solid top-button" name="save" value="save"><@icon name="save"/> <@s.text name="button.save"/></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary top-button" onclick="window.history.back();"><@s.text name="button.back"/></button>
+                <a class="btn btn-sm btn-outline-secondary top-button" href="resource.do?r=${resource.shortname}"><@s.text name="button.back"/></a>
             </div>
         </div>
     </div>

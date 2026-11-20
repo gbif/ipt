@@ -505,10 +505,7 @@
                 $form.submit();
             }
 
-            $("#savebar-save").click(function (event) {
-                validateCoordinates(event);
-            });
-            $("#top-save").click(function (event) {
+            $("#top-save, #side-save, #savebar-save").click(function (event) {
                 validateCoordinates(event);
             });
 

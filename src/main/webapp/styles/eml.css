@@ -17,6 +17,9 @@
 .bd-toc nav.eml-side #eml-other a:hover { color: #212529 !important; }
 .bd-toc nav.eml-side #eml-other a.current { color: #212529 !important; font-weight: 600; }
 
+/* Save and Back under the lists */
+.eml-side-save { display: flex; gap: 6px; margin-top: 16px; padding: 12px 8px 0; border-top: 1px solid #dee2e6; }
+
 /* the parts "On this page" jumps to stop below the fixed navbar */
 .bd-content [data-toc] { scroll-margin-top: 80px; }
 
