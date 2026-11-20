@@ -1,4 +1,5 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
+<link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
 <title><@s.text name="admin.vocabulary.title"/></title>
 <#assign currentMenu = "manage"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -9,34 +10,29 @@
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3">
-            <div class="text-center">
+        <div class="container my-3 p-3 ov-head ov-head-left">
+            <div class="ov-grow">
                 <div class="fs-smaller">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
+                        <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.vocabulary"/></li>
                         </ol>
                     </nav>
                 </div>
 
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
                     ${vocabulary.title}
                 </h1>
 
-                <#if vocabulary.link?has_content>
-                    <div class="text-smaller mb-2">
+                <div class="ov-meta">
+                    <#if vocabulary.issued??>
+                        <span class="text-gbif-primary"><@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${vocabulary.issued?date?string.long}</span>
+                    </#if>
+                    <#if vocabulary.link?has_content>
                         <a href="${vocabulary.link}">${vocabulary.link}</a>
-                    </div>
-                </#if>
-
-                <#if vocabulary.issued??>
-                    <div class="text-smaller text-gbif-primary">
-                    <span>
-                        <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${vocabulary.issued?date?string.long}
-                    </span>
-                    </div>
-                </#if>
+                    </#if>
+                </div>
             </div>
         </div>
     </div>

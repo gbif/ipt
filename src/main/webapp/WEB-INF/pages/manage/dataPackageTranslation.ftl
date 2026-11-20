@@ -1,7 +1,9 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.DataPackageFieldTranslationAction" -->
+    <#include "/WEB-INF/pages/macros/icon.ftl"/>
     <#include "/WEB-INF/pages/inc/header.ftl">
     <#include "/WEB-INF/pages/macros/dialog.ftl"/>
     <title><@s.text name="manage.translation.title"/></title>
+    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
@@ -266,70 +268,41 @@
 
     <div class="container-fluid border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
-            <div class="container my-3 p-3">
-                <div class="text-center fs-smaller">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
-                         aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item">
-                                <a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="resource?r=${resource.shortname}"><@s.text name="breadcrumb.manage.overview"/></a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="dataPackageMapping.do?r=${resource.shortname}&id=${(mapping.dataPackageSchema.identifier)!?url}&mid=${mid}">
-                                    <@s.text name="breadcrumb.manage.overview.mapping"/>
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                <@s.text name="breadcrumb.manage.overview.mapping.translation"/>
-                            </li>
-                        </ol>
-                    </nav>
+            <div class="container my-3 p-3 ov-head ov-head-left">
+                <div class="ov-grow">
+                    <div class="fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
+                                <li class="breadcrumb-item ov-crumb-resource"><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></li>
+                                <li class="breadcrumb-item"><a href="dataPackageMapping.do?r=${resource.shortname}&id=${(mapping.dataPackageSchema.identifier)!?url}&mid=${mid}"><@s.text name="breadcrumb.manage.overview.mapping"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.mapping.translation"/></li>
+                            </ol>
+                        </nav>
+                    </div>
+
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="manage.translation.title"/></h1>
                 </div>
 
-                <div class="text-center">
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                        <@s.text name="manage.translation.title"/>
-                    </h1>
-                </div>
-
-                <div class="text-center fs-smaller">
-                    <a href="resource.do?r=${resource.shortname}"
-                       title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a>
-                </div>
-
-                <div class="mt-2 text-center">
-                    <div>
-                        <@s.submit form="translation-form" cssClass="button btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
-
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button id="btnGroup" type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <@s.text name="button.options"/>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="btnGroup" style="">
+                <div class="ov-acts">
+                    <button type="submit" id="save" name="save" value="save" form="translation-form" class="button btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
+                    <a class="button btn btn-sm btn-outline-secondary top-button" role="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${(mapping.dataPackageSchema.identifier)!?url}&mid=${mid}"><@s.text name="button.back"/></a>
+                    <#-- more actions last, as on the resource overview -->
+                    <div class="dropdown">
+                        <button id="btnGroup" type="button" class="btn btn-sm btn-outline-secondary top-button ov-more-btn" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.moreActions'/>" aria-label="<@s.text name='manage.overview.moreActions'/>"><@icon name="more_horiz"/></button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnGroup">
+                            <li>
+                                <a class="button btn btn-sm btn-outline-secondary w-100 dropdown-button" href='dataPackageFieldTranslationReload.do?r=${resource.shortname}&field=${field.name!}&mid=${mid}'><@s.text name="button.reload"/></a>
+                            </li>
+                            <#if (field.constraints.vocabulary)?has_content>
                                 <li>
-                                    <a class="button btn btn-sm btn-outline-secondary w-100 dropdown-button" href='dataPackageFieldTranslationReload.do?r=${resource.shortname}&field=${field.name!}&mid=${mid}'>
-                                        <@s.text name="button.reload"/>
-                                    </a>
+                                    <a class="button btn btn-sm btn-outline-secondary w-100 dropdown-button" role="button" href='dataPackageFieldTranslationAutomap.do?r=${resource.shortname}&field=${field.name!}&mid=${mid}'><@s.text name="button.automap"/></a>
                                 </li>
-                                <#if (field.constraints.vocabulary)?has_content>
-                                    <li>
-                                        <a class="button btn btn-sm btn-outline-secondary w-100 dropdown-button" role="button" href='dataPackageFieldTranslationAutomap.do?r=${resource.shortname}&field=${field.name!}&mid=${mid}'>
-                                            <@s.text name="button.automap"/>
-                                        </a>
-                                    </li>
-                                </#if>
-                                <li>
-                                    <@s.submit form="translation-form" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <a class="button btn btn-sm btn-outline-secondary top-button mt-1" role="button" href="dataPackageMapping.do?r=${resource.shortname}&id=${(mapping.dataPackageSchema.identifier)!}&mid=${mid}">
-                            <@s.text name='button.cancel'/>
-                        </a>
+                            </#if>
+                            <li>
+                                <@s.submit form="translation-form" cssClass="confirm btn btn-sm btn-outline-gbif-danger w-100 dropdown-button" name="deleteFlag" key="button.delete"/>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

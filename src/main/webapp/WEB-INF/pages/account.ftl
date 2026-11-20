@@ -1,5 +1,7 @@
 <#ftl output_format="HTML">
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
+<link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
 <title><@s.text name="account.title"/></title>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl">
@@ -57,21 +59,25 @@
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3">
-            <div class="text-center fs-smaller">
-                <@s.text name="menu.account"/>
+        <div class="container my-3 p-3 ov-head ov-head-left">
+            <div class="ov-grow">
+                <div class="fs-smaller">
+                    <span><@s.text name="menu.account"/></span>
+                </div>
+
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="account.title"/></h1>
+
+                <div class="ov-meta">
+                    <span>${user.email!}</span>
+                    <span><@s.text name="user.roles.${user.role?lower_case}"/></span>
+                </div>
             </div>
 
-            <div class="text-center">
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
-                    <@s.text name="account.title"/>
-                </h1>
-
-                <div class="mt-2">
-                    <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-gbif-primary top-button mt-1" name="save" key="button.save"/>
-                    <@s.submit form="changePassword" cssClass="btn btn-sm btn-outline-gbif-primary top-button mt-1" cssStyle="display: none;" name="change-password" key="button.save"/>
-                    <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-secondary top-button mt-1" name="cancel" key="button.cancel"/>
-                </div>
+            <div class="ov-acts">
+                <#-- one Save per tab: the page script shows #save on Profile and #change_password on Change password -->
+                <button type="submit" id="save" name="save" value="save" form="profileData" class="btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
+                <button type="submit" id="change_password" name="change-password" value="change-password" form="changePassword" class="btn btn-sm btn-gbif-solid top-button" style="display: none;"><@icon name="save"/> <@s.text name="button.save"/></button>
+                <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
             </div>
         </div>
     </div>
