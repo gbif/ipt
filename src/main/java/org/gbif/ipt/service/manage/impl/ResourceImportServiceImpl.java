@@ -115,6 +115,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.DWC_DP;
 import static org.gbif.ipt.config.Constants.EML_2_1_1_SCHEMA;
 import static org.gbif.ipt.config.Constants.EML_2_2_0_SCHEMA;
 import static org.gbif.ipt.config.DataDir.COL_DP_METADATA_FILENAMES;
@@ -261,6 +262,8 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     try {
       // copy metadata file to data directory (with name datapackage.json) and populate metadata instance
       metadata = copyDatapackageMetadata(shortname, metadataFile, type, alog);
+      // the publisher's version, see createFromFrictionlessDataPackage
+      metadata.setVersion(null);
 
       if (metadata instanceof FrictionlessMetadata frictionlessMetadata) {
         // set name, erase some internal fields
@@ -277,6 +280,17 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     Resource resource = newResource(shortname, type, creator);
     resource.setMetadataModified(new Date());
     resource.setDataPackageMetadata(metadata);
+    // written instead of the copied file, which still has the fields cleared above
+    try {
+      resourceManagerProvider.get().saveDatapackageMetadata(resource);
+    } catch (InvalidConfigException e) {
+      alog.error("manage.resource.create.failed");
+      throw new ImportException(e);
+    }
+    // a DwC-DP's metadata is its EML, which a datapackage.json doesn't have
+    if (DWC_DP.equals(type)) {
+      alog.warn("manage.resource.dp.create.dwcdp.no.eml");
+    }
     return resource;
   }
 
@@ -505,7 +519,25 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       resource.setSourcesModified(lastModifiedDate);
       resource.setMappingsModified(lastModifiedDate);
 
+      // a DwC-DP's metadata is its eml.xml, datapackage.json only repeats a few fields of it
+      if (DWC_DP.equals(packageType)) {
+        Eml eml = readDwcDpEml(resource.getShortname(), packageFiles, alog);
+        if (eml != null) {
+          // the version and publication dates are the publisher's, the new resource hasn't been published here
+          eml.setEmlVersion(Constants.INITIAL_RESOURCE_VERSION);
+          eml.setPreviousEmlVersion(null);
+          eml.setDateStamp((Date) null);
+          eml.setPubDate(null);
+          resource.setEml(eml);
+          resource.setMetadataModified(lastModifiedDate);
+        }
+      }
+
       if (metadata != null) {
+        // the package's version is the publisher's, it would be taken for the resource's version (e.g. Publish v2
+        // for a resource that was never published here). It's set to the resource version when published.
+        metadata.setVersion(null);
+
         if (metadata instanceof FrictionlessMetadata frictionlessMetadata) {
           frictionlessMetadata.setName(resource.getShortname());
           frictionlessMetadata.setId(null);
@@ -533,6 +565,10 @@ public class ResourceImportServiceImpl implements ResourceImportService {
       ResourceManager resourceManager = resourceManagerProvider.get();
       resourceManager.save(resource);
       resourceManager.saveDatapackageMetadata(resource);
+      if (DWC_DP.equals(packageType)) {
+        // written instead of the copied eml.xml, which still has the publisher's version, dates and identifier
+        resourceManager.saveEml(resource);
+      }
 
       alog.info("manage.resource.dp.create.success",
           new String[]{String.valueOf(resource.getSources().size()), String.valueOf(resource.getDataPackageMappings().size())});
@@ -802,6 +838,33 @@ public class ResourceImportServiceImpl implements ResourceImportService {
     }
     alog.warn("manage.resource.read.problem");
     return null;
+  }
+
+  /**
+   * Reads a DwC-DP's eml.xml (in the root of the package) and copies it to the resource.
+   *
+   * @return the EML, null if the package has none or it can't be read: the resource keeps its blank metadata
+   */
+  private Eml readDwcDpEml(String shortname, List<File> packageFiles, ActionLogger alog) {
+    File emlFile = packageFiles.stream()
+        .filter(f -> f.isFile() && EML_XML_FILENAME.equalsIgnoreCase(f.getName()))
+        .findFirst()
+        .orElse(null);
+    if (emlFile == null) {
+      LOG.warn("No eml.xml found in DwC-DP {}", shortname);
+      alog.warn("manage.resource.dp.create.dwcdp.no.eml");
+      return null;
+    }
+    try {
+      Eml eml = copyMetadata(shortname, emlFile);
+      alog.info("manage.resource.read.eml.metadata");
+      MetadataUtils.warnIfLicenseUnsupported(eml, alog);
+      return eml;
+    } catch (ImportException e) {
+      LOG.warn("Cannot read DwC-DP eml.xml", e);
+      alog.warn("manage.resource.read.problem");
+      return null;
+    }
   }
 
   private DataPackageMetadata readDataPackageMetadata(String shortname, String dataPackageType, File file, ActionLogger alog) {

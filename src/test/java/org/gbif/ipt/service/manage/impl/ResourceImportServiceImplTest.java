@@ -68,6 +68,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import static org.gbif.ipt.config.Constants.CAMTRAP_DP;
 import static org.gbif.ipt.config.Constants.COL_DP;
+import static org.gbif.ipt.config.Constants.DWC_DP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -284,18 +285,25 @@ public class ResourceImportServiceImplTest {
     metadata.setName("original-name");
     metadata.setId("original-id");
     metadata.getAdditionalProperties().put("custom", "value");
+    metadata.setVersion("2");
     when(metadataReader.readValue(any(File.class), any())).thenReturn(metadata);
 
-    Resource resource = service.createFromPackageDescriptor(SHORTNAME, "dwc-dp", metadataFile, creator, alog);
+    Resource resource = service.createFromPackageDescriptor(SHORTNAME, DWC_DP, metadataFile, creator, alog);
 
     assertSame(metadata, resource.getDataPackageMetadata());
     assertEquals(SHORTNAME, metadata.getName());
     assertNull(metadata.getId());
     assertNull(metadata.getCreated());
     assertTrue(metadata.getAdditionalProperties().isEmpty());
+    // the publisher's version isn't kept
+    assertNull(metadata.getVersion());
     assertEquals("dwc-dp", resource.getCoreType());
     assertNotNull(resource.getMetadataModified());
     assertTrue(new File(resourceDir, "datapackage.json").exists());
+    // written from the resource, the copied file has the cleared fields
+    verify(resourceManager).saveDatapackageMetadata(resource);
+    // a DwC-DP's metadata is its EML, which the descriptor doesn't have
+    verify(action, atLeastOnce()).getText("manage.resource.dp.create.dwcdp.no.eml");
   }
 
   @Test
@@ -397,6 +405,74 @@ public class ResourceImportServiceImplTest {
         .map(f -> f.getIndex() + ":" + f.getField().getName())
         .toList();
     assertEquals(List.of("0:observationID", "1:deploymentID"), fields);
+  }
+
+  /**
+   * A DwC-DP's metadata is its eml.xml, which is read into the resource's EML.
+   */
+  @Test
+  public void testCreateFromDwcDpArchiveReadsEml() throws Exception {
+    when(schemaManager.getSchemaIdentifier(DWC_DP)).thenReturn("http://rs.tdwg.org/dwc-dp");
+    FrictionlessMetadata metadata = new FrictionlessMetadata();
+    metadata.setVersion("2");
+    when(metadataReader.readValue(any(File.class), any(Class.class))).thenReturn(metadata);
+
+    Path archive = Files.createDirectory(tempDir.resolve("archive"));
+    File datapackageJson = Files.writeString(archive.resolve("datapackage.json"), "{}").toFile();
+    File eml = Files.copy(FileUtils.getClasspathFile("data/eml.xml").toPath(), archive.resolve("eml.xml")).toFile();
+
+    Resource resource = service.createFromFrictionlessDataPackage(SHORTNAME, archive.toFile(), DWC_DP,
+        List.of(datapackageJson, eml), creator, alog);
+
+    assertEquals("WII Herbarium Dataset", resource.getEml().getTitle());
+    assertEquals("WII Herbarium Dataset", resource.getTitle());
+    assertTrue(resource.getDataPackageMappings().isEmpty());
+    // the publisher's version and publication dates aren't kept
+    assertNull(resource.getDataPackageMetadata().getVersion());
+    assertEquals(0, Constants.INITIAL_RESOURCE_VERSION.compareTo(resource.getMetadataVersion()));
+    assertEquals(0, Constants.INITIAL_RESOURCE_VERSION.compareTo(resource.getEml().getEmlVersion()));
+    assertNull(resource.getEml().getPubDate());
+    assertNull(resource.getEml().getDateStamp());
+    // written from the resource, the copied eml.xml has the publisher's
+    verify(resourceManager).saveEml(resource);
+  }
+
+  /**
+   * A DwC-DP without eml.xml is created with blank metadata, and the user is told to fill it in.
+   */
+  @Test
+  public void testCreateFromDwcDpArchiveWithoutEml() throws Exception {
+    when(schemaManager.getSchemaIdentifier(DWC_DP)).thenReturn("http://rs.tdwg.org/dwc-dp");
+    when(metadataReader.readValue(any(File.class), any(Class.class))).thenReturn(new FrictionlessMetadata());
+
+    Path archive = Files.createDirectory(tempDir.resolve("archive"));
+    File datapackageJson = Files.writeString(archive.resolve("datapackage.json"), "{}").toFile();
+
+    Resource resource = service.createFromFrictionlessDataPackage(SHORTNAME, archive.toFile(), DWC_DP,
+        List.of(datapackageJson), creator, alog);
+
+    assertNull(resource.getEml().getTitle());
+    verify(action, atLeastOnce()).getText("manage.resource.dp.create.dwcdp.no.eml");
+  }
+
+  /**
+   * A package's version is the publisher's: a new resource starts at the initial version.
+   */
+  @Test
+  public void testCreateFromCamtrapArchiveClearsVersion() throws Exception {
+    when(schemaManager.getSchemaIdentifier(CAMTRAP_DP)).thenReturn("https://rs.gbif.org/sandbox/data-packages/camtrap-dp");
+    CamtrapMetadata metadata = new CamtrapMetadata();
+    metadata.setVersion("5");
+    when(metadataReader.readValue(any(File.class), eq(CamtrapMetadata.class))).thenReturn(metadata);
+
+    Path archive = Files.createDirectory(tempDir.resolve("archive"));
+    File datapackageJson = Files.writeString(archive.resolve("datapackage.json"), "{}").toFile();
+
+    Resource resource = service.createFromFrictionlessDataPackage(SHORTNAME, archive.toFile(), CAMTRAP_DP,
+        List.of(datapackageJson), creator, alog);
+
+    assertNull(resource.getDataPackageMetadata().getVersion());
+    assertEquals(0, Constants.INITIAL_RESOURCE_VERSION.compareTo(resource.getMetadataVersion()));
   }
 
   /**
