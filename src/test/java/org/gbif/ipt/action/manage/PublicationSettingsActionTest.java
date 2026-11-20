@@ -19,13 +19,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AutoPublishActionTest {
+public class PublicationSettingsActionTest {
 
   /**
    * Multi-label domains such as mail.huji.ac.il used to be rejected (#3263).
@@ -39,7 +40,7 @@ public class AutoPublishActionTest {
       "admin@example.org"
   })
   public void testValidEmailsAccepted(String email) {
-    assertTrue(AutoPublishAction.findInvalidEmails(Collections.singletonList(email)).isEmpty(),
+    assertTrue(PublicationSettingsAction.findInvalidEmails(Collections.singletonList(email)).isEmpty(),
         email + " should be accepted");
   }
 
@@ -54,26 +55,37 @@ public class AutoPublishActionTest {
   })
   public void testInvalidEmailsRejected(String email) {
     assertEquals(Collections.singletonList(email),
-        AutoPublishAction.findInvalidEmails(Collections.singletonList(email)));
+        PublicationSettingsAction.findInvalidEmails(Collections.singletonList(email)));
   }
 
   @Test
   public void testFindInvalidEmailsReturnsOnlyInvalidOnesInOrder() {
     List<String> emails = Arrays.asList("ok@mail.huji.ac.il", "bad", "ok@example.org", "a@b");
-    assertEquals(Arrays.asList("bad", "a@b"), AutoPublishAction.findInvalidEmails(emails));
+    assertEquals(Arrays.asList("bad", "a@b"), PublicationSettingsAction.findInvalidEmails(emails));
   }
 
   @Test
   public void testParseFailureEmailsTrimsDeduplicatesAndDropsBlanks() {
     String raw = " biogis@mail.huji.ac.il , nnhc@mail.huji.ac.il,, ,biogis@mail.huji.ac.il ";
     assertEquals(Arrays.asList("biogis@mail.huji.ac.il", "nnhc@mail.huji.ac.il"),
-        AutoPublishAction.parseFailureEmails(raw));
+        PublicationSettingsAction.parseFailureEmails(raw));
   }
 
   @ParameterizedTest
   @NullAndEmptySource
   @ValueSource(strings = {"   ", " , ,"})
   public void testParseFailureEmailsBlankInput(String raw) {
-    assertTrue(AutoPublishAction.parseFailureEmails(raw).isEmpty());
+    assertTrue(PublicationSettingsAction.parseFailureEmails(raw).isEmpty());
+  }
+
+  @ParameterizedTest
+  @CsvSource({"03:05,03:05", "3:5,03:05", "23:59,23:59", "24:00,12:00", "12:60,12:00", "noon,12:00", "'',12:00"})
+  public void testNormaliseTime(String raw, String expected) {
+    assertEquals(expected, PublicationSettingsAction.normaliseTime(raw));
+  }
+
+  @Test
+  public void testNormaliseTimeNull() {
+    assertEquals("12:00", PublicationSettingsAction.normaliseTime(null));
   }
 }
