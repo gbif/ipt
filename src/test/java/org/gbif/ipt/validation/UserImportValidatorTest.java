@@ -17,6 +17,7 @@ import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.UserImportRow;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.validation.UserImportValidator.UserImportException;
 
 import java.io.File;
@@ -26,6 +27,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -170,9 +175,60 @@ public class UserImportValidatorTest {
 
   @Test
   public void testParseRole() {
-    assertEquals(Role.User, UserImportValidator.parseRole(null));
-    assertEquals(Role.User, UserImportValidator.parseRole(" "));
-    assertEquals(Role.Publisher, UserImportValidator.parseRole(" PUBLISHER "));
-    assertNull(UserImportValidator.parseRole("Root"));
+    assertEquals(Role.User, validator.parseRole(null));
+    assertEquals(Role.User, validator.parseRole(" "));
+    assertEquals(Role.Publisher, validator.parseRole(" PUBLISHER "));
+    assertNull(validator.parseRole("Root"));
+    assertNull(validator.parseRole("Manager with registration rights"));
+  }
+
+  @Test
+  public void testParseRoleLabels() {
+    validator.addRoleLabel("Manager with registration rights", Role.Publisher);
+    validator.addRoleLabel("Manager avec les droits d'enregistrement", Role.Publisher);
+    validator.addRoleLabel("\u5177\u6709\u8a3b\u518a\u8cc7\u6599\u6b0a\u9650\u7684\u7ba1\u7406\u54e1\u3002", Role.Publisher);
+    validator.addRoleLabel(" ", Role.Admin);
+
+    assertEquals(Role.Publisher, validator.parseRole(" manager  WITH registration rights "));
+    assertEquals(Role.Publisher, validator.parseRole("Manager with registration rights."));
+    assertEquals(Role.Publisher, validator.parseRole("manager avec les droits d\u2019enregistrement"));
+    assertEquals(Role.Publisher, validator.parseRole("\u5177\u6709\u8a3b\u518a\u8cc7\u6599\u6b0a\u9650\u7684\u7ba1\u7406\u54e1"));
+    assertEquals(Role.Admin, validator.parseRole("admin"));
+    assertNull(validator.parseRole("Manager with registration right"));
+  }
+
+  @Test
+  public void testAmbiguousRoleLabel() {
+    validator.addRoleLabel("Gestor", Role.Manager);
+    validator.addRoleLabel("gestor", Role.Manager);
+    assertEquals(Role.Manager, validator.parseRole("Gestor"));
+
+    validator.addRoleLabel("Gestor", Role.Publisher);
+    validator.addRoleLabel("Gestor", Role.Manager);
+    assertNull(validator.parseRole("Gestor"));
+  }
+
+  /**
+   * Role labels of all IPT languages are accepted, and no label stands for two different roles.
+   */
+  @Test
+  public void testRoleLabelsOfAllLanguages() throws IOException {
+    UserImportValidator allLanguages = new UserImportValidator(new SimpleTextProvider());
+
+    assertEquals(Role.Publisher, allLanguages.parseRole("Manager with registration rights"));
+    assertEquals(Role.Manager, allLanguages.parseRole("Manager sans les droits d\u2019enregistrement"));
+    assertEquals(Role.Publisher, allLanguages.parseRole("Editor con derechos de registro"));
+    assertEquals(Role.Manager, allLanguages.parseRole("\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u0431\u0435\u0437 \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0445 \u043f\u0440\u0430\u0432"));
+    assertTrue(allLanguages.getAmbiguousRoleLabels().isEmpty(), "Ambiguous role labels: " + allLanguages.getAmbiguousRoleLabels());
+
+    // every interface language is covered
+    Set<String> languages;
+    try (Stream<Path> files = Files.list(Path.of("src/main/resources"))) {
+      languages = files.map(f -> f.getFileName().toString())
+          .filter(n -> n.matches("ApplicationResources_[a-z]{2}\\.properties"))
+          .map(n -> n.substring("ApplicationResources_".length(), "ApplicationResources_".length() + 2))
+          .collect(Collectors.toSet());
+    }
+    assertEquals(languages, UserImportValidator.LABEL_LANGUAGES.stream().map(Locale::getLanguage).collect(Collectors.toSet()));
   }
 }

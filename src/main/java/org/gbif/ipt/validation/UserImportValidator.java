@@ -16,6 +16,7 @@ package org.gbif.ipt.validation;
 import org.gbif.ipt.model.User.Role;
 import org.gbif.ipt.model.UserImportRow;
 import org.gbif.ipt.service.admin.UserAccountManager;
+import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.utils.file.csv.CSVReader;
 import org.gbif.utils.file.csv.CSVReaderFactory;
 
@@ -40,6 +41,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 
 import static org.gbif.ipt.validation.EmailValidationMessageTranslator.EMAIL_ERROR_TRANSLATIONS;
@@ -62,6 +64,38 @@ public class UserImportValidator extends BaseValidator {
   private static final List<String> REQUIRED_COLUMNS = List.of(COLUMN_FIRSTNAME, COLUMN_LASTNAME, COLUMN_EMAIL);
   private static final List<String> DELIMITERS = List.of(",", ";", "\t");
   private static final String BOM = "\uFEFF";
+
+  /**
+   * Languages of the IPT interface (one ApplicationResources file each), whose role labels are accepted.
+   */
+  public static final List<Locale> LABEL_LANGUAGES = List.of(
+      Locale.ENGLISH, new Locale("es"), new Locale("fa"), Locale.FRENCH, Locale.JAPANESE, new Locale("pt"),
+      new Locale("ru"), new Locale("tr"), Locale.CHINESE);
+
+  // normalized role labels (e.g. "manager with registration rights") accepted besides the role names
+  private final Map<String, Role> roleLabels = new HashMap<>();
+  // normalized labels used for more than one role, which are not accepted
+  @Getter(AccessLevel.PACKAGE)
+  private final Set<String> ambiguousRoleLabels = new HashSet<>();
+
+  /**
+   * Accepts the role names only (e.g. Publisher), used in tests.
+   */
+  UserImportValidator() {
+  }
+
+  /**
+   * Also accepts the role labels shown in the IPT, in all its languages, e.g. "Manager with registration rights" or
+   * "Manager avec les droits d'enregistrement" for Publisher.
+   */
+  public UserImportValidator(SimpleTextProvider textProvider) {
+    for (Locale locale : LABEL_LANGUAGES) {
+      for (Role role : Role.values()) {
+        String key = "user.roles." + role.name().toLowerCase(Locale.ROOT);
+        addRoleLabel(textProvider.getText(locale, key, "", new String[0]), role);
+      }
+    }
+  }
 
   /**
    * Thrown when the file as a whole cannot be imported (e.g. missing columns). Carries an i18n key.
@@ -202,18 +236,45 @@ public class UserImportValidator extends BaseValidator {
   }
 
   /**
-   * @return the role matching the value (case-insensitive), User if the value is empty, or null if not recognised
+   * Accepts the given label (e.g. "Manager with registration rights", or its translation) as the given role, besides
+   * the role names. A label given for two different roles is accepted for neither, so it is reported as unknown
+   * rather than matched to the wrong role.
    */
-  static Role parseRole(String value) {
+  void addRoleLabel(String label, Role role) {
+    if (StringUtils.isBlank(label)) {
+      return;
+    }
+    String normalized = normalizeRole(label);
+    if (ambiguousRoleLabels.contains(normalized)) {
+      return;
+    }
+    Role existing = roleLabels.putIfAbsent(normalized, role);
+    if (existing != null && existing != role) {
+      roleLabels.remove(normalized);
+      ambiguousRoleLabels.add(normalized);
+    }
+  }
+
+  /**
+   * @return the role matching the value: its name (e.g. Publisher) or one of the added labels, ignoring case, spacing,
+   * typographic apostrophes and trailing full stops; User if the value is empty, or null if not recognised
+   */
+  Role parseRole(String value) {
     if (StringUtils.isBlank(value)) {
       return Role.User;
     }
+    String normalized = normalizeRole(value);
     for (Role role : Role.values()) {
-      if (role.name().equalsIgnoreCase(value.trim())) {
+      if (role.name().equalsIgnoreCase(normalized)) {
         return role;
       }
     }
-    return null;
+    return roleLabels.get(normalized);
+  }
+
+  private static String normalizeRole(String value) {
+    String normalized = StringUtils.normalizeSpace(value).replace('\u2019', '\'');
+    return StringUtils.stripEnd(normalized, ".\u3002").toLowerCase(Locale.ROOT);
   }
 
   private Map<String, Integer> mapColumns(String[] header) throws UserImportException {

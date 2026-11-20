@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +56,7 @@ public class UserImportAction extends BaseAction implements UploadedFilesAware {
   private static final Logger LOG = LogManager.getLogger(UserImportAction.class);
 
   private final UserAccountManager userManager;
-  private final UserImportValidator validator = new UserImportValidator();
+  private final UserImportValidator validator;
 
   private List<UploadedFile> uploadedFiles = new ArrayList<>();
 
@@ -81,6 +82,7 @@ public class UserImportAction extends BaseAction implements UploadedFilesAware {
       UserAccountManager userManager) {
     super(textProvider, cfg, registrationManager);
     this.userManager = userManager;
+    this.validator = new UserImportValidator(textProvider);
   }
 
   /**
@@ -189,6 +191,15 @@ public class UserImportAction extends BaseAction implements UploadedFilesAware {
 
   public int getMaxRows() {
     return UserImportValidator.MAX_ROWS;
+  }
+
+  /**
+   * @return the role's full name in English (e.g. "Manager with registration rights"), as the credentials email is in
+   * English
+   */
+  public String getEnglishRoleName(Role role) {
+    return textProvider.getText(Locale.ENGLISH, "user.roles." + role.name().toLowerCase(Locale.ROOT), role.name(),
+        new String[0]);
   }
 
   public Role[] getRoleOptions() {

@@ -26,7 +26,7 @@
     <#macro roleSelect row="">
         <select name="roles" class="form-select form-select-sm <#if row?has_content && hasError(row, "role")>is-invalid</#if>">
             <#if row?has_content && !row.role?? && row.roleValue??>
-                <option value="${row.roleValue}" selected>${row.roleValue}</option>
+                <option value="${row.roleValue}" selected><@s.text name="admin.users.import.role.unknown"><@s.param>${row.roleValue}</@s.param></@s.text></option>
             </#if>
             <#list roleOptions as option>
                 <option value="${option.name()}" <#if row?has_content && row.role?? && row.role.name() == option.name()>selected</#if>>
@@ -208,7 +208,7 @@
                         <tbody>
                         <#list rows as row>
                             <#if row.created>
-                                <#assign mailBody = "Dear " + row.firstname + ",\n\nWe would like to inform you that we have created an IPT account for you.\n\nAccount information:\n\nIPT: " + baseURL + "\nEmail: " + row.email + "\nPassword: " + row.password + "\nRole: " + row.role.name() + "\n\nThank you for your attention."/>
+                                <#assign mailBody = "Dear " + row.firstname + ",\n\nWe would like to inform you that we have created an IPT account for you.\n\nAccount information:\n\nIPT: " + baseURL + "\nEmail: " + row.email + "\nPassword: " + row.password + "\nRole: " + action.getEnglishRoleName(row.role) + "\n\nThank you for your attention."/>
                                 <tr data-firstname="${row.firstname}" data-lastname="${row.lastname}" data-email="${row.email}" data-role="${row.role.name()}" data-password="${row.password}">
                                     <td><#if row.line gt 0>${row.line}</#if></td>
                                     <td>${row.firstname} ${row.lastname}</td>

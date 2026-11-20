@@ -195,4 +195,13 @@ public class UserImportActionTest {
     assertFalse(action.isPreview());
     assertEquals(1, action.getActionErrors().size());
   }
+
+  @Test
+  public void testEnglishRoleName() {
+    UserImportAction withTexts = new UserImportAction(new SimpleTextProvider(), mock(AppConfig.class),
+        mock(RegistrationManager.class), userManager);
+
+    assertEquals("Manager with registration rights", withTexts.getEnglishRoleName(Role.Publisher));
+    assertEquals("Manager without registration rights", withTexts.getEnglishRoleName(Role.Manager));
+  }
 }
