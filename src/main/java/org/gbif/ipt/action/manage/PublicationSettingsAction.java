@@ -105,6 +105,9 @@ public class PublicationSettingsAction extends ManagerBaseAction {
   private boolean skipDrop;
   @Getter
   private int recordsDropThreshold = DEFAULT_THRESHOLD;
+  /** The threshold as posted when it was refused, so the form shows what was typed rather than the saved value. */
+  @Getter
+  private String recordsDropThresholdInput;
   @Getter
   private boolean notifyFailure;
   @Getter
@@ -170,8 +173,9 @@ public class PublicationSettingsAction extends ManagerBaseAction {
       addFieldError("id", getText("validation.required", new String[]{getText("portal.home.organisation")}));
     } else {
       organisation = registrationManager.get(id);
-      if (organisation == null) {
-        addFieldError("id", getText("eml.publishingOrganisation.notFound", id));
+      // the current organization stays allowed after it can no longer publish, any other one must be able to
+      if (organisation == null || (!organisation.isCanHost() && !isCurrentOrganisation(organisation))) {
+        addFieldError("id", getText("eml.publishingOrganisation.notFound", new String[]{id}));
       }
     }
 
@@ -184,8 +188,7 @@ public class PublicationSettingsAction extends ManagerBaseAction {
     }
 
     // 3. apply
-    boolean organisationChanged = resource.getOrganisation() == null
-        || !Objects.equals(resource.getOrganisation().getKey(), organisation.getKey());
+    boolean organisationChanged = !isCurrentOrganisation(organisation);
     resource.setOrganisation(organisation);
 
     if (scheduleChange) {
@@ -193,8 +196,11 @@ public class PublicationSettingsAction extends ManagerBaseAction {
     }
 
     saveResource();
+    if (hasActionErrors()) {
+      return INPUT;
+    }
 
-    if (organisationChanged && (resource.isAlreadyAssignedDoi() || resource.isRegistered())) {
+    if (organisationChanged && isRegisteredOrHasDoi()) {
       addActionMessage(
           getText(
               "manage.publicationSettings.success.registered",
@@ -224,7 +230,8 @@ public class PublicationSettingsAction extends ManagerBaseAction {
       if (!OFF_FREQUENCY.equals(postedFrequency) || !resource.usesAutoPublishing()) {
         addActionError(getText(cfg.isAutoPublishingEnabled()
             ? "manage.overview.autopublish.notAllowed" : "manage.overview.autopublish.disabledByAdmin"));
-        LOG.warn("Rejected auto-publishing change for [{}]: not allowed for this user", resource.getShortname());
+        LOG.warn("Rejected auto-publishing change for [{}]: {}", resource.getShortname(),
+            cfg.isAutoPublishingEnabled() ? "restricted to administrators" : "auto-publishing is off for this IPT");
         return false;
       }
       // only the frequency: the options (skip-if-unchanged, failure notifications, ...) survive the schedule
@@ -259,15 +266,15 @@ public class PublicationSettingsAction extends ManagerBaseAction {
     skipDrop = Boolean.parseBoolean(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_SKIP_DROP));
     notifyFailure = Boolean.parseBoolean(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_NOTIFY_FAILURE));
 
+    // the threshold is only checked when it's used; unticked, an unusable value is left as it was
     String thresholdRaw = StringUtils.trimToNull(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_DROP_THRESHOLD));
-    if (thresholdRaw != null) {
-      int threshold = NumberUtils.toInt(thresholdRaw, -1);
-      if (threshold < 0 || threshold > 100) {
-        addFieldError(Constants.REQ_PARAM_AUTO_PUBLISH_DROP_THRESHOLD,
-            getText("manage.autopublish.options.dropThreshold.invalid"));
-      } else {
-        recordsDropThreshold = threshold;
-      }
+    int threshold = NumberUtils.toInt(thresholdRaw, -1);
+    if (thresholdRaw != null && threshold >= 0 && threshold <= 100) {
+      recordsDropThreshold = threshold;
+    } else if (skipDrop) {
+      recordsDropThresholdInput = StringUtils.trimToEmpty(thresholdRaw);
+      addFieldError(Constants.REQ_PARAM_AUTO_PUBLISH_DROP_THRESHOLD,
+          getText("manage.autopublish.options.dropThreshold.invalid"));
     }
 
     failureEmails = StringUtils.trimToEmpty(req.getParameter(Constants.REQ_PARAM_AUTO_PUBLISH_FAILURE_EMAILS));
@@ -358,6 +365,19 @@ public class PublicationSettingsAction extends ManagerBaseAction {
         || (getCurrentUser() != null && getCurrentUser().hasAdminRights());
   }
 
+  private boolean isCurrentOrganisation(Organisation organisation) {
+    return resource.getOrganisation() != null
+        && Objects.equals(resource.getOrganisation().getKey(), organisation.getKey());
+  }
+
+  /**
+   * Registered with GBIF, or with a DOI (reserved or public): changing the organization here then also needs the
+   * GBIF helpdesk.
+   */
+  public boolean isRegisteredOrHasDoi() {
+    return resource.isRegistered() || resource.getDoi() != null;
+  }
+
   public boolean hasMaxProcessFailures() {
     return resourcePublicationManager.hasMaxProcessFailures(resource, false);
   }
@@ -399,6 +419,17 @@ public class PublicationSettingsAction extends ManagerBaseAction {
           organisations.put(o.getKey().toString(), o.getName());
         }
       }
+    }
+
+    // the resource's own organization, even if it can no longer publish: otherwise the page can't be saved without
+    // changing it
+    Organisation current = resource.getOrganisation() == null
+        ? null : registrationManager.get(resource.getOrganisation().getKey());
+    if (current != null && !organisations.containsKey(current.getKey().toString())) {
+      if (organisations.isEmpty()) {
+        organisations.put("", getText("admin.organisation.name.select"));
+      }
+      organisations.put(current.getKey().toString(), current.getName());
     }
   }
 

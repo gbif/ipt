@@ -24,7 +24,7 @@
 <#assign turnOffOnly = !configurable && hasSchedule/>
 <#assign showForm = configurable || turnOffOnly/>
 <#assign suspended = hasSchedule && action.hasMaxProcessFailures()/>
-<#assign registeredOrDoi = resource.isRegistered() || resource.doi?has_content/>
+<#assign registeredOrDoi = action.registeredOrHasDoi/>
 <#assign selectedOrg = (id?has_content)?then(id, (resource.organisation.key)!'')/>
 <#assign savedOrg = (resource.organisation.key)!''/>
 
@@ -143,36 +143,36 @@
 
                     <div id="ps-schedule"<#if !configurable> class="ps-readonly"</#if>>
                         <#assign tz><span class="ps-tz"><@s.text name="manage.publicationSettings.schedule.timezone"><@s.param>${serverTimeZone}</@s.param></@s.text></span></#assign>
-                        <#macro timeInput f><input type="time" class="form-control form-control-sm ps-ctl" name="updateFrequencyTime" value="${frequencyTime}" aria-label="<@s.text name='manage.publicationSettings.schedule.time'/>"<#if !configurable> disabled</#if>></#macro>
-                        <#macro daySelect f><select class="form-select form-select-sm ps-ctl" name="updateFrequencyDay" aria-label="<@s.text name='manage.publicationSettings.schedule.day'/>"<#if !configurable> disabled</#if>><#list 1..31 as d><option value="${d}"<#if frequencyDay == d> selected</#if>>${d}</option></#list></select></#macro>
+                        <#macro timeInput><input type="time" class="form-control form-control-sm ps-ctl" name="updateFrequencyTime" value="${frequencyTime}" aria-label="<@s.text name='manage.publicationSettings.schedule.time'/>"<#if !configurable> disabled</#if>></#macro>
+                        <#macro daySelect><select class="form-select form-select-sm ps-ctl" name="updateFrequencyDay" aria-label="<@s.text name='manage.publicationSettings.schedule.day'/>"<#if !configurable> disabled</#if>><#list 1..31 as d><option value="${d}"<#if frequencyDay == d> selected</#if>>${d}</option></#list></select></#macro>
 
                         <div class="ps-sentence" data-freq="daily">
-                            <@s.text name="manage.publicationSettings.schedule.daily"><@s.param><@timeInput "daily"/></@s.param></@s.text> ${tz}
+                            <@s.text name="manage.publicationSettings.schedule.daily"><@s.param><@timeInput/></@s.param></@s.text> ${tz}
                         </div>
                         <div class="ps-sentence" data-freq="weekly">
                             <@s.text name="manage.publicationSettings.schedule.weekly">
                                 <@s.param><select class="form-select form-select-sm ps-ctl" name="updateFrequencyDayOfWeek" aria-label="<@s.text name='manage.publicationSettings.schedule.dayOfWeek'/>"<#if !configurable> disabled</#if>><#list daysOfWeek?keys as v><option value="${v}"<#if (frequencyDayOfWeek!"monday") == v> selected</#if>>${daysOfWeek.get(v)}</option></#list></select></@s.param>
-                                <@s.param><@timeInput "weekly"/></@s.param>
+                                <@s.param><@timeInput/></@s.param>
                             </@s.text> ${tz}
                         </div>
                         <div class="ps-sentence" data-freq="monthly">
                             <@s.text name="manage.publicationSettings.schedule.monthly">
-                                <@s.param><@daySelect "monthly"/></@s.param>
-                                <@s.param><@timeInput "monthly"/></@s.param>
+                                <@s.param><@daySelect/></@s.param>
+                                <@s.param><@timeInput/></@s.param>
                             </@s.text> ${tz}
                         </div>
                         <div class="ps-sentence" data-freq="biannually">
                             <@s.text name="manage.publicationSettings.schedule.biannually">
-                                <@s.param><@daySelect "biannually"/></@s.param>
+                                <@s.param><@daySelect/></@s.param>
                                 <@s.param><select class="form-select form-select-sm ps-ctl" name="updateFrequencyBiMonth" aria-label="<@s.text name='manage.publicationSettings.schedule.months'/>"<#if !configurable> disabled</#if>><#list biMonths?keys as v><option value="${v}"<#if (frequencyBiMonth!"january_july") == v> selected</#if>>${biMonths.get(v)}</option></#list></select></@s.param>
-                                <@s.param><@timeInput "biannually"/></@s.param>
+                                <@s.param><@timeInput/></@s.param>
                             </@s.text> ${tz}
                         </div>
                         <div class="ps-sentence" data-freq="annually">
                             <@s.text name="manage.publicationSettings.schedule.annually">
-                                <@s.param><@daySelect "annually"/></@s.param>
+                                <@s.param><@daySelect/></@s.param>
                                 <@s.param><select class="form-select form-select-sm ps-ctl" name="updateFrequencyMonth" aria-label="<@s.text name='manage.publicationSettings.schedule.month'/>"<#if !configurable> disabled</#if>><#list months?keys as v><option value="${v}"<#if (frequencyMonth!"january") == v> selected</#if>>${months.get(v)}</option></#list></select></@s.param>
-                                <@s.param><@timeInput "annually"/></@s.param>
+                                <@s.param><@timeInput/></@s.param>
                             </@s.text> ${tz}
                         </div>
 
@@ -190,7 +190,7 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="skipDrop" id="skipDrop" value="true"<#if skipDrop> checked</#if><#if !configurable> disabled</#if>>
-                                <label class="form-check-label" for="skipDrop"><@s.text name="manage.publicationSettings.auto.skipDrop"><@s.param><input type="number" class="form-control form-control-sm ps-ctl ps-num<#if fieldErrors.recordsDropThreshold??> is-invalid</#if>" name="recordsDropThreshold" id="recordsDropThreshold" min="0" max="100" step="1" value="${recordsDropThreshold?c}" aria-label="<@s.text name='manage.publicationSettings.auto.dropThreshold'/>"<#if !configurable> disabled</#if>></@s.param></@s.text></label>
+                                <label class="form-check-label" for="skipDrop"><@s.text name="manage.publicationSettings.auto.skipDrop"><@s.param><input type="number" class="form-control form-control-sm ps-ctl ps-num<#if fieldErrors.recordsDropThreshold??> is-invalid</#if>" name="recordsDropThreshold" id="recordsDropThreshold" min="0" max="100" step="1" value="${recordsDropThresholdInput!recordsDropThreshold?c}" aria-label="<@s.text name='manage.publicationSettings.auto.dropThreshold'/>"<#if !configurable> disabled</#if>></@s.param></@s.text></label>
                                 <@s.fielderror cssClass="invalid-feedback list-unstyled field-error my-1 d-block" fieldName="recordsDropThreshold"/>
                                 <#if (resource.recordsPublished > 0)>
                                     <span class="ps-sub" id="ps-drop-help" data-records="${resource.recordsPublished?c}"><@s.text name="manage.publicationSettings.auto.skipDrop.help"><@s.param>${resource.recordsPublished?string.number}</@s.param><@s.param><span id="ps-drop-min"></span></@s.param></@s.text></span>
