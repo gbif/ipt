@@ -1,4 +1,5 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
+<link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
 <title><@s.text name="admin.failedResources.title"/></title>
 <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -9,30 +10,29 @@
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3">
-            <div class="text-center">
+        <div class="container my-3 p-3 ov-head ov-head-left">
+            <div class="ov-grow">
                 <div class="fs-smaller">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
+                        <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
                             <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.failedResources"/></li>
                         </ol>
                     </nav>
                 </div>
 
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
                     <@s.text name="admin.failedResources.title"/>
                 </h1>
-
-                <div class="mt-2">
-                    <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary top-button">
-                        <@s.text name="button.cancel"/>
-                    </a>
-                </div>
 
                 <p class="mt-3 mb-0 text-smaller fst-italic">
                     <@s.text name="admin.failedResources.intro"/>
                 </p>
+            </div>
+            <div class="ov-acts">
+                <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary top-button">
+                    <@s.text name="button.back"/>
+                </a>
             </div>
         </div>
     </div>

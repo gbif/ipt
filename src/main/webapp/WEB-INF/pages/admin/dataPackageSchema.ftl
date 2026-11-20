@@ -1,5 +1,7 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.admin.DataPackageSchemaAction" -->
 <#include "/WEB-INF/pages/inc/header.ftl">
+<link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
+<#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/macros/dialog.ftl"/>
 <title><@s.text name="admin.home.manageDataPackageSchemas"/></title>
 <script src="${baseURL}/js/scrollspy.js"></script>
@@ -70,64 +72,51 @@
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3">
-            <div class="text-center fs-smaller">
-                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
-                     aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a>
-                        </li>
-                        <li class="breadcrumb-item"><a
-                                    href="${baseURL}/admin/dataPackages.do"><@s.text name="breadcrumb.admin.dataPackageSchemas"/></a>
-                        </li>
-                        <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.dataPackageSchema"/></li>
-                    </ol>
-                </nav>
-            </div>
+        <div class="container my-3 p-3 ov-head ov-head-left">
+            <div class="ov-grow">
+                <div class="fs-smaller">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+                         aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a>
+                            </li>
+                            <li class="breadcrumb-item"><a
+                                        href="${baseURL}/admin/dataPackages.do"><@s.text name="breadcrumb.admin.dataPackageSchemas"/></a>
+                            </li>
+                            <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.dataPackageSchema"/></li>
+                        </ol>
+                    </nav>
+                </div>
 
-            <div class="text-center">
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
                     ${dataPackageSchema.title}
                 </h1>
 
-                <#if dataPackageSchema.url??>
-                    <div class="text-center fs-smaller mb-2">
-                        <a href="${dataPackageSchema.url}">${dataPackageSchema.url}</a>
-                    </div>
-                </#if>
-
-                <div class="text-smaller">
+                <div class="ov-meta">
                     <#if dataPackageSchema.isLatest()>
                         <span class="text-gbif-primary">
-                                <@s.text name="schema.version.issued.upToDate"><@s.param>${dataPackageSchema.version}</@s.param><@s.param>${dataPackageSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
-                            </span>
+                            <@s.text name="schema.version.issued.upToDate"><@s.param>${dataPackageSchema.version}</@s.param><@s.param>${dataPackageSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                        </span>
                     <#else>
                         <span class="text-gbif-danger">
-                                <@s.text name="schema.version.issued.outdated"><@s.param>${dataPackageSchema.version}</@s.param><@s.param>${dataPackageSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
-                            </span>
+                            <@s.text name="schema.version.issued.outdated"><@s.param>${dataPackageSchema.version}</@s.param><@s.param>${dataPackageSchema.issued?date?string["d MMMM yyyy"]}</@s.param></@s.text>
+                        </span>
+                    </#if>
+                    <#if dataPackageSchema.url??>
+                        <a href="${dataPackageSchema.url}">${dataPackageSchema.url}</a>
                     </#if>
                 </div>
-
-                <div class="mt-2">
-                    <div class="btn-group btn-group-sm" role="group">
-                        <button id="btnGroup" type="button"
-                                class="btn btn-sm btn-outline-gbif-primary dropdown-toggle align-self-start top-button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            <@s.text name="button.options"/>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="btnGroup" style="">
-                            <li>
-                                <a id="button-display-raw-data" href="#"
-                                   class="btn btn-sm btn-outline-gbif-primary w-100 dropdown-button">
-                                    <@s.text name="schema.view.source"/>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <a href="dataPackages.do" class="btn btn-sm btn-outline-secondary mt-1 me-xl-1 top-button">
-                        <@s.text name="button.back"/>
-                    </a>
+            </div>
+            <div class="ov-acts">
+                <a href="dataPackages.do" class="btn btn-sm btn-outline-secondary top-button">
+                    <@s.text name="button.back"/>
+                </a>
+                <#-- more actions last, as on the resource overview -->
+                <div class="dropdown">
+                    <button id="btnGroup" type="button" class="btn btn-sm btn-outline-secondary top-button ov-more-btn" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.moreActions'/>" aria-label="<@s.text name='manage.overview.moreActions'/>"><@icon name="more_horiz"/></button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="btnGroup">
+                        <li><a id="button-display-raw-data" href="#" class="dropdown-item"><@s.text name="schema.view.source"/></a></li>
+                    </ul>
                 </div>
             </div>
         </div>

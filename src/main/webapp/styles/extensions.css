@@ -6,7 +6,8 @@
 .ex-state-warn .material-icon { color: rgb(var(--alert-warning-icon-color)); }
 .ex-state-bad .material-icon { color: rgb(var(--alert-danger-icon-color)); }
 
-.ex-meta { flex-direction: column; gap: 2px; }
+/* state sentence and last synchronised date on their own lines */
+.ex-meta { flex-direction: column; align-items: flex-start; gap: 2px; }
 
 /* banners, as on the administration home page */
 .ex-banner { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 1.25rem; padding: 12px 14px; border-radius: 8px; font-size: 0.875rem; }

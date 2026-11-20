@@ -108,20 +108,20 @@
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>
 
-<#-- the heading every IPT page has: centred, in a box -->
+<#-- the page heading: left-aligned, in a box (styles/page-heading.css) -->
 <div class="container-fluid border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3 ov-head">
+        <div class="container my-3 p-3 ov-head ov-head-left">
             <div class="ov-grow">
                 <div class="fs-smaller">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
+                        <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
                             <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.extensions"/></li>
                         </ol>
                     </nav>
                 </div>
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal"><@s.text name="admin.home.manageExtensions"/></h1>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="admin.home.manageExtensions"/></h1>
                 <div class="ov-meta ex-meta">
                     <#if !extensions?has_content>
                         <span class="ex-state ex-state-bad"><@icon name="error"/><@s.text name="admin.extensions.noneInstalled"/></span>

@@ -1,4 +1,6 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
+    <#include "/WEB-INF/pages/macros/icon.ftl"/>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
@@ -130,19 +132,19 @@
 
     <div class="container-fluid bg-body border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
-            <div class="container my-3 p-3">
-                <div class="text-center fs-smaller">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
-                            <li class="breadcrumb-item"><a href="${baseURL}/admin/organisations.do"><@s.text name="breadcrumb.admin.organisations"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.organisations.organisation"/></li>
-                        </ol>
-                    </nav>
-                </div>
+            <div class="container my-3 p-3 ov-head ov-head-left">
+                <div class="ov-grow">
+                    <div class="fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                                <li class="breadcrumb-item"><a href="${baseURL}/admin/organisations.do"><@s.text name="breadcrumb.admin.organisations"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.organisations.organisation"/></li>
+                            </ol>
+                        </nav>
+                    </div>
 
-                <div class="text-center">
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
                         <#if id?has_content>
                             ${organisation.name!}
                         <#else>
@@ -151,18 +153,17 @@
                     </h1>
 
                     <#if organisation.key?has_content>
-                        <div class="text-smaller">
+                        <div class="ov-meta">
                             <a href="${portalUrl}/publisher/${organisation.key}" target="_blank"><@s.text name="about.link"/></a>
                         </div>
                     </#if>
-
-                    <div class="mt-2">
-                        <@s.submit name="save" form="organisationsForm" key="button.save" cssClass="button btn btn-sm btn-outline-gbif-primary top-button"/>
-                        <#if id?has_content>
-                            <@s.submit name="deleteFlag" form="organisationsForm" key="button.delete" cssClass="button confirm btn btn-sm btn-outline-gbif-danger top-button"/>
-                        </#if>
-                        <@s.submit name="cancel" form="organisationsForm" key="button.cancel" cssClass="button btn btn-sm btn-outline-secondary top-button"/>
-                    </div>
+                </div>
+                <div class="ov-acts">
+                    <button type="submit" id="save" name="save" value="save" form="organisationsForm" class="button btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
+                    <#if id?has_content>
+                        <@s.submit name="deleteFlag" form="organisationsForm" key="button.delete" cssClass="button confirm btn btn-sm btn-outline-gbif-danger top-button"/>
+                    </#if>
+                    <@s.submit name="cancel" form="organisationsForm" key="button.back" cssClass="button btn btn-sm btn-outline-secondary top-button"/>
                 </div>
             </div>
         </div>

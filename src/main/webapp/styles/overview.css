@@ -1,32 +1,6 @@
 /* Resource overview page (manage/overview.ftl) */
 
-/* heading: the IPT's centred heading box (as on the other pages), with the resource's pills, details and actions */
-.ov-head { display: flex; flex-direction: column; align-items: center; text-align: center; }
-.ov-head h1 { overflow-wrap: anywhere; }
-/* type and status pills come from main.css with different paddings; same size in the heading */
-.ov-meta .dt-content-pill, .ov-meta .status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px !important; line-height: 18px; margin: 0 !important; }
-.ov-meta { display: flex; gap: 6px 14px; flex-wrap: wrap; align-items: center; justify-content: center; font-size: 0.8rem; color: #6c757d; margin-top: 8px; }
-.ov-head > .ov-acts { justify-content: center; margin-top: 16px; }
-/* trial: left-aligned heading, buttons bottom right (overview and mapping pages only) */
-.ov-head.ov-head-left { flex-direction: row; flex-wrap: wrap; align-items: flex-start; text-align: left; gap: 12px 32px; }
-.ov-head-left .ov-grow { flex: 1 1 420px; min-width: 0; }
-.ov-head-left .breadcrumb, .ov-head-left .ov-meta { justify-content: flex-start; }
-.ov-head-left > .ov-acts { margin-top: 0; align-self: flex-end; }
-/* even spacing: breadcrumb, title and the line under it 4px / 8px apart (mapping.css gives the source line 12px) */
-.ov-head-left h1 { padding: 4px 0 0 !important; }
-.ov-head-left .ov-meta, .ov-head-left .ov-meta.mp-source-line { margin-top: 8px; column-gap: 10px; }
-/* smaller buttons than the other headings' .top-button (main.css) */
-.ov-head-left .top-button { min-width: 80px; margin-top: 0; padding: 4px 12px !important; line-height: 1.5; font-size: 0.8125rem !important; }
-.ov-head-left .ov-acts .top-button.ov-more-btn { min-width: 0; min-height: 0; height: calc(1.5em + 10px); padding: 0 8px !important; }
-/* a long resource title in the breadcrumb is cut to about the width of a short page title; the full title is in its title attribute */
-.ov-head-left .breadcrumb { flex-wrap: nowrap; }
-.ov-head-left .breadcrumb-item { min-width: 0; white-space: nowrap; }
-.ov-head-left .breadcrumb-item.ov-crumb-resource { max-width: 18rem; overflow: hidden; text-overflow: ellipsis; }
-.ov-acts { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.ov-acts form { display: inline-block; margin: 0; }
-.ov-acts .top-button.ov-more-btn { min-width: calc(1.75em + 14px); min-height: calc(1.75em + 14px); display: inline-flex; align-items: center; justify-content: center; }
-.ov-acts .dropdown-menu { min-width: 260px; text-align: left; }
-.ov-acts .dropdown-item small { display: block; color: #6c757d; font-size: 0.75rem; white-space: normal; }
+@import url("page-heading.css");
 
 .btn-gbif-solid.ov-blocked, .btn.ov-blocked { opacity: 0.55; cursor: not-allowed; }
 #sections .ov-card .ov-hact.ov-blocked { opacity: 0.55; cursor: pointer; text-decoration: none !important; }

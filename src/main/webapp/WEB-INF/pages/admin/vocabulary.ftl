@@ -1,4 +1,5 @@
 <#include "/WEB-INF/pages/inc/header.ftl">
+<link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
 <title><@s.text name="admin.vocabulary.title"/></title>
 <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -9,27 +10,22 @@
 
 <div class="container-fluid bg-body border-bottom">
     <div class="container bg-body border rounded-2 mb-4">
-        <div class="container my-3 p-3">
-            <div class="text-center">
+        <div class="container my-3 p-3 ov-head ov-head-left">
+            <div class="ov-grow">
                 <div class="fs-smaller">
                     <span><@s.text name="admin.vocabulary.title"/></span>
                 </div>
 
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
                     ${vocabulary.title}
                 </h1>
 
-                <div class="text-smaller mb-2">
+                <div class="ov-meta">
+                    <#if vocabulary.issued??>
+                        <span class="text-gbif-primary"><@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${vocabulary.issued?date?string.long}</span>
+                    </#if>
                     <a href="${vocabulary.link!vocabulary.uriString}">${vocabulary.link!vocabulary.uriString}</a>
                 </div>
-
-                <#if vocabulary.issued??>
-                    <div class="text-smaller text-gbif-primary">
-                        <span>
-                            <@s.text name='schema.version'/> <@s.text name='schema.issuedOn'/> ${vocabulary.issued?date?string.long}
-                        </span>
-                    </div>
-                </#if>
             </div>
         </div>
     </div>

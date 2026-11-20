@@ -1,4 +1,6 @@
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
+    <#include "/WEB-INF/pages/macros/icon.ftl"/>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
@@ -204,36 +206,35 @@
 
     <div class="container-fluid bg-body border-bottom">
         <div class="container bg-body border rounded-2 mb-4">
-            <div class="container my-3 p-3">
-                <div class="text-center">
+            <div class="container my-3 p-3 ov-head ov-head-left">
+                <div class="ov-grow">
                     <div class="fs-smaller">
                         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                            <ol class="breadcrumb justify-content-center mb-0">
+                            <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
                                 <li class="breadcrumb-item"><@s.text name="breadcrumb.admin.registration"/></li>
                             </ol>
                         </nav>
                     </div>
 
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
                         <@s.text name="admin.home.editRegistration"/>
                     </h1>
-
-                    <div class="mt-2">
-                        <#if hostingOrganisation?has_content>
-                            <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="registration" name="update" id="update" key="button.updateRegistration" />
-                            <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="changeTokens" name="tokens" id="tokens" key="button.updateTokens" cssStyle="display: none;"/>
-                            <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" form="networkForm" name="network" id="network" key="button.save" cssStyle="display: none;"/>
-                            <a href="${baseURL}/admin/" class="button btn btn-sm btn-outline-secondary top-button">
-                                <@s.text name="button.back"/>
-                            </a>
-                        <#else>
-                            <@s.submit cssClass="button btn btn-sm btn-outline-gbif-primary top-button" cssStyle="display: none;" form="registrationForm" name="save" id="save" key="button.save"/>
-                            <a href="${baseURL}/admin/" class="button btn btn-sm btn-outline-secondary top-button">
-                                <@s.text name="button.back"/>
-                            </a>
-                        </#if>
-                    </div>
+                </div>
+                <div class="ov-acts">
+                    <#if hostingOrganisation?has_content>
+                        <@s.submit cssClass="button btn btn-sm btn-gbif-solid top-button" form="registration" name="update" id="update" key="button.updateRegistration" />
+                        <@s.submit cssClass="button btn btn-sm btn-gbif-solid top-button" form="changeTokens" name="tokens" id="tokens" key="button.updateTokens" cssStyle="display: none;"/>
+                        <button type="submit" id="network" name="network" value="network" form="networkForm" class="button btn btn-sm btn-gbif-solid top-button" style="display: none;"><@icon name="save"/> <@s.text name="button.save"/></button>
+                        <a href="${baseURL}/admin/" class="button btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="button.back"/>
+                        </a>
+                    <#else>
+                        <button type="submit" id="save" name="save" value="save" form="registrationForm" class="button btn btn-sm btn-gbif-solid top-button" style="display: none;"><@icon name="save"/> <@s.text name="button.save"/></button>
+                        <a href="${baseURL}/admin/" class="button btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="button.back"/>
+                        </a>
+                    </#if>
                 </div>
             </div>
         </div>

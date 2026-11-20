@@ -1,6 +1,7 @@
 <#ftl output_format="HTML">
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.admin.UserImportAction" -->
     <#include "/WEB-INF/pages/inc/header.ftl">
+    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
     <title><@s.text name="admin.users.import.title"/></title>
     <#assign currentMenu = "admin"/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -133,49 +134,49 @@
 
     <div class="container-fluid bg-body border-bottom">
         <div class="container border rounded-2 mb-4">
-            <div class="container my-3 p-3">
-                <div class="text-center fs-smaller">
-                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                        <ol class="breadcrumb justify-content-center mb-0">
-                            <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
-                            <li class="breadcrumb-item"><a href="${baseURL}/admin/users.do"><@s.text name="breadcrumb.admin.users"/></a></li>
-                            <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.users.import"/></li>
-                        </ol>
-                    </nav>
-                </div>
+            <div class="container my-3 p-3 ov-head ov-head-left">
+                <div class="ov-grow">
+                    <div class="fs-smaller">
+                        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="${baseURL}/admin/"><@s.text name="breadcrumb.admin"/></a></li>
+                                <li class="breadcrumb-item"><a href="${baseURL}/admin/users.do"><@s.text name="breadcrumb.admin.users"/></a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.admin.users.import"/></li>
+                            </ol>
+                        </nav>
+                    </div>
 
-                <div class="text-center">
-                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-2 fw-normal">
+                    <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">
                         <@s.text name="admin.users.import.title"/>
                     </h1>
-
-                    <div class="mt-2">
-                        <#if preview>
-                            <button id="confirm" type="submit" form="rowsForm" formaction="usersImportConfirm.do" class="btn btn-sm btn-outline-gbif-primary top-button" <#if validCount == 0>disabled</#if>>
-                                <@s.text name="admin.users.import.button.confirm"><@s.param>${validCount}</@s.param></@s.text>
-                            </button>
-                            <button id="revalidate" type="submit" form="rowsForm" formaction="usersImportRevalidate.do" class="btn btn-sm btn-outline-secondary top-button">
-                                <@s.text name="admin.users.import.button.revalidate"/>
-                            </button>
-                            <a href="${baseURL}/admin/usersImport.do" class="btn btn-sm btn-outline-secondary top-button">
-                                <@s.text name="button.cancel"/>
-                            </a>
-                        <#elseif completed>
-                            <a href="#" id="downloadCredentials" class="btn btn-sm btn-outline-gbif-primary top-button">
-                                <@s.text name="admin.users.import.button.downloadCredentials"/>
-                            </a>
-                            <a href="${baseURL}/admin/users.do" class="btn btn-sm btn-outline-secondary top-button">
-                                <@s.text name="button.back"/>
-                            </a>
-                        <#else>
-                            <button id="upload" type="submit" form="uploadForm" class="btn btn-sm btn-outline-gbif-primary top-button" disabled>
-                                <@s.text name="button.upload"/>
-                            </button>
-                            <a href="${baseURL}/admin/users.do" class="btn btn-sm btn-outline-secondary top-button">
-                                <@s.text name="button.cancel"/>
-                            </a>
-                        </#if>
-                    </div>
+                </div>
+                <div class="ov-acts">
+                    <#if preview>
+                        <button id="confirm" type="submit" form="rowsForm" formaction="usersImportConfirm.do" class="btn btn-sm btn-gbif-solid top-button" <#if validCount == 0>disabled</#if>>
+                            <@s.text name="admin.users.import.button.confirm"><@s.param>${validCount}</@s.param></@s.text>
+                        </button>
+                        <button id="revalidate" type="submit" form="rowsForm" formaction="usersImportRevalidate.do" class="btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="admin.users.import.button.revalidate"/>
+                        </button>
+                        <#-- Cancel, not Back: this drops the uploaded file and the checked rows -->
+                        <a href="${baseURL}/admin/usersImport.do" class="btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="button.cancel"/>
+                        </a>
+                    <#elseif completed>
+                        <a href="#" id="downloadCredentials" class="btn btn-sm btn-outline-gbif-primary top-button">
+                            <@s.text name="admin.users.import.button.downloadCredentials"/>
+                        </a>
+                        <a href="${baseURL}/admin/users.do" class="btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="button.back"/>
+                        </a>
+                    <#else>
+                        <button id="upload" type="submit" form="uploadForm" class="btn btn-sm btn-outline-gbif-primary top-button" disabled>
+                            <@s.text name="button.upload"/>
+                        </button>
+                        <a href="${baseURL}/admin/users.do" class="btn btn-sm btn-outline-secondary top-button">
+                            <@s.text name="button.back"/>
+                        </a>
+                    </#if>
                 </div>
             </div>
         </div>
