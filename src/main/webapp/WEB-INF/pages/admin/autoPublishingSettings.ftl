@@ -5,17 +5,6 @@
 <#assign currentMenu = "admin"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
-<style>
-    .form-switch .form-check-input:focus:not(:checked) {
-        background-image: radial-gradient(circle closest-side,
-            rgb(var(--color-gbif-primary)) 0,
-            rgb(var(--color-gbif-primary)) 74%,
-            transparent 78%);
-        background-size: 1em 1em;
-        background-repeat: no-repeat;
-    }
-</style>
-
 <div class="container px-0">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
 </div>

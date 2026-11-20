@@ -20,7 +20,8 @@
 /* citation preview */
 .party-citation { border: 1px solid #dee2e6; background: #fff; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; }
 .party-citation-lbl { font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #6c757d; margin-bottom: 4px; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-.party-citation-order { font-weight: 400; text-transform: none; letter-spacing: 0; color: #6c757d; }
+.party-citation-order { color: #6c757d; font-size: .75rem; margin-top: 2px; }
+.party-citation-switch { font-weight: 400; text-transform: none; letter-spacing: 0; font-size: .8rem; color: #495057; margin: 0; min-height: 0; }
 .party-citation-txt { font-size: .85rem; overflow-wrap: anywhere; }
 .party-citation-txt mark { background: none; color: inherit; padding: 0; font-weight: 500; }
 .party-citation-rest { color: #6c757d; }
@@ -59,6 +60,11 @@
 .party-role.other.on { background: #eef2f7; border-color: #c9d4e3; color: #3d5a80; }
 .party-role.other.on:hover { filter: none; border-color: rgb(var(--color-gbif-danger)); color: rgb(var(--color-gbif-danger)); }
 .party-role .n { opacity: .85; font-weight: 400; margin-left: 3px; }
+/* names the pills on open cards and on cards that still need a role (#3322) */
+.party-roles-lbl { display: none; font-size: .7rem; color: #6c757d; white-space: nowrap; }
+.party-card.open .party-roles-lbl, .party-card.no-role .party-roles-lbl { display: inline; }
+.party-card.no-role .party-roles-lbl { color: rgb(var(--color-gbif-danger)); font-weight: 600; }
+.party-card.no-role .party-role:not(.on) { border-color: rgba(var(--color-gbif-danger), .7); }
 
 .party-icon-btn { border: 0; background: none; padding: 4px; border-radius: 4px; cursor: pointer; color: #6c757d; display: inline-flex; }
 .party-icon-btn:hover { background: #f1f3f5; color: #212529; }
@@ -75,6 +81,7 @@
 .party-menu .dropdown-header { font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; }
 .party-menu .dropdown-item { white-space: normal; font-size: .8125rem; padding-top: .3rem; padding-bottom: .3rem; }
 .party-menu .dropdown-item small { color: #6c757d; display: block; font-size: .6875rem; line-height: 1.3; }
+.party-menu-list { max-height: min(340px, 50vh); overflow-y: auto; }
 .party-menu-scroll { max-height: 340px; overflow-y: auto; width: 22rem; max-width: 90vw; }
 .party-menu .dropdown-item small.party-cited-note { color: rgb(var(--color-gbif-primary)); }
 

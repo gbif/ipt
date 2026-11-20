@@ -53,6 +53,7 @@
         // select2 fires jQuery events only
         $(root).on('change', 'select.party-country', () => refreshAll());
         form.addEventListener('submit', onSubmit);
+        initCitationSwitch();
         initSortable();
         initPicker();
 
@@ -263,6 +264,24 @@
         refreshCitation(authors);
     }
 
+    // auto-generation of the citation, the same setting as on the Citations and links page (#3322)
+    function initCitationSwitch() {
+        const toggle = root.querySelector('[data-citation-switch]');
+        if (!toggle) {
+            return;
+        }
+        toggle.addEventListener('change', () => {
+            root.querySelector('[data-citation-auto]').value = String(toggle.checked);
+            // only there when it was on; empties the generated citation when switched off
+            const clear = root.querySelector('[data-citation-clear]');
+            if (clear) {
+                clear.disabled = toggle.checked;
+            }
+            root.querySelector('[data-citation-on]').hidden = !toggle.checked;
+            root.querySelector('[data-citation-off]').hidden = toggle.checked;
+        });
+    }
+
     function refreshCitation(authors) {
         const out = root.querySelector('[data-citation-text]');
         root.querySelector('[data-citation]').hidden = filter !== 'all' && filter !== 'creator';
@@ -313,6 +332,7 @@
         card.classList.toggle('invalid', !named || !withRole || card.classList.contains('has-errors'));
         card.querySelector('[data-name-error]').hidden = named;
         card.querySelector('[data-role-error]').hidden = withRole;
+        card.classList.toggle('no-role', !withRole);
 
         // dataset role chips; the creator chip shows the author position
         card.querySelectorAll('.party-role[data-act="role"]').forEach(button => {
@@ -664,10 +684,11 @@
 
     function buildCopyMenu(menu, forCard) {
         const others = cards().filter(card => card !== forCard && displayName(card));
+        // the people scroll, so a long list stays on the screen and "From another resource" stays in view (#3322)
         menu.innerHTML = `<h6 class="dropdown-header">${esc(forCard ? text.copyReplace : text.copyThisPage)}</h6>`
             + (others.length
-                ? others.map(card => `<button type="button" class="dropdown-item" data-act="copy-from" data-src="${cards().indexOf(card)}">`
-                    + `${esc(displayName(card))}<small>${esc(rolesSummary(card) || text.copyNoRole)}</small></button>`).join('')
+                ? '<div class="party-menu-list">' + others.map(card => `<button type="button" class="dropdown-item" data-act="copy-from" data-src="${cards().indexOf(card)}">`
+                    + `${esc(displayName(card))}<small>${esc(rolesSummary(card) || text.copyNoRole)}</small></button>`).join('') + '</div>'
                 : `<span class="dropdown-item-text text-muted">${esc(text.copyNobody)}</span>`)
             + '<div class="dropdown-divider"></div>'
             + `<button type="button" class="dropdown-item" data-act="copy-another">${esc(text.copyAnother)}</button>`;

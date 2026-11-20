@@ -1244,6 +1244,16 @@ a.no-text-decoration, a.no-text-decoration:focus, a.no-text-decoration:hover {
     background-color: rgb(var(--color-gbif-primary));
     border-color: rgb(var(--color-gbif-primary));
 }
+
+/* the knob of a focused switch that is off: green, not Bootstrap's blue */
+.form-switch .form-check-input:not(.is-invalid):focus:not(:checked) {
+    background-image: radial-gradient(circle closest-side,
+        rgb(var(--color-gbif-primary)) 0,
+        rgb(var(--color-gbif-primary)) 74%,
+        transparent 78%);
+    background-size: 1em 1em;
+    background-repeat: no-repeat;
+}
 /* Style form elements END */
 
 
