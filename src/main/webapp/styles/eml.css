@@ -92,6 +92,10 @@
 /* map handles of the selected box: corners resize, the centre moves it */
 .geo-handle span { display: block; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 3px solid; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); }
 .geo-handle.geo-centre span { border-radius: 3px; cursor: move; }
+/* a just added box pulses so it is easy to spot */
+@keyframes geo-new { 0%, 100% { stroke-width: 3px; fill-opacity: .18; } 50% { stroke-width: 7px; fill-opacity: .4; } }
+.geo-new { animation: geo-new .6s ease-in-out 3; }
+@media (prefers-reduced-motion: reduce) { .geo-new { animation: none; } }
 .geo-area .removeGeoAreaLink { color: #6c757d !important; padding: 2px 4px; border-radius: 4px; }
 .geo-area .removeGeoAreaLink:hover { color: #c43e3e !important; background: rgba(196, 62, 62, .08); }
 

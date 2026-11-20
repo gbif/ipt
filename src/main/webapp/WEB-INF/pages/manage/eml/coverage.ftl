@@ -103,6 +103,11 @@
                 tileSize: 512
             }).addTo(map);
             var drawn = L.layerGroup().addTo(map);
+            var selRect = null;
+            // boxes follow the map to the nearest copy of the world (see latLngBounds)
+            map.on("moveend", function () {
+                draw(false);
+            });
 
             // an area's box as numbers, from its inputs
             function readBox($scope) {
@@ -142,9 +147,12 @@
             function crosses(b) {
                 return b.w > b.e;
             }
-            // Leaflet bounds: a box across the 180th meridian continues east of 180
+            // Leaflet bounds: a box across the 180th meridian continues east of 180,
+            // and every box sits on the copy of the world nearest the map centre
             function latLngBounds(b) {
-                return L.latLngBounds([b.s, b.w], [b.n, crosses(b) ? b.e + 360 : b.e]);
+                var east = crosses(b) ? b.e + 360 : b.e;
+                var d = Math.round((map.getCenter().lng - (b.w + east) / 2) / 360) * 360;
+                return L.latLngBounds([b.s, b.w + d], [b.n, east + d]);
             }
             function normLng(x) {
                 return (x >= -180 && x <= 180) ? x : ((x + 540) % 360 + 360) % 360 - 180;
@@ -183,6 +191,7 @@
 
             function draw(fit) {
                 drawn.clearLayers();
+                selRect = null;
                 var all = [];
                 if (mode === "manual") {
                     cards().each(function (i) {
@@ -201,6 +210,7 @@
                             cards().eq(i)[0].scrollIntoView({behavior: "smooth", block: "nearest"});
                         });
                         if (i === sel) {
+                            selRect = rect;
                             addHandles($card, b, rect, c);
                         }
                     });
@@ -228,10 +238,10 @@
                 function icon(cls) {
                     return L.divIcon({className: "geo-handle " + cls, iconSize: [14, 14], html: "<span style='border-color:" + c + "'></span>"});
                 }
-                var east = crosses(b) ? b.e + 360 : b.e;
-                var sw = L.marker([b.s, b.w], {draggable: true, icon: icon("geo-corner"), keyboard: false}).addTo(drawn);
+                var lb = latLngBounds(b), west = lb.getWest(), east = lb.getEast();
+                var sw = L.marker([b.s, west], {draggable: true, icon: icon("geo-corner"), keyboard: false}).addTo(drawn);
                 var ne = L.marker([b.n, east], {draggable: true, icon: icon("geo-corner"), keyboard: false}).addTo(drawn);
-                var mid = L.marker([(b.s + b.n) / 2, (b.w + east) / 2], {draggable: true, icon: icon("geo-centre"), keyboard: false}).addTo(drawn);
+                var mid = L.marker([(b.s + b.n) / 2, (west + east) / 2], {draggable: true, icon: icon("geo-centre"), keyboard: false}).addTo(drawn);
 
                 function fromCorners() {
                     var p = sw.getLatLng(), q = ne.getLatLng();
@@ -313,13 +323,13 @@
                 var i = cards().length;
                 var html = $("#baseItem-geo").html().replace(/__i__/g, String(i));
                 var $card = $(html).appendTo($areas);
-                // a box in the middle of what the map shows
+                // a box in the middle of what the map shows; the view may be past 180, so the
+                // edges are brought into -180..180 one by one and may cross the 180th meridian
                 var vb = map.getBounds(), c = vb.getCenter();
                 var dLng = Math.min(90, (vb.getEast() - vb.getWest()) / 6), dLat = Math.min(45, (vb.getNorth() - vb.getSouth()) / 6);
-                var cl = normLng(c.lng);
                 var nb = {
-                    w: Math.max(-180, cl - dLng),
-                    e: Math.min(180, cl + dLng),
+                    w: normLng(c.lng - dLng),
+                    e: normLng(c.lng + dLng),
                     s: Math.max(-90, c.lat - dLat),
                     n: Math.min(90, c.lat + dLat)
                 };
@@ -327,6 +337,10 @@
                 renumber();
                 showCardState($card, false);
                 select(i, false);
+                // make the new box easy to spot
+                if (selRect && selRect.getElement()) {
+                    selRect.getElement().classList.add("geo-new");
+                }
                 $card.find("textarea").trigger("focus");
             });
 
