@@ -24,11 +24,7 @@ import org.gbif.metadata.eml.ipt.model.Party;
 import jakarta.inject.Inject;
 import java.io.Serial;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.json.annotations.JSON;
@@ -38,8 +34,6 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
   @Serial
   private static final long serialVersionUID = -6982193399461813074L;
 
-  public Map<String, String> suggestedResources = new HashMap<>();
-  public Map<String, Agent> suggestedAgents = new HashMap<>();
   public List<SuggestedPerson> suggestedPeople = new ArrayList<>();
 
   @Inject
@@ -57,36 +51,11 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
   }
 
   /**
-   * suggest-resources lists all resources of the user; suggest-agents filters them by r itself.
+   * suggest-people lists the people of all resources of the user; r only says which one to leave out.
    */
   @Override
   public boolean requiresResource() {
     return false;
-  }
-
-  @Override
-  public String execute() {
-    List<Resource> resources = resourceManager.list(getCurrentUser());
-
-    suggestedResources = resources.stream()
-        .collect(Collectors.toMap(Resource::getShortname, value -> StringUtils.defaultIfEmpty(value.getTitle(), value.getShortname())));
-
-    String resourceShortname = req.getParameter("r");
-    String agentType = req.getParameter("type");
-
-    if (StringUtils.isNotEmpty(resourceShortname) && StringUtils.isNotEmpty(agentType)) {
-      suggestedAgents = resources.stream()
-          .filter(res -> res.getShortname().equals(resourceShortname))
-          .map(res -> getMetadataAgentsByType(res, agentType))
-          .flatMap(Collection::stream)
-          .filter(agent -> agent.getFullName() != null || agent.getOrganisation() != null)
-          .collect(Collectors.toMap(
-              agent -> agent.getFullName() != null ? agent.getFullName() : agent.getOrganisation(),
-              value -> value,
-              (existing, newOne) -> existing));
-    }
-
-    return SUCCESS;
   }
 
   /**
@@ -141,34 +110,6 @@ public class MetadataAgentSuggesterAction extends ManagerBaseAction {
     SuggestedPerson person = new SuggestedPerson(agent);
     person.usedIn.add(usage);
     suggestedPeople.add(person);
-  }
-
-  private List<Agent> getMetadataAgentsByType(Resource resource, String type) {
-    if (resource.getEml() == null) {
-      return new ArrayList<>();
-    } else if ("creators".equals(type)) {
-      return resource.getEml().getCreators();
-    } else if ("contacts".equals(type)) {
-      return resource.getEml().getContacts();
-    } else if ("metadataProviders".equals(type)) {
-      return resource.getEml().getMetadataProviders();
-    } else if ("associatedParties".equals(type)) {
-      return resource.getEml().getAssociatedParties();
-    } else if ("projectPersonnel".equals(type) && resource.getEml().getProject() != null) {
-      return resource.getEml().getProject().getPersonnel();
-    }
-
-    return new ArrayList<>();
-  }
-
-  @JSON
-  public Map<String, String> getSuggestedResources() {
-    return suggestedResources;
-  }
-
-  @JSON
-  public Map<String, Agent> getSuggestedAgents() {
-    return suggestedAgents;
   }
 
   @JSON

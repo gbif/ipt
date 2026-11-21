@@ -8,6 +8,7 @@
     <@docBookEditorAssets/>
     <link rel="stylesheet" href="${baseURL}/styles/contacts.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
+    <script src="${baseURL}/js/people.js"></script>
     <#-- runs on DOMContentLoaded, after Bootstrap and html5sortable from the footer -->
     <script src="${baseURL}/js/contacts.js"></script>
     <title><@s.text name='manage.metadata.contacts.title'/></title>
@@ -529,24 +530,7 @@
 
     <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
-    <div id="party-picker" class="modal fade" tabindex="-1" aria-labelledby="party-picker-title" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fs-6" id="party-picker-title"><@s.text name="eml.party.picker.title"/></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="${t('button.cancel')}"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="search" class="form-control mb-2" id="party-picker-search" placeholder="${t('eml.party.picker.search')}" aria-label="${t('eml.party.picker.search')}"/>
-                    <div class="party-picker-results" id="party-picker-results" role="listbox" aria-labelledby="party-picker-title"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
-                    <button type="button" class="btn btn-sm btn-gbif-solid" id="party-picker-ok" disabled><@s.text name="button.copy"/></button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <#include "people_picker.ftl"/>
 
     <div class="party-toast" id="party-toast" role="status" aria-live="polite"></div>
 

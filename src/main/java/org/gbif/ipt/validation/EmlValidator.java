@@ -615,18 +615,8 @@ public class EmlValidator extends BaseValidator {
                             i18n.getText("eml.project.personnel.lastName")));
                   }
 
-                  // directory and personnel id both required (if either is supplied)
-                  if (!p.getUserIds().isEmpty()) {
-                    if (exists(p.getUserIds().get(0).getDirectory()) && !exists(p.getUserIds().get(0).getIdentifier())) {
-                      ec.addFieldError(
-                          "eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].userIds[0].identifier",
-                          i18n.getText("validation.personnel"));
-                    } else if (!exists(p.getUserIds().get(0).getDirectory()) && exists(p.getUserIds().get(0).getIdentifier())) {
-                      ec.addFieldError(
-                          "eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "].userIds[0].directory",
-                          i18n.getText("validation.directory"));
-                    }
-                  }
+                  // directory and personnel id both required (if either is supplied), for every identifier
+                  validateUserIds(p.getUserIds(), "eml.project.relatedProjects[" + index + "].personnel[" + personnelIndex + "]", ec, i18n);
                 }
               }
             }
@@ -654,18 +644,8 @@ public class EmlValidator extends BaseValidator {
                           i18n.getText("eml.project.personnel.lastName")));
                 }
 
-                // directory and personnel id both required (if either is supplied)
-                if (!p.getUserIds().isEmpty()) {
-                  if (exists(p.getUserIds().get(0).getDirectory()) && !exists(p.getUserIds().get(0).getIdentifier())) {
-                    ec.addFieldError(
-                        "eml.project.personnel[" + index + "].userIds[0].identifier",
-                        i18n.getText("validation.personnel"));
-                  } else if (!exists(p.getUserIds().get(0).getDirectory()) && exists(p.getUserIds().get(0).getIdentifier())) {
-                    ec.addFieldError(
-                        "eml.project.personnel[" + index + "].userIds[0].directory",
-                        i18n.getText("validation.directory"));
-                  }
-                }
+                // directory and personnel id both required (if either is supplied), for every identifier
+                validateUserIds(p.getUserIds(), "eml.project.personnel[" + index + "]", ec, i18n);
               }
             }
           }
@@ -948,7 +928,7 @@ public class EmlValidator extends BaseValidator {
 
   /**
    * Determine if the Project page is empty. In other words, the user hasn't entered any information for a single field
-   * yet. There is a total of 7 fields on this page.
+   * yet, and added no award or related project.
    *
    * @param eml EML
    * @return whether the Project page is empty or not.
@@ -959,17 +939,17 @@ public class EmlValidator extends BaseValidator {
       List<Agent> personnelList = project.getPersonnel();
       StudyAreaDescription area = project.getStudyAreaDescription();
 
-      // total of 4 fields on page, plus multiple personnel composed of first name, last name, and role
-      String title = project.getTitle();
-      String funding = project.getFunding();
-      String design = project.getDesignDescription();
-      String desc = area.getDescriptorValue();
-
-      return (StringUtils.isBlank(title) &&
-        StringUtils.isBlank(funding) &&
-        StringUtils.isBlank(design) &&
-        StringUtils.isBlank(desc) &&
-        isAgentsListEmpty(personnelList));
+      // the project fields, the personnel, and the awards and related projects: any of them makes the page count
+      // as filled in, so an award or related project on its own is validated too
+      return (StringUtils.isBlank(project.getTitle()) &&
+        StringUtils.isBlank(project.getIdentifier()) &&
+        StringUtils.isBlank(project.getDescription()) &&
+        StringUtils.isBlank(project.getFunding()) &&
+        StringUtils.isBlank(project.getDesignDescription()) &&
+        (area == null || StringUtils.isBlank(area.getDescriptorValue())) &&
+        isAgentsListEmpty(personnelList) &&
+        project.getAwards().isEmpty() &&
+        project.getRelatedProjects().isEmpty());
     }
     return false;
   }
@@ -1318,6 +1298,29 @@ public class EmlValidator extends BaseValidator {
   }
 
   /**
+   * Directory and identifier are both required, if either is supplied; checked for every user id of an agent.
+   *
+   * @param userIds user ids of the agent
+   * @param path    form path of the agent, e.g. eml.project.personnel[0], used for the field errors
+   */
+  private void validateUserIds(List<UserId> userIds, String path, ErrorCollector ec, I18n i18n) {
+    for (int identifierIndex = 0; identifierIndex < userIds.size(); identifierIndex++) {
+      UserId userId = userIds.get(identifierIndex);
+      String userIdPath = path + ".userIds[" + identifierIndex + "]";
+      if (exists(userId.getDirectory()) && !exists(userId.getIdentifier())) {
+        ec.addFieldError(userIdPath + ".identifier", i18n.getText("validation.personnel"));
+      } else if (!exists(userId.getDirectory()) && exists(userId.getIdentifier())) {
+        ec.addFieldError(userIdPath + ".directory", i18n.getText("validation.directory"));
+      } else if (!exists(userId.getDirectory()) && !exists(userId.getIdentifier())) {
+        ec.addFieldError(userIdPath + ".identifier",
+            i18n.getText("validation.invalid", i18n.getText("eml.contact.identifier")));
+        ec.addFieldError(userIdPath + ".directory",
+            i18n.getText("validation.invalid", i18n.getText("eml.contact.directory")));
+      }
+    }
+  }
+
+  /**
    * Validates one agent of the contacts form: name, identifiers, organisation/position/last name, addresses,
    * positions, emails, phones and homepages. Homepages are normalised in place. Only field errors are added; the
    * caller adds the action error for a missing last name, organisation and position once for all agents.
@@ -1335,20 +1338,7 @@ public class EmlValidator extends BaseValidator {
     }
 
     // directory and personnel id both required (if either is supplied)
-    for (int identifierIndex = 0; identifierIndex < agent.getUserIds().size(); identifierIndex++) {
-      UserId userId = agent.getUserIds().get(identifierIndex);
-      String userIdPath = path + ".userIds[" + identifierIndex + "]";
-      if (exists(userId.getDirectory()) && !exists(userId.getIdentifier())) {
-        ec.addFieldError(userIdPath + ".identifier", i18n.getText("validation.personnel"));
-      } else if (!exists(userId.getDirectory()) && exists(userId.getIdentifier())) {
-        ec.addFieldError(userIdPath + ".directory", i18n.getText("validation.directory"));
-      } else if (!exists(userId.getDirectory()) && !exists(userId.getIdentifier())) {
-        ec.addFieldError(userIdPath + ".identifier",
-            i18n.getText("validation.invalid", i18n.getText("eml.contact.identifier")));
-        ec.addFieldError(userIdPath + ".directory",
-            i18n.getText("validation.invalid", i18n.getText("eml.contact.directory")));
-      }
-    }
+    validateUserIds(agent.getUserIds(), path, ec, i18n);
 
     // At least one of organisation, position, or a lastName have to exist
     if (!exists(agent.getOrganisation())

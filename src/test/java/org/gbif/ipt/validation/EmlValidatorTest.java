@@ -32,6 +32,8 @@ import org.gbif.metadata.eml.ipt.model.Eml;
 import org.gbif.metadata.eml.ipt.model.GeospatialCoverage;
 import org.gbif.metadata.eml.ipt.model.MaintenanceUpdateFrequency;
 import org.gbif.metadata.eml.ipt.model.Party;
+import org.gbif.metadata.eml.ipt.model.Project;
+import org.gbif.metadata.eml.ipt.model.ProjectAward;
 import org.gbif.metadata.eml.ipt.model.UserId;
 import org.gbif.utils.file.FileUtils;
 
@@ -597,6 +599,43 @@ public class EmlValidatorTest extends IptBaseTest {
     // make user id valid by setting its identifier
     personnel.getUserIds().get(0).setIdentifier("1234-5678-9101-1213");
     assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+  }
+
+  /**
+   * Every identifier of a personnel is checked, not only the first one.
+   */
+  @Test
+  public void testProjectPartPersonnelSecondUseridIncomplete() {
+    Agent personnel = eml.getProject().getPersonnel().get(0);
+    personnel.getUserIds().add(new UserId("https://orcid.org/", "0000-0002-1825-0097"));
+    assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+    // second user id without directory
+    personnel.getUserIds().add(new UserId("", "Q42"));
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+  }
+
+  /**
+   * An award or related project on its own makes the page count as filled in, so it is validated (and a project
+   * without title, which the EML leaves out entirely, is reported).
+   */
+  @Test
+  public void testProjectPartOnlyAward() {
+    eml.setProject(new Project());
+    assertTrue(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+    ProjectAward award = new ProjectAward();
+    award.setTitle("Award");
+    award.setFunderName("Funder");
+    eml.getProject().addAward(award);
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
+  }
+
+  @Test
+  public void testProjectPartOnlyRelatedProject() {
+    eml.setProject(new Project());
+    Project related = new Project();
+    related.setTitle("Related");
+    eml.getProject().addRelatedProject(related);
+    assertFalse(validator.isValid(resource, MetadataSection.PROJECT_SECTION));
   }
 
   @Test

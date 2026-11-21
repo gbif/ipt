@@ -76,7 +76,7 @@
 .party-order svg { width: 16px; height: 16px; }
 .party-chev { pointer-events: none; }
 .party-chev svg { transition: transform .15s; }
-.party-card.open .party-chev svg { transform: rotate(180deg); }
+.party-card.open > .party-summary .party-chev svg { transform: rotate(180deg); }
 .party-menu { font-size: .85rem; min-width: 260px; }
 .party-menu .dropdown-header { font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; }
 .party-menu .dropdown-item { white-space: normal; font-size: .8125rem; padding-top: .3rem; padding-bottom: .3rem; }
@@ -87,7 +87,7 @@
 
 /* card body */
 .party-body { display: none; border-top: 1px solid #dee2e6; padding: 12px 14px 14px; background: #fcfcfd; border-radius: 0 0 6px 6px; }
-.party-card.open .party-body { display: block; }
+.party-card.open > .party-body { display: block; }
 .party-body .form-label { font-size: .75rem; color: #495057; margin-bottom: 2px; }
 .party-alert { border-radius: 4px; padding: 6px 10px; margin-bottom: 10px; font-size: .8rem; }
 .party-alert-danger { background: rgba(var(--color-gbif-danger), .07); color: rgb(var(--color-gbif-danger)); }

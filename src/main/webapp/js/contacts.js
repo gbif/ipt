@@ -12,20 +12,11 @@
     const CITED_OTHER_ROLES = ['originator', 'metadataProvider'];
     // not offered in the "+ Role" menu: the Metadata provider chip covers it (a role already held still shows)
     const HIDDEN_OTHER_ROLES = ['metadataProvider'];
-    // personnel directories, recognised from what is pasted; the stored directory is the matching option of the select
-    const DIRECTORIES = [
-        {name: 'ORCID', host: 'orcid.org', prefixes: ['orcid.org/']},
-        {name: 'ROR', host: 'ror.org', prefixes: ['ror.org/']},
-        {name: 'Wikidata', host: 'wikidata.org', prefixes: ['wikidata.org/entity/', 'wikidata.org/wiki/']},
-        {name: 'ResearcherID', host: 'researcherid.com', prefixes: ['researcherid.com/rid/']},
-        {name: 'Google Scholar', host: 'scholar.google.com', prefixes: ['scholar.google.com/citations?user=']},
-        {name: 'LinkedIn', host: 'linkedin.com', prefixes: ['linkedin.com/profile/view?id=', 'linkedin.com/in/']}
-    ];
-    const ORCID = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/i;
+    const P = window.IptPeople;
     const REPEATABLE = ['position', 'email', 'homepage', 'phone', 'address'];
 
     let root, list, form, text, roleLabels = {}, roleDescriptions = {}, filter = 'all';
-    let picker = {modal: null, people: null, selected: null, target: null};
+    let picker;
 
     document.addEventListener('DOMContentLoaded', init);
 
@@ -207,9 +198,7 @@
 
     // ---------- drawing ----------
 
-    function esc(value) {
-        return String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
-    }
+    const esc = P.esc;
 
     function flagLabel(name) {
         return text['chip' + name.charAt(0).toUpperCase() + name.slice(1)];
@@ -322,7 +311,7 @@
             chips.push(`<span class="party-chip err">${esc(text.hasErrors)}</span>`);
         }
         const recognised = Array.from(card.querySelectorAll('[data-id-row]'))
-            .map(row => detect(row.querySelector('[data-id-full]').value, row.querySelector('select')))
+            .map(P.detectRow)
             .find(Boolean);
         if (recognised) {
             chips.push(`<span class="party-chip">${esc(recognised.directory.name)}</span>`);
@@ -378,7 +367,7 @@
             allowClear: true,
             theme: 'bootstrap4'
         });
-        card.querySelectorAll('[data-id-row]').forEach(row => initIdentifierRow(row));
+        card.querySelectorAll('[data-id-row]').forEach(row => P.initIdentifierRow(row, text));
         if (isNew && typeof initInfoPopovers === 'function') {
             initInfoPopovers(card);
         }
@@ -461,7 +450,7 @@
         const row = fragment.querySelector('[data-rep-row]');
         group.querySelector('[data-rep-rows]').appendChild(fragment);
         if (row.hasAttribute('data-id-row')) {
-            initIdentifierRow(row);
+            P.initIdentifierRow(row, text);
         }
         reindex();
         if (focus) {
@@ -472,105 +461,6 @@
 
     function clearRows(group) {
         repRows(group).forEach(row => row.remove());
-    }
-
-    function directoryOption(select, directory) {
-        return Array.from(select.options).find(option => option.value && option.value.toLowerCase().includes(directory.host));
-    }
-
-    // recognises the personnel directory of a pasted identifier: a URL of a known directory, or a bare ORCID iD,
-    // Wikidata item or ROR id
-    function detect(value, select) {
-        const v = (value || '').trim();
-        if (!v) {
-            return null;
-        }
-        const bare = v.replace(/^https?:\/\//i, '').replace(/^www\./i, '');
-        let found = null;
-        for (const directory of DIRECTORIES) {
-            const prefix = directory.prefixes.find(p => bare.toLowerCase().startsWith(p));
-            if (prefix) {
-                found = {directory: directory, identifier: bare.slice(prefix.length).replace(/\/$/, '')};
-                break;
-            }
-        }
-        if (!found) {
-            if (ORCID.test(v)) {
-                found = {directory: DIRECTORIES[0], identifier: v.toUpperCase()};
-            } else if (/^Q\d+$/.test(v)) {
-                found = {directory: DIRECTORIES[2], identifier: v};
-            } else if (/^0[a-z0-9]{6}\d{2}$/i.test(v)) {
-                found = {directory: DIRECTORIES[1], identifier: v.toLowerCase()};
-            }
-        }
-        if (!found || !found.identifier) {
-            return null;
-        }
-        const option = select && directoryOption(select, found.directory);
-        return option ? Object.assign(found, {value: option.value}) : null;
-    }
-
-    function showDetection(row, detected, full) {
-        const out = row.querySelector('[data-id-detect]');
-        const select = row.querySelector('select');
-        const posted = !!row.querySelector('.field-error li');
-        let message = '', state = '';
-        if (detected) {
-            const badOrcid = detected.directory.name === 'ORCID' && !ORCID.test(detected.identifier);
-            message = badOrcid ? text.identifierOrcidFormat : text.identifierRecognised + ' ' + detected.directory.name;
-            state = badOrcid ? 'warn' : 'ok';
-        } else if (full && !select.value) {
-            // once a directory is picked (or kept from the EML) there is nothing more to ask; something that starts
-            // like an ORCID iD gets the ORCID hint instead
-            message = /^\d{4}-\d{4}-/.test(full) ? text.identifierOrcidFormat : text.identifierUnknown;
-            state = 'warn';
-        }
-        out.textContent = message;
-        out.className = 'party-id-detect' + (state ? ' ' + state : '');
-        // the directory is picked by hand only when it can't be recognised, or the posted one is wrong
-        select.classList.toggle('d-none', !!detected || (!full && !posted && !select.value));
-    }
-
-    function initIdentifierRow(row) {
-        const full = row.querySelector('[data-id-full]');
-        const select = row.querySelector('select');
-        const detected = detect(full.value, select);
-        // a stored directory that matches the stored value counts as recognised, like one picked while typing
-        if (detected && detected.value === select.value) {
-            select.dataset.auto = 'true';
-        }
-        showDetection(row, detected, full.value.trim());
-        // form-validation.js marks the posted (hidden) identifier input; show it on the visible one
-        row.querySelector('input[type=hidden]').classList.remove('is-invalid');
-        if (row.querySelector('.field-error li')) {
-            full.classList.add('is-invalid');
-            select.classList.remove('d-none');
-        }
-    }
-
-    // keeps the posted directory and identifier in step with the pasted identifier
-    function updateIdentifier(row) {
-        const full = row.querySelector('[data-id-full]').value.trim();
-        const select = row.querySelector('select');
-        const identifier = row.querySelector('input[type=hidden]');
-        const detected = detect(full, select);
-        if (detected) {
-            select.value = detected.value;
-            // picked here, not by the user: dropped again if the value stops being recognised
-            select.dataset.auto = 'true';
-            identifier.value = detected.identifier;
-        } else if (!full) {
-            select.value = '';
-            identifier.value = '';
-        } else {
-            if (select.dataset.auto) {
-                select.value = '';
-                delete select.dataset.auto;
-            }
-            identifier.value = select.value && full.toLowerCase().startsWith(select.value.toLowerCase())
-                ? full.slice(select.value.length) : full;
-        }
-        showDetection(row, detected, full);
     }
 
     // ---------- copying ----------
@@ -593,9 +483,7 @@
                 country: field(card, 'agent.address.country'),
                 postalCode: field(card, 'agent.address.postalCode')
             },
-            userIds: Array.from(card.querySelectorAll('[data-id-row]'))
-                .map(row => ({directory: row.querySelector('select').value, identifier: row.querySelector('input[type=hidden]').value}))
-                .filter(userId => userId.identifier)
+            userIds: P.userIdsOf(card)
         };
     }
 
@@ -625,13 +513,7 @@
         const ids = repGroup(card, 'identifier');
         clearRows(ids);
         (agent.userIds || []).filter(userId => userId && userId.identifier).forEach(userId => {
-            const row = addRow(ids, false);
-            const select = row.querySelector('select');
-            const option = Array.from(select.options).find(o => o.value && o.value.replace(/^https?:\/\//, '') === (userId.directory || '').replace(/^https?:\/\//, ''));
-            select.value = option ? option.value : '';
-            row.querySelector('input[type=hidden]').value = userId.identifier;
-            row.querySelector('[data-id-full]').value = /^https?:\/\//i.test(userId.identifier) || !select.value ? userId.identifier : select.value + userId.identifier;
-            showDetection(row, detect(row.querySelector('[data-id-full]').value, select), userId.identifier);
+            P.setIdentifier(addRow(ids, false), userId, text);
         });
 
         reindex();
@@ -640,10 +522,7 @@
         changed();
     }
 
-    function nameOfAgent(agent) {
-        const name = [agent.salutation, agent.firstName, agent.lastName].filter(Boolean).join(' ').trim();
-        return name || agent.organisation || (agent.position || [])[0] || '';
-    }
+    const nameOfAgent = P.nameOfAgent;
 
     // adds associated party roles a card doesn't hold yet
     function addOtherRoles(card, roles) {
@@ -837,7 +716,7 @@
                 break;
             }
             case 'copy-another':
-                openPicker(card);
+                picker.open(card);
                 break;
         }
     }
@@ -862,7 +741,7 @@
                 // a directory picked by the user stays, whatever is typed
                 delete event.target.dataset.auto;
             }
-            updateIdentifier(row);
+            P.updateIdentifier(row, text);
         }
         // a posted error no longer applies once its field is edited; the name rule marks three fields at once
         if (event.target.matches('[data-name-field], [data-name="agent.position[]"]') && hasName(card)) {
@@ -885,78 +764,20 @@
                 row.remove();
             }
         });
-        list.querySelectorAll('[data-id-row]').forEach(row => updateIdentifier(row));
+        list.querySelectorAll('[data-id-row]').forEach(row => P.updateIdentifier(row, text));
         reindex();
     }
 
     // ---------- copy from another resource ----------
 
     function initPicker() {
-        const el = document.getElementById('party-picker');
-        picker.modal = new bootstrap.Modal(el);
-        const search = document.getElementById('party-picker-search');
-        const results = document.getElementById('party-picker-results');
-        const ok = document.getElementById('party-picker-ok');
-
-        el.addEventListener('shown.bs.modal', () => search.focus());
-        search.addEventListener('input', renderPicker);
-        results.addEventListener('click', event => {
-            const result = event.target.closest('[data-i]');
-            if (result) {
-                picker.selected = Number(result.dataset.i);
-                renderPicker();
-            }
-        });
-        results.addEventListener('dblclick', event => {
-            if (event.target.closest('[data-i]')) {
-                ok.click();
-            }
-        });
-        results.addEventListener('keydown', event => {
-            const result = event.target.closest('[data-i]');
-            if (result && (event.key === 'Enter' || event.key === ' ')) {
-                event.preventDefault();
-                picker.selected = Number(result.dataset.i);
-                ok.click();
-            }
-        });
-        ok.addEventListener('click', () => {
-            if (picker.selected == null || !picker.people) {
-                return;
-            }
-            const person = picker.people[picker.selected];
-            const target = picker.target && picker.target.isConnected ? picker.target : null;
+        picker = P.picker({
+            url: root.dataset.peopleUrl,
+            text: text,
+            usageText: usageText,
             // the associated party roles held in any of the other resources
-            const roles = (person.usedIn || []).flatMap(usage => usage.associatedPartyRoles || []);
-            picker.modal.hide();
-            copyInto(target, person.agent, roles);
+            onPick: (person, target) => copyInto(target, person.agent, (person.usedIn || []).flatMap(usage => usage.associatedPartyRoles || []))
         });
-    }
-
-    function openPicker(card) {
-        picker.target = card;
-        picker.selected = null;
-        document.getElementById('party-picker-search').value = '';
-        picker.modal.show();
-        if (picker.people) {
-            renderPicker();
-            return;
-        }
-        document.getElementById('party-picker-results').innerHTML = `<div class="party-picker-msg">${esc(text.pickerLoading)}</div>`;
-        fetch(root.dataset.peopleUrl, {credentials: 'same-origin', headers: {Accept: 'application/json'}})
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(response.status);
-                }
-                return response.json();
-            })
-            .then(people => {
-                picker.people = Array.isArray(people) ? people : [];
-                renderPicker();
-            })
-            .catch(() => {
-                document.getElementById('party-picker-results').innerHTML = `<div class="party-picker-msg">${esc(text.pickerFailed)}</div>`;
-            });
     }
 
     function usageText(usage) {
@@ -966,43 +787,5 @@
             roles.push(text.pickerPersonnel);
         }
         return usage.resource + (roles.length ? ` (${roles.join(', ')})` : '');
-    }
-
-    function renderPicker() {
-        const results = document.getElementById('party-picker-results');
-        const ok = document.getElementById('party-picker-ok');
-        const query = document.getElementById('party-picker-search').value.trim().toLowerCase();
-        if (!picker.people) {
-            return;
-        }
-        if (!picker.people.length) {
-            results.innerHTML = `<div class="party-picker-msg">${esc(text.pickerNone)}</div>`;
-            ok.disabled = true;
-            return;
-        }
-        const matches = picker.people
-            .map((person, index) => ({person: person, index: index}))
-            .filter(({person}) => {
-                const agent = person.agent || {};
-                const haystack = [nameOfAgent(agent), agent.organisation].concat(agent.email || [], (agent.userIds || []).map(u => u.identifier))
-                    .join(' ').toLowerCase();
-                return !query || haystack.includes(query);
-            });
-        if (picker.selected != null && !matches.some(match => match.index === picker.selected)) {
-            picker.selected = null;
-        }
-        ok.disabled = picker.selected == null;
-        results.innerHTML = matches.length
-            ? matches.map(({person, index}) => {
-                const agent = person.agent || {};
-                const details = [agent.organisation && [agent.firstName, agent.lastName].some(Boolean) ? agent.organisation : '',
-                    (agent.position || [])[0], (agent.email || [])[0]].filter(Boolean).join(' \u00B7 ');
-                const selected = picker.selected === index;
-                return `<div class="party-picker-result${selected ? ' sel' : ''}" data-i="${index}" tabindex="0" role="option" aria-selected="${selected}">`
-                    + `<span class="party-who"><span class="party-name">${esc(nameOfAgent(agent))}</span>`
-                    + `<span class="party-sub">${details ? esc(details) + '<br>' : ''}<i>${esc(text.pickerUsedIn)} ${esc((person.usedIn || []).map(usageText).join('; '))}</i></span></span>`
-                    + '</div>';
-            }).join('')
-            : `<div class="party-picker-msg">${esc(text.pickerNoMatch)}</div>`;
     }
 })();
