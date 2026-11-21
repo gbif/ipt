@@ -1,427 +1,162 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.CamtrapMetadataAction" -->
     <#include "/WEB-INF/pages/macros/icon.ftl"/>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
     <title><@s.text name='manage.datapackagemetadata.camtrap.other.title'/></title>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
+    <link rel="stylesheet" href="${baseURL}/styles/contacts.css">
+    <link rel="stylesheet" href="${baseURL}/styles/overview.css">
+    <link rel="stylesheet" href="${baseURL}/styles/eml.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
+    <script src="${baseURL}/js/dp-metadata.js"></script>
     <script>
-        $(document).ready(function(){
-            var relatedIdentifierItems = calcNumberOfItems("relatedIdentifier");
-            var referenceItems = calcNumberOfItems("reference");
+        $(document).ready(function () {
+            var placeholders = {
+                relationType: '${action.getText("datapackagemetadata.other.relationType.select")?js_string}',
+                resourceTypeGeneral: '${action.getText("datapackagemetadata.other.resourceTypeGeneral.select")?js_string}',
+                relatedIdentifierType: '${action.getText("datapackagemetadata.other.relatedIdentifierType.select")?js_string}'
+            };
 
-            function calcNumberOfItems(name) {
-                var lastItem = $("#" + name + "-items .item:last-child").attr("id");
-                if (lastItem !== undefined)
-                    return parseInt(lastItem.split("-")[2]);
-                else
-                    return -1;
-            }
-
-            $("#plus-relatedIdentifier").click(function (e) {
-                e.preventDefault();
-                addNewRelatedIdentifierItem(true);
-            });
-
-            function addNewRelatedIdentifierItem(effects) {
-                var newItem = $('#baseItem-relatedIdentifier').clone();
-                if (effects) newItem.hide();
-                newItem.appendTo('#relatedIdentifier-items');
-
-                if (effects) {
-                    newItem.slideDown('slow');
-                }
-
-                setRelatedIdentifierItemIndex(newItem, ++relatedIdentifierItems);
-
-                initInfoPopovers(newItem[0]);
-            }
-
-            function addNewReferenceItem(effects) {
-                var newItem = $('#baseItem-reference').clone();
-                if (effects) newItem.hide();
-                newItem.appendTo('#reference-items');
-
-                if (effects) {
-                    newItem.slideDown('slow');
-                }
-
-                setReferenceItemIndex(newItem, ++referenceItems);
-            }
-
-            function removeRelatedIdentifierItem(e) {
-                e.preventDefault();
-                var $target = $(e.target);
-                if (!$target.is('a')) {
-                    $target = $(e.target).closest('a');
-                }
-                $('#relatedIdentifier-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
-                    $(this).remove();
-                    $("#relatedIdentifier-items .item").each(function (index) {
-                        setRelatedIdentifierItemIndex($(this), index);
+            function initSelects($scope) {
+                Object.keys(placeholders).forEach(function (field) {
+                    $scope.find('select[id$=".' + field + '"]').select2({
+                        placeholder: placeholders[field],
+                        language: {
+                            noResults: function () {
+                                return '${selectNoResultsFound}';
+                            }
+                        },
+                        minimumResultsForSearch: 15,
+                        width: "100%",
+                        allowClear: true,
+                        theme: 'bootstrap4'
                     });
-                    calcNumberOfItems("relatedIdentifier");
                 });
             }
 
-            function removeReferenceItem(e) {
-                e.preventDefault();
-                var $target = $(e.target);
-                if (!$target.is('a')) {
-                    $target = $(e.target).closest('a');
-                }
-                $('#reference-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
-                    $(this).remove();
-                    $("#reference-items .item").each(function (index) {
-                        setReferenceItemIndex($(this), index);
-                    });
-                    calcNumberOfItems("reference");
-                });
+            dpList({key: 'relatedIdentifier', prefix: 'metadata.relatedIdentifiers', onAdd: initSelects});
+            dpList({key: 'reference', prefix: 'metadata.references'});
+            initSelects($('#relatedIdentifier-items'));
+
+            // scroll to the first error
+            var $invalid = $(".is-invalid").first();
+            if ($invalid.length) {
+                $('body, html').animate({scrollTop: $invalid.offset().top - 100});
             }
-
-            function setRelatedIdentifierItemIndex(item, index) {
-                item.attr("id", "relatedIdentifier-item-" + index);
-
-                $("#relatedIdentifier-item-" + index + " [id^='relatedIdentifier-removeLink']").attr("id", "relatedIdentifier-removeLink-" + index);
-                $("#relatedIdentifier-removeLink-" + index).click(function (event) {
-                    removeRelatedIdentifierItem(event);
-                });
-
-                $("#relatedIdentifier-item-" + index + " [id$='relationType']").attr("id", "metadata.relatedIdentifiers[" + index + "].relationType").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#relatedIdentifier-item-" + index + " [for$='relationType']").attr("for", "metadata.relatedIdentifiers[" + index + "].relationType");
-                $("#relatedIdentifier-item-" + index + " [id$='relationType']").select2({
-                    placeholder: '${action.getText("datapackagemetadata.other.relationType.select")?js_string}',
-                    language: {
-                        noResults: function () {
-                            return '${selectNoResultsFound}';
-                        }
-                    },
-                    minimumResultsForSearch: 15,
-                    width: "100%",
-                    allowClear: true,
-                    theme: 'bootstrap4'
-                });
-
-                $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifier']").attr("id", "metadata.relatedIdentifiers[" + index + "].relatedIdentifier").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#relatedIdentifier-item-" + index + " [for$='relatedIdentifier']").attr("for", "metadata.relatedIdentifiers[" + index + "].relatedIdentifier");
-
-                $("#relatedIdentifier-item-" + index + " [id$='resourceTypeGeneral']").attr("id", "metadata.relatedIdentifiers[" + index + "].resourceTypeGeneral").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#relatedIdentifier-item-" + index + " [for$='resourceTypeGeneral']").attr("for", "metadata.relatedIdentifiers[" + index + "].resourceTypeGeneral");
-                $("#relatedIdentifier-item-" + index + " [id$='resourceTypeGeneral']").select2({
-                    placeholder: '${action.getText("datapackagemetadata.other.resourceTypeGeneral.select")?js_string}',
-                    language: {
-                        noResults: function () {
-                            return '${selectNoResultsFound}';
-                        }
-                    },
-                    minimumResultsForSearch: 15,
-                    width: "100%",
-                    allowClear: true,
-                    theme: 'bootstrap4'
-                });
-
-                $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifierType']").attr("id", "metadata.relatedIdentifiers[" + index + "].relatedIdentifierType").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#relatedIdentifier-item-" + index + " [for$='relatedIdentifierType']").attr("for", "metadata.relatedIdentifiers[" + index + "].relatedIdentifierType");
-                $("#relatedIdentifier-item-" + index + " [id$='relatedIdentifierType']").select2({
-                    placeholder: '${action.getText("datapackagemetadata.other.relatedIdentifierType.select")?js_string}',
-                    language: {
-                        noResults: function () {
-                            return '${selectNoResultsFound}';
-                        }
-                    },
-                    minimumResultsForSearch: 15,
-                    width: "100%",
-                    allowClear: true,
-                    theme: 'bootstrap4'
-                });
-            }
-
-            function setReferenceItemIndex(item, index) {
-                item.attr("id", "reference-item-" + index);
-
-                $("#reference-item-" + index + " [id^='reference-removeLink']").attr("id", "reference-removeLink-" + index);
-                $("#reference-removeLink-" + index).click(function (event) {
-                    removeReferenceItem(event);
-                });
-
-                $("#reference-item-" + index + " input").attr("id", "metadata.references[" + index + "]").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#reference-item-" + index + " label").attr("for", "metadata.references[" + index + "]");
-            }
-
-            $(".removeRelatedIdentifierLink").click(function (e) {
-                removeRelatedIdentifierItem(e);
-            });
-
-            $(".removeReferenceLink").click(function (e) {
-                removeReferenceItem(e);
-            });
-
-            $("#plus-reference").click(function (e) {
-                e.preventDefault();
-                addNewReferenceItem(true);
-            });
-
-            // scroll to the error if present
-            var invalidElements = $(".is-invalid");
-
-            if (invalidElements !== undefined && invalidElements.length > 0) {
-                var invalidElement = invalidElements.first();
-                var pos = invalidElement.offset().top - 100;
-                // scroll to the element
-                $('body, html').animate({scrollTop: pos});
-            }
-
-            $('[id^="metadata.relatedIdentifiers["][id$=".relationType"]').select2({
-                placeholder: '${action.getText("datapackagemetadata.other.relationType.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                minimumResultsForSearch: 15,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="metadata.relatedIdentifiers["][id$=".resourceTypeGeneral"]').select2({
-                placeholder: '${action.getText("datapackagemetadata.other.resourceTypeGeneral.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                minimumResultsForSearch: 15,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="metadata.relatedIdentifiers["][id$=".relatedIdentifierType"]').select2({
-                placeholder: '${action.getText("datapackagemetadata.other.relatedIdentifierType.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                minimumResultsForSearch: 15,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
 
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#assign currentMenu="manage"/>
     <#assign currentMetadataPage = "other"/>
+    <#assign savebarAction = "camtrap-metadata-other"/>
+    <#assign materialHelpIcons = true/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
+
+    <#function t key>
+        <#return action.getText(key)/>
+    </#function>
+
+    <#assign removeRelatedIdentifierLink = (t('manage.metadata.removethis') + " " + t('datapackagemetadata.other.relatedIdentifier'))?lower_case?cap_first/>
+    <#assign addRelatedIdentifierLink = (t('manage.metadata.addnew') + " " + t('datapackagemetadata.other.relatedIdentifier'))?lower_case?cap_first/>
+    <#assign removeReferenceLink = (t('manage.metadata.removethis') + " " + t('datapackagemetadata.other.reference'))?lower_case?cap_first/>
+    <#assign addReferenceLink = (t('manage.metadata.addnew') + " " + t('datapackagemetadata.other.reference'))?lower_case?cap_first/>
+
+    <#-- one related identifier; index "" is the template -->
+    <#macro relatedIdentifierCard index="" item={}>
+        <#local base = index?has_content?then("metadata.relatedIdentifiers[" + index + "]", "metadata.relatedIdentifiers")/>
+        <div <#if index?has_content>id="relatedIdentifier-item-${index}"<#else>id="baseItem-relatedIdentifier" style="display: none;"</#if> class="item dp-card">
+            <div class="dp-card-head">
+                <span class="dp-card-title" data-card-title data-title-from='input[id$="relatedIdentifier"]' data-empty="${t('datapackagemetadata.other.relatedIdentifier')}"></span>
+                <a id="relatedIdentifier-removeLink<#if index?has_content>-${index}</#if>" href="" class="party-icon-btn party-icon-danger remove-item" title="${removeRelatedIdentifierLink}" aria-label="${removeRelatedIdentifierLink}"><@icon name="delete"/></a>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-6">
+                    <@input name="${base}.relatedIdentifier" value=item.relatedIdentifier!"" help="i18n" i18nkey="datapackagemetadata.other.relatedIdentifier" requiredField=true />
+                </div>
+                <div class="col-lg-6">
+                    <@select name="${base}.relatedIdentifierType" help="i18n" includeEmpty=true compareValues=true options=relatedIdentifierTypes! i18nkey="datapackagemetadata.other.relatedIdentifierType" value=(item.relatedIdentifierType)!"" requiredField=true />
+                </div>
+                <div class="col-lg-6">
+                    <@select name="${base}.relationType" help="i18n" includeEmpty=true compareValues=true options=relationTypes! i18nkey="datapackagemetadata.other.relationType" value=(item.relationType)!"" requiredField=true />
+                </div>
+                <div class="col-lg-6">
+                    <@select name="${base}.resourceTypeGeneral" help="i18n" includeEmpty=true compareValues=true options=resourceTypeGenerals! i18nkey="datapackagemetadata.other.resourceTypeGeneral" value=(item.resourceTypeGeneral)!"" />
+                </div>
+            </div>
+        </div>
+    </#macro>
+
+    <#-- one reference: a line with its remove button; index "" is the template -->
+    <#macro referenceLine index="" value="">
+        <div <#if index?has_content>id="reference-item-${index}"<#else>id="baseItem-reference" style="display: none;"</#if> class="item dp-line">
+            <@input name=index?has_content?then("metadata.references[" + index + "]", "metadata.references") value=value i18nkey="datapackagemetadata.other.reference" withLabel=false />
+            <a id="reference-removeLink<#if index?has_content>-${index}</#if>" href="" class="party-icon-btn party-icon-danger remove-item" title="${removeReferenceLink}" aria-label="${removeReferenceLink}"><@icon name="delete"/></a>
+        </div>
+    </#macro>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
+    <form id="other-form" class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
-        <div class="container-fluid bg-body border-bottom">
-            <div class="container bg-body border rounded-2 mb-4">
-                <div class="container my-3 p-3 ov-head ov-head-left">
-                    <div class="ov-grow">
-                        <div class="fs-smaller">
-                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                                <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                    <li class="breadcrumb-item ov-crumb-resource"><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                                </ol>
-                            </nav>
-                        </div>
-
-                        <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name='manage.datapackagemetadata.camtrap.other.title'/></h1>
-                    </div>
-
-                    <div class="ov-acts">
-                        <button type="submit" id="save" name="save" value="save" class="button btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <#include "metadata_heading.ftl"/>
 
         <div class="container-fluid bg-body">
             <div class="container bd-layout main-content-container">
-                <main class="bd-main bd-main">
+                <main class="bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "metadata_sidebar.ftl"/>
                     </div>
 
                     <div class="bd-content">
-                        <div class="my-md-3 p-3">
-                            <!-- GBIF Ingestion -->
-                            <div>
-                                <@textinline name="datapackagemetadata.other.gbifIngestion" help="i18n"/>
-
-                                <div class="mt-3">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <@select name="metadata.gbifIngestion.observationLevel" help="i18n" includeEmpty=true compareValues=true options=observationLevels i18nkey="datapackagemetadata.other.gbifIngestion.observationLevel" value="${(metadata.gbifIngestion.observationLevel)!}" />
-                                        </div>
-                                    </div>
+                        <div class="my-md-3 p-3" id="s-gbif-ingestion" data-toc="${t('datapackagemetadata.other.gbifIngestion')}">
+                            <@textinline name="datapackagemetadata.other.gbifIngestion" help="i18n"/>
+                            <div class="row g-3 mt-0">
+                                <div class="col-lg-6">
+                                    <@select name="metadata.gbifIngestion.observationLevel" help="i18n" includeEmpty=true compareValues=true options=observationLevels i18nkey="datapackagemetadata.other.gbifIngestion.observationLevel" value="${(metadata.gbifIngestion.observationLevel)!}" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="my-md-3 p-3">
-                            <#assign removeRelatedIdentifierLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
-                            <#assign removeRelatedIdentifierLink = removeRelatedIdentifierLink?markup_string>
-                            <#assign addRelatedIdentifierLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.relatedIdentifier'/></#assign>
-                            <#assign addRelatedIdentifierLink = addRelatedIdentifierLink?markup_string>
-
-                            <!-- List of Related identifiers -->
-                            <div>
-                                <@textinline name="datapackagemetadata.other.relatedIdentifiers" help="i18n"/>
-                                <div id="relatedIdentifier-items">
-                                    <#list (metadata.relatedIdentifiers)! as item>
-                                        <div id="relatedIdentifier-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="relatedIdentifier-removeLink-${item_index}" href="" class="removeRelatedIdentifierLink metadata-action-link custom-link">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeRelatedIdentifierLink?lower_case?cap_first}</span>
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@select name="metadata.relatedIdentifiers[${item_index}].relationType" help="i18n" includeEmpty=true compareValues=true options=relationTypes! i18nkey="datapackagemetadata.other.relationType" value="${(metadata.relatedIdentifiers[item_index].relationType)!}" requiredField=true />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.relatedIdentifiers[${item_index}].relatedIdentifier" value=item.relatedIdentifier! help="i18n" i18nkey="datapackagemetadata.other.relatedIdentifier" requiredField=true />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@select name="metadata.relatedIdentifiers[${item_index}].resourceTypeGeneral" help="i18n" includeEmpty=true compareValues=true options=resourceTypeGenerals! i18nkey="datapackagemetadata.other.resourceTypeGeneral" value="${(metadata.relatedIdentifiers[item_index].resourceTypeGeneral)!}" />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@select name="metadata.relatedIdentifiers[${item_index}].relatedIdentifierType" help="i18n" includeEmpty=true compareValues=true options=relatedIdentifierTypes! i18nkey="datapackagemetadata.other.relatedIdentifierType" value="${(metadata.relatedIdentifiers[item_index].relatedIdentifierType)!}" requiredField=true />
-                                            </div>
-                                        </div>
-                                    </#list>
-                                </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-relatedIdentifier" class="metadata-action-link custom-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${addRelatedIdentifierLink?lower_case?cap_first}</span>
-                                    </a>
-                                </div>
+                        <div class="my-3 p-3" id="s-related-identifiers" data-toc="${t('datapackagemetadata.other.relatedIdentifiers')}">
+                            <@textinline name="datapackagemetadata.other.relatedIdentifiers" help="i18n"/>
+                            <div id="relatedIdentifier-items" class="dp-cards">
+                                <#list (metadata.relatedIdentifiers)! as item>
+                                    <@relatedIdentifierCard index=item_index item=item/>
+                                </#list>
+                            </div>
+                            <div class="add-area">
+                                <a id="plus-relatedIdentifier" href=""><@icon name="add"/> <span>${addRelatedIdentifierLink}</span></a>
                             </div>
                         </div>
 
-                        <div class="my-md-3 p-3">
-                            <#assign removeReferenceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.other.reference'/></#assign>
-                            <#assign removeReferenceLink = removeReferenceLink?markup_string>
-                            <#assign addReferenceLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.other.reference'/></#assign>
-                            <#assign addReferenceLink = addReferenceLink?markup_string>
-
-                            <!-- List of References -->
-                            <div>
-                                <@textinline name="datapackagemetadata.other.references" help="i18n"/>
-                                <div id="reference-items">
-                                    <#list (metadata.references)! as item>
-                                        <div id="reference-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="col-12 d-flex">
-                                                <div class="flex-grow-1">
-                                                    <@input name="metadata.references[${item_index}]" value=item! i18nkey="datapackagemetadata.other.reference" withLabel=false />
-                                                </div>
-                                                <div>
-                                                    <a id="reference-removeLink-${item_index}" href="" class="removeReferenceLink metadata-action-link custom-link">
-                                                        <span>
-                                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                                                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                            </svg>
-                                                        </span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </#list>
-                                </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-reference" class="metadata-action-link custom-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${addReferenceLink?lower_case?cap_first}</span>
-                                    </a>
-                                </div>
+                        <div class="my-3 p-3" id="s-references" data-toc="${t('datapackagemetadata.other.references')}">
+                            <@textinline name="datapackagemetadata.other.references" help="i18n"/>
+                            <div id="reference-items" class="dp-lines">
+                                <#list (metadata.references)! as item>
+                                    <@referenceLine index=item_index value=item!""/>
+                                </#list>
+                            </div>
+                            <div class="add-area">
+                                <a id="plus-reference" href=""><@icon name="add"/> <span>${addReferenceLink}</span></a>
                             </div>
                         </div>
                     </div>
                 </main>
             </div>
         </div>
+
+        <#include "/WEB-INF/pages/manage/eml/eml_savebar.ftl"/>
     </form>
 
-    <div id="baseItem-relatedIdentifier" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
-        <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="relatedIdentifier-removeLink" href="" class="removeRelatedIdentifierLink metadata-action-link custom-link">
-                <span>
-                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                    </svg>
-                </span>
-                <span>${removeRelatedIdentifierLink?lower_case?cap_first}</span>
-            </a>
-        </div>
-        <div class="col-lg-6">
-            <@select name="metadata.relatedIdentifiers.relationType" help="i18n" includeEmpty=true compareValues=true options=relationTypes! i18nkey="datapackagemetadata.other.relationType" value="" requiredField=true />
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.relatedIdentifiers.relatedIdentifier" help="i18n" i18nkey="datapackagemetadata.other.relatedIdentifier" requiredField=true />
-        </div>
-        <div class="col-lg-6">
-            <@select name="metadata.relatedIdentifiers.resourceTypeGeneral" help="i18n" includeEmpty=true compareValues=true options=resourceTypeGenerals! i18nkey="datapackagemetadata.other.resourceTypeGeneral" value="" />
-        </div>
-        <div class="col-lg-6">
-            <@select name="metadata.relatedIdentifiers.relatedIdentifierType" help="i18n" includeEmpty=true compareValues=true options=relatedIdentifierTypes! i18nkey="datapackagemetadata.other.relatedIdentifierType" value="" requiredField=true />
-        </div>
-    </div>
-
-    <div id="baseItem-reference" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
-        <div class="col-12 d-flex">
-            <div class="flex-grow-1">
-                <@input name="metadata.references" i18nkey="datapackagemetadata.other.reference" value="" withLabel=false />
-            </div>
-            <div>
-                <a id="reference-removeLink" href="" class="removeReferenceLink metadata-action-link custom-link">
-                    <span>
-                        <svg viewBox="0 0 24 24" class="link-icon link-icon-neutral">
-                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                        </svg>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>
+    <@relatedIdentifierCard/>
+    <@referenceLine/>
 
     <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 

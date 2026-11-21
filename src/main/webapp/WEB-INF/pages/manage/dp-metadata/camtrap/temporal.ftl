@@ -1,182 +1,84 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.CamtrapMetadataAction" -->
     <#include "/WEB-INF/pages/macros/icon.ftl"/>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
     <title><@s.text name='manage.datapackagemetadata.camtrap.temporal.title'/></title>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
-    <script>
-        $(document).ready(function(){
-            // scroll to the error if present
-            var invalidElements = $(".is-invalid");
-
-            if (invalidElements !== undefined && invalidElements.length > 0) {
-                var invalidElement = invalidElements.first();
-                var pos = invalidElement.offset().top - 100;
-                // scroll to the element
-                $('body, html').animate({scrollTop: pos});
-            }
-
-            var $inferAutomaticallyCheckbox = $("#resource\\.inferTemporalCoverageAutomatically");
-            var isInferAutomaticallyEnabled = $inferAutomaticallyCheckbox.is(":checked");
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const isReinferMetadataActivated = urlParams.get('reinferMetadata');
-
-            if (isInferAutomaticallyEnabled || isReinferMetadataActivated) {
-                $("#actual-metadata-block").hide();
-                $("#custom-data").hide();
-                $('#resource\\.inferTemporalCoverageAutomatically').prop('checked', true);
-            } else {
-                $("#actual-metadata-block").show();
-                $("#inferred-metadata-block").hide();
-                $("#preview-links").hide();
-                $("#custom-data").show();
-            }
-
-            $inferAutomaticallyCheckbox.click(function() {
-                if ($(this).is(":checked")) {
-                    $("#actual-metadata-block").hide();
-                    $("#inferred-metadata-block").show();
-                    $("#preview-links").show();
-                    $("#custom-data").hide();
-                    $("#custom-data-textarea").text('');
-                } else {
-                    $("#actual-metadata-block").show();
-                    $("#inferred-metadata-block").hide();
-                    $("#preview-links").hide();
-                    $("#custom-data").show();
-                }
-            });
-
-            $("#re-infer-link").on('click', displayProcessing);
-
-            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
-        });
-    </script>
+    <link rel="stylesheet" href="${baseURL}/styles/overview.css">
+    <link rel="stylesheet" href="${baseURL}/styles/eml.css">
+    <script src="${baseURL}/js/dp-metadata.js"></script>
     <#assign currentMenu="manage"/>
     <#assign currentMetadataPage = "temporal"/>
+    <#assign savebarAction = "camtrap-metadata-temporal"/>
+    <#assign materialHelpIcons = true/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
+    <#include "scope_macros.ftl"/>
+
+    <#assign inferredScope = (inferredMetadata.inferredTemporalScope)!{}/>
+    <#assign inferredOk = (inferredScope.inferred)!false && !(inferredScope.errors)?has_content
+        && (inferredScope.startDate)?? && (inferredScope.endDate)??/>
+    <#assign storedOk = (metadata.temporal.start)?has_content || (metadata.temporal.end)?has_content/>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
+    <form id="temporal-scope-form" class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
-        <div class="container-fluid bg-body border-bottom">
-            <div class="container bg-body border rounded-2 mb-4">
-                <div class="container my-3 p-3 ov-head ov-head-left">
-                    <div class="ov-grow">
-                        <div class="fs-smaller">
-                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                                <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                    <li class="breadcrumb-item ov-crumb-resource"><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                                </ol>
-                            </nav>
-                        </div>
-
-                        <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name='manage.datapackagemetadata.camtrap.temporal.title'/></h1>
-                    </div>
-
-                    <div class="ov-acts">
-                        <button type="submit" id="save" name="save" value="save" class="button btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <#include "metadata_heading.ftl"/>
 
         <div class="container-fluid bg-body">
             <div class="container bd-layout main-content-container">
-                <main class="bd-main bd-main">
+                <main class="bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "metadata_sidebar.ftl"/>
                     </div>
 
                     <div class="bd-content">
-                        <div class="mb-md-3 ps-3 py-3">
-                            <div class="mt-4">
-                                <#assign inferAutomaticallyPopupInfo>
-                                    <@s.text name='datapackagemetadata.infer.automatically.short.help'/>
-                                </#assign>
-                                <@checkbox name="resource.inferTemporalCoverageAutomatically" value=resource.inferTemporalCoverageAutomatically i18nkey="datapackagemetadata.infer.automatically" />
-                            </div>
+                        <div class="my-md-3 p-3">
+                            <@scopeModes field="resource.inferTemporalCoverageAutomatically" page="temporal" infer=resource.inferTemporalCoverageAutomatically/>
 
-                            <div id="actual-metadata-block" class="mt-3">
-                                <div class="table-responsive border rounded p-3">
-                                    <table class="text-smaller table table-sm table-borderless mb-0">
-                                        <tr>
-                                            <th class="col-4"><@s.text name='datapackagemetadata.temporal.start'/> / <@s.text name='datapackagemetadata.temporal.end'/></th>
-                                            <td>
-                                                <#if (metadata.temporal.start)?? && (metadata.temporal.end)??>
-                                                    ${metadata.temporal.start} / ${metadata.temporal.end}
-                                                <#else>
-                                                    -
-                                                </#if>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <#assign temporalScopeMetadataIsInferred = (inferredMetadata.inferredTemporalScope)?? && inferredMetadata.inferredTemporalScope.inferred && !inferredMetadata.inferredTemporalScope.errors?has_content/>
-
-                            <div id="inferred-metadata-block" class="mt-4">
-                                <div class="row">
-                                    <div class="col-md-6"></div>
-                                    <div id="preview-links" class="col-md-6">
-                                        <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end">
-                                            <span class="fs-smaller-2 p-1">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                            <a id="re-infer-link" href="camtrap-metadata-temporal.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link custom-link p-1">
-                                                <span>
-                                                    <svg class="link-icon link-icon-primary" viewBox="0 0 24 24">
-                                                        <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span><@s.text name="datapackagemetadata.reinfer"/></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
-                                <#if (inferredMetadata.inferredTemporalScope.errors)?has_content>
-                                    <#list inferredMetadata.inferredTemporalScope.errors as error>
-                                        <div class="callout callout-danger text-smaller">
-                                            <@s.text name="${error}"/>
-                                        </div>
-                                    </#list>
-                                <#else>
-                                <div class="table-responsive border rounded p-3">
-                                    <#if temporalScopeMetadataIsInferred>
-                                        <table class="text-smaller table table-sm table-borderless mb-0">
-                                            <tr>
-                                                <th class="col-4"><@s.text name='datapackagemetadata.temporal.start'/> / <@s.text name='datapackagemetadata.temporal.end'/></th>
-                                                <td>
-                                                    <#if (inferredMetadata.inferredTemporalScope.startDate)?? && (inferredMetadata.inferredTemporalScope.endDate)??>
-                                                        ${inferredMetadata.inferredTemporalScope.startDate?date} / ${inferredMetadata.inferredTemporalScope.endDate?date}
-                                                    <#else>
-                                                        -
-                                                    </#if>
-                                                </td>
-                                            </tr>
-                                        </table>
+                            <div id="scope-inferred" class="dp-scope" hidden>
+                                <@inferBar scope=inferredScope page="temporal"/>
+                                <div class="mt-2">
+                                    <#if inferredOk>
+                                        <dl class="dp-values mb-0">
+                                            <dt><@s.text name="datapackagemetadata.temporal.start"/></dt><dd>${inferredScope.startDate?date}</dd>
+                                            <dt><@s.text name="datapackagemetadata.temporal.end"/></dt><dd>${inferredScope.endDate?date}</dd>
+                                        </dl>
                                     <#else>
-                                        <@s.text name="datapackagemetadata.noData"/>
+                                        <div class="dp-values-empty"><@s.text name="datapackagemetadata.noData"/></div>
                                     </#if>
                                 </div>
-                                </#if>
                             </div>
 
+                            <div id="scope-stored" class="dp-scope" hidden>
+                                <#if storedOk>
+                                    <dl class="dp-values mb-0">
+                                        <dt><@s.text name="datapackagemetadata.temporal.start"/></dt><dd>${(metadata.temporal.start)!"-"}</dd>
+                                        <dt><@s.text name="datapackagemetadata.temporal.end"/></dt><dd>${(metadata.temporal.end)!"-"}</dd>
+                                    </dl>
+                                <#else>
+                                    <div class="dp-values-empty"><@s.text name="datapackagemetadata.noData"/></div>
+                                </#if>
+                            </div>
                         </div>
                     </div>
                 </main>
             </div>
         </div>
+
+        <#include "/WEB-INF/pages/manage/eml/eml_savebar.ftl"/>
     </form>
 
     <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
+
+    <script>
+        $(document).ready(function () {
+            dpScope();
+            $("#re-infer-link").on('click', displayProcessing);
+            makeSureResourceParameterIsPresentInURL('${resource.shortname}');
+        });
+    </script>

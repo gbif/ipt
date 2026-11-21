@@ -1,78 +1,245 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.CamtrapMetadataAction" -->
     <#include "/WEB-INF/pages/macros/icon.ftl"/>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
     <title><@s.text name='manage.datapackagemetadata.camtrap.geographic.title'/></title>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
+    <link rel="stylesheet" href="${baseURL}/styles/leaflet/leaflet-1.9.4.css" />
+    <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
+    <link rel="stylesheet" href="${baseURL}/styles/overview.css">
+    <link rel="stylesheet" href="${baseURL}/styles/eml.css">
+    <script src="${baseURL}/js/leaflet/leaflet-1.9.4.js"></script>
+    <script src="${baseURL}/js/dp-metadata.js"></script>
+    <#assign currentMenu="manage"/>
+    <#assign currentMetadataPage = "geographic"/>
+    <#assign savebarAction = "camtrap-metadata-geographic"/>
+    <#assign materialHelpIcons = true/>
+    <#include "/WEB-INF/pages/inc/menu.ftl">
+    <#include "/WEB-INF/pages/macros/forms.ftl"/>
+    <#include "scope_macros.ftl"/>
+
+    <#-- a GeoJSON coordinates array as JavaScript -->
+    <#macro json value><#if value?is_sequence>[<#list value as it><@json it/><#sep>,</#list>]<#elseif value?is_number>${value?c}<#else>null</#if></#macro>
+
+    <#assign inferredScope = (inferredMetadata.inferredGeographicScope)!{}/>
+    <#assign inferredOk = (inferredScope.inferred)!false && !(inferredScope.errors)?has_content/>
+    <#assign spatialType = (metadata.spatial.type)!""/>
+    <#assign spatialMappable = spatialType?has_content && (metadata.spatial.coordinates)?has_content
+        && ["Point", "MultiPoint", "LineString", "MultiLineString", "Polygon", "MultiPolygon"]?seq_contains(spatialType?string)/>
+
+    <#macro extent prefix>
+        <dt><@s.text name="eml.geospatialCoverages.boundingCoordinates.min.longitude"/></dt><dd data-extent="${prefix}-w">-</dd>
+        <dt><@s.text name="eml.geospatialCoverages.boundingCoordinates.max.longitude"/></dt><dd data-extent="${prefix}-e">-</dd>
+        <dt><@s.text name="eml.geospatialCoverages.boundingCoordinates.min.latitude"/></dt><dd data-extent="${prefix}-s">-</dd>
+        <dt><@s.text name="eml.geospatialCoverages.boundingCoordinates.max.latitude"/></dt><dd data-extent="${prefix}-n">-</dd>
+    </#macro>
+
+    <div class="container px-0">
+        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
+    </div>
+
+    <form id="geographic-scope-form" class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
+        <input type="hidden" name="r" value="${resource.shortname}" />
+
+        <#include "metadata_heading.ftl"/>
+
+        <div class="container-fluid bg-body">
+            <div class="container bd-layout main-content-container">
+                <main class="bd-main">
+                    <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
+                        <#include "metadata_sidebar.ftl"/>
+                    </div>
+
+                    <div class="bd-content">
+                        <div class="my-md-3 p-3">
+                            <@scopeModes field="resource.inferGeocoverageAutomatically" page="geographic" infer=resource.inferGeocoverageAutomatically/>
+
+                            <div id="scope-inferred" class="dp-scope" hidden>
+                                <@inferBar scope=inferredScope page="geographic"/>
+                            </div>
+
+                            <div class="dp-scope dp-map-layout">
+                                <div id="scope-map" class="dp-map"></div>
+                                <div>
+                                    <div id="values-inferred" class="dp-scope-part" hidden>
+                                        <#if inferredOk>
+                                            <dl class="dp-values mb-0">
+                                                <dt><@s.text name="datapackagemetadata.geographic.type"/></dt><dd>Polygon</dd>
+                                                <@extent prefix="inferred"/>
+                                            </dl>
+                                        <#else>
+                                            <div class="dp-values-empty"><@s.text name="datapackagemetadata.noData"/></div>
+                                        </#if>
+                                    </div>
+                                    <div id="values-stored" class="dp-scope-part" hidden>
+                                        <dl class="dp-values mb-0" id="stored-values"<#if !spatialType?has_content> hidden</#if>>
+                                            <dt><@s.text name="datapackagemetadata.geographic.type"/></dt><dd id="stored-type">${spatialType}</dd>
+                                            <@extent prefix="stored"/>
+                                            <#if (metadata.coordinatePrecision)??>
+                                                <dt id="stored-precision-label"><@s.text name="datapackagemetadata.coordinatePrecision"/></dt><dd id="stored-precision">${metadata.coordinatePrecision}</dd>
+                                            </#if>
+                                        </dl>
+                                        <div id="stored-none" class="dp-values-empty"<#if spatialType?has_content> hidden</#if>><@s.text name="datapackagemetadata.noData"/></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="scope-stored" class="dp-scope dp-geojson" hidden>
+                                <label for="custom-data-textarea" class="form-label text-smaller"><@s.text name="manage.datapackagemetadata.camtrap.geographic.replace"/></label>
+                                <textarea id="custom-data-textarea" name="customGeoJson" rows="4" class="form-control" placeholder="<@s.text name='datapackagemetadata.geographic.custom.input'/>">${customGeoJson!}</textarea>
+                                <div class="dp-geojson-bar">
+                                    <input type="file" id="custom-data-input" accept=".json,.geojson,application/json,application/geo+json" hidden>
+                                    <button type="button" id="file-selector" class="btn btn-link metadata-action-link custom-link"><@icon name="upload" class="link-icon-primary"/> <span><@s.text name="basic.uploadFile"/></span></button>
+                                    <span id="geojson-msg" class="dp-geojson-msg" aria-live="polite"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <#include "/WEB-INF/pages/manage/eml/eml_savebar.ftl"/>
+    </form>
+
+    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
+
+    <#include "/WEB-INF/pages/inc/footer.ftl">
+
     <script>
-        $(document).ready(function(){
-            var $inferAutomaticallyCheckbox = $("#resource\\.inferGeocoverageAutomatically");
-            var isInferAutomaticallyEnabled = $inferAutomaticallyCheckbox.is(":checked");
+        $(document).ready(function () {
+            var INVALID = '${action.getText("datapackagemetadata.geographic.error.customGeojson")?js_string?no_esc}';
+            <#if inferredOk>
+            var INFERRED = {
+                type: 'Polygon',
+                coordinates: [[
+                    [${(inferredScope.minLongitude!0)?c}, ${(inferredScope.minLatitude!0)?c}],
+                    [${(inferredScope.maxLongitude!0)?c}, ${(inferredScope.minLatitude!0)?c}],
+                    [${(inferredScope.maxLongitude!0)?c}, ${(inferredScope.maxLatitude!0)?c}],
+                    [${(inferredScope.minLongitude!0)?c}, ${(inferredScope.maxLatitude!0)?c}],
+                    [${(inferredScope.minLongitude!0)?c}, ${(inferredScope.minLatitude!0)?c}]
+                ]]
+            };
+            <#else>
+            var INFERRED = null;
+            </#if>
+            <#if spatialMappable>
+            var STORED = {type: '${spatialType?string?js_string?no_esc}', coordinates: <@json metadata.spatial.coordinates/>};
+            <#else>
+            var STORED = null;
+            </#if>
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const isReinferMetadataActivated = urlParams.get('reinferMetadata');
+            var pixelRatio = parseInt(window.devicePixelRatio) || 1;
+            var map = L.map('scope-map', {zoomControl: false}).setView([0, 0], 1);
+            L.control.zoom({position: 'topright'}).addTo(map);
+            map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
+            L.tileLayer('https://tile.gbif.org/3857/omt/{z}/{x}/{y}@{r}x.png?style=osm-bright'.replace('{r}', pixelRatio), {
+                minZoom: 1,
+                maxZoom: 17,
+                zoomOffset: -1,
+                tileSize: 512
+            }).addTo(map);
+            var layer = null;
 
-            if (isInferAutomaticallyEnabled || isReinferMetadataActivated) {
-                $("#actual-metadata-block").hide();
-                $("#custom-data").hide();
-                $('#resource\\.inferGeocoverageAutomatically').prop('checked', true);
-            } else {
-                $("#actual-metadata-block").show();
-                $("#inferred-metadata-block").hide();
-                $("#preview-links").hide();
-                $("#custom-data").show();
+            function round(value) {
+                return Math.round(value * 1e6) / 1e6;
             }
 
-            $inferAutomaticallyCheckbox.click(function() {
-                if ($(this).is(":checked")) {
-                    $("#actual-metadata-block").hide();
-                    $("#inferred-metadata-block").show();
-                    $("#preview-links").show();
-                    $("#custom-data").hide();
-                    $("#custom-data-textarea").text('');
+            // draws the geometry and writes its extent into the dd elements of the part (prefix inferred or stored)
+            function show(geojson, prefix) {
+                if (layer) {
+                    map.removeLayer(layer);
+                    layer = null;
+                }
+                var bounds = null;
+                if (geojson) {
+                    try {
+                        layer = L.geoJSON(geojson, {style: {color: '#4C9C2E', weight: 2, fillOpacity: .15}}).addTo(map);
+                        bounds = layer.getBounds();
+                    } catch (e) {
+                        layer = null;
+                    }
+                }
+                if (bounds && bounds.isValid()) {
+                    map.fitBounds(bounds, {padding: [20, 20], maxZoom: 10});
                 } else {
-                    $("#actual-metadata-block").show();
-                    $("#inferred-metadata-block").hide();
-                    $("#preview-links").hide();
-                    $("#custom-data").show();
+                    map.setView([0, 0], 1);
+                    bounds = null;
                 }
-            });
+                var values = bounds ? {w: bounds.getWest(), e: bounds.getEast(), s: bounds.getSouth(), n: bounds.getNorth()} : {};
+                ['w', 'e', 's', 'n'].forEach(function (side) {
+                    $('[data-extent="' + prefix + '-' + side + '"]').text(bounds ? round(values[side]) : '-');
+                });
+                map.invalidateSize();
+            }
 
-            var customGeoJson;
-
-            function readFile() {
-                const fileInput = $('#custom-data-input')[0];
-                const file = fileInput.files[0];
-                if (file) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        try {
-                            const json = JSON.parse(e.target.result);
-                            const jsonString = JSON.stringify(json, null, 0);
-                            customGeoJson = jsonString;
-
-                            $("#custom-data-textarea").text(jsonString);
-                            $("#error-upload-file").text("");
-                        } catch (error) {
-                            $("#error-upload-file").text("Error: Invalid JSON");
-                        }
-                    };
-
-                    reader.readAsText(file);
+            // pasted or uploaded GeoJSON replaces the stored geometry when saved: shown instead of it
+            var $custom = $('#custom-data-textarea');
+            function customGeojson() {
+                var text = $custom.val().trim();
+                if (!text) {
+                    $('#geojson-msg').text('').removeClass('bad');
+                    return null;
+                }
+                try {
+                    var json = JSON.parse(text);
+                    if (!json || typeof json.type !== 'string') {
+                        throw new Error('no type');
+                    }
+                    $('#geojson-msg').text('').removeClass('bad');
+                    return json;
+                } catch (e) {
+                    $('#geojson-msg').text(INVALID).addClass('bad');
+                    return null;
                 }
             }
 
-            $("#file-selector").click(function() {
-                $("#custom-data-input").click();
+            var mode;
+            function render() {
+                $('#values-inferred').prop('hidden', mode !== 'inferred');
+                $('#values-stored').prop('hidden', mode !== 'stored');
+                if (mode === 'inferred') {
+                    show(INFERRED, 'inferred');
+                    return;
+                }
+                var custom = customGeojson();
+                var hasStored = ${spatialType?has_content?c};
+                $('#stored-type').text(custom ? custom.type : '${spatialType?string?js_string?no_esc}');
+                // the precision belongs to the stored (inferred) box, not to a replacement
+                $('#stored-precision, #stored-precision-label').prop('hidden', !!custom);
+                $('#stored-values').prop('hidden', !custom && !hasStored);
+                $('#stored-none').prop('hidden', !!custom || hasStored);
+                show(custom || STORED, 'stored');
+            }
+
+            dpScope(function (newMode) {
+                mode = newMode;
+                if (mode === 'inferred') {
+                    // switching back to the data drops a pasted replacement, as before
+                    $custom.val('');
+                }
+                render();
             });
 
-            $("#custom-data-input").change(function() {
-                const fileInput = $("#custom-data-input")[0];
+            $custom.on('input', render);
 
-                if (fileInput.files.length > 0) {
-                    readFile();
+            $('#file-selector').on('click', function () {
+                $('#custom-data-input').trigger('click');
+            });
+            $('#custom-data-input').on('change', function () {
+                var file = this.files[0];
+                if (!file) {
+                    return;
                 }
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        $custom.val(JSON.stringify(JSON.parse(e.target.result)));
+                    } catch (error) {
+                        $custom.val(e.target.result);
+                    }
+                    $custom[0].dispatchEvent(new Event('input', {bubbles: true}));
+                };
+                reader.readAsText(file);
+                this.value = '';
             });
 
             $("#re-infer-link").on('click', displayProcessing);
@@ -80,166 +247,3 @@
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
-    <#assign currentMenu="manage"/>
-    <#assign currentMetadataPage = "geographic"/>
-    <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/forms.ftl"/>
-
-    <div class="container px-0">
-        <#include "/WEB-INF/pages/inc/action_alerts.ftl">
-    </div>
-
-    <form id="geographic-scope-form track-unsaved" class="needs-validation" action="camtrap-metadata-${section}.do" method="post" novalidate>
-        <input type="hidden" name="r" value="${resource.shortname}" />
-
-        <div class="container-fluid bg-body border-bottom">
-            <div class="container bg-body border rounded-2 mb-4">
-                <div class="container my-3 p-3 ov-head ov-head-left">
-                    <div class="ov-grow">
-                        <div class="fs-smaller">
-                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                                <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                    <li class="breadcrumb-item ov-crumb-resource"><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                                </ol>
-                            </nav>
-                        </div>
-
-                        <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name='manage.datapackagemetadata.camtrap.geographic.title'/></h1>
-                    </div>
-
-                    <div class="ov-acts">
-                        <button type="submit" id="save" name="save" value="save" class="button btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="container-fluid bg-body">
-            <div class="container bd-layout main-content-container">
-                <main class="bd-main bd-main">
-                    <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
-                        <#include "metadata_sidebar.ftl"/>
-                    </div>
-
-                    <div class="bd-content">
-                        <div class="mb-md-3 ps-3 py-3">
-                            <div class="mt-4">
-                                <@checkbox name="resource.inferGeocoverageAutomatically" value=resource.inferGeocoverageAutomatically i18nkey="datapackagemetadata.infer.automatically" help="i18n"/>
-                            </div>
-
-                            <div id="actual-metadata-block" class="mt-3">
-                                <div class="table-responsive border rounded p-3">
-                                    <table class="text-smaller table table-sm table-borderless mb-0">
-                                        <tr>
-                                            <th class="col-4"><@s.text name='datapackagemetadata.geographic.type'/></th>
-                                            <td>
-                                                ${(metadata.spatial.type)!"-"}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="col-4"><@s.text name='datapackagemetadata.geographic.boundingCoordinates'/></th>
-                                            <td>
-                                                <#if (metadata.spatial.coordinates)??>
-                                                    ${metadata.spatial.coordinates}
-                                                <#else>
-                                                    -
-                                                </#if>
-                                            </td>
-                                        </tr>
-                                        <#if (metadata.coordinatePrecision)??>
-                                        <tr>
-                                            <th class="col-4"><@s.text name='datapackagemetadata.coordinatePrecision'/></th>
-                                            <td>
-                                                ${metadata.coordinatePrecision}
-                                            </td>
-                                        </tr>
-                                        </#if>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div id="custom-data" class="mt-4">
-                                <div class="col-md-6">
-                                    <@s.file id="custom-data-input" cssClass="form-control form-control-sm my-1 d-none" />
-                                </div>
-
-                                <textarea id="custom-data-textarea" name="customGeoJson" placeholder="<@s.text name='datapackagemetadata.geographic.custom.input'/>" class="form-control" style="border-bottom: 1px dashed #ced4da;border-bottom-right-radius: 0;border-bottom-left-radius: 0;">${customGeoJson!}</textarea>
-                                <div id="file-selector" class="border-bottom border-start border-end rounded py-2 px-3 fs-smaller text-muted" style="cursor: pointer;border-color: #ced4da !important;border-top-right-radius: 0 !important;border-top-left-radius: 0 !important;">
-                                    <span id="upload-file">
-                                        <svg class="action-link-button-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24">
-                                            <path style="fill:#6c757d!important;" d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z"></path>
-                                        </svg>
-                                        <@s.text name="basic.uploadFile"/>
-                                    </span>
-                                    <span id="error-upload-file" class="text-gbif-danger"></span>
-                                </div>
-
-                                <pre id="jsonContent" class="border rounded p-3 mt-3 fs-smaller-2" style="background: #f6f8fa; display: none;"></pre>
-                            </div>
-
-                            <#assign geographicScopeMetadataIsInferred = (inferredMetadata.inferredGeographicScope)?? && inferredMetadata.inferredGeographicScope.inferred && !inferredMetadata.inferredGeographicScope.errors?has_content/>
-
-                            <div id="inferred-metadata-block" class="mt-4">
-                                <div class="row">
-                                    <div class="col-md-6"></div>
-                                    <div id="preview-links" class="col-md-6">
-                                        <div id="dateInferred" class="text-smaller mt-0 d-flex justify-content-end">
-                                            <span class="fs-smaller-2 p-1">${(inferredMetadata.lastModified?datetime?string.medium)!}&nbsp;</span>
-                                            <a id="re-infer-link" href="camtrap-metadata-geographic.do?r=${resource.shortname}&amp;reinferMetadata=true" class="metadata-action-link custom-link p-1">
-                                                <span>
-                                                    <svg class="link-icon link-icon-primary" viewBox="0 0 24 24">
-                                                        <path d="m19 8-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"></path>
-                                                    </svg>
-                                                </span>
-                                                <span><@s.text name="datapackagemetadata.reinfer"/></span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <#include "/WEB-INF/pages/inc/inferring_status.ftl"/>
-                                <#if (inferredMetadata.inferredGeographicScope.errors)?has_content>
-                                    <#list inferredMetadata.inferredGeographicScope.errors as error>
-                                        <div class="callout callout-danger text-smaller">
-                                            <@s.text name="${error}"/>
-                                        </div>
-                                    </#list>
-                                <#else>
-                                <div class="table-responsive border rounded p-3">
-                                    <#if geographicScopeMetadataIsInferred>
-                                        <table class="text-smaller table table-sm table-borderless mb-0">
-                                            <tr>
-                                                <th class="col-4"><@s.text name='datapackagemetadata.geographic.type'/></th>
-                                                <td>
-                                                    Polygon
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th class="col-4"><@s.text name='datapackagemetadata.geographic.boundingCoordinates'/></th>
-                                                <td>
-                                                    [[[${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}],
-                                                    [${inferredMetadata.inferredGeographicScope.maxLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}],
-                                                    [${inferredMetadata.inferredGeographicScope.maxLongitude!}, ${inferredMetadata.inferredGeographicScope.maxLatitude!}],
-                                                    [${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.maxLatitude!}],
-                                                    [${inferredMetadata.inferredGeographicScope.minLongitude!}, ${inferredMetadata.inferredGeographicScope.minLatitude!}]]]
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    <#else>
-                                        <@s.text name="datapackagemetadata.noData"/>
-                                    </#if>
-                                </div>
-                                </#if>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </div>
-    </form>
-
-    <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
-
-    <#include "/WEB-INF/pages/inc/footer.ftl">

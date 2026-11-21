@@ -1,828 +1,283 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.CamtrapMetadataAction" -->
     <#include "/WEB-INF/pages/macros/icon.ftl"/>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
     <title><@s.text name='manage.datapackagemetadata.camtrap.basic.title'/></title>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
+    <link rel="stylesheet" href="${baseURL}/styles/contacts.css">
+    <link rel="stylesheet" href="${baseURL}/styles/overview.css">
+    <link rel="stylesheet" href="${baseURL}/styles/eml.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
+    <script src="${baseURL}/js/dp-metadata.js"></script>
     <script>
         $(document).ready(function () {
-            var nextContributorIndex;
-            getNextContributorIndex();
-            var sourcesItems = calcNumberOfItems("source");
-
-            function calcNumberOfItems(name) {
-                var lastItem = $("#" + name + "-items .item:last-child").attr("id");
-                if (lastItem !== undefined)
-                    return parseInt(lastItem.split("-")[2]);
-                else
-                    return -1;
-            }
-
-            function getNextContributorIndex() {
-                var lastItem = $("#contributor-items .item:last-child").attr("id");
-                if (lastItem !== undefined) {
-                    nextContributorIndex = parseInt(lastItem.split("-")[2]);
-
-                    if (nextContributorIndex || nextContributorIndex === 0) {
-                        nextContributorIndex = nextContributorIndex + 1;
-                    } else {
-                        nextContributorIndex = 0;
-                    }
-                } else {
-                    nextContributorIndex = 0;
-                }
-            }
-
-            $("#plus-contributor").click(function (event) {
-                event.preventDefault();
-                addNewContributorItem(true);
-            });
-
-            $("#plus-source").click(function (event) {
-                event.preventDefault();
-                addNewSourceItem(true);
-            });
-
-            function addNewContributorItem(effects) {
-                var newItem = $('#baseItem-contributor').clone();
-                if (effects) newItem.hide();
-                newItem.appendTo('#contributor-items');
-
-                if (effects) {
-                    newItem.slideDown('slow');
-                }
-
-                setContributorItemIndex(newItem, nextContributorIndex);
-                getNextContributorIndex();
-
-                initInfoPopovers(newItem[0]);
-            }
-
-            function addNewSourceItem(effects) {
-                var newItem = $('#baseItem-source').clone();
-                if (effects) newItem.hide();
-                newItem.appendTo('#source-items');
-
-                if (effects) {
-                    newItem.slideDown('slow');
-                }
-
-                setSourceItemIndex(newItem, ++sourcesItems);
-
-                initInfoPopovers(newItem[0]);
-            }
-
-            function removeContributorItem(event) {
-                event.preventDefault();
-                var $target = $(event.target);
-                if (!$target.is('a')) {
-                    $target = $(event.target).closest('a');
-                }
-                $('#contributor-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
-                    $(this).remove();
-                    $("#contributor-items .item").each(function (index) {
-                        setContributorItemIndex($(this), index);
-                    });
-                    calcNumberOfItems("contributor");
-                });
-            }
-
-            function removeSourceItem(event) {
-                event.preventDefault();
-                var $target = $(event.target);
-                if (!$target.is('a')) {
-                    $target = $(event.target).closest('a');
-                }
-                $('#source-item-' + $target.attr("id").split("-")[2]).slideUp('slow', function () {
-                    $(this).remove();
-                    $("#source-items .item").each(function (index) {
-                        setSourceItemIndex($(this), index);
-                    });
-                    calcNumberOfItems("source");
-                });
-            }
-
-            function setContributorItemIndex(item, index) {
-                item.attr("id", "contributor-item-" + index);
-
-                $("#contributor-item-" + index + " [id^='contributor-removeLink']").attr("id", "contributor-removeLink-" + index);
-                $("#contributor-removeLink-" + index).click(function (event) {
-                    removeContributorItem(event);
-                });
-
-                $("#contributor-item-" + index + " [id$='title']").attr("id", "metadata.contributors[" + index + "].title").attr("name", function () {
-                    return $(this).attr("id");
-                });
-
-                $("#contributor-item-" + index + " [id$='firstName']").attr("id", "metadata.contributors[" + index + "].firstName").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#contributor-item-" + index + " [for$='firstName']").attr("for", "metadata.contributors[" + index + "].firstName");
-
-                $("#contributor-item-" + index + " [id$='lastName']").attr("id", "metadata.contributors[" + index + "].lastName").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#contributor-item-" + index + " [for$='lastName']").attr("for", "metadata.contributors[" + index + "].lastName");
-
-                $("#contributor-item-" + index + " [id$='path']").attr("id", "metadata.contributors[" + index + "].path").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#contributor-item-" + index + " [for$='path']").attr("for", "metadata.contributors[" + index + "].path");
-
-                $("#contributor-item-" + index + " [id$='email']").attr("id", "metadata.contributors[" + index + "].email").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#contributor-item-" + index + " [for$='email']").attr("for", "metadata.contributors[" + index + "].email");
-
-                $("#contributor-item-" + index + " [id$='role']").attr("id", "metadata.contributors[" + index + "].role").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#contributor-item-" + index + " [for$='role']").attr("for", "metadata.contributors[" + index + "].role");
-                $("#contributor-item-" + index + " [id$='role']").select2({
-                    placeholder: '${action.getText("datapackagemetadata.contributor.role.select")?js_string}',
+            function select2Options(placeholder, search) {
+                return {
+                    placeholder: placeholder,
                     language: {
                         noResults: function () {
                             return '${selectNoResultsFound}';
                         }
                     },
-                    minimumResultsForSearch: 15,
+                    minimumResultsForSearch: search,
                     width: "100%",
                     allowClear: true,
                     theme: 'bootstrap4'
-                });
+                };
+            }
+            var rolePlaceholder = '${action.getText("datapackagemetadata.contributor.role.select")?js_string}';
+            var licensePlaceholder = '${action.getText("datapackagemetadata.license.select")?js_string}';
 
-                $("#contributor-item-" + index + " [id$='organization']").attr("id", "metadata.contributors[" + index + "].organization").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#contributor-item-" + index + " [for$='organization']").attr("for", "metadata.contributors[" + index + "].organization");
+            // people (contact, principal investigator, contributor) have first and last names, the title follows them;
+            // organizations (publisher, rights holder) only have the title
+            function isPersonRole(role) {
+                return !role || role === 'CONTACT' || role === 'PRINCIPAL_INVESTIGATOR' || role === 'CONTRIBUTOR';
+            }
 
-                $('input[id^="metadata\\.contributors"][id$="\\.firstName"]').on('input', function() {
-                    var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                    var lastName = $("#metadata\\.contributors\\[" + index + "\\]\\.lastName").val();
-                    var title;
-
-                    if (lastName) {
-                        title = $(this).val() + " " + lastName;
+            function showRoleFields($card, initial) {
+                var person = isPersonRole($card.find('select[id$="role"]').val());
+                var $title = $card.find('input[id$="title"]');
+                var $firstName = $card.find('input[id$="firstName"]');
+                var $lastName = $card.find('input[id$="lastName"]');
+                if (!initial) {
+                    if (person) {
+                        // the organization name becomes the names
+                        var names = ($title.val() || '').trim().split(/\s+/).filter(Boolean);
+                        if (!$firstName.val() && !$lastName.val() && names.length) {
+                            $lastName.val(names.length === 1 ? names[0] : names.slice(1).join(' '));
+                            $firstName.val(names.length === 1 ? '' : names[0]);
+                        }
                     } else {
-                        title = $(this).val();
+                        $title.val((($firstName.val() || '') + ' ' + ($lastName.val() || '')).trim());
+                        $firstName.val('');
+                        $lastName.val('');
                     }
-
-                    if (title) {
-                        title = title.trim();
-                    }
-
-                    $title.val(title);
-                });
-
-                $('input[id^="metadata\\.contributors"][id$="\\.lastName"]').on('input', function() {
-                    var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                    var firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName").val();
-
-                    var title;
-
-                    if (firstName) {
-                        title = firstName + " " + $(this).val();
-                    } else {
-                        title = $(this).val();
-                    }
-
-                    if (title) {
-                        title = title.trim();
-                    }
-
-                    $title.val(title);
-                });
-
-                // disable title, show last name and first name
-                $("#metadata\\.contributors\\[" + index + "\\]\\.role").on("change", function () {
-                    var selectedRole = $(this).val();
-
-                    var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                    var $titleWrapper = $title.closest(".title-col-wrapper");
-                    var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
-                    var $firstNameWrapper = $firstName.closest(".firstName-col-wrapper");
-                    var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
-                    var $lastNameWrapper = $lastName.closest(".lastName-col-wrapper");
-
-                    if (!selectedRole
-                        || selectedRole === 'CONTACT'
-                        || selectedRole === 'PRINCIPAL_INVESTIGATOR'
-                        || selectedRole === 'CONTRIBUTOR') {
-                        $title.val($firstName.val() + " " + $lastName.val());
-                        $titleWrapper.hide();
-
-                        // add margins (remove zero margin class)
-                        $firstNameWrapper.removeClass("mt-0");
-                        $lastNameWrapper.removeClass("mt-0");
-
-                        // first name input and label should be displayed
-                        $firstName.show();
-                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
-
-                        // last name input and label should be displayed
-                        $lastName.show();
-                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
-
-
-                        var title;
-                        $firstName.on('input', function() {
-                            title = $(this).val() + " " + $lastName.val();
-                            if (title) title = title.trim();
-                            $title.val(title);
-                        });
-
-                        $lastName.on('input', function() {
-                            title = $firstName.val() + " " + $(this).val();
-                            if (title) title = title.trim();
-                            $title.val(title);
-                        });
-
-                    } else if (selectedRole === 'PUBLISHER' || selectedRole === 'RIGHTS_HOLDER') {
-                        $title.val($firstName.val() + " " + $lastName.val());
-                        $titleWrapper.removeClass("d-none");
-                        $titleWrapper.show();
-
-                        // remove margins
-                        $firstNameWrapper.addClass("mt-0");
-                        $lastNameWrapper.addClass("mt-0");
-
-                        $firstName.hide();
-                        $firstName.val("")
-                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
-
-                        $lastName.hide();
-                        $lastName.val("");
-                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
-                    }
-                });
+                    $lastName.removeClass('is-invalid');
+                }
+                $card.find('.title-col-wrapper').toggleClass('d-none', person);
+                $card.find('.firstName-col-wrapper, .lastName-col-wrapper').toggleClass('d-none', !person);
             }
 
-            function setSourceItemIndex(item, index) {
-                item.attr("id", "source-item-" + index);
-
-                $("#source-item-" + index + " [id^='source-removeLink']").attr("id", "source-removeLink-" + index);
-                $("#source-removeLink-" + index).click(function (event) {
-                    removeSourceItem(event);
-                });
-
-                $("#source-item-" + index + " [id$='title']").attr("id", "metadata.sources[" + index + "].title").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#source-item-" + index + " [for$='title']").attr("for", "metadata.sources[" + index + "].title");
-
-                $("#source-item-" + index + " [id$='path']").attr("id", "metadata.sources[" + index + "].path").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#source-item-" + index + " [for$='path']").attr("for", "metadata.sources[" + index + "].path");
-
-                $("#source-item-" + index + " [id$='email']").attr("id", "metadata.sources[" + index + "].email").attr("name", function () {
-                    return $(this).attr("id");
-                });
-                $("#source-item-" + index + " [for$='email']").attr("for", "metadata.sources[" + index + "].email");
-            }
-
-            $(".removeContributorLink").click(function (event) {
-                removeContributorItem(event);
-            });
-
-            $(".removeSourceLink").click(function (event) {
-                removeSourceItem(event);
-            });
-
-            // scroll to the error if present
-            var invalidElements = $(".is-invalid");
-
-            if (invalidElements !== undefined && invalidElements.length > 0) {
-                var invalidElement = invalidElements.first();
-                var pos = invalidElement.offset().top - 100;
-                // scroll to the element
-                $('body, html').animate({scrollTop: pos});
-            }
-
-            $('input[id^="metadata\\.contributors"][id$="\\.firstName"]').on('input', function() {
-                var index = $(this)[0].id.match(/\d+/)[0];
-                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                var lastName = $("#metadata\\.contributors\\[" + index + "\\]\\.lastName").val();
-                var title;
-
-                if (lastName) {
-                    title = $(this).val() + " " + lastName;
-                    if (title) title = title.trim();
-                    $title.val(title);
-                } else {
-                    title = $(this).val();
-                    if (title) title = title.trim();
-                    $title.val(title);
+            var contributors = dpList({
+                key: 'contributor',
+                prefix: 'metadata.contributors',
+                onAdd: function ($card) {
+                    $card.find('select[id$="role"]').select2(select2Options(rolePlaceholder, 15));
+                    showRoleFields($card, true);
                 }
             });
 
-            $('input[id^="metadata\\.contributors"][id$="\\.lastName"]').on('input', function() {
-                var index = $(this)[0].id.match(/\d+/)[0];
-                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                var firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName").val();
-                var title;
-
-                if (firstName) {
-                    title = firstName + " " + $(this).val();
-                    if (title) title = title.trim();
-                    $title.val(title);
-                } else {
-                    title = $(this).val();
-                    if (title) title = title.trim();
-                    $title.val(title);
-                }
-            });
-
-            // go through the existing contributors, hide first/last name fields if needed
-            $('select[id^="metadata\\.contributors"][id$="\\.role"]').each(function () {
-                var id = $(this)[0].id;
-                var idNumbersMatch = id.match(/\d+/);
-
-                if (idNumbersMatch) {
-                    var index = idNumbersMatch[0];
-                    var role = $(this).val();
-                    var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                    var $titleWrapper = $title.closest('.title-col-wrapper');
-                    var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
-                    var $firstNameWrapper = $firstName.closest(".firstName-col-wrapper");
-                    var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
-                    var $lastNameWrapper = $lastName.closest(".lastName-col-wrapper");
-
-                    if (!role
-                        || role === 'CONTACT'
-                        || role === 'PRINCIPAL_INVESTIGATOR'
-                        || role === 'CONTRIBUTOR') {
-                        $titleWrapper.hide();
-
-                        // first name input and label should be displayed
-                        $firstName.show();
-                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
-
-                        // last name input and label should be displayed
-                        $lastName.show();
-                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
-                    } else {
-                        $titleWrapper.show();
-
-                        $firstNameWrapper.addClass("mt-0");
-                        $firstName.hide();
-                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
-
-                        $lastNameWrapper.addClass("mt-0");
-                        $lastName.hide();
-                        $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
-                    }
-                }
-            });
-
-            // existing contributors - hide/display first/last name fields when role changes
-            $('select[id^="metadata\\.contributors"][id$="\\.role"]').on("change", function () {
-                var $select = $(this);
-                var selectedRole = $select.val();
-                var index = $(this)[0].id.match(/\d+/)[0];
-
-                // remove validation message
-                $("#metadata\\.contributors\\[" + index + "\\]\\.lastName").removeClass("is-invalid")
-
-                if (!selectedRole
-                    || selectedRole === 'CONTACT'
-                    || selectedRole === 'PRINCIPAL_INVESTIGATOR'
-                    || selectedRole === 'CONTRIBUTOR') {
-                    handlePeopleContributor(index);
-                } else if (selectedRole === 'PUBLISHER'
-                    || selectedRole === 'RIGHTS_HOLDER') {
-                    handleOrganizationalContributor(index);
-                }
-            });
-
-            function handlePeopleContributor(index) {
-                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                var $titleWrapper = $title.closest(".title-col-wrapper");
-                var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
-                var $firstNameWrapper = $firstName.closest(".firstName-col-wrapper");
-                var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
-                var $lastNameWrapper = $lastName.closest(".lastName-col-wrapper");
-
-                // title is hidden (hide its wrapper)
-                $titleWrapper.hide();
-
-                // first name input and label should be displayed
-                $firstNameWrapper.removeClass("mt-0");
-                $firstName.show();
-                $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').show();
-
-                // last name input and label should be displayed
-                $lastNameWrapper.removeClass("mt-0");
-                $lastName.show();
-                $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').show();
-
-                var names = $title.val().split(/\s+/);
-
-                if (names.length > 0) {
-                    if (names.length === 1) {
-                        $lastName.val(names[0])
-                    } else {
-                        $firstName.val(names[0])
-                        $lastName.val(names.slice(1).join(" "))
-                    }
-                }
-
-                $firstName.on('input', function() {
-                    $title.val($firstName.val() + " " + $lastName.val());
+            $('#contributor-items')
+                .on('input', 'input[id$="firstName"], input[id$="lastName"]', function () {
+                    var $card = $(this).closest('.item');
+                    var name = (($card.find('input[id$="firstName"]').val() || '') + ' ' + ($card.find('input[id$="lastName"]').val() || '')).trim();
+                    $card.find('input[id$="title"]').val(name);
+                    contributors.updateTitle($card);
+                })
+                .on('change', 'select[id$="role"]', function () {
+                    var $card = $(this).closest('.item');
+                    showRoleFields($card, false);
+                    contributors.updateTitle($card);
                 });
 
-                $lastName.on('input', function() {
-                    $title.val($firstName.val() + " " + $lastName.val());
-                });
+            $('#contributor-items > .item').each(function () {
+                showRoleFields($(this), true);
+            });
+            $('#contributor-items select[id$="role"]').select2(select2Options(rolePlaceholder, 15));
+
+            dpList({key: 'source', prefix: 'metadata.sources'});
+
+            $('#license-data select').select2(select2Options(licensePlaceholder, 'Infinity'));
+            $('#license-media select').select2(select2Options(licensePlaceholder, 15));
+
+            // scroll to the first error
+            var $invalid = $(".is-invalid").first();
+            if ($invalid.length) {
+                $('body, html').animate({scrollTop: $invalid.offset().top - 100});
             }
-
-            function handleOrganizationalContributor(index) {
-                var $title = $("#metadata\\.contributors\\[" + index + "\\]\\.title");
-                var $titleWrapper = $title.closest('.title-col-wrapper');
-                var $firstName = $("#metadata\\.contributors\\[" + index + "\\]\\.firstName");
-                var $lastName= $("#metadata\\.contributors\\[" + index + "\\]\\.lastName");
-
-                $title.show();
-                $titleWrapper.removeClass("d-none");
-                $titleWrapper.show();
-
-                $firstName.hide();
-                $firstName.closest('.firstName-col-wrapper').addClass("mt-0");
-                $firstName.val('');
-                $('label[for="metadata\\.contributors\\[' + index + '\\]\\.firstName"]').hide();
-
-                $lastName.hide();
-                $lastName.closest('.lastName-col-wrapper').addClass("mt-0");
-                $lastName.val('');
-                $('label[for="metadata\\.contributors\\[' + index + '\\]\\.lastName"]').hide();
-            }
-
-            $('#metadata\\.licenses\\[0\\]\\.name').select2({
-                placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                minimumResultsForSearch: 'Infinity',
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('#metadata\\.licenses\\[1\\]\\.name').select2({
-                placeholder: '${action.getText("datapackagemetadata.license.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                minimumResultsForSearch: 15,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
-            $('[id^="metadata.contributors["][id$=".role"]').select2({
-                placeholder: '${action.getText("datapackagemetadata.contributor.role.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                minimumResultsForSearch: 15,
-                width: "100%",
-                allowClear: true,
-                theme: 'bootstrap4'
-            });
 
             makeSureResourceParameterIsPresentInURL('${resource.shortname}');
         });
     </script>
     <#assign currentMenu="manage"/>
     <#assign currentMetadataPage = "basic"/>
+    <#assign savebarAction = "camtrap-metadata-basic"/>
+    <#assign materialHelpIcons = true/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
+
+    <#function t key>
+        <#return action.getText(key)/>
+    </#function>
+
+    <#-- one contributor; index "" is the template (fields named metadata.contributors.*, renumbered when added) -->
+    <#macro contributorCard index="" item={}>
+        <#local base = index?has_content?then("metadata.contributors[" + index + "]", "metadata.contributors")/>
+        <#local person = !(item.role)?? || item.role == "contributor" || item.role == "contact" || item.role == "principalInvestigator"/>
+        <div <#if index?has_content>id="contributor-item-${index}"<#else>id="baseItem-contributor" style="display: none;"</#if> class="item dp-card">
+            <div class="dp-card-head">
+                <span class="dp-card-title" data-card-title data-title-from='input[id$="title"]' data-empty="${t('datapackagemetadata.contributor')}"></span>
+                <a id="contributor-removeLink<#if index?has_content>-${index}</#if>" href="" class="party-icon-btn party-icon-danger remove-item" title="${removeContributorLink}" aria-label="${removeContributorLink}"><@icon name="delete"/></a>
+            </div>
+            <div class="row g-3">
+                <div class="col-12 title-col-wrapper<#if person> d-none</#if>">
+                    <@input name="${base}.title" value=person?then(((item.firstName!"") + " " + (item.lastName!""))?trim, item.title!"") help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
+                </div>
+                <div class="col-lg-6 firstName-col-wrapper<#if !person> d-none</#if>">
+                    <@input name="${base}.firstName" value=item.firstName!"" i18nkey="datapackagemetadata.contributor.firstName" />
+                </div>
+                <div class="col-lg-6 lastName-col-wrapper<#if !person> d-none</#if>">
+                    <@input name="${base}.lastName" value=item.lastName!"" i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
+                </div>
+                <div class="col-lg-6">
+                    <@select name="${base}.role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value=(item.role)!"" />
+                </div>
+                <div class="col-lg-6">
+                    <@input name="${base}.organization" value=item.organization!"" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
+                </div>
+                <div class="col-lg-6">
+                    <@input name="${base}.email" value=item.email!"" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
+                </div>
+                <div class="col-lg-6">
+                    <@input name="${base}.path" value=item.path!"" help="i18n" i18nkey="datapackagemetadata.contributor.path" />
+                </div>
+            </div>
+        </div>
+    </#macro>
+
+    <#-- one source; index "" is the template -->
+    <#macro sourceCard index="" item={}>
+        <#local base = index?has_content?then("metadata.sources[" + index + "]", "metadata.sources")/>
+        <div <#if index?has_content>id="source-item-${index}"<#else>id="baseItem-source" style="display: none;"</#if> class="item dp-card">
+            <div class="dp-card-head">
+                <span class="dp-card-title" data-card-title data-title-from='input[id$="title"]' data-empty="${t('datapackagemetadata.source')}"></span>
+                <a id="source-removeLink<#if index?has_content>-${index}</#if>" href="" class="party-icon-btn party-icon-danger remove-item" title="${removeSourceLink}" aria-label="${removeSourceLink}"><@icon name="delete"/></a>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-6">
+                    <@input name="${base}.title" value=item.title!"" help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
+                </div>
+                <div class="col-lg-6">
+                    <@input name="${base}.version" value=item.version!"" help="i18n" i18nkey="datapackagemetadata.source.version" />
+                </div>
+                <div class="col-lg-6">
+                    <@input name="${base}.path" value=item.path!"" help="i18n" i18nkey="datapackagemetadata.source.path" />
+                </div>
+                <div class="col-lg-6">
+                    <@input name="${base}.email" value=item.email!"" help="i18n" i18nkey="datapackagemetadata.source.email" />
+                </div>
+            </div>
+        </div>
+    </#macro>
+
+    <#assign removeContributorLink = (t('manage.metadata.removethis') + " " + t('datapackagemetadata.contributor'))?lower_case?cap_first/>
+    <#assign addContributorLink = (t('manage.metadata.addnew') + " " + t('datapackagemetadata.contributor'))?lower_case?cap_first/>
+    <#assign removeSourceLink = (t('manage.metadata.removethis') + " " + t('datapackagemetadata.source'))?lower_case?cap_first/>
+    <#assign addSourceLink = (t('manage.metadata.addnew') + " " + t('datapackagemetadata.source'))?lower_case?cap_first/>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
+    <form id="camtrap-basic-form" class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
-        <div class="container-fluid bg-body border-bottom">
-            <div class="container bg-body border rounded-2 mb-4">
-                <div class="container my-3 p-3 ov-head ov-head-left">
-                    <div class="ov-grow">
-                        <div class="fs-smaller">
-                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                                <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                    <li class="breadcrumb-item ov-crumb-resource"><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                                </ol>
-                            </nav>
-                        </div>
-
-                        <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name='manage.datapackagemetadata.camtrap.basic.title'/></h1>
-                    </div>
-
-                    <div class="ov-acts">
-                        <button type="submit" id="save" name="save" value="save" class="button btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <#include "metadata_heading.ftl"/>
 
         <div class="container-fluid bg-body">
             <div class="container bd-layout main-content-container">
-                <main class="bd-main bd-main">
+                <main class="bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "metadata_sidebar.ftl"/>
                     </div>
 
                     <div class="bd-content">
-
-                        <div class="my-md-3 p-3">
-                            <div class="row g-3">
+                        <div class="my-md-3 p-3" id="s-general" data-toc="${t('manage.datapackagemetadata.camtrap.section.general')}">
+                            <@textinline name="manage.datapackagemetadata.camtrap.section.general"/>
+                            <div class="row g-3 mt-0">
                                 <div class="col-12">
                                     <@input name="metadata.title" value=metadata.title! help="i18n" i18nkey="datapackagemetadata.title" requiredField=true />
                                 </div>
-
                                 <div class="col-12">
                                     <@text name="metadata.description" value=metadata.description! help="i18n" i18nkey="datapackagemetadata.description" requiredField=true />
                                 </div>
-
                                 <div class="col-lg-6">
                                     <@input name="metadata.homepage" value=metadata.homepage! help="i18n" i18nkey="datapackagemetadata.homepage" type="url" />
                                 </div>
-
                                 <div class="col-lg-6">
                                     <@input name="metadata.image" value=metadata.image! help="i18n" i18nkey="datapackagemetadata.image" type="url" />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="my-md-3 p-3">
-                            <#assign removeContributorLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.contributor'/></#assign>
-                            <#assign removeContributorLink = removeContributorLink?markup_string>
-                            <#assign addContributorLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.contributor'/></#assign>
-                            <#assign addContributorLink = addContributorLink?markup_string>
-
-                            <!-- List of Contributors -->
-                            <div>
-                                <@textinline name="datapackagemetadata.contributors" help="i18n" requiredField=true />
-                                <div id="contributor-items">
-                                    <#list metadata.contributors as item>
-                                        <#if item?has_content>
-                                        <div id="contributor-item-${item_index}" class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="contributor-removeLink-${item_index}" href="" class="metadata-action-link custom-link removeContributorLink">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeContributorLink?lower_case?cap_first}</span>
-                                                </a>
-                                            </div>
-
-                                            <#if ((item.role)?? && (item.role == "contributor" || item.role == "contact" || item.role == "principalInvestigator")) || !(item.role)??>
-                                                <div class="col-12 title-col-wrapper d-none">
-                                                    <@input name="metadata.contributors[${item_index}].title" value="${item.firstName!} ${item.lastName!}" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
-                                                </div>
-                                            <#else>
-                                                <div class="col-12 title-col-wrapper">
-                                                    <@input name="metadata.contributors[${item_index}].title" value=item.title! help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
-                                                </div>
-                                            </#if>
-
-                                            <div class="col-lg-6 firstName-col-wrapper">
-                                                <@input name="metadata.contributors[${item_index}].firstName" value=item.firstName! i18nkey="datapackagemetadata.contributor.firstName" />
-                                            </div>
-                                            <div class="col-lg-6 lastName-col-wrapper">
-                                                <@input name="metadata.contributors[${item_index}].lastName" value=item.lastName! i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].path" value=item.path! help="i18n" i18nkey="datapackagemetadata.contributor.path" />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].email" value=item.email! help="i18n" i18nkey="datapackagemetadata.contributor.email" />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@select name="metadata.contributors[${item_index}].role" value=item.role! help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value=(item.role)!"" />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.contributors[${item_index}].organization" value=item.organization! help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
-                                            </div>
-                                        </div>
-                                        </#if>
-                                    </#list>
-                                </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-contributor" class="metadata-action-link custom-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${addContributorLink?lower_case?cap_first}</span>
-                                    </a>
-                                </div>
+                        <div class="my-3 p-3" id="s-contributors" data-toc="${t('datapackagemetadata.contributors')}">
+                            <@textinline name="datapackagemetadata.contributors" help="i18n" requiredField=true />
+                            <div id="contributor-items" class="dp-cards">
+                                <#list metadata.contributors as item>
+                                    <#if item?has_content>
+                                        <@contributorCard index=item_index item=item/>
+                                    </#if>
+                                </#list>
+                            </div>
+                            <p id="contributor-none" class="dp-none" hidden><@s.text name="manage.datapackagemetadata.camtrap.noContributor"/></p>
+                            <div class="add-area">
+                                <a id="plus-contributor" href=""><@icon name="add"/> <span>${addContributorLink}</span></a>
                             </div>
                         </div>
 
-                        <div class="my-md-3 p-3">
-                            <#assign removeLicenseLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.license'/></#assign>
-                            <#assign removeLicenseLink = removeLicenseLink?markup_string>
-                            <#assign addLicenseLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.license'/></#assign>
-                            <#assign addLicenseLink = addLicenseLink?markup_string>
-
-                            <#assign dataLicenseItemIndex = -1 />
-                            <#assign mediaLicenseItemIndex = -1 />
-
+                        <div class="my-3 p-3" id="s-licenses" data-toc="${t('datapackagemetadata.licenses')}">
+                            <#assign dataLicenseIndex = -1/>
+                            <#assign mediaLicenseIndex = -1/>
                             <#list metadata.licenses! as item>
                                 <#if (item.scope)?has_content && item.scope == "data">
-                                    <#assign dataLicenseItemIndex = item_index />
+                                    <#assign dataLicenseIndex = item_index/>
                                 <#elseif (item.scope)?has_content && item.scope == "media">
-                                    <#assign mediaLicenseItemIndex = item_index />
+                                    <#assign mediaLicenseIndex = item_index/>
                                 </#if>
                             </#list>
+                            <#-- a missing licence gets a free index, so the two never share one -->
+                            <#assign dataLicenseName = (dataLicenseIndex > -1)?then((metadata.licenses[dataLicenseIndex].name)!"", "")/>
+                            <#assign mediaLicenseName = (mediaLicenseIndex > -1)?then((metadata.licenses[mediaLicenseIndex].name)!"", "")/>
+                            <#if (dataLicenseIndex < 0)><#assign dataLicenseIndex = (mediaLicenseIndex == 0)?then(1, 0)/></#if>
+                            <#if (mediaLicenseIndex < 0)><#assign mediaLicenseIndex = (dataLicenseIndex == 1)?then(0, 1)/></#if>
 
-                            <!-- List of Licenses -->
-                            <div>
-                                <@textinline name="datapackagemetadata.licenses" help="i18n" requiredField=true />
-                                <div id="license-items">
-                                    <div class="row g-3 mt-1">
-                                        <div class="col-lg-6">
-                                            <#if (dataLicenseItemIndex > -1)>
-                                                <input type="hidden"
-                                                       name="metadata.licenses[${dataLicenseItemIndex}].scope"
-                                                       value="DATA" required>
-                                                <@select name="metadata.licenses[${dataLicenseItemIndex}].name" help="i18n" includeEmpty=true options=gbifSupportedLicenseNames i18nkey="datapackagemetadata.license.name.data" value="${(metadata.licenses[dataLicenseItemIndex].name)!''}" requiredField=true/>
-                                            <#else>
-                                                <input type="hidden" name="metadata.licenses[0].scope" value="DATA"
-                                                       required>
-                                                <@select name="metadata.licenses[0].name" help="i18n" includeEmpty=true options=gbifSupportedLicenseNames i18nkey="datapackagemetadata.license.name.data" value="" requiredField=true/>
-                                            </#if>
-                                        </div>
-
-                                        <div class="col-lg-6">
-                                            <#if (mediaLicenseItemIndex > -1)>
-                                                <input type="hidden"
-                                                       name="metadata.licenses[${mediaLicenseItemIndex}].scope"
-                                                       value="MEDIA" required>
-                                                <@select name="metadata.licenses[${mediaLicenseItemIndex}].name" help="i18n" includeEmpty=true options=openDefinitionLicenseNames i18nkey="datapackagemetadata.license.name.media" value="${(metadata.licenses[mediaLicenseItemIndex].name)!''}" requiredField=true />
-                                            <#else>
-                                                <input type="hidden" name="metadata.licenses[1].scope" value="MEDIA"
-                                                       required>
-                                                <@select name="metadata.licenses[1].name" help="i18n" includeEmpty=true options=openDefinitionLicenseNames i18nkey="datapackagemetadata.license.name.media" value="" requiredField=true />
-                                            </#if>
-                                        </div>
-                                    </div>
+                            <@textinline name="datapackagemetadata.licenses" help="i18n" requiredField=true />
+                            <div class="row g-3 mt-0">
+                                <div class="col-lg-6" id="license-data">
+                                    <input type="hidden" name="metadata.licenses[${dataLicenseIndex}].scope" value="DATA">
+                                    <@select name="metadata.licenses[${dataLicenseIndex}].name" help="i18n" includeEmpty=true options=gbifSupportedLicenseNames i18nkey="datapackagemetadata.license.name.data" value=dataLicenseName requiredField=true/>
+                                </div>
+                                <div class="col-lg-6" id="license-media">
+                                    <input type="hidden" name="metadata.licenses[${mediaLicenseIndex}].scope" value="MEDIA">
+                                    <@select name="metadata.licenses[${mediaLicenseIndex}].name" help="i18n" includeEmpty=true options=openDefinitionLicenseNames i18nkey="datapackagemetadata.license.name.media" value=mediaLicenseName requiredField=true />
                                 </div>
                             </div>
                         </div>
 
-                        <div class="my-md-3 p-3">
-                            <#assign removeSourceLink><@s.text name='manage.metadata.removethis'/> <@s.text name='datapackagemetadata.source'/></#assign>
-                            <#assign removeSourceLink = removeSourceLink?markup_string>
-                            <#assign addSourceLink><@s.text name='manage.metadata.addnew'/> <@s.text name='datapackagemetadata.source'/></#assign>
-                            <#assign addSourceLink = addSourceLink?markup_string>
-
-                            <!-- List of Sources -->
-                            <div>
-                                <@textinline name="datapackagemetadata.sources" help="i18n" />
-                                <div id="source-items">
-                                    <#list metadata.sources as item>
-                                        <div id="source-item-${item_index}"
-                                             class="item clearfix row g-3 border-bottom pb-3 mt-1">
-                                            <div class="columnLinks mt-2 d-flex justify-content-end">
-                                                <a id="source-removeLink-${item_index}" href=""
-                                                   class="metadata-action-link custom-link removeSourceLink">
-                                                    <span>
-                                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                                                        </svg>
-                                                    </span>
-                                                    <span>${removeSourceLink?lower_case?cap_first}</span>
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].title" value=item.title! help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].path" value=item.path! help="i18n" i18nkey="datapackagemetadata.source.path" />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].email" value=item.email! help="i18n" i18nkey="datapackagemetadata.source.email" />
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <@input name="metadata.sources[${item_index}].version" value=item.version! help="i18n" i18nkey="datapackagemetadata.source.version" />
-                                            </div>
-                                        </div>
-                                    </#list>
-                                </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-source" class="metadata-action-link custom-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${addSourceLink?lower_case?cap_first}</span>
-                                    </a>
-                                </div>
+                        <div class="my-3 p-3" id="s-sources" data-toc="${t('datapackagemetadata.sources')}">
+                            <@textinline name="datapackagemetadata.sources" help="i18n" />
+                            <div id="source-items" class="dp-cards">
+                                <#list metadata.sources as item>
+                                    <@sourceCard index=item_index item=item/>
+                                </#list>
+                            </div>
+                            <p id="source-none" class="dp-none" hidden><@s.text name="manage.datapackagemetadata.camtrap.noSource"/></p>
+                            <div class="add-area">
+                                <a id="plus-source" href=""><@icon name="add"/> <span>${addSourceLink}</span></a>
                             </div>
                         </div>
                     </div>
                 </main>
             </div>
         </div>
+
+        <#include "/WEB-INF/pages/manage/eml/eml_savebar.ftl"/>
     </form>
 
-    <div id="baseItem-contributor" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
-        <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="contributor-removeLink" href="" class="metadata-action-link custom-link removeContributorLink">
-                <span>
-                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                    </svg>
-                </span>
-                <span>${removeContributorLink?lower_case?cap_first}</span>
-            </a>
-        </div>
-        <div class="col-12 title-col-wrapper d-none">
-            <@input name="metadata.contributors.title" help="i18n" i18nkey="datapackagemetadata.contributor.title" requiredField=true />
-        </div>
-        <div class="col-lg-6 firstName-col-wrapper">
-            <@input name="metadata.contributors.firstName" i18nkey="datapackagemetadata.contributor.firstName" />
-        </div>
-        <div class="col-lg-6 lastName-col-wrapper">
-            <@input name="metadata.contributors.lastName" i18nkey="datapackagemetadata.contributor.lastName" requiredField=true />
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.contributors.path" help="i18n" i18nkey="datapackagemetadata.contributor.path" />
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.contributors.email" help="i18n" i18nkey="datapackagemetadata.contributor.email" />
-        </div>
-        <div class="col-lg-6">
-            <@select name="metadata.contributors.role" help="i18n" includeEmpty=true compareValues=true options=contributorRoles i18nkey="datapackagemetadata.contributor.role" value="" />
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.contributors.organization" help="i18n" i18nkey="datapackagemetadata.contributor.organization" />
-        </div>
-    </div>
-
-    <div id="baseItem-source" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
-        <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="source-removeLink" href="" class="metadata-action-link custom-link removeSourceLink">
-                <span>
-                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                    </svg>
-                </span>
-                <span>${removeSourceLink?lower_case?cap_first}</span>
-            </a>
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.sources.title" help="i18n" i18nkey="datapackagemetadata.source.title" requiredField=true />
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.sources.path" help="i18n" i18nkey="datapackagemetadata.source.path" />
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.sources.email" help="i18n" i18nkey="datapackagemetadata.source.email" />
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.sources.version" help="i18n" i18nkey="datapackagemetadata.source.version" />
-        </div>
-    </div>
-
-    <div id="baseItem-license" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display: none;">
-        <div class="columnLinks mt-2 d-flex justify-content-end">
-            <a id="license-removeLink" href="" class="metadata-action-link custom-link removeLicenseLink">
-                <span>
-                    <svg viewBox="0 0 24 24" class="link-icon link-icon-danger">
-                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
-                    </svg>
-                </span>
-                <span>${removeLicenseLink?lower_case?cap_first}</span>
-            </a>
-        </div>
-        <div class="col-lg-6">
-            <@input name="metadata.licenses.name" help="i18n" i18nkey="datapackagemetadata.license.name" requiredField=true />
-        </div>
-        <div class="col-lg-6">
-            <@select name="metadata.licenses.scope" help="i18n" includeEmpty=true options=licenseScopes i18nkey="datapackagemetadata.license.scope" value="" requiredField=true/>
-        </div>
-    </div>
+    <@contributorCard/>
+    <@sourceCard/>
 
     <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
 

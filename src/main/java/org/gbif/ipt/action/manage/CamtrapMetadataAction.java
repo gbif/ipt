@@ -24,14 +24,12 @@ import org.gbif.ipt.model.InferredMetadata;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapContributor;
-import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapLicense;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CaptureMethod;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Geojson;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.ObservationLevel;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Project;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.RelatedIdentifier;
-import org.gbif.ipt.model.datapackage.metadata.camtrap.Taxonomic;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.Temporal;
 import org.gbif.ipt.model.voc.CamtrapMetadataSection;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
@@ -339,6 +337,7 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
         if (isHttpPost()) {
           if (metadata.getProject() != null) {
             metadata.getProject().getCaptureMethod().clear();
+            metadata.getProject().getObservationLevel().clear();
           }
         }
         break;
@@ -526,13 +525,16 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
     resource.setDataPackageMetadata(metadata);
   }
 
+  /**
+   * The pasted or uploaded GeoJSON, shown again when saving fails (e.g. it can't be read).
+   */
+  public String getCustomGeoJson() {
+    return customGeoJson;
+  }
+
   @StrutsParameter
   public void setCustomGeoJson(String customGeoJson) {
     this.customGeoJson = customGeoJson;
-  }
-
-  public Map<String, String> getLicenseScopes() {
-    return CamtrapLicense.Scope.VOCABULARY;
   }
 
   public Map<String, String> getGbifSupportedLicenseNames() {
@@ -545,10 +547,6 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
 
   public Map<String, String> getContributorRoles() {
     return CamtrapContributor.Role.VOCABULARY;
-  }
-
-  public Map<String, String> getTaxonRanks() {
-    return Taxonomic.TaxonRank.VOCABULARY;
   }
 
   public Map<String, String> getSamplingDesigns() {

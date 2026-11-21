@@ -255,3 +255,53 @@ a.tax-show-all { font-size: 0.75rem !important; color: rgb(var(--color-gbif-prim
 .add-area > .dropdown > button { border-radius: 0 7px 7px 0; height: 100%; }
 .add-area > button[data-act=add]:has(+ .dropdown) { border-radius: 7px 0 0 7px; }
 .add-area svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* Camtrap DP metadata pages (manage/dp-metadata/camtrap): list items as cards, one-line items as rows */
+.dp-cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 8px; }
+.dp-card { border: 1px solid #dee2e6; border-radius: 8px; padding: 8px 12px 12px; background: #fff; }
+.dp-card:has(.is-invalid) { border-color: rgba(196, 62, 62, .6); }
+.dp-card-head { display: flex; gap: 6px; align-items: center; margin-bottom: 2px; }
+.dp-card-title { margin: 0 auto 0 0; min-width: 0; font-weight: 600; font-size: 0.875rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dp-card-title.empty { color: #6c757d; font-weight: 500; }
+.dp-card > .row { --bs-gutter-y: .75rem; }
+.dp-lines { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; margin-top: 8px; }
+.dp-line { display: flex; gap: 6px; align-items: flex-start; }
+.dp-line > :first-child { flex: 1; min-width: 0; }
+.dp-line .party-icon-btn { margin-top: 3px; }
+.dp-none { font-size: 0.85rem; color: #6c757d; margin: 8px 0 0; }
+.dp-none[hidden] { display: none; }
+/* the remove links are anchors (inc/footer.ftl marks the page unsaved on a[class*=remove]): grey, not link green (main.css) */
+a.party-icon-btn { color: #6c757d !important; text-decoration: none; }
+a.party-icon-danger:hover { color: rgb(var(--color-gbif-danger)) !important; }
+
+/* scope pages: the inferred or stored values, read-only */
+.dp-scope { margin-top: 14px; }
+.dp-scope[hidden], .dp-scope-part[hidden] { display: none !important; }
+.dp-values { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 18px; padding: 10px 12px; border: 1px dashed #c3c9cf; border-radius: 8px; font-size: 0.875rem; }
+.dp-values dt { font-weight: 400; color: #6c757d; }
+.dp-values dd { margin: 0; color: #212529; font-weight: 500; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.dp-values-empty { padding: 10px 12px; border: 1px dashed #c3c9cf; border-radius: 8px; font-size: 0.875rem; color: #6c757d; }
+.dp-map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 14px; align-items: start; }
+.dp-map { height: 340px; border: 1px solid #dee2e6; border-radius: 6px; }
+@media (max-width: 991.98px) {
+    .dp-map-layout { grid-template-columns: minmax(0, 1fr); }
+    .dp-map { height: 280px; }
+}
+.dp-geojson textarea { font-family: var(--bs-font-monospace); font-size: 0.8rem; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.dp-geojson-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 6px 12px; border: 1px solid #ced4da; border-top: 1px dashed #ced4da; border-radius: 0 0 6px 6px; font-size: 0.85rem; }
+.dp-geojson-bar .btn-link { padding: 0; font-size: inherit; text-decoration: none; display: inline-flex; gap: 4px; align-items: center; }
+.dp-geojson-msg { color: #6c757d; }
+.dp-geojson-msg.bad { color: rgb(var(--color-gbif-danger)); }
+.dp-taxa { max-height: 420px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 8px; }
+.dp-taxa .tax-table { margin-top: 0; }
+.dp-taxa .tax-table th { position: sticky; top: 0; background: #fff; padding: 6px 10px; }
+.dp-taxa .tax-table td { padding: 5px 10px; }
+.dp-count { font-size: 0.8rem; color: #6c757d; margin: 6px 0 0; }
+
+/* Project page: choices as chips (checkboxes) */
+.dp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dp-chip { display: inline-flex; align-items: center; gap: 6px; margin: 0; border: 1px solid #dee2e6; border-radius: 999px; padding: 3px 12px 3px 8px; font-size: 0.85rem; background: #fff; cursor: pointer; }
+.dp-chip:hover { border-color: #adb5bd; }
+.dp-chip:has(input:checked) { border-color: rgb(var(--color-gbif-primary)); background: rgba(var(--color-gbif-primary), .08); }
+.dp-chip:has(input:focus-visible) { box-shadow: 0 0 0 .2rem rgba(var(--color-gbif-primary), .25); }
+.dp-chip input { margin: 0; }

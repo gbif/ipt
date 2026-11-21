@@ -1,39 +1,17 @@
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.CamtrapMetadataAction" -->
     <#include "/WEB-INF/pages/macros/icon.ftl"/>
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
     <title><@s.text name='manage.datapackagemetadata.camtrap.project.title'/></title>
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-4.0.13.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="${baseURL}/styles/select2-ipt.css">
     <link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
+    <link rel="stylesheet" href="${baseURL}/styles/contacts.css">
+    <link rel="stylesheet" href="${baseURL}/styles/overview.css">
+    <link rel="stylesheet" href="${baseURL}/styles/eml.css">
     <script src="${baseURL}/js/select2/select2-4.0.13.min.js"></script>
-    <script src="${baseURL}/js/jconfirmation.jquery.js"></script>
     <script>
-        $(document).ready(function(){
-            $('select#metadata\\.project\\.captureMethod').select2({
-                placeholder: '${action.getText("datapackagemetadata.project.captureMethod.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                multiple: true,
-                theme: 'bootstrap4'
-            });
-            $('select#metadata\\.project\\.observationLevel').select2({
-                placeholder: '${action.getText("datapackagemetadata.project.observationLevel.select")?js_string}',
-                language: {
-                    noResults: function () {
-                        return '${selectNoResultsFound}';
-                    }
-                },
-                width: "100%",
-                allowClear: true,
-                multiple: true,
-                theme: 'bootstrap4'
-            });
+        $(document).ready(function () {
             $('#metadata\\.project\\.samplingDesign').select2({
                 placeholder: '${action.getText("datapackagemetadata.project.samplingDesign.select")?js_string}',
                 language: {
@@ -52,116 +30,84 @@
     </script>
     <#assign currentMenu="manage"/>
     <#assign currentMetadataPage = "project"/>
+    <#assign savebarAction = "camtrap-metadata-project"/>
+    <#assign materialHelpIcons = true/>
     <#include "/WEB-INF/pages/inc/menu.ftl">
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
-    <#include "/WEB-INF/pages/macros/popover.ftl"/>
+
+    <#function t key>
+        <#return action.getText(key)/>
+    </#function>
+
+    <#-- several values as checkbox chips, posted under one name; options: key -> value, current: the stored values -->
+    <#macro choiceChips name i18nkey options current>
+        <div class="d-flex text-smaller">
+            <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
+               data-bs-content="${t(i18nkey + '.help')}"><@icon name="info_outlined" class="text-gbif-primary help-icon-m"/></a>
+            <span class="form-label" id="${name}-label"><@s.text name=i18nkey/> <span class="text-gbif-danger">&#42;</span></span>
+        </div>
+        <div class="dp-chips" role="group" aria-labelledby="${name}-label" id="${name}">
+            <#list options as key, value>
+                <label class="dp-chip">
+                    <input type="checkbox" class="form-check-input" name="${name}" value="${key}"<#if current?has_content && current?contains(value)> checked</#if>>
+                    <span>${value}</span>
+                </label>
+            </#list>
+        </div>
+        <@s.fielderror id="field-error-${name}" cssClass="invalid-feedback list-unstyled field-error d-block my-1" fieldName="${name}"/>
+    </#macro>
 
     <div class="container px-0">
         <#include "/WEB-INF/pages/inc/action_alerts.ftl">
     </div>
 
-    <form class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
+    <form id="project-form" class="needs-validation track-unsaved" action="camtrap-metadata-${section}.do" method="post" novalidate>
         <input type="hidden" name="r" value="${resource.shortname}" />
 
-        <div class="container-fluid bg-body border-bottom">
-            <div class="container bg-body border rounded-2 mb-4">
-                <div class="container my-3 p-3 ov-head ov-head-left">
-                    <div class="ov-grow">
-                        <div class="fs-smaller">
-                            <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                                <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="${baseURL}/manage/"><@s.text name="breadcrumb.manage"/></a></li>
-                                    <li class="breadcrumb-item ov-crumb-resource"><a href="resource.do?r=${resource.shortname}" title="${resource.title!resource.shortname}">${resource.title!resource.shortname}</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page"><@s.text name="breadcrumb.manage.overview.metadata"/></li>
-                                </ol>
-                            </nav>
-                        </div>
-
-                        <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name='manage.datapackagemetadata.camtrap.project.title'/></h1>
-                    </div>
-
-                    <div class="ov-acts">
-                        <button type="submit" id="save" name="save" value="save" class="button btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
-                        <@s.submit cssClass="button btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <#include "metadata_heading.ftl"/>
 
         <div class="container-fluid bg-body">
             <div class="container bd-layout main-content-container">
-                <main class="bd-main bd-main">
+                <main class="bd-main">
                     <div class="bd-toc mt-4 mb-5 ps-3 mb-lg-5 text-muted">
                         <#include "metadata_sidebar.ftl"/>
                     </div>
 
                     <div class="bd-content">
-                        <div class="my-md-3 p-3">
-                            <p class="mb-5"><@s.text name="datapackagemetadata.project.intro"/></p>
-
+                        <div class="my-md-3 p-3" id="s-project" data-toc="${t('manage.metadata.section.project')}">
+                            <@textinline name="manage.metadata.section.project"/>
+                            <p class="party-intro"><@s.text name="datapackagemetadata.project.intro"/></p>
                             <div class="row g-3">
-                                <div class="col-12">
-                                    <@input name="metadata.project.id" value=(metadata.project.id)! help="i18n" i18nkey="datapackagemetadata.project.id" />
-                                </div>
-
                                 <div class="col-12">
                                     <@input name="metadata.project.title" value=(metadata.project.title)! help="i18n" i18nkey="datapackagemetadata.project.title" requiredField=true />
                                 </div>
-
-                                <div class="col-12">
-                                    <@text name="metadata.project.description" value=(metadata.project.description)! help="i18n" i18nkey="datapackagemetadata.project.description" />
-                                </div>
-
                                 <div class="col-lg-6">
                                     <@input name="metadata.project.acronym" value=(metadata.project.acronym)! help="i18n" i18nkey="datapackagemetadata.project.acronym" />
                                 </div>
-
                                 <div class="col-lg-6">
-                                    <@input name="metadata.project.path" value=(metadata.project.path)! help="i18n" i18nkey="datapackagemetadata.project.path" />
+                                    <@input name="metadata.project.id" value=(metadata.project.id)! help="i18n" i18nkey="datapackagemetadata.project.id" />
                                 </div>
+                                <div class="col-12">
+                                    <@text name="metadata.project.description" value=(metadata.project.description)! help="i18n" i18nkey="datapackagemetadata.project.description" />
+                                </div>
+                                <div class="col-12">
+                                    <@input name="metadata.project.path" value=(metadata.project.path)! help="i18n" i18nkey="datapackagemetadata.project.path" type="url" />
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="my-3 p-3" id="s-sampling" data-toc="${t('manage.datapackagemetadata.camtrap.section.sampling')}">
+                            <@textinline name="manage.datapackagemetadata.camtrap.section.sampling"/>
+                            <div class="row g-3 mt-0">
                                 <div class="col-lg-6">
-                                    <#if (metadata.project.samplingDesign)??>
-                                        <@select name="metadata.project.samplingDesign" help="i18n" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value=(metadata.project.samplingDesign)! requiredField=true />
-                                    <#else>
-                                        <@select name="metadata.project.samplingDesign" help="i18n" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value="" requiredField=true />
-                                    </#if>
+                                    <@select name="metadata.project.samplingDesign" help="i18n" includeEmpty=true compareValues=true options=samplingDesigns i18nkey="datapackagemetadata.project.samplingDesign" value=(metadata.project.samplingDesign)!"" requiredField=true />
                                 </div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <@popoverPropertyInfo "datapackagemetadata.project.captureMethod.help"/>
-                                        <label for="metadata.project.captureMethod" class="form-label" style="margin-bottom: 6px !important;">
-                                            <@s.text name="datapackagemetadata.project.captureMethod"/> <span class="text-gbif-danger">&#42;</span>
-                                        </label>
-                                        <select name="metadata.project.captureMethod" id="metadata.project.captureMethod" class="form-select" required multiple>
-                                            <#if captureMethods?has_content>
-                                                <#list captureMethods as key, value>
-                                                    <option value="${key}" <#if (metadata.project.captureMethod)?has_content && metadata.project.captureMethod?contains(value)>selected</#if> >${value}</option>
-                                                </#list>
-                                            </#if>
-                                        </select>
-                                        <@s.fielderror id="field-error-metadata.project.captureMethod" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="metadata.project.captureMethod"/>
-                                    </div>
+                                <div class="col-12">
+                                    <@choiceChips name="metadata.project.captureMethod" i18nkey="datapackagemetadata.project.captureMethod" options=captureMethods!{} current=(metadata.project.captureMethod)!""/>
                                 </div>
-
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <@popoverPropertyInfo "datapackagemetadata.project.observationLevel.help"/>
-                                        <label for="metadata.project.observationLevel" class="form-label" style="margin-bottom: 6px !important;">
-                                            <@s.text name="datapackagemetadata.project.observationLevel"/> <span class="text-gbif-danger">&#42;</span>
-                                        </label>
-                                        <select name="metadata.project.observationLevel" id="metadata.project.observationLevel" class="form-select" required multiple>
-                                            <#if observationLevels?has_content>
-                                                <#list observationLevels as key, value>
-                                                    <option value="${key}" <#if (metadata.project.observationLevel)?has_content && metadata.project.observationLevel?contains(value)>selected</#if> >${value}</option>
-                                                </#list>
-                                            </#if>
-                                        </select>
-                                        <@s.fielderror id="field-error-metadata.project.observationLevel" cssClass="invalid-feedback list-unstyled field-error my-1" fieldName="metadata.project.observationLevel"/>
-                                    </div>
+                                <div class="col-12">
+                                    <@choiceChips name="metadata.project.observationLevel" i18nkey="datapackagemetadata.project.observationLevel" options=observationLevels!{} current=(metadata.project.observationLevel)!""/>
                                 </div>
-
                                 <div class="col-12 fs-smaller">
                                     <@checkbox name="metadata.project.individualAnimals" value=(metadata.project.individualAnimals)!false i18nkey="datapackagemetadata.project.individualAnimals" help="i18n"/>
                                 </div>
@@ -171,6 +117,8 @@
                 </main>
             </div>
         </div>
+
+        <#include "/WEB-INF/pages/manage/eml/eml_savebar.ftl"/>
     </form>
 
     <#include "/WEB-INF/pages/manage/eml/unsaved_changes_modal.ftl">
