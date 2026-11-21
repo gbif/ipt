@@ -205,19 +205,16 @@
 
     <#elseif isDataPackage>
         <#-- data packages: one line per mapped table, grouped like the schema, problems first in each group; unused sources last -->
-        <#assign dpGroups = []>
-        <#if isDwcDp>
-            <#assign dpGroups = [["Events", dwcDpEvents], ["Entities", dwcDpEntities], ["Agents", dwcDpAgents], ["Joins", dwcDpJoins]]>
-        </#if>
+        <#-- DwC-DP: grouped by the table's keys (DwcDpTableGroup); a table the schema doesn't have is an entity -->
         <#assign dpRows = []>
         <#list resource.dataPackageMappings! as m>
-            <#assign tableName = (m.dataPackageTableSchemaName.name)!"?">
             <#assign groupName = "">
-            <#list dpGroups as g><#if g[1]?seq_contains(tableName)><#assign groupName = g[0]><#break></#if></#list>
-            <#if isDwcDp && !groupName?has_content><#assign groupName = "Others"></#if>
+            <#if isDwcDp>
+                <#assign groupName = m.tableSchemaMissing?then("entities", (m.tableSchema.dwcDpGroup.key)!"entities")>
+            </#if>
             <#assign dpRows = dpRows + [{"m": m, "mid": m_index, "group": groupName, "problem": dpProblem(m)}]>
         </#list>
-        <#assign groupOrder = ["Events", "Entities", "Agents", "Joins", "Others", ""]>
+        <#assign groupOrder = ["events", "entities", "assertions", "joins", ""]>
 
         <@dataTools rowCount=dpRows?size + unmappedSources?size anyChanged=(showChangedTags && dpRows?filter(r -> isMappingChanged(r.m))?has_content) || changedSources?has_content anyProblem=dpRows?filter(r -> r.problem)?has_content || unreadableSources?has_content/>
 
@@ -237,7 +234,7 @@
                 <#assign rowsInGroup = dpRows?filter(r -> r.group == groupName)>
                 <#assign rowsInGroup = rowsInGroup?filter(r -> r.problem) + rowsInGroup?filter(r -> !r.problem)>
                 <#if rowsInGroup?has_content>
-                    <#if groupName?has_content><tr class="ov-grp"><td colspan="4">${groupName}</td></tr></#if>
+                    <#if groupName?has_content><tr class="ov-grp"><td colspan="4"><@s.text name="manage.overview.data.group.${groupName}"/></td></tr></#if>
                     <#list rowsInGroup as r>
                         <#assign m = r.m>
                         <#assign tableName = (m.dataPackageTableSchemaName.name)!"?">

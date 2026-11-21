@@ -1738,7 +1738,6 @@
 <#include "/WEB-INF/pages/macros/forms.ftl"/>
 <#include "/WEB-INF/pages/macros/popover.ftl"/>
 <#include "/WEB-INF/pages/macros/manage/publish.ftl"/>
-<#include "/WEB-INF/pages/macros/dwc_dp_types.ftl"/>
 <#assign metadataType = "metadata"/>
 <#assign isDataPackage = resource.isDataPackage()/>
 <#assign isColDp = resource.coreType?has_content && resource.coreType == "coldp"/>

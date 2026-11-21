@@ -20,10 +20,15 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * A single table schema of {@link DataPackageSchema}
@@ -50,4 +55,21 @@ public class DataPackageTableSchema implements Serializable {
   private List<DataPackageField> fields;
   private String primaryKey;
   private List<DataPackageTableSchemaForeignKey> foreignKeys;
+
+  // worked out on first use and kept: installed schemas are loaded once and shared by all resources
+  @Getter(AccessLevel.NONE)
+  @Setter(AccessLevel.NONE)
+  @EqualsAndHashCode.Exclude
+  @ToString.Exclude
+  private transient DwcDpTableGroup dwcDpGroup;
+
+  /**
+   * How the resource overview groups this table, if it's a Darwin Core Data Package table.
+   */
+  public DwcDpTableGroup getDwcDpGroup() {
+    if (dwcDpGroup == null) {
+      dwcDpGroup = DwcDpTableGroup.of(this);
+    }
+    return dwcDpGroup;
+  }
 }
