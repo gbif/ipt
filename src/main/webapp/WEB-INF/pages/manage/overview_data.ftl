@@ -42,34 +42,51 @@
     <#elseif src.isSqlSource()>
         <span class="ov-small">${src.getColumns()} <@s.text name="manage.overview.source.columns"/><#if liveSourceNames?seq_contains(src.name)> · <@s.text name="manage.overview.source.live"/></#if></span>
     <#else>
-        <span class="ov-small"><#attempt>${src.formattedFileSize(currentLocale)}<#recover>-</#attempt> · ${src.rows?string.number} <@s.text name="manage.overview.source.rows"/> × ${src.getColumns()} <@s.text name="manage.overview.source.columns"/><#if liveSourceNames?seq_contains(src.name)> · <@s.text name="manage.overview.source.live"/></#if></span>
+        <span class="ov-small"><#attempt>${src.formattedFileSize(currentLocale)}<#recover>-</#attempt> · ${src.rows?string.number} <@s.text name="manage.overview.source.rows"/> · ${src.getColumns()} <@s.text name="manage.overview.source.columns"/><#if liveSourceNames?seq_contains(src.name)> · <@s.text name="manage.overview.source.live"/></#if></span>
     </#if>
 </#macro>
 
 <#-- source cell: type, name, changed flag and size -->
-<#macro sourceCell src>
+<#-- menuId: when given, the source's menu follows its name. showDims: the size line, left out where the source shows
+     again in the same section -->
+<#macro sourceCell src menuId="" showDims=true>
     <div class="ov-src">
         <@sourceType src/>
         <div>
-            <a href="source.do?r=${resource.shortname}&id=${src.name?url}" class="ov-name">${src.name}</a><#if isSourceChanged(src)><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#if>
-            <@sourceDims src/>
+            <a href="source.do?r=${resource.shortname}&id=${src.name?url}" class="ov-name">${src.name}</a><#if isSourceChanged(src)><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#if><#if menuId?has_content><@sourceMenu src menuId/></#if>
+            <#if showDims><@sourceDims src/></#if>
         </div>
     </div>
 </#macro>
 
-<#-- the ⋯ menu for a source: edit, download, delete -->
-<#macro sourceMenu src id>
-    <div class="dropdown">
-        <a href="#" class="ov-name" id="source-menu-${id}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.sourceActions'/>"><@icon name="more_horiz"/></a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="source-menu-${id}">
-            <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
-            <#if src.isFileSource() || src.isExcelSource()>
-                <li><a class="dropdown-item" href="raw-source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.downloadSource"/></a></li>
-            </#if>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-gbif-danger delete-source" data-name="${src.name}" data-post href="delete-source.do?r=${resource.shortname}&id=${src.name?url}"><@s.text name="manage.overview.data.deleteSource"/></a></li>
+<#-- the actions after a table or source name: icons on wide screens, a ⋯ menu on narrow ones (overview.css).
+     items: icon, text, href; optional cls (extra class, e.g. peekBtn) and name (data-name); a delete has del, its
+     confirm class -->
+<#macro nameActions id titleKey items>
+    <span class="ov-name-acts">
+        <#list items as i>
+            <a href="${i.href}" title="<@s.text name=i.text/>" aria-label="<@s.text name=i.text/>" class="<#if i.del??>ov-act-del ${i.del}</#if> ${i.cls!}"<#if i.name??> data-name="${i.name}"</#if><#if i.del??> data-post</#if>><@icon name=i.icon/></a>
+        </#list>
+    </span>
+    <div class="dropdown ov-name-menu">
+        <a href="#" class="ov-name" id="${id}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name=titleKey/>"><@icon name="more_horiz"/></a>
+        <ul class="dropdown-menu" aria-labelledby="${id}">
+            <#list items as i>
+                <#if i.del??><li><hr class="dropdown-divider"></li></#if>
+                <li><a class="dropdown-item<#if i.del??> text-gbif-danger ${i.del}</#if> ${i.cls!}" href="${i.href}"<#if i.name??> data-name="${i.name}"</#if><#if i.del??> data-post</#if>><@s.text name=i.text/></a></li>
+            </#list>
         </ul>
     </div>
+</#macro>
+
+<#-- a source's actions: edit, download (files), delete -->
+<#macro sourceMenu src id>
+    <#local items = [{"icon": "edit", "text": "manage.overview.data.editSource", "href": "source.do?r=${resource.shortname}&id=${src.name?url}"}]>
+    <#if src.isFileSource() || src.isExcelSource()>
+        <#local items = items + [{"icon": "download", "text": "manage.overview.data.downloadSource", "href": "raw-source.do?r=${resource.shortname}&id=${src.name?url}"}]>
+    </#if>
+    <#local items = items + [{"icon": "delete", "text": "manage.overview.data.deleteSource", "href": "delete-source.do?r=${resource.shortname}&id=${src.name?url}", "del": unmappedSources?map(x -> x.name)?seq_contains(src.name)?then("delete-unused-source", "delete-source"), "name": src.name}]>
+    <@nameActions id="source-menu-" + id titleKey="manage.overview.data.sourceActions" items=items/>
 </#macro>
 
 <#-- a problem with a mapping, under its name: an error stops publishing, a warning doesn't -->
@@ -93,15 +110,14 @@
                             data-hide="<@s.text name='manage.overview.data.showFewer'/>"><@s.text name='manage.overview.data.showAll'><@s.param>${unmappedSources?size}</@s.param></@s.text></button>
                 </#if>
             </div>
+            <#-- a grid of small cards: mapping them starts from "Map tables" / "Add mapping" above -->
+            <div class="ov-unused-grid">
             <#list unmappedSources as src>
                 <div class="ov-unused-row ov-row" data-ov-unused="true" data-ov-text="${src.name?lower_case}" data-ov-changed="${isSourceChanged(src)?c}" data-ov-unmapped="true" data-ov-problem="${(!src.readable)?c}">
-                    <@sourceCell src/>
-                    <span class="ov-sp"></span>
-                    <#if src.readable && !isDataPackage><button type="button" class="ov-link-btn ov-open-add-mapping" data-source="${src.name}"><@s.text name="manage.overview.data.mapTo"/></button></#if>
-                    <#if src.readable && isDataPackage><a class="ov-link-btn" href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${resource.dataPackageIdentifier?url}&from=${src.name?url}"><@s.text name="manage.overview.data.map"/></a></#if>
-                    <div class="ov-rowacts"><@sourceMenu src idPrefix + src?index/></div>
+                    <@sourceCell src idPrefix + src?index/>
                 </div>
             </#list>
+            </div>
         </div>
     </#if>
 </#macro>
@@ -120,22 +136,65 @@
     </#if>
 </#macro>
 
-<#-- "Showing 8 of 20 · Show all", under the rows -->
-<#macro dataMore>
+<#-- shown when search or a filter matches nothing -->
+<#macro noMatch>
     <p class="ov-nomatch text-muted text-smaller" style="display: none;"><@s.text name="manage.overview.data.noMatch"/></p>
-    <div class="ov-more" id="ov-data-more" style="display: none;"
-         data-showing="<@s.text name='manage.overview.data.showing'/>"
-         data-show-all="<@s.text name='manage.overview.data.showAll'/>"
-         data-show-fewer="<@s.text name='manage.overview.data.showFewer'/>">
-        <span id="ov-data-showing"></span>
-        <button type="button" class="ov-link-btn" id="ov-data-expand"></button>
-    </div>
 </#macro>
 
 <#macro changedTag><span class="ov-chg"><@s.text name="manage.overview.data.changedTag"/></span></#macro>
 
-<#-- rows shown before "Show all"; rows with a problem are always shown -->
+<#-- search and filter chips show above this many rows -->
 <#assign rowLimit = 8>
+
+<#-- how the sections of the table start on load (they can always be folded and opened by hand). Folded, the heading
+     lists each mapping as "source -> table"; opened, the rows show.
+     The core of the data starts open: the DwC-A core and DwC-DP events. Supporting tables start folded: DwC-DP
+     assertions and identifiers, and joins. The others (entities, extensions) fold when they have more mappings than
+     foldAbove -->
+<#assign foldAbove = 5>
+<#assign alwaysOpen = ["core", "events"]>
+<#assign alwaysFolded = ["assertions", "joins"]>
+
+<#-- how bad a mapping's problem is, as its note under the name says: an error stops publishing, a warning doesn't -->
+<#function dpLevel m>
+    <#local tableName = (m.dataPackageTableSchemaName.name)!"?">
+    <#if m.tableSchemaMissing || (missingRequiredFieldsDataPackage!{})?keys?seq_contains(tableName) || ((m.source)?? && !m.source.readable)>
+        <#return "error">
+    </#if>
+    <#if dataPackageMappingHasIssues(m)><#return "warning"></#if>
+    <#return "">
+</#function>
+<#function dwcLevel m>
+    <#if (m.source)?? && !m.source.readable><#return "error"></#if>
+    <#if m.fields?size == 0><#return "warning"></#if>
+    <#return "">
+</#function>
+
+<#-- a section heading: name, counts, and when folded a link per mapping. items: name, source, href, level, changed -->
+<#macro sectionHeading id label items countKey>
+    <#local folded = !alwaysOpen?seq_contains(id) && (alwaysFolded?seq_contains(id) || items?size > foldAbove)>
+    <#local errors = items?filter(i -> i.level == "error")?size>
+    <#local warnings = items?filter(i -> i.level == "warning")?size>
+    <#local changed = items?filter(i -> i.changed)?size>
+    <tr class="ov-grp ov-sec<#if folded> ov-closed</#if>" data-ov-sec="${id}">
+        <td colspan="2">
+            <div class="ov-sec-h">
+                <button type="button" class="ov-sec-toggle" aria-expanded="${(!folded)?c}"><@icon name="expand_more"/><span>${label}</span></button>
+                <span class="ov-sec-sum">
+                    <span><@s.text name=countKey><@s.param>${items?size}</@s.param></@s.text></span>
+                    <#if (errors > 0)><span class="bad"><@icon name="error"/><@s.text name="manage.overview.data.section.needFixing"><@s.param>${errors}</@s.param></@s.text></span></#if>
+                    <#if (warnings > 0)><span class="warn"><@icon name="warning"/><@s.text name="manage.overview.data.section.warnings"><@s.param>${warnings}</@s.param></@s.text></span></#if>
+                    <#if (changed > 0)><span class="chg"><@s.text name="manage.overview.data.section.changed"><@s.param>${changed}</@s.param></@s.text></span></#if>
+                </span>
+            </div>
+            <div class="ov-sec-maps">
+                <#list items as i>
+                    <a class="ov-map<#if i.level?has_content> ${i.level}</#if>" href="${i.href}"><#if i.level?has_content><@icon name=i.level/></#if><span class="ov-map-src">${i.source}</span><span class="ov-map-ar">&rarr;</span><b>${i.name}</b></a>
+                </#list>
+            </div>
+        </td>
+    </tr>
+</#macro>
 
 <#-- what makes a row need attention -->
 <#function dwcProblem r>
@@ -218,15 +277,14 @@
 
         <@dataTools rowCount=dpRows?size + unmappedSources?size anyChanged=(showChangedTags && dpRows?filter(r -> isMappingChanged(r.m))?has_content) || changedSources?has_content anyProblem=dpRows?filter(r -> r.problem)?has_content || unreadableSources?has_content/>
 
-        <div id="ov-data" data-ov-limit="${rowLimit}">
+        <div id="ov-data">
         <#if dpRows?has_content>
-        <table class="ov-table">
+        <#-- the table name links to the mapping and the source name to the source; each is followed by its menu -->
+        <table class="ov-table ov-split">
             <thead>
             <tr>
                 <th><@s.text name="manage.overview.data.col.table"/></th>
                 <th><@s.text name="manage.overview.data.col.fromSource"/></th>
-                <th class="ov-num"><@s.text name="manage.overview.data.col.fields"/></th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -234,34 +292,37 @@
                 <#assign rowsInGroup = dpRows?filter(r -> r.group == groupName)>
                 <#assign rowsInGroup = rowsInGroup?filter(r -> r.problem) + rowsInGroup?filter(r -> !r.problem)>
                 <#if rowsInGroup?has_content>
-                    <#if groupName?has_content><tr class="ov-grp"><td colspan="4"><@s.text name="manage.overview.data.group.${groupName}"/></td></tr></#if>
+                    <#-- other data packages have no groups: their tables aren't folded -->
+                    <#assign secId = groupName?lower_case>
+                    <#if groupName?has_content>
+                        <#assign secItems = []>
+                        <#list rowsInGroup as r>
+                            <#assign secItems = secItems + [{"name": (r.m.dataPackageTableSchemaName.name)!"?", "source": (r.m.source.name)!"?",
+                                "href": "dataPackageMapping.do?r=${resource.shortname}&id=${r.m.dataPackageSchema.identifier?url}&mid=${r.mid}",
+                                "level": dpLevel(r.m), "changed": showChangedTags && isMappingChanged(r.m)}]>
+                        </#list>
+                        <#assign secLabel><@s.text name="manage.overview.data.group.${groupName}"/></#assign>
+                        <@sectionHeading id=secId label=secLabel items=secItems countKey="manage.overview.data.section.tables"/>
+                    </#if>
+                    <#-- a section where every table changed says so in its heading only -->
+                    <#assign rowTags = showChangedTags && !(groupName?has_content && !rowsInGroup?filter(x -> !isMappingChanged(x.m))?has_content)>
+                    <#assign sourcesShown = []>
                     <#list rowsInGroup as r>
                         <#assign m = r.m>
                         <#assign tableName = (m.dataPackageTableSchemaName.name)!"?">
                         <#assign sourceName = (m.source.name)!"?">
                         <#assign missingRequired = (missingRequiredFieldsDataPackage!{})?keys?seq_contains(tableName)>
                         <#assign editUrl = "dataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}">
-                        <tr class="ov-row" data-ov-text="${(tableName + ' ' + sourceName)?lower_case}" data-ov-changed="${dpChanged(m)?c}" data-ov-unmapped="false" data-ov-problem="${r.problem?c}">
+                        <tr class="ov-row" data-ov-sec="${secId}" data-ov-text="${(tableName + ' ' + sourceName)?lower_case}" data-ov-changed="${dpChanged(m)?c}" data-ov-unmapped="false" data-ov-problem="${r.problem?c}">
                             <td>
-                                <a href="${editUrl}" class="ov-name fw-semibold">${tableName}</a><#if showChangedTags && isMappingChanged(m)><@changedTag/></#if>
+                                <a href="${editUrl}" class="ov-name fw-semibold">${tableName}</a><#if rowTags && isMappingChanged(m)><@changedTag/></#if><@nameActions id="dp-mapping-menu-" + r.mid?c titleKey="manage.overview.data.mappingActions" items=[
+                                    {"icon": "edit", "text": "manage.overview.data.editMapping", "href": editUrl},
+                                    {"icon": "delete", "text": "manage.overview.data.deleteMapping", "href": "deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}", "del": "delete-mapping", "name": tableName}]/>
+                                <div class="ov-small"><@s.text name="manage.overview.data.fieldsMapped"><@s.param>${(m.fields![])?filter(f -> f.mapped && !m.unresolvedFieldNames?seq_contains((f.field.name)!""))?size}</@s.param><@s.param><#if m.tableSchemaMissing>?<#else>${(m.tableSchema.fields)!?size}</#if></@s.param></@s.text></div>
                                 <#if missingRequired && !m.tableSchemaMissing><@problemNote "manage.overview.data.status.requiredMissing"/></#if>
                                 <@dataPackageMappingIssues m/>
                             </td>
-                            <td><#if (m.source)??><@sourceCell m.source/><#else>?</#if></td>
-                            <td class="ov-num">${(m.fields)!?size}</td>
-                            <td class="ov-rowacts">
-                                <a href="${editUrl}"><@s.text name="button.edit"/></a>
-                                <div class="dropdown">
-                                    <a href="#" id="dp-mapping-menu-${r.mid}" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><@icon name="more_horiz"/></a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dp-mapping-menu-${r.mid}">
-                                        <#if (m.source.name)??>
-                                            <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                        </#if>
-                                        <li><a class="dropdown-item text-gbif-danger delete-mapping" data-name="${tableName}" data-post href="deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
-                                    </ul>
-                                </div>
-                            </td>
+                            <td><#if (m.source)??><@sourceCell src=m.source menuId="dp-" + r.mid?c showDims=!sourcesShown?seq_contains(m.source.name)/><#assign sourcesShown = sourcesShown + [m.source.name]><#else>?</#if></td>
                         </tr>
                     </#list>
                 </#if>
@@ -269,8 +330,8 @@
             </tbody>
         </table>
         </#if>
-        <@dataMore/>
-        <@unusedSources "manage.overview.data.group.notUsed" "dp-"/>
+        <@noMatch/>
+        <@unusedSources "manage.overview.data.group.notUsed" "dp-unused-"/>
         </div>
 
     <#else>
@@ -285,23 +346,22 @@
         </#list>
         <#assign classGroups = classGroups?filter(g -> g.core) + classGroups?filter(g -> !g.core && g.problem) + classGroups?filter(g -> !g.core && !g.problem)>
 
-        <@dataTools rowCount=classGroups?size + unmappedSources?size anyChanged=(showChangedTags && classRows?filter(r -> isMappingChanged(r.m))?has_content) || changedSources?has_content anyProblem=emptyMappings?has_content || unreadableSources?has_content/>
+        <@dataTools rowCount=classRows?size + unmappedSources?size anyChanged=(showChangedTags && classRows?filter(r -> isMappingChanged(r.m))?has_content) || changedSources?has_content anyProblem=emptyMappings?has_content || unreadableSources?has_content/>
 
-        <#if (classRows?size > 1)>
+        <#-- deleting the only core mapping deletes the extension mappings too (Resource.deleteMapping) -->
+        <#if (classRows?filter(r -> r.core)?size == 1) && (classRows?size > 1)>
             <#assign deleteCoreMappingClass = "delete-core-mapping">
         <#else>
             <#assign deleteCoreMappingClass = "delete-mapping">
         </#if>
 
-        <div id="ov-data" data-ov-limit="${rowLimit}">
+        <div id="ov-data">
         <#if classGroups?has_content>
-        <table class="ov-table">
+        <table class="ov-table ov-split">
             <thead>
             <tr>
                 <th><@s.text name="manage.overview.data.col.class"/></th>
                 <th><@s.text name="manage.overview.data.col.fromSource"/></th>
-                <th class="ov-num"><@s.text name="manage.overview.data.col.terms"/></th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -309,85 +369,55 @@
             <#list classGroups as g>
                 <#assign groupKey = g.core?then("manage.overview.data.group.core", "manage.overview.data.group.extensions")>
                 <#if groupKey != lastGroup>
-                    <tr class="ov-grp"><td colspan="4"><@s.text name=groupKey/></td></tr>
+                    <#assign secId = g.core?then("core", "extensions")>
+                    <#assign secItems = []>
+                    <#list classGroups?filter(x -> x.core == g.core) as sg>
+                        <#list sg.rows as r>
+                            <#assign secItems = secItems + [{"name": r.ext.title, "source": (r.m.source.name)!"?",
+                                "href": "mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}",
+                                "level": dwcLevel(r.m), "changed": showChangedTags && isMappingChanged(r.m)}]>
+                        </#list>
+                    </#list>
+                    <#assign secLabel><@s.text name=groupKey/></#assign>
+                    <@sectionHeading id=secId label=secLabel items=secItems countKey="manage.overview.data.section.mappings"/>
+                    <#-- a section where every mapping changed says so in its heading only -->
+                    <#assign rowTags = showChangedTags && secItems?filter(i -> !i.changed)?has_content>
+                    <#assign sourcesShown = []>
                     <#assign lastGroup = groupKey>
                 </#if>
-                <#assign anyMappingChanged = g.rows?filter(r -> isMappingChanged(r.m))?has_content>
-                <#if g.rows?size == 1>
-                    <@dwcMappingRow g.rows[0] true/>
-                <#else>
-                    <#-- several sources: one line for the class, opening to a line per source (open when one has a problem) -->
-                    <#assign groupId = "ov-class-" + g?index>
-                    <#assign groupText = g.ext.title + " " + g.rows?map(r -> (r.m.source.name)!"")?join(" ")>
-                    <tr class="ov-row ov-parent<#if g.problem> open</#if>" id="${groupId}" data-ov-text="${groupText?lower_case}"
-                        data-ov-changed="${g.rows?filter(r -> (r.m.source)?? && isSourceChanged(r.m.source))?has_content?c}" data-ov-mapping-changed="${anyMappingChanged?c}"
-                        data-ov-unmapped="false" data-ov-problem="${g.problem?c}">
-                        <td>
-                            <span class="ov-name fw-semibold">${g.ext.title}</span><#if showChangedTags && anyMappingChanged><@changedTag/></#if>
-                            <#if g.rows?filter(r -> r.m.fields?size == 0)?has_content><@problemNote "manage.overview.data.status.noTerms" "warning"/></#if>
-                        </td>
-                        <td>
-                            <button type="button" class="ov-link-btn ov-toggle-sources" aria-expanded="${g.problem?c}" aria-controls="${groupId}">
-                                <@s.text name="manage.overview.data.sourcesCount"><@s.param>${g.rows?size}</@s.param></@s.text>
-                            </button>
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <#assign showChildChangedTags = showChangedTags && g.rows?filter(r -> !isMappingChanged(r.m))?has_content>
-                    <#list g.rows as r>
-                        <@dwcMappingRow r false groupId/>
-                    </#list>
-                </#if>
+                <#-- a row per mapping; a class mapped from several sources has a row per source, named alike -->
+                <#list g.rows as r>
+                    <@dwcMappingRow r/>
+                </#list>
             </#list>
             </tbody>
         </table>
         <#else>
             <p class="text-muted text-smaller mb-2"><@s.text name="manage.overview.data.noMappings"/></p>
         </#if>
-        <@dataMore/>
+        <@noMatch/>
         <@unusedSources "manage.overview.data.group.notInArchive" "unused-"/>
         </div>
     </#if>
 </section>
 
-<#-- one Darwin Core mapping: a row of its own (withClass), or a line under its class when the class has several sources -->
-<#macro dwcMappingRow r withClass parentId="">
+<#-- one Darwin Core mapping -->
+<#macro dwcMappingRow r>
     <#local m = r.m>
     <#local editUrl = "mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}">
-    <#if withClass>
-        <tr class="ov-row"<#if (m.source)??> data-ov-text="${(m.source.name + ' ' + r.ext.title)?lower_case}" data-ov-changed="${isSourceChanged(m.source)?c}"</#if> data-ov-mapping-changed="${isMappingChanged(m)?c}" data-ov-unmapped="false" data-ov-problem="${dwcProblem(r)?c}">
-    <#else>
-        <tr class="ov-child" data-ov-parent="${parentId}">
-    </#if>
+    <tr class="ov-row" data-ov-sec="${secId}"<#if (m.source)??> data-ov-text="${(m.source.name + ' ' + r.ext.title)?lower_case}" data-ov-changed="${isSourceChanged(m.source)?c}"</#if> data-ov-mapping-changed="${isMappingChanged(m)?c}" data-ov-unmapped="false" data-ov-problem="${dwcProblem(r)?c}">
         <td>
-            <#if withClass>
-                <a href="${editUrl}" class="ov-name fw-semibold">${r.ext.title}</a><#if showChangedTags && isMappingChanged(m)><@changedTag/></#if>
-                <#if m.fields?size == 0><@problemNote "manage.overview.data.status.noTerms" "warning"/></#if>
-            <#elseif m.fields?size == 0>
-                <@problemNote "manage.overview.data.status.noTerms" "warning"/>
-            <#elseif showChildChangedTags && isMappingChanged(m)>
-                <@changedTag/>
-            </#if>
+            <#local items = [
+                {"icon": "edit", "text": "manage.overview.data.editMapping", "href": editUrl},
+                {"icon": "visibility", "text": "button.preview", "href": "mappingPeek.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}",
+                    "cls": "peekBtn", "name": r.ext.title + (m.source??)?then(" \x2190 " + (m.source.name)!"", "")},
+                {"icon": "delete", "text": "manage.overview.data.deleteMapping", "href": "delete-mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}",
+                    "del": r.core?then(deleteCoreMappingClass, "delete-mapping"), "name": r.ext.title}]>
+            <#local termsLine><@s.text name="manage.overview.data.termsMapped"><@s.param>${m.fields?size}</@s.param><@s.param>${(r.ext.properties)!?size}</@s.param></@s.text></#local>
+            <a href="${editUrl}" class="ov-name fw-semibold">${r.ext.title}</a><#if rowTags && isMappingChanged(m)><@changedTag/></#if><@nameActions id="dwc-mapping-menu-" + r.mid?c + "-" + r.ext.rowType?url items=items titleKey="manage.overview.data.mappingActions"/>
+            <div class="ov-small">${termsLine}</div>
+            <#if m.fields?size == 0><@problemNote "manage.overview.data.status.noTerms" "warning"/></#if>
         </td>
-        <td><#if (m.source)??><@sourceCell m.source/><#else>?</#if></td>
-        <td class="ov-num<#if m.fields?size == 0> ov-missing</#if>">${m.fields?size}</td>
-        <td class="ov-rowacts">
-            <a href="${editUrl}"><@s.text name="button.edit"/></a>
-            <a class="peekBtn" data-name="${r.ext.title}<#if (m.source)??> &#8592; ${m.source.name}</#if>" href="mappingPeek.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="button.preview"/></a>
-            <div class="dropdown">
-                <a href="#" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.mappingActions'/>"><@icon name="more_horiz"/></a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <#if (m.source)??>
-                        <li><a class="dropdown-item" href="source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.editSource"/></a></li>
-                        <#if m.source.isFileSource() || m.source.isExcelSource()>
-                            <li><a class="dropdown-item" href="raw-source.do?r=${resource.shortname}&id=${m.source.name?url}"><@s.text name="manage.overview.data.downloadSource"/></a></li>
-                        </#if>
-                        <li><hr class="dropdown-divider"></li>
-                    </#if>
-                    <li><a class="dropdown-item text-gbif-danger ${r.core?then(deleteCoreMappingClass, 'delete-mapping')}" data-name="${r.ext.title}" data-post href="delete-mapping.do?r=${resource.shortname}&id=${r.ext.rowType?url}&mid=${r.mid}"><@s.text name="manage.overview.data.deleteMapping"/></a></li>
-                </ul>
-            </div>
-        </td>
+        <td><#if (m.source)??><@sourceCell src=m.source menuId="dwc-" + r.mid?c + "-" + r.ext.rowType?url showDims=!sourcesShown?seq_contains(m.source.name)/><#assign sourcesShown = sourcesShown + [m.source.name]><#else>?</#if></td>
     </tr>
 </#macro>

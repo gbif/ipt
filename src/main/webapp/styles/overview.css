@@ -88,6 +88,30 @@
 .ov-table td { padding: 8px; border-bottom: 1px solid #f1f3f5; vertical-align: top; }
 .ov-table tr.ov-grp td { background: #f6f7f8; font-size: 0.68rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; font-weight: 600; padding: 4px 8px; }
 .ov-table tr.ov-hidden, .ov-table tr.ov-filtered, .ov-row.ov-hidden, .ov-row.ov-filtered { display: none !important; }
+/* sections of the table (core, extensions; events, entities, ...): the heading folds and opens them; folded, it
+   lists the section's mappings as source -> table, red or orange when they need fixing */
+.ov-table tr.ov-sec td { padding: 8px; cursor: pointer; font-size: 0.78rem; font-weight: 400; text-transform: none; letter-spacing: 0; border-bottom: 1px solid #fff; }
+.ov-sec-h { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.ov-sec-toggle { display: inline-flex; align-items: center; gap: 2px; background: none; border: 0; padding: 0; color: #495057; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.ov-sec-toggle .material-icon { font-size: 1.1rem; transform: rotate(-90deg); transition: transform .15s; }
+tr.ov-sec.ov-shown .ov-sec-toggle .material-icon { transform: none; }
+.ov-sec-sum { display: inline-flex; flex-wrap: wrap; gap: 4px 10px; color: #6c757d; }
+.ov-sec-sum > span { display: inline-flex; align-items: center; gap: 3px; }
+.ov-sec-sum .material-icon { font-size: 0.85rem; }
+.ov-sec-sum .bad { color: rgb(var(--color-gbif-danger)); font-weight: 600; }
+.ov-sec-sum .warn { color: rgb(var(--alert-warning-icon-color)); font-weight: 600; }
+.ov-sec-sum .chg { color: rgb(var(--alert-warning-icon-color)); }
+.ov-sec-maps { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+tr.ov-sec.ov-shown .ov-sec-maps { display: none; }
+.ov-sec-maps a.ov-map { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; background: #fff; border: 1px solid #e1e5e8; border-radius: 4px; padding: 2px 8px; color: #6c757d; text-decoration: none; overflow-wrap: anywhere; }
+.ov-sec-maps a.ov-map:hover { border-color: #adb5bd; color: #495057; }
+.ov-map b { color: #212529; font-weight: 600; }
+.ov-map-ar { color: #adb5bd; }
+.ov-map .material-icon { font-size: 0.85rem; flex: none; }
+.ov-map.error { border-color: rgba(var(--color-gbif-danger), .35); background: rgba(var(--color-gbif-danger), .05); }
+.ov-map.error b, .ov-map.error .material-icon { color: rgb(var(--color-gbif-danger)); }
+.ov-map.warning { border-color: rgba(var(--alert-warning-icon-color), .4); background: rgba(var(--alert-warning-icon-color), .06); }
+.ov-map.warning b, .ov-map.warning .material-icon { color: rgb(var(--alert-warning-icon-color)); }
 .ov-table th.ov-num, .ov-table td.ov-num { text-align: right; width: 1%; white-space: nowrap; padding-right: 24px; }
 /* sources no mapping uses, under the table */
 .ov-unused { margin-top: 12px; font-size: 0.82rem; }
@@ -96,13 +120,9 @@
 .ov-unused-h .ov-link-btn { text-transform: none; letter-spacing: 0; font-weight: 400; white-space: nowrap; margin-left: auto; }
 .ov-unused:not(.ov-folded) .ov-unused-names { display: none; }
 .ov-unused.ov-folded .ov-unused-row { display: none !important; }
-/* a class filled from several sources: its line opens to a line per source */
-.ov-toggle-sources { display: inline-flex; align-items: center; gap: 4px; }
-.ov-toggle-sources::after { content: "\203A"; transition: transform .15s; }
-tr.ov-parent.open .ov-toggle-sources::after { transform: rotate(90deg); }
-.ov-table tr.ov-child td { border-bottom-color: #f6f7f8; background: #fcfcfd; }
-.ov-table tr.ov-child td:first-child { padding-left: 24px; }
-.ov-unused-row { display: flex; gap: 12px; align-items: center; padding: 6px 8px; border: 1px dashed #dee2e6; border-radius: 6px; margin-bottom: 6px; }
+/* sources no mapping uses: a grid of small cards */
+.ov-unused-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 6px; }
+.ov-unused-row { display: flex; gap: 12px; align-items: center; padding: 6px 8px; border: 1px dashed #dee2e6; border-radius: 6px; min-width: 0; }
 .ov-unused-row .ov-src { align-items: center; }
 .ov-src { display: flex; gap: 8px; align-items: flex-start; min-width: 0; }
 .ov-src > div { min-width: 0; overflow-wrap: anywhere; }
@@ -115,23 +135,36 @@ tr.ov-parent.open .ov-toggle-sources::after { transform: rotate(90deg); }
 .ov-small.warn { color: rgb(var(--alert-warning-icon-color)); }
 .ov-chg { font-size: 0.62rem; font-weight: 700; background: rgba(var(--alert-warning-icon-color), .12); color: rgb(var(--alert-warning-icon-color)); border-radius: 4px; padding: 0 5px; margin-left: 4px; vertical-align: 1px; }
 .ov-maps { display: flex; flex-direction: column; gap: 3px; }
-.ov-rowacts { white-space: nowrap; text-align: right; }
-.ov-rowacts > a, .ov-rowacts > .dropdown > a { margin-left: 10px; font-size: 0.78rem; }
 /* main.css colours every link with !important; names and row actions in the tables stay neutral */
-#sections .ov-card a.ov-name, #sections .ov-rowacts > a, #sections .ov-rowacts > .dropdown > a { color: #343a40 !important; text-decoration: none; }
-#sections .ov-card a.ov-name:hover, #sections .ov-rowacts > a:hover, #sections .ov-rowacts > .dropdown > a:hover { color: rgb(var(--color-gbif-primary)) !important; }
+#sections .ov-card a.ov-name { color: #343a40 !important; text-decoration: none; }
+#sections .ov-card a.ov-name:hover { color: rgb(var(--color-gbif-primary)) !important; }
+#sections .ov-card a.ov-map { color: #6c757d !important; }
+#sections .ov-card a.ov-map:hover, #sections .ov-card a.ov-map:focus { color: #495057 !important; text-decoration: none !important; }
 /* main.css sets dropdown menus to 1rem !important on wide screens */
 #sections .dropdown-menu, .ov-acts .dropdown-menu { font-size: 0.82rem !important; }
 #sections a.dropdown-item, .ov-acts a.dropdown-item { color: #4e565f !important; }
 #sections a.dropdown-item.text-gbif-danger, .ov-acts .dropdown-item.text-gbif-danger { color: rgb(var(--color-gbif-danger)) !important; }
-.ov-rowacts .dropdown { display: inline-block; }
+/* the actions after a table or source name: grey icons on wide screens (like the contacts page), a menu on narrow ones.
+   Not .ov-acts, which is the page heading's action bar */
+.ov-name-menu { display: inline-block; margin-left: 6px; vertical-align: middle; line-height: 1; }
+.ov-name-menu > a { font-size: 0.78rem; }
+.ov-name-acts { display: none; margin-left: 6px; vertical-align: middle; line-height: 1; gap: 2px; }
+#sections .ov-card .ov-name-acts a { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 4px; color: #6c757d !important; text-decoration: none; }
+.ov-name-acts a .material-icon { width: 12px; height: 12px; fill: currentColor; }
+#sections .ov-card .ov-name-acts a:hover { background: #f1f3f5; color: #212529 !important; }
+#sections .ov-card .ov-name-acts a.ov-act-del:hover { background: rgba(var(--color-gbif-danger), .08); color: rgb(var(--color-gbif-danger)) !important; }
+@media (min-width: 992px) {
+    .ov-name-acts { display: inline-flex; }
+    .ov-name-menu { display: none; }
+}
+/* the same split on every resource */
+.ov-split th:first-child { width: 45%; }
 .ov-link-btn { border: 0; background: none; padding: 0; color: rgb(var(--color-gbif-primary)); font-size: 0.8rem; cursor: pointer; }
 .ov-link-btn:hover { text-decoration: underline; }
 .ov-tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 4px 0 6px; }
 .ov-tools input[type=search] { border: 1px solid #ced4da; border-radius: 4px; padding: 3px 8px; font-size: 0.8rem; width: 210px; }
 .ov-chip { border: 1px solid #dee2e6; background: #fff; border-radius: 14px; padding: 1px 9px; cursor: pointer; font-size: 0.75rem; }
 .ov-chip.on { background: rgba(var(--color-gbif-primary), .12); border-color: rgb(var(--color-gbif-primary)); color: rgb(50, 110, 50); font-weight: 600; }
-.ov-more { margin-top: 6px; font-size: 0.8rem; display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; color: #6c757d; }
 .ov-empty { border: 1px dashed #dee2e6; border-radius: 8px; padding: 18px; text-align: center; color: #6c757d; font-size: 0.85rem; }
 .ov-empty b { display: block; color: #212529; font-size: 0.9rem; margin-bottom: 4px; font-weight: 600; }
 
