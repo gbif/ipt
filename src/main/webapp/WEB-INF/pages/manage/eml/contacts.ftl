@@ -27,6 +27,7 @@
     <#assign currentMetadataPage = "contacts"/>
     <#assign currentMenu="manage"/>
     <#include "/WEB-INF/pages/macros/icon.ftl"/>
+    <#assign materialHelpIcons = true/>
     <link rel="stylesheet" href="${baseURL}/styles/overview.css">
     <link rel="stylesheet" href="${baseURL}/styles/eml.css">
     <#include "/WEB-INF/pages/inc/menu.ftl">
@@ -249,7 +250,7 @@
                         <@s.text name="eml.party.identifiers"/>
                         <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
                            data-bs-content="<@s.text name='eml.contact.directory.help'/><br><br><@s.text name='eml.contact.identifier.help'/>">
-                            <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                            <@icon name="info_outlined" class="text-gbif-primary help-icon-m"/>
                         </a>
                     </legend>
                     <div class="row g-2">
@@ -367,7 +368,7 @@
                                     <@s.text name="eml.party.description"/>
                                     <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
                                        data-bs-content="<@s.text name='eml.party.plural.help'/>" aria-label="${t('eml.party.plural')}">
-                                        <i class="bi bi-info-circle text-gbif-primary px-1"></i>
+                                        <@icon name="info_outlined" class="text-gbif-primary help-icon-m"/>
                                     </a>
                                 </p>
 
@@ -423,22 +424,17 @@
                                 </div>
                                 <div class="party-empty" data-empty hidden></div>
 
-                                <div class="party-add-bar">
-                                    <#-- link-style actions, as on the other metadata pages -->
-                                    <button type="button" class="metadata-action-link custom-link" data-act="add">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                                        </span>
+                                <div class="add-area">
+                                    <button type="button" data-act="add">
+                                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                                         <span data-add-label><@s.text name="eml.party.add"/></span>
                                     </button>
                                     <span class="dropdown">
-                                        <button type="button" class="metadata-action-link custom-link" data-act="copy-menu" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span>
-                                                <svg viewBox="0 0 24 24" class="link-icon link-icon-primary" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                                            </span>
+                                        <button type="button" data-act="copy-menu" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
                                             <span><@s.text name="eml.party.copyFrom"/></span>
                                         </button>
-                                        <div class="dropdown-menu party-menu" data-copy-menu></div>
+                                        <div class="dropdown-menu dropdown-menu-end party-menu" data-copy-menu></div>
                                     </span>
                                 </div>
 
@@ -507,17 +503,8 @@
 
                         <#-- were a page of their own (#3319) -->
                         <div class="my-3 p-3" id="s-acknowledgements" data-toc="${t('manage.metadata.acknowledgements')}">
-                            <@textinline name="manage.metadata.acknowledgements"/>
-                            <p class="mb-3">
-                                <a tabindex="0" role="button" class="popover-link" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
-                                   data-bs-content="<@s.text name='manage.metadata.acknowledgements.info' escapeHtml=true/>">
-                                    <i class="bi bi-info-circle text-gbif-primary px-1"></i>
-                                </a>
-                                <@s.text name='manage.metadata.acknowledgements.intro'/>
-                            </p>
-                            <p class="mb-3 text-smaller fst-italic">
-                                <@s.text name='manage.metadata.acknowledgements.description'/>
-                            </p>
+                            <@textinline name="manage.metadata.acknowledgements" help=t('manage.metadata.acknowledgements.info')/>
+                            <p class="party-intro"><@s.text name='manage.metadata.acknowledgements.description'/></p>
                             <@docBookEditor name="eml.acknowledgements" id="acknowledgements" value=eml.acknowledgements! label=action.getText("manage.metadata.acknowledgements")/>
                         </div>
                     </div>

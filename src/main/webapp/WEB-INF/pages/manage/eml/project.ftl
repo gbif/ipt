@@ -133,9 +133,11 @@
     </#macro>
 
     <#--
-      Add and Copy from links under a list of people. The copy menu is filled by project.js when it opens.
+      Add and Copy from under a list of people: the dashed add area for the page's personnel, small links inside a
+      related project card. The copy menu is filled by project.js when it opens.
     -->
-    <#macro peopleAddBar>
+    <#macro peopleAddBar nested=false>
+        <#if nested>
         <div class="party-add-bar">
             <button type="button" class="metadata-action-link custom-link" data-act="add">
                 <span><svg viewBox="0 0 24 24" class="link-icon link-icon-primary" aria-hidden="true"><path d="${plusPath}"/></svg></span>
@@ -149,6 +151,15 @@
                 <div class="dropdown-menu party-menu" data-copy-menu></div>
             </span>
         </div>
+        <#else>
+        <div class="add-area">
+            <button type="button" data-act="add"><@icn plusPath/><span><@s.text name="eml.project.personnel.add"/></span></button>
+            <span class="dropdown">
+                <button type="button" data-act="copy-menu" data-bs-toggle="dropdown" aria-expanded="false"><@icn copyPath/><span><@s.text name="eml.party.copyFrom"/></span></button>
+                <div class="dropdown-menu dropdown-menu-end party-menu" data-copy-menu></div>
+            </span>
+        </div>
+        </#if>
     </#macro>
 
     <#--
@@ -281,7 +292,7 @@
                             </#list>
                         </div>
                         <div class="party-alert party-alert-danger mb-0" data-empty hidden><@s.text name="eml.project.relatedProject.personnel.required"/></div>
-                        <@peopleAddBar/>
+                        <@peopleAddBar nested=true/>
                     </div>
                 </fieldset>
             </div>
@@ -353,11 +364,8 @@
                                     </#list>
                                 </div>
                                 <div class="party-empty" data-empty hidden><@s.text name="eml.project.award.empty"/></div>
-                                <div class="party-add-bar">
-                                    <button type="button" class="metadata-action-link custom-link" data-act="add">
-                                        <span><svg viewBox="0 0 24 24" class="link-icon link-icon-primary" aria-hidden="true"><path d="${plusPath}"/></svg></span>
-                                        <span><@s.text name="eml.project.award.add"/></span>
-                                    </button>
+                                <div class="add-area">
+                                    <button type="button" data-act="add"><@icn plusPath/><span><@s.text name="eml.project.award.add"/></span></button>
                                 </div>
                             </div>
                         </div>
@@ -371,11 +379,8 @@
                                     </#list>
                                 </div>
                                 <div class="party-empty" data-empty hidden><@s.text name="eml.project.relatedProject.empty"/></div>
-                                <div class="party-add-bar">
-                                    <button type="button" class="metadata-action-link custom-link" data-act="add">
-                                        <span><svg viewBox="0 0 24 24" class="link-icon link-icon-primary" aria-hidden="true"><path d="${plusPath}"/></svg></span>
-                                        <span><@s.text name="eml.project.relatedProject.add"/></span>
-                                    </button>
+                                <div class="add-area">
+                                    <button type="button" data-act="add"><@icn plusPath/><span><@s.text name="eml.project.relatedProject.add"/></span></button>
                                 </div>
                             </div>
                         </div>

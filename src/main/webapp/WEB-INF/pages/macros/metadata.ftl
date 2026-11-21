@@ -291,15 +291,6 @@ $(document).ready(function(){
         });
 
 	    <#switch "${section}">
-            <#case "methods">
-                $("#item-"+index+" textarea").attr("id", "eml.methodSteps["+index+"]");
-                $("#item-"+index+" label").attr("for", "eml.methodSteps["+index+"]");
-                $("#item-"+index+" textarea").attr("name", "eml.methodSteps["+index+"]");
-                if($("#removeLink-0") != null) {
-                    $("#removeLink-0").hide();
-                }
-            <#break>
-
             <#case "citations">
                 $("#item-"+index+" [id$='citation']").attr("id","eml.bibliographicCitationSet.bibliographicCitations["+index+"].citation");
                 $("#item-"+index+" [name$='citation']").attr("name","eml.bibliographicCitationSet.bibliographicCitations["+index+"].citation");

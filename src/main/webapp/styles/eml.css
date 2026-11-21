@@ -233,3 +233,25 @@ a.tax-show-all { font-size: 0.75rem !important; color: rgb(var(--color-gbif-prim
 .kw-entry { flex: 1; min-width: 160px; border: 0; outline: 0; padding: 0; font-size: inherit; background: transparent; }
 .kw-placeholder { border: 1px dashed #adb5bd; border-radius: 8px; }
 #kw-none[hidden] { display: none; }
+
+/* Sampling methods page: numbered step cards */
+.ms-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.ms-step { border: 1px solid #dee2e6; border-radius: 8px; padding: 8px 12px 12px; background: #fff; }
+.ms-step.invalid { border-color: rgba(196, 62, 62, .6); }
+.ms-step-head { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+.ms-step-title { margin: 0 auto 0 0; font-weight: 600; font-size: 0.875rem; }
+.ms-step .party-order { flex-direction: row; }
+.ms-step .party-order .party-icon-btn { padding: 4px; }
+.ms-steps > .border { border-radius: 8px; }
+
+/* "Add X" area at the end of a list of cards: dashed box where the next card goes, optional Copy from part on the right */
+.add-area { display: flex; align-items: stretch; margin-top: 10px; border: 1px dashed #c3c9cf; border-radius: 8px; background: #fff; transition: border-color .1s ease; }
+.add-area:hover, .add-area:focus-within { border-color: rgb(var(--color-gbif-primary)); }
+.add-area button, .add-area > a { border: 0; background: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 14px; color: rgb(var(--color-gbif-primary)); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background .1s ease; }
+.add-area button:hover, .add-area button:focus-visible, .add-area > a:hover, .add-area > a:focus-visible { color: rgb(var(--color-gbif-primary)); background: rgba(var(--color-gbif-primary), .05); }
+.add-area button, .add-area button:hover, .add-area button:hover span, .add-area button:focus span, .add-area > a, .add-area > a:hover { text-decoration: none; }
+.add-area > button[data-act=add], .add-area > a { flex: 1 1 auto; border-radius: 7px; }
+.add-area > .dropdown { display: flex; border-left: 1px dashed #c3c9cf; }
+.add-area > .dropdown > button { border-radius: 0 7px 7px 0; height: 100%; }
+.add-area > button[data-act=add]:has(+ .dropdown) { border-radius: 7px 0 0 7px; }
+.add-area svg { width: 18px; height: 18px; fill: currentColor; }

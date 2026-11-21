@@ -229,15 +229,8 @@
                                 </div>
                             </div>
 
-                            <div class="addNew col-12 mt-1">
-                                <a id="plus" href="" class="metadata-action-link custom-link">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                        </svg>
-                                    </span>
-                                    <span>${addLink?lower_case?cap_first}</span>
-                                </a>
+                            <div class="add-area">
+                                <a id="plus" href="" class="custom-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><span>${addLink?lower_case?cap_first}</span></a>
                             </div>
 
                             <!-- internal parameter -->
@@ -305,15 +298,8 @@
                                     </#list>
                                 </div>
 
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-physicalData" href="" class="metadata-action-link custom-link">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></span>
-                                    </a>
+                                <div class="add-area">
+                                    <a id="plus-physicalData" href="" class="custom-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.physical.item'/></span></a>
                                 </div>
                             </div>
 
@@ -362,15 +348,8 @@
                                 </#list>
                             </div>
 
-                            <div class="addNew col-12 mt-2">
-                                <a id="plus-altId" href="" class="metadata-action-link custom-link">
-                                    <span>
-                                        <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                        </svg>
-                                    </span>
-                                    <span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span>
-                                </a>
+                            <div class="add-area">
+                                <a id="plus-altId" href="" class="custom-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.alternateIdentifiers.item'/></span></a>
                             </div>
 
                             <div id="baseItem-altId" class="item clearfix row g-3 border-bottom pb-3 mt-1" style="display:none;">

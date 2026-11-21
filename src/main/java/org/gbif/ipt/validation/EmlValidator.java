@@ -680,6 +680,10 @@ public class EmlValidator extends BaseValidator {
               }
               index++;
             }
+            // EML: methods have at least one method step, so sampling or quality control needs one
+            if (!emptyFields && eml.getMethodSteps().isEmpty()) {
+              ec.addFieldError("eml.methodSteps", i18n.getText("validation.methods.stepRequired"));
+            }
             // both study extent and sampling description required if either one is present
             if (!emptyFields) {
               if (StringUtils.isNotBlank(eml.getSampleDescription()) && StringUtils.isBlank(eml.getStudyExtent())) {

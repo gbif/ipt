@@ -668,6 +668,35 @@ public class EmlValidatorTest extends IptBaseTest {
   }
 
   @Test
+  public void testMethodsPartSamplingWithoutStep() {
+    // invalid: EML methods need at least one method step
+    eml.getMethodSteps().clear();
+    eml.setStudyExtent("Non empty");
+    eml.setSampleDescription("Non empty");
+    assertFalse(validator.isValid(resource, MetadataSection.METHODS_SECTION));
+  }
+
+  @Test
+  public void testMethodsPartQualityControlWithoutStep() {
+    // invalid: EML methods need at least one method step
+    eml.getMethodSteps().clear();
+    eml.setStudyExtent(null);
+    eml.setSampleDescription(null);
+    eml.setQualityControl("Non empty");
+    assertFalse(validator.isValid(resource, MetadataSection.METHODS_SECTION));
+  }
+
+  @Test
+  public void testMethodsPartEmpty() {
+    // valid: nothing entered at all
+    eml.getMethodSteps().clear();
+    eml.setStudyExtent(null);
+    eml.setSampleDescription(null);
+    eml.setQualityControl(null);
+    assertTrue(validator.isValid(resource, MetadataSection.METHODS_SECTION));
+  }
+
+  @Test
   public void testCitationsPart() {
     // valid
     assertTrue(validator.isValid(resource, MetadataSection.CITATIONS_SECTION));

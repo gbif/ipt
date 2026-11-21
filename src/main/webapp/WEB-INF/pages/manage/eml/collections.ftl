@@ -203,15 +203,8 @@
                                         </div>
                                     </#list>
                                 </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-collection" class="metadata-action-link custom-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${addCollectionLink?lower_case?cap_first}</span>
-                                    </a>
+                                <div class="add-area">
+                                    <a id="plus-collection" href="" class="custom-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><span>${addCollectionLink?lower_case?cap_first}</span></a>
                                 </div>
                             </div>
                         </div>
@@ -239,15 +232,8 @@
                                         </div>
                                     </#list>
                                 </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus-specimenPreservationMethod" class="metadata-action-link custom-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span>${addSpecimenPreservationMethodLink?lower_case?cap_first}</span>
-                                    </a>
+                                <div class="add-area">
+                                    <a id="plus-specimenPreservationMethod" href="" class="custom-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><span>${addSpecimenPreservationMethodLink?lower_case?cap_first}</span></a>
                                 </div>
                             </div>
                         </div>
@@ -306,15 +292,8 @@
                                         </div>
                                     </#list>
                                 </div>
-                                <div class="addNew col-12 mt-2">
-                                    <a id="plus" class="metadata-action-link custom-link" href="">
-                                        <span>
-                                            <svg viewBox="0 0 24 24" class="link-icon link-icon-primary">
-                                                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                            </svg>
-                                        </span>
-                                        <span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></span>
-                                    </a>
+                                <div class="add-area">
+                                    <a id="plus" href="" class="custom-link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><span><@s.text name='manage.metadata.addnew'/> <@s.text name='manage.metadata.collections.curatorialUnits.item'/></span></a>
                                 </div>
                             </div>
 

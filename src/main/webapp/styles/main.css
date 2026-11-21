@@ -813,13 +813,13 @@ footer a {
 
 /* Links color with exception for some classes START */
 a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button,
-.action-link, .action-link-button, .smaller-action-link-button, .resource-table-link, .footer-link, .custom-link) {
+.action-link, .action-link-button, .smaller-action-link-button, .resource-table-link, .footer-link, .custom-link, .geo-add) {
     color: rgb(var(--link-color)) !important;
     text-decoration: none !important;
 }
 
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .smaller-action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link):focus,
-a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .smaller-action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link):hover {
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .smaller-action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link, .geo-add):focus,
+a:not(.btn, .button, .navbar-brand, .nav-link, .menu-link, .popover-link, .admin-col-listing-item, .doi, .icon-button, .action-link, .action-link-button, .smaller-action-link-button, .metadata-action-link, .resource-table-link, .footer-link, .custom-link, .geo-add):hover {
     color: rgb(var(--link-color)) !important;
     filter: brightness(0.85);
     text-decoration: underline !important;
