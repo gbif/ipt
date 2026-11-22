@@ -90,6 +90,8 @@
                 $col: $row.find('.mp-col'),
                 // data package mappings: a generated value (list item, key, template...), js/dp-rows.js
                 $gen: $row.find('.mp-gen-kind'),
+                $tpl: $row.find('.mp-gen-tpl'),
+                $pairs: $row.find('.mp-gen-pairs select'),
                 $const: $const,
                 $doi: $row.find('#doiUsedForDatasetId'),
                 $samples: $row.find('.mp-samples'),
@@ -118,6 +120,29 @@
             if (g && g !== 'ID') return -1;
             var v = f.$col.val();
             return v === '' || v == null ? -1 : +v;
+        }
+        // the columns a field's value is read from (DataPackageRowBuilder): its column, or for a generated value the
+        // lists the rows are made from, the paired lists or the columns named in a template; a key of another table
+        // reads none
+        function rowMode() { return $('input[name=rowMode]:checked').val() || 'ROW'; }
+        function listCols() {
+            return rowMode() === 'ITEMS' ? ($('#mp-split').val() || []).map(Number) : [];
+        }
+        function sourceCols(f) {
+            var g = generated(f), c = colOf(f), out = [];
+            function add(ci) { if (ci >= 0 && ci < columns.length && out.indexOf(ci) < 0) out.push(ci); }
+            if (!g || (g === 'ID' && c >= 0)) add(c);
+            else if (g === 'ID' || g === 'ITEM' || g === 'POSITION') listCols().forEach(add);
+            else if (g === 'PAIRED') {
+                if (rowMode() === 'ITEMS') f.$pairs.each(function () { if (this.value !== '') add(+this.value); });
+            } else if (g === 'TEMPLATE') {
+                String(f.$tpl.val() || '').replace(/\{([^{}]+)\}/g, function (m, name) {
+                    if (name === 'item' || name === 'position') listCols().forEach(add);
+                    else add(columns.indexOf(name));
+                    return m;
+                });
+            }
+            return out;
         }
         function isMapped(f) {
             if (f.mirrored) return idMode() === 'column' && idCol() >= 0;
@@ -382,15 +407,16 @@
         // ---------- by source column ----------
         function renderByColumn() {
             var feeds = columns.map(function () { return []; });
-            fields.forEach(function (f) { var c = colOf(f); if (c >= 0 && !f.mirrored && feeds[c]) feeds[c].push(f); });
+            fields.forEach(function (f) { if (!f.mirrored) sourceCols(f).forEach(function (c) { feeds[c].push(f); }); });
             var mode = idMode(), ic = idCol();
             var options = '<option value="">' + esc(i18n.mapTo) + '</option>';
             $groups.each(function () {
                 var $g = $(this), g = $g.attr('data-g');
                 var opts = fields.filter(function (f) { return f.group === g && !f.mirrored; }).map(function (f) {
                     // a field takes one column: say which one it has, as choosing it here takes it from there
-                    var c = colOf(f);
-                    return '<option value="' + f.i + '">' + esc(f.label) + (c >= 0 && columns[c] != null ? ' (' + esc(columns[c]) + ')' : '') + '</option>';
+                    var c = colOf(f), g = generated(f);
+                    var note = g && g !== 'ID' ? i18n.generated : c >= 0 && columns[c] != null ? columns[c] : '';
+                    return '<option value="' + f.i + '">' + esc(f.label) + (note ? ' (' + esc(note) + ')' : '') + '</option>';
                 }).join('');
                 // one list of fields (data packages): no group to name
                 options += $groups.length > 1 ? '<optgroup label="' + esc($g.find('.mp-group-h h3').text()) + '">' + opts + '</optgroup>' : opts;
@@ -403,8 +429,10 @@
                         : rows.map(function (r, ri) { var v = sample(ci, ri).v; return v ? '<span class="mp-sv" title="' + esc(v) + '">' + esc(v) + '</span>' : '<span class="mp-sv empty">' + esc(i18n.empty) + '</span>'; }).join('')) + '</div></td>' +
                     '<td>' + (isId ? '<span class="mp-chip id">' + esc(i18n.recordId) + '</span>' : '') +
                     feeds[ci].map(function (f) {
-                        return '<span class="mp-chip"><button type="button" class="mp-jump" data-jump="' + f.i + '">' + esc(f.label) + (hasTranslations(f) ? ' \u00b7 ' + esc(i18n.translated) : '') + '</button>' +
-                            '<button type="button" data-unmap="' + f.i + '" title="' + esc(i18n.remove) + '" aria-label="' + esc(i18n.remove + ': ' + f.label) + '">\u00d7</button></span>';
+                        // a generated value: changed on its field, so no remove here, except an ID made from this column
+                        var g = generated(f), own = !g || (g === 'ID' && colOf(f) === ci);
+                        return '<span class="mp-chip"><button type="button" class="mp-jump" data-jump="' + f.i + '">' + esc(f.label) + (g ? ' \u00b7 ' + esc(i18n.generated) : '') + (hasTranslations(f) ? ' \u00b7 ' + esc(i18n.translated) : '') + '</button>' +
+                            (own ? '<button type="button" data-unmap="' + f.i + '" title="' + esc(i18n.remove) + '" aria-label="' + esc(i18n.remove + ': ' + f.label) + '">\u00d7</button>' : '') + '</span>';
                     }).join('') +
                     '<div><select class="form-select form-select-sm" form="mp-ui" data-map-column="' + ci + '" aria-label="' + esc(c + ': ' + i18n.mapTo) + '">' + options + '</select></div></td></tr>';
             }).join('');
@@ -421,10 +449,10 @@
             var counts = {default: 0, problems: 0, unmapped: 0, all: fields.length};
             var used = {};
             fields.forEach(function (f) {
-                var m = isMapped(f), pr = problems(f), c = colOf(f);
+                var m = isMapped(f), pr = problems(f);
                 if (f.required && !m) reqMissing++;
                 if (pr.length) withProblems++;
-                if (c >= 0) used[c] = true;
+                sourceCols(f).forEach(function (c) { used[c] = true; });
                 groupTotal[f.group] = (groupTotal[f.group] || 0) + 1;
                 if (m) groupMapped[f.group] = (groupMapped[f.group] || 0) + 1;
                 if (pr.length) groupProblems[f.group] = (groupProblems[f.group] || 0) + 1;
@@ -646,6 +674,9 @@
         $('#mp-bycolumn').on('change', '[data-map-column]', function () {
             var ci = $(this).attr('data-map-column'), f = byIndex[$(this).val()];
             if (!f) return;
+            // mapping a column replaces a generated value; an ID is then made from this column
+            var g = generated(f);
+            if (g && g !== 'ID') f.$gen.val('').trigger('change');
             f.$col.val(ci).trigger('change');
             // the table was drawn again: back to the same column's dropdown, for the keyboard
             $('#mp-bycolumn select[data-map-column="' + ci + '"]').next('.select2').find('.select2-selection').trigger('focus');

@@ -283,6 +283,7 @@
          data-map-to="<@s.text name='manage.mapping.bycol.mapTo'/>"
          data-remove="<@s.text name='manage.mapping.bycol.remove'/>"
          data-translated="<@s.text name='manage.mapping.bycol.translated'/>"
+         data-generated="<@s.text name='manage.mapping.bycol.generated'/>"
          data-no-results="${selectNoResultsFound}"
          data-unsaved="<@s.text name='manage.mapping.savebar.leave'/>"></div>
 
