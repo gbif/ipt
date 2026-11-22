@@ -62,6 +62,10 @@ public class DataPackageRowsPreview {
   private int sourceRows;
   private int rowsMade;
   private int merged;
+  /** rows of a merging mapping whose key field is empty: they aren't merged */
+  private int unkeyed;
+  /** the field rows merge by, null when they don't merge or merge as identical rows */
+  private String mergeKey;
   private final int shown;
 
   /**
@@ -71,6 +75,13 @@ public class DataPackageRowsPreview {
   public int getProblemCount() {
     return problems.size() + conflicts.size() + emptyRequired.size()
         + (int) linkChecks.stream().filter(l -> !l.missing().isEmpty()).count();
+  }
+
+  /**
+   * @return the rows without a key to tell about: none when the key is a required field, already reported as empty
+   */
+  public int getUnkeyedShown() {
+    return mergeKey != null && emptyRequired.containsKey(mergeKey) ? 0 : unkeyed;
   }
 
   /**
@@ -115,6 +126,10 @@ public class DataPackageRowsPreview {
           emptyRequired.put(field.getName(), empty);
         }
       }
+    }
+
+    if (builder.isMerging() && !mapping.isWholeRowMerge()) {
+      mergeKey = mapping.getEffectiveMergeKey();
     }
 
     checkLinks(mapping, table, allMappings, sourceManager, sample, sourceColumns, result);
@@ -185,8 +200,15 @@ public class DataPackageRowsPreview {
   private List<Row> merge(List<Row> made, DataPackageRowBuilder builder) {
     Map<String, Row> byKey = new LinkedHashMap<>();
     Set<String> conflicting = new HashSet<>();
+    int noKey = 0;
     for (Row r : made) {
       String key = builder.mergeKey(r.values());
+      if (key == null) {
+        // no key: a row of its own
+        byKey.put("\u0000" + noKey++, r);
+        unkeyed++;
+        continue;
+      }
       Row first = byKey.get(key);
       if (first == null) {
         // a copy: empty values get filled from later rows

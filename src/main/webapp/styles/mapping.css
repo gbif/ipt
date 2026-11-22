@@ -239,6 +239,7 @@ body.mp-dirty { padding-bottom: 60px; }
 .mp-checks li .material-icon { margin-top: 2px; flex: none; }
 .mp-checks li.bad { color: rgb(var(--color-gbif-danger)); }
 .mp-checks li.ok { color: rgb(55, 115, 55); }
+.mp-checks li.warn .material-icon { color: rgb(var(--alert-warning-icon-color)); }
 .mp-result-table { overflow-x: auto; border: 1px solid #dee2e6; border-radius: 6px; }
 .mp-result-table td, .mp-result-table th { white-space: nowrap; }
 .mp-result-table .mp-rn { color: #adb5bd; width: 1%; }

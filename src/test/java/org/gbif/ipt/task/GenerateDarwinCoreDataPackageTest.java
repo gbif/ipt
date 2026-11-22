@@ -17,6 +17,7 @@ import org.gbif.datapackage.DataPackage;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.DataPackageField;
+import org.gbif.ipt.model.DataPackageFieldConstraints;
 import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageRowMode;
@@ -202,6 +203,110 @@ public class GenerateDarwinCoreDataPackageTest {
         "eventID,eventDate,locality",
         "e1,2020-01-01,Copenhagen",
         "e2,2020-01-02,Aarhus"), lines);
+  }
+
+  /**
+   * Rows with an empty key aren't one row: each stays as it is, no conflict and no row made of several.
+   */
+  @Test
+  public void testDistinctRowsWithEmptyKeyStayUnmerged() throws Exception {
+    Source source = source("flat",
+        new String[] {"e1", "2020-01-01", "Copenhagen"},
+        new String[] {"", "2020-06-10", "Malmo"},
+        new String[] {"e1", "2020-01-01", "Copenhagen"},
+        new String[] {"", "2020-07-02", "Ystad"},
+        new String[] {" ", "", "Visby"});
+    DataPackageMapping m = mapping(source,
+        new DataPackageFieldMapping(0, field("eventID")),
+        new DataPackageFieldMapping(1, field("eventDate")),
+        new DataPackageFieldMapping(2, field("locality")));
+    m.setRowMode(DataPackageRowMode.DISTINCT);
+    m.setMergeKey("eventID");
+
+    generator.addDataResource(eventTableSchema, List.of(m), true);
+
+    List<String> lines = Files.readAllLines(new File(dataPackageFolder, "event.csv").toPath(), StandardCharsets.UTF_8);
+    assertEquals(5, lines.size(), lines.toString());
+    assertEquals(1, lines.stream().filter(l -> l.startsWith("e1,")).count(), lines.toString());
+    assertTrue(lines.contains(",2020-06-10,Malmo") && lines.contains(",2020-07-02,Ystad")
+        && lines.stream().anyMatch(l -> l.endsWith(",,Visby")), lines.toString());
+  }
+
+  /**
+   * Values are compared as they are written, trimmed and without tabs or line breaks: "E1 " is E1 (one row, not a
+   * duplicate key), and "Copenhagen " doesn't conflict with "Copenhagen".
+   */
+  @Test
+  public void testDistinctRowsCompareValuesAsWritten() throws Exception {
+    Source source = source("flat",
+        new String[] {"e1", "2020-01-01", "Copenhagen"},
+        new String[] {"e1 ", "2020-01-01", "Copenhagen "},
+        new String[] {"\te1", "", "Copen\nhagen"},
+        new String[] {"e2", "2020-01-02", "Aarhus"});
+    DataPackageMapping m = mapping(source,
+        new DataPackageFieldMapping(0, field("eventID")),
+        new DataPackageFieldMapping(1, field("eventDate")),
+        new DataPackageFieldMapping(2, field("locality")));
+    m.setRowMode(DataPackageRowMode.DISTINCT);
+    m.setMergeKey("eventID");
+
+    generator.addDataResource(eventTableSchema, List.of(m), true);
+
+    List<String> lines = Files.readAllLines(new File(dataPackageFolder, "event.csv").toPath(), StandardCharsets.UTF_8);
+    assertEquals(List.of(
+        "eventID,eventDate,locality",
+        "e1,2020-01-01,Copenhagen",
+        "e2,2020-01-02,Aarhus"), lines);
+
+    // the Result agrees
+    when(mockSourceManager.rowIterator(source)).thenReturn(new RowIterator(List.of(
+        new String[] {"e1", "2020-01-01", "Copenhagen"},
+        new String[] {"e1 ", "2020-01-01", "Copenhagen "},
+        new String[] {"\te1", "", "Copen\nhagen"},
+        new String[] {"e2", "2020-01-02", "Aarhus"})));
+    DataPackageRowsPreview pv = new DataPackageRowsPreview(m, List.of(m), mockSourceManager, 50, 50);
+    assertEquals(2, pv.getMerged());
+    assertTrue(pv.getConflicts().isEmpty(), pv.getConflicts().toString());
+    assertEquals(0, pv.getUnkeyed());
+  }
+
+  /**
+   * The mapping page's Result makes the rows as publishing does: rows with an empty key stay rows of their own and are
+   * told about, unless the key is required and so already reported as empty.
+   */
+  @Test
+  public void testResultKeepsRowsWithEmptyKeyUnmerged() throws Exception {
+    Source source = source("flat",
+        new String[] {"e1", "2020-01-01", "Copenhagen"},
+        new String[] {"", "2020-06-10", "Malmo"},
+        new String[] {"e1", "2020-01-01", "Copenhagen"},
+        new String[] {"", "2020-07-02", "Ystad"},
+        new String[] {" ", "", "Visby"});
+    DataPackageMapping m = mapping(source,
+        new DataPackageFieldMapping(0, field("eventID")),
+        new DataPackageFieldMapping(1, field("eventDate")),
+        new DataPackageFieldMapping(2, field("locality")));
+    m.setRowMode(DataPackageRowMode.DISTINCT);
+    m.setMergeKey("eventID");
+
+    DataPackageRowsPreview pv = new DataPackageRowsPreview(m, List.of(m), mockSourceManager, 50, 50);
+    assertEquals(5, pv.getRowsMade());
+    assertEquals(1, pv.getMerged());
+    assertEquals(4, pv.getRows().size());
+    assertTrue(pv.getConflicts().isEmpty(), pv.getConflicts().toString());
+    assertEquals(3, pv.getUnkeyed());
+    assertEquals(3, pv.getUnkeyedShown());
+    assertEquals("eventID", pv.getMergeKey());
+
+    // a required key: reported as empty instead
+    eventTableSchema.getFields().get(0).setConstraints(DataPackageFieldConstraints.builder().required(true).build());
+    when(mockSourceManager.rowIterator(source)).thenReturn(new RowIterator(List.of(
+        new String[] {"e1", "2020-01-01", "Copenhagen"},
+        new String[] {"", "2020-06-10", "Malmo"})));
+    pv = new DataPackageRowsPreview(m, List.of(m), mockSourceManager, 50, 50);
+    assertEquals(Map.of("eventID", 1), pv.getEmptyRequired());
+    assertEquals(1, pv.getUnkeyed());
+    assertEquals(0, pv.getUnkeyedShown());
   }
 
   /**

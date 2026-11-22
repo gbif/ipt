@@ -38,6 +38,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataPackageRowBuilderTest {
@@ -187,6 +188,21 @@ public class DataPackageRowBuilderTest {
     assertTrue(b.isMerging());
     assertEquals(b.mergeKey(new String[] {"recorder", "1"}), b.mergeKey(new String[] {"recorder", "1"}));
     assertNotEquals(b.mergeKey(new String[] {"recorder", "1"}), b.mergeKey(new String[] {"recorder", "2"}));
+
+    // by a key field: an empty key isn't a key, the row doesn't merge
+    DataPackageMapping ev = mapping("event", source, column("eventID", 1));
+    ev.setRowMode(DataPackageRowMode.DISTINCT);
+    ev.setMergeKey("eventID");
+    DataPackageRowBuilder byKey = new DataPackageRowBuilder(ev, List.of("eventID"), List.of(ev), COLUMNS);
+    assertTrue(byKey.isMerging());
+    assertEquals("E1", byKey.mergeKey(new String[] {"E1"}));
+    assertNull(byKey.mergeKey(new String[] {""}));
+    assertNull(byKey.mergeKey(new String[] {" "}));
+    assertNull(byKey.mergeKey(new String[] {null}));
+    // values as written: spaces around, tabs and line breaks don't count
+    assertEquals("E1", byKey.mergeKey(new String[] {"E1 "}));
+    assertEquals("E1", byKey.mergeKey(new String[] {"\tE1\n"}));
+    assertArrayEquals(new String[] {"E1"}, byKey.build(new String[] {"OBS-1", " E1 ", "x"}).get(0));
 
     // one row per source row never merges
     role.setRowMode(null);

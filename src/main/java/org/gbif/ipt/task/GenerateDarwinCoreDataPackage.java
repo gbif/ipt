@@ -91,7 +91,6 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     WAITING, STARTED, DATARESOURCES, METADATA, BUNDLING, COMPLETED, ARCHIVING, VALIDATING, CANCELLED, FAILED
   }
 
-  private static final Pattern ESCAPE_CHARS = Pattern.compile("[\t\n\r]");
 
   // DwC-DP table schema keys on identifiers that may point outside the dataset
   private static final String WEAK_PRIMARY_KEY = "weakPrimaryKey";
@@ -682,6 +681,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     long recordsWithError = 0;
     long linesWithWrongColumnNumber = 0;
     long recordsFiltered = 0;
+    long unkeyed = 0;
     long emptyLines = 0;
     ClosableReportingIterator<String[]> iter = null;
     long line = 0;
@@ -795,9 +795,14 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
           }
 
           for (String[] built : rowBuilder.build(in)) {
-            if (merging) {
-              mergeWriter.write(MergeLines.write(rowBuilder.mergeKey(built), line, built));
+            String mergeKey = merging ? rowBuilder.mergeKey(built) : null;
+            if (mergeKey != null) {
+              mergeWriter.write(MergeLines.write(mergeKey, line, built));
               continue;
+            }
+            // merging, but the key is empty: the row stays as it is
+            if (merging) {
+              unkeyed++;
             }
             // concatenate values
             String newRow = commaRow(built);
@@ -883,6 +888,12 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
           + " line(s) did not match the filter criteria and got skipped " + mp);
     } else {
       writePublicationLogMessage("All lines match the filter criteria" + mp);
+    }
+
+    // rows of a merging mapping without a key
+    if (unkeyed > 0) {
+      addMessage(Level.WARN, unkeyed + " row(s) with an empty " + schemaMapping.getEffectiveMergeKey()
+          + " not merged" + mp);
     }
   }
 
@@ -1072,7 +1083,7 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
     for (int i = 0; i < columns.length; i++) {
       if (columns[i] != null) {
         empty = false;
-        columns[i] = StringUtils.trimToNull(ESCAPE_CHARS.matcher(columns[i]).replaceAll(""));
+        columns[i] = DataPackageRowBuilder.clean(columns[i]);
 
         boolean containsDoubleQuotes = StringUtils.contains(columns[i], '"');
         boolean containsComma = StringUtils.contains(columns[i], ',');

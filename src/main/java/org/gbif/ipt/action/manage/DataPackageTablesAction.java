@@ -331,8 +331,14 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     Map<String, List<String[]>> groups = new LinkedHashMap<>();
     if (eventTable != null) {
       Set<String> eventFields = fieldNames(eventTable);
-      for (String[] row : sample) {
-        groups.computeIfAbsent(eventKey(row, eventKeyCols), k -> new ArrayList<>()).add(row);
+      for (int i = 0; i < sample.size(); i++) {
+        String[] row = sample.get(i);
+        String key = eventKey(row, eventKeyCols);
+        // an empty key is no event: publishing doesn't merge such rows, each is an event of its own
+        if (!eventKeyCols.isEmpty() && StringUtils.isBlank(key)) {
+          key = "\u0000" + i;
+        }
+        groups.computeIfAbsent(key, k -> new ArrayList<>()).add(row);
       }
       for (int c = 0; c < columns.size(); c++) {
         if (c == occCol || c == eventCol || !matchesField(columns.get(c), eventFields)) {
@@ -571,7 +577,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   private static List<String> differInside(Map<String, List<String[]>> groups, int col) {
     List<String> differ = new ArrayList<>();
     for (Map.Entry<String, List<String[]>> g : groups.entrySet()) {
-      if (g.getValue().stream().map(r -> value(r, col)).distinct().count() > 1) {
+      if (g.getValue().stream().map(r -> DataPackageRowBuilder.clean(value(r, col))).distinct().count() > 1) {
         differ.add(StringUtils.defaultIfEmpty(g.getKey(), "-"));
       }
     }
@@ -628,7 +634,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     int rows = 0;
     for (String[] in : sample) {
       for (String[] r : builder.build(in)) {
-        if (!builder.isMerging() || keys.add(builder.mergeKey(r))) {
+        String key = builder.isMerging() ? builder.mergeKey(r) : null;
+        // rows without a key don't merge
+        if (key == null || keys.add(key)) {
           rows++;
           if (s.preview.size() < PREVIEW_ROWS) {
             s.preview.add(r);
@@ -746,7 +754,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
 
   private static String eventKey(String[] row, List<Integer> keyCols) {
     // as the key template fills it in, so the groups are the events publishing makes
-    return keyCols.stream().map(c -> StringUtils.defaultString(value(row, c))).collect(Collectors.joining(" "));
+    String key = keyCols.stream().map(c -> StringUtils.defaultString(value(row, c))).collect(Collectors.joining(" "));
+    // and as it is written: "E1 " is E1, an empty key is none
+    return StringUtils.defaultString(DataPackageRowBuilder.clean(key));
   }
 
   private static String value(String[] row, int c) {
@@ -754,7 +764,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   }
 
   private static long distinct(List<String[]> sample, int c) {
-    return sample.stream().map(r -> StringUtils.defaultString(value(r, c))).distinct().count();
+    // as written: "OBS-1 " and "OBS-1" are one value
+    return sample.stream().map(r -> StringUtils.defaultString(DataPackageRowBuilder.clean(value(r, c))))
+        .distinct().count();
   }
 
   /**

@@ -127,6 +127,33 @@ public class DataPackageTablesActionTest {
         agent.getPreview().stream().map(Arrays::toString).toList().toString());
   }
 
+  /**
+   * Rows without an eventID aren't one event: publishing doesn't merge them, so the wizard counts and compares each
+   * as an event of its own. Values count as written: "E1 " is E1.
+   */
+  @Test
+  public void testRowsWithoutEventIdAreEventsOfTheirOwn() {
+    TextFileSource source = new TextFileSource();
+    source.setName("gaps.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "eventDate", "locality");
+    List<String[]> sample = List.of(
+        new String[] {"O1", "E1", "2024-05-01", "Lund"},
+        // written as E1 and Lund: the same event
+        new String[] {"O2", "E1 ", "2024-05-01", "Lund "},
+        new String[] {"O3", "", "2024-06-10", "Malmo"},
+        new String[] {"O4", "", "2024-07-02", "Ystad"});
+    Map<String, DataPackageTablesAction.Suggestion> byId = DataPackageTablesAction.suggest(schema(), source, columns, sample)
+        .stream().collect(Collectors.toMap(DataPackageTablesAction.Suggestion::getId, x -> x));
+
+    DataPackageTablesAction.Suggestion ev = byId.get("event");
+    // E1 ("E1 " too) and the two rows without an eventID
+    assertEquals(3, ev.getRows());
+    // the date and place don't differ inside an event: they go to the event, no warning
+    assertEquals(2, ev.getMapping().getField("eventDate").getIndex());
+    assertEquals(3, ev.getMapping().getField("locality").getIndex());
+    assertTrue(ev.getWarnings().isEmpty(), ev.getWarnings().toString());
+  }
+
   @Test
   public void testSpecimensMakeMaterial() {
     TextFileSource source = new TextFileSource();

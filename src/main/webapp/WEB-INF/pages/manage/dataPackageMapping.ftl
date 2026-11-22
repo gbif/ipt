@@ -504,6 +504,8 @@
                                             <li class="bad"><@icon name="error"/><span><@s.text name="manage.mapping.result.conflict"><@s.param>${mapping.mergeKey!}</@s.param><@s.param>${c.key()}</@s.param><@s.param>${c.field()}</@s.param><@s.param>${c.first()!}</@s.param><@s.param>${c.firstLine()?c}</@s.param><@s.param>${c.other()!}</@s.param><@s.param>${c.otherLine()?c}</@s.param></@s.text></span></li>
                                         </#list>
                                         <#list pv.emptyRequired as f, n><li class="bad"><@icon name="error"/><span><@s.text name="manage.mapping.result.emptyRequired"><@s.param>${f}</@s.param><@s.param>${n?c}</@s.param></@s.text></span></li></#list>
+                                        <#-- rows without a key stay unmerged; a required key is already reported as empty -->
+                                        <#if pv.unkeyedShown gt 0><li class="warn"><@icon name="warning"/><span><@s.text name="manage.mapping.result.unkeyed"><@s.param>${pv.mergeKey!}</@s.param><@s.param>${pv.unkeyedShown?c}</@s.param></@s.text></span></li></#if>
                                         <#list pv.linkChecks as l>
                                             <#if l.missing()?has_content>
                                                 <li class="bad"><@icon name="error"/><span><@s.text name="manage.mapping.result.linkMissing"><@s.param>${l.field()}</@s.param><@s.param>${l.target()}</@s.param><@s.param>${l.missing()?size?c}</@s.param><@s.param><#list l.missing() as v><#if v?index lt 3>${v}<#sep>, </#sep></#if></#list></@s.param></@s.text></span></li>

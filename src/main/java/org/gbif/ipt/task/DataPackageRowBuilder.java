@@ -52,6 +52,8 @@ public class DataPackageRowBuilder {
   private static final UUID URL_NAMESPACE = UUID.fromString("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
   private static final String NAMESPACE_PREFIX = "https://ipt.gbif.org/data-package/";
   private static final Pattern WHITESPACE = Pattern.compile("\\s+");
+  // tabs and line breaks: the data package writer drops them
+  private static final Pattern WRITE_ESCAPES = Pattern.compile("[\t\n\r]");
   private static final Pattern PLACEHOLDER = Pattern.compile("\\{([^{}]+)}");
   static final String ITEM_PLACEHOLDER = "item";
   static final String POSITION_PLACEHOLDER = "position";
@@ -210,13 +212,15 @@ public class DataPackageRowBuilder {
   }
 
   /**
-   * @return the value rows merge by: the key field's, or the whole row for identical rows; null if they don't merge
+   * @param row a row made by {@link #build}: its values are clean, as written ({@link #clean})
+   * @return the value rows merge by: the key field's, or the whole row for identical rows; null if they don't merge or
+   * the key field is empty: rows without a key aren't the same row, each stays as it is
    */
   public String mergeKey(String[] row) {
     if (wholeRowMerge) {
       return String.join("\u001F", Arrays.stream(row).map(StringUtils::defaultString).toList());
     }
-    return mergeColumn >= 0 ? StringUtils.defaultString(row[mergeColumn]) : null;
+    return mergeColumn >= 0 ? clean(row[mergeColumn]) : null;
   }
 
   /**
@@ -263,7 +267,8 @@ public class DataPackageRowBuilder {
     for (int i = 0; i < out.length; i++) {
       DataPackageFieldMapping fm = usedMappings.get(i);
       if (fm != null) {
-        out[i] = value(new Rule(fm, table), in, item);
+        // as written: "E1 " is the same key as "E1"
+        out[i] = clean(value(new Rule(fm, table), in, item));
       }
     }
     return out;
@@ -334,6 +339,14 @@ public class DataPackageRowBuilder {
     }
     m.appendTail(sb);
     return sb.toString();
+  }
+
+  /**
+   * @return the value as the data package writer writes it: without tabs and line breaks, trimmed, null if nothing is
+   * left. Rows are compared and merged by these values, so two values written the same are the same
+   */
+  public static String clean(String value) {
+    return value == null ? null : StringUtils.trimToNull(WRITE_ESCAPES.matcher(value).replaceAll(""));
   }
 
   /**
