@@ -45,6 +45,8 @@ $(function () {
         // a generated value replaces the column, except an ID made from it
         var $colcell = $gen.siblings('.mp-colcell');
         $colcell.toggleClass('mp-generated', kind !== '' && kind !== 'ID');
+        // and the constant value, always: it's dropped when the mapping is saved
+        $gen.closest('.mp-field').toggleClass('mp-const-off', kind !== '');
         // an ID is made from the column when one is chosen, otherwise from each list item
         var hasCol = ($colcell.find('.mp-col').val() || '') !== '';
         $gen.find('[data-id-from=col]').prop('hidden', !hasCol);

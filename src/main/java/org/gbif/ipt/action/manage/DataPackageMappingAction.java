@@ -239,10 +239,22 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
         }
       }
       fm.setPairColumns(pairs);
-      // a generated value replaces the column, except an ID made from it
-      if (kind != null && kind != DataPackageValueKind.ID) {
-        fm.setIndex(null);
-      }
+      dropReplaced(fm);
+    }
+  }
+
+  /**
+   * Drops what a generated value replaces (DataPackageRowBuilder): the constant value, and the column except for an ID
+   * made from it.
+   */
+  static void dropReplaced(DataPackageFieldMapping fm) {
+    DataPackageValueKind kind = fm.getValueKind();
+    if (kind == null) {
+      return;
+    }
+    fm.setDefaultValue(null);
+    if (kind != DataPackageValueKind.ID) {
+      fm.setIndex(null);
     }
   }
 

@@ -70,7 +70,7 @@
     <#local badTr = badTranslations[f.name]![]/>
     <#local badConst = badConstants[f.name]!""/>
     <#local constraints = fieldConstraints[f.name]![]/>
-    <div class="mp-field" id="field-${i?c}" data-i="${i?c}" data-group="0" data-label="${label}" data-term="${f.name}"
+    <div class="mp-field<#if ((fm.valueKind.name())!"")?has_content> mp-const-off</#if>" id="field-${i?c}" data-i="${i?c}" data-group="0" data-label="${label}" data-term="${f.name}"
          data-required="${f.required?c}" data-type="${type}" data-unique="${((c.unique)!false)?c}"
          data-enum="${vocabulary?has_content?c}" data-expect="${expectations[f.name]!}" data-bad="${badCells[f.name]!}"<#if badConst?has_content> data-bad-const="${badConst}"</#if>
          data-search="${(label + ' ' + f.name + ' ' + (f.description!''))?lower_case}">

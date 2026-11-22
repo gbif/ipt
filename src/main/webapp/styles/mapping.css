@@ -229,6 +229,8 @@ body.mp-dirty { padding-bottom: 60px; }
 .mp-colcell.mp-generated { display: none; }
 /* the column is hidden, so the generated value is the first control in the cell: level with the constant value */
 .mp-colcell.mp-generated + .mp-gen { margin-top: 0; }
+/* a generated value replaces the constant value (js/dp-rows.js): kept in place, so the row doesn't move */
+.mp-const-off .mp-const, .mp-const-off .mp-const + .select2-container { visibility: hidden; }
 .mp-result-counts { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.85rem; margin-bottom: 8px; }
 .mp-checks { list-style: none; padding: 0; margin: 0 0 10px; display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; }
 .mp-checks li { display: flex; gap: 6px; align-items: flex-start; }

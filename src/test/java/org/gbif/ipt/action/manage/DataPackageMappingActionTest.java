@@ -15,6 +15,7 @@ package org.gbif.ipt.action.manage;
 
 import org.gbif.ipt.model.DataPackageField;
 import org.gbif.ipt.model.DataPackageFieldMapping;
+import org.gbif.ipt.model.DataPackageValueKind;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,31 @@ public class DataPackageMappingActionTest {
   /**
    * Field names with underscores, hyphens or digits are automapped from columns with the same name.
    */
+  @Test
+  public void testGeneratedValueDropsWhatItReplaces() {
+    DataPackageFieldMapping template = new DataPackageFieldMapping(2, new DataPackageField());
+    template.setDefaultValue("unused");
+    template.setValueKind(DataPackageValueKind.TEMPLATE);
+    DataPackageMappingAction.dropReplaced(template);
+    assertNull(template.getIndex());
+    assertNull(template.getDefaultValue());
+
+    // an ID is made from its column
+    DataPackageFieldMapping id = new DataPackageFieldMapping(1, new DataPackageField());
+    id.setDefaultValue("unused");
+    id.setValueKind(DataPackageValueKind.ID);
+    DataPackageMappingAction.dropReplaced(id);
+    assertEquals(Integer.valueOf(1), id.getIndex());
+    assertNull(id.getDefaultValue());
+
+    // not generated: column and constant stay
+    DataPackageFieldMapping plain = new DataPackageFieldMapping(0, new DataPackageField());
+    plain.setDefaultValue("fallback");
+    DataPackageMappingAction.dropReplaced(plain);
+    assertEquals(Integer.valueOf(0), plain.getIndex());
+    assertEquals("fallback", plain.getDefaultValue());
+  }
+
   @Test
   public void testAutomapFieldNamesWithSpecialCharacters() {
     List<DataPackageFieldMapping> fields = fieldMappings(
