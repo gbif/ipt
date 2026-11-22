@@ -396,7 +396,11 @@
                 $g.find('.mp-group-more').prop('hidden', more <= 0).children('span').text(fmt(i18n.groupMore, more));
                 if (openMatches && shown > 0) setOpen($g, true);
             });
-            $('#mp-nomatch').prop('hidden', anyShown).find('b').text(function (k, t) { return $(this).data('t') ? fmt($(this).data('t'), query) : t; });
+            // nothing shown: a search found nothing (with a way to clear it), or the chosen list is empty
+            var none = {problems: i18n.noneProblems, unmapped: i18n.noneUnmapped}[show] || i18n.noneDefault;
+            var $none = $('#mp-nomatch').prop('hidden', anyShown);
+            $none.find('b').text(query ? fmt($none.find('b').data('t'), query) : none);
+            $('#mp-clear-q').prop('hidden', !query);
             $('#mp-show button').each(function () { $(this).toggleClass('on', !query && $(this).attr('data-show') === show); });
         }
 
