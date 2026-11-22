@@ -43,9 +43,15 @@ $(function () {
             $(this).prop('hidden', $(this).attr('data-kind-help') !== kind);
         });
         // a generated value replaces the column, except an ID made from it
-        $gen.siblings('.mp-colcell').toggleClass('mp-generated', kind !== '' && kind !== 'ID');
+        var $colcell = $gen.siblings('.mp-colcell');
+        $colcell.toggleClass('mp-generated', kind !== '' && kind !== 'ID');
+        // an ID is made from the column when one is chosen, otherwise from each list item
+        var hasCol = ($colcell.find('.mp-col').val() || '') !== '';
+        $gen.find('[data-id-from=col]').prop('hidden', !hasCol);
+        $gen.find('[data-id-from=item]').prop('hidden', hasCol);
     }
     $(document).on('change', '.mp-gen-kind', function () { renderGen($(this).closest('.mp-gen')); });
+    $(document).on('change', '.mp-col', function () { renderGen($(this).closest('.mp-colcell').siblings('.mp-gen')); });
     $(document).on('click', '.mp-gen-open', function () {
         var $kind = $(this).prop('hidden', true).siblings('.mp-gen').prop('hidden', false).find('.mp-gen-kind');
         // select2 hides the select: focus its box instead

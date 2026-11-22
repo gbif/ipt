@@ -135,7 +135,17 @@
                 <div class="mp-gen-help" data-kind-help="ITEM"<#if gen != "ITEM"> hidden</#if>><@s.text name="manage.mapping.gen.ITEM.help"/></div>
                 <div class="mp-gen-help" data-kind-help="POSITION"<#if gen != "POSITION"> hidden</#if>><@s.text name="manage.mapping.gen.POSITION.help"/></div>
                 <#if fk?has_content><div class="mp-gen-help" data-kind-help="LINK"<#if gen != "LINK"> hidden</#if>><@s.text name="manage.mapping.gen.LINK.help"><@s.param>${fk?keep_before_last(".")}</@s.param></@s.text></div></#if>
-                <div class="mp-gen-help" data-kind-help="ID"<#if gen != "ID"> hidden</#if>><@s.text name="manage.mapping.gen.ID.help"/></div>
+                <#-- what the code is made from: the field's column, otherwise each item of the Rows lists (js/dp-rows.js switches) -->
+                <#local hasCol = ((fm.index)!-1) gte 0/>
+                <div class="mp-gen-help" data-kind-help="ID"<#if gen != "ID"> hidden</#if>>
+                    <span data-id-from="col"<#if !hasCol> hidden</#if>><@s.text name="manage.mapping.gen.ID.help.col"/></span>
+                    <#if splitColumns?has_content>
+                        <span data-id-from="item"<#if hasCol> hidden</#if>><@s.text name="manage.mapping.gen.ID.help.item"><@s.param>${splitColumns?map(sc -> columns[sc]!sc?c)?join(", ")}</@s.param></@s.text></span>
+                    <#else>
+                        <span data-id-from="item"<#if hasCol> hidden</#if>><@s.text name="manage.mapping.gen.ID.help.none"/></span>
+                    </#if>
+                    <@s.text name="manage.mapping.gen.ID.help.same"/>
+                </div>
                 <div class="mp-gen-help" data-kind-help="TEMPLATE"<#if gen != "TEMPLATE"> hidden</#if>><@s.text name="manage.mapping.gen.TEMPLATE.help"><@s.param>{occurrenceID}-id, {item}, {position}</@s.param></@s.text></div>
             </div>
             <button type="button" class="ov-link-btn mp-gen-open"<#if showGen> hidden</#if>><@s.text name="manage.mapping.gen.open"/></button>
