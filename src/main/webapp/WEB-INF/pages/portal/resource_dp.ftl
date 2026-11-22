@@ -258,7 +258,7 @@
                                             <@s.text name='portal.resource.dataPackage.verbose'/>
                                         </th>
                                         <td class="p-0">
-                                            <a href="${download_dp_url}" onClick="_gaq.push(['_trackEvent', 'Archive', 'Download', '${resource.shortname}' ]);">
+                                            <a href="${download_dp_url}" onClick="_trackEvent(['Archive', 'Download', '${resource.shortname}' ]);">
                                                 <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                                 <@s.text name='portal.resource.download'/>
                                             </a>
@@ -268,7 +268,7 @@
                                     <tr>
                                         <th class="p-0"><@s.text name='portal.resource.datapackage.metadata.verbose'/></th>
                                         <td class="p-0">
-                                            <a href="${download_metadata_url}" onClick="_gaq.push(['_trackEvent', 'Metadata', 'Download', '${resource.shortname}']);" download>
+                                            <a href="${download_metadata_url}" onClick="_trackEvent(['Metadata', 'Download', '${resource.shortname}']);" download>
                                                 <svg class="link-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="DownloadIcon"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
                                                 <@s.text name='portal.resource.download'/>
                                             </a>
