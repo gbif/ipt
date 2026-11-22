@@ -106,30 +106,33 @@
             <div class="mp-gen"<#if !showGen> hidden</#if>>
                 <select id="fGen${i?c}" class="form-select form-select-sm mp-gen-kind" name="valueKind_${i?c}" aria-label="${label}: <@s.text name='manage.mapping.gen.label'/>">
                     <option value="" data-desc="<@s.text name='manage.mapping.gen.none.desc'/>"><@s.text name="manage.mapping.gen.none"/></option>
-                    <option value="ITEM" data-desc="<@s.text name='manage.mapping.gen.ITEM.desc'/>"<#if gen == "ITEM"> selected</#if>><@s.text name="manage.mapping.gen.ITEM"/></option>
-                    <option value="POSITION" data-desc="<@s.text name='manage.mapping.gen.POSITION.desc'/>"<#if gen == "POSITION"> selected</#if>><@s.text name="manage.mapping.gen.POSITION"/></option>
+                    <option value="ITEM" data-lists data-desc="<@s.text name='manage.mapping.gen.ITEM.desc'/>"<#if gen == "ITEM"> selected</#if>><@s.text name="manage.mapping.gen.ITEM"/></option>
+                    <option value="POSITION" data-lists data-desc="<@s.text name='manage.mapping.gen.POSITION.desc'/>"<#if gen == "POSITION"> selected</#if>><@s.text name="manage.mapping.gen.POSITION"/></option>
                     <option value="ID" data-desc="<@s.text name='manage.mapping.gen.ID.desc'/>"<#if gen == "ID"> selected</#if>><@s.text name="manage.mapping.gen.ID"/></option>
                     <#if fk?has_content><option value="LINK" data-desc="<@s.text name='manage.mapping.gen.LINK.desc'><@s.param>${fk?keep_before_last(".")}</@s.param></@s.text>"<#if gen == "LINK"> selected</#if>><@s.text name="manage.mapping.gen.LINK"><@s.param>${fk?keep_before_last(".")}</@s.param></@s.text></option></#if>
                     <option value="TEMPLATE" data-desc="<@s.text name='manage.mapping.gen.TEMPLATE.desc'><@s.param>{occurrenceID}-id</@s.param></@s.text>"<#if gen == "TEMPLATE"> selected</#if>><@s.text name="manage.mapping.gen.TEMPLATE"/></option>
-                    <option value="PAIRED" data-desc="<@s.text name='manage.mapping.gen.PAIRED.desc'/>"<#if gen == "PAIRED"> selected</#if>><@s.text name="manage.mapping.gen.PAIRED"/></option>
+                    <option value="PAIRED" data-lists data-desc="<@s.text name='manage.mapping.gen.PAIRED.desc'/>"<#if gen == "PAIRED"> selected</#if>><@s.text name="manage.mapping.gen.PAIRED"/></option>
                 </select>
                 <input id="fTpl${i?c}" class="form-control form-control-sm mp-gen-tpl" name="template_${i?c}" value="${fm.template!}" placeholder="{occurrenceID}-id" aria-label="${label}: <@s.text name='manage.mapping.gen.TEMPLATE'/>"<#if gen != "TEMPLATE"> hidden</#if>/>
-                <#-- PAIRED: for each list column of the saved Rows, the list whose item at the same place is taken -->
+                <#-- PAIRED: for each list column in Rows, the list whose item at the same place is taken; js/dp-rows.js redraws these
+                     as the lists in Rows change (data-list: the list column a select is for) -->
                 <div class="mp-gen-help mp-gen-pairs" data-kind-help="PAIRED"<#if gen != "PAIRED"> hidden</#if>>
-                    <#if splitColumns?has_content>
-                        <#local pairs = fm.pairColumns![]/>
-                        <#list splitColumns as sc>
-                            <#local chosen = (pairs[sc?index])!-1/>
-                            <label class="mp-pair"><span><@s.text name="manage.mapping.gen.PAIRED.for"><@s.param>${columns[sc]!sc}</@s.param></@s.text></span>
-                                <select class="form-select form-select-sm" name="pair_${i?c}_${sc?index}">
-                                    <option value=""></option>
-                                    <#list columns as col><option value="${col_index}"<#if col_index == chosen> selected</#if>>${col}</option></#list>
-                                </select>
-                            </label>
-                        </#list>
-                    <#else>
-                        <div><@s.text name="manage.mapping.gen.PAIRED.noLists"/></div>
-                    </#if>
+                    <div class="mp-pairs">
+                        <#if splitColumns?has_content>
+                            <#local pairs = fm.pairColumns![]/>
+                            <#list splitColumns as sc>
+                                <#local chosen = (pairs[sc?index])!-1/>
+                                <label class="mp-pair"><span><@s.text name="manage.mapping.gen.PAIRED.for"><@s.param>${columns[sc]!sc}</@s.param></@s.text></span>
+                                    <select class="form-select form-select-sm" data-list="${sc?c}" name="pair_${i?c}_${sc?index}">
+                                        <option value=""></option>
+                                        <#list columns as col><option value="${col_index}"<#if col_index == chosen> selected</#if>>${col}</option></#list>
+                                    </select>
+                                </label>
+                            </#list>
+                        <#else>
+                            <div><@s.text name="manage.mapping.gen.PAIRED.noLists"/></div>
+                        </#if>
+                    </div>
                 </div>
                 <#-- what the code is made from: the field's column, otherwise each item of the Rows lists (js/dp-rows.js switches) -->
                 <#local hasCol = ((fm.index)!-1) gte 0/>
@@ -255,6 +258,7 @@
          data-ready-none="<@s.text name='manage.mapping.ready.none'/>"
          data-msg-required="<@s.text name='manage.mapping.msg.required'/>"
          data-msg-required-empty="<@s.text name='manage.mapping.msg.requiredEmpty'/>"
+         data-msg-needs-lists="<@s.text name='manage.mapping.gen.needsLists'/>"
          data-msg-enum="<@s.text name='manage.mapping.msg.enum'/>"
          data-msg-invalid="<@s.text name='manage.mapping.msg.invalid'/>"
          data-id-dup="<@s.text name='manage.mapping.id.sample.dup'/>"
@@ -373,7 +377,10 @@
 
                         <#-- ROWS: how the rows of the table are made from the source rows -->
                         <span class="mp-anchor" id="anchor-mp-rows"></span>
-                        <section id="mp-rows" class="mp-section">
+                        <section id="mp-rows" class="mp-section"
+                                 data-needs-lists="<@s.text name='manage.mapping.gen.needsLists'/>"
+                                 data-pair-for="<@s.text name='manage.mapping.gen.PAIRED.for'><@s.param>{0}</@s.param></@s.text>"
+                                 data-pair-none="<@s.text name='manage.mapping.gen.PAIRED.noLists'/>">
                             <div class="mp-sec-head"><h2><@s.text name="manage.mapping.rows.title"/></h2><span><@s.text name="manage.mapping.rows.desc"/></span></div>
                             <div class="mp-cards mp-rowmodes">
                                 <#list ["ROW", "DISTINCT", "ITEMS"] as m>

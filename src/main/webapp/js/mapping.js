@@ -91,7 +91,6 @@
                 // data package mappings: a generated value (list item, key, template...), js/dp-rows.js
                 $gen: $row.find('.mp-gen-kind'),
                 $tpl: $row.find('.mp-gen-tpl'),
-                $pairs: $row.find('.mp-gen-pairs select'),
                 $const: $const,
                 $doi: $row.find('#doiUsedForDatasetId'),
                 $samples: $row.find('.mp-samples'),
@@ -134,7 +133,8 @@
             if (!g || (g === 'ID' && c >= 0)) add(c);
             else if (g === 'ID' || g === 'ITEM' || g === 'POSITION') listCols().forEach(add);
             else if (g === 'PAIRED') {
-                if (rowMode() === 'ITEMS') f.$pairs.each(function () { if (this.value !== '') add(+this.value); });
+                // looked up each time: js/dp-rows.js redraws them as the lists in Rows change
+                if (rowMode() === 'ITEMS') f.$row.find('.mp-gen-pairs select').each(function () { if (this.value !== '') add(+this.value); });
             } else if (g === 'TEMPLATE') {
                 String(f.$tpl.val() || '').replace(/\{([^{}]+)\}/g, function (m, name) {
                     if (name === 'item' || name === 'position') listCols().forEach(add);
@@ -171,6 +171,11 @@
             var out = [];
             if (f.mirrored) return out;
             if (f.required && !isMapped(f)) out.push({cls: 'bad', text: i18n.msgRequired});
+            // each item, its place and the matching item need rows made from a list (DataPackageRowBuilder)
+            var g = generated(f);
+            if ((g === 'ITEM' || g === 'POSITION' || g === 'PAIRED') && !listCols().length) {
+                out.push({cls: 'bad', text: i18n.msgNeedsLists});
+            }
             var bad = [], samples = checkedSamples(f);
             samples.forEach(function (s) {
                 if (s.state === 'bad' && bad.indexOf(s.pub) < 0) bad.push(s.pub);
