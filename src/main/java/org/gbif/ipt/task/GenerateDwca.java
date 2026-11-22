@@ -1445,7 +1445,7 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
    * @param doiUsedForDatasetId true if mapping should use resource DOI as datasetID, false otherwise
    * @param doi DOI assigned to resource
    */
-  private void applyTranslations(PropertyMapping[] inCols, String[] in, String[] record, boolean doiUsedForDatasetId,
+  static void applyTranslations(PropertyMapping[] inCols, String[] in, String[] record, boolean doiUsedForDatasetId,
     DOI doi) {
     for (int i = 1; i < inCols.length; i++) {
       PropertyMapping pm = inCols[i];
@@ -1453,15 +1453,15 @@ public class GenerateDwca extends ReportingTask implements Callable<Map<String, 
       if (pm != null) {
         if (pm.getIndex() != null) {
           val = in[pm.getIndex()];
-          // translate value?
-          if (pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
+          // translate value? (translations are TreeMaps, which reject null keys: a missing cell)
+          if (val != null && pm.getTranslation() != null && pm.getTranslation().containsKey(val)) {
             val = pm.getTranslation().get(val);
             // update value in original record
             in[pm.getIndex()] = val;
           }
         }
-        // use default value for null values
-        if (val == null) {
+        // the constant value where the column is empty or missing
+        if (StringUtils.isBlank(val) && pm.getDefaultValue() != null) {
           val = pm.getDefaultValue();
         }
         // use DOI for datasetID property?

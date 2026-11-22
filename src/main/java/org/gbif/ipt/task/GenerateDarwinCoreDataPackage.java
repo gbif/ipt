@@ -1030,23 +1030,22 @@ public class GenerateDarwinCoreDataPackage extends ReportingTask implements Call
    * @param in values array, of all columns in row
    * @param translated translated values
    */
-  private void applyTranslations(List<DataPackageFieldMapping> inCols,
-                                 String[] in, String[] translated) {
+  static void applyTranslations(List<DataPackageFieldMapping> inCols, String[] in, String[] translated) {
     for (int i = 0; i < inCols.size(); i++) {
       DataPackageFieldMapping mapping = inCols.get(i);
       String val = null;
       if (mapping != null) {
         if (mapping.getIndex() != null) {
           val = in[mapping.getIndex()];
-          // translate value?
-          if (mapping.getTranslation() != null && mapping.getTranslation().containsKey(val)) {
+          // translate value? (translations are TreeMaps, which reject null keys: a missing cell)
+          if (val != null && mapping.getTranslation() != null && mapping.getTranslation().containsKey(val)) {
             val = mapping.getTranslation().get(val);
             // update value in original record
             in[mapping.getIndex()] = val;
           }
         }
-        // use default value for null values
-        if (val == null) {
+        // the constant value where the column is empty or missing
+        if (StringUtils.isBlank(val) && mapping.getDefaultValue() != null) {
           val = mapping.getDefaultValue();
         }
       }

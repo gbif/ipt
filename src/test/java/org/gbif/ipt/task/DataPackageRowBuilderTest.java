@@ -257,4 +257,16 @@ public class DataPackageRowBuilderTest {
     fm.setTemplate(template);
     return fm;
   }
+
+  @Test
+  public void testConstantFillsEmptyAndMissingCells() {
+    DataPackageFieldMapping name = column("preferredAgentName", 2);
+    name.setDefaultValue("unknown");
+    DataPackageMapping agent = mapping("agent", source, column("agent_pk", 0), name);
+    DataPackageRowBuilder b = new DataPackageRowBuilder(agent, List.of("agent_pk", "preferredAgentName"), List.of(agent), COLUMNS);
+    assertEquals("unknown", b.build(new String[] {"A1", "E1", ""}).get(0)[1]);
+    assertEquals("unknown", b.build(new String[] {"A1", "E1", "  "}).get(0)[1]);
+    assertEquals("unknown", b.build(new String[] {"A1", "E1"}).get(0)[1]);
+    assertEquals("Collector A", b.build(new String[] {"A1", "E1", "Collector A"}).get(0)[1]);
+  }
 }

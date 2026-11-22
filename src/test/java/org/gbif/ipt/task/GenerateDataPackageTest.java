@@ -44,6 +44,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.Set;
 import java.util.zip.ZipFile;
 
@@ -665,5 +666,22 @@ public class GenerateDataPackageTest {
     @Override
     public void close() {
     }
+  }
+
+  @Test
+  public void testConstantFillsEmptyAndMissingCells() {
+    List<DataPackageFieldMapping> cols = new ArrayList<>();
+    for (int i = 0; i < 4; i++) {
+      DataPackageFieldMapping fm = new DataPackageFieldMapping(i, new DataPackageField());
+      fm.setDefaultValue("fallback");
+      // a translation doesn't stop the missing cell (null) from getting the constant
+      fm.setTranslation(new TreeMap<>(Map.of("x", "y")));
+      cols.add(fm);
+    }
+    // without a constant an empty cell stays as it is
+    cols.add(new DataPackageFieldMapping(0, new DataPackageField()));
+    String[] out = new String[cols.size()];
+    GenerateDataPackage.applyTranslations(cols, new String[] {"", "  ", "value", null}, out);
+    assertArrayEquals(new String[] {"fallback", "fallback", "value", "fallback", ""}, out);
   }
 }

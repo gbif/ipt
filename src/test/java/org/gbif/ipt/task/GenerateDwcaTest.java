@@ -31,6 +31,7 @@ import org.gbif.ipt.mock.MockDataDir;
 import org.gbif.ipt.mock.MockRegistryManager;
 import org.gbif.ipt.model.Extension;
 import org.gbif.ipt.model.FileSource;
+import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.model.converter.ConceptTermConverter;
@@ -88,6 +89,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -95,6 +97,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -779,5 +782,29 @@ public class GenerateDwcaTest extends IptBaseTest {
     elements = new String[]{null, null, null};
     tabRow = generateDwca.tabRow(elements);
     assertNull(tabRow);
+  }
+
+  @Test
+  public void testConstantFillsEmptyAndMissingCells() {
+    // the record ID column (0) isn't a property mapping
+    PropertyMapping[] cols = new PropertyMapping[6];
+    for (int i = 1; i <= 4; i++) {
+      cols[i] = propertyMapping(i - 1, "fallback");
+    }
+    // without a constant an empty cell stays as it is
+    cols[5] = propertyMapping(0, null);
+    String[] record = new String[cols.length];
+    GenerateDwca.applyTranslations(cols, new String[] {"", "  ", "value", null}, record, false, null);
+    assertArrayEquals(new String[] {null, "fallback", "fallback", "value", "fallback", ""}, record);
+  }
+
+  private static PropertyMapping propertyMapping(int index, String constant) {
+    PropertyMapping pm = new PropertyMapping();
+    pm.setIndex(index);
+    pm.setTerm(DwcTerm.locality);
+    pm.setDefaultValue(constant);
+    // a translation doesn't stop the missing cell (null) from getting the constant
+    pm.setTranslation(new TreeMap<>(Map.of("x", "y")));
+    return pm;
   }
 }

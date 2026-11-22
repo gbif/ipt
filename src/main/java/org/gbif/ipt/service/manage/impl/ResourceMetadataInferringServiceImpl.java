@@ -837,7 +837,8 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
     }
 
     /**
-     * @return the translated value, the default value if the value is missing, or null if blank
+     * @return the translated value, the default value if the value is blank or missing (as publishing does), or null
+     * if blank
      */
     private String value(String[] row) {
       String value = null;
@@ -848,7 +849,7 @@ public class ResourceMetadataInferringServiceImpl implements ResourceMetadataInf
           value = translation.get(value);
         }
       }
-      if (value == null) {
+      if (StringUtils.isBlank(value)) {
         value = defaultValue;
       }
       return StringUtils.trimToNull(value);

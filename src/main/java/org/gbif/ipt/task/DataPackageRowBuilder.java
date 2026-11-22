@@ -273,7 +273,8 @@ public class DataPackageRowBuilder {
     DataPackageFieldMapping fm = rule.mapping();
     if (fm.getValueKind() == null) {
       String value = column(in, fm.getIndex());
-      return value == null ? fm.getDefaultValue() : value;
+      // the constant value where the column is empty or missing
+      return StringUtils.isBlank(value) && fm.getDefaultValue() != null ? fm.getDefaultValue() : value;
     }
     return switch (fm.getValueKind()) {
       case ITEM -> item == null ? null : item.value();

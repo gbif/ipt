@@ -507,7 +507,7 @@ public class ResourceEmlMetadataInferringTest extends IptBaseTest {
         () -> assertEquals(10.0, bbox.getMax().getLatitude()),
         () -> assertEquals(7.5, bbox.getMax().getLongitude()),
         () -> assertEquals("2020-01-01", format(temporal.getData().getStartDate())),
-        // the blank value is published as it is, not replaced by the default value
+        // the missing and the blank value both get the default value, as when publishing
         () -> assertEquals(Arrays.asList("Animalia", "Fungi"), names(metadata.getInferredTaxonomicCoverage(), Constants.KINGDOM)));
   }
 
