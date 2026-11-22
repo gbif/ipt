@@ -702,6 +702,13 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   }
 
   /**
+   * @return true when the columns give the split something to start from: an occurrenceID or an eventID
+   */
+  static boolean canSplit(List<String> columns) {
+    return column(columns, "occurrenceID") >= 0 || column(columns, "eventID") >= 0;
+  }
+
+  /**
    * @return the index of the column named like the term, -1 if none
    */
   static int column(List<String> columns, String term) {

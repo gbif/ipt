@@ -350,8 +350,10 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
    * A readable source with the table it most likely fills ("Map tables", several sources at once).
    *
    * @param mappedTo the tables already mapped from the source, each once, empty when none
+   * @param flat a DwC-DP source the split can start from (an occurrenceID or eventID column): when it matches no table,
+   *             it's offered "Split into tables"
    */
-  public record SourceMatch(Source source, DataPackageSourceMatcher.Match match, List<String> mappedTo) {}
+  public record SourceMatch(Source source, DataPackageSourceMatcher.Match match, List<String> mappedTo, boolean flat) {}
 
   private List<SourceMatch> sourceMatches;
   // readable database sources left out of the matches: read only when matching is chosen (?how=MATCH)
@@ -386,7 +388,9 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
                 .map(m -> m.getDataPackageTableSchemaName().getName())
                 .distinct()
                 .toList();
-            sourceMatches.add(new SourceMatch(src, DataPackageSourceMatcher.match(src.getName(), columns, schema), mappedTo));
+            boolean flat = "dwc-dp".equals(schema.getName()) && DataPackageTablesAction.canSplit(columns);
+            sourceMatches.add(new SourceMatch(src, DataPackageSourceMatcher.match(src.getName(), columns, schema), mappedTo,
+                flat));
           } catch (Exception e) {
             LOG.warn("Can't read the columns of source {} to suggest its table", src.getName(), e);
           }

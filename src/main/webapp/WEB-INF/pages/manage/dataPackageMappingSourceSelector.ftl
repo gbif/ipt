@@ -24,7 +24,9 @@
 <#assign notRead = sourcesNotRead/>
 <#-- matching lists the unmapped sources a table was found for; the others are only named under the list -->
 <#assign toMatch = matches?filter(x -> !x.mappedTo()?has_content && x.match().table()??)/>
-<#assign noMatch = matches?filter(x -> !x.mappedTo()?has_content && !x.match().table()??)/>
+<#assign noMatch = matches?filter(x -> !x.mappedTo()?has_content && !x.match().table()?? && !x.flat())/>
+<#-- flat DwC-DP files (an occurrenceID or eventID, no table's key): split them instead -->
+<#assign flatSources = matches?filter(x -> !x.mappedTo()?has_content && !x.match().table()?? && x.flat())/>
 <#assign alreadyMapped = matches?filter(x -> x.mappedTo()?has_content)/>
 <#assign how = (Parameters.how)!""/>
 <#if !(how == "PICK" || how == "MATCH" || (how == "SPLIT" && isDwcDp))>
@@ -152,6 +154,9 @@
                 <p class="mt-rest"><@s.text name="manage.mapping.new.notRead"><@s.param>${notRead?map(x -> x.name)?join(", ")}</@s.param></@s.text>
                     <a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=MATCH"><@s.text name="manage.mapping.new.readNow"/></a></p>
             </#if>
+            <#list flatSources as sm>
+                <p class="mt-rest"><@s.text name="manage.mapping.new.flat"><@s.param>${sm.source().name}</@s.param><@s.param><a href="dataPackageTables.do?r=${resource.shortname}&source=${sm.source().name?url}"><@s.text name="manage.mapping.new.flat.split"/></a></@s.param><@s.param><a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=PICK&from=${sm.source().name?url}"><@s.text name="manage.mapping.new.flat.pick"/></a></@s.param></@s.text></p>
+            </#list>
             <#if noMatch?has_content>
                 <p class="mt-rest"><@s.text name="manage.mapping.new.noMatch"><@s.param><#list noMatch as sm><a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=PICK&from=${sm.source().name?url}">${sm.source().name}</a><#sep>, </#sep></#list></@s.param></@s.text></p>
             </#if>
