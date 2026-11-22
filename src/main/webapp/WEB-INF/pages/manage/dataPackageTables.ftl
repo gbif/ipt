@@ -51,7 +51,7 @@
             <#if unavailable?has_content>
                 <div class="ov-banner warn" role="status"><@icon name="warning" class="ov-ic"/><div class="ov-grow"><@s.text name=unavailable/></div></div>
             <#else>
-                <p class="text-smaller mb-2"><@s.text name="manage.tables.intro"/></p>
+                <p class="text-smaller mb-2"><@s.text name=introKey/></p>
                 <#-- how the tables point to each other -->
                 <div class="tb-links mb-3">
                     <#list links as table, to>

@@ -225,7 +225,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     sampleRows = sample.size();
     suggestions.addAll(suggest(dataPackageSchema, source, columns, sample));
     if (suggestions.isEmpty()) {
-      unavailable = "manage.tables.unavailable.noOccurrenceId";
+      unavailable = "manage.tables.unavailable.noRowKey";
     }
     unusedColumns = unused(columns, suggestions.stream().map(Suggestion::getMapping).toList());
   }
@@ -258,6 +258,14 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     return columns.stream().filter(c -> StringUtils.isNotBlank(c) && !used.contains(c)).toList();
   }
 
+  /**
+   * @return the intro text key: the source read as one row per occurrence, or without occurrences per event
+   */
+  public String getIntroKey() {
+    return suggestions.stream().anyMatch(s -> OCCURRENCE.equals(s.getId())) || suggestions.isEmpty()
+        ? "manage.tables.intro" : "manage.tables.intro.event";
+  }
+
   private List<String[]> read() {
     List<String[]> sample = new ArrayList<>();
     try (ClosableReportingIterator<String[]> iter = sourceManager.rowIterator(source)) {
@@ -286,15 +294,19 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     DataPackageTableSchema identificationTable = schema.tableSchemaByName(IDENTIFICATION);
     DataPackageTableSchema materialTable = schema.tableSchemaByName(MATERIAL);
 
-    int occCol = column(columns, "occurrenceID");
-    if (occTable == null || occCol < 0) {
+    // each row is an occurrence, or without an occurrenceID part of an event: the key of the row's own record must
+    // come from the data, a made-up one would change when the data is corrected
+    int occCol = occTable == null ? -1 : column(columns, "occurrenceID");
+    int eventCol = column(columns, "eventID");
+    boolean withOcc = occCol >= 0;
+    if (!withOcc && (eventTable == null || eventCol < 0)) {
       return result;
     }
-    int eventCol = column(columns, "eventID");
     Map<String, Integer> nameCols = new LinkedHashMap<>();
     for (String term : NAME_COLUMNS.keySet()) {
       int c = column(columns, term);
-      if (c >= 0) {
+      // without occurrences only the recorders have something to be linked to
+      if (c >= 0 && (withOcc || RECORDED_BY.equals(term))) {
         nameCols.put(term, c);
       }
     }
@@ -339,8 +351,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     // in DwC-DP 1.0 the recorders belong to the event: there when they're the same inside every event
     Integer recordedByCol = nameCols.get(RECORDED_BY);
     List<String> recordersDiffer = recordedByCol == null || !withEvent ? List.of() : differInside(groups, recordedByCol);
+    // without occurrences they're on the event even when they differ inside it: each name and event once
     boolean recordersOnEvent = recordedByCol != null && withEvent && eventRoleTable != null
-        && eventCols.contains(recordedByCol);
+        && (eventCols.contains(recordedByCol) || !withOcc);
     if (!recordersOnEvent) {
       // recorders per occurrence: their names and IDs don't go to the event
       eventCols.remove(recordedByCol);
@@ -348,24 +361,26 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     }
 
     // occurrence: one per row
-    DataPackageMapping occ = mapping(schema, source, occTable);
-    List<String> occColumns = new ArrayList<>(columns);
-    for (Integer c : eventCols) {
-      occColumns.set(c, "");
+    DataPackageMapping occ = withOcc ? mapping(schema, source, occTable) : null;
+    if (withOcc) {
+      List<String> occColumns = new ArrayList<>(columns);
+      for (Integer c : eventCols) {
+        occColumns.set(c, "");
+      }
+      if (withEvent && eventCol >= 0) {
+        occColumns.set(eventCol, "");
+      }
+      DataPackageMappingAction.automap(occ.getFields(), occColumns);
+      setColumn(occ, occTable.getPrimaryKey(), occCol);
+      if (withEvent) {
+        setKind(occ, foreignKeyTo(occTable, EVENT), DataPackageValueKind.LINK);
+      }
+      Suggestion occS = new Suggestion(OCCURRENCE, occ, true, "manage.tables.why.occurrence",
+          columns.get(occCol), String.valueOf(distinct(sample, occCol)), String.valueOf(sample.size()));
+      fillFromData(occS, sample, columns);
+      addAsks(occS);
+      result.add(occS);
     }
-    if (withEvent && eventCol >= 0) {
-      occColumns.set(eventCol, "");
-    }
-    DataPackageMappingAction.automap(occ.getFields(), occColumns);
-    setColumn(occ, occTable.getPrimaryKey(), occCol);
-    if (withEvent) {
-      setKind(occ, foreignKeyTo(occTable, EVENT), DataPackageValueKind.LINK);
-    }
-    Suggestion occS = new Suggestion(OCCURRENCE, occ, true, "manage.tables.why.occurrence",
-        columns.get(occCol), String.valueOf(distinct(sample, occCol)), String.valueOf(sample.size()));
-    fillFromData(occS, sample, columns);
-    addAsks(occS);
-    result.add(occS);
 
     if (withEvent) {
       DataPackageMapping ev = mapping(schema, source, eventTable);
@@ -382,7 +397,8 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       Suggestion evS;
       if (eventCol >= 0) {
         setColumn(ev, eventTable.getPrimaryKey(), eventCol);
-        evS = new Suggestion(EVENT, ev, true, "manage.tables.why.event", columns.get(eventCol),
+        evS = new Suggestion(EVENT, ev, true, withOcc ? "manage.tables.why.event" : "manage.tables.why.event.rows",
+            columns.get(eventCol),
             String.valueOf(sample.size()), String.valueOf(groups.size()), inside);
       } else if (!eventKeyCols.isEmpty()) {
         // a readable key from the date and place, e.g. "2024-07-01 Ystad"; occurrence links with the same rule
@@ -459,10 +475,13 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         setKind(role, "agentRoleOrder", DataPackageValueKind.POSITION);
         String id = (onEvent ? EVENT_AGENT_ROLE : OCCURRENCE_AGENT_ROLE) + "-" + e.getKey();
         Suggestion roleS;
-        if (onEvent) {
+        if (onEvent && recordersDiffer.isEmpty()) {
           // every occurrence of the event repeats its recorders: each row once
           role.setMergeKey(DataPackageMapping.WHOLE_ROW);
           roleS = new Suggestion(id, role, true, "manage.tables.why.role.event", columns.get(e.getValue()), roleName);
+        } else if (onEvent) {
+          role.setMergeKey(DataPackageMapping.WHOLE_ROW);
+          roleS = new Suggestion(id, role, true, "manage.tables.why.role.event.rows", columns.get(e.getValue()), roleName);
         } else if (RECORDED_BY.equals(e.getKey()) && !recordersDiffer.isEmpty()) {
           roleS = new Suggestion(id, role, true, "manage.tables.why.role.varies", columns.get(e.getValue()), roleName,
               String.join(", ", recordersDiffer.subList(0, Math.min(3, recordersDiffer.size()))));
@@ -481,13 +500,15 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     boolean specimens = MATERIAL_TERMS.stream().anyMatch(t -> column(columns, t) >= 0);
     if (materialTable != null && specimens) {
       DataPackageMapping mat = mapping(schema, source, materialTable);
-      // the columns occurrence and event don't take: the identification stays with the occurrence
+      // the columns occurrence and event don't take: the identification stays with the occurrence, if there is one
       Set<Integer> taken = new HashSet<>(eventCols);
-      taken.add(occCol);
+      if (withOcc) {
+        taken.add(occCol);
+        occ.getFields().stream().map(DataPackageFieldMapping::getIndex).filter(Objects::nonNull).forEach(taken::add);
+      }
       if (eventCol >= 0) {
         taken.add(eventCol);
       }
-      occ.getFields().stream().map(DataPackageFieldMapping::getIndex).filter(Objects::nonNull).forEach(taken::add);
       List<String> matColumns = new ArrayList<>();
       for (int c = 0; c < columns.size(); c++) {
         matColumns.add(taken.contains(c) && c != materialIdCol ? "" : columns.get(c));
@@ -506,17 +527,20 @@ public class DataPackageTablesAction extends ManagerBaseAction {
           pk.setTemplate(key);
         }
       }
-      setKind(mat, foreignKeyTo(materialTable, OCCURRENCE), DataPackageValueKind.LINK);
+      if (withOcc) {
+        setKind(mat, foreignKeyTo(materialTable, OCCURRENCE), DataPackageValueKind.LINK);
+      }
       if (withEvent) {
         setKind(mat, foreignKeyTo(materialTable, EVENT), DataPackageValueKind.LINK);
       }
-      Suggestion matS = new Suggestion(MATERIAL, mat, true, "manage.tables.why.material",
+      Suggestion matS = new Suggestion(MATERIAL, mat, true,
+          withOcc ? "manage.tables.why.material" : "manage.tables.why.material.event",
           String.join(", ", MATERIAL_TERMS.stream().filter(t -> column(columns, t) >= 0).toList()), key);
       addAsks(matS);
       result.add(matS);
     }
 
-    if (identificationTable != null) {
+    if (identificationTable != null && withOcc) {
       DataPackageMapping id = mapping(schema, source, identificationTable);
       List<String> idColumns = new ArrayList<>(columns);
       idColumns.set(occCol, "");

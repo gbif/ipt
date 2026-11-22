@@ -201,6 +201,54 @@ public class DataPackageTablesActionTest {
     assertEquals(DataPackageValueKind.LINK, byId.get("occurrence").getMapping().getField("event_fk").getValueKind());
   }
 
+  @Test
+  public void testEventsWithoutOccurrences() {
+    TextFileSource source = new TextFileSource();
+    source.setName("events.csv");
+    List<String> columns = List.of("eventID", "eventDate", "locality", "recordedBy", "identifiedBy", "catalogNumber");
+    List<String[]> sample = List.of(
+        new String[] {"a", "2025-03-26", "Fulltofta", "Tim", "Tim", "12"},
+        new String[] {"b", "2025-03-27", "Ystad", "Tim | Collector B", "Tim", "13"},
+        new String[] {"b", "2025-03-27", "Ystad", "Collector C", "Tim", "14"});
+    Map<String, DataPackageTablesAction.Suggestion> byId = DataPackageTablesAction.suggest(schema(), source, columns, sample)
+        .stream().collect(Collectors.toMap(DataPackageTablesAction.Suggestion::getId, x -> x));
+
+    // no occurrence, no identification: the rows are events, keyed by eventID
+    assertFalse(byId.containsKey("occurrence"));
+    assertFalse(byId.containsKey("identification"));
+    DataPackageTablesAction.Suggestion ev = byId.get("event");
+    assertEquals("manage.tables.why.event.rows", ev.getWhyKey());
+    assertEquals(0, ev.getMapping().getField("event_pk").getIndex());
+    assertEquals(2, ev.getRows());
+    assertEquals(2, ev.getMapping().getField("locality").getIndex());
+    // recorders differ inside b: not on the event row, but each name linked to its event
+    assertNull(ev.getMapping().getField("recordedBy").getIndex());
+    DataPackageTablesAction.Suggestion roles = byId.get("event-agent-role-recordedBy");
+    assertEquals("manage.tables.why.role.event.rows", roles.getWhyKey());
+    assertEquals(DataPackageMapping.WHOLE_ROW, roles.getMapping().getMergeKey());
+    assertEquals(4, roles.getRows());
+    // only the recorders become agents: identifiedBy has nothing to link to
+    DataPackageTablesAction.Suggestion agent = byId.get("agent");
+    assertEquals(List.of(3), agent.getMapping().getSplitColumns());
+    assertEquals(3, agent.getRows());
+    assertFalse(byId.containsKey("occurrence-agent-role-identifiedBy"));
+    // specimens linked to their event only
+    DataPackageTablesAction.Suggestion mat = byId.get("material");
+    assertEquals("manage.tables.why.material.event", mat.getWhyKey());
+    assertEquals(DataPackageValueKind.LINK, mat.getMapping().getField("collectionEvent_fk").getValueKind());
+    assertFalse(mat.getMapping().getField("evidenceForOccurrence_fk").isMapped());
+    assertEquals(3, mat.getRows());
+  }
+
+  @Test
+  public void testNoSuggestionsWithoutOccurrenceOrEventId() {
+    TextFileSource source = new TextFileSource();
+    source.setName("nokey.csv");
+    List<String> columns = List.of("eventDate", "locality", "recordedBy");
+    List<String[]> sample = List.<String[]>of(new String[] {"2025-03-26", "Fulltofta", "Tim"});
+    assertTrue(DataPackageTablesAction.suggest(schema(), source, columns, sample).isEmpty());
+  }
+
   /**
    * The parts of DwC-DP 1.0 the suggestions use: recorders on the event, identifiers on the occurrence, material.
    */
