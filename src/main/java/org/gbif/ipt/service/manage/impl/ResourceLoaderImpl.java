@@ -223,6 +223,8 @@ public class ResourceLoaderImpl implements ResourceLoader {
             frSrc.setFile(dataDir.sourceFile(resource, frSrc));
           }
         }
+        // mappings saved with their own copy of a replaced source, which has no file, use the resource's source again
+        resource.linkMappingSources();
 
         // pre v2.2 resources: set IdentifierStatus if null
         if (resource.getIdentifierStatus() == null) {

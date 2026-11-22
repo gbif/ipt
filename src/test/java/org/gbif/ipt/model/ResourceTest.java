@@ -42,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ResourceTest extends IptBaseTest {
@@ -1039,5 +1040,46 @@ public class ResourceTest extends IptBaseTest {
     assertEquals(100L, normalized.get(Constants.DWC_ROWTYPE_EVENT));
     assertEquals(2407330766L, normalized.get("http://rs.iobis.org/obis/terms/ExtendedMeasurementOrFact"));
     assertTrue(Resource.normalizeRecordCounts(null).isEmpty());
+  }
+
+  /**
+   * A source replaced by one of the same name (a file uploaded again, a URL source refreshed): DwC-A and data package
+   * mappings both move to the new source. Otherwise a data package mapping is saved with a copy of the old source,
+   * which has no file after the next load.
+   */
+  @Test
+  public void testReplacedSourceKeepsItsMappings() throws Exception {
+    Resource resource = new Resource();
+    TextFileSource old = new TextFileSource();
+    old.setName("gaps");
+    resource.addSource(old, false);
+    ExtensionMapping ext = new ExtensionMapping();
+    ext.setSource(old);
+    resource.getMappings().add(ext);
+    DataPackageMapping dp = new DataPackageMapping();
+    dp.setDataPackageSchema(DataPackageSchema.builder().name("dwc-dp").build());
+    dp.setSource(old);
+    resource.addDataPackageMapping(dp);
+
+    TextFileSource replacement = new TextFileSource();
+    replacement.setName("gaps");
+    resource.addSource(replacement, true);
+    assertSame(replacement, ext.getSource());
+    assertSame(replacement, dp.getSource());
+    assertEquals(1, resource.getSources().size());
+
+    // a mapping saved with its own copy of the source (before this fix) gets the resource's source on load
+    TextFileSource copy = new TextFileSource();
+    copy.setName("gaps");
+    dp.setSource(copy);
+    resource.linkMappingSources();
+    assertSame(replacement, dp.getSource());
+
+    // a source the resource doesn't have stays as it is
+    TextFileSource other = new TextFileSource();
+    other.setName("other");
+    dp.setSource(other);
+    resource.linkMappingSources();
+    assertSame(other, dp.getSource());
   }
 }

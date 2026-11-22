@@ -351,14 +351,34 @@ public class Resource implements Serializable, Comparable<Resource> {
     if (allowOverwrite && sources.contains(src)) {
       // If the source file is going to be overwritten, it should be actually re-add it.
       sources.remove(src);
-      // Changing the SourceBase in the ExtensionMapping object from the mapping list.
-      for (ExtensionMapping ext : this.getMappings()) {
-        if (ext.getSource().equals(src)) {
-          ext.setSource(src);
-        }
-      }
     }
     sources.add(src);
+    // the mappings of a replaced source move to the new one
+    linkMappingSources();
+  }
+
+  /**
+   * Points every mapping, DwC-A and data package, at the source of the same name in this resource's sources. A source
+   * replaced by a new one (a file uploaded again, a URL source refreshed) is a new object: a mapping left on the old
+   * one is saved with a copy of it, and after the next load that copy has no file.
+   */
+  public void linkMappingSources() {
+    for (ExtensionMapping m : mappings) {
+      m.setSource(sourceNamedAs(m.getSource()));
+    }
+    for (DataPackageMapping m : dataPackageMappings) {
+      m.setSource(sourceNamedAs(m.getSource()));
+    }
+  }
+
+  /**
+   * @return the source in this resource's sources with the same name as the given one, the given one if there is none
+   */
+  private Source sourceNamedAs(Source source) {
+    if (source == null) {
+      return null;
+    }
+    return sources.stream().filter(s -> Objects.equals(s.getName(), source.getName())).findFirst().orElse(source);
   }
 
   @Override
