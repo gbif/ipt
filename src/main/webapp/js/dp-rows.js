@@ -32,7 +32,15 @@ $(function () {
         // a table can have dozens of fields: searchable
         $('#mp-mergekey').select2({theme: 'bootstrap4', width: 'resolve', dropdownAutoWidth: true});
         // the generated value: a short list, so no search box, but the look of the column dropdown above it
-        $('.mp-gen-kind').select2({theme: 'bootstrap4', width: '100%', minimumResultsForSearch: Infinity});
+        // each option says what it does under its name; the box shows the name only
+        $('.mp-gen-kind').select2({theme: 'bootstrap4', width: '100%', minimumResultsForSearch: Infinity,
+            // wider and taller than the box, so the descriptions are read without scrolling
+            dropdownCssClass: 'mp-gen-dd',
+            templateResult: function (o) {
+                var desc = o.element && $(o.element).attr('data-desc');
+                if (!desc) return o.text;
+                return $('<span class="mp-gen-opt">').append($('<span>').text(o.text), $('<small>').text(desc));
+            }});
     }
     renderRows();
 
