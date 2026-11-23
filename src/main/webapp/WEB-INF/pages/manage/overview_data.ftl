@@ -332,7 +332,7 @@
                                 <a href="${editUrl}" class="ov-name fw-semibold">${tableName}</a><#if rowTags && isMappingChanged(m)><@changedTag/></#if><@nameActions id="dp-mapping-menu-" + r.mid?c titleKey="manage.overview.data.mappingActions" items=[
                                     {"icon": "edit", "text": "manage.overview.data.editMapping", "href": editUrl},
                                     {"icon": "delete", "text": "manage.overview.data.deleteMapping", "href": "deleteDataPackageMapping.do?r=${resource.shortname}&id=${m.dataPackageSchema.identifier?url}&mid=${r.mid}", "del": "delete-mapping", "name": tableName}]/>
-                                <div class="ov-small"><@s.text name="manage.overview.data.fieldsMapped"><@s.param>${(m.fields![])?filter(f -> f.mapped && !m.unresolvedFieldNames?seq_contains((f.field.name)!""))?size}</@s.param><@s.param><#if m.tableSchemaMissing>?<#else>${(m.tableSchema.fields)!?size}</#if></@s.param></@s.text></div>
+                                <div class="ov-small"><@s.text name="manage.overview.data.fieldsMapped"><@s.param>${(m.fields![])?filter(f -> f.mapped && !m.unresolvedFieldNames?seq_contains((f.field.name)!""))?size}</@s.param><@s.param><#if m.tableSchemaMissing>?<#else>${(m.tableSchema.fields)!?size}</#if></@s.param></@s.text><#if (resource.recordsByExtension[tableName])??> · <@s.text name="manage.overview.data.rowsPublished"/>: ${resource.recordsByExtension[tableName]}</#if></div>
                                 <#if missingRequired && !m.tableSchemaMissing><@problemNote "manage.overview.data.status.requiredMissing"/></#if>
                                 <@dataPackageMappingIssues m/>
                             </td>

@@ -109,7 +109,6 @@
                                     <div class="tb-warn"><@icon name="warning"/><span><@s.text name="manage.tables.varies"><@s.param>${w?keep_before("|")}</@s.param><@s.param>${w?keep_after("|")}</@s.param></@s.text></span></div>
                                 </#list>
                             </div>
-                            <div class="tb-count"><@s.text name="manage.tables.rows"/>: ${sg.rows?c}</div>
                         </div>
                     </#list>
                 </div>
@@ -144,7 +143,6 @@
     .tb-ask input { width: 12rem; }
     .tb-warn { display: flex; align-items: flex-start; gap: 6px; font-size: 0.78rem; line-height: 1.4; color: rgb(var(--alert-warning-icon-color)); margin-top: 4px; }
     .tb-warn > .material-icon { margin-top: 0.2em; }
-    .tb-count { font-size: 0.8rem; color: #6c757d; white-space: nowrap; }
     @media (max-width: 760px) { .tb-sugg { grid-template-columns: 22px 1fr; } .tb-sugg > :nth-child(n+3) { grid-column: 2; } }
 </style>
 
