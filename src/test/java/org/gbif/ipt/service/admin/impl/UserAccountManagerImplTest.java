@@ -135,6 +135,27 @@ public class UserAccountManagerImplTest extends IptBaseTest {
   }
 
   /**
+   * "admin" logs in the only admin, also after that admin was saved again; a second admin turns it off.
+   */
+  @Test
+  public void testSimplifiedAdminLogin() throws Exception {
+    UserAccountManager userManager = getUserAccountManager();
+    userManager.create(admin);
+    userManager.create(manager);
+    assertEquals(admin, userManager.authenticate("admin", "admin"));
+
+    // saved again, e.g. on the admin user page, as a copy
+    userManager.save((User) admin.clone());
+    assertEquals("admin@ipt.gbif.org", userManager.authenticate("admin", "admin").getEmail());
+
+    User secondAdmin = (User) manager.clone();
+    secondAdmin.setEmail("admin2@ipt.gbif.org");
+    secondAdmin.setRole(Role.Admin);
+    userManager.save(secondAdmin);
+    assertNull(userManager.authenticate("admin", "admin"));
+  }
+
+  /**
    * Test user creation.
    */
   @Test

@@ -74,23 +74,21 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
 
   private User addUser(User user) {
     if (user != null) {
-      if (user.getRole() == Role.Admin) {
-        LOG.debug("Adding admin {}", user.getEmail());
-        if (allowSimplifiedAdminLogin) {
-          if (onlyAdminEmail == null || users.isEmpty()) {
-            // first admin - keep its email address available for simplified login
-            // without email address but keyword "admin"
-            onlyAdminEmail = user.getEmail();
-          } else {
-            // at least 2 admins exist - disable simplified admin login
-            onlyAdminEmail = null;
-            allowSimplifiedAdminLogin = false;
-          }
-        }
-      } else {
-        LOG.debug("Adding user {}", user.getEmail());
-      }
+      LOG.debug("Adding {} {}", user.getRole() == Role.Admin ? "admin" : "user", user.getEmail());
       users.put(user.getEmail().toLowerCase(), user);
+      if (user.getRole() == Role.Admin && allowSimplifiedAdminLogin) {
+        // count the admins actually stored: saving an existing admin again (e.g. on the admin user page) replaces it
+        // and must not count as a second one
+        List<User> admins = users.values().stream().filter(u -> u.getRole() == Role.Admin).toList();
+        if (admins.size() == 1) {
+          // only admin - keep its email address available for simplified login with the keyword "admin"
+          onlyAdminEmail = admins.get(0).getEmail();
+        } else {
+          // at least 2 admins exist - disable simplified admin login
+          onlyAdminEmail = null;
+          allowSimplifiedAdminLogin = false;
+        }
+      }
     }
     return user;
   }
@@ -229,6 +227,9 @@ public class UserAccountManagerImpl extends BaseManager implements UserAccountMa
     try (ObjectInputStream in = xstream.createObjectInputStream(
         IptFileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE)))) {
       users.clear();
+      // decided again from the accounts loaded, not kept from a previous load (another data directory)
+      allowSimplifiedAdminLogin = true;
+      onlyAdminEmail = null;
       while (true) {
         try {
           User u = (User) in.readObject();
