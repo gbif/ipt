@@ -25,7 +25,7 @@
 <#-- matching lists the unmapped sources a table was found for; the others are only named under the list -->
 <#assign toMatch = matches?filter(x -> !x.mappedTo()?has_content && x.match().table()??)/>
 <#assign noMatch = matches?filter(x -> !x.mappedTo()?has_content && !x.match().table()?? && !x.flat())/>
-<#-- flat DwC-DP files (an occurrenceID or eventID, no table's key): split them instead -->
+<#-- flat DwC-DP files (an occurrenceID, eventID, materialEntityID or catalogNumber, no table's key): split them instead -->
 <#assign flatSources = matches?filter(x -> !x.mappedTo()?has_content && !x.match().table()?? && x.flat())/>
 <#assign alreadyMapped = matches?filter(x -> x.mappedTo()?has_content)/>
 <#assign how = (Parameters.how)!""/>

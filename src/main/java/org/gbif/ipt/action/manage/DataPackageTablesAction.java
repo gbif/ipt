@@ -82,6 +82,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   static final String EVENT_AGENT_ROLE = "event-agent-role";
   static final String IDENTIFICATION = "identification";
   static final String MATERIAL = "material";
+  static final String MATERIAL_AGENT_ROLE = "material-agent-role";
   static final String RECORDED_BY = "recordedBy";
 
   // DwC agent-name terms, the role of the person in each, and the term with their IDs in the same order
@@ -259,11 +260,17 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   }
 
   /**
-   * @return the intro text key: the source read as one row per occurrence, or without occurrences per event
+   * @return the intro text key: the source read as one row per occurrence, without occurrences per event, and without
+   * events too per specimen
    */
   public String getIntroKey() {
-    return suggestions.stream().anyMatch(s -> OCCURRENCE.equals(s.getId())) || suggestions.isEmpty()
-        ? "manage.tables.intro" : "manage.tables.intro.event";
+    if (suggestions.isEmpty() || suggestions.stream().anyMatch(s -> OCCURRENCE.equals(s.getId()))) {
+      return "manage.tables.intro";
+    }
+    boolean specimenRows = suggestions.stream()
+        .anyMatch(s -> MATERIAL.equals(s.getId()) && s.getWhyKey().startsWith("manage.tables.why.material.rows"));
+    return specimenRows
+        ? "manage.tables.intro.material" : "manage.tables.intro.event";
   }
 
   private List<String[]> read() {
@@ -293,20 +300,26 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     DataPackageTableSchema eventRoleTable = schema.tableSchemaByName(EVENT_AGENT_ROLE);
     DataPackageTableSchema identificationTable = schema.tableSchemaByName(IDENTIFICATION);
     DataPackageTableSchema materialTable = schema.tableSchemaByName(MATERIAL);
+    DataPackageTableSchema materialRoleTable = schema.tableSchemaByName(MATERIAL_AGENT_ROLE);
 
-    // each row is an occurrence, or without an occurrenceID part of an event: the key of the row's own record must
-    // come from the data, a made-up one would change when the data is corrected
+    // each row is an occurrence; without an occurrenceID part of an event; without an eventID too a specimen, keyed by
+    // its materialEntityID or catalogue number. The key of the row's own record must come from the data, a made-up one
+    // would change when the data is corrected
     int occCol = occTable == null ? -1 : column(columns, "occurrenceID");
     int eventCol = column(columns, "eventID");
     boolean withOcc = occCol >= 0;
-    if (!withOcc && (eventTable == null || eventCol < 0)) {
+    boolean specimens = materialTable != null && MATERIAL_TERMS.stream().anyMatch(t -> column(columns, t) >= 0);
+    boolean materialRows = !withOcc && eventCol < 0 && specimens;
+    if (!withOcc && !materialRows && (eventTable == null || eventCol < 0)) {
       return result;
     }
+    // without occurrences the specimens' people are linked to the material
+    boolean peopleOnMaterial = !withOcc && specimens && materialRoleTable != null;
     Map<String, Integer> nameCols = new LinkedHashMap<>();
     for (String term : NAME_COLUMNS.keySet()) {
       int c = column(columns, term);
-      // without occurrences only the recorders have something to be linked to
-      if (c >= 0 && (withOcc || RECORDED_BY.equals(term))) {
+      // without occurrences or specimens only the recorders have something to be linked to: the event
+      if (c >= 0 && (withOcc || peopleOnMaterial || RECORDED_BY.equals(term))) {
         nameCols.put(term, c);
       }
     }
@@ -324,12 +337,14 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     // the event key: the eventID column, otherwise the date and place columns (one event per date and place),
     // otherwise none (every row in one event)
     List<Integer> eventKeyCols = eventCol >= 0 ? List.of(eventCol) : dateAndPlace(columns);
+    // an occurrence needs its event, a specimen doesn't: specimens without a date or place get none
+    boolean withEvent = eventTable != null && !(materialRows && eventKeyCols.isEmpty());
 
     // event: the columns with one value inside every event go there; the ones that differ stay out
     Set<Integer> eventCols = new LinkedHashSet<>();
     Map<String, List<String>> varying = new LinkedHashMap<>();
     Map<String, List<String[]>> groups = new LinkedHashMap<>();
-    if (eventTable != null) {
+    if (withEvent) {
       Set<String> eventFields = fieldNames(eventTable);
       for (int i = 0; i < sample.size(); i++) {
         String[] row = sample.get(i);
@@ -353,7 +368,6 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         }
       }
     }
-    boolean withEvent = eventTable != null;
     // in DwC-DP 1.0 the recorders belong to the event: there when they're the same inside every event
     Integer recordedByCol = nameCols.get(RECORDED_BY);
     List<String> recordersDiffer = recordedByCol == null || !withEvent ? List.of() : differInside(groups, recordedByCol);
@@ -463,10 +477,14 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       addAsks(agS);
       result.add(agS);
 
-      // a role row per name: recorders on the event when they're the same inside every event, otherwise per occurrence
+      // a role row per name: recorders on the event when they're the same inside every event, otherwise per occurrence;
+      // without occurrences the specimen's people, and its recorders when there's no event, on the material
       for (Map.Entry<String, Integer> e : nameCols.entrySet()) {
         boolean onEvent = recordersOnEvent && RECORDED_BY.equals(e.getKey());
-        DataPackageTableSchema table = onEvent ? eventRoleTable : roleTable;
+        boolean onMaterial = !onEvent && peopleOnMaterial;
+        DataPackageTableSchema table = onEvent ? eventRoleTable
+            : onMaterial ? materialRoleTable
+            : withOcc ? roleTable : null;
         if (table == null) {
           continue;
         }
@@ -475,13 +493,17 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         role.setRowMode(DataPackageRowMode.ITEMS);
         role.setSplitColumns(List.of(e.getValue()));
         role.setSeparator(ag.getSeparator());
-        setKind(role, foreignKeyTo(table, onEvent ? EVENT : OCCURRENCE), DataPackageValueKind.LINK);
+        String linkedTo = onEvent ? EVENT : onMaterial ? MATERIAL : OCCURRENCE;
+        setKind(role, foreignKeyTo(table, linkedTo), DataPackageValueKind.LINK);
         setKind(role, foreignKeyTo(table, AGENT), DataPackageValueKind.LINK);
         setDefault(role, "agentRole", roleName);
         setKind(role, "agentRoleOrder", DataPackageValueKind.POSITION);
-        String id = (onEvent ? EVENT_AGENT_ROLE : OCCURRENCE_AGENT_ROLE) + "-" + e.getKey();
+        String id = table.getName() + "-" + e.getKey();
         Suggestion roleS;
-        if (onEvent && recordersDiffer.isEmpty()) {
+        if (onMaterial) {
+          roleS = new Suggestion(id, role, true, "manage.tables.why.role.material", columns.get(e.getValue()),
+              roleName);
+        } else if (onEvent && recordersDiffer.isEmpty()) {
           // every occurrence of the event repeats its recorders: each row once
           role.setMergeKey(DataPackageMapping.WHOLE_ROW);
           roleS = new Suggestion(id, role, true, "manage.tables.why.role.event", columns.get(e.getValue()), roleName);
@@ -503,8 +525,8 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     // material: each row is also a specimen when there's a materialEntityID or catalogNumber
     int materialIdCol = column(columns, "materialEntityID");
     List<Integer> keyCols = MATERIAL_KEY_TERMS.stream().map(t -> column(columns, t)).filter(c -> c >= 0).toList();
-    boolean specimens = MATERIAL_TERMS.stream().anyMatch(t -> column(columns, t) >= 0);
-    if (materialTable != null && specimens) {
+    String materialKey = null;
+    if (specimens) {
       DataPackageMapping mat = mapping(schema, source, materialTable);
       // the columns occurrence and event don't take: the identification stays with the occurrence, if there is one
       Set<Integer> taken = new HashSet<>(eventCols);
@@ -539,26 +561,36 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       if (withEvent) {
         setKind(mat, foreignKeyTo(materialTable, EVENT), DataPackageValueKind.LINK);
       }
-      Suggestion matS = new Suggestion(MATERIAL, mat, true,
-          withOcc ? "manage.tables.why.material" : "manage.tables.why.material.event",
+      String why = withOcc ? "manage.tables.why.material" : !materialRows ? "manage.tables.why.material.event"
+          : withEvent ? "manage.tables.why.material.rows" : "manage.tables.why.material.rows.noEvent";
+      Suggestion matS = new Suggestion(MATERIAL, mat, true, why,
           String.join(", ", MATERIAL_TERMS.stream().filter(t -> column(columns, t) >= 0).toList()), key);
       addAsks(matS);
       result.add(matS);
+      // as a template: the column in braces, or the key template itself
+      materialKey = materialIdCol >= 0 ? "{" + key + "}" : key;
     }
 
-    if (identificationTable != null && withOcc) {
+    // the identification history: of the occurrence, or of the specimen when the rows are specimens
+    String idOf = withOcc ? "{" + columns.get(occCol) + "}" : materialRows ? materialKey : null;
+    if (identificationTable != null && idOf != null) {
       DataPackageMapping id = mapping(schema, source, identificationTable);
+      // the row's own key column isn't automapped: the identification links to its row instead
       List<String> idColumns = new ArrayList<>(columns);
-      idColumns.set(occCol, "");
+      int anchorCol = withOcc ? occCol : materialIdCol;
+      if (anchorCol >= 0) {
+        idColumns.set(anchorCol, "");
+      }
       DataPackageMappingAction.automap(id.getFields(), idColumns);
       DataPackageFieldMapping pk = id.getField(identificationTable.getPrimaryKey());
       if (pk != null) {
         pk.setIndex(null);
         pk.setValueKind(DataPackageValueKind.TEMPLATE);
-        pk.setTemplate("{" + columns.get(occCol) + "}-id");
+        pk.setTemplate(idOf + "-id");
       }
-      setKind(id, foreignKeyTo(identificationTable, OCCURRENCE), DataPackageValueKind.LINK);
-      Suggestion idS = new Suggestion(IDENTIFICATION, id, false, "manage.tables.why.identification");
+      setKind(id, foreignKeyTo(identificationTable, withOcc ? OCCURRENCE : MATERIAL), DataPackageValueKind.LINK);
+      Suggestion idS = new Suggestion(IDENTIFICATION, id, false,
+          withOcc ? "manage.tables.why.identification" : "manage.tables.why.identification.material");
       addAsks(idS);
       result.add(idS);
     }
@@ -710,10 +742,12 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   }
 
   /**
-   * @return true when the columns give the split something to start from: an occurrenceID or an eventID
+   * @return true when the columns give the split something to start from: an occurrenceID, an eventID, or the
+   * materialEntityID or catalogNumber of specimens
    */
   static boolean canSplit(List<String> columns) {
-    return column(columns, "occurrenceID") >= 0 || column(columns, "eventID") >= 0;
+    return column(columns, "occurrenceID") >= 0 || column(columns, "eventID") >= 0
+        || MATERIAL_TERMS.stream().anyMatch(t -> column(columns, t) >= 0);
   }
 
   /**

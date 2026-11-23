@@ -254,11 +254,13 @@ public class DataPackageTablesActionTest {
     assertEquals("manage.tables.why.role.event.rows", roles.getWhyKey());
     assertEquals(DataPackageMapping.WHOLE_ROW, roles.getMapping().getMergeKey());
     assertEquals(4, roles.getRows());
-    // only the recorders become agents: identifiedBy has nothing to link to
+    // the identifiers are linked to the specimens (there are catalogue numbers), not to an occurrence
     DataPackageTablesAction.Suggestion agent = byId.get("agent");
-    assertEquals(List.of(3), agent.getMapping().getSplitColumns());
+    assertEquals(List.of(3, 4), agent.getMapping().getSplitColumns());
     assertEquals(3, agent.getRows());
     assertFalse(byId.containsKey("occurrence-agent-role-identifiedBy"));
+    assertEquals(DataPackageValueKind.LINK,
+        byId.get("material-agent-role-identifiedBy").getMapping().getField("materialEntity_fk").getValueKind());
     // specimens linked to their event only
     DataPackageTablesAction.Suggestion mat = byId.get("material");
     assertEquals("manage.tables.why.material.event", mat.getWhyKey());
@@ -274,6 +276,87 @@ public class DataPackageTablesActionTest {
     List<String> columns = List.of("eventDate", "locality", "recordedBy");
     List<String[]> sample = List.<String[]>of(new String[] {"2025-03-26", "Fulltofta", "Tim"});
     assertTrue(DataPackageTablesAction.suggest(schema(), source, columns, sample).isEmpty());
+    assertFalse(DataPackageTablesAction.canSplit(columns));
+  }
+
+  /**
+   * No occurrenceID or eventID, but a materialEntityID: the rows are specimens. Events from the date and place, the
+   * recorders on the event, the identifiers on the specimen, which keeps its own identification.
+   */
+  @Test
+  public void testSpecimensWithoutOccurrences() {
+    TextFileSource source = new TextFileSource();
+    source.setName("specimens.csv");
+    List<String> columns = List.of("materialEntityID", "eventDate", "locality", "scientificName", "recordedBy",
+        "identifiedBy", "preparations");
+    List<String[]> sample = List.of(
+        new String[] {"M1", "2024-05-01", "Lund", "Pica pica", "Collector A", "Identifier C", "ethanol"},
+        new String[] {"M2", "2024-05-01", "Lund", "Corvus corax", "Collector A", "Identifier C", "dried"},
+        new String[] {"M3", "2024-06-01", "Ystad", "Parus major", "Collector B", "Identifier D", "dried"});
+    assertTrue(DataPackageTablesAction.canSplit(columns));
+    Map<String, DataPackageTablesAction.Suggestion> byId = DataPackageTablesAction.suggest(schema(), source, columns, sample)
+        .stream().collect(Collectors.toMap(DataPackageTablesAction.Suggestion::getId, x -> x));
+
+    assertFalse(byId.containsKey("occurrence"));
+    DataPackageTablesAction.Suggestion mat = byId.get("material");
+    assertEquals("manage.tables.why.material.rows", mat.getWhyKey());
+    assertEquals(3, mat.getRows());
+    DataPackageMapping m = mat.getMapping();
+    assertEquals(0, m.getField("materialEntity_pk").getIndex());
+    assertEquals(DataPackageValueKind.LINK, m.getField("collectionEvent_fk").getValueKind());
+    assertNull(m.getField("evidenceForOccurrence_fk").getValueKind());
+    // the specimen keeps its identification
+    assertEquals(3, m.getField("scientificName").getIndex());
+    assertEquals(5, m.getField("identifiedBy").getIndex());
+
+    DataPackageTablesAction.Suggestion ev = byId.get("event");
+    assertEquals("manage.tables.why.event.made", ev.getWhyKey());
+    assertEquals(2, ev.getRows());
+
+    assertTrue(byId.containsKey("event-agent-role-recordedBy"));
+    DataPackageTablesAction.Suggestion identifiers = byId.get("material-agent-role-identifiedBy");
+    assertEquals("manage.tables.why.role.material", identifiers.getWhyKey());
+    assertEquals(3, identifiers.getRows());
+    assertEquals(DataPackageValueKind.LINK, identifiers.getMapping().getField("materialEntity_fk").getValueKind());
+    assertEquals("identifier", identifiers.getMapping().getField("agentRole").getDefaultValue());
+
+    DataPackageTablesAction.Suggestion id = byId.get("identification");
+    assertFalse(id.isChecked());
+    assertEquals("manage.tables.why.identification.material", id.getWhyKey());
+    assertEquals("{materialEntityID}-id", id.getMapping().getField("identification_pk").getTemplate());
+    assertEquals(DataPackageValueKind.LINK, id.getMapping().getField("materialEntity_fk").getValueKind());
+    assertNull(id.getMapping().getField("occurrence_fk").getValueKind());
+    assertTrue(DataPackageTablesAction.unused(columns,
+        byId.values().stream().map(DataPackageTablesAction.Suggestion::getMapping).toList()).isEmpty());
+  }
+
+  /**
+   * Catalogue numbers and no date or place: the specimen key is made from the institution and the catalogue number,
+   * there's no event, so the recorders are linked to the specimen.
+   */
+  @Test
+  public void testCatalogueNumbersWithoutDateOrPlace() {
+    TextFileSource source = new TextFileSource();
+    source.setName("catalogue.csv");
+    List<String> columns = List.of("institutionCode", "catalogNumber", "scientificName", "recordedBy");
+    List<String[]> sample = List.of(
+        new String[] {"NHMD", "12", "Pica pica", "Collector A | Collector B"},
+        new String[] {"NHMD", "13", "Corvus corax", "Collector A"});
+    Map<String, DataPackageTablesAction.Suggestion> byId = DataPackageTablesAction.suggest(schema(), source, columns, sample)
+        .stream().collect(Collectors.toMap(DataPackageTablesAction.Suggestion::getId, x -> x));
+
+    assertFalse(byId.containsKey("occurrence"));
+    assertFalse(byId.containsKey("event"));
+    DataPackageTablesAction.Suggestion mat = byId.get("material");
+    assertEquals("manage.tables.why.material.rows.noEvent", mat.getWhyKey());
+    assertEquals("{institutionCode}:{catalogNumber}", mat.getMapping().getField("materialEntity_pk").getTemplate());
+    assertNull(mat.getMapping().getField("collectionEvent_fk").getValueKind());
+
+    DataPackageTablesAction.Suggestion recorders = byId.get("material-agent-role-recordedBy");
+    assertEquals("recorder", recorders.getMapping().getField("agentRole").getDefaultValue());
+    assertEquals(3, recorders.getRows());
+    assertEquals("{institutionCode}:{catalogNumber}-id",
+        byId.get("identification").getMapping().getField("identification_pk").getTemplate());
   }
 
   /**
@@ -295,11 +378,20 @@ public class DataPackageTablesActionTest {
     eventRole.setForeignKeys(List.of(fk("event_fk", "event", "event_pk"), fk("agent_fk", "agent", "agent_pk")));
     DataPackageTableSchema material = table("material", "materialEntity_pk",
         List.of("materialEntity_pk", "materialEntityID", "collectionEvent_fk", "evidenceForOccurrence_fk", "institutionCode",
-            "collectionCode", "catalogNumber", "preparations", "scientificName"), Set.of("materialEntity_pk"));
+            "collectionCode", "catalogNumber", "preparations", "scientificName", "identifiedBy"), Set.of("materialEntity_pk"));
     material.setForeignKeys(List.of(fk("collectionEvent_fk", "event", "event_pk"),
         fk("evidenceForOccurrence_fk", "occurrence", "occurrence_pk")));
+    DataPackageTableSchema materialRole = table("material-agent-role", null,
+        List.of("materialEntity_fk", "agent_fk", "agentRole", "agentRoleOrder"),
+        Set.of("materialEntity_fk", "agent_fk", "agentRoleOrder"));
+    materialRole.setForeignKeys(List.of(fk("materialEntity_fk", "material", "materialEntity_pk"),
+        fk("agent_fk", "agent", "agent_pk")));
+    DataPackageTableSchema identification = table("identification", "identification_pk",
+        List.of("identification_pk", "occurrence_fk", "materialEntity_fk", "scientificName"), Set.of("identification_pk"));
+    identification.setForeignKeys(List.of(fk("occurrence_fk", "occurrence", "occurrence_pk"),
+        fk("materialEntity_fk", "material", "materialEntity_pk")));
     return DataPackageSchema.builder().name("dwc-dp").version("1.0")
-        .tableSchemas(Set.of(event, occurrence, agent, role, eventRole, material)).build();
+        .tableSchemas(Set.of(event, occurrence, agent, role, eventRole, material, materialRole, identification)).build();
   }
 
   private static DataPackageTableSchema table(String name, String pk, List<String> fields, Set<String> required) {
