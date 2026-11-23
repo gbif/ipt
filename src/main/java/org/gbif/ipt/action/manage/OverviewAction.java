@@ -520,7 +520,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           addActionMessage(getText("manage.overview.resource.deleted", new String[]{resource.toString()}));
         } else {
           // de-register resource, and delete resource directory
+          boolean registered = resource.isRegistered();
           resourceManager.delete(resource, true);
+          addActionMessage(getText(registered
+              ? "manage.overview.resource.deleteFromIptAndGbif.successful"
+              : "manage.overview.resource.deleteFromIpt.successful", new String[]{resource.getShortname()}));
         }
         return HOME;
       } catch (IOException | DeletionNotAllowedException e) {
