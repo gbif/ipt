@@ -175,6 +175,10 @@ public class ResourceCitationsManagerImpl implements ResourceCitationsManager {
    * @return false if the round stopped because the API couldn't be reached
    */
   boolean refresh() throws InterruptedException {
+    // before setup: nothing registered and nowhere to store, try again later
+    if (!dataDir.isConfigured()) {
+      return false;
+    }
     String api = StringUtils.removeEnd(StringUtils.trimToNull(cfg.getApiUrl()), "/");
     if (api == null) {
       return true;
@@ -318,6 +322,10 @@ public class ResourceCitationsManagerImpl implements ResourceCitationsManager {
    * Reads the stored counts; a missing or broken file means nothing fetched yet.
    */
   void load() {
+    // before setup there is no data dir to read from
+    if (!dataDir.isConfigured()) {
+      return;
+    }
     File file = citationsFile();
     if (!file.exists()) {
       return;

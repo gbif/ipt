@@ -70,6 +70,7 @@ public class ResourceCitationsManagerImplTest {
     cfg = mock(AppConfig.class);
     when(cfg.getApiUrl()).thenReturn(API + "/");
     dataDir = mock(DataDir.class);
+    when(dataDir.isConfigured()).thenReturn(true);
     when(dataDir.configFile(anyString())).thenAnswer(inv -> dir.resolve((String) inv.getArgument(0)).toFile());
     resourceManager = mock(ResourceManager.class);
     when(resourceManager.list()).thenReturn(resources);
@@ -157,6 +158,18 @@ public class ResourceCitationsManagerImplTest {
     assertEquals(2L, reloaded.getCitations(key(1)));
     assertEquals(4L, reloaded.getCitationsTotal());
     assertTrue(reloaded.snapshot().fetched() > 0);
+  }
+
+  @Test
+  public void noDataDirStartsWithoutTouchingIt() throws Exception {
+    when(dataDir.isConfigured()).thenReturn(false);
+    when(dataDir.configFile(anyString())).thenThrow(new IllegalStateException("No data dir has been configured yet"));
+    resources.add(resource(key(1), PublicationStatus.REGISTERED));
+    ResourceCitationsManagerImpl m = manager();
+    m.start();
+    m.stop();
+    assertFalse(m.refresh());
+    verify(http, never()).get(anyString());
   }
 
   @Test
