@@ -39,7 +39,6 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -83,6 +82,8 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   static final String IDENTIFICATION = "identification";
   static final String MATERIAL = "material";
   static final String MATERIAL_AGENT_ROLE = "material-agent-role";
+  static final String SURVEY = "survey";
+  static final String MATERIAL_SAMPLE_ID = "materialSampleID";
   static final String RECORDED_BY = "recordedBy";
 
   // DwC agent-name terms, the role of the person in each, and the term with their IDs in the same order
@@ -301,6 +302,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     DataPackageTableSchema identificationTable = schema.tableSchemaByName(IDENTIFICATION);
     DataPackageTableSchema materialTable = schema.tableSchemaByName(MATERIAL);
     DataPackageTableSchema materialRoleTable = schema.tableSchemaByName(MATERIAL_AGENT_ROLE);
+    DataPackageTableSchema surveyTable = schema.tableSchemaByName(SURVEY);
 
     // each row is an occurrence; without an occurrenceID part of an event; without an eventID too a specimen, keyed by
     // its materialEntityID or catalogue number. The key of the row's own record must come from the data, a made-up one
@@ -310,6 +312,10 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     boolean withOcc = occCol >= 0;
     boolean specimens = materialTable != null && MATERIAL_TERMS.stream().anyMatch(t -> column(columns, t) >= 0);
     boolean materialRows = !withOcc && eventCol < 0 && specimens;
+    // a materialSampleID without specimen keys: a sample several rows share, e.g. the bulk sample a DNA analysis
+    // found many taxa in
+    int sampleCol = column(columns, MATERIAL_SAMPLE_ID);
+    boolean samples = materialTable != null && !specimens && sampleCol >= 0;
     if (!withOcc && !materialRows && (eventTable == null || eventCol < 0)) {
       return result;
     }
@@ -346,15 +352,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     Map<String, List<String[]>> groups = new LinkedHashMap<>();
     if (withEvent) {
       Set<String> eventFields = fieldNames(eventTable);
-      for (int i = 0; i < sample.size(); i++) {
-        String[] row = sample.get(i);
-        String key = eventKey(row, eventKeyCols);
-        // an empty key is no event: publishing doesn't merge such rows, each is an event of its own
-        if (!eventKeyCols.isEmpty() && StringUtils.isBlank(key)) {
-          key = "\u0000" + i;
-        }
-        groups.computeIfAbsent(key, k -> new ArrayList<>()).add(row);
-      }
+      groups.putAll(groups(sample, eventKeyCols));
       for (int c = 0; c < columns.size(); c++) {
         if (c == occCol || c == eventCol || !matchesField(columns.get(c), eventFields)) {
           continue;
@@ -529,14 +527,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     if (specimens) {
       DataPackageMapping mat = mapping(schema, source, materialTable);
       // the columns occurrence and event don't take: the identification stays with the occurrence, if there is one
-      Set<Integer> taken = new HashSet<>(eventCols);
-      if (withOcc) {
-        taken.add(occCol);
-        occ.getFields().stream().map(DataPackageFieldMapping::getIndex).filter(Objects::nonNull).forEach(taken::add);
-      }
-      if (eventCol >= 0) {
-        taken.add(eventCol);
-      }
+      Set<Integer> taken = taken(occ, occCol, eventCol, eventCols);
       List<String> matColumns = new ArrayList<>();
       for (int c = 0; c < columns.size(); c++) {
         matColumns.add(taken.contains(c) && c != materialIdCol ? "" : columns.get(c));
@@ -569,6 +560,39 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       result.add(matS);
       // as a template: the column in braces, or the key template itself
       materialKey = materialIdCol >= 0 ? "{" + key + "}" : key;
+    } else if (samples) {
+      // one material per sample, with the columns that are the same inside every sample and that occurrence and
+      // event don't take (the identification differs from row to row and stays with the occurrence)
+      Map<String, List<String[]>> sampleGroups = groups(sample, List.of(sampleCol));
+      Set<Integer> taken = taken(occ, occCol, eventCol, eventCols);
+      Set<String> materialFields = fieldNames(materialTable);
+      List<String> matColumns = new ArrayList<>();
+      List<String> inside = new ArrayList<>();
+      for (int c = 0; c < columns.size(); c++) {
+        boolean use = c != sampleCol && !taken.contains(c) && matchesField(columns.get(c), materialFields)
+            && differInside(sampleGroups, c).isEmpty();
+        matColumns.add(use ? columns.get(c) : "");
+        if (use) {
+          inside.add(columns.get(c));
+        }
+      }
+      DataPackageMapping mat = mapping(schema, source, materialTable);
+      DataPackageMappingAction.automap(mat.getFields(), matColumns);
+      mat.setRowMode(DataPackageRowMode.DISTINCT);
+      mat.setMergeKey(materialTable.getPrimaryKey());
+      setColumn(mat, materialTable.getPrimaryKey(), sampleCol);
+      setColumn(mat, "materialEntityID", sampleCol);
+      // linked to its event when it has one: merging would keep the first row's event of a sample taken in several
+      boolean oneEvent = eventKeyCols.stream().allMatch(c -> differInside(sampleGroups, c).isEmpty());
+      if (withEvent && oneEvent) {
+        setKind(mat, foreignKeyTo(materialTable, EVENT), DataPackageValueKind.LINK);
+      }
+      Suggestion matS = new Suggestion(MATERIAL, mat, true,
+          oneEvent ? "manage.tables.why.material.sample" : "manage.tables.why.material.sample.events",
+          columns.get(sampleCol), String.valueOf(sample.size()), String.valueOf(sampleGroups.size()),
+          inside.isEmpty() ? "-" : String.join(", ", inside));
+      addAsks(matS);
+      result.add(matS);
     }
 
     // the identification history: of the occurrence, or of the specimen when the rows are specimens
@@ -589,10 +613,56 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         pk.setTemplate(idOf + "-id");
       }
       setKind(id, foreignKeyTo(identificationTable, withOcc ? OCCURRENCE : MATERIAL), DataPackageValueKind.LINK);
-      Suggestion idS = new Suggestion(IDENTIFICATION, id, false,
-          withOcc ? "manage.tables.why.identification" : "manage.tables.why.identification.material");
+      // with samples it's what says which sample each occurrence was found in: ticked
+      boolean ofSample = withOcc && samples;
+      if (ofSample) {
+        setKind(id, foreignKeyTo(identificationTable, MATERIAL), DataPackageValueKind.LINK);
+      }
+      Suggestion idS = ofSample
+          ? new Suggestion(IDENTIFICATION, id, true, "manage.tables.why.identification.sample", columns.get(sampleCol))
+          : new Suggestion(IDENTIFICATION, id, false,
+              withOcc ? "manage.tables.why.identification" : "manage.tables.why.identification.material");
       addAsks(idS);
       result.add(idS);
+    }
+
+    // survey: one per event, with the survey columns that are the same inside every event and that the other tables
+    // don't take, e.g. sampleSizeValue
+    if (surveyTable != null && withEvent) {
+      Set<Integer> taken = taken(occ, occCol, eventCol, eventCols);
+      result.stream().filter(sg -> MATERIAL.equals(sg.getId())).findFirst().ifPresent(sg -> sg.getMapping().getFields()
+          .stream().map(DataPackageFieldMapping::getIndex).filter(Objects::nonNull).forEach(taken::add));
+      Set<String> surveyFields = fieldNames(surveyTable);
+      List<String> svColumns = new ArrayList<>();
+      List<String> inside = new ArrayList<>();
+      for (int c = 0; c < columns.size(); c++) {
+        boolean use = !taken.contains(c) && !peopleCols.contains(c) && matchesField(columns.get(c), surveyFields)
+            && differInside(groups, c).isEmpty();
+        svColumns.add(use ? columns.get(c) : "");
+        if (use) {
+          inside.add(columns.get(c));
+        }
+      }
+      if (!inside.isEmpty()) {
+        DataPackageMapping sv = mapping(schema, source, surveyTable);
+        DataPackageMappingAction.automap(sv.getFields(), svColumns);
+        sv.setRowMode(DataPackageRowMode.DISTINCT);
+        sv.setMergeKey(surveyTable.getPrimaryKey());
+        // the event's key: one survey per event
+        DataPackageFieldMapping svPk = sv.getField(surveyTable.getPrimaryKey());
+        DataPackageFieldMapping evPk = result.stream().filter(sg -> EVENT.equals(sg.getId())).findFirst()
+            .map(sg -> sg.getMapping().getField(eventTable.getPrimaryKey())).orElse(null);
+        if (svPk != null && evPk != null) {
+          svPk.setIndex(evPk.getIndex());
+          svPk.setValueKind(evPk.getValueKind());
+          svPk.setTemplate(evPk.getTemplate());
+          svPk.setDefaultValue(evPk.getDefaultValue());
+        }
+        setKind(sv, foreignKeyTo(surveyTable, EVENT), DataPackageValueKind.LINK);
+        Suggestion svS = new Suggestion(SURVEY, sv, true, "manage.tables.why.survey", String.join(", ", inside));
+        addAsks(svS);
+        result.add(svS);
+      }
     }
 
     // how many rows each makes from the rows read
@@ -601,6 +671,38 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       s.rows = countRows(s, all, columns, sample);
     }
     return result;
+  }
+
+  /**
+   * @return the rows grouped by their key in the key columns, as publishing merges them; a row with an empty key is a
+   * group of its own (publishing doesn't merge it), without key columns all rows are one group
+   */
+  private static Map<String, List<String[]>> groups(List<String[]> sample, List<Integer> keyCols) {
+    Map<String, List<String[]>> groups = new LinkedHashMap<>();
+    for (int i = 0; i < sample.size(); i++) {
+      String[] row = sample.get(i);
+      String key = eventKey(row, keyCols);
+      if (!keyCols.isEmpty() && StringUtils.isBlank(key)) {
+        key = "\u0000" + i;
+      }
+      groups.computeIfAbsent(key, k -> new ArrayList<>()).add(row);
+    }
+    return groups;
+  }
+
+  /**
+   * @return the columns occurrence and event take: their keys and the columns mapped to them
+   */
+  private static Set<Integer> taken(DataPackageMapping occ, int occCol, int eventCol, Set<Integer> eventCols) {
+    Set<Integer> taken = new HashSet<>(eventCols);
+    if (occ != null) {
+      taken.add(occCol);
+      occ.getFields().stream().map(DataPackageFieldMapping::getIndex).filter(Objects::nonNull).forEach(taken::add);
+    }
+    if (eventCol >= 0) {
+      taken.add(eventCol);
+    }
+    return taken;
   }
 
   /**

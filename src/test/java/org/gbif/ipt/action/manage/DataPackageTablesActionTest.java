@@ -182,6 +182,93 @@ public class DataPackageTablesActionTest {
         byId.values().stream().map(DataPackageTablesAction.Suggestion::getMapping).toList()).isEmpty());
   }
 
+  /**
+   * A DNA metabarcoding source: one bulk sample per event, the taxa found in it one occurrence each. One material per
+   * sample, an identification linking each occurrence to its sample (ticked), and the sample size in one survey per
+   * event.
+   */
+  @Test
+  public void testSharedSamples() {
+    TextFileSource source = new TextFileSource();
+    source.setName("metabarcoding.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "eventDate", "materialSampleID", "institutionCode",
+        "preparations", "scientificName", "organismQuantity", "sampleSizeValue", "sampleSizeUnit");
+    List<String[]> sample = List.of(
+        new String[] {"o1", "e1", "2024-07-01", "S1", "NHRS", "DNA extract", "Pica pica", "3", "1000", "metre"},
+        new String[] {"o2", "e1", "2024-07-01", "S1", "NHRS", "DNA extract", "Corvus corax", "1", "1000", "metre"},
+        new String[] {"o3", "e2", "2024-07-02", "S2", "NHRS", "DNA extract", "Parus major", "2", "500", "metre"});
+    Map<String, DataPackageTablesAction.Suggestion> byId = DataPackageTablesAction.suggest(schema(), source, columns, sample)
+        .stream().collect(Collectors.toMap(DataPackageTablesAction.Suggestion::getId, x -> x));
+
+    DataPackageTablesAction.Suggestion mat = byId.get("material");
+    assertEquals("manage.tables.why.material.sample", mat.getWhyKey());
+    assertEquals(2, mat.getRows());
+    DataPackageMapping m = mat.getMapping();
+    assertEquals(DataPackageRowMode.DISTINCT, m.getRowMode());
+    assertEquals("materialEntity_pk", m.getMergeKey());
+    assertEquals(3, m.getField("materialEntity_pk").getIndex());
+    assertEquals(3, m.getField("materialEntityID").getIndex());
+    assertEquals(4, m.getField("institutionCode").getIndex());
+    assertEquals(5, m.getField("preparations").getIndex());
+    assertEquals(DataPackageValueKind.LINK, m.getField("collectionEvent_fk").getValueKind());
+    // a sample serves several occurrences: linked through identification, its name stays with the occurrence
+    assertNull(m.getField("evidenceForOccurrence_fk").getValueKind());
+    assertNull(m.getField("scientificName").getIndex());
+
+    DataPackageTablesAction.Suggestion id = byId.get("identification");
+    assertTrue(id.isChecked());
+    assertEquals("manage.tables.why.identification.sample", id.getWhyKey());
+    assertEquals(3, id.getRows());
+    assertEquals(DataPackageValueKind.LINK, id.getMapping().getField("occurrence_fk").getValueKind());
+    assertEquals(DataPackageValueKind.LINK, id.getMapping().getField("materialEntity_fk").getValueKind());
+    int sampleAt = id.getPreviewFields().indexOf("materialEntity_fk");
+    assertEquals(List.of("S1", "S1", "S2"), id.getPreview().stream().map(r -> r[sampleAt]).toList());
+
+    DataPackageTablesAction.Suggestion sv = byId.get("survey");
+    assertEquals("manage.tables.why.survey", sv.getWhyKey());
+    assertEquals(2, sv.getRows());
+    assertEquals(1, sv.getMapping().getField("survey_pk").getIndex());
+    assertEquals(DataPackageValueKind.LINK, sv.getMapping().getField("event_fk").getValueKind());
+    assertEquals(8, sv.getMapping().getField("sampleSizeValue").getIndex());
+    assertEquals(9, sv.getMapping().getField("sampleSizeUnit").getIndex());
+
+    assertTrue(DataPackageTablesAction.unused(columns,
+        byId.values().stream().map(DataPackageTablesAction.Suggestion::getMapping).toList()).isEmpty());
+  }
+
+  /**
+   * A sample taken in two events isn't linked to an event: merging would keep the first row's.
+   */
+  @Test
+  public void testSampleInSeveralEventsNotLinked() {
+    TextFileSource source = new TextFileSource();
+    source.setName("pooled.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "materialSampleID", "scientificName");
+    List<String[]> sample = List.of(
+        new String[] {"o1", "e1", "S1", "Pica pica"},
+        new String[] {"o2", "e2", "S1", "Corvus corax"});
+    DataPackageTablesAction.Suggestion mat = DataPackageTablesAction.suggest(schema(), source, columns, sample).stream()
+        .filter(x -> x.getId().equals("material")).findFirst().orElseThrow();
+    assertEquals("manage.tables.why.material.sample.events", mat.getWhyKey());
+    assertEquals(1, mat.getRows());
+    assertNull(mat.getMapping().getField("collectionEvent_fk").getValueKind());
+  }
+
+  /**
+   * A sample size that differs inside an event isn't put in survey: no survey suggested.
+   */
+  @Test
+  public void testNoSurveyWhenSampleSizeDiffersInsideEvent() {
+    TextFileSource source = new TextFileSource();
+    source.setName("sizes.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "scientificName", "sampleSizeValue");
+    List<String[]> sample = List.of(
+        new String[] {"o1", "e1", "Pica pica", "10"},
+        new String[] {"o2", "e1", "Corvus corax", "20"});
+    assertTrue(DataPackageTablesAction.suggest(schema(), source, columns, sample).stream()
+        .noneMatch(x -> x.getId().equals("survey")));
+  }
+
   @Test
   public void testEventsFromDateAndPlaceWithoutEventId() {
     TextFileSource source = new TextFileSource();
@@ -390,8 +477,13 @@ public class DataPackageTablesActionTest {
         List.of("identification_pk", "occurrence_fk", "materialEntity_fk", "scientificName"), Set.of("identification_pk"));
     identification.setForeignKeys(List.of(fk("occurrence_fk", "occurrence", "occurrence_pk"),
         fk("materialEntity_fk", "material", "materialEntity_pk")));
+    DataPackageTableSchema survey = table("survey", "survey_pk",
+        List.of("survey_pk", "surveyID", "event_fk", "sampleSizeValue", "sampleSizeUnit", "identifiedBy"),
+        Set.of("survey_pk", "event_fk"));
+    survey.setForeignKeys(List.of(fk("event_fk", "event", "event_pk")));
     return DataPackageSchema.builder().name("dwc-dp").version("1.0")
-        .tableSchemas(Set.of(event, occurrence, agent, role, eventRole, material, materialRole, identification)).build();
+        .tableSchemas(Set.of(event, occurrence, agent, role, eventRole, material, materialRole, identification, survey))
+        .build();
   }
 
   private static DataPackageTableSchema table(String name, String pk, List<String> fields, Set<String> required) {
