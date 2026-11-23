@@ -19,7 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * The installation description shown on the home page: {@link HomeAction#descriptionLead}.
+ * The installation description shown on the home page: {@link HomeAction#descriptionLead} and
+ * {@link HomeAction#descriptionFull}.
  */
 class HomeActionTest {
 
@@ -38,5 +39,29 @@ class HomeActionTest {
     assertNull(HomeAction.descriptionLead(null));
     assertNull(HomeAction.descriptionLead("  \n "));
     assertNull(HomeAction.descriptionLead("<p></p>"));
+  }
+
+  @Test
+  void descriptionFullIsNullWhenTheFirstLineSaysItAll() {
+    assertNull(HomeAction.descriptionFull(null));
+    assertNull(HomeAction.descriptionFull("Hosted by GBIF."));
+    assertNull(HomeAction.descriptionFull("<p><b>Hosted</b> by GBIF.</p>\n"));
+  }
+
+  @Test
+  void descriptionFullKeepsLineBreaksOfPlainText() {
+    assertEquals("Hosted by GBIF.<br>Contacts: https://example.org",
+        oneLine(HomeAction.descriptionFull("Hosted by GBIF.\r\nContacts: https://example.org\n")));
+  }
+
+  @Test
+  void descriptionFullKeepsSafeMarkupOnly() {
+    String full = HomeAction.descriptionFull("<p>Hosted by GBIF.</p>\n<p onclick=\"x()\">More <a href=\"https://gbif.org\">here</a><script>x()</script></p>");
+    assertEquals("<p>Hosted by GBIF.</p><p>More <a href=\"https://gbif.org\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">here</a></p>", oneLine(full));
+  }
+
+  /** Jsoup's output is pretty-printed; the line breaks between tags don't matter in HTML. */
+  private static String oneLine(String html) {
+    return html.replaceAll("\\s*\\R\\s*", "");
   }
 }

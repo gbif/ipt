@@ -79,6 +79,11 @@
         <p class="login-foot">
             <@s.text name="login.noAccount"/> <@adminContact/>
         </p>
+
+        <#-- the logo links elsewhere, and the menu has no Home for logged-out visitors -->
+        <#if (cfg.getLogoRedirectUrl())?has_content>
+            <p class="login-foot"><a href="${baseURL}/"><@s.text name="login.iptHome"/></a></p>
+        </#if>
     </div>
 </main>
 

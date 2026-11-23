@@ -275,8 +275,12 @@
       <result name="success" type="redirect">${baseURL}/account.do</result>
     </action>
 
-    <action name="about" class="org.gbif.ipt.action.AboutAction">
-      <result>/WEB-INF/pages/about.ftl</result>
+    <!-- the About page was retired, the portal home shows its content: keep old links and bookmarks working -->
+    <action name="about">
+      <result type="redirect">
+        <param name="location">${baseURL}/</param>
+        <param name="statusCode">301</param>
+      </result>
     </action>
 
     <action name="health" class="healthAction">

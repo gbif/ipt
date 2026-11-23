@@ -20,7 +20,7 @@
         <#if !iptName?has_content>
             <h1 class="visually-hidden"><@s.text name="portal.home.title"/></h1>
         </#if>
-        <#-- who runs this IPT (registration, as on the About page) and the totals of its public resources -->
+        <#-- who runs this IPT (registration) and the totals of its public resources -->
         <#if registeredIpt?? || (totals.resources > 0)>
             <section class="ph-intro" aria-label="<@s.text name="portal.home.about"/>">
                 <#if registeredIpt??>
@@ -30,7 +30,17 @@
                         <p class="ph-where"><@s.text name="portal.home.hostedBy"><@s.param><#if hostingOrganisationGbifUrl??><a href="${hostingOrganisationGbifUrl}">${hostingOrganisation.name}</a><#else>${hostingOrganisation.name}</#if></@s.param></@s.text></p>
                     </#if>
                     <#if iptDescriptionLead??>
-                        <p class="ph-lead">${iptDescriptionLead}</p>
+                        <#-- the first line; "More" swaps it for the whole description (sanitized HTML) -->
+                        <#if iptDescriptionFull??>
+                            <div class="ph-lead" id="ph-lead">
+                                <p>${iptDescriptionLead}</p>
+                                <div class="ph-lead-full" hidden>${iptDescriptionFull?no_esc}</div>
+                                <button type="button" class="ph-lead-more" aria-expanded="false"
+                                        data-less="<@s.text name="basic.showLess"/>"><@s.text name="basic.showMore"/></button>
+                            </div>
+                        <#else>
+                            <p class="ph-lead">${iptDescriptionLead}</p>
+                        </#if>
                     </#if>
                 </#if>
                 <p class="ph-facts">
@@ -129,6 +139,22 @@
 </main>
 
 <#if (resourcesSize>0)>
+<script>
+    // the installation description: "More" shows all of it instead of the first line, "Less" goes back
+    (function () {
+        const lead = document.getElementById("ph-lead");
+        if (!lead) return;
+        const first = lead.querySelector("p"), full = lead.querySelector(".ph-lead-full"), button = lead.querySelector(".ph-lead-more");
+        const more = button.textContent;
+        button.addEventListener("click", function () {
+            const open = full.hidden;
+            full.hidden = !open;
+            first.hidden = open;
+            button.textContent = open ? button.dataset.less : more;
+            button.setAttribute("aria-expanded", String(open));
+        });
+    })();
+</script>
 <script>
     <#-- list and filters of /api/home-resources (HomeAction#search); the search, filters, sort, view and page are kept
          in the URL so a search can be shared -->

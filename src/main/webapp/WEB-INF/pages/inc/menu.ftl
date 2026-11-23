@@ -66,9 +66,12 @@
             <div class="collapse navbar-collapse ps-2" id="navbarCollapse">
                 <!-- Navbar -->
                 <ul class="navbar-nav mx-auto mb-md-0">
+                    [#-- only next to Manage: a lone Home looks odd, the logo leads home (with a custom logo link, the login page links it) --]
+                    [#if managerRights]
                     <li class="nav-item nav-item-border-bottom">
                         <a class="nav-link custom-nav-link [#if currentMenu=='home']active[/#if]" href="${baseURL}/">[@s.text name="menu.home"/]</a>
                     </li>
+                    [/#if]
                     [#if managerRights]
                         <li class="nav-item nav-item-border-bottom">
                             <a class="nav-link custom-nav-link [#if currentMenu=='manage']active[/#if]" href="${baseURL}/manage/">[@s.text name="menu.manage"/]</a>
@@ -79,9 +82,6 @@
                             <a class="nav-link custom-nav-link [#if currentMenu=='admin']active[/#if]" href="${baseURL}/admin/">[@s.text name="menu.admin"/]</a>
                         </li>
                     [/#if]
-                    <li class="nav-item nav-item-border-bottom">
-                        <a class="nav-link custom-nav-link [#if currentMenu=='about']active[/#if]" href="${baseURL}/about.do">[@s.text name="menu.about"/]</a>
-                    </li>
                 </ul>
 
                 <div class="d-xl-flex align-content-between">

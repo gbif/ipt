@@ -27,6 +27,7 @@ import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceDataTableViewManager;
 import org.gbif.ipt.service.manage.ResourceCitationsManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
+import org.gbif.ipt.utils.XSSUtils;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,6 +44,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
@@ -51,6 +53,9 @@ public class HomeAction extends BaseAction {
 
   @Serial
   private static final long serialVersionUID = 8504283506326312600L;
+
+  /** Markup that sets its own line breaks; a description without it is plain text. */
+  private static final Pattern HTML_BLOCKS = Pattern.compile("<(p|br|ul|ol|li)\\b", Pattern.CASE_INSENSITIVE);
 
   private final ResourceDataTableViewManager resourceManager;
   private final ResourceCitationsManager citationsManager;
@@ -192,7 +197,7 @@ public class HomeAction extends BaseAction {
   }
 
   /**
-   * The first line of the registered installation description, as plain text (the About page shows all of it), or
+   * The first line of the registered installation description, as plain text (GBIF.org shows all of it), or
    * null if the IPT isn't registered or has no description.
    */
   @Nullable
@@ -202,7 +207,17 @@ public class HomeAction extends BaseAction {
   }
 
   /**
-   * The first line of a description that has text, without markup (the About page shows the description as HTML).
+   * The whole registered installation description, sanitized HTML, or null if the first line
+   * ({@link #getIptDescriptionLead()}) already says it all. Shown behind "More" on the home page.
+   */
+  @Nullable
+  public String getIptDescriptionFull() {
+    Ipt ipt = getRegisteredIpt();
+    return ipt != null ? descriptionFull(ipt.getDescription()) : null;
+  }
+
+  /**
+   * The first line of a description that has text, without markup.
    */
   @Nullable
   static String descriptionLead(@Nullable String description) {
@@ -214,6 +229,21 @@ public class HomeAction extends BaseAction {
         .filter(StringUtils::isNotEmpty)
         .findFirst()
         .orElse(null);
+  }
+
+  /**
+   * A description that says more than its first line, as sanitized HTML; plain text keeps its line breaks.
+   */
+  @Nullable
+  static String descriptionFull(@Nullable String description) {
+    String lead = descriptionLead(description);
+    if (lead == null || lead.equals(Jsoup.parse(description).text().strip())) {
+      return null;
+    }
+    String html = HTML_BLOCKS.matcher(description).find()
+        ? description
+        : description.strip().replaceAll("\\R", "<br>");
+    return XSSUtils.stripXSS(html);
   }
 
   /**

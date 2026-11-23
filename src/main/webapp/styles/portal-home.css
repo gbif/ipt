@@ -17,6 +17,10 @@
 .ph-where a { color: inherit !important; text-decoration: underline; text-decoration-color: #dee2e6; }
 .ph-where a:hover, .ph-where a:focus-visible { color: rgb(var(--color-gbif-primary)) !important; }
 .ph-lead { color: #495057; font-size: 0.875rem; max-width: 72ch; }
+.ph-lead-full p, .ph-lead-full ul, .ph-lead-full ol { margin: 0 0 0.5rem; }
+.ph-lead-full > :last-child { margin-bottom: 0; }
+.ph-lead-more { padding: 0; border: 0; background: none; font-size: inherit; color: rgb(var(--color-gbif-primary)); }
+.ph-lead-more:hover, .ph-lead-more:focus-visible { text-decoration: underline; }
 .ph-intro .ph-facts { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 0.8125rem; color: #6c757d; }
 .ph-facts b { color: #212529; font-weight: 600; font-variant-numeric: tabular-nums; }
 .ph-facts .material-icon { vertical-align: -0.15em; }

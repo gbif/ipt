@@ -526,6 +526,15 @@ table {
     .custom-nav-link {
         padding: 1.25rem 2rem !important;
     }
+
+    /* keep the height of a menu link when there are none (logged-out visitors) */
+    .main-nav > .container-fluid {
+        min-height: calc(2.5rem + 1.5em);
+    }
+
+    header.shrink .main-nav > .container-fluid {
+        min-height: calc(2rem + 1.5em);
+    }
 }
 
 .navbar-dark .navbar-nav .nav-link, .navbar-dark .nav-link {
