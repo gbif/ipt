@@ -53,3 +53,48 @@ table.dataTable.us-table td.dt-right, table.dataTable.us-table th.dt-right { tex
 .us-role.us-role-static:hover { border-color: #dee2e6; }
 /* read-only fields (account email) look read-only */
 .us-page .form-control[readonly] { background-color: #f8f9fa; color: #6c757d; }
+
+/* user import (admin/users_import.ftl); the drop area is .dlg-drop from dialogs.css, Add user is .add-area (eml.css) */
+.imp-drop { padding: 32px 20px 28px; background: #fff; }
+.imp-template .material-icon { font-size: 1rem; }
+.imp-table td { vertical-align: middle; }
+.imp-table .imp-line { width: 1%; white-space: nowrap; color: #6c757d; }
+.imp-table .imp-line .material-icon { font-size: 1rem; vertical-align: -3px; margin-right: 4px; }
+.imp-table td.imp-acts { width: 1%; white-space: nowrap; text-align: right; }
+.imp-name { color: #212529; }
+.imp-email { font-size: 0.75rem; color: #6c757d; }
+
+/* file format */
+.imp-format td:first-child { width: 1%; white-space: nowrap; }
+.imp-format td:nth-child(2) { width: 1%; white-space: nowrap; }
+.imp-format .us-tag { background: rgba(var(--color-gbif-primary), .1); color: rgb(var(--color-gbif-primary)); }
+.imp-format .us-tag.imp-optional { background: #f1f3f5; color: #495057; }
+.imp-roles { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; }
+.imp-role-opt { display: inline-flex; align-items: center; gap: 6px; }
+
+/* review: inputs fill their column; email is the widest */
+.imp-edit td { padding: 6px 6px; }
+.imp-edit tbody tr.imp-row td { border-bottom: 0; }
+.imp-edit tbody tr.imp-row:not(.imp-bad) td, .imp-edit tbody tr.imp-errs td { border-bottom: 1px solid #f1f3f5; }
+.imp-edit th:nth-child(2), .imp-edit th:nth-child(3) { width: 17%; }
+.imp-edit th:nth-child(4) { width: 30%; }
+.imp-edit th:nth-child(5) { width: 22%; }
+.imp-edit .form-select { min-width: 160px; }
+.imp-edit tr.imp-bad td { background: rgba(var(--color-gbif-danger), .03); }
+.imp-edit tr.imp-errs td { padding-top: 0; }
+.imp-err-list { list-style: none; margin: 0; padding: 0; font-size: 0.78rem; color: rgb(var(--color-gbif-danger)); }
+.imp-err-list li + li { margin-top: 2px; }
+.imp-err-list .material-icon { font-size: 0.9rem; vertical-align: -2px; }
+.imp-edit .imp-err-list li::before { content: "\2022"; margin-right: 6px; }
+.imp-problems-only tr.imp-row:not(.imp-bad):not(.imp-new) { display: none; }
+.imp-filter { font-size: 0.82rem; color: #4e565f; }
+.imp-filter .form-check-input:checked { background-color: rgb(var(--color-gbif-primary)); border-color: rgb(var(--color-gbif-primary)); }
+
+/* created: password with copy */
+.imp-page code.imp-password { font-size: 0.82rem; color: #212529; background: #f1f3f5; border-radius: 4px; padding: 2px 6px; user-select: all; }
+.imp-copy .imp-copied, .imp-copy.is-copied .material-icon:first-child { display: none; }
+.imp-copy.is-copied .imp-copied { display: inline-block; color: rgb(var(--color-gbif-success, var(--color-gbif-primary))); }
+.imp-page code { color: #212529; background: #f1f3f5; border-radius: 4px; padding: 1px 5px; font-size: 0.8rem; }
+.imp-page a.imp-template { color: rgb(var(--color-gbif-primary)) !important; font-weight: 500; text-decoration: none !important; }
+.imp-page a.imp-template:hover { text-decoration: underline !important; }
+.imp-role-full { color: #6c757d; font-size: 0.78rem; margin-left: 6px; }

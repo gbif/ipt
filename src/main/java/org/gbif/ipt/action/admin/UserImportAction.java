@@ -131,7 +131,6 @@ public class UserImportAction extends BaseAction implements UploadedFilesAware {
     }
 
     User currentUser = getCurrentUser();
-    int created = 0;
     for (UserImportRow row : rows) {
       if (!row.isValid()) {
         continue;
@@ -149,7 +148,6 @@ public class UserImportAction extends BaseAction implements UploadedFilesAware {
         userManager.create(user);
         row.setPassword(password);
         row.setCreated(true);
-        created++;
         LOG.info("User {} has been created by {} (bulk import)", row.getEmail(), currentUser.getEmail());
       } catch (AlreadyExistingException e) {
         // created in the meantime
@@ -162,7 +160,6 @@ public class UserImportAction extends BaseAction implements UploadedFilesAware {
     }
 
     completed = true;
-    addActionMessage(getText("admin.users.import.created", new String[] {String.valueOf(created)}));
     return SUCCESS;
   }
 
