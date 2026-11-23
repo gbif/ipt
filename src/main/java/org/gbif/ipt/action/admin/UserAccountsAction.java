@@ -33,9 +33,15 @@ import java.io.IOException;
 import java.io.Serial;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -96,6 +102,36 @@ public class UserAccountsAction extends POSTAction {
   private boolean newUser;
   @Getter
   private List<User> users;
+  // list page: resources each user created or manages, and why a user can't be deleted, by lower case email
+  @Getter
+  private final Map<String, Integer> resourceCounts = new HashMap<>();
+  @Getter
+  private final Map<String, String> deleteBlocked = new HashMap<>();
+  // user page: the resources the user created or manages, and why the account can't be deleted (read on first use)
+  private List<UserResource> userResources;
+  private String deleteBlockedReason;
+  private boolean deleteBlockedChecked;
+
+  /**
+   * A resource on the user page, with how the user is linked to it.
+   */
+  public record UserResource(String shortname, String title, boolean creator, boolean manager) {
+    public String getShortname() {
+      return shortname;
+    }
+
+    public String getTitle() {
+      return title;
+    }
+
+    public boolean isCreator() {
+      return creator;
+    }
+
+    public boolean isManager() {
+      return manager;
+    }
+  }
 
   @Inject
   public UserAccountsAction(
@@ -109,22 +145,33 @@ public class UserAccountsAction extends POSTAction {
     this.resourceManager = resourceManager;
   }
 
-  private void checkUserResourcesBeforeDeletion(String email) throws DeletionNotAllowedException {
-    User remUser = userManager.get(email);
+  private static boolean sameEmail(User a, User b) {
+    return a != null && b != null && a.getEmail() != null && a.getEmail().equalsIgnoreCase(b.getEmail());
+  }
 
-    Set<String> resourcesCreatedByUser = new HashSet<>();
+  /**
+   * Resources (shortnames) the user is the creator of.
+   */
+  private Set<String> resourcesCreatedBy(User remUser) {
+    Set<String> resourcesCreatedByUser = new TreeSet<>();
     for (Resource r : resourceManager.list()) {
-      User creator = userManager.get(r.getCreator().getEmail());
+      User creator = r.getCreator() == null ? null : userManager.get(r.getCreator().getEmail());
       if (creator != null && creator.equals(remUser)) {
         resourcesCreatedByUser.add(r.getShortname());
       }
     }
+    return resourcesCreatedByUser;
+  }
 
-    Set<String> resourcesManagedOnlyByUser = new HashSet<>();
+  /**
+   * Resources (shortnames) that would have no manager left without the user.
+   */
+  private Set<String> resourcesManagedOnlyBy(User remUser) {
+    Set<String> resourcesManagedOnlyByUser = new TreeSet<>();
     for (Resource r : resourceManager.list(remUser)) {
       Set<User> managers = new HashSet<>();
       // add creator to the list of managers, but only if creator has manager rights!
-      User creator = userManager.get(r.getCreator().getEmail());
+      User creator = r.getCreator() == null ? null : userManager.get(r.getCreator().getEmail());
       if (creator != null && creator.hasManagerRights()) {
         managers.add(creator);
       }
@@ -140,14 +187,80 @@ public class UserAccountsAction extends POSTAction {
         resourcesManagedOnlyByUser.add(r.getShortname());
       }
     }
+    return resourcesManagedOnlyByUser;
+  }
 
+  private void checkUserResourcesBeforeDeletion(String email) throws DeletionNotAllowedException {
+    User remUser = userManager.get(email);
+    Set<String> resourcesManagedOnlyByUser = resourcesManagedOnlyBy(remUser);
     if (!resourcesManagedOnlyByUser.isEmpty()) {
       // Check #1, is user the only manager that exists for or more resources? If yes, prevent deletion!
       throw new DeletionNotAllowedException(Reason.LAST_RESOURCE_MANAGER, resourcesManagedOnlyByUser.toString());
-    } else if (!resourcesCreatedByUser.isEmpty()) {
+    }
+    Set<String> resourcesCreatedByUser = resourcesCreatedBy(remUser);
+    if (!resourcesCreatedByUser.isEmpty()) {
       // Check #2, is user the creator of one or more resources? If yes, prevent deletion!
       throw new DeletionNotAllowedException(Reason.IS_RESOURCE_CREATOR, resourcesCreatedByUser.toString());
     }
+  }
+
+  /**
+   * Why the user can't be deleted, in the checks' order of delete() and UserAccountManager.delete(), or null when
+   * the user can be deleted. Shown before anyone tries, so the Delete action can be disabled.
+   */
+  private String deletionBlockedReason(User u) {
+    if (sameEmail(u, getCurrentUser())) {
+      return getText("admin.user.delete.blocked.current");
+    }
+    Set<String> onlyManager = resourcesManagedOnlyBy(u);
+    if (!onlyManager.isEmpty()) {
+      return getText("admin.user.delete.blocked.lastManager", new String[]{String.join(", ", onlyManager)});
+    }
+    Set<String> created = resourcesCreatedBy(u);
+    if (!created.isEmpty()) {
+      return getText("admin.user.delete.blocked.creator", new String[]{String.join(", ", created)});
+    }
+    if (u.getRole() == Role.Admin && userManager.list(Role.Admin).stream().noneMatch(a -> !a.equals(u))) {
+      return getText("admin.user.delete.blocked.lastAdmin");
+    }
+    return null;
+  }
+
+  /**
+   * The resources the user created or was added to as a manager, by title. Admins manage every resource, so for them
+   * only the ones they created.
+   */
+  private List<UserResource> resourcesOf(User u) {
+    boolean admin = u.getRole() == Role.Admin;
+    List<UserResource> result = new ArrayList<>();
+    for (Resource r : resourceManager.list()) {
+      boolean creator = sameEmail(r.getCreator(), u);
+      boolean manager = !admin && r.getManagers().stream().anyMatch(m -> sameEmail(m, u));
+      if (creator || manager) {
+        String title = StringUtils.defaultIfBlank(r.getTitle(), r.getShortname());
+        result.add(new UserResource(r.getShortname(), title, creator, manager));
+      }
+    }
+    result.sort(Comparator.comparing(ur -> ur.title().toLowerCase(Locale.ROOT)));
+    return result;
+  }
+
+  /**
+   * Number of administrators, active or not.
+   */
+  public long getAdminCount() {
+    return users == null ? 0 : users.stream().filter(u -> u.getRole() == Role.Admin).count();
+  }
+
+  public long getDeactivatedCount() {
+    return users == null ? 0 : users.stream().filter(User::isDeactivated).count();
+  }
+
+  /**
+   * Whether the page shows the logged in user's own account.
+   */
+  public boolean isOwnAccount() {
+    return !newUser && sameEmail(user, getCurrentUser());
   }
 
   private void removeUserFromResourceManagers(User user) {
@@ -209,7 +322,36 @@ public class UserAccountsAction extends POSTAction {
 
   public String list() {
     users = userManager.list();
+    for (User u : users) {
+      String key = u.getEmail().toLowerCase(Locale.ROOT);
+      resourceCounts.put(key, resourcesOf(u).size());
+      String blocked = deletionBlockedReason(u);
+      if (blocked != null) {
+        deleteBlocked.put(key, blocked);
+      }
+    }
     return SUCCESS;
+  }
+
+  /**
+   * User page: the resources the user created or manages, empty for a new account.
+   */
+  public List<UserResource> getUserResources() {
+    if (userResources == null) {
+      userResources = newUser || id == null ? new ArrayList<>() : resourcesOf(userManager.get(id));
+    }
+    return userResources;
+  }
+
+  /**
+   * User page: why the account can't be deleted, or null.
+   */
+  public String getDeleteBlockedReason() {
+    if (!deleteBlockedChecked && !newUser && id != null) {
+      deleteBlockedReason = deletionBlockedReason(userManager.get(id));
+      deleteBlockedChecked = true;
+    }
+    return deleteBlockedReason;
   }
 
   @Override
