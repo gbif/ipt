@@ -164,10 +164,14 @@ public class UserAccountsAction extends POSTAction {
   }
 
   /**
-   * Resources (shortnames) that would have no manager left without the user.
+   * Resources (shortnames) that would have no manager left without the user. None for an admin: another admin always
+   * remains (the last one can't be deleted), and admins manage every resource.
    */
   private Set<String> resourcesManagedOnlyBy(User remUser) {
     Set<String> resourcesManagedOnlyByUser = new TreeSet<>();
+    if (remUser == null || remUser.getRole() == Role.Admin) {
+      return resourcesManagedOnlyByUser;
+    }
     for (Resource r : resourceManager.list(remUser)) {
       Set<User> managers = new HashSet<>();
       // add creator to the list of managers, but only if creator has manager rights!
