@@ -14,6 +14,7 @@
 package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.admin.UserAccountManager;
@@ -88,8 +89,15 @@ public class AccountAction extends POSTAction {
   public void prepare() {
     super.prepare();
     try {
-      if (getCurrentUser() != null) {
-        currentUser = getCurrentUser();
+      User sessionUser = getCurrentUser();
+      if (sessionUser != null) {
+        // change the stored account, not the session's: saving an account on the admin user page replaces the stored
+        // one with a copy, and changes to an object that isn't stored any more are never written
+        User stored = userManager.get(sessionUser.getEmail());
+        currentUser = stored != null ? stored : sessionUser;
+        if (stored != null && stored != sessionUser && session != null) {
+          session.put(Constants.SESSION_USER, stored);
+        }
         user = (User) currentUser.clone();
         email = user.getEmail();
       }
@@ -149,7 +157,17 @@ public class AccountAction extends POSTAction {
         password2 = null;
         // otherwise, set password if it's valid
       } else if (validator.validatePassword(this, newPassword)) {
+        String previousHash = currentUser.getPassword();
         currentUser.setPassword(BCrypt.withDefaults().hashToString(12, newPassword.toCharArray()));
+        try {
+          userManager.save();
+        } catch (IOException e) {
+          // not written: keep the old password, which is still the one on disk
+          currentUser.setPassword(previousHash);
+          addActionError(getText("admin.user.account.saveError"));
+          LOG.error("The password of user {} could not be saved: {}", currentUser.getEmail(), e.getMessage(), e);
+          return INPUT;
+        }
         // erase data
         newPassword = null;
         currentPassword = null;
