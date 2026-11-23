@@ -48,3 +48,8 @@ table.dataTable.us-table td.dt-right, table.dataTable.us-table th.dt-right { tex
 .us-show-all:hover { color: #212529; text-decoration: underline; }
 /* manage-home.css drops the gap under the last message (no heading box there); this page has one, keep the gap */
 #action-alerts .alert:last-child { margin-bottom: 1rem; }
+/* account page: the own role, shown like a role card but not a choice */
+.us-role.us-role-static { cursor: default; max-width: 520px; }
+.us-role.us-role-static:hover { border-color: #dee2e6; }
+/* read-only fields (account email) look read-only */
+.us-page .form-control[readonly] { background-color: #f8f9fa; color: #6c757d; }

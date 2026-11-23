@@ -1,57 +1,17 @@
 <#ftl output_format="HTML">
+<#-- @ftlvariable name="" type="org.gbif.ipt.action.AccountAction" -->
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/inc/header.ftl">
 <link rel="stylesheet" href="${baseURL}/styles/page-heading.css">
+<link rel="stylesheet" href="${baseURL}/styles/overview.css">
+<link rel="stylesheet" href="${baseURL}/styles/users.css">
+<link rel="stylesheet" href="${baseURL}/styles/smaller-inputs.css">
 <title><@s.text name="account.title"/></title>
+<#assign currentMenu = "account"/>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 <#include "/WEB-INF/pages/macros/forms.ftl">
 
-<script>
-    $(document).ready(function(){
-        function displayProfileView() {
-            $('#change-password-block').hide();
-            $('#change_password').hide();
-            $('#edit-profile-block').show();
-            $('#save').show();
-        }
-
-        function displayPasswordView() {
-            $('#edit-profile-block').hide();
-            $('#save').hide();
-            $('#change-password-block').show();
-            $('#change_password').show();
-        }
-
-        $(".default-button-tab-root").click(function (event) {
-            var selectedTab = $(this);
-            var selectedTabId = selectedTab[0].id;
-
-            // remove "selected" from all tabs
-            $(".default-button-tab-root").removeClass("tab-selected");
-            // hide all indicators
-            $(".tabs-indicator").hide();
-            // add "selected" to clicked tab
-            selectedTab.addClass("tab-selected");
-            // show indicator for this tab
-            $("#" + selectedTabId + " .tabs-indicator").show();
-
-            if (selectedTabId === 'tab-profile') {
-                displayProfileView();
-            } else {
-                displayPasswordView();
-            }
-        });
-
-        // in case of validation error for change-password switch to the proper view
-        if (window.location.href.indexOf("change-password") > -1) {
-            $('#edit-profile-block').hide();
-            $('#save').hide();
-            $('#change-password-radio').prop("checked", true);
-            $('#change-password-block').show();
-            $('#change_password').show();
-        }
-    });
-</script>
+<#assign roleKey = user.role?lower_case/>
 
 <div class="container px-0">
     <#include "/WEB-INF/pages/inc/action_alerts.ftl">
@@ -65,104 +25,91 @@
                     <span><@s.text name="menu.account"/></span>
                 </div>
 
-                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="account.title"/></h1>
+                <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal">${user.name!user.email}</h1>
 
                 <div class="ov-meta">
-                    <span>${user.email!}</span>
-                    <span><@s.text name="user.roles.${user.role?lower_case}"/></span>
+                    <span class="fs-smaller-2 text-nowrap dt-content-pill user-${roleKey}"><@s.text name="user.roles.${roleKey}"/></span>
+                    <span>${user.email}</span>
                 </div>
             </div>
 
             <div class="ov-acts">
-                <#-- one Save per tab: the page script shows #save on Profile and #change_password on Change password -->
+                <#-- Save is for the names only; the password has its own button in its card -->
                 <button type="submit" id="save" name="save" value="save" form="profileData" class="btn btn-sm btn-gbif-solid top-button"><@icon name="save"/> <@s.text name="button.save"/></button>
-                <button type="submit" id="change_password" name="change-password" value="change-password" form="changePassword" class="btn btn-sm btn-gbif-solid top-button" style="display: none;"><@icon name="save"/> <@s.text name="button.save"/></button>
-                <@s.submit form="profileData" cssClass="btn btn-sm btn-outline-secondary top-button" name="cancel" key="button.back"/>
+                <a href="${baseURL}/home.do" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.back"/></a>
             </div>
         </div>
     </div>
 </div>
 
-<main class="container main-content-container">
-    <div class="mt-3 p-3">
-        <p>
-            <@s.text name="account.intro"/>
-        </p>
-
-        <p class="mb-0">
-            <@s.text name="account.email.cantChange"/>
-        </p>
-    </div>
-
-    <div class="p-3">
-        <div class="tabs-root">
-            <div class="tabs-scroller tabs-fixed" style="overflow:hidden;margin-bottom:0">
-                <div class="tabs-flexContainer justify-content-start" role="tablist">
-                    <button id="tab-profile" class="default-button-tab-root tab-selected" type="button" role="tab">
-                        <@s.text name="account.profile.title"/>
-                        <span id="tab-indicator-profile" class="tabs-indicator"></span>
-                    </button>
-                    <button id="tab-password" class="default-button-tab-root" type="button" role="tab">
-                        <@s.text name="account.passwordChange.title"/>
-                        <span id="tab-indicator-password" class="tabs-indicator" style="display: none;"></span>
-                    </button>
+<main class="container main-content-container mb-5">
+    <div class="my-3 us-page">
+        <section class="ov-card">
+            <div class="ov-ch"><h2><@s.text name="admin.user.section.account"/></h2></div>
+            <form id="profileData" class="needs-validation" action="account.do" method="post" novalidate>
+                <div class="row g-3 mt-0">
+                    <div class="col-md-6">
+                        <@input name="user.firstname" value=user.firstname! requiredField=true />
+                    </div>
+                    <div class="col-md-6">
+                        <@input name="user.lastname" value=user.lastname! requiredField=true />
+                    </div>
+                    <div class="col-md-6">
+                        <@input name="user.email" value=user.email! disabled=true />
+                    </div>
+                    <div class="col-12">
+                        <div class="ov-banner info compact">
+                            <span class="ov-ic"><@icon name="info_outlined"/></span>
+                            <div class="ov-grow"><@s.text name="account.email.note"/></div>
+                        </div>
+                    </div>
                 </div>
+            </form>
+        </section>
+
+        <section class="ov-card">
+            <div class="ov-ch"><h2><@s.text name="user.role"/></h2></div>
+            <div class="us-role us-role-static">
+                <span>
+                    <span class="us-role-name"><@s.text name="user.roles.${roleKey}"/></span>
+                    <span class="us-role-desc"><@s.text name="admin.user.role.${roleKey}.desc"/></span>
+                </span>
             </div>
-        </div>
+            <p class="ov-sub mt-2 mb-0"><@s.text name="account.role.note"/></p>
+        </section>
+
+        <section class="ov-card">
+            <div class="ov-ch"><h2><@s.text name="user.password"/></h2></div>
+            <form id="changePassword" class="needs-validation" action="change-password.do" method="post" novalidate>
+                <div class="row g-3 mt-0">
+                    <div class="col-md-6">
+                        <@input name="currentPassword" i18nkey="user.password.current" type="password" requiredField=true />
+                    </div>
+                    <div class="w-100 m-0"></div>
+                    <div class="col-md-6">
+                        <@input name="newPassword" i18nkey="user.password.new" type="password" requiredField=true />
+                    </div>
+                    <div class="col-md-6">
+                        <@input name="password2" i18nkey="user.password2" type="password" requiredField=true />
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" id="change_password" name="change-password" value="change-password" class="btn btn-sm btn-outline-gbif-primary"><@s.text name="button.changePassword"/></button>
+                    </div>
+                </div>
+            </form>
+        </section>
     </div>
-
-    <div id="edit-profile-block" class="p-3">
-        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-            <@s.text name="account.profile.title"/>
-        </h4>
-        <form id="profileData" class="needs-validation" action="account.do" method="post" novalidate>
-            <input type="hidden" name="id" value="${email!}" required>
-
-            <div class="row g-3 mt-0 mb-2">
-                <div class="col-sm-6">
-                    <@input name="user.email" value=user.email! disabled=true requiredField=true />
-                </div>
-
-                <#assign val><@s.text name="user.roles.${user.role?lower_case}"/></#assign>
-
-                <div class="col-sm-6">
-                    <@readonly name="role" i18nkey="user.role" value=val requiredField=true />
-                </div>
-
-                <div class="col-sm-6">
-                    <@input name="user.firstname" value=user.firstname! requiredField=true />
-                </div>
-
-                <div class="col-sm-6">
-                    <@input name="user.lastname" value=user.lastname! requiredField=true />
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div id="change-password-block" class="p-3" style="display: none;">
-        <h4 class="pb-2 mb-2 pt-2 text-gbif-header-2 fs-5 fw-400">
-            <@s.text name="account.passwordChange.title"/>
-        </h4>
-        <form id="changePassword" class="needs-validation" action="change-password.do" method="post" novalidate>
-            <input type="hidden" name="id" value="${email!}" required>
-
-            <div class="row g-3 mt-0 mb-2">
-                <div class="col-sm-6">
-                    <@input name="newPassword" i18nkey="user.password.new" type="password" requiredField=true />
-                </div>
-
-                <div class="col-sm-6">
-                    <@input name="password2" i18nkey="user.password2" type="password" requiredField=true />
-                </div>
-
-                <div class="col-sm-6">
-                    <@input name="currentPassword" i18nkey="user.password.current" type="password" requiredField=true />
-                </div>
-            </div>
-        </form>
-    </div>
-
 </main>
+
+<script>
+    // a refused password change comes back at the top of the page: show the card with the error
+    $(function () {
+        var invalid = document.querySelector("#changePassword .is-invalid");
+        if (invalid) {
+            invalid.closest(".ov-card").scrollIntoView({block: "center"});
+            invalid.focus({preventScroll: true});
+        }
+    });
+</script>
 
 <#include "/WEB-INF/pages/inc/footer.ftl">
