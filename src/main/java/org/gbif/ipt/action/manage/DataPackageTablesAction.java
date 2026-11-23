@@ -85,6 +85,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
   static final String SURVEY = "survey";
   static final String MATERIAL_SAMPLE_ID = "materialSampleID";
   static final String RECORDED_BY = "recordedBy";
+  // DwC-DP 1.0 links an event to its parent by key; the schema gives parentEvent_fk as a version of dwc:parentEventID
+  static final String PARENT_EVENT_ID = "parentEventID";
+  static final String PARENT_EVENT_FK = "parentEvent_fk";
 
   // DwC agent-name terms, the role of the person in each, and the term with their IDs in the same order
   private static final Map<String, String> NAME_COLUMNS = new LinkedHashMap<>();
@@ -161,6 +164,8 @@ public class DataPackageTablesAction extends ManagerBaseAction {
     // fields given a fixed value because of the data (occurrenceStatus "detected"), with the column that shows why
     private final Map<String, String> filledFromData = new LinkedHashMap<>();
     private int rows;
+    // parent events that aren't events of the rows read, so parentEvent_fk isn't mapped: some of them, comma separated
+    private String parentMissing;
     // the first rows it makes from the rows read, to show what the table looks like
     private final List<String> previewFields = new ArrayList<>();
     private final List<String[]> preview = new ArrayList<>();
@@ -394,7 +399,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         setKind(occ, foreignKeyTo(occTable, EVENT), DataPackageValueKind.LINK);
       }
       Suggestion occS = new Suggestion(OCCURRENCE, occ, true, "manage.tables.why.occurrence",
-          columns.get(occCol), String.valueOf(distinct(sample, occCol)), String.valueOf(sample.size()));
+          columns.get(occCol));
       fillFromData(occS, sample, columns);
       addAsks(occS);
       result.add(occS);
@@ -416,8 +421,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       if (eventCol >= 0) {
         setColumn(ev, eventTable.getPrimaryKey(), eventCol);
         evS = new Suggestion(EVENT, ev, true, withOcc ? "manage.tables.why.event" : "manage.tables.why.event.rows",
-            columns.get(eventCol),
-            String.valueOf(sample.size()), String.valueOf(groups.size()), inside);
+            columns.get(eventCol), inside);
       } else if (!eventKeyCols.isEmpty()) {
         // a readable key from the date and place, e.g. "2024-07-01 Ystad"; occurrence links with the same rule
         if (evPk != null) {
@@ -426,8 +430,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
           evPk.setTemplate(eventKeyCols.stream().map(c -> "{" + columns.get(c) + "}").collect(Collectors.joining(" ")));
         }
         evS = new Suggestion(EVENT, ev, true, "manage.tables.why.event.made",
-            String.join(", ", eventKeyCols.stream().map(columns::get).toList()),
-            String.valueOf(sample.size()), String.valueOf(groups.size()), inside);
+            String.join(", ", eventKeyCols.stream().map(columns::get).toList()), inside);
       } else {
         // nothing to tell events apart: every row in one event, its ID asked for (the source name until then)
         if (evPk != null) {
@@ -436,6 +439,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         }
         evS = new Suggestion(EVENT, ev, true, "manage.tables.why.event.one", inside);
         evS.getAsks().add(new Ask(eventTable.getPrimaryKey(), source.getName()));
+      }
+      if (eventCol >= 0) {
+        evS.parentMissing = linkParentEvent(ev, sample, columns, eventCol, groups, varying);
       }
       varying.forEach((col, keys) -> evS.getWarnings().add(col + "|" + String.join(", ", keys.subList(0, Math.min(3, keys.size())))));
       addAsks(evS);
@@ -458,20 +464,9 @@ public class DataPackageTablesAction extends ManagerBaseAction {
         setKind(ag, "agentID", DataPackageValueKind.PAIRED);
         agentId.setPairColumns(nameCols.keySet().stream().map(idCols::get).toList());
       }
-      Set<String> names = new HashSet<>();
-      for (String[] row : sample) {
-        for (Integer c : nameCols.values()) {
-          for (String part : StringUtils.splitByWholeSeparator(StringUtils.defaultString(value(row, c)), separator)) {
-            String n = DataPackageRowBuilder.normalize(part);
-            if (!n.isEmpty()) {
-              names.add(n);
-            }
-          }
-        }
-      }
       Suggestion agS = new Suggestion(AGENT, ag, true, withIds ? "manage.tables.why.agent.ids" : "manage.tables.why.agent",
           String.join(", ", nameCols.keySet().stream().map(t -> columns.get(nameCols.get(t))).toList()), separator,
-          String.valueOf(names.size()), String.join(", ", idCols.values().stream().map(columns::get).toList()));
+          String.join(", ", idCols.values().stream().map(columns::get).toList()));
       addAsks(agS);
       result.add(agS);
 
@@ -589,8 +584,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       }
       Suggestion matS = new Suggestion(MATERIAL, mat, true,
           oneEvent ? "manage.tables.why.material.sample" : "manage.tables.why.material.sample.events",
-          columns.get(sampleCol), String.valueOf(sample.size()), String.valueOf(sampleGroups.size()),
-          inside.isEmpty() ? "-" : String.join(", ", inside));
+          columns.get(sampleCol), inside.isEmpty() ? "-" : String.join(", ", inside));
       addAsks(matS);
       result.add(matS);
     }
@@ -703,6 +697,48 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       taken.add(eventCol);
     }
     return taken;
+  }
+
+  /**
+   * Maps parentEvent_fk from the parentEventID column when every parent is an event of the rows read: the event key is
+   * the eventID itself, and a parent without a row of its own would break the link. A parent that differs inside an
+   * event is reported like any other event column.
+   *
+   * @return some of the parents that aren't events of the rows read, comma separated, or null
+   */
+  private static String linkParentEvent(DataPackageMapping ev, List<String[]> sample, List<String> columns, int eventCol,
+                                        Map<String, List<String[]>> groups, Map<String, List<String>> varying) {
+    int parentCol = column(columns, PARENT_EVENT_ID);
+    if (parentCol < 0 || ev.getField(PARENT_EVENT_FK) == null) {
+      return null;
+    }
+    List<String> differ = differInside(groups, parentCol);
+    if (!differ.isEmpty()) {
+      varying.put(columns.get(parentCol), differ);
+    }
+    List<String> missing = missingParents(sample, eventCol, parentCol);
+    if (differ.isEmpty() && missing.isEmpty()) {
+      setColumn(ev, PARENT_EVENT_FK, parentCol);
+    }
+    return missing.isEmpty() ? null : String.join(", ", missing.subList(0, Math.min(3, missing.size())));
+  }
+
+  /**
+   * @return the parentEventID values that aren't an eventID of the rows read, in the order they're met
+   */
+  private static List<String> missingParents(List<String[]> sample, int eventCol, int parentCol) {
+    Set<String> events = new HashSet<>();
+    for (String[] row : sample) {
+      events.add(DataPackageRowBuilder.clean(value(row, eventCol)));
+    }
+    Set<String> missing = new LinkedHashSet<>();
+    for (String[] row : sample) {
+      String parent = DataPackageRowBuilder.clean(value(row, parentCol));
+      if (StringUtils.isNotEmpty(parent) && !events.contains(parent)) {
+        missing.add(parent);
+      }
+    }
+    return new ArrayList<>(missing);
   }
 
   /**
@@ -897,12 +933,6 @@ public class DataPackageTablesAction extends ManagerBaseAction {
 
   private static String value(String[] row, int c) {
     return c >= 0 && c < row.length ? row[c] : null;
-  }
-
-  private static long distinct(List<String[]> sample, int c) {
-    // as written: "OBS-1 " and "OBS-1" are one value
-    return sample.stream().map(r -> StringUtils.defaultString(DataPackageRowBuilder.clean(value(r, c))))
-        .distinct().count();
   }
 
   /**

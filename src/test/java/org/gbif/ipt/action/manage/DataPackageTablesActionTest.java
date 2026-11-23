@@ -446,12 +446,66 @@ public class DataPackageTablesActionTest {
         byId.get("identification").getMapping().getField("identification_pk").getTemplate());
   }
 
+  @Test
+  public void testParentEventLinkedWhenItIsAnEventOfTheSource() {
+    TextFileSource source = new TextFileSource();
+    source.setName("parents.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "parentEventID", "scientificName");
+    List<String[]> sample = List.of(
+        new String[] {"o1", "SITE", "", "Parus major"},
+        new String[] {"o2", "E1", "SITE", "Parus major"},
+        new String[] {"o3", "E1", "SITE", "Sitta europaea"},
+        new String[] {"o4", "E2", " SITE ", "Parus major"});
+    DataPackageTablesAction.Suggestion ev = event(source, columns, sample);
+    assertEquals(2, ev.getMapping().getField("parentEvent_fk").getIndex());
+    assertNull(ev.getParentMissing());
+    assertTrue(ev.getWarnings().isEmpty(), ev.getWarnings().toString());
+  }
+
+  @Test
+  public void testParentEventWithoutItsOwnRowNotLinked() {
+    TextFileSource source = new TextFileSource();
+    source.setName("parents.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "parentEventID", "scientificName");
+    List<String[]> sample = List.of(
+        new String[] {"o1", "E1", "SITE-A", "Parus major"},
+        new String[] {"o2", "E2", "SITE-B", "Parus major"},
+        new String[] {"o3", "E3", "E1", "Parus major"});
+    DataPackageTablesAction.Suggestion ev = event(source, columns, sample);
+    // a link to a parent that isn't a row of the event table would break publishing
+    assertFalse(ev.getMapping().getField("parentEvent_fk").isMapped());
+    assertEquals("SITE-A, SITE-B", ev.getParentMissing());
+  }
+
+  @Test
+  public void testParentEventDifferingInsideAnEventNotLinked() {
+    TextFileSource source = new TextFileSource();
+    source.setName("parents.csv");
+    List<String> columns = List.of("occurrenceID", "eventID", "parentEventID", "scientificName");
+    List<String[]> sample = List.of(
+        new String[] {"o1", "P1", "", "Parus major"},
+        new String[] {"o2", "P2", "", "Parus major"},
+        new String[] {"o3", "E1", "P1", "Parus major"},
+        new String[] {"o4", "E1", "P2", "Parus major"});
+    DataPackageTablesAction.Suggestion ev = event(source, columns, sample);
+    assertFalse(ev.getMapping().getField("parentEvent_fk").isMapped());
+    assertTrue(ev.getWarnings().get(0).startsWith("parentEventID|E1"), ev.getWarnings().toString());
+    assertNull(ev.getParentMissing());
+  }
+
+  private static DataPackageTablesAction.Suggestion event(TextFileSource source, List<String> columns,
+                                                          List<String[]> sample) {
+    return DataPackageTablesAction.suggest(schema(), source, columns, sample).stream()
+        .filter(x -> "event".equals(x.getId())).findFirst().orElseThrow();
+  }
+
   /**
    * The parts of DwC-DP 1.0 the suggestions use: recorders on the event, identifiers on the occurrence, material.
    */
   private static DataPackageSchema schema() {
     DataPackageTableSchema event = table("event", "event_pk", List.of("event_pk", "eventID", "eventCategory", "eventDate",
-        "locality", "recordedBy", "recordedBy_fk", "recordedByID"), Set.of("event_pk", "eventCategory"));
+        "locality", "recordedBy", "recordedBy_fk", "recordedByID", "parentEvent_fk"), Set.of("event_pk", "eventCategory"));
+    event.setForeignKeys(List.of(fk("parentEvent_fk", "", "event_pk")));
     DataPackageTableSchema occurrence = table("occurrence", "occurrence_pk",
         List.of("occurrence_pk", "occurrenceID", "event_fk", "occurrenceStatus", "scientificName", "organismQuantity",
             "identifiedBy", "identifiedByID"), Set.of("occurrence_pk", "event_fk", "occurrenceStatus"));

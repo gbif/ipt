@@ -108,6 +108,9 @@
                                 <#list sg.warnings as w>
                                     <div class="tb-warn"><@icon name="warning"/><span><@s.text name="manage.tables.varies"><@s.param>${w?keep_before("|")}</@s.param><@s.param>${w?keep_after("|")}</@s.param></@s.text></span></div>
                                 </#list>
+                                <#if sg.parentMissing??>
+                                    <div class="tb-warn"><@icon name="warning"/><span><@s.text name="manage.tables.parentMissing"><@s.param>${sg.parentMissing}</@s.param></@s.text></span></div>
+                                </#if>
                             </div>
                         </div>
                     </#list>
