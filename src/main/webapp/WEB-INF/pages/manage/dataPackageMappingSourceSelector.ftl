@@ -147,6 +147,8 @@
                     </div>
                 </#list>
             </div>
+            <#-- right under the ticked sources it is about, before the sources Continue leaves alone -->
+            <p class="text-smaller text-muted mt-2 mb-0"><@s.text name="manage.mapping.new.MATCH.after"/></p>
             <#else>
                 <div class="ov-banner info compact" role="status"><@icon name="info" class="ov-ic"/><div class="ov-grow"><@s.text name="manage.mapping.new.nothingToMatch"/></div></div>
             </#if>
@@ -154,16 +156,47 @@
                 <p class="mt-rest"><@s.text name="manage.mapping.new.notRead"><@s.param>${notRead?map(x -> x.name)?join(", ")}</@s.param></@s.text>
                     <a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=MATCH"><@s.text name="manage.mapping.new.readNow"/></a></p>
             </#if>
-            <#list flatSources as sm>
-                <p class="mt-rest"><@s.text name="manage.mapping.new.flat"><@s.param>${sm.source().name}</@s.param><@s.param><a href="dataPackageTables.do?r=${resource.shortname}&source=${sm.source().name?url}"><@s.text name="manage.mapping.new.flat.split"/></a></@s.param><@s.param><a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=PICK&from=${sm.source().name?url}"><@s.text name="manage.mapping.new.flat.pick"/></a></@s.param></@s.text></p>
-            </#list>
-            <#if noMatch?has_content>
-                <p class="mt-rest"><@s.text name="manage.mapping.new.noMatch"><@s.param><#list noMatch as sm><a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=PICK&from=${sm.source().name?url}">${sm.source().name}</a><#sep>, </#sep></#list></@s.param></@s.text></p>
+            <#-- the other sources, grouped by why they are not in the list above: one line of explanation per group, then
+                 one row per source with what can be done with it -->
+            <#if flatSources?has_content || noMatch?has_content || alreadyMapped?has_content>
+                <div class="mt-others">
+                    <#if flatSources?has_content>
+                        <div class="mt-group">
+                            <div class="mt-group-h"><@s.text name="manage.mapping.new.flat"/></div>
+                            <div class="mt-other-rows"><#list flatSources as sm>
+                                <div class="mt-other">
+                                    <span class="mt-other-name">${sm.source().name}</span>
+                                    <span class="mt-other-act">
+                                        <a href="dataPackageTables.do?r=${resource.shortname}&source=${sm.source().name?url}" aria-label="${sm.source().name}: <@s.text name='manage.mapping.new.flat.split'/>"><@s.text name="manage.mapping.new.flat.split"/></a>
+                                        <a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=PICK&from=${sm.source().name?url}" aria-label="${sm.source().name}: <@s.text name='manage.mapping.new.flat.pick'/>"><@s.text name="manage.mapping.new.flat.pick"/></a>
+                                    </span>
+                                </div>
+                            </#list></div>
+                        </div>
+                    </#if>
+                    <#if noMatch?has_content>
+                        <div class="mt-group">
+                            <div class="mt-group-h"><@s.text name="manage.mapping.new.noMatch"/></div>
+                            <div class="mt-other-rows"><#list noMatch as sm>
+                                <div class="mt-other">
+                                    <span class="mt-other-name">${sm.source().name}</span>
+                                    <span class="mt-other-act"><a href="dataPackageMappingSourceNew.do?r=${resource.shortname}&id=${dataPackageSchema.identifier?url}&how=PICK&from=${sm.source().name?url}" aria-label="${sm.source().name}: <@s.text name='manage.mapping.new.flat.pick'/>"><@s.text name="manage.mapping.new.flat.pick"/></a></span>
+                                </div>
+                            </#list></div>
+                        </div>
+                    </#if>
+                    <#if alreadyMapped?has_content>
+                        <div class="mt-group">
+                            <div class="mt-group-h"><@s.text name="manage.mapping.new.alreadyMapped"/></div>
+                            <div class="mt-other-rows"><#list alreadyMapped as sm>
+                                <div class="mt-other">
+                                    <span class="mt-other-name">${sm.source().name} <span class="mt-other-tables">&rarr; ${sm.mappedTo()?join(", ")}</span></span>
+                                </div>
+                            </#list></div>
+                        </div>
+                    </#if>
+                </div>
             </#if>
-            <#if alreadyMapped?has_content>
-                <p class="mt-rest"><@s.text name="manage.mapping.new.alreadyMapped"><@s.param><#list alreadyMapped as sm>${sm.source().name} &rarr; ${sm.mappedTo()?join(", ")}<#sep>, </#sep></#list></@s.param></@s.text></p>
-            </#if>
-            <#if toMatch?has_content><p class="text-smaller text-muted mt-3 mb-0"><@s.text name="manage.mapping.new.MATCH.after"/></p></#if>
         </form>
 
         <#-- split a flat source: on to the "Split into tables" page -->
@@ -203,6 +236,16 @@
     .mt-rest { font-size: 0.8rem; color: #6c757d; margin: 10px 0 0; }
     .mt-count { font-size: 0.78rem; color: #6c757d; }
     .mt-count.none { color: rgb(var(--alert-warning-icon-color)); }
+    /* sources not in the match list, grouped by reason */
+    .mt-others { margin-top: 14px; }
+    .mt-group + .mt-group { margin-top: 14px; }
+    .mt-group-h { font-size: 0.8rem; color: #6c757d; margin-bottom: 4px; }
+    .mt-other-rows { border: 1px solid #dee2e6; border-radius: 8px; padding: 0 14px; }
+    .mt-other { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: 16px; row-gap: 2px; padding: 8px 0; border-top: 1px solid #f1f3f5; font-size: 0.875rem; }
+    .mt-other:first-child { border-top: 0; }
+    .mt-other-name { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+    .mt-other-act { display: flex; gap: 16px; white-space: nowrap; font-size: 0.8rem; }
+    .mt-other-tables { font-weight: 400; color: #6c757d; margin-left: 4px; }
     @media (max-width: 760px) { .mt-match { grid-template-columns: 22px 1fr; } .mt-match > :nth-child(n+4) { grid-column: 2; } }
     /* as tall as the dropdowns beside it (--s2-height in select2-ipt.css, set on the select2 container only), the bin
        centred in it */
