@@ -442,6 +442,27 @@ public class Resource implements Serializable, Comparable<Resource> {
     return false;
   }
 
+  /**
+   * @return true if the resource has a Darwin Core or data package mapping, also one for a schema that isn't installed
+   */
+  public boolean hasAnyMapping() {
+    return !mappings.isEmpty() || (dataPackageMappings != null && !dataPackageMappings.isEmpty());
+  }
+
+  /**
+   * Deletes every Darwin Core and data package mapping, also those for a schema that isn't installed.
+   *
+   * @return true if there was a mapping to delete
+   */
+  public boolean deleteAllMappings() {
+    boolean any = hasAnyMapping();
+    mappings.clear();
+    if (dataPackageMappings != null) {
+      dataPackageMappings.clear();
+    }
+    return any;
+  }
+
   public boolean deleteSource(Source src) {
     boolean result = false;
     if (src != null) {

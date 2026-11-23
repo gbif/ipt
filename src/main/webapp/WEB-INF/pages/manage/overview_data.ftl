@@ -229,6 +229,20 @@
         <#else>
             <a id="add-mapping-button" class="ov-hact mapping-action" href="#"><@icon name="add"/> <#if isDataPackage><@s.text name="manage.overview.data.mapTable"/><#else><@s.text name="manage.overview.data.addMapping"/></#if></a>
         </#if>
+        <#-- starting over: delete every mapping, or every source and so every mapping -->
+        <#if resource.sources?has_content>
+            <div class="dropdown">
+                <button class="ov-hmenu" type="button" id="data-menu" data-bs-toggle="dropdown" aria-expanded="false" title="<@s.text name='manage.overview.data.actions'/>" aria-label="<@s.text name='manage.overview.data.actions'/>">
+                    <@icon name="more_horiz"/>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="data-menu">
+                    <#if resource.hasAnyMapping()>
+                        <li><a class="dropdown-item text-gbif-danger delete-all-mappings" href="resource-deleteAllMappings.do?r=${resource.shortname}" data-post><@s.text name="manage.overview.data.deleteAllMappings"/></a></li>
+                    </#if>
+                    <li><a class="dropdown-item text-gbif-danger delete-all-sources" href="resource-deleteAllSources.do?r=${resource.shortname}" data-post><@s.text name="manage.overview.data.deleteAllSources"/></a></li>
+                </ul>
+            </div>
+        </#if>
     </div>
 
     <#-- when the data last changed. A CHANGED tag only tells something when not every row has it; if every mapping

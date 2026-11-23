@@ -219,6 +219,36 @@ public class ResourceTest extends IptBaseTest {
     assertEquals(0, res.getCoreMappings().size());
   }
 
+  /**
+   * deleteAllMappings deletes Darwin Core and data package mappings, also one for a schema that isn't installed, which
+   * getDataPackageMappings leaves out.
+   */
+  @Test
+  public void testDeleteAllMappings() {
+    Resource res = getResource();
+    assertFalse(res.hasAnyMapping());
+    assertFalse(res.deleteAllMappings());
+
+    res.addMapping(getOccExtensionMapping());
+    res.addMapping(getExtExtensionMapping());
+    assertTrue(res.hasAnyMapping());
+    assertTrue(res.deleteAllMappings());
+    assertFalse(res.hasAnyMapping());
+    assertTrue(res.getMappings().isEmpty());
+    assertFalse(res.hasCore());
+
+    // only a data package mapping whose schema isn't installed (null after loading)
+    res.setDataPackageIdentifier("http://example.org/dp");
+    DataPackageMapping mapping = new DataPackageMapping();
+    mapping.setDataPackageSchema(DataPackageSchema.builder().identifier("http://example.org/dp").build());
+    res.addDataPackageMapping(mapping);
+    mapping.setDataPackageSchema(null);
+    assertTrue(res.getDataPackageMappings().isEmpty());
+    assertTrue(res.hasAnyMapping());
+    assertTrue(res.deleteAllMappings());
+    assertFalse(res.hasAnyMapping());
+  }
+
   @Test
   public void testDeleteSource() throws AlreadyExistingException {
     Resource res = getResource();

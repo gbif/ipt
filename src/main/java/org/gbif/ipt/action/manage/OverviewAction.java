@@ -744,6 +744,62 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   }
 
   /**
+   * Deletes every mapping of the resource, Darwin Core and data package alike; the sources stay. From the data card's
+   * menu on the overview.
+   */
+  @RequirePost
+  public String deleteAllMappings() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (resource.deleteAllMappings()) {
+      resource.setMappingsModified(new Date());
+      saveResource();
+      addActionMessage(getText("manage.overview.data.deleteAllMappings.done"));
+    }
+    return SUCCESS;
+  }
+
+  /**
+   * Deletes every source of the resource with its files, and so every mapping. From the data card's menu on the
+   * overview.
+   */
+  @RequirePost
+  public String deleteAllSources() {
+    if (resource == null) {
+      return NOT_FOUND;
+    }
+    if (!resource.getSources().isEmpty()) {
+      boolean hadMappings = resource.hasAnyMapping();
+      List<String> notDeleted = new ArrayList<>();
+      for (Source src : resource.getSources()) {
+        if (!sourceManager.delete(resource, src)) {
+          notDeleted.add(src.getName());
+        }
+      }
+      // deleting a source deletes its mappings; with every source gone none can be left, even one without a source
+      if (notDeleted.isEmpty()) {
+        resource.deleteAllMappings();
+      }
+      resource.setSourcesModified(new Date());
+      if (hadMappings) {
+        resource.setMappingsModified(new Date());
+      }
+      saveResource();
+      if (notDeleted.isEmpty()) {
+        addActionMessage(getText(hadMappings
+            ? "manage.overview.data.deleteAllSources.done"
+            : "manage.overview.data.deleteAllSources.doneNoMappings"));
+      } else {
+        for (String name : notDeleted) {
+          addActionError(getText("manage.source.deleted.couldnt", new String[] {name}));
+        }
+      }
+    }
+    return SUCCESS;
+  }
+
+  /**
    * Triggered by delete network link on manage resource page.
    */
   @RequirePost
