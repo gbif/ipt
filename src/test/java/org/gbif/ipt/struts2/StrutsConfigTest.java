@@ -78,7 +78,9 @@ public class StrutsConfigTest {
           // show the page on GET and only import or retry on POST
           "usersImportUpload", "usersImportRevalidate", "usersImportConfirm", "retryFailedResource",
           // shows what a schema update would change, the update itself is updateDataPackage
-          "dataPackageUpdateImpact"));
+          "dataPackageUpdateImpact",
+          // shows the vocabulary and checks the Registry for a newer version, nothing is saved
+          "vocabulary"));
 
   /**
    * Manage and admin actions that change state in execute() without checking for a POST themselves.
