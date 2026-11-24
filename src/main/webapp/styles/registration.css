@@ -1,0 +1,18 @@
+/* GBIF registration page (admin/registration.ftl); fields, notes and facts come from settings.css */
+
+.rg-ok { width: 16px; height: 16px; vertical-align: -3px; color: rgb(var(--color-gbif-success)); }
+.rg-wide { max-width: 760px; }
+.rg-card-acts { display: flex; gap: 8px; margin-top: 14px; }
+.st-main .rg-card-acts:last-child { margin-bottom: 0; }
+
+/* steps before registering */
+.rg-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; margin-right: 8px; border-radius: 50%; background: rgba(var(--color-gbif-primary), .1); color: rgb(var(--color-gbif-primary)); font-size: 0.8rem; font-weight: 600; vertical-align: 1px; }
+.rg-url-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.rg-url { padding: 5px 10px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; overflow-wrap: anywhere; }
+.rg-note-bad .st-note-ic { color: rgb(var(--color-gbif-danger)); }
+.rg-steps { margin: 0; padding: 0; border: 0; min-width: 0; }
+.rg-steps[disabled] .rg-step { opacity: .55; }
+.rg-locked { display: flex; align-items: center; gap: 4px; margin: 0 0 10px; }
+.rg-steps .ov-banner.info { margin-bottom: 0; }
+.rg-steps .select2-container { max-width: 520px; }
+#rg-url .st-state { margin-top: 12px; }

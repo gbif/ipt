@@ -37,11 +37,13 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -172,10 +174,9 @@ public class RegistrationAction extends POSTAction {
     if (sessionNetworksRaw == null) {
       // null session networks cache - request registry
       requestRegistry = true;
-    } else if (sessionNetworksRaw instanceof List) {
-      // Safely cast to Map<?,?> and check if it contains String objects
-      Map<?, ?> networksGenericList = (Map<?, ?>) sessionNetworksRaw;
-      if (!networksGenericList.isEmpty() && networksGenericList.get(0) instanceof String) {
+    } else if (sessionNetworksRaw instanceof Map<?, ?> networksGenericMap) {
+      // check the cached map holds network names by key
+      if (!networksGenericMap.isEmpty() && networksGenericMap.values().iterator().next() instanceof String) {
         // The map is already in the session and is of the correct type
         //noinspection unchecked
         networks = (Map<String, String>) sessionNetworksRaw;
@@ -191,11 +192,12 @@ public class RegistrationAction extends POSTAction {
     if (requestRegistry) {
       LOG.debug("Fetching networks from registry");
       try {
+        // sorted by name for the picker
         networks = registryManager.getNetworksBrief().stream()
-            .collect(Collectors.toMap(KeyNamePair::getKey, KeyNamePair::getName));
+            .sorted(Comparator.comparing(KeyNamePair::getName, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)))
+            .collect(Collectors.toMap(KeyNamePair::getKey, p -> Objects.toString(p.getName(), p.getKey()),
+                (a, b) -> a, LinkedHashMap::new));
         LOG.debug("Networks returned from the Registry: {}", networks.size());
-
-        networks.put("", getText("admin.ipt.network.selection"));
 
         session.setAttribute(SESSION_NETWORKS_KEY, networks);
         session.setAttribute(SESSION_NETWORKS_LAST_UPDATED_KEY, new Date());
@@ -222,6 +224,13 @@ public class RegistrationAction extends POSTAction {
   public List<Organisation> getOrganisations() {
     loadOrganisations();
     return organisations;
+  }
+
+  /**
+   * @return the number of resources registered with GBIF: saving the registration details updates each of them
+   */
+  public int getRegisteredResourcesCount() {
+    return resourceManager.list(PublicationStatus.REGISTERED).size();
   }
 
   public String getRegistryURL() {
@@ -406,6 +415,9 @@ public class RegistrationAction extends POSTAction {
     }
 
     if (tokenChange) {
+      if (StringUtils.isAllEmpty(hostingOrganisationToken, registeredIptPassword)) {
+        addActionError(getText("admin.registration.tokens.empty"));
+      }
       if (StringUtils.isNotEmpty(hostingOrganisationToken)) {
         organisationValidation.validateOrganisationToken(this, getHostingOrganisation().getKey(), hostingOrganisationToken);
       }
