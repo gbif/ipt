@@ -768,6 +768,17 @@
             $('#add-mapping-submit').prop('disabled', !$(this).val());
         });
 
+        // under "Map to": the chosen core type or extension's description and a link to all its terms
+        function showChosenExtension() {
+            var option = $('#rowType option:selected');
+            $('#add-mapping-ext').prop('hidden', !option.length);
+            if (!option.length) return;
+            $('#add-mapping-ext-desc').text(option.attr('data-description') || '');
+            $('#add-mapping-ext-link').attr('href', 'extension.do?id=' + encodeURIComponent(option.val()));
+        }
+        $('#rowType').on('change', showChosenExtension);
+        showChosenExtension();
+
         $("#add-mapping-button").on('click', function (e) {
             e.preventDefault();
             setAddMappingSource(null);
@@ -2201,7 +2212,7 @@
                         <optgroup label="<@s.text name='manage.overview.DwC.Mappings.cores.select'/>">
                             <#list potentialCores as c>
                                 <#if c?has_content>
-                                    <option value="${c.rowType}">${c.title}</option>
+                                    <option value="${c.rowType}" data-description="${c.description!}">${c.title}</option>
                                 </#if>
                             </#list>
                         </optgroup>
@@ -2209,12 +2220,17 @@
                             <optgroup label="<@s.text name='manage.overview.DwC.Mappings.extensions.select'/>">
                                 <#list potentialExtensions as e>
                                     <#if e?has_content>
-                                        <option value="${e.rowType}">${e.title}</option>
+                                        <option value="${e.rowType}" data-description="${e.description!}">${e.title}</option>
                                     </#if>
                                 </#list>
                             </optgroup>
                         </#if>
                     </select>
+                    <#-- what the chosen core type or extension is for, and all its terms in a new tab (manage/extension.do) -->
+                    <div class="am-ext" id="add-mapping-ext">
+                        <p class="am-ext-desc" id="add-mapping-ext-desc"></p>
+                        <a id="add-mapping-ext-link" href="extension.do" target="_blank" rel="noopener"><@s.text name="manage.mapping.termsAndDefinitions"/></a>
+                    </div>
                 </form>
             <#elseif isDataPackage>
                 <@s.text name="manage.overview.mappings.cantdo"/>

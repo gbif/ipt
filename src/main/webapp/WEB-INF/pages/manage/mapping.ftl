@@ -156,6 +156,8 @@
                     <#-- core or extension, and its source; "Columns not used" (js/mapping.js) opens the by-column view -->
                     <div class="ov-meta mp-source-line">
                         <span class="mp-kind-pill"><#if isCoreMapping><@s.text name="manage.overview.data.group.core"/><#else><@s.text name="extension"/></#if></span>
+                        <#-- every term of the core / extension, with definitions, examples and vocabularies, in a new tab -->
+                        <a class="mp-terms-link" href="extension.do?id=${mapping.extension.rowType?url}" target="_blank" rel="noopener"><@s.text name="manage.mapping.termsAndDefinitions"/></a>
                         <span><@s.text name="manage.mapping.overview.source"/>: <a href="source.do?r=${resource.shortname}&id=${mapping.source.name?url}">${mapping.source.name}</a> · <#t>
                             <#if !mapping.source.readable><span class="ov-missing"><@s.text name="manage.source.notReadable"/></span><#t>
                             <#elseif mapping.source.isSqlSource()>${columns?size} <@s.text name="manage.overview.source.columns"/><#t>

@@ -17,9 +17,7 @@ import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.model.Extension;
-import org.gbif.ipt.model.ExtensionMapping;
 import org.gbif.ipt.model.ExtensionProperty;
-import org.gbif.ipt.model.PropertyMapping;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.Vocabulary;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -42,12 +40,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -317,11 +313,9 @@ public class ExtensionsAction extends POSTAction {
   }
 
   private void putWorksWith(Extension ext) {
-    if (ext.getRowType() != null && !ext.isCore()) {
-      worksWith.put(ext.getRowType(), AppConfig.getCoreRowTypes().stream()
-          .filter(core -> extensionManager.isSuitableFor(ext, core))
-          .map(ExtensionsAction::shortName)
-          .collect(Collectors.toList()));
+    List<String> cores = ExtensionPageSupport.worksWith(ext, extensionManager);
+    if (cores != null) {
+      worksWith.put(ext.getRowType(), cores);
     }
   }
 
@@ -340,48 +334,13 @@ public class ExtensionsAction extends POSTAction {
   /**
    * Populates what the extension page shows besides the extension itself: whether it is the latest version, the core
    * types it can be added to, the resources mapping it and the terms each maps, and the languages of its labels.
-   * A term counts as mapped when it has a source column or a default value, as in {@link ExtensionMapping#isMapped}.
+   * A term counts as mapped when it has a source column or a default value, see {@link ExtensionPageSupport#populateUsage}.
    */
   void populateExtensionPage() {
     updateIsLatest(Collections.singletonList(extension));
     putWorksWith(extension);
-
-    Set<String> terms = extension.getProperties().stream()
-        .map(ExtensionProperty::getQualname)
-        .filter(Objects::nonNull)
-        .collect(Collectors.toSet());
-    List<Resource> resources = new ArrayList<>(resourceManager.list());
-    resources.sort(Comparator.comparing(this::titleOf, String.CASE_INSENSITIVE_ORDER));
-    for (Resource r : resources) {
-      List<ExtensionMapping> mappings = r.getMappings(extension.getRowType());
-      if (mappings.isEmpty()) {
-        continue;
-      }
-      // a resource can map the same extension more than once, e.g. from two sources
-      Set<String> mapped = new HashSet<>();
-      for (ExtensionMapping m : mappings) {
-        for (PropertyMapping pm : m.getFields()) {
-          if (pm.getTerm() != null && (pm.getIndex() != null || pm.getDefaultValue() != null)
-              && terms.contains(pm.getTerm().qualifiedName())) {
-            mapped.add(pm.getTerm().qualifiedName());
-          }
-        }
-      }
-      extensionUsage.add(new ResourceUsage(r, mapped.size()));
-      mapped.forEach(t -> termUsedBy.computeIfAbsent(t, k -> new ArrayList<>()).add(r));
-    }
-
-    Map<String, Integer> counts = new HashMap<>();
-    for (ExtensionProperty p : extension.getProperties()) {
-      p.getTranslations().forEach((lang, t) -> {
-        if (lang != null && t != null && StringUtils.isNotBlank(t.getLabel())) {
-          counts.merge(lang, 1, Integer::sum);
-        }
-      });
-    }
-    counts.entrySet().stream()
-        .sorted(Comparator.comparing(e -> languageName(e.getKey()), String.CASE_INSENSITIVE_ORDER))
-        .forEach(e -> labelTranslations.put(e.getKey(), e.getValue()));
+    ExtensionPageSupport.populateUsage(extension, resourceManager.list(), extensionUsage, termUsedBy);
+    labelTranslations.putAll(ExtensionPageSupport.labelTranslations(extension, this::languageName));
   }
 
   /**
@@ -402,22 +361,14 @@ public class ExtensionsAction extends POSTAction {
    * @return the resource's title, or its shortname if it has none
    */
   public String titleOf(Resource r) {
-    return StringUtils.defaultIfBlank(r.getTitle(), r.getShortname());
-  }
-
-  /**
-   * @return the last part of a row type, e.g. Occurrence for http://rs.tdwg.org/dwc/terms/Occurrence
-   */
-  private static String shortName(String rowType) {
-    int i = Math.max(rowType.lastIndexOf('/'), rowType.lastIndexOf('#'));
-    return i >= 0 && i < rowType.length() - 1 ? rowType.substring(i + 1) : rowType;
+    return ExtensionPageSupport.titleOf(r);
   }
 
   /**
    * @return short names of the row types that can be cores, for the filters of the extensions not installed
    */
   public List<String> getCoreNames() {
-    return AppConfig.getCoreRowTypes().stream().map(ExtensionsAction::shortName).distinct().collect(Collectors.toList());
+    return AppConfig.getCoreRowTypes().stream().map(ExtensionPageSupport::shortName).distinct().collect(Collectors.toList());
   }
 
   /**
@@ -443,9 +394,7 @@ public class ExtensionsAction extends POSTAction {
         // set notFound flag to true so POSTAction will return a NOT_FOUND 404 result name
         notFound = true;
       } else {
-        // groups in the order of the extension's definition
-        propertiesByGroup = extension.getProperties().stream()
-            .collect(Collectors.groupingBy(prop -> StringUtils.trimToEmpty(prop.getGroup()), LinkedHashMap::new, Collectors.toList()));
+        propertiesByGroup = ExtensionPageSupport.propertiesByGroup(extension);
       }
     }
   }

@@ -1,8 +1,9 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.admin.VocabulariesAction" -->
 <#--
   The vocabulary page, shared by admin/vocabulary.ftl and manage/vocabulary.ftl (opened from mappings and translations).
-  The including page sets vocabularyArea: "admin" (breadcrumb to the extensions page, Back, links to the extension
-  pages, version checked against the Registry) or "manage" (none of these: managers can't open the admin pages).
+  The including page sets vocabularyArea: "admin" (breadcrumb to the extensions page, Back, version checked against
+  the Registry) or "manage" (none of these: managers can't open the admin pages). Extensions link to the extension page
+  of the same area.
 -->
 <#include "/WEB-INF/pages/inc/header.ftl">
 <title>${vocabulary.title} - <@s.text name="admin.vocabulary.title"/></title>
@@ -155,10 +156,10 @@
                             <#list usedBy as u>
                                 <tr>
                                     <td>
-                                        <#if isAdmin><a class="resource-table-link" href="${baseURL}/admin/extension.do?id=${u.extension.rowType?url}">${u.extension.title}</a><#else>${u.extension.title}</#if>
+                                        <a class="resource-table-link" href="${baseURL}/${vocabularyArea}/extension.do?id=${u.extension.rowType?url}">${u.extension.title}</a>
                                         <div class="ext-shortname">${u.extension.rowType}</div>
                                     </td>
-                                    <td><#list u.terms as p><#if isAdmin><a href="${baseURL}/admin/extension.do?id=${u.extension.rowType?url}#${p.qualname?url}">${p.name}</a><#else>${p.name}</#if><#sep>, </#sep></#list></td>
+                                    <td><#list u.terms as p><a href="${baseURL}/${vocabularyArea}/extension.do?id=${u.extension.rowType?url}#${p.qualname?url}">${p.name}</a><#sep>, </#sep></#list></td>
                                 </tr>
                             </#list>
                             </tbody>

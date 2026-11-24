@@ -248,3 +248,6 @@ body.mp-dirty { padding-bottom: 60px; }
 .mp-result-table { overflow-x: auto; border: 1px solid #dee2e6; border-radius: 6px; }
 .mp-result-table td, .mp-result-table th { white-space: nowrap; }
 .mp-result-table .mp-rn { color: #adb5bd; width: 1%; }
+
+/* heading: link to all the terms of the core type or extension (manage/extension.do), next to its kind */
+.mp-terms-link { white-space: nowrap; }

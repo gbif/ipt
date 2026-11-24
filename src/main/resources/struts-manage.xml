@@ -316,6 +316,10 @@
       <result>/WEB-INF/pages/manage/vocabulary.ftl</result>
     </action>
 
+    <action name="extension" class="org.gbif.ipt.action.manage.ExtensionAction">
+      <result>/WEB-INF/pages/manage/extension.ftl</result>
+    </action>
+
     <action name="translation" class="org.gbif.ipt.action.manage.TranslationAction">
       <result>/WEB-INF/pages/manage/translation.ftl</result>
       <result name="input">/WEB-INF/pages/manage/translation.ftl</result>
