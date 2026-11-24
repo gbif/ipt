@@ -398,14 +398,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   @Override
   public List<Extension> getLatestExtensions() throws RegistryException {
-    Map<String, List<Extension>> jSONExtensions = gson
-        .fromJson(requestHttpGetFromRegistry(getExtensionsURL(true)).getContent(),
-            new TypeToken<Map<String, List<Extension>>>() {
-            }.getType());
-
-    List<Extension> allExtensions = (jSONExtensions.get("extensions") == null) ? new ArrayList<>() : jSONExtensions.get("extensions");
-
-    return allExtensions.stream()
+    return getExtensions().stream()
         .filter(Extension::isLatest)
         .collect(Collectors.toList());
   }
@@ -415,17 +408,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    */
   @Override
   public List<Extension> getExtensions() throws RegistryException {
-    String url = getExtensionsURL(true);
-    try {
-      Map<String, List<Extension>> jSONExtensions = gson
-        .fromJson(requestHttpGetFromRegistry(url).getContent(),
-          new TypeToken<Map<String, List<Extension>>>() {
-          }.getType());
-      return (jSONExtensions == null || jSONExtensions.get("extensions") == null) ? new ArrayList<>() : jSONExtensions.get("extensions");
-    } catch (JsonSyntaxException e) {
-      // e.g. an HTML error page from a proxy, or a JSON error response
-      throw new RegistryException(Type.BAD_RESPONSE, url, "Unexpected, non-parsable response format encountered.");
-    }
+    Map<String, List<Extension>> jSONExtensions = fromRegistryJson(getExtensionsURL(true),
+        new TypeToken<Map<String, List<Extension>>>() {
+        }.getType());
+    return (jSONExtensions == null || jSONExtensions.get("extensions") == null)
+        ? new ArrayList<>() : jSONExtensions.get("extensions");
   }
 
   @Override
@@ -489,7 +476,8 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     try {
       return gson.fromJson(content, type);
     } catch (JsonParseException e) {
-      LOG.error("Could not parse registry response from {}", url, e);
+      // callers log the RegistryException
+      LOG.debug("Could not parse registry response from {}", url, e);
       throw new RegistryException(Type.BAD_RESPONSE, url, "Unexpected, non-parsable response format encountered.");
     }
   }

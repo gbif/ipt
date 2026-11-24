@@ -355,6 +355,81 @@ public class DataPackageSchemaActionTest {
   }
 
   /**
+   * Without a compatible version from the Registry, an installed schema isn't offered an update.
+   */
+  @Test
+  public void testUpdateCheckWithoutCompatibleVersion() {
+    RegistryManager registryManager = mock(RegistryManager.class);
+    when(registryManager.getLatestDataPackageSchemas()).thenReturn(List.of(registered("2.0", "2025-06-01")));
+    when(registryManager.getLatestCompatibleSchemaVersion("dp", "1.0")).thenReturn(null);
+    DataPackageSchema installed = installed("2025-01-01");
+
+    actionWith(registryManager).updateComputableFields(List.of(installed));
+
+    assertTrue(installed.isLatest());
+    assertFalse(installed.isUpdatable());
+  }
+
+  /**
+   * Without the compatible schema or its issued date from the Registry, an installed schema isn't offered an update.
+   */
+  @Test
+  public void testUpdateCheckWithoutCompatibleSchema() {
+    RegistryManager registryManager = mock(RegistryManager.class);
+    when(registryManager.getLatestDataPackageSchemas()).thenReturn(List.of(registered("2.0", "2025-06-01")));
+    when(registryManager.getLatestCompatibleSchemaVersion("dp", "1.0")).thenReturn("1.0");
+    when(registryManager.getSchema("dp", "1.0")).thenReturn(null);
+    DataPackageSchema installed = installed("2025-01-01");
+
+    actionWith(registryManager).updateComputableFields(List.of(installed));
+
+    assertTrue(installed.isLatest());
+    assertFalse(installed.isUpdatable());
+
+    when(registryManager.getSchema("dp", "1.0")).thenReturn(registered("1.0", null));
+
+    actionWith(registryManager).updateComputableFields(List.of(installed));
+
+    assertTrue(installed.isLatest());
+    assertFalse(installed.isUpdatable());
+  }
+
+  /**
+   * An installed schema without an issued date can be updated to the compatible schema from the Registry.
+   */
+  @Test
+  public void testUpdateCheckInstalledWithoutIssuedDate() {
+    RegistryManager registryManager = mock(RegistryManager.class);
+    when(registryManager.getLatestDataPackageSchemas()).thenReturn(List.of(registered("2.0", "2025-06-01")));
+    when(registryManager.getLatestCompatibleSchemaVersion("dp", "1.0")).thenReturn("1.0");
+    when(registryManager.getSchema("dp", "1.0")).thenReturn(registered("1.0", "2025-06-01"));
+    DataPackageSchema installed = installed(null);
+
+    actionWith(registryManager).updateComputableFields(List.of(installed));
+
+    assertFalse(installed.isLatest());
+    assertTrue(installed.isUpdatable());
+  }
+
+  private DataPackageSchemaAction actionWith(RegistryManager registryManager) {
+    return new DataPackageSchemaAction(mock(SimpleTextProvider.class), mock(AppConfig.class),
+        mock(RegistrationManager.class), schemaManager, registryManager, new ConfigWarnings(), resourceManager);
+  }
+
+  private static DataPackageSchema installed(String issued) {
+    return DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version("1.0").issued(date(issued)).build();
+  }
+
+  private static DataPackageSchema registered(String version, String issued) {
+    return DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version(version).issued(date(issued))
+        .isLatest(true).build();
+  }
+
+  private static Date date(String isoDate) {
+    return isoDate == null ? null : java.sql.Date.valueOf(isoDate);
+  }
+
+  /**
    * The schema page lists the resources using the schema, with the tables and fields each maps, in schema order and
    * by title; resources using another schema and unmapped fields are left out.
    */

@@ -118,12 +118,9 @@ public interface DataPackageSchemaManager {
   boolean isSchemaInstalled(String nameOrIdentifier);
 
   /**
-   * Check whether identifier/name is schema identifier/name or not
-   */
-  boolean isSchemaType(String nameOrIdentifier);
-
-  /**
-   * Returns schema identifier by schema name
+   * Returns the identifier of the installed schema with this name, without asking the registry
+   *
+   * @return identifier, or null if no schema with this name is installed
    */
   String getSchemaIdentifier(String schemaName);
 

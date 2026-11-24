@@ -591,7 +591,7 @@ public class DataPackageSchemaAction extends POSTAction {
   private void handleCompatibleVersionMatchesInstalledButNotMatchLatest(DataPackageSchema installedSchema, String latestCompatibleVersion) {
     DataPackageSchema latestCompatibleSchema = registryManager.getSchema(installedSchema.getName(), latestCompatibleVersion);
     if (latestCompatibleSchema == null || latestCompatibleSchema.getIssued() == null) {
-      LOG.warn("Registry gave no issued date for data schema {} {}, update check skipped",
+      LOG.warn("Registry gave no schema or no issued date for data schema {} {}, update check skipped",
           installedSchema.getName(), latestCompatibleVersion);
       return;
     }

@@ -705,42 +705,13 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
   }
 
   @Override
-  public boolean isSchemaType(String nameOrIdentifier) {
-    boolean result = false;
-
-    List<DataPackageSchema> dataPackageSchemas = registryManager.getLatestDataPackageSchemas();
-    for (DataPackageSchema dataPackageSchema : dataPackageSchemas) {
-      if (dataPackageSchema.getIdentifier().equals(nameOrIdentifier)
-          || dataPackageSchema.getName().equals(nameOrIdentifier)) {
-        result = true;
-        break;
-      }
-    }
-
-    return result;
-  }
-
-  @Override
   public String getSchemaIdentifier(String schemaName) {
-    // the installed schema is the one a new resource is mapped to, and it needs no registry
-    Optional<String> installedIdentifier = installed().schemas().stream()
-        .filter(schema -> schemaName.equals(schema.getName()))
+    // the installed schema is the one a new resource is mapped to; one that isn't installed can't be used anyway
+    return installed().schemas().stream()
+        .filter(schema -> Objects.equals(schemaName, schema.getName()))
         .map(DataPackageSchema::getIdentifier)
-        .findFirst();
-    if (installedIdentifier.isPresent()) {
-      return installedIdentifier.get();
-    }
-
-    try {
-      return registryManager.getLatestDataPackageSchemas().stream()
-          .filter(schema -> schemaName.equals(schema.getName()))
-          .map(DataPackageSchema::getIdentifier)
-          .findFirst()
-          .orElse(null);
-    } catch (RegistryException e) {
-      LOG.warn("Could not look up the identifier of data schema {} in the registry", schemaName, e);
-      return null;
-    }
+        .findFirst()
+        .orElse(null);
   }
 
   /**

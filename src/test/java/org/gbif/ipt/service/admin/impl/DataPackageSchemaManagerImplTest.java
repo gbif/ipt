@@ -305,6 +305,19 @@ public class DataPackageSchemaManagerImplTest {
     assertNull(manager.installSupported("http://rs.example.org/data-packages/unknown"));
   }
 
+  /**
+   * A new resource gets the identifier of the installed schema, without asking the registry.
+   */
+  @Test
+  public void testGetSchemaIdentifier() {
+    manager.install(schema(IDENTIFIER, "dp", "1.0", "2025-01-01", "event"));
+    when(registryManager.getLatestDataPackageSchemas()).thenThrow(new RuntimeException("registry unreachable"));
+
+    assertEquals(IDENTIFIER, manager.getSchemaIdentifier("dp"));
+    assertNull(manager.getSchemaIdentifier("occurrence"));
+    assertNull(manager.getSchemaIdentifier(null));
+  }
+
   @Test
   public void testInstallSupportedFailsIfRegistryCantBeReached() {
     when(registryManager.getSupportedDataSchemas()).thenThrow(new RuntimeException("registry unreachable"));
