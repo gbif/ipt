@@ -59,6 +59,8 @@ import org.xml.sax.SAXException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -181,6 +183,44 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
     } catch (RegistryException e) {
       assertEquals(RegistryException.Type.BAD_RESPONSE, e.getType());
     }
+  }
+
+  @Test
+  public void testGetDataPackageSchemasHtmlResponseThrowsRegistryException() throws Exception {
+    // e.g. an error page from a proxy
+    extResponse.setContent("<html><body>Bad gateway</body></html>");
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
+    RegistryManager manager =
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider);
+
+    RegistryException e = assertThrows(RegistryException.class, manager::getLatestDataPackageSchemas);
+    assertEquals(RegistryException.Type.BAD_RESPONSE, e.getType());
+    e = assertThrows(RegistryException.class, () -> manager.getSchema("camtrap-dp", "1.0"));
+    assertEquals(RegistryException.Type.BAD_RESPONSE, e.getType());
+  }
+
+  @Test
+  public void testGetDataPackageSchemaUnexpectedDateFormatThrowsRegistryException() throws Exception {
+    extResponse.setContent("{\"name\": \"camtrap-dp\", \"version\": \"1.0\", \"issued\": \"24 November 2026\"}");
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
+    RegistryManager manager =
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider);
+
+    RegistryException e = assertThrows(RegistryException.class, () -> manager.getSchema("camtrap-dp", "1.0"));
+    assertEquals(RegistryException.Type.BAD_RESPONSE, e.getType());
+  }
+
+  @Test
+  public void testGetDataPackageSchemasEmptyResponseReturnsEmptyList() throws Exception {
+    extResponse.setContent("");
+    when(mockHttpClient.get(anyString())).thenReturn(extResponse);
+    RegistryManager manager =
+      new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
+        mockSimpleTextProvider);
+
+    assertTrue(manager.getLatestDataPackageSchemas().isEmpty());
   }
 
   @Test

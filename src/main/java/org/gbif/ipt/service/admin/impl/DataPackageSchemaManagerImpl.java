@@ -722,17 +722,25 @@ public class DataPackageSchemaManagerImpl extends BaseManager implements DataPac
 
   @Override
   public String getSchemaIdentifier(String schemaName) {
-    String result = null;
-
-    List<DataPackageSchema> dataPackageSchemas = registryManager.getLatestDataPackageSchemas();
-    for (DataPackageSchema dataPackageSchema : dataPackageSchemas) {
-      if (dataPackageSchema.getName().equals(schemaName)) {
-        result = dataPackageSchema.getIdentifier();
-        break;
-      }
+    // the installed schema is the one a new resource is mapped to, and it needs no registry
+    Optional<String> installedIdentifier = installed().schemas().stream()
+        .filter(schema -> schemaName.equals(schema.getName()))
+        .map(DataPackageSchema::getIdentifier)
+        .findFirst();
+    if (installedIdentifier.isPresent()) {
+      return installedIdentifier.get();
     }
 
-    return result;
+    try {
+      return registryManager.getLatestDataPackageSchemas().stream()
+          .filter(schema -> schemaName.equals(schema.getName()))
+          .map(DataPackageSchema::getIdentifier)
+          .findFirst()
+          .orElse(null);
+    } catch (RegistryException e) {
+      LOG.warn("Could not look up the identifier of data schema {} in the registry", schemaName, e);
+      return null;
+    }
   }
 
   /**

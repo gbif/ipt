@@ -561,6 +561,12 @@ public class DataPackageSchemaAction extends POSTAction {
     Date installedSchemaIssuedDate = installedSchema.getIssued();
     Date latestSchemaIssuedDate = latestSchema.getIssued();
 
+    if (latestCompatibleVersion == null) {
+      LOG.warn("Registry gave no latest compatible version for data schema {} {}, update check skipped",
+          installedSchema.getName(), installedVersion);
+      return;
+    }
+
     if (installedVersion.equals(latestCompatibleVersion)
         && latestCompatibleVersion.equals(latestVersion)
         && (installedSchemaIssuedDate != null && installedSchemaIssuedDate.equals(latestSchemaIssuedDate))) {
@@ -584,12 +590,17 @@ public class DataPackageSchemaAction extends POSTAction {
 
   private void handleCompatibleVersionMatchesInstalledButNotMatchLatest(DataPackageSchema installedSchema, String latestCompatibleVersion) {
     DataPackageSchema latestCompatibleSchema = registryManager.getSchema(installedSchema.getName(), latestCompatibleVersion);
+    if (latestCompatibleSchema == null || latestCompatibleSchema.getIssued() == null) {
+      LOG.warn("Registry gave no issued date for data schema {} {}, update check skipped",
+          installedSchema.getName(), latestCompatibleVersion);
+      return;
+    }
     Date latestCompatibleSchemaIssuedDate = latestCompatibleSchema.getIssued();
 
     upToDate = false;
     installedSchema.setLatest(false);
 
-    if (latestCompatibleSchemaIssuedDate.after(installedSchema.getIssued())) {
+    if (installedSchema.getIssued() == null || latestCompatibleSchemaIssuedDate.after(installedSchema.getIssued())) {
       LOG.debug("Installed data schema with identifier {} was issued {}. " +
               "A newer compatible schema with the same version but newer issued date exists.",
           installedSchema.getIdentifier(), installedSchema.getIssued());

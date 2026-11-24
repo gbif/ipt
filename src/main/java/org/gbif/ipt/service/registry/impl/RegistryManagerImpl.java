@@ -79,6 +79,7 @@ import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -429,11 +430,11 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   @Override
   public List<DataPackageSchema> getLatestDataPackageSchemas() throws RegistryException {
-    Map<String, List<DataPackageSchema>> jSONDataSchemas = gson
-        .fromJson(requestHttpGetFromRegistry(getDataSchemasURL()).getContent(),
-            new TypeToken<Map<String, List<DataPackageSchema>>>() {
-            }.getType());
-    return (jSONDataSchemas.get("dataPackages") == null) ? new ArrayList<>() : jSONDataSchemas.get("dataPackages");
+    Map<String, List<DataPackageSchema>> jSONDataSchemas = fromRegistryJson(getDataSchemasURL(),
+        new TypeToken<Map<String, List<DataPackageSchema>>>() {
+        }.getType());
+    return (jSONDataSchemas == null || jSONDataSchemas.get("dataPackages") == null)
+        ? new ArrayList<>() : jSONDataSchemas.get("dataPackages");
   }
 
   @Override
@@ -458,10 +459,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
 
   @Override
   public DataPackageSchema getSchema(String schemaName, String schemaVersion) throws RegistryException {
-    return gson
-        .fromJson(requestHttpGetFromRegistry(getDataSchemaURL(schemaName, schemaVersion)).getContent(),
-            new TypeToken<DataPackageSchema>() {
-            }.getType());
+    return fromRegistryJson(getDataSchemaURL(schemaName, schemaVersion), DataPackageSchema.class);
   }
 
   @Override
@@ -470,14 +468,30 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
     Map<String, String> schemasWithVersions = baseAction.getCfg().getSupportedDataSchemaNamesWithVersions();
 
     for (Map.Entry<String, String> entrySchemaVersion : schemasWithVersions.entrySet()) {
-      DataPackageSchema jsonDataSchema = gson
-              .fromJson(requestHttpGetFromRegistry(getDataSchemaURL(entrySchemaVersion.getKey(), entrySchemaVersion.getValue())).getContent(),
-                      new TypeToken<DataPackageSchema>() {
-                      }.getType());
-      result.add(jsonDataSchema);
+      DataPackageSchema jsonDataSchema = getSchema(entrySchemaVersion.getKey(), entrySchemaVersion.getValue());
+      if (jsonDataSchema != null) {
+        result.add(jsonDataSchema);
+      }
     }
 
     return result;
+  }
+
+  /**
+   * Requests the URL from the registry and parses the JSON response.
+   *
+   * @return parsed response, or null if the response is empty
+   * @throws RegistryException if the request failed or the response could not be parsed, e.g. an HTML error page or
+   * a value in an unexpected format
+   */
+  private <T> T fromRegistryJson(String url, java.lang.reflect.Type type) throws RegistryException {
+    String content = requestHttpGetFromRegistry(url).getContent();
+    try {
+      return gson.fromJson(content, type);
+    } catch (JsonParseException e) {
+      LOG.error("Could not parse registry response from {}", url, e);
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Unexpected, non-parsable response format encountered.");
+    }
   }
 
   /**
