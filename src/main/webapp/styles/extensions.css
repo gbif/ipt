@@ -109,8 +109,9 @@
 .ext-copy .material-icon { font-size: 0.85rem; }
 .ext-copy.ext-copied { color: rgb(var(--color-gbif-success)); }
 .ext-section { margin-top: 1.5rem; scroll-margin-top: var(--navbar-height); }
-/* scrollspy anchors (js/scrollspy.js): no height, the sections have scroll-margin-top */
-.ext-anchor { display: block; height: 0; }
+/* scrollspy anchors (js/scrollspy.js): no height. Clicks scroll to the section (scroll-margin-top); a page opened at
+   an anchor (e.g. #anchor-ext-group-event from the mapping page) scrolls to the anchor itself, so it gets the same scroll-margin-top */
+.ext-anchor { display: block; height: 0; scroll-margin-top: var(--navbar-height); }
 /* section heading as on the mapping page: title, short summary, a rule underneath */
 .ext-sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #dee2e6; padding-bottom: 6px; margin-bottom: 14px; }
 .ext-sec-head h2 { font-size: 1.1rem; font-weight: 500; color: #4e565f; margin: 0; }

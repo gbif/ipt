@@ -77,6 +77,8 @@
                     </nav>
                 </div>
                 <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="manage.mapping.new.title"/></h1>
+                <#-- every table and field of the schema, with definitions (manage/dataPackage.do), in a new tab -->
+                <div class="ov-meta"><a class="mp-terms-link" href="dataPackage.do?id=${dataPackageSchema.identifier?url}" target="_blank" rel="noopener"><@s.text name="manage.mapping.tablesAndFields"/></a></div>
             </div>
             <div class="ov-acts">
                 <button type="submit" id="mt-continue" form="mt-pick" class="btn btn-sm btn-gbif-solid top-button"><@s.text name="manage.mapping.new.continue"/></button>

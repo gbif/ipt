@@ -207,6 +207,8 @@
                         <#elseif dataPackageSchema.identifier == "http://rs.tdwg.org/dwc/dwc-dp"><#assign schemaLabel = "DwC-DP"/>
                         <#else><#assign schemaLabel = schemaTitle/></#if>
                         <span class="mp-kind-pill">${schemaLabel}</span>
+                        <#-- the table's fields, with definitions, examples and allowed values (manage/dataPackage.do), in a new tab -->
+                        <a class="mp-terms-link" href="dataPackage.do?id=${dataPackageSchema.identifier?url}<#if tableName?has_content && !tableMissing>#anchor-ext-group-${tableName?url}</#if>" target="_blank" rel="noopener"><@s.text name="manage.mapping.fieldsAndDefinitions"/></a>
                         <span><@s.text name="manage.mapping.overview.source"/>: <a href="source.do?r=${resource.shortname}&id=${mapping.source.name?url}">${mapping.source.name}</a> · <#t>
                             <#if !mapping.source.readable><span class="ov-missing"><@s.text name="manage.source.notReadable"/></span><#t>
                             <#elseif mapping.source.isSqlSource()>${columns?size} <@s.text name="manage.overview.source.columns"/><#t>

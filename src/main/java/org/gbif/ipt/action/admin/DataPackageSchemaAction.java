@@ -183,7 +183,7 @@ public class DataPackageSchemaAction extends POSTAction {
   /**
    * @return the descriptions of the schema's table rules, e.g. "Required schemas must be present: ...", top level first
    */
-  static List<String> tableRulesOf(DataPackageTableSchemaRequirement requirement) {
+  public static List<String> tableRulesOf(DataPackageTableSchemaRequirement requirement) {
     List<String> rules = new ArrayList<>();
     if (requirement == null) {
       return rules;

@@ -33,7 +33,8 @@
                     </div>
                     <h1 class="pb-2 mb-0 pt-2 text-gbif-header fs-4 fw-normal"><@s.text name="manage.tables.heading"><@s.param>${source.name}</@s.param></@s.text></h1>
                     <#if !unavailable?has_content>
-                        <div class="ov-meta"><span><@s.text name="manage.tables.read"/>: ${sampleRows?c} · <@s.text name="manage.overview.source.columns"/>: ${columns?size?c}</span></div>
+                        <#-- every table and field of the schema, with definitions (manage/dataPackage.do), in a new tab -->
+                        <div class="ov-meta"><span><@s.text name="manage.tables.read"/>: ${sampleRows?c} · <@s.text name="manage.overview.source.columns"/>: ${columns?size?c}</span><#if dataPackageSchema??> <a class="mp-terms-link" href="dataPackage.do?id=${dataPackageSchema.identifier?url}" target="_blank" rel="noopener"><@s.text name="manage.mapping.tablesAndFields"/></a></#if></div>
                     </#if>
                 </div>
                 <div class="ov-acts">
