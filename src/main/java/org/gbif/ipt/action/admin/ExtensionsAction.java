@@ -45,7 +45,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -383,17 +382,6 @@ public class ExtensionsAction extends POSTAction {
     counts.entrySet().stream()
         .sorted(Comparator.comparing(e -> languageName(e.getKey()), String.CASE_INSENSITIVE_ORDER))
         .forEach(e -> labelTranslations.put(e.getKey(), e.getValue()));
-  }
-
-  /**
-   * @return a language's name in the interface language, e.g. French for fr; the code if Java doesn't know it
-   */
-  public String languageName(String code) {
-    Locale locale = getLocale() != null ? getLocale() : Locale.ENGLISH;
-    Locale language = Locale.forLanguageTag(code);
-    String name = StringUtils.trimToNull(language.getDisplayLanguage(locale));
-    // an unknown language comes back as its own code
-    return name == null || name.equalsIgnoreCase(language.getLanguage()) ? code : StringUtils.capitalize(name);
   }
 
   /**

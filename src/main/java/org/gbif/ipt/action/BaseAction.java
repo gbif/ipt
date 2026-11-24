@@ -303,6 +303,17 @@ public class BaseAction extends ActionSupport
   }
 
   /**
+   * @return a language's name in the interface language, e.g. French for fr; the code if Java doesn't know it
+   */
+  public String languageName(String code) {
+    Locale locale = getLocale() != null ? getLocale() : Locale.ENGLISH;
+    Locale language = Locale.forLanguageTag(code);
+    String name = StringUtils.trimToNull(language.getDisplayLanguage(locale));
+    // an unknown language comes back as its own code
+    return name == null || name.equalsIgnoreCase(language.getLanguage()) ? code : StringUtils.capitalize(name);
+  }
+
+  /**
    * Return the locale language code.
    * Struts2 manages the locale in the session param WW_TRANS_I18N_LOCALE via the i18n interceptor.
    *
