@@ -1,7 +1,7 @@
 [#ftl]
 [#assign interfaceLanguges = {
 "en": "English",
-"fr": "Française",
+"fr": "Français",
 "es": "Español",
 "zh": "繁體中文",
 "pt": "Português",

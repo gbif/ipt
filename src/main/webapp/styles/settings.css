@@ -1,0 +1,79 @@
+/* IPT settings page (admin/config.ftl); sections are the overview's cards (overview.css) */
+
+.st-main .ov-sub { margin-bottom: 12px; }
+.st-main .ov-ch + .st-field { margin-top: 10px; }
+.st-main .form-control::placeholder { color: #adb5bd; opacity: 1; }
+
+/* fields: label, input, error, hint */
+.st-field { margin-bottom: 14px; max-width: 520px; }
+.st-field:last-child { margin-bottom: 0; }
+.st-label { display: block; font-weight: 500; font-size: 0.875rem; margin-bottom: 4px; }
+.st-opt { font-weight: 400; font-size: 0.8rem; color: #6c757d; }
+.st-hint { font-size: 0.8rem; color: #6c757d; margin-top: 4px; }
+.st-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; max-width: 760px; margin-top: 6px; }
+.st-grid .st-field { margin-bottom: 14px; }
+@media (max-width: 576px) { .st-grid { grid-template-columns: 1fr; } }
+
+/* notes under a field, as the info banner: neutral box, coloured icon, body text */
+.st-note { display: flex; gap: 8px; align-items: flex-start; margin-top: 8px; padding: 8px 10px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; font-size: 0.8125rem; }
+.st-note-ic { flex: none; width: 16px; height: 16px; margin-top: 1px; color: rgb(var(--color-gbif-primary)); }
+.st-note-warn .st-note-ic { color: rgb(var(--alert-warning-icon-color)); }
+
+/* facts about this installation */
+.st-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 24px; row-gap: 6px; margin-top: 10px; font-size: 0.875rem; }
+.st-fact-k { color: #6c757d; }
+.st-fact-v { min-width: 0; overflow-wrap: anywhere; }
+.st-fact-text { font-family: SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.8125rem; }
+.st-fact-note { color: #6c757d; font-size: 0.8rem; margin-left: 6px; }
+.st-copy { border: 0; background: none; padding: 0 2px; margin-left: 6px; color: #6c757d; cursor: pointer; display: inline-flex; vertical-align: -2px; line-height: 1; }
+.st-copy:hover { color: #212529; }
+.st-copy .material-icon { width: 14px; height: 14px; }
+.st-copy.st-copied { color: rgb(var(--color-gbif-success)); }
+@media (max-width: 576px) { .st-facts { grid-template-columns: 1fr; row-gap: 0; } .st-fact-v { margin-bottom: 6px; } }
+
+/* switches with their hint under the label */
+.st-switch { margin-top: 4px; margin-bottom: 0; }
+.st-switch .form-check-label { font-weight: 500; font-size: 0.875rem; }
+.st-lock { display: flex; align-items: center; gap: 4px; }
+.st-lock-ic { width: 14px; height: 14px; flex: none; }
+
+/* saved SMTP password */
+.st-saved { display: flex; align-items: center; gap: 8px; min-height: 31px; font-size: 0.875rem; flex-wrap: wrap; }
+.st-saved-ic { width: 16px; height: 16px; color: #6c757d; }
+.st-link { padding: 0; font-size: 0.875rem; text-decoration: none; color: rgb(var(--color-gbif-primary)) !important; }
+.st-link:hover { text-decoration: underline; }
+.st-link-danger { color: rgb(var(--color-gbif-danger)) !important; }
+
+/* whether failure emails go out */
+.st-state { margin-top: 14px; padding-top: 12px; border-top: 1px solid #f1f3f5; font-size: 0.875rem; }
+.st-state .material-icon { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
+.st-ok { color: rgb(var(--color-gbif-success)); }
+.st-muted-ic { color: #6c757d; }
+
+/* languages */
+.st-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.st-chip { position: relative; cursor: pointer; margin: 0; }
+.st-chip input { position: absolute; opacity: 0; pointer-events: none; }
+.st-chip span { display: inline-block; padding: 5px 12px; border: 1px solid #ced4da; border-radius: 16px; font-size: 0.875rem; background: #fff; }
+.st-chip:hover span { border-color: #adb5bd; }
+.st-chip input:checked + span { border-color: rgb(var(--color-gbif-primary)); box-shadow: 0 0 0 1px rgb(var(--color-gbif-primary)); color: rgb(var(--color-gbif-primary)); font-weight: 500; }
+.st-chip input:focus-visible + span { outline: 2px solid rgba(var(--color-gbif-primary), .5); outline-offset: 2px; }
+
+/* archiving */
+.st-keep { margin: 12px 0 0 2.5em; padding: 0; border: 0; min-width: 0; font-size: 0.875rem; }
+.st-keep[disabled] { opacity: .55; }
+.st-keep-last { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.st-keep-last .form-check-input { margin-top: 0; }
+.st-num { width: 70px; display: inline-block; }
+
+/* server location */
+.st-location { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+.st-location-fields { flex: 0 1 260px; }
+.st-map-wrap { flex: 1 1 320px; min-width: 0; }
+.st-map { height: 240px; border: 1px solid #dee2e6; border-radius: 6px; cursor: crosshair; }
+
+/* unsaved changes, as on the Appearance page */
+.st-savebar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #dee2e6; box-shadow: 0 -4px 14px rgba(0, 0, 0, .06); transform: translateY(110%); transition: transform .2s; z-index: 1020; }
+.st-savebar.show { transform: none; }
+.st-savebar .container { padding-top: 10px; padding-bottom: 10px; display: flex; gap: 12px; align-items: center; font-size: 0.85rem; }
+.st-grow { flex: 1; font-weight: 600; }

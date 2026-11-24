@@ -173,8 +173,12 @@ document.addEventListener("DOMContentLoaded", function () {
     let leaving = false;
     const savebar = document.getElementById("ap-savebar");
 
+    const logoLink = document.getElementById("logoRedirectUrl");
+    const initialLogoLink = logoLink ? logoLink.value.trim() : "";
+    if (logoLink) logoLink.addEventListener("input", () => updateSavebar());
+
     function isDirty() {
-        return logoChanged || rows.some(row => normalizeHex(row.querySelector(".ap-hex").value) !== initial[row.dataset.field]);
+        return logoChanged || (logoLink && logoLink.value.trim() !== initialLogoLink) || rows.some(row => normalizeHex(row.querySelector(".ap-hex").value) !== initial[row.dataset.field]);
     }
 
     function updateSavebar() {

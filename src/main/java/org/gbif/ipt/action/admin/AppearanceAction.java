@@ -26,6 +26,8 @@ import org.gbif.ipt.utils.IptFileUtils;
 import jakarta.inject.Inject;
 import java.io.File;
 import java.io.Serial;
+import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -55,6 +58,9 @@ public class AppearanceAction extends POSTAction implements UploadedFilesAware {
   private List<UploadedFile> uploadedFiles = new ArrayList<>();
   @Getter
   private boolean removeLogo;
+  // where the logo in the navigation bar links to; empty for this IPT's home page
+  @Getter
+  private String logoRedirectUrl;
 
   @Inject
   public AppearanceAction(
@@ -71,11 +77,16 @@ public class AppearanceAction extends POSTAction implements UploadedFilesAware {
     super.prepare();
     // a copy: the posted values must not reach the pages before they are checked and saved
     colorScheme = new IptColorScheme(getCfg().getColorSchemeConfig());
+    logoRedirectUrl = getCfg().getLogoRedirectUrl();
   }
 
   @Override
   public String save() {
-    if (!validColours()) {
+    boolean coloursOk = validColours();
+    if (logoRedirectUrl != null && !isHttpUrl(logoRedirectUrl)) {
+      addFieldError("logoRedirectUrl", getText("admin.uiManagement.logoLink.invalid"));
+    }
+    if (!coloursOk || hasFieldErrors()) {
       return INPUT;
     }
 
@@ -88,6 +99,10 @@ public class AppearanceAction extends POSTAction implements UploadedFilesAware {
 
     try {
       getCfg().saveColorSchemeConfig(colorScheme);
+      if (!Objects.equals(logoRedirectUrl, getCfg().getLogoRedirectUrl())) {
+        getCfg().setLogoRedirectUrl(Objects.requireNonNullElse(logoRedirectUrl, ""));
+        getCfg().saveConfig();
+      }
 
       if (logo != null) {
         // a failed copy leaves the previous logo in place
@@ -186,6 +201,21 @@ public class AppearanceAction extends POSTAction implements UploadedFilesAware {
   @Override
   public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
     this.uploadedFiles = uploadedFiles;
+  }
+
+  @StrutsParameter
+  public void setLogoRedirectUrl(String logoRedirectUrl) {
+    this.logoRedirectUrl = StringUtils.trimToNull(logoRedirectUrl);
+  }
+
+  private static boolean isHttpUrl(String value) {
+    try {
+      URL url = new URI(value).toURL();
+      return ("http".equalsIgnoreCase(url.getProtocol()) || "https".equalsIgnoreCase(url.getProtocol()))
+          && StringUtils.isNotBlank(url.getHost());
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   @StrutsParameter

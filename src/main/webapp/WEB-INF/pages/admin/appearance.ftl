@@ -121,6 +121,12 @@
                             <button type="button" class="btn btn-sm btn-link ap-logo-remove" id="buttonRemove"<#if !customLogo> hidden</#if>><@icon name="delete"/> <@s.text name="admin.uiManagement.logo.remove"/></button>
                         </div>
                     </div>
+                    <div class="ap-logo-link">
+                        <label for="logoRedirectUrl" class="ap-label"><@s.text name="admin.uiManagement.logoLink"/></label>
+                        <input type="text" class="form-control form-control-sm" id="logoRedirectUrl" name="logoRedirectUrl" value="${logoRedirectUrl!}" placeholder="${baseURL}" inputmode="url" spellcheck="false" autocomplete="off">
+                        <@s.fielderror cssClass="invalid-feedback d-block list-unstyled my-1" fieldName="logoRedirectUrl"/>
+                        <div class="ap-where"><@s.text name="admin.uiManagement.logoLink.help"/></div>
+                    </div>
                 </section>
 
                 <section class="ov-card" aria-labelledby="ap-schemes-title">

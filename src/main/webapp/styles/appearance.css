@@ -14,6 +14,8 @@
 .ap-mark path { fill: rgb(var(--navbar-gbif-logo-color)); }
 .ap-logo-input { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
 .ap-logo-input .form-control { max-width: 420px; }
+.ap-logo-link { margin-top: 14px; padding-top: 12px; border-top: 1px solid #f1f3f5; max-width: 520px; }
+.ap-logo-link .form-control { margin-top: 4px; }
 .ap-logo-remove { padding: 0; color: rgb(var(--color-gbif-danger)) !important; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; font-size: 0.85rem; }
 
 /* schemes */
