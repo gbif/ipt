@@ -69,6 +69,9 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
   private SimpleMapModel vocabTerms;
   @Getter
   private Integer mid;
+  // source values translated by automap() on this visit, not saved yet
+  @Getter
+  private int automapped;
 
   @Inject
   public DataPackageFieldTranslationAction(
@@ -100,6 +103,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
           .filter(v -> ValueTranslation.looselyEquals(v, value))
           .findFirst()
           .orElse(null));
+      automapped = count;
       addActionMessage(getText("manage.translation.mapped.fields", new String[]{String.valueOf(count)}));
     }
     return SUCCESS;

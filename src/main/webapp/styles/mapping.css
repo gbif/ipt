@@ -159,9 +159,11 @@ select.mp-locked { pointer-events: none; background-color: #f6f7f8; color: #6c75
 .mp-field a.mp-translate.quiet { visibility: hidden; }
 .mp-field:hover a.mp-translate.quiet, .mp-field a.mp-translate.quiet:focus { visibility: visible; }
 .mp-field a.mp-translate[hidden] { display: none; }
-/* samples switched off: the line stays only for a "Translate values" link that is always shown */
+/* samples switched off: the line stays for the "Translate values" link, which is then always shown (it's alone there,
+   so hover-only would leave an empty line) */
 #mp-byfield.mp-no-samples .mp-samples > :not(.mp-translate) { display: none; }
-#mp-byfield.mp-no-samples .mp-samples:not(:has(> a.mp-translate:not(.quiet):not([hidden]))) { display: none; }
+#mp-byfield.mp-no-samples .mp-samples:not(:has(> a.mp-translate:not([hidden]))) { display: none; }
+#mp-byfield.mp-no-samples .mp-field a.mp-translate.quiet { visibility: visible; }
 
 /* by source column */
 .mp-cols td.c b { font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.78rem; overflow-wrap: anywhere; }

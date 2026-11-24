@@ -68,6 +68,9 @@ public class TranslationAction extends ManagerBaseAction {
   private SimpleMapModel vocabTerms;
   @Getter
   private Integer mid;
+  // source values translated by automap() on this visit, not saved yet
+  @Getter
+  private int automapped;
 
   @Inject
   public TranslationAction(
@@ -108,6 +111,7 @@ public class TranslationAction extends ManagerBaseAction {
         }
         return vc != null ? vc.getIdentifier() : null;
       });
+      automapped = count;
       addActionMessage(getText("manage.translation.mapped.terms", new String[]{String.valueOf(count)}));
     }
     return SUCCESS;

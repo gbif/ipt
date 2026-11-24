@@ -1,0 +1,58 @@
+/* Value translation pages (manage/translation.ftl, manage/dataPackageTranslation.ftl), on top of overview.css and
+   mapping.css (section heads, toolbar, counts, messages, save bar) */
+
+
+/* the field: its definition and details */
+.tr-def { font-size: 0.85rem; color: #495057; }
+.tr-def p { margin: 0 0 6px; }
+.tr-def code { font-size: 0.8rem; }
+.tr-facts { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 10px 0 0; font-size: 0.8rem; }
+.tr-facts dt { font-weight: 500; color: #6c757d; }
+.tr-facts dd { margin: 0; overflow-wrap: anywhere; }
+.tr-facts ul { margin: 0; padding-left: 18px; }
+
+.mp-sec-head .tr-automap { align-self: center; }
+
+/* the values */
+.tr-list { border: 1px solid #dee2e6; border-radius: 8px; }
+.tr-head, .tr-row { display: grid; grid-template-columns: minmax(150px, 1fr) 20px minmax(220px, 1.2fr); gap: 4px 12px; align-items: start; padding: 7px 12px; }
+.tr-head { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: #6c757d; background: #fafafa; border-bottom: 1px solid #dee2e6; border-radius: 8px 8px 0 0; padding-top: 6px; padding-bottom: 6px; }
+.tr-row { border-bottom: 1px solid #f1f3f5; font-size: 0.82rem; }
+.tr-row:last-child { border-bottom: 0; }
+.tr-row[hidden] { display: none; }
+.tr-row.flash { animation: mp-flash 1.4s; }
+.tr-src { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; min-height: 31px; }
+/* the value as it is in the source: spaces and case matter */
+.tr-val { font-family: var(--bs-font-monospace); font-size: 0.78rem; white-space: pre-wrap; overflow-wrap: anywhere; background: #f6f7f8; border-radius: 3px; padding: 1px 6px; }
+.tr-val-empty { font-family: inherit; font-style: italic; color: #6c757d; }
+.tr-arrow { color: rgb(var(--color-gbif-primary)); margin-top: 8px; }
+.tr-ctl { display: flex; gap: 4px; align-items: center; }
+.tr-ctl .tr-input { flex: 1; min-width: 0; }
+.tr-btn { border: 0; background: none; color: #6c757d; padding: 4px; border-radius: 4px; line-height: 1; display: inline-flex; }
+.tr-btn:hover { color: #212529; background: #f1f3f5; }
+.tr-btn .material-icon { font-size: 1.05rem; }
+/* published empty: a pill instead of the control */
+.tr-blank-pill { display: none; flex: 1; font-size: 0.78rem; color: #495057; border: 1px solid #dee2e6; border-radius: 4px; padding: 4px 8px; background: #f6f7f8; font-style: italic; }
+.tr-row[data-state=blank] .tr-blank-pill { display: block; }
+.tr-row[data-state=blank] .tr-input { display: none; }
+/* keeps its place, so the remove buttons line up */
+.tr-row[data-state=blank] .tr-blank-btn { visibility: hidden; }
+.tr-to .mp-msg { margin-top: 3px; }
+
+.tr-none-msg { padding: 14px 12px; font-size: 0.82rem; color: #6c757d; text-align: center; }
+.tr-none-msg[hidden] { display: none; }
+
+/* search, above a long list */
+.tr-search { max-width: 300px; margin-bottom: 10px; }
+.tr-search[hidden], .tr-head[hidden] { display: none; }
+
+/* adding a translation: the picker of untranslated source values */
+.tr-add { margin-top: 14px; }
+.tr-add-row { max-width: 420px; }
+
+@media (max-width: 767px) {
+    .tr-head { display: none; }
+    .tr-row { grid-template-columns: 1fr; }
+    .tr-arrow { display: none; }
+    .tr-search { max-width: none; }
+}

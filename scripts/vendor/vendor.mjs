@@ -62,6 +62,7 @@ const ICONS = [
   'arrow_forward',
   'article',
   'autorenew',
+  'block',
   'business',
   'cancel',
   'check',
