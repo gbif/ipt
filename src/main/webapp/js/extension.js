@@ -1,5 +1,5 @@
 /*
- * Extension page (admin/extension.ftl): sidebar scroll-spy, "Used by" show all, term search and filter chips,
+ * Extension page (inc/extension_page.ftl), also used by the vocabulary and data package pages: sidebar scroll-spy, "Used by" show all, term search and filter chips,
  * "show all details", copy buttons, and opening at the term in the URL fragment (extension.do?id=...#<qualified name>).
  */
 document.addEventListener("DOMContentLoaded", function () {
@@ -36,6 +36,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 toc.textContent = n;
                 toc.parentElement.classList.toggle("ext-zero", n === 0);
             }
+        });
+        // wrappers around several groups (the data package page's table groups): hidden when all their groups are
+        document.querySelectorAll("[data-hide-empty]").forEach(function (w) {
+            w.hidden = w.querySelectorAll(".ext-term:not([hidden])").length === 0;
         });
         var tocTotal = document.querySelector("[data-toc-count='']");
         if (tocTotal) tocTotal.textContent = shown;

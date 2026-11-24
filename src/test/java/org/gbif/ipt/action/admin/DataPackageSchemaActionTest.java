@@ -24,8 +24,10 @@ import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageSchemaUpdateImpact.ResourceImpact;
 import org.gbif.ipt.model.DataPackageTableSchema;
 import org.gbif.ipt.model.DataPackageTableSchemaName;
+import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
+import org.gbif.ipt.service.RegistryException;
 import org.gbif.ipt.service.admin.DataPackageSchemaManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.service.manage.ResourceManager;
@@ -39,6 +41,8 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
@@ -47,10 +51,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -298,6 +304,123 @@ public class DataPackageSchemaActionTest {
     metadata.setProfile(profile);
     resource.setDataPackageMetadata(metadata);
     return resource;
+  }
+
+  /**
+   * The list page shows the resources using each installed schema, whichever form of its identifier they have.
+   */
+  @Test
+  public void testListUsedBy() {
+    DataPackageSchema schema = schemaManager.get(IDENTIFIER);
+    when(schemaManager.list()).thenReturn(new ArrayList<>(List.of(schema)));
+    Resource https = resource("https://example.org/dp", false);
+    https.setShortname("https");
+    Resource http = resource(IDENTIFIER, true);
+    Resource other = resource("http://example.org/other", true);
+    other.setShortname("other");
+    when(resourceManager.list()).thenReturn(List.of(other, https, http));
+    action.setLatestDataSchemasVersions(new ArrayList<>());
+
+    action.list();
+
+    assertEquals(List.of("https", "res-true"),
+        action.getUsedBy().get(IDENTIFIER).stream().map(Resource::getShortname).toList());
+  }
+
+  /**
+   * When the Registry can't be reached, the page says so, and it isn't asked again for the versions in the same request.
+   */
+  @Test
+  public void testListWithRegistryDown() {
+    RegistryManager registryManager = mock(RegistryManager.class);
+    when(registryManager.getLatestDataPackageSchemas())
+        .thenThrow(new RegistryException("http://registry.example.org", new RuntimeException("down")));
+    DataPackageSchemaAction offline = new DataPackageSchemaAction(mock(SimpleTextProvider.class),
+        mock(AppConfig.class), mock(RegistrationManager.class), schemaManager, registryManager, new ConfigWarnings(),
+        resourceManager);
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getMethod()).thenReturn("GET");
+    offline.setServletRequest(req);
+    DataPackageSchema schema = schemaManager.get(IDENTIFIER);
+    when(schemaManager.list()).thenReturn(new ArrayList<>(List.of(schema)));
+    when(resourceManager.list()).thenReturn(List.of());
+
+    offline.prepare();
+    offline.list();
+
+    assertTrue(offline.isRegistryUnreachable());
+    assertTrue(offline.getNewSchemas().isEmpty());
+    assertNull(offline.latestOf(schema));
+    verify(registryManager, times(1)).getLatestDataPackageSchemas();
+  }
+
+  /**
+   * The schema page lists the resources using the schema, with the tables and fields each maps, in schema order and
+   * by title; resources using another schema and unmapped fields are left out.
+   */
+  @Test
+  public void testSchemaPageUsage() throws Exception {
+    DataPackageSchema schema = DataPackageSchema.builder().identifier(IDENTIFIER).name("dp").version("1.0")
+        .tableSchemas(new LinkedHashSet<>(List.of(
+            table("event", "eventID", "locality"), table("occurrence", "occurrenceID")))).build();
+    when(schemaManager.get(IDENTIFIER)).thenReturn(schema);
+
+    Resource b = new Resource();
+    b.setShortname("b");
+    b.setTitle("Beta");
+    b.setDataPackageIdentifier(IDENTIFIER);
+    // mapped in reverse table order, and a field without a column
+    b.addDataPackageMapping(mapping(schema, "1.0", "occurrence", "occurrenceID"));
+    DataPackageMapping event = mapping(schema, "1.0", "event", "eventID");
+    event.getFields().add(new DataPackageFieldMapping(null, field("locality")));
+    b.addDataPackageMapping(event);
+    Resource a = new Resource();
+    a.setShortname("a");
+    a.setTitle("Alpha");
+    a.setDataPackageIdentifier(IDENTIFIER);
+    a.addDataPackageMapping(mapping(schema, "1.0", "event", "eventID", "locality"));
+    Resource other = new Resource();
+    other.setShortname("other");
+    other.setDataPackageIdentifier("http://example.org/other");
+    when(resourceManager.list()).thenReturn(List.of(b, other, a));
+
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    when(req.getParameter("id")).thenReturn(IDENTIFIER);
+    when(req.getMethod()).thenReturn("GET");
+    action.setServletRequest(req);
+    action.prepare();
+    action.execute();
+
+    assertFalse(action.isRegistryUnreachable());
+    assertEquals(List.of(a, b), action.getSchemaUsage().stream().map(DataPackageSchemaAction.SchemaUsage::getResource).toList());
+    DataPackageSchemaAction.SchemaUsage usageB = action.getSchemaUsage().get(1);
+    assertEquals(List.of("event", "occurrence"), usageB.getTables().stream().map(DataPackageTableSchema::getName).toList());
+    assertEquals(2, usageB.getFieldsMapped());
+    assertEquals(List.of(a, b), action.getTableUsedBy().get("event"));
+    assertEquals(List.of(a, b), action.getFieldUsedBy().get("event/eventID"));
+    assertEquals(List.of(a), action.getFieldUsedBy().get("event/locality"));
+    assertEquals(List.of(b), action.getFieldUsedBy().get("occurrence/occurrenceID"));
+  }
+
+  /**
+   * Table rules are the descriptions in the requirements, the top level first, then the nested ones.
+   */
+  @Test
+  public void testTableRules() {
+    assertTrue(DataPackageSchemaAction.tableRulesOf(null).isEmpty());
+    assertTrue(DataPackageSchemaAction.tableRulesOf(new DataPackageTableSchemaRequirement()).isEmpty());
+
+    DataPackageTableSchemaRequirement top = new DataPackageTableSchemaRequirement();
+    top.setDescription(" Top ");
+    DataPackageTableSchemaRequirement first = new DataPackageTableSchemaRequirement();
+    first.setDescription("First");
+    DataPackageTableSchemaRequirement nested = new DataPackageTableSchemaRequirement();
+    nested.setDescription("Nested");
+    first.setAnyOf(List.of(nested));
+    DataPackageTableSchemaRequirement blank = new DataPackageTableSchemaRequirement();
+    blank.setDescription(" ");
+    top.setAllOf(List.of(first, blank));
+    assertEquals(List.of("Top", "First", "Nested"), DataPackageSchemaAction.tableRulesOf(top));
   }
 
   private static DataPackageTableSchema table(String name, String... fieldNames) {

@@ -183,3 +183,47 @@ a.ext-tag-voc:hover { text-decoration: underline; }
 /* Remove in the heading's ... menu: red as Delete on the resource overview, faded while a resource maps the extension */
 .ov-acts .dropdown-item.text-gbif-danger.disabled { opacity: .55; }
 .ov-acts .dropdown-item small { display: block; font-size: 0.75rem; white-space: normal; }
+
+/* Data package page (admin/dataPackageSchema.ftl): tables as groups of fields, DwC-DP tables in the overview's groups */
+.ext-toc .dp-toc-group { padding: 8px 0 2px 10px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; font-weight: 600; }
+.dp-tgroup[hidden] { display: none; }
+.dp-tgroup-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .05em; color: #6c757d; font-weight: 600; margin: 1.25rem 0 6px; }
+.ext-toolbar + .dp-tgroup .dp-tgroup-title { margin-top: 0; }
+.dp-table .ext-group-title { text-transform: none; }
+.dp-table-head { font-size: 0.85rem; padding: 8px 0 4px; border-bottom: 1px solid #f1f3f5; overflow-wrap: anywhere; }
+.dp-table-head p { margin: 0 0 4px; max-width: 860px; }
+.dp-table-head code { color: #343a40; background: #f1f3f5; padding: 0 3px; border-radius: 3px; font-size: 0.75rem; }
+.dp-table-meta { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 0.75rem; color: #6c757d; margin-bottom: 4px; }
+.dp-rules { margin: 0; padding-left: 1.1rem; }
+.dp-rules li + li { margin-top: 3px; }
+.dp-usage-tables { font-size: 0.8rem; }
+.dp-usage-tables a { color: inherit; }
+
+/* Data package update page (admin/dataPackageUpdateImpact.ftl): schema changes per table, then the affected resources */
+.dpu-arrow { font-size: 0.9rem; vertical-align: -2px; color: #6c757d; margin: 0 4px; }
+.dpu-stats { display: flex; flex-wrap: wrap; gap: 2px 14px; font-size: 0.78rem; color: #6c757d; }
+.dpu-stats b { color: #343a40; font-weight: 600; }
+.dpu-table { font-size: 0.82rem; }
+.dpu-table td { vertical-align: top; }
+.dpu-table td.ext-mono { width: 30%; white-space: nowrap; }
+.dpu-chips { display: flex; flex-wrap: wrap; gap: 3px; }
+.dpu-chip { font-family: var(--bs-font-monospace); font-size: 0.72rem; border-radius: 8px; padding: 0 7px; white-space: nowrap; }
+.dpu-chip.add { background: rgba(var(--color-gbif-success), .12); color: rgb(55, 115, 55); }
+.dpu-chip.add.req { box-shadow: inset 0 0 0 1px rgba(var(--color-gbif-danger), .45); }
+.dpu-chip.del { background: rgba(var(--color-gbif-danger), .08); color: rgb(var(--color-gbif-danger)); text-decoration: line-through; }
+/* a whole table added or removed: a label, not a field name */
+.dpu-chip.label { font-family: inherit; font-weight: 600; text-decoration: none; }
+.dpu-note { font-size: 0.75rem; color: #6c757d; margin-top: 3px; overflow-wrap: anywhere; }
+.dpu-res { border: 1px solid #dee2e6; border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; }
+.dpu-res-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
+.dpu-res .dpu-mappings { margin: 8px 0 0; }
+.dpu-res .dpu-mappings td { overflow-wrap: anywhere; }
+.dpu-res .dpu-mappings td.ext-mono { white-space: normal; }
+.dpu-bad { color: rgb(var(--color-gbif-danger)); }
+.dpu-alert { display: flex; align-items: flex-start; gap: 6px; font-size: 0.8rem; margin-top: 6px; }
+.dpu-alert .material-icon { font-size: 1rem; flex: none; }
+.dpu-alert.warn .material-icon { color: rgb(var(--alert-warning-icon-color)); }
+.dpu-alert.bad .material-icon { color: rgb(var(--alert-danger-icon-color)); }
+.dpu-unaffected { font-size: 0.8rem; }
+/* narrow screens: table names wrap at their hyphens, not inside words */
+@media (max-width: 767.98px) { .dpu-table td.ext-mono { width: auto; white-space: normal; overflow-wrap: normal; } }

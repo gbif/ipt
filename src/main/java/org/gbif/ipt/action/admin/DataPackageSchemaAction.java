@@ -16,9 +16,12 @@ package org.gbif.ipt.action.admin;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.ConfigWarnings;
+import org.gbif.ipt.model.DataPackageFieldMapping;
 import org.gbif.ipt.model.DataPackageMapping;
 import org.gbif.ipt.model.DataPackageSchema;
 import org.gbif.ipt.model.DataPackageSchemaUpdateImpact;
+import org.gbif.ipt.model.DataPackageTableSchema;
+import org.gbif.ipt.model.DataPackageTableSchemaRequirement;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.datapackage.metadata.camtrap.CamtrapMetadata;
 import org.gbif.ipt.service.DeletionNotAllowedException;
@@ -37,14 +40,19 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -83,6 +91,35 @@ public class DataPackageSchemaAction extends POSTAction {
   // what updating the data schema would change, shown before updating
   @Getter
   private DataPackageSchemaUpdateImpact updateImpact;
+  // whether the Registry couldn't be asked for the registered schemas and their versions
+  @Getter
+  private boolean registryUnreachable = false;
+  // the latest registered version of each installed schema, by name
+  private final Map<String, DataPackageSchema> latestByName = new HashMap<>();
+  // the list page: the resources using each installed schema, by identifier
+  @Getter
+  private Map<String, List<Resource>> usedBy = new HashMap<>();
+  // the schema page: the resources using the schema, and which of them map each table and field (by "table/field")
+  @Getter
+  private List<SchemaUsage> schemaUsage = new ArrayList<>();
+  @Getter
+  private Map<String, List<Resource>> tableUsedBy = new HashMap<>();
+  @Getter
+  private Map<String, List<Resource>> fieldUsedBy = new HashMap<>();
+  // the schema page: the rules on which tables a data package has, as written in the schema
+  @Getter
+  private List<String> tableRules = new ArrayList<>();
+
+  /**
+   * A resource using the schema, with the tables it maps (in schema order) and how many fields.
+   */
+  @Getter
+  @AllArgsConstructor
+  public static class SchemaUsage {
+    private final Resource resource;
+    private final List<DataPackageTableSchema> tables;
+    private final int fieldsMapped;
+  }
 
   @Inject
   public DataPackageSchemaAction(
@@ -98,6 +135,90 @@ public class DataPackageSchemaAction extends POSTAction {
     this.registryManager = registryManager;
     this.configWarnings = configWarnings;
     this.resourceManager = resourceManager;
+  }
+
+  /**
+   * The schema page (GET): checks the version against the Registry and works out which resources use the schema.
+   */
+  @Override
+  public String execute() throws Exception {
+    if (!isHttpPost() && !notFound && dataPackageSchema != null) {
+      populateSchemaPage();
+    }
+    return super.execute();
+  }
+
+  private void populateSchemaPage() {
+    updateComputableFields(List.of(dataPackageSchema));
+    tableRules = tableRulesOf(dataPackageSchema.getTableSchemasRequirements());
+
+    List<Resource> resources = resourceManager.list().stream()
+        .filter(res -> usesSchema(res, dataPackageSchema))
+        .sorted(Comparator.comparing(ExtensionPageSupport::titleOf, String.CASE_INSENSITIVE_ORDER))
+        .toList();
+    for (Resource resource : resources) {
+      Set<String> tableNames = new LinkedHashSet<>();
+      Set<String> fieldNames = new LinkedHashSet<>();
+      for (DataPackageMapping mapping : resource.getDataPackageMappings()) {
+        if (mapping.getDataPackageTableSchemaName() == null || mapping.getFields() == null) {
+          continue;
+        }
+        String table = mapping.getDataPackageTableSchemaName().getName();
+        tableNames.add(table);
+        for (DataPackageFieldMapping fm : mapping.getFields()) {
+          if (fm.getField() != null && fm.isMapped()) {
+            fieldNames.add(table + "/" + fm.getField().getName());
+          }
+        }
+      }
+      tableNames.forEach(t -> tableUsedBy.computeIfAbsent(t, k -> new ArrayList<>()).add(resource));
+      fieldNames.forEach(f -> fieldUsedBy.computeIfAbsent(f, k -> new ArrayList<>()).add(resource));
+      List<DataPackageTableSchema> tables = dataPackageSchema.getTableSchemas().stream()
+          .filter(t -> tableNames.contains(t.getName()))
+          .toList();
+      schemaUsage.add(new SchemaUsage(resource, tables, fieldNames.size()));
+    }
+  }
+
+  /**
+   * @return the descriptions of the schema's table rules, e.g. "Required schemas must be present: ...", top level first
+   */
+  static List<String> tableRulesOf(DataPackageTableSchemaRequirement requirement) {
+    List<String> rules = new ArrayList<>();
+    if (requirement == null) {
+      return rules;
+    }
+    if (StringUtils.isNotBlank(requirement.getDescription())) {
+      rules.add(requirement.getDescription().trim());
+    }
+    for (List<DataPackageTableSchemaRequirement> group
+        : List.of(requirement.getAllOf(), requirement.getAnyOf(), requirement.getOneOf())) {
+      if (group != null) {
+        group.forEach(sub -> rules.addAll(tableRulesOf(sub)));
+      }
+    }
+    return rules;
+  }
+
+  /**
+   * @return the latest version of the schema registered with GBIF, or null if unknown (e.g. the Registry is down)
+   */
+  public DataPackageSchema latestOf(DataPackageSchema schema) {
+    return schema == null ? null : latestByName.get(schema.getName());
+  }
+
+  /**
+   * @return the latest registered version of the schema shown on the schema page, or null if unknown
+   */
+  public DataPackageSchema getLatestRegistered() {
+    return latestOf(dataPackageSchema);
+  }
+
+  /**
+   * @return the resource's title, or its shortname if it has none
+   */
+  public String titleOf(Resource resource) {
+    return ExtensionPageSupport.titleOf(resource);
   }
 
   @Override
@@ -274,6 +395,15 @@ public class DataPackageSchemaAction extends POSTAction {
     // populate the list of uninstalled data schemas, removing data schemas installed already, showing only the latest versions
     newSchemas = getLatestDataSchemasVersions();
     newSchemas.removeIf(ds -> schemas.stream().anyMatch(installed -> isSameSchema(installed, ds)));
+    newSchemas.sort(Comparator.comparing(DataPackageSchema::getTitle, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
+
+    // the resources using each installed schema, by identifier, each list sorted by title
+    List<Resource> resources = resourceManager.list().stream()
+        .sorted(Comparator.comparing(ExtensionPageSupport::titleOf, String.CASE_INSENSITIVE_ORDER))
+        .toList();
+    for (DataPackageSchema schema : schemas) {
+      usedBy.put(schema.getIdentifier(), resources.stream().filter(r -> usesSchema(r, schema)).toList());
+    }
 
     return SUCCESS;
   }
@@ -329,6 +459,7 @@ public class DataPackageSchemaAction extends POSTAction {
         setLatestDataSchemasVersions(getLatestVersions(all));
       }
     } catch (RegistryException e) {
+      registryUnreachable = true;
       // add startup error message that explains why the Registry error occurred
       String msg = RegistryException.logRegistryException(e, this);
       configWarnings.addStartupError(msg);
@@ -385,7 +516,8 @@ public class DataPackageSchemaAction extends POSTAction {
    * or not. Plus, updates boolean "upToDate", set to false if there is at least one data schema that is not up-to-date.
    */
   protected void updateComputableFields(List<DataPackageSchema> installedDataSchemas) {
-    if (installedDataSchemas.isEmpty()) {
+    // the Registry already failed for this request: not asked again (another timeout, the same startup errors twice)
+    if (installedDataSchemas.isEmpty() || registryUnreachable) {
       return;
     }
 
@@ -397,6 +529,7 @@ public class DataPackageSchemaAction extends POSTAction {
         updateComputableFields(installedSchema, registeredSchemas);
       }
     } catch (RegistryException e) {
+      registryUnreachable = true;
       // add startup error message about Registry error
       String msg = RegistryException.logRegistryException(e, this);
       configWarnings.addStartupError(msg);
@@ -414,6 +547,7 @@ public class DataPackageSchemaAction extends POSTAction {
 
     for (DataPackageSchema registeredSchema : registeredSchemas) {
       if (isLatest(registeredSchema) && isSameSchema(installedSchema, registeredSchema)) {
+        latestByName.put(installedSchema.getName(), registeredSchema);
         handleSchema(installedSchema, registeredSchema);
         break;
       }
