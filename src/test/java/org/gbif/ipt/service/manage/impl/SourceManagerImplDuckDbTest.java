@@ -19,6 +19,7 @@ import org.gbif.ipt.config.JdbcSupport;
 import org.gbif.ipt.model.SqlSource;
 import org.gbif.ipt.service.SourceException;
 import org.gbif.ipt.service.file.FileStoreManager;
+import org.gbif.ipt.service.manage.SourceManager;
 import org.gbif.utils.file.ClosableReportingIterator;
 
 import java.io.File;
@@ -45,6 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -93,6 +96,29 @@ public class SourceManagerImplDuckDbTest {
       rs.next();
       return rs.getLong(1);
     }
+  }
+
+  /**
+   * An SQL source is read up to the row limit; the result says whether rows were left unread.
+   */
+  @Test
+  public void inspectColumnTellsWhenTheRowLimitIsReached() throws Exception {
+    when(duckDb.addLimit(anyString(), anyInt()))
+        .thenAnswer(inv -> inv.getArgument(0) + " LIMIT " + inv.getArgument(1));
+    SqlSource source = source(dbFile.getAbsolutePath());
+    source.setSql("SELECT id FROM occurrence ORDER BY id");
+
+    SourceManager.ColumnValues limited = manager.inspectColumn(source, 0, 10, 1);
+    assertEquals(Set.of("occ1"), limited.values());
+    assertTrue(limited.rowLimitReached());
+
+    // exactly as many rows as the limit: nothing left unread
+    SourceManager.ColumnValues all = manager.inspectColumn(source, 0, 10, 2);
+    assertEquals(Set.of("occ1", "occ2"), all.values());
+    assertFalse(all.rowLimitReached());
+
+    // the distinct value limit stops first: not the row limit
+    assertFalse(manager.inspectColumn(source, 0, 1, 1).rowLimitReached());
   }
 
   @Test
@@ -227,7 +253,7 @@ public class SourceManagerImplDuckDbTest {
       assertEquals("occ1", rows.next()[0]);
     }
     // including the value of the first row
-    assertEquals(Set.of("occ1", "occ2"), recording.inspectColumn(source, 0, 10, 0));
+    assertEquals(Set.of("occ1", "occ2"), recording.inspectColumn(source, 0, 10, 0).values());
 
     assertEquals(2, connections.size());
     for (Connection c : connections) {

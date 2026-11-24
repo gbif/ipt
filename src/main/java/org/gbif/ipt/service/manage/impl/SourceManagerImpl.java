@@ -1341,13 +1341,23 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
    * {@inheritDoc}
    */
   @Override
-  public Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
+  public ColumnValues inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException {
+    // only SQL sources are limited: a file is read to the end
+    int rowLimit = source instanceof SqlSource && maxRows > 0 ? maxRows : 0;
     // insertion order, so truncating the values keeps the first ones found
     Set<String> values = new LinkedHashSet<>();
-    try (ClosableIterator<Object> iter = iterSourceColumn(source, column, maxRows)){
+    boolean rowLimitReached = false;
+    // one row more than the limit, to tell whether the source has more rows
+    try (ClosableIterator<Object> iter = iterSourceColumn(source, column, rowLimit > 0 ? rowLimit + 1 : 0)) {
+      int rows = 0;
       // get distinct values
       while (iter.hasNext() && (maxValues < 1 || values.size() < maxValues)) {
+        if (rowLimit > 0 && rows == rowLimit) {
+          rowLimitReached = true;
+          break;
+        }
         Object obj = iter.next();
+        rows++;
         if (obj != null) {
           String val = obj.toString();
           values.add(val);
@@ -1357,7 +1367,7 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
       LOG.error(e);
       throw new SourceException("Error reading source " + source.getName() + ": " + e.getMessage());
     }
-    return values;
+    return new ColumnValues(values, rowLimitReached);
   }
 
   /**

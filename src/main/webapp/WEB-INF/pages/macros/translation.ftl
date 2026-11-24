@@ -31,7 +31,7 @@
                 <span class="tr-blank-pill"><@s.text name="manage.translation.blank"/></span>
                 <input type="hidden" class="tr-blank" value=""/>
                 <button type="button" class="tr-btn tr-blank-btn" title="<@s.text name='manage.translation.blank.set'/>" aria-label="<@s.text name='manage.translation.blank.set'/>"><@icon name="block"/></button>
-                <button type="button" class="tr-btn tr-clear-btn" title="<@s.text name='manage.translation.clear'/>" aria-label="<@s.text name='manage.translation.clear'/>"><@icon name="close"/></button>
+                <button type="button" class="tr-btn tr-clear-btn" title="<@s.text name='manage.translation.clear'/>" aria-label="<@s.text name='manage.translation.clear'/>"><@icon name="delete"/></button>
             </div>
             <#if hasVocab && translated?has_content && !(vocabTerms[translated])??>
                 <div class="mp-msg w tr-server-msg"><@icon name="warning"/><span><@s.text name="manage.translation.notInVocabulary"/></span></div>
@@ -82,10 +82,13 @@
                 <select id="tr-add" form="tr-ui" class="form-select form-select-sm">
                     <option value=""></option>
                     <#list sourceValuesMap as k, val>
-                        <#if !(tmap.get(k))??><option value="${val}" data-key="${k}">${val}</option></#if>
+                        <#-- the key as the value: an empty source value would otherwise be taken for the placeholder; "(empty)" in
+                             brackets, so a typed value "empty" isn't matched to it -->
+                        <#if !(tmap.get(k))??><option value="${k}" data-source="${val}"><#if val?has_content>${val}<#else>(<@s.text name="manage.mapping.field.empty"/>)</#if></option></#if>
                     </#list>
                 </select>
             </div>
+            <div class="mp-msg mu"><@s.text name="manage.translation.add.hint"/></div>
             <div class="mp-msg mu" id="tr-add-msg" hidden></div>
         </div>
     </section>
@@ -107,6 +110,7 @@
          data-unsaved="<@s.text name='manage.mapping.savebar.leave'/>"
          data-add-placeholder="<@s.text name='manage.translation.add.placeholder'/>"
          data-add-exists="<@s.text name='manage.translation.add.exists'/>"
+         data-empty="<@s.text name='manage.mapping.field.empty'/>"
          data-no-results="${selectNoResultsFound}"
          data-missing="<@s.text name='manage.translation.missing'/>"
          data-msg-number="<@s.text name='validation.number.expected'/>"

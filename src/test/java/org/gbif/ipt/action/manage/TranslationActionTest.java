@@ -207,8 +207,13 @@ public class TranslationActionTest extends IptBaseTest {
   }
 
   private void mockSourceValues(String... values) throws Exception {
+    mockSourceValues(false, values);
+  }
+
+  private void mockSourceValues(boolean rowLimitReached, String... values) throws Exception {
     Set<String> set = new LinkedHashSet<>(List.of(values));
-    when(mockSourceManager.inspectColumn(any(SourceBase.class), anyInt(), anyInt(), anyInt())).thenReturn(set);
+    when(mockSourceManager.inspectColumn(any(SourceBase.class), anyInt(), anyInt(), anyInt()))
+        .thenReturn(new SourceManager.ColumnValues(set, rowLimitReached));
   }
 
   /**
@@ -261,6 +266,15 @@ public class TranslationActionTest extends IptBaseTest {
     assertEquals(ValueTranslation.MAX_DISTINCT_VALUES, action.getTranslation().getSourceValueCount());
     // the 2 saved translations are kept
     assertEquals(ValueTranslation.MAX_DISTINCT_VALUES + 2, action.getSourceValuesMap().size());
+    assertEquals(1, action.getActionWarnings().size());
+  }
+
+  @Test
+  public void testPrepareWarnsWhenTheSqlRowLimitIsReached() throws Exception {
+    mockSourceValues(true, "spe", "obs");
+    action.prepare();
+
+    assertFalse(action.getTranslation().isTruncated());
     assertEquals(1, action.getActionWarnings().size());
   }
 

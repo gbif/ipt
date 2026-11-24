@@ -193,9 +193,12 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
    */
   void loadSourceValues() {
     Set<String> values;
+    boolean rowLimitReached = false;
     try {
-      values = sourceManager.inspectColumn(mapping.getSource(), fieldMapping.getIndex(),
+      SourceManager.ColumnValues read = sourceManager.inspectColumn(mapping.getSource(), fieldMapping.getIndex(),
           ValueTranslation.MAX_DISTINCT_VALUES + 1, ValueTranslation.MAX_SQL_ROWS);
+      values = read.values();
+      rowLimitReached = read.rowLimitReached();
     } catch (SourceException e) {
       // if an error has occurred, bring it to the user's attention
       addActionError(getText("manage.translation.reloaded.field.fail",
@@ -206,6 +209,10 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     if (translation.isTruncated()) {
       addActionWarning(getText("manage.translation.values.truncated",
           new String[]{String.valueOf(ValueTranslation.MAX_DISTINCT_VALUES)}));
+    } else if (rowLimitReached) {
+      // an SQL source is only read up to MAX_SQL_ROWS rows: values first appearing later aren't offered
+      addActionWarning(getText("manage.translation.values.rowLimit",
+          new String[]{String.valueOf(ValueTranslation.MAX_SQL_ROWS)}));
     }
   }
 

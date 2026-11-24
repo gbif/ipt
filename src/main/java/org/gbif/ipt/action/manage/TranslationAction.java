@@ -191,7 +191,7 @@ public class TranslationAction extends ManagerBaseAction {
     }
     if (!hasActionErrors()) {
       addActionMessage(getText("manage.translation.reloaded.values",
-          new String[]{String.valueOf(translation.getSourceValueCount()), field.getTerm().toString()}));
+          new String[]{String.valueOf(translation.getSourceValueCount()), property.getName()}));
     }
     // leaves the user on the translation page
     return SUCCESS;
@@ -202,19 +202,26 @@ public class TranslationAction extends ManagerBaseAction {
    */
   void loadSourceValues() {
     Set<String> values;
+    boolean rowLimitReached = false;
     try {
-      values = sourceManager.inspectColumn(mapping.getSource(), field.getIndex(),
+      SourceManager.ColumnValues read = sourceManager.inspectColumn(mapping.getSource(), field.getIndex(),
           ValueTranslation.MAX_DISTINCT_VALUES + 1, ValueTranslation.MAX_SQL_ROWS);
+      values = read.values();
+      rowLimitReached = read.rowLimitReached();
     } catch (SourceException e) {
       // if an error has occurred, bring it to the user's attention
       addActionError(getText("manage.translation.reloaded.fail",
-          new String[]{field.getTerm().toString(), e.getMessage()}));
+          new String[]{property.getName(), e.getMessage()}));
       values = Collections.emptySet();
     }
     translation.load(values, field.getTranslation());
     if (translation.isTruncated()) {
       addActionWarning(getText("manage.translation.values.truncated",
           new String[]{String.valueOf(ValueTranslation.MAX_DISTINCT_VALUES)}));
+    } else if (rowLimitReached) {
+      // an SQL source is only read up to MAX_SQL_ROWS rows: values first appearing later aren't offered
+      addActionWarning(getText("manage.translation.values.rowLimit",
+          new String[]{String.valueOf(ValueTranslation.MAX_SQL_ROWS)}));
     }
   }
 

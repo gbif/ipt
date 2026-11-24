@@ -113,17 +113,28 @@ public interface SourceManager {
   boolean delete(Resource resource, Source source);
 
   /**
-   * Retrieves a set of unique string values used in a given column of a source.
+   * Distinct values read from a source column.
+   *
+   * @param values          distinct values, in the order found
+   * @param rowLimitReached true if reading stopped at the row limit while the source had more rows, so values that
+   *                        first appear later are missing
+   */
+  record ColumnValues(Set<String> values, boolean rowLimitReached) {
+  }
+
+  /**
+   * Retrieves the unique string values used in a given column of a source.
    * The maximum number of distinct values can be restricted.
    *
    * @param source    source
    * @param column    column to inspect, zero based numbering as used in the dwc archives
-   * @param maxValues maximun number of distinct values to return. If zero or negative all values will be retrieved.
-   * @param maxRows   maximum number of rows to inspect. If zero or negative all rows will be scanned.
+   * @param maxValues maximum number of distinct values to return. If zero or negative all values will be retrieved.
+   * @param maxRows   maximum number of rows of an SQL source to inspect. If zero or negative all rows will be scanned.
+   *                  Other sources are read to the end (or until maxValues values are found).
    *
-   * @return unique values found in the column
+   * @return unique values found in the column, and whether the row limit cut the reading short
    */
-  Set<String> inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException;
+  ColumnValues inspectColumn(Source source, int column, int maxValues, int maxRows) throws SourceException;
 
   /**
    * Return sample rows from the dataset.

@@ -64,13 +64,14 @@ $(function () {
     // removing a translation: the value is published as it is again, and can be picked again
     $rows.on('click', '.tr-clear-btn', function () {
         var $row = $(this).closest('.tr-row');
-        var value = sourceOf($row);
-        var o = new Option(value, value);
-        if (!/^n\d+$/.test($row.attr('data-key'))) o.setAttribute('data-key', $row.attr('data-key'));
+        var value = sourceOf($row), key = $row.attr('data-key');
+        // the key as the option's value, the source value aside: an empty one would be taken for the placeholder
+        var o = new Option(value === '' ? '(' + i18n.empty + ')' : value, key);
+        o.setAttribute('data-source', value);
         // back in its place: the picker is sorted, ignoring case, as ValueTranslation sorts the values
         var lower = value.toLowerCase();
         var $after = $add.children('option').filter(function () {
-            return this.value !== '' && this.value.toLowerCase() > lower;
+            return this.value !== '' && (this.getAttribute('data-source') || '').toLowerCase() > lower;
         }).first();
         if ($after.length) $after.before(o); else $add.append(o);
         $row.remove();
@@ -165,11 +166,14 @@ $(function () {
         dropdownCssClass: 'text-smaller',
         language: { noResults: function () { return i18n.noResults; } }
     }).on('select2:select', function (e) {
-        var data = e.params.data;
-        var key = data.element ? data.element.getAttribute('data-key') : null;
-        if (data.element && !data.newTag) $(data.element).remove();
+        var data = e.params.data, el = data.element;
+        var listed = el && el.hasAttribute('data-source');
+        if (listed) $(el).remove();
+        // a typed value leaves an option behind (select2 tags), not always given in the event: the row stands for it now
+        $add.find('option[data-select2-tag]').remove();
         $add.val(null).trigger('change.select2');
-        addValue(data.id, key);
+        // a listed value keeps its key; a typed one gets a new key
+        if (listed) addValue(el.getAttribute('data-source'), data.id); else addValue(data.text);
     });
 
     // ---------- dirty state + submit ----------
