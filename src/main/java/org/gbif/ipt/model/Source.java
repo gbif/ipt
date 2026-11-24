@@ -22,8 +22,6 @@ public interface Source {
 
   int getColumns();
 
-  String getDateFormat();
-
   String getEncoding();
 
   /**
@@ -50,8 +48,6 @@ public interface Source {
   SourceType getSourceType();
 
   void setColumns(int columns);
-
-  void setDateFormat(String dateFormat);
 
   void setEncoding(String encoding);
 

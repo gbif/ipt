@@ -78,7 +78,6 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   private static final Set<String> SOURCE_PARAMETERS = Set.of(
       "source.name",
       "source.encoding",
-      "source.dateFormat",
       "source.ignoreHeaderLines",
       "source.fieldsTerminatedByEscaped",
       "source.fieldsEnclosedByEscaped",

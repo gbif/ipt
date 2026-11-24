@@ -1259,7 +1259,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
 
     // other params
     source.setEncoding("UTF-8");
-    source.setDateFormat("YYYY-MM-DD");
     source.setReadable(true);
 
     // rdbms param
@@ -1330,7 +1329,6 @@ public class ResourceManagerImplTest extends IptBaseTest {
     assertEquals("SELECT * FROM occurrence_record where datasetID=1", persistedSource.getSql());
     assertEquals("com.mysql.cj.jdbc.Driver", persistedSource.getJdbcDriver());
     assertEquals("UTF-8", persistedSource.getEncoding());
-    assertEquals("YYYY-MM-DD", persistedSource.getDateFormat());
     assertTrue(persistedSource.isReadable());
 
   }

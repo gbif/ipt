@@ -216,7 +216,7 @@ public class ManagerParameterNamesTest {
   @Test
   public void sourceParameters() {
     SourceAction action = post(sourceAction());
-    for (String param : List.of("source.name", "source.encoding", "source.dateFormat", "source.ignoreHeaderLines",
+    for (String param : List.of("source.name", "source.encoding", "source.ignoreHeaderLines",
         "source.fieldsTerminatedByEscaped", "source.fieldsEnclosedByEscaped", "source.multiValueFieldsDelimitedBy",
         "source.sheetIdx", "fileSource.fieldsTerminatedByEscaped", "fileSource.fieldsEnclosedByEscaped",
         "sqlSource.host", "sqlSource.database", "sqlSource.username", "sqlSource.sql", "sqlSourcePassword", "rdbms",

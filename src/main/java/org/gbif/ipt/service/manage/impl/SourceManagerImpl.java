@@ -364,14 +364,12 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setFieldsEnclosedBy(null);
     to.setFieldsTerminatedBy(",");
     to.setIgnoreHeaderLines(1);
-    to.setDateFormat("YYYY-MM-DD");
   }
   public static void copyArchiveFileProperties(ArchiveFile from, TextFileSource to) {
     to.setEncoding(from.getEncoding());
     to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? "\"" : from.getFieldsEnclosedBy().toString());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
-    to.setDateFormat(from.getDateFormat());
   }
 
   public static void copyArchiveFileProperties(ArchiveFile from, UrlSource to) {
@@ -379,7 +377,6 @@ public class SourceManagerImpl extends BaseManager implements SourceManager {
     to.setFieldsEnclosedBy(from.getFieldsEnclosedBy() == null ? "\"" : from.getFieldsEnclosedBy().toString());
     to.setFieldsTerminatedBy(from.getFieldsTerminatedBy());
     to.setIgnoreHeaderLines(from.getIgnoreHeaderLines());
-    to.setDateFormat(from.getDateFormat());
   }
 
   /**

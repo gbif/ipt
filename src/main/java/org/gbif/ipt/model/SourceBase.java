@@ -33,7 +33,6 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   protected String name;
   protected String encoding = "UTF-8";
   protected String multiValueFieldsDelimitedBy;
-  protected String dateFormat = "YYYY-MM-DD";
   protected int columns;
   protected boolean readable = false;
   protected boolean processing = false;
@@ -98,11 +97,6 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   }
 
   @Override
-  public String getDateFormat() {
-    return dateFormat;
-  }
-
-  @Override
   public String getEncoding() {
     return encoding;
   }
@@ -161,11 +155,6 @@ public abstract class SourceBase implements Comparable<Source>, Serializable, So
   @Override
   public void setColumns(int columns) {
     this.columns = columns;
-  }
-
-  @Override
-  public void setDateFormat(String dateFormat) {
-    this.dateFormat = dateFormat;
   }
 
   @Override
