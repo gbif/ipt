@@ -43,6 +43,14 @@ public class HealthAction extends BaseAction {
 
   private static final Logger LOG = LogManager.getLogger(HealthAction.class);
 
+  // Free space thresholds. Absolute, not a share of the disk: 15% free is plenty on a 2 TB disk and nothing on a
+  // 20 GB one. What matters is room for a publication: source files, the archive being built, archived versions.
+  static final long DISK_LOW_BYTES = 10L * FileUtils.ONE_GB;
+  static final long DISK_FULL_BYTES = 2L * FileUtils.ONE_GB;
+  static final String DISK_OK = "ok";
+  static final String DISK_LOW = "warn";
+  static final String DISK_FULL = "bad";
+
   private DataDir dataDir;
   private final HttpClient http;
 
@@ -57,6 +65,8 @@ public class HealthAction extends BaseAction {
   public String networkPublicAccessURL = "";
   public String networkCheckPublicAccessURL = "https://tools.gbif.org/ws-validurl/?url=";
   public boolean networkPublicAccess = false;
+  // false when the validator itself failed: then nothing is known about the IPT's public access
+  public boolean networkPublicAccessChecked = false;
   public String networkPublicAccessMessage = "";
   public String networkPublicAccessStatus = "";
 
@@ -64,8 +74,10 @@ public class HealthAction extends BaseAction {
   public long diskUsed = 0;
   public long diskFree = 0;
   public int diskUsedRatio = 0;
+  public String diskLevel = DISK_OK;
 
   public boolean readConfigDir = false;
+  public boolean writeConfigDir = false;
   public boolean readLogDir = false;
   public boolean writeLogDir = false;
   public boolean readTmpDir = false;
@@ -122,62 +134,39 @@ public class HealthAction extends BaseAction {
     }
 
     // Public access
+    networkPublicAccessURL = cfg.getBaseUrl();
+    PublicAccessCheck check;
     try {
-      networkPublicAccessURL = cfg.getBaseUrl();
       String checkUrl = networkCheckPublicAccessURL + networkPublicAccessURL;
       ExtendedResponse resp = http.get(checkUrl);
       LOG.debug("Public access check: url={}, status={}, body={}",
           checkUrl, resp != null ? resp.getStatusCode() : null,
           resp != null ? resp.getContent() : null);
-
-      if (resp == null) {
-        networkPublicAccessStatus = "NO_RESPONSE";
-        networkPublicAccessMessage = "No response from the URL validation service.";
-      } else if (resp.getStatusCode() != 200) {
-        networkPublicAccessStatus = String.valueOf(resp.getStatusCode());
-        networkPublicAccessMessage = "The URL validation service returned HTTP "
-            + resp.getStatusCode() + ".";
-      } else {
-        JsonObject json = JsonParser.parseString(resp.getContent()).getAsJsonObject();
-        JsonElement success = json.get("success");
-        if (success != null && success.getAsBoolean()) {
-          networkPublicAccess = true;
-        } else {
-          // Failure: validator couldn't reach the IPT, or the IPT answered with an error status
-          networkPublicAccessStatus = jsonString(json, "status");
-          String error = jsonString(json, "error");
-          if (error.isEmpty()) {
-            error = jsonString(json, "message");
-          }
-          if (!networkPublicAccessStatus.isEmpty()) {
-            networkPublicAccessMessage = "IPT responded to the validator with HTTP "
-                + networkPublicAccessStatus + ".";
-          } else if (!error.isEmpty()) {
-            networkPublicAccessMessage = error;
-          } else {
-            networkPublicAccessMessage = "The validator could not reach " + networkPublicAccessURL
-                + ". Check that the base URL is correct and reachable from the public internet.";
-          }
-        }
-      }
+      check = readPublicAccessResponse(resp, networkPublicAccessURL);
     } catch (Exception e) {
       LOG.error("Public access check failed for {}", networkPublicAccessURL, e);
-      networkPublicAccessStatus = "ERROR";
-      networkPublicAccessMessage = "Could not run the public access check. See logs for details.";
+      check = new PublicAccessCheck(false, false, "ERROR",
+          "Could not run the public access check. See logs for details.");
     }
+    networkPublicAccessChecked = check.checked();
+    networkPublicAccess = check.reachable();
+    networkPublicAccessStatus = check.status();
+    networkPublicAccessMessage = check.message();
 
     // Disk
     diskTotal = dataDir.getDataDirTotalSpace();
     diskFree = dataDir.getDataDirUsableSpace();
     diskUsed = diskTotal - diskFree;
-    diskUsedRatio = (int) (100 * diskUsed / diskTotal);
+    diskUsedRatio = diskTotal > 0 ? (int) (100 * diskUsed / diskTotal) : 0;
     hrDiskTotal = FileUtils.byteCountToDisplaySize(diskTotal);
     hrDiskUsed = FileUtils.byteCountToDisplaySize(diskUsed);
     hrDiskFree = FileUtils.byteCountToDisplaySize(diskFree);
+    diskLevel = diskLevel(diskFree);
 
     // File permissions (config dir)
     DataDir.DirStatus configDirStatus = dataDir.getDirectoryReadWriteStatus(dataDir.configDir());
     readConfigDir = (configDirStatus == DataDir.DirStatus.READ_ONLY) || (configDirStatus == DataDir.DirStatus.READ_WRITE);
+    writeConfigDir = (configDirStatus == DataDir.DirStatus.READ_WRITE);
 
     // File permissions (log dir)
     DataDir.DirStatus logDirStatus = dataDir.getDirectoryReadWriteStatus(dataDir.loggingDir());
@@ -210,6 +199,71 @@ public class HealthAction extends BaseAction {
     iptMode = ((cfg != null) && (cfg.getRegistryType() != null)) ? cfg.getRegistryType().name() : "";
   }
 
+  /**
+   * @return "ok", "warn" (running low) or "bad" (almost full) for the usable space left on the data directory's disk
+   */
+  static String diskLevel(long freeBytes) {
+    if (freeBytes < DISK_FULL_BYTES) {
+      return DISK_FULL;
+    }
+    return freeBytes < DISK_LOW_BYTES ? DISK_LOW : DISK_OK;
+  }
+
+  /**
+   * The validator's answer about the IPT's public URL.
+   *
+   * @param checked   true when the validator ran; false when it didn't answer, failed or answered something unreadable
+   * @param reachable true when the validator could open the URL
+   */
+  record PublicAccessCheck(boolean checked, boolean reachable, String status, String message) {}
+
+  /**
+   * Reads a ws-validurl response. Only a readable answer from the validator says something about the IPT; a missing or
+   * failed answer means the check couldn't run.
+   */
+  static PublicAccessCheck readPublicAccessResponse(ExtendedResponse resp, String publicUrl) {
+    if (resp == null) {
+      return new PublicAccessCheck(false, false, "NO_RESPONSE", "No response from the URL validation service.");
+    }
+    if (resp.getStatusCode() != 200) {
+      return new PublicAccessCheck(false, false, String.valueOf(resp.getStatusCode()),
+          "The URL validation service returned HTTP " + resp.getStatusCode() + ".");
+    }
+
+    JsonObject json;
+    try {
+      json = JsonParser.parseString(resp.getContent()).getAsJsonObject();
+    } catch (RuntimeException e) {
+      return new PublicAccessCheck(false, false, "BAD_RESPONSE",
+          "The URL validation service returned a response that could not be read.");
+    }
+
+    JsonElement success = json.get("success");
+    if (success != null && !success.isJsonNull() && success.getAsBoolean()) {
+      return new PublicAccessCheck(true, true, "", "");
+    }
+
+    // the validator couldn't reach the IPT, or the IPT answered with an error status
+    String status = jsonString(json, "status");
+    String error = jsonString(json, "error");
+    if (error.isEmpty()) {
+      error = jsonString(json, "message");
+    }
+    String message;
+    if ("NonPublicAddress".equals(error)) {
+      // validurl-ws refuses localhost and private network addresses
+      message = publicUrl + " points to this computer or a private network, which the internet cannot reach.";
+    } else if (!status.isEmpty()) {
+      message = "IPT responded to the validator with HTTP " + status + ".";
+    } else if (!error.isEmpty()) {
+      message = error;
+    } else {
+      message = "The validator could not reach " + publicUrl
+          + ". Check that the base URL is correct and reachable from the public internet.";
+    }
+    return new PublicAccessCheck(true, false, status, message);
+  }
+
   private static String jsonString(JsonObject json, String key) {
     JsonElement el = json.get(key);
     return (el != null && !el.isJsonNull()) ? el.getAsString() : "";
@@ -224,6 +278,7 @@ public class HealthAction extends BaseAction {
     status.setNetworkRepository(this.networkRepository);
     status.setNetworkPublicAccessURL(this.networkPublicAccessURL);
     status.setNetworkPublicAccess(this.networkPublicAccess);
+    status.setNetworkPublicAccessChecked(this.networkPublicAccessChecked);
     status.setNetworkPublicAccessMessage(this.networkPublicAccessMessage);
     status.setNetworkPublicAccessStatus(this.networkPublicAccessStatus);
     status.setDiskTotal(this.diskTotal);
@@ -231,6 +286,7 @@ public class HealthAction extends BaseAction {
     status.setDiskFree(this.diskFree);
     status.setDiskUsedRatio(this.diskUsedRatio);
     status.setReadConfigDir(this.readConfigDir);
+    status.setWriteConfigDir(this.writeConfigDir);
     status.setReadLogDir(this.readLogDir);
     status.setWriteLogDir(this.writeLogDir);
     status.setReadTmpDir(this.readTmpDir);
@@ -254,6 +310,7 @@ public class HealthAction extends BaseAction {
     private boolean networkRepository;
     private String networkPublicAccessURL;
     private boolean networkPublicAccess;
+    private boolean networkPublicAccessChecked;
     private String networkPublicAccessMessage;
     private String networkPublicAccessStatus;
     private long diskTotal;
@@ -261,6 +318,7 @@ public class HealthAction extends BaseAction {
     private long diskFree;
     private int diskUsedRatio;
     private boolean readConfigDir;
+    private boolean writeConfigDir;
     private boolean readLogDir;
     private boolean writeLogDir;
     private boolean readTmpDir;
@@ -318,6 +376,14 @@ public class HealthAction extends BaseAction {
       this.networkPublicAccess = networkPublicAccess;
     }
 
+    public boolean isNetworkPublicAccessChecked() {
+      return networkPublicAccessChecked;
+    }
+
+    public void setNetworkPublicAccessChecked(boolean networkPublicAccessChecked) {
+      this.networkPublicAccessChecked = networkPublicAccessChecked;
+    }
+
     public String getNetworkPublicAccessMessage() {
       return networkPublicAccessMessage;
     }
@@ -372,6 +438,14 @@ public class HealthAction extends BaseAction {
 
     public void setReadConfigDir(boolean readConfigDir) {
       this.readConfigDir = readConfigDir;
+    }
+
+    public boolean isWriteConfigDir() {
+      return writeConfigDir;
+    }
+
+    public void setWriteConfigDir(boolean writeConfigDir) {
+      this.writeConfigDir = writeConfigDir;
     }
 
     public boolean isReadLogDir() {

@@ -1,0 +1,49 @@
+/* Health status (health.ftl). Builds on overview.css (.ov-card, .ov-banner). */
+
+.hl-page .ov-card { padding: 16px 20px; margin: 0; }
+.hl-page .ov-card .ov-ch { margin-bottom: 8px; }
+.hl-page .ov-banner.bad .ov-ic { color: rgb(var(--color-gbif-danger)); }
+
+/* two columns on wide screens, one on narrow ones */
+/* cards in one row share their height */
+.hl-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 992px) { .hl-grid { grid-template-columns: 1fr 1fr; } }
+
+.hl-meta-ok { display: inline-flex; align-items: center; gap: 4px; }
+.hl-meta-ok .material-icon { color: rgb(var(--color-gbif-primary)); font-size: 1rem; }
+
+/* one row per check: severity only in the icon, text in normal colours */
+.hl-list { border: 1px solid #dee2e6; border-radius: 8px; }
+.hl-row { display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; font-size: 0.875rem; }
+.hl-row + .hl-row { border-top: 1px solid #dee2e6; }
+.hl-body { flex: 1; min-width: 0; }
+.hl-name { color: #212529; }
+.hl-detail { font-size: 0.75rem; overflow-wrap: anywhere; }
+.hl-detail a { color: #6c757d !important; }
+.hl-state { flex: none; max-width: 50%; text-align: right; color: #495057; }
+.hl-fact .hl-state { color: #212529; overflow-wrap: anywhere; }
+
+.hl-ic { flex: none; line-height: 1; font-size: 1.15rem; margin-top: 1px; }
+.hl-ic.ok { color: rgb(var(--color-gbif-primary)); }
+.hl-ic.warn { color: rgb(var(--alert-warning-icon-color)); }
+.hl-ic.bad { color: rgb(var(--color-gbif-danger)); }
+
+/* why the public access check failed: the validator's answer as written, then what it means */
+.hl-msg { margin-top: 6px; font-family: var(--bs-font-monospace); font-size: 0.75rem; color: #495057; background: #f8f9fa; border-radius: 4px; padding: 6px 8px; overflow-wrap: anywhere; }
+.hl-hint { margin-top: 6px; font-size: 0.8rem; color: #495057; }
+
+/* disk usage bar */
+.hl-bar { height: 8px; margin-top: 6px; border-radius: 4px; background: #e9ecef; overflow: hidden; }
+.hl-bar span { display: block; height: 100%; border-radius: 4px; }
+.hl-bar span.ok { background: rgb(var(--color-gbif-primary)); }
+.hl-bar span.warn { background: rgb(var(--alert-warning-icon-color)); }
+.hl-bar span.bad { background: rgb(var(--color-gbif-danger)); }
+
+.hl-login { margin: 16px 0 0; font-size: 0.875rem; display: flex; align-items: center; gap: 6px; }
+.hl-login .material-icon { color: rgb(var(--color-gbif-primary)); font-size: 1.1rem; }
+
+@media (max-width: 575.98px) {
+  .hl-row { flex-wrap: wrap; }
+  .hl-state { max-width: none; flex-basis: 100%; text-align: left; padding-left: 28px; }
+  .hl-fact .hl-state { padding-left: 0; }
+}
