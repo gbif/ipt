@@ -1,7 +1,7 @@
+= GBIF Integrated Publishing Toolkit (IPT)
+
 https://builds.gbif.org/job/ipt/lastBuild/console[image:https://builds.gbif.org/job/ipt/badge/icon[Build status]]
 https://crowdin.com/project/gbif-ipt[image:https://badges.crowdin.net/gbif-ipt/localized.svg[Crowdin]]
-
-= GBIF Integrated Publishing Toolkit (IPT)
 
 The Integrated Publishing Toolkit (IPT) is a free, open source software tool provided by the Global Biodiversity Information Facility (GBIF) and used to publish and share biodiversity datasets through the https://www.gbif.org/[GBIF network]. The IPT can also be configured with a DataCite account in order to assign DOIs to datasets, thus transforming it into a data repository.
 
