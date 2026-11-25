@@ -1,9 +1,23 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.OverviewAction" -->
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
 <#include "/WEB-INF/pages/macros/dialog.ftl"/>
+<#-- what publishing gives a DwC-A resource meant to have data (a data type, or sources) with nothing mapped to the core (#2742):
+     "" when it has data or is meant to be metadata only; "metadataOnly" when the next version has no data;
+     "dataRemoved" when the current version has data that goes -->
+<#function noDataPublication>
+    <#if resource.isDataPackage() || resource.status == "DELETED" || resource.hasAnyMappedData()
+        || (resource.coreType!"")?lower_case == "metadata" || (!resource.coreType?has_content && !resource.sources?has_content)>
+        <#return "">
+    </#if>
+    <#return (resource.recordsPublished > 0)?then("dataRemoved", "metadataOnly")>
+</#function>
+
 <#-- a publish confirmation (jConfirmAction): the version as the question, the version on the button -->
 <#macro publishConfirm cls textKey agreement=false>
-        $('.${cls}').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.publish.title'><@s.param>${resource.nextVersionPlainString}</@s.param></@s.text>", question: "<#if outdatedExtensions><@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br></#if><@s.text name=textKey><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer: "<@s.text name='manage.overview.publishVersion'><@s.param>${resource.nextVersionPlainString}</@s.param></@s.text>", cancelAnswer: "<@s.text name='button.cancel'/>", summary: "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>",<#if agreement> checkboxText: "<@s.text name='manage.overview.confirm.publish.doiAgreement'/>",</#if> buttonType: "primary", tone: "info", icon: "upload"});
+        <#local noData = noDataPublication()>
+        <#-- the overview's orange banner on top of the question; icon markup has double quotes, hence js_string -->
+        <#local noDataBanner><#if noData?has_content><div class="ov-banner warn compact mb-3"><@icon name="warning" class="ov-ic"/><div class="ov-grow"><@s.text name="manage.overview.publishing.${noData}"><@s.param>${resource.recordsPublished?string.number}</@s.param></@s.text></div></div></#if></#local>
+        $('.${cls}').jConfirmAction({titleQuestion: "<@s.text name='manage.overview.confirm.publish.title'><@s.param>${resource.nextVersionPlainString}</@s.param></@s.text>", question: "${noDataBanner?markup_string?js_string?no_esc}<#if outdatedExtensions><@s.text name='manage.overview.publishing.outdatedExtensions'/><br><br></#if><@s.text name=textKey><@s.param>${resourceVisibility}</@s.param><@s.param>${resourceVisibility}</@s.param></@s.text>", yesAnswer: "<@s.text name='manage.overview.publishVersion'><@s.param>${resource.nextVersionPlainString}</@s.param></@s.text>", cancelAnswer: "<@s.text name='button.cancel'/>", summary: "<@s.text name='manage.overview.publishing.doi.summary.placeholder'/>",<#if agreement> checkboxText: "<@s.text name='manage.overview.confirm.publish.doiAgreement'/>",</#if> buttonType: "primary", tone: "${noData?has_content?then('warn', 'info')}", icon: "upload"});
 </#macro>
 <#macro dwcaValidator>
     <#if (resource.recordsPublished>0)>

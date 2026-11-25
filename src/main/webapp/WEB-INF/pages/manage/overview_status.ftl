@@ -175,6 +175,11 @@
 <#-- needs attention: [level, text] -->
 <#assign attention = []>
 <#if !isMetadataOnly && !isDeleted>
+    <#assign noData = noDataPublication()>
+    <#if noData?has_content>
+        <#assign t><@s.text name="manage.overview.attention.${noData}"/></#assign>
+        <#assign attention = attention + [["warn", t]]>
+    </#if>
     <#if !resource.sources?has_content>
         <#assign t><@s.text name="manage.overview.attention.noSources"/></#assign>
         <#assign attention = attention + [["warn", t]]>
@@ -187,7 +192,8 @@
         <#assign t><@s.text name="manage.overview.attention.unmappedSources"><@s.param>${unmappedSources?size}</@s.param></@s.text></#assign>
         <#assign attention = attention + [["warn", t]]>
     </#if>
-    <#if !isDataPackage && resource.sources?has_content && !hasCoreMapping>
+    <#-- the metadata-only line above already says so -->
+    <#if !isDataPackage && resource.sources?has_content && !hasCoreMapping && !noData?has_content>
         <#assign t><@s.text name="manage.overview.attention.noCoreMapping"/></#assign>
         <#assign attention = attention + [["warn", t]]>
     </#if>
