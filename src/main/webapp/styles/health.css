@@ -10,7 +10,7 @@
 @media (min-width: 992px) { .hl-grid { grid-template-columns: 1fr 1fr; } }
 
 .hl-meta-ok { display: inline-flex; align-items: center; gap: 4px; }
-.hl-meta-ok .material-icon { color: rgb(var(--color-gbif-primary)); font-size: 1rem; }
+.hl-meta-ok .material-icon { color: rgb(var(--color-gbif-success)); font-size: 1rem; }
 
 /* one row per check: severity only in the icon, text in normal colours */
 .hl-list { border: 1px solid #dee2e6; border-radius: 8px; }
@@ -24,7 +24,7 @@
 .hl-fact .hl-state { color: #212529; overflow-wrap: anywhere; }
 
 .hl-ic { flex: none; line-height: 1; font-size: 1.15rem; margin-top: 1px; }
-.hl-ic.ok { color: rgb(var(--color-gbif-primary)); }
+.hl-ic.ok { color: rgb(var(--color-gbif-success)); }
 .hl-ic.warn { color: rgb(var(--alert-warning-icon-color)); }
 .hl-ic.bad { color: rgb(var(--color-gbif-danger)); }
 
