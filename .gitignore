@@ -2,6 +2,7 @@
 *.iml
 target/
 .idea/
+.mcp.json
 .DS_Store
 .java-version
 datadirs/
