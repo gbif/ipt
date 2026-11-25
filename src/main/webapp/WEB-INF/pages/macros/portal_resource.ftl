@@ -234,11 +234,11 @@
      files: [{"url", "label", "description", "size", "download" (true for a file the browser saves as is)}], data first -->
 <#macro downloadButtons files>
     <#if files?has_content>
-        <div class="dropdown d-inline-block mt-1 me-xl-1">
+        <div class="dropdown d-inline-block">
             <button type="button" class="btn btn-sm btn-outline-gbif-primary dropdown-toggle top-button rp-download" data-bs-toggle="dropdown" aria-expanded="false">
                 <@icon "download"/> <@s.text name='portal.resource.downloadButton'/>
             </button>
-            <ul class="dropdown-menu rp-download-menu">
+            <ul class="dropdown-menu dropdown-menu-end rp-download-menu">
                 <#list files as f>
                     <li>
                         <a class="dropdown-item rp-menu-file" href="${f.url}"<#if f.download!false> download</#if>>

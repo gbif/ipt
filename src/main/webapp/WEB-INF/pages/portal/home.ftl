@@ -267,7 +267,7 @@
         function pills(item) {
             const p = [];
             if (item.typeLabel) p.push('<span class="dt-content-pill type-' + esc(item.type) + '">' + esc(item.typeLabel) + '</span>');
-            if (item.subtypeLabel) p.push('<span class="dt-content-pill type-' + esc(item.type) + '">' + esc(item.subtypeLabel) + '</span>');
+            if (item.subtypeLabel) p.push('<span class="dt-content-pill type-other">' + esc(item.subtypeLabel) + '</span>');
             if (item.licenceLabel) p.push('<span class="ph-pill">' + esc(item.licenceLabel) + '</span>');
             if (item.doiUrl) p.push('<a class="ph-pill" href="' + esc(item.doiUrl) + '" title="' + esc(item.doi) + '">DOI</a>');
             if (item.gbifUrl) p.push('<a class="ph-pill ph-pill-gbif" href="' + esc(item.gbifUrl) + '">' + esc(T.onGbif) + ' ' + icon("open_in_new") + '</a>');

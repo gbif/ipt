@@ -54,7 +54,7 @@
 .rp-version-summary a.rp-version-delete:hover, .rp-version-summary a.rp-version-delete:focus-visible { color: rgb(var(--color-gbif-danger)) !important; }
 .rp-pill { font-size: .6875rem !important; border: 1px solid #dee2e6; border-radius: 10px; padding: 0 8px; color: #495057 !important; }
 /* the version line under the heading (macro versionLine) */
-.rp-version-line { font-size: .8125rem; color: #6c757d; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 6px; }
+.rp-version-line { font-size: .8125rem; color: #6c757d; display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 0 6px; }
 .rp-version-line .rp-sep { color: #adb5bd; }
 
 /* coverage */
@@ -138,7 +138,8 @@ summary.rp-pr-head:hover { background: #f8f9fa; }
 .rp-menu-file { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; white-space: normal; padding-top: 6px; padding-bottom: 6px; }
 .rp-menu-file-name { color: #212529; font-weight: 500; }
 .rp-menu-file-desc { display: block; color: #6c757d; font-size: .71875rem; font-weight: 400; }
-.rp-menu-file small { color: #6c757d; white-space: nowrap; font-size: .71875rem; padding-top: 1px; font-variant-numeric: tabular-nums; }
+/* beats page-heading.css .ov-acts .dropdown-item small (block, wrapping) */
+.rp-download-menu .dropdown-item.rp-menu-file small { color: #6c757d; white-space: nowrap; font-size: .71875rem; padding-top: 1px; font-variant-numeric: tabular-nums; }
 
 /* preview notice fixed under the navbar (macro previewNotice); portal-resource.js sets --rp-navbar (the navbar's
    height, which shrinks on scroll) and the spacer's height */

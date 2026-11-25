@@ -1,5 +1,5 @@
 /* Page heading box: .ov-head (centred) and .ov-head-left (left-aligned, buttons bottom right), with .ov-meta lines and .ov-acts buttons.
-   Imported by overview.css; pages that need only the heading (the admin pages) link it directly. */
+   Imported by overview.css; pages that need only the heading (the admin pages, the public resource pages) link it directly. */
 
 /* heading: the IPT's centred heading box (as on the other pages), with the resource's pills, details and actions */
 .ov-head { display: flex; flex-direction: column; align-items: center; text-align: center; }
@@ -8,7 +8,7 @@
 .ov-meta .dt-content-pill, .ov-meta .status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px !important; line-height: 18px; margin: 0 !important; }
 .ov-meta { display: flex; gap: 6px 14px; flex-wrap: wrap; align-items: center; justify-content: center; font-size: 0.8rem; color: #6c757d; margin-top: 8px; }
 .ov-head > .ov-acts { justify-content: center; margin-top: 16px; }
-/* left-aligned heading, buttons bottom right: manage and admin pages */
+/* left-aligned heading, buttons bottom right: manage, admin and public resource pages */
 .ov-head.ov-head-left { flex-direction: row; flex-wrap: wrap; align-items: flex-start; text-align: left; gap: 12px 32px; }
 .ov-head-left .ov-grow { flex: 1 1 420px; min-width: 0; }
 .ov-head-left .breadcrumb, .ov-head-left .ov-meta { justify-content: flex-start; }
