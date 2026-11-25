@@ -167,8 +167,8 @@
                         <@factRow labelKey="portal.health.disk.usage.total.size">${hrDiskTotal}</@factRow>
                         <@factRow labelKey="portal.health.disk.usage.used.size">${hrDiskUsed}</@factRow>
                         <@factRow labelKey="portal.health.disk.usage.free.size">${hrDiskFree}</@factRow>
-                        <#-- the free space level is measured against this -->
-                        <#if largestResource?has_content>
+                        <#-- the free space level is measured against this; only worth showing when it explains a warning -->
+                        <#if largestResource?has_content && diskLevel != "ok">
                             <@factRow labelKey="portal.health.disk.publishingNeed">${hrPublishingNeed} (<a href="${baseURL}/manage/resource.do?r=${largestResource?url}" class="resource-table-link">${largestResource}</a>)</@factRow>
                         </#if>
                     </div>
