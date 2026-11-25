@@ -27,7 +27,7 @@ import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 
 /**
- * Set up RollingFileAppenders, initially in the default directory, then in the data directory.
+ * Set up RollingFileAppenders in the data directory, once it is known (console only before that).
  */
 public class LoggingConfiguration extends XmlConfiguration {
   public static String logDirectory = "";
@@ -39,6 +39,11 @@ public class LoggingConfiguration extends XmlConfiguration {
   @Override
   protected void doConfigure() {
     super.doConfigure();
+
+    // no file logs until the data directory is known, otherwise they land in the working directory
+    if (logDirectory.isEmpty()) {
+      return;
+    }
 
     final Layout<?> layout = PatternLayout.newBuilder()
         .withConfiguration(this)
