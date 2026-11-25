@@ -6,6 +6,8 @@
 <#include "/WEB-INF/pages/macros/icon.ftl"/>
 <title><@s.text name="portal.health.title"/></title>
 <#assign currentMenu = "health"/>
+<#-- disk sizes, versions and the validator's raw answer are for whoever runs the server -->
+<#assign details = adminRights>
 <#include "/WEB-INF/pages/inc/menu.ftl">
 
 <#--
@@ -57,7 +59,7 @@
 <#macro dirRow labelKey state>
     <div class="hl-row">
         <@stateIcon level=(state == "rw")?then("ok", "bad")/>
-        <div class="hl-body"><div class="hl-name"><@s.text name=labelKey/></div></div>
+        <div class="hl-body"><div class="hl-name"><@s.text name=labelKey/></div><#nested></div>
         <span class="hl-state">
             <#switch state>
                 <#case "rw"><@s.text name="portal.health.file.permissions.read.write"/><#break>
@@ -95,7 +97,7 @@
                 </h1>
 
                 <div class="ov-meta">
-                    <span><@s.text name="portal.health.checked"><@s.param>${.now?string("yyyy-MM-dd HH:mm")}</@s.param></@s.text></span>
+                    <span><@s.text name="portal.health.checked"><@s.param>${.now?string("yyyy-MM-dd HH:mm z")}</@s.param></@s.text></span>
                     <#if !issues?has_content>
                         <span>·</span>
                         <span class="hl-meta-ok"><@icon name="check_circle"/> <@s.text name="portal.health.allPassed"/></span>
@@ -136,7 +138,7 @@
                     <@remoteRow label=action.getText("portal.health.network.repository") ok=networkRepository url=networkRepositoryURL/>
                     <@remoteRow label=action.getText("portal.health.network.publicAccess") ok=networkPublicAccess url=networkPublicAccessURL checked=networkPublicAccessChecked>
                         <#if !networkPublicAccess>
-                            <#if loggedIn && networkPublicAccessMessage?has_content>
+                            <#if details && networkPublicAccessMessage?has_content>
                                 <div class="hl-msg"><#if networkPublicAccessStatus?has_content>${networkPublicAccessStatus}: </#if>${networkPublicAccessMessage}</div>
                             </#if>
                             <#if networkPublicAccessChecked>
@@ -147,7 +149,7 @@
                 </div>
             </section>
 
-            <#if loggedIn>
+            <#if details>
                 <#-- the data directory's disk -->
                 <section class="ov-card">
                     <div class="ov-ch"><h2><@s.text name="portal.health.disk.usage"/></h2></div>
@@ -168,25 +170,34 @@
                 </section>
             </#if>
 
-            <#-- the IPT reads and writes all of these; visitors get free space here as one state, without sizes -->
+            <#-- the IPT reads and writes all of these; non-admins get free space here as one state, without sizes -->
             <section class="ov-card">
-                <div class="ov-ch"><h2><#if loggedIn><@s.text name="portal.health.file.permissions"/><#else><@s.text name="portal.health.dataDirectory"/></#if></h2></div>
+                <div class="ov-ch"><h2><#if details><@s.text name="portal.health.file.permissions"/><#else><@s.text name="portal.health.dataDirectory"/></#if></h2></div>
                 <div class="hl-list">
-                    <#if !loggedIn>
+                    <#if !details>
                         <div class="hl-row">
                             <@stateIcon level=diskLevel/>
                             <div class="hl-body"><div class="hl-name"><@s.text name="portal.health.disk.space"/></div></div>
                             <span class="hl-state"><@s.text name="portal.health.disk.space.${diskLevel}"/></span>
                         </div>
                     </#if>
+                    <#-- where the folders below are and who must own them -->
+                    <#if details>
+                        <@factRow labelKey="portal.health.dataDirectory">${dataDirPath}</@factRow>
+                        <@factRow labelKey="portal.health.system.user">${systemUser}</@factRow>
+                    </#if>
                     <@dirRow labelKey="portal.health.file.permissions.config.directory" state=configState/>
                     <@dirRow labelKey="portal.health.file.permissions.logs.directory" state=logState/>
                     <@dirRow labelKey="portal.health.file.permissions.tmp.directory" state=tmpState/>
-                    <@dirRow labelKey="portal.health.file.permissions.resources.directory" state=resourcesState/>
+                    <@dirRow labelKey="portal.health.file.permissions.resources.directory" state=resourcesState>
+                        <#if details && problemResourceDirs?has_content>
+                            <div class="hl-detail"><@s.text name="portal.health.file.permissions.folders"/>: ${problemResourceDirs[0..*5]?join(", ")}<#if (problemResourceDirs?size > 5)> (+${problemResourceDirs?size - 5})</#if></div>
+                        </#if>
+                    </@dirRow>
                 </div>
             </section>
 
-            <#if loggedIn>
+            <#if details>
                 <section class="ov-card">
                     <div class="ov-ch"><h2><@s.text name="portal.health.system"/></h2></div>
                     <div class="hl-list">

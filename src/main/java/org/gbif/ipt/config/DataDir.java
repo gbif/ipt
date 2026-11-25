@@ -617,10 +617,10 @@ public class DataDir {
 
   /**
    * Get sub directories read/write status
-   * If one sub directory has not Read/Write status, its status is returned
+   * If one sub directory has not Read/Write status, its status is returned. Files are skipped: only folders count.
    */
   public DirStatus getSubDirectoriesReadWriteStatus(File dir) {
-    File[] files = dir.listFiles();
+    File[] files = dir.listFiles(File::isDirectory);
     if (files != null) {
       for (File subDir : files) {
         DirStatus status = getDirectoryReadWriteStatus(subDir);
@@ -632,6 +632,21 @@ public class DataDir {
     } else {
       return DirStatus.NOT_EXIST;
     }
+  }
+
+  /**
+   * @return names of the sub folders that aren't readable and writable, sorted; files are skipped
+   */
+  public List<String> getSubDirectoriesNotReadWrite(File dir) {
+    File[] subDirs = dir.listFiles(File::isDirectory);
+    if (subDirs == null) {
+      return List.of();
+    }
+    return Stream.of(subDirs)
+        .filter(subDir -> getDirectoryReadWriteStatus(subDir) != DirStatus.READ_WRITE)
+        .map(File::getName)
+        .sorted()
+        .toList();
   }
 
   public File getDataDir() {

@@ -283,8 +283,8 @@ public class ConfigManagerImpl extends BaseManager implements ConfigManager {
         break;
       case READ_WRITE:
         // Write access to folder /resources
-        // Check subdirectories
-        File[] files = resourcesDir.listFiles();
+        // Check subdirectories (files are skipped: only folders count)
+        File[] files = resourcesDir.listFiles(File::isDirectory);
         if (files != null) {
           for (File subResourceDir : files) {
             DataDir.DirStatus subStatus = dataDir.getDirectoryReadWriteStatus(subResourceDir);

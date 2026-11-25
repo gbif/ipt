@@ -33,8 +33,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.Serial;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class HealthAction extends BaseAction {
 
@@ -86,6 +85,11 @@ public class HealthAction extends BaseAction {
   public boolean writeResourcesDir = false;
   public boolean readSubResourcesDir = false;
   public boolean writeSubResourcesDir = false;
+
+  // for admins fixing permissions; set only for them and not part of the /api/health JSON
+  public List<String> problemResourceDirs = List.of();
+  public String dataDirPath = "";
+  public String systemUser = "";
 
   public String hrDiskTotal = "";
   public String hrDiskUsed = "";
@@ -187,6 +191,15 @@ public class HealthAction extends BaseAction {
     DataDir.DirStatus subResourcesDirStatus = dataDir.getSubDirectoriesReadWriteStatus(dataDir.resourcesDir());
     readSubResourcesDir = (subResourcesDirStatus == DataDir.DirStatus.READ_ONLY) || (subResourcesDirStatus == DataDir.DirStatus.READ_WRITE);
     writeSubResourcesDir = (subResourcesDirStatus == DataDir.DirStatus.READ_WRITE);
+
+    // resource folder names include private resources, and paths and the user are server details
+    if (isAdminRights()) {
+      if (!writeSubResourcesDir) {
+        problemResourceDirs = dataDir.getSubDirectoriesNotReadWrite(dataDir.resourcesDir());
+      }
+      dataDirPath = dataDir.getDataDir().getAbsolutePath();
+      systemUser = System.getProperty("user.name", "");
+    }
 
     // System
     osName = System.getProperty("os.name");
