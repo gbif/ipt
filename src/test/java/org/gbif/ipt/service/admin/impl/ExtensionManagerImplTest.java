@@ -209,7 +209,8 @@ public class ExtensionManagerImplTest extends IptBaseTest {
     assertNotNull(ext.getIssued());
     assertEquals("dwc:Taxon dwc:Event", ext.getSubject());
     assertNull(ext.getUrl());
-    assertFalse(ext.isLatest()); // this isn't persisted, only populated when deserialising JSON list from registry
+    // not in the XML: set from the Registry on install, so a fresh install isn't reported as outdated
+    assertTrue(ext.isLatest());
   }
 
   /**

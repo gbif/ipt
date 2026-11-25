@@ -508,12 +508,26 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     try {
       File installedFile = getExtensionFile(extension.getRowType());
       FileUtils.moveFile(tmpFile, installedFile);
+      // isLatest isn't in the XML: without this a new install counts as outdated until the next restart
+      extension.setLatest(isLatest(extension, getLatestRegisteredExtensions()));
       // keep extension in local lookup: allowed one installed extension per rowType
       extensionsHolder.getExtensionsByRowtype().put(extension.getRowType(), extension);
     } catch (IOException e) {
       LOG.error("Installing extension failed, while trying to move and rename extension file: {}",
           e.getMessage(), e);
       throw e;
+    }
+  }
+
+  /**
+   * @return the latest extension versions in the Registry, or an empty list when it can't be reached
+   */
+  private List<Extension> getLatestRegisteredExtensions() {
+    try {
+      return registryManager.getLatestExtensions();
+    } catch (Exception e) {
+      LOG.error("Failed to load extensions from the Registry. Cannot check the latest extensions", e);
+      return Collections.emptyList();
     }
   }
 
@@ -613,13 +627,7 @@ public class ExtensionManagerImpl extends BaseManager implements ExtensionManage
     File extensionDir = dataDir.configFile(CONFIG_FOLDER);
     int counter = 0;
 
-    List<Extension> allRegisteredExtensions;
-    try {
-      allRegisteredExtensions = registryManager.getLatestExtensions();
-    } catch (Exception e) {
-      LOG.error("Failed to load extensions from the Registry. Cannot check the latest extensions", e);
-      allRegisteredExtensions = Collections.emptyList();
-    }
+    List<Extension> allRegisteredExtensions = getLatestRegisteredExtensions();
 
     if (extensionDir.isDirectory()) {
       List<File> extensionFiles = new ArrayList<>();
