@@ -276,6 +276,17 @@
     <constructor-arg ref="resourceManager"/>
     <constructor-arg ref="httpClient"/>
   </bean>
+
+  <!-- health checks: GBIF services and public access run in the background about twice a day -->
+  <bean id="healthService" class="org.gbif.ipt.service.admin.impl.HealthServiceImpl"
+        init-method="start" destroy-method="stop">
+    <constructor-arg ref="appConfig"/>
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="httpClient"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="resourceManager"/>
+  </bean>
+
   <bean id="resourceManagerProvider"
         class="org.springframework.beans.factory.config.ProviderCreatingFactoryBean">
     <property name="targetBeanName" value="resourceManager"/>
@@ -416,14 +427,16 @@
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="resourceDataTableViewManager"/>
     <constructor-arg ref="resourceCitationsManager"/>
+    <!-- the health icon in the menu (BaseAction); actions without a bean get it autowired by type -->
+    <property name="healthService" ref="healthService"/>
   </bean>
 
   <bean id="healthAction" class="org.gbif.ipt.action.HealthAction" scope="prototype">
     <constructor-arg ref="simpleTextProvider"/>
     <constructor-arg ref="appConfig"/>
-    <constructor-arg ref="httpClient"/>
     <constructor-arg ref="registrationManager"/>
     <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="healthService"/>
   </bean>
 
   <bean id="resourceAction" class="org.gbif.ipt.action.portal.ResourceAction" scope="prototype">
@@ -436,6 +449,8 @@
     <constructor-arg ref="extensionManager"/>
     <constructor-arg ref="metadataReader"/>
     <constructor-arg ref="resourceCitationsManager"/>
+    <!-- the health icon in the menu (BaseAction); actions without a bean get it autowired by type -->
+    <property name="healthService" ref="healthService"/>
   </bean>
 
   <bean id="organisationSupport" class="org.gbif.ipt.validation.OrganisationSupport">

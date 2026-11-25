@@ -581,25 +581,33 @@ table {
     box-shadow: none;
 }
 
-/* Health logo with red circle */
-/*.health-link::after {*/
-/*    content: ' ';*/
-/*    display: block;*/
-/*    position: absolute;*/
-/*    width: 10px;*/
-/*    height: 10px;*/
-/*    background: tomato;*/
-/*    border-radius: 50%;*/
-/*    top: 5px;*/
-/*    right: 5px;*/
-/*    pointer-events: none;*/
-/*}*/
+/* Health icon: a dot for admins when a check failed (inc/menu.ftl) */
+.health-link.health-warn::after, .health-link.health-bad::after {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    top: 6px;
+    right: 2px;
+    box-shadow: 0 0 0 2px rgb(var(--navbar-color, 255, 255, 255));
+    pointer-events: none;
+}
 
-/*@media (max-width: 1200px) {*/
-/*    .health-link::after {*/
-/*        left: 15px;*/
-/*    }*/
-/*}*/
+.health-link.health-warn::after {
+    background: rgb(var(--alert-warning-icon-color));
+}
+
+.health-link.health-bad::after {
+    background: rgb(var(--color-gbif-danger));
+}
+
+@media (max-width: 1199.98px) {
+    .health-link.health-warn::after, .health-link.health-bad::after {
+        left: 18px;
+        right: auto;
+    }
+}
 /* Logo, header, menu etc. END */
 
 /* Additional flex properties */

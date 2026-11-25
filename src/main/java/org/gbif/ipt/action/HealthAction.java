@@ -15,54 +15,42 @@ package org.gbif.ipt.action;
 
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.DataDir;
+import org.gbif.ipt.service.admin.HealthService;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.struts2.RequirePost;
 import org.gbif.ipt.struts2.SimpleTextProvider;
-import org.gbif.utils.ExtendedResponse;
-import org.gbif.utils.HttpClient;
+
+import java.io.Serial;
+import java.util.Date;
+import java.util.List;
 
 import jakarta.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.json.annotations.JSON;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import java.io.Serial;
-import java.util.List;
 
 public class HealthAction extends BaseAction {
 
   @Serial
   private static final long serialVersionUID = 5332856472390163029L;
 
-  private static final Logger LOG = LogManager.getLogger(HealthAction.class);
-
-  // Free space thresholds. Absolute, not a share of the disk: 15% free is plenty on a 2 TB disk and nothing on a
-  // 20 GB one. What matters is room for a publication: source files, the archive being built, archived versions.
-  static final long DISK_LOW_BYTES = 10L * FileUtils.ONE_GB;
-  static final long DISK_FULL_BYTES = 2L * FileUtils.ONE_GB;
-  static final String DISK_OK = "ok";
-  static final String DISK_LOW = "warn";
-  static final String DISK_FULL = "bad";
-
-  private DataDir dataDir;
-  private final HttpClient http;
+  private final DataDir dataDir;
+  private final HealthService healthService;
 
   public Status status;
+
+  // when the remote checks ran; null before the IPT is set up
+  public Date checkedAt;
 
   public String networkRegistryURL = "";
   public boolean networkRegistry = false;
 
-  public String networkRepositoryURL = "http://rs.gbif.org";
+  public String networkRepositoryURL = "";
   public boolean networkRepository = false;
 
   public String networkPublicAccessURL = "";
-  public String networkCheckPublicAccessURL = "https://tools.gbif.org/ws-validurl/?url=";
   public boolean networkPublicAccess = false;
   // false when the validator itself failed: then nothing is known about the IPT's public access
   public boolean networkPublicAccessChecked = false;
@@ -73,7 +61,10 @@ public class HealthAction extends BaseAction {
   public long diskUsed = 0;
   public long diskFree = 0;
   public int diskUsedRatio = 0;
-  public String diskLevel = DISK_OK;
+  public String diskLevel = "ok";
+  // admins: what sets the disk level
+  public String hrPublishingNeed = "";
+  public String largestResource = "";
 
   public boolean readConfigDir = false;
   public boolean writeConfigDir = false;
@@ -105,92 +96,69 @@ public class HealthAction extends BaseAction {
   public HealthAction(
       SimpleTextProvider textProvider,
       AppConfig cfg,
-      HttpClient client,
       RegistrationManager registrationManager,
-      DataDir dataDir) {
+      DataDir dataDir,
+      HealthService healthService) {
     super(textProvider, cfg, registrationManager);
     this.dataDir = dataDir;
-    this.http = client;
+    this.healthService = healthService;
+    setHealthService(healthService);
   }
 
-  @Override
-  public void prepare() {
-    super.prepare();
+  /**
+   * Runs the remote checks again whatever their age: admins only, POST only (each run calls GBIF). Others are sent
+   * to the page, which reuses checks from the last few minutes.
+   */
+  @RequirePost
+  public String check() {
+    if (isAdminRights()) {
+      healthService.refreshRemoteChecks(true);
+    }
+    return SUCCESS;
+  }
 
+  private void load() {
     // Network
-    try {
-      networkRegistryURL = cfg.getRegistryUrl();
-      ExtendedResponse resp = http.get(networkRegistryURL);
-      if ((resp != null) && (resp.getStatusCode() == 200)) {
-        networkRegistry = true;
-      }
-    } catch (Exception e) {
-      // do nothing
+    HealthService.RemoteChecks remote = healthService.refreshRemoteChecks(false);
+    if (remote != null) {
+      checkedAt = new Date(remote.checked());
+      networkRegistryURL = remote.registryUrl();
+      networkRegistry = remote.registry();
+      networkRepositoryURL = remote.repositoryUrl();
+      networkRepository = remote.repository();
+      networkPublicAccessURL = remote.publicAccessUrl();
+      networkPublicAccessChecked = remote.publicAccessChecked();
+      networkPublicAccess = remote.publicAccess();
+      networkPublicAccessStatus = remote.publicAccessStatus();
+      networkPublicAccessMessage = remote.publicAccessMessage();
     }
-
-    try {
-      ExtendedResponse resp = http.get(networkRepositoryURL);
-      if ((resp != null) && (resp.getStatusCode() == 200)) {
-        networkRepository = true;
-      }
-    } catch (Exception e) {
-      // do nothing
-    }
-
-    // Public access
-    networkPublicAccessURL = cfg.getBaseUrl();
-    PublicAccessCheck check;
-    try {
-      String checkUrl = networkCheckPublicAccessURL + networkPublicAccessURL;
-      ExtendedResponse resp = http.get(checkUrl);
-      LOG.debug("Public access check: url={}, status={}, body={}",
-          checkUrl, resp != null ? resp.getStatusCode() : null,
-          resp != null ? resp.getContent() : null);
-      check = readPublicAccessResponse(resp, networkPublicAccessURL);
-    } catch (Exception e) {
-      LOG.error("Public access check failed for {}", networkPublicAccessURL, e);
-      check = new PublicAccessCheck(false, false, "ERROR",
-          "Could not run the public access check. See logs for details.");
-    }
-    networkPublicAccessChecked = check.checked();
-    networkPublicAccess = check.reachable();
-    networkPublicAccessStatus = check.status();
-    networkPublicAccessMessage = check.message();
 
     // Disk
-    diskTotal = dataDir.getDataDirTotalSpace();
-    diskFree = dataDir.getDataDirUsableSpace();
+    HealthService.LocalChecks local = healthService.checkLocal();
+    diskTotal = local.diskTotal();
+    diskFree = local.diskFree();
     diskUsed = diskTotal - diskFree;
     diskUsedRatio = diskTotal > 0 ? (int) (100 * diskUsed / diskTotal) : 0;
     hrDiskTotal = FileUtils.byteCountToDisplaySize(diskTotal);
     hrDiskUsed = FileUtils.byteCountToDisplaySize(diskUsed);
     hrDiskFree = FileUtils.byteCountToDisplaySize(diskFree);
-    diskLevel = diskLevel(diskFree);
+    diskLevel = local.diskLevel();
+    if (isAdminRights()) {
+      hrPublishingNeed = FileUtils.byteCountToDisplaySize(local.publishingNeed());
+      largestResource = StringUtils.defaultString(local.largestResource());
+    }
 
-    // File permissions (config dir)
-    DataDir.DirStatus configDirStatus = dataDir.getDirectoryReadWriteStatus(dataDir.configDir());
-    readConfigDir = (configDirStatus == DataDir.DirStatus.READ_ONLY) || (configDirStatus == DataDir.DirStatus.READ_WRITE);
-    writeConfigDir = (configDirStatus == DataDir.DirStatus.READ_WRITE);
-
-    // File permissions (log dir)
-    DataDir.DirStatus logDirStatus = dataDir.getDirectoryReadWriteStatus(dataDir.loggingDir());
-    readLogDir = (logDirStatus == DataDir.DirStatus.READ_ONLY) || (logDirStatus == DataDir.DirStatus.READ_WRITE);
-    writeLogDir = (logDirStatus == DataDir.DirStatus.READ_WRITE);
-
-    // File permissions (tmp dir)
-    DataDir.DirStatus tmpDirStatus = dataDir.getDirectoryReadWriteStatus(dataDir.tmpRootDir());
-    readTmpDir = (tmpDirStatus == DataDir.DirStatus.READ_ONLY) || (tmpDirStatus == DataDir.DirStatus.READ_WRITE);
-    writeTmpDir = (tmpDirStatus == DataDir.DirStatus.READ_WRITE);
-
-    // File permissions (resources dir)
-    DataDir.DirStatus resourcesDirStatus = dataDir.getDirectoryReadWriteStatus(dataDir.resourcesDir());
-    readResourcesDir = (resourcesDirStatus == DataDir.DirStatus.READ_ONLY) || (resourcesDirStatus == DataDir.DirStatus.READ_WRITE);
-    writeResourcesDir = (resourcesDirStatus == DataDir.DirStatus.READ_WRITE);
-
-    // File permissions (sub resources dir)
-    DataDir.DirStatus subResourcesDirStatus = dataDir.getSubDirectoriesReadWriteStatus(dataDir.resourcesDir());
-    readSubResourcesDir = (subResourcesDirStatus == DataDir.DirStatus.READ_ONLY) || (subResourcesDirStatus == DataDir.DirStatus.READ_WRITE);
-    writeSubResourcesDir = (subResourcesDirStatus == DataDir.DirStatus.READ_WRITE);
+    // File permissions
+    readConfigDir = readable(local.config());
+    writeConfigDir = local.config() == DataDir.DirStatus.READ_WRITE;
+    readLogDir = readable(local.log());
+    writeLogDir = local.log() == DataDir.DirStatus.READ_WRITE;
+    readTmpDir = readable(local.tmp());
+    writeTmpDir = local.tmp() == DataDir.DirStatus.READ_WRITE;
+    readResourcesDir = readable(local.resources());
+    writeResourcesDir = local.resources() == DataDir.DirStatus.READ_WRITE;
+    readSubResourcesDir = readable(local.subResources());
+    writeSubResourcesDir = local.subResources() == DataDir.DirStatus.READ_WRITE;
 
     // resource folder names include private resources, and paths and the user are server details
     if (isAdminRights()) {
@@ -212,79 +180,15 @@ public class HealthAction extends BaseAction {
     iptMode = ((cfg != null) && (cfg.getRegistryType() != null)) ? cfg.getRegistryType().name() : "";
   }
 
-  /**
-   * @return "ok", "warn" (running low) or "bad" (almost full) for the usable space left on the data directory's disk
-   */
-  static String diskLevel(long freeBytes) {
-    if (freeBytes < DISK_FULL_BYTES) {
-      return DISK_FULL;
-    }
-    return freeBytes < DISK_LOW_BYTES ? DISK_LOW : DISK_OK;
-  }
-
-  /**
-   * The validator's answer about the IPT's public URL.
-   *
-   * @param checked   true when the validator ran; false when it didn't answer, failed or answered something unreadable
-   * @param reachable true when the validator could open the URL
-   */
-  record PublicAccessCheck(boolean checked, boolean reachable, String status, String message) {}
-
-  /**
-   * Reads a ws-validurl response. Only a readable answer from the validator says something about the IPT; a missing or
-   * failed answer means the check couldn't run.
-   */
-  static PublicAccessCheck readPublicAccessResponse(ExtendedResponse resp, String publicUrl) {
-    if (resp == null) {
-      return new PublicAccessCheck(false, false, "NO_RESPONSE", "No response from the URL validation service.");
-    }
-    if (resp.getStatusCode() != 200) {
-      return new PublicAccessCheck(false, false, String.valueOf(resp.getStatusCode()),
-          "The URL validation service returned HTTP " + resp.getStatusCode() + ".");
-    }
-
-    JsonObject json;
-    try {
-      json = JsonParser.parseString(resp.getContent()).getAsJsonObject();
-    } catch (RuntimeException e) {
-      return new PublicAccessCheck(false, false, "BAD_RESPONSE",
-          "The URL validation service returned a response that could not be read.");
-    }
-
-    JsonElement success = json.get("success");
-    if (success != null && !success.isJsonNull() && success.getAsBoolean()) {
-      return new PublicAccessCheck(true, true, "", "");
-    }
-
-    // the validator couldn't reach the IPT, or the IPT answered with an error status
-    String status = jsonString(json, "status");
-    String error = jsonString(json, "error");
-    if (error.isEmpty()) {
-      error = jsonString(json, "message");
-    }
-    String message;
-    if ("NonPublicAddress".equals(error)) {
-      // validurl-ws refuses localhost and private network addresses
-      message = publicUrl + " points to this computer or a private network, which the internet cannot reach.";
-    } else if (!status.isEmpty()) {
-      message = "IPT responded to the validator with HTTP " + status + ".";
-    } else if (!error.isEmpty()) {
-      message = error;
-    } else {
-      message = "The validator could not reach " + publicUrl
-          + ". Check that the base URL is correct and reachable from the public internet.";
-    }
-    return new PublicAccessCheck(true, false, status, message);
-  }
-
-  private static String jsonString(JsonObject json, String key) {
-    JsonElement el = json.get(key);
-    return (el != null && !el.isJsonNull()) ? el.getAsString() : "";
+  private static boolean readable(DataDir.DirStatus status) {
+    return status == DataDir.DirStatus.READ_ONLY || status == DataDir.DirStatus.READ_WRITE;
   }
 
   @Override
   public String execute() {
+    load();
     status = new Status();
+    status.setLevel(healthService.getLevel().css());
     status.setNetworkRegistryURL(this.networkRegistryURL);
     status.setNetworkRegistry(this.networkRegistry);
     status.setNetworkRepositoryURL(this.networkRepositoryURL);
@@ -292,12 +196,16 @@ public class HealthAction extends BaseAction {
     status.setNetworkPublicAccessURL(this.networkPublicAccessURL);
     status.setNetworkPublicAccess(this.networkPublicAccess);
     status.setNetworkPublicAccessChecked(this.networkPublicAccessChecked);
-    status.setNetworkPublicAccessMessage(this.networkPublicAccessMessage);
-    status.setNetworkPublicAccessStatus(this.networkPublicAccessStatus);
-    status.setDiskTotal(this.diskTotal);
-    status.setDiskUsed(this.diskUsed);
-    status.setDiskFree(this.diskFree);
-    status.setDiskUsedRatio(this.diskUsedRatio);
+    status.setDiskLevel(this.diskLevel);
+    // the health page shows these to admins only; left out of the JSON for others
+    if (isAdminRights()) {
+      status.setNetworkPublicAccessMessage(this.networkPublicAccessMessage);
+      status.setNetworkPublicAccessStatus(this.networkPublicAccessStatus);
+      status.setDiskTotal(this.diskTotal);
+      status.setDiskUsed(this.diskUsed);
+      status.setDiskFree(this.diskFree);
+      status.setDiskUsedRatio(this.diskUsedRatio);
+    }
     status.setReadConfigDir(this.readConfigDir);
     status.setWriteConfigDir(this.writeConfigDir);
     status.setReadLogDir(this.readLogDir);
@@ -317,6 +225,8 @@ public class HealthAction extends BaseAction {
   }
 
   public static class Status {
+    // "ok", "warn" or "bad": the health icon's state for admins
+    private String level;
     private String networkRegistryURL;
     private boolean networkRegistry;
     private String networkRepositoryURL;
@@ -326,10 +236,13 @@ public class HealthAction extends BaseAction {
     private boolean networkPublicAccessChecked;
     private String networkPublicAccessMessage;
     private String networkPublicAccessStatus;
-    private long diskTotal;
-    private long diskUsed;
-    private long diskFree;
-    private int diskUsedRatio;
+    // "ok", "warn" (room to publish the largest resource only once more) or "bad"
+    private String diskLevel;
+    // null (left out) for anyone but an admin
+    private Long diskTotal;
+    private Long diskUsed;
+    private Long diskFree;
+    private Integer diskUsedRatio;
     private boolean readConfigDir;
     private boolean writeConfigDir;
     private boolean readLogDir;
@@ -340,6 +253,22 @@ public class HealthAction extends BaseAction {
     private boolean writeResourcesDir;
     private boolean readSubResourcesDir;
     private boolean writeSubResourcesDir;
+
+    public String getLevel() {
+      return level;
+    }
+
+    public void setLevel(String level) {
+      this.level = level;
+    }
+
+    public String getDiskLevel() {
+      return diskLevel;
+    }
+
+    public void setDiskLevel(String diskLevel) {
+      this.diskLevel = diskLevel;
+    }
 
     public String getNetworkRegistryURL() {
       return networkRegistryURL;
@@ -413,35 +342,35 @@ public class HealthAction extends BaseAction {
       this.networkPublicAccessStatus = networkPublicAccessStatus;
     }
 
-    public long getDiskTotal() {
+    public Long getDiskTotal() {
       return diskTotal;
     }
 
-    public void setDiskTotal(long diskTotal) {
+    public void setDiskTotal(Long diskTotal) {
       this.diskTotal = diskTotal;
     }
 
-    public long getDiskUsed() {
+    public Long getDiskUsed() {
       return diskUsed;
     }
 
-    public void setDiskUsed(long diskUsed) {
+    public void setDiskUsed(Long diskUsed) {
       this.diskUsed = diskUsed;
     }
 
-    public long getDiskFree() {
+    public Long getDiskFree() {
       return diskFree;
     }
 
-    public void setDiskFree(long diskFree) {
+    public void setDiskFree(Long diskFree) {
       this.diskFree = diskFree;
     }
 
-    public int getDiskUsedRatio() {
+    public Integer getDiskUsedRatio() {
       return diskUsedRatio;
     }
 
-    public void setDiskUsedRatio(int diskUsedRatio) {
+    public void setDiskUsedRatio(Integer diskUsedRatio) {
       this.diskUsedRatio = diskUsedRatio;
     }
 

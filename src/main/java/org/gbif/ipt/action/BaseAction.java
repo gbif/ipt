@@ -20,6 +20,7 @@ import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.IptColorScheme;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.User;
+import org.gbif.ipt.service.admin.HealthService;
 import org.gbif.ipt.service.admin.RegistrationManager;
 import org.gbif.ipt.struts2.CsrfInterceptor;
 import org.gbif.ipt.struts2.SimpleTextProvider;
@@ -52,6 +53,7 @@ import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.Preparable;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
+import org.apache.struts2.json.annotations.JSON;
 import org.apache.struts2.util.ValueStack;
 
 import lombok.Getter;
@@ -95,6 +97,8 @@ public class BaseAction extends ActionSupport
   @Getter
   protected AppConfig cfg;
   protected RegistrationManager registrationManager;
+  // for the health icon in the menu
+  private HealthService healthService;
 
   @Inject
   public BaseAction(
@@ -403,6 +407,26 @@ public class BaseAction extends ActionSupport
   public boolean isAdminRights() {
     User user = getCurrentUser();
     return user != null && user.hasAdminRights();
+  }
+
+  public void setHealthService(HealthService healthService) {
+    this.healthService = healthService;
+  }
+
+  /**
+   * @return "ok", "warn" or "bad" for the health icon in the menu; admins only, always "ok" for others
+   */
+  @JSON(serialize = false)
+  public String getHealthLevel() {
+    if (healthService == null || !isAdminRights()) {
+      return HealthService.Level.OK.css();
+    }
+    try {
+      return healthService.getLevel().css();
+    } catch (RuntimeException e) {
+      LOG.error("Could not get the health level for the menu", e);
+      return HealthService.Level.OK.css();
+    }
   }
 
   protected boolean isHttpPost() {

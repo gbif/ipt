@@ -97,17 +97,18 @@
                 </h1>
 
                 <div class="ov-meta">
-                    <span><@s.text name="portal.health.checked"><@s.param>${.now?string("yyyy-MM-dd HH:mm z")}</@s.param></@s.text></span>
+                    <#-- the time of the GBIF and public access checks; the data directory is checked on each view -->
+                    <span><@s.text name="portal.health.checked"><@s.param>${(checkedAt!.now)?string("yyyy-MM-dd HH:mm z")}</@s.param></@s.text></span>
                     <#if !issues?has_content>
                         <span>·</span>
                         <span class="hl-meta-ok"><@icon name="check_circle"/> <@s.text name="portal.health.allPassed"/></span>
                     </#if>
                 </div>
             </div>
-            <#-- each view runs the remote checks again: no button inviting visitors to repeat them -->
-            <#if loggedIn>
+            <#-- views reuse the checks of the last few minutes; admins can run them again now (POST, it calls GBIF) -->
+            <#if adminRights>
                 <div class="ov-acts">
-                    <a href="${baseURL}/health.do" class="btn btn-sm btn-outline-gbif-primary top-button">
+                    <a href="${baseURL}/health-check.do" data-post class="btn btn-sm btn-outline-gbif-primary top-button">
                         <@icon name="autorenew"/> <@s.text name="portal.health.checkAgain"/>
                     </a>
                 </div>
@@ -166,6 +167,10 @@
                         <@factRow labelKey="portal.health.disk.usage.total.size">${hrDiskTotal}</@factRow>
                         <@factRow labelKey="portal.health.disk.usage.used.size">${hrDiskUsed}</@factRow>
                         <@factRow labelKey="portal.health.disk.usage.free.size">${hrDiskFree}</@factRow>
+                        <#-- the free space level is measured against this -->
+                        <#if largestResource?has_content>
+                            <@factRow labelKey="portal.health.disk.publishingNeed">${hrPublishingNeed} (<a href="${baseURL}/manage/resource.do?r=${largestResource?url}" class="resource-table-link">${largestResource}</a>)</@factRow>
+                        </#if>
                     </div>
                 </section>
             </#if>

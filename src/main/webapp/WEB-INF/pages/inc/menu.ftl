@@ -87,10 +87,13 @@
                 <div class="d-xl-flex align-content-between">
                     <!-- Health -->
                     <div class="navbar-nav nav-item-border-bottom">
-                      <a href="${baseURL}/health.do" class="nav-link position-relative health-link" title="[@s.text name="portal.health.title"/]">
+                      [#-- admins only: a dot when a check failed, red if the IPT can't work properly, orange otherwise --]
+                      [#assign healthLevel = adminRights?then((action.healthLevel)!"ok", "ok")]
+                      <a href="${baseURL}/health.do" class="nav-link position-relative health-link[#if healthLevel != "ok"] health-${healthLevel}[/#if]" title="[@s.text name="portal.health.title"/][#if healthLevel == "bad"]: [@s.text name="portal.health.problems"/][#elseif healthLevel == "warn"]: [@s.text name="portal.health.warnings"/][/#if]">
                           <svg class="gbif-heartbeat-icon [#if currentMenu=='health']active[/#if]" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-356 246.5 90 77.6"  xml:space="preserve">
                               <path d="M-277.2,286.2h-22.9l-5,11l-10.1-43.8l-10.9,32.8h-18.6c-1.8,0-3.2,1.4-3.2,3.2c0,1.8,1.4,3.2,3.2,3.2h23.3l5.2-15.5l9.2,40l11.1-24.5h18.7c1.8,0,3.2-1.4,3.2-3.2C-274,287.7-275.4,286.2-277.2,286.2z"/>
                           </svg>
+                          [#if healthLevel == "bad"]<span class="visually-hidden">[@s.text name="portal.health.problems"/]</span>[#elseif healthLevel == "warn"]<span class="visually-hidden">[@s.text name="portal.health.warnings"/]</span>[/#if]
                       </a>
                     </div>
 

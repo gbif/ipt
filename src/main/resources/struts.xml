@@ -287,6 +287,11 @@
       <result>/WEB-INF/pages/health.ftl</result>
     </action>
 
+    <!-- "Check again": admins run the remote checks now (POST only), then see the page -->
+    <action name="health-check" class="org.gbif.ipt.action.HealthAction" method="check">
+      <result type="redirect">${baseURL}/health.do</result>
+    </action>
+
     <action name="rss" class="resourceAction" method="rss">
       <result name="success" type="freemarker">
         <param name="location">/WEB-INF/pages/portal/rss.ftl</param>
@@ -330,9 +335,11 @@
       </result>
     </action>
 
+    <!-- disk sizes and the validator's answer only for a logged-in admin, like on the health page -->
     <action name="health" class="org.gbif.ipt.action.HealthAction">
       <result name="success" type="json">
         <param name="noCache">true</param>
+        <param name="excludeNullProperties">true</param>
       </result>
     </action>
   </package>
