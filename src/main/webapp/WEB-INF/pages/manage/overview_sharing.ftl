@@ -158,15 +158,12 @@
                     <@s.text name="manage.overview.networks.title"/>
                 </span>
                 <span>
-                    <#assign networks = resourceNetworks>
-                    <#if networks?has_content>
-                        <#list networks as n>
-                            <span class="ov-pill grey"><a href="${cfg.portalUrl}/network/${n.key!}" class="ov-name">${n.title!n.key!""}</a>
-                                <a data-post href="resource-deleteNetwork.do?r=${resource.shortname}&id=${n.key!}" class="text-muted" title="<@s.text name='button.delete'/>"><@icon name="close"/></a></span>
-                        </#list>
-                    <#else>
-                        <@s.text name="manage.overview.metadata.none"/>
-                    </#if>
+                    <#-- filled from /manager-api/networks after the page has loaded see overview.ftl -->
+                    <span id="resource-networks" class="text-muted"><@s.text name="manage.overview.networks.loading"/></span>
+                    <template id="resource-network-tpl">
+                        <span class="ov-pill grey"><a href="#" class="ov-name"></a>
+                            <a data-post href="#" class="text-muted" title="<@s.text name='button.delete'/>"><@icon name="close"/></a></span>
+                    </template>
                     · <a id="add-network-button" href="#"><@s.text name="button.add"/></a>
                 </span>
             </div>

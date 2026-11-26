@@ -16,7 +16,6 @@ package org.gbif.ipt.action.manage;
 import org.gbif.api.model.common.DOI;
 import org.gbif.api.model.common.DoiData;
 import org.gbif.api.model.common.DoiStatus;
-import org.gbif.api.model.registry.Network;
 import org.gbif.api.vocabulary.DatasetType;
 import org.gbif.doi.metadata.datacite.DataCiteMetadata;
 import org.gbif.doi.service.DoiException;
@@ -161,8 +160,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
   @Getter
   private List<User> potentialManagers;
-  private List<KeyNamePair> allNetworks = new ArrayList<>();
-  private List<KeyNamePair> potentialNetworks = new ArrayList<>();
   @Getter
   private List<Extension> potentialCores;
   @Getter
@@ -213,8 +210,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
   private boolean publish = false;
   @Getter
   private boolean validateEml = false;
-  @Getter
-  private boolean networksAvailable = true;
   @Getter
   private boolean outdatedExtensions = false;
   @Getter
@@ -354,14 +349,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     try {
       registryManager.addResourceToNetwork(resource, id);
       saveResource();
-      Optional<KeyNamePair> keyNameNetwork = getAllNetworks().stream().filter(n -> n.getKey().equals(id)).findFirst();
-      if (keyNameNetwork.isPresent()) {
-        addActionMessage(getAlertText("manage.overview.networks.add.success", new String[]{keyNameNetwork.get().getName()}));
-      } else {
-        addActionMessage(getAlertText("manage.overview.networks.add.success", new String[]{id}));
-      }
-
-      potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), id));
+      addActionMessage(getAlertText("manage.overview.networks.add.success", new String[]{networkName(id)}));
     } catch (IllegalArgumentException e) {
       addActionError(getText("manage.overview.networks.add.failed"));
     }
@@ -815,16 +803,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       registryManager.removeResourceFromNetwork(resource, id);
       saveResource();
 
-      Optional<KeyNamePair> keyNameNetwork = getAllNetworks().stream().filter(n -> n.getKey().equals(id)).findFirst();
-      if (keyNameNetwork.isPresent()) {
-        addActionMessage(getAlertText("manage.overview.networks.delete.success", new String[]{keyNameNetwork.get().getName()}));
-      } else {
-        addActionMessage(getAlertText("manage.overview.networks.delete.success", new String[]{id}));
-      }
-
-      Optional<KeyNamePair> potentialNetwork =
-          getAllNetworks().stream().filter(n -> Objects.equals(n.getKey(), id)).findFirst();
-      potentialNetwork.ifPresent(potentialNetworks::add);
+      addActionMessage(getAlertText("manage.overview.networks.delete.success", new String[]{networkName(id)}));
     } catch (IllegalArgumentException e) {
       addActionError(getText("manage.overview.networks.delete.failed"));
     }
@@ -918,12 +897,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     return missingRegistrationMetadata;
   }
 
-  public List<Network> getResourceNetworks() {
+  /**
+   * The network's name for the add/remove message, or its key when the registry can't list the networks.
+   * The overview page itself loads networks from the registry with NetworksAction, so a slow registry doesn't hold
+   * up the page.
+   */
+  private String networkName(String networkKey) {
     try {
-      return registryManager.getResourceNetworks(resource);
+      return registryManager.getNetworksBrief().stream()
+          .filter(n -> Objects.equals(n.getKey(), networkKey))
+          .map(KeyNamePair::getName)
+          .findFirst()
+          .orElse(networkKey);
     } catch (RegistryException e) {
-      LOG.error("Failed to display resource's networks");
-      return Collections.emptyList();
+      LOG.warn("Couldn't load networks from the registry to name network {}", networkKey);
+      return networkKey;
     }
   }
 
@@ -2280,37 +2268,6 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
 
     return false;
-  }
-
-  // Lazy getter
-  public List<KeyNamePair> getAllNetworks() {
-    if (allNetworks == null || allNetworks.isEmpty()) {
-      try {
-        allNetworks = registryManager.getNetworksBrief();
-        networksAvailable = true;
-      } catch (RegistryException e) {
-        String msg = RegistryException.logRegistryException(e, this);
-        addActionWarning(getAlertText(
-            "manage.overview.networks.registryAccessUrl",
-            new String[]{cfg.getRegistryUrl()}
-        ) + msg);
-        networksAvailable = false;
-        allNetworks = Collections.emptyList();
-      }
-    }
-    return allNetworks;
-  }
-
-  // Lazy getter
-  public List<KeyNamePair> getPotentialNetworks() {
-    if (potentialNetworks == null || potentialNetworks.isEmpty()) {
-      List<KeyNamePair> networksCopy = new ArrayList<>(getAllNetworks());
-      for (Network net : getResourceNetworks()) {
-        networksCopy.removeIf(n -> Objects.equals(net.getKey().toString(), n.getKey()));
-      }
-      potentialNetworks = networksCopy;
-    }
-    return potentialNetworks;
   }
 
   @StrutsParameter

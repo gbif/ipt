@@ -44,6 +44,14 @@
       </result>
     </action>
 
+    <!-- the GBIF networks of a registered resource, fetched by the overview page after it has loaded -->
+    <action name="networks" class="org.gbif.ipt.action.manage.NetworksAction">
+      <result name="success" type="json">
+        <param name="noCache">true</param>
+        <param name="root">networks</param>
+      </result>
+    </action>
+
     <action name="installable" class="org.gbif.ipt.action.manage.InstallableAction">
       <result name="success" type="json">
         <param name="noCache">true</param>

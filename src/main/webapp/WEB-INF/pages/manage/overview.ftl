@@ -825,9 +825,89 @@
 
         $("#show-visibility-disabled-modal").on('click', showVisibilityDisabledModal);
 
+        // networks come from the registry, which can be slow: fetched after the page has loaded, not while it is
+        // built. The row in the sharing section lists the resource's networks, the dialog the others.
+        var networksUrl = '${baseURL}/manager-api/networks?r=${resource.shortname?url}';
+
+        function fetchNetworks(all) {
+            return fetch(networksUrl + (all ? '&all=true' : ''), {headers: {'Accept': 'application/json'}})
+                .then(function (response) {
+                    return response.ok ? response.json() : {available: false};
+                })
+                .catch(function () {
+                    return {available: false};
+                });
+        }
+
+        function showResourceNetworks(data) {
+            var row = document.getElementById('resource-networks');
+            var tpl = document.getElementById('resource-network-tpl');
+            if (!row || !tpl) {
+                return;
+            }
+            row.textContent = '';
+            row.classList.remove('text-muted');
+            if (!data.available) {
+                row.textContent = '${action.getText("manage.overview.networks.loadFailed")?js_string?no_esc}';
+                return;
+            }
+            var list = data.resourceNetworks || [];
+            if (list.length === 0) {
+                row.textContent = '${action.getText("manage.overview.metadata.none")?js_string?no_esc}';
+                return;
+            }
+            list.forEach(function (n) {
+                var pill = tpl.content.firstElementChild.cloneNode(true);
+                var links = pill.querySelectorAll('a');
+                links[0].href = '${cfg.portalUrl?js_string?no_esc}/network/' + encodeURIComponent(n.key);
+                links[0].textContent = n.name || n.key;
+                links[1].href = 'resource-deleteNetwork.do?r=${resource.shortname?url}&id=' + encodeURIComponent(n.key);
+                row.appendChild(pill);
+                row.appendChild(document.createTextNode(' '));
+            });
+        }
+
+        if (document.getElementById('resource-networks')) {
+            fetchNetworks(false).then(showResourceNetworks);
+        }
+
+        // the dialog's list is fetched once; a failed fetch is tried again when the dialog is next opened
+        var networksLoaded = false;
+        var networksLoading = false;
+
+        function loadPotentialNetworks() {
+            if (networksLoaded || networksLoading || !document.getElementById('networks-select')) {
+                return;
+            }
+            networksLoading = true;
+            $("#networks-loading").show();
+            $("#networks-unavailable, #networks-empty, #networks-select").hide();
+            fetchNetworks(true).then(function (data) {
+                networksLoading = false;
+                $("#networks-loading").hide();
+                if (!data.available) {
+                    $("#networks-unavailable").show();
+                    return;
+                }
+                networksLoaded = true;
+                showResourceNetworks(data);
+                var list = data.potentialNetworks || [];
+                if (list.length === 0) {
+                    $("#networks-empty").show();
+                    return;
+                }
+                var select = $("#network");
+                list.forEach(function (n) {
+                    select.append(new Option(n.name || n.key, n.key));
+                });
+                $("#networks-select").show();
+            });
+        }
+
         function showAddNetworkModal() {
             var dialogWindow = $("#networks-modal");
             dialogWindow.modal('show');
+            loadPotentialNetworks();
         }
 
         $("#add-network-button").on('click', function (e) {
@@ -2384,23 +2464,22 @@
         <div class="modal-body">
             <#if resource.status == "DELETED">
                 <@s.text name="manage.overview.networks.deleted"/>
-            <#elseif !networksAvailable>
-                <@s.text name="manage.overview.networks.registryAccess"/>
-            <#elseif (potentialNetworks?size==0)>
-                <@s.text name="manage.overview.networks.select.empty"/>
             <#elseif resource.key?has_content>
-                <div id="obis-network-validation-notification" class="callout callout-info text-smaller mt-0" style="display: none;">
-                    <@s.text name="manage.overview.networks.obis.notification"/>
+                <#-- filled from /manager-api/networks when the dialog opens -->
+                <p id="networks-loading" class="text-muted mb-0"><@s.text name="manage.overview.networks.loading"/></p>
+                <p id="networks-unavailable" class="mb-0" style="display: none;"><@s.text name="manage.overview.networks.registryAccess"/></p>
+                <p id="networks-empty" class="mb-0" style="display: none;"><@s.text name="manage.overview.networks.select.empty"/></p>
+                <div id="networks-select" style="display: none;">
+                    <div id="obis-network-validation-notification" class="callout callout-info text-smaller mt-0" style="display: none;">
+                        <@s.text name="manage.overview.networks.obis.notification"/>
+                    </div>
+                    <form id="addNetworkForm" action='resource-addNetwork.do' method='post'>
+                        <input name="r" type="hidden" value="${resource.shortname}"/>
+                        <select name="id" class="form-select form-select-sm" id="network" size="1" aria-label="<@s.text name='manage.overview.networks.select'/>">
+                            <option value="" disabled selected><@s.text name='manage.overview.networks.select'/></option>
+                        </select>
+                    </form>
                 </div>
-                <form id="addNetworkForm" action='resource-addNetwork.do' method='post'>
-                    <input name="r" type="hidden" value="${resource.shortname}"/>
-                    <select name="id" class="form-select form-select-sm" id="network" size="1" aria-label="<@s.text name='manage.overview.networks.select'/>">
-                        <option value="" disabled selected><@s.text name='manage.overview.networks.select'/></option>
-                        <#list potentialNetworks?sort_by("name") as n>
-                            <option value="${n.key}">${n.name}</option>
-                        </#list>
-                    </select>
-                </form>
             <#else>
                 <@s.text name="manage.overview.networks.not.registered"/>
             </#if>
