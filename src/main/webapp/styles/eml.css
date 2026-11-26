@@ -5,23 +5,20 @@
 @media (min-width: 768px) {
     .bd-toc:has(> nav.eml-side) { height: auto; max-height: calc(100vh - 7rem); align-self: start; }
 }
-.bd-toc nav.eml-side { font-size: 0.8125rem; }
+/* "On this page" uses the shared links of the other pages (main.css .sidebar-navigation-link); the pages list is plainer */
 .eml-side ul { padding-left: 0; margin: 0; list-style: none; }
-.eml-side-title { font-weight: 600; color: #4e565f; margin-bottom: 8px; font-size: 0.8125rem; }
-.bd-toc nav.eml-side #eml-toc a { display: block; padding: 4px 8px; border-left: 2px solid transparent; color: #6c757d !important; text-decoration: none; line-height: 1.35; font-weight: normal; }
-.bd-toc nav.eml-side #eml-toc a:hover { color: #212529 !important; }
-.bd-toc nav.eml-side #eml-toc a.active { border-left-color: rgb(var(--color-gbif-primary)); color: #212529 !important; font-weight: normal; }
+.eml-side-title { font-weight: 600; color: #4e565f; margin-bottom: 8px; font-size: 0.875rem; }
 #eml-toc:not([hidden]) + #eml-other { margin-top: 20px; padding-top: 12px; border-top: 1px solid #dee2e6; }
-#eml-other .eml-side-title { padding-left: 8px; margin-bottom: 4px; }
-.bd-toc nav.eml-side #eml-other a { display: block; padding: 2px 8px; color: #6c757d !important; text-decoration: none; line-height: 1.35; }
+#eml-other .eml-side-title { margin-bottom: 4px; }
+.bd-toc nav.eml-side #eml-other a { display: block; padding: 4px 0; font-size: 0.875rem; color: #6c757d !important; text-decoration: none; line-height: 1.35; }
 .bd-toc nav.eml-side #eml-other a:hover { color: #212529 !important; }
 .bd-toc nav.eml-side #eml-other a.current { color: #212529 !important; font-weight: 600; }
 
 /* Save and Back under the lists */
-.eml-side-save { display: flex; gap: 6px; margin-top: 16px; padding: 12px 8px 0; border-top: 1px solid #dee2e6; }
+.eml-side-save { display: flex; gap: 6px; margin-top: 16px; padding: 12px 0 0; border-top: 1px solid #dee2e6; }
 
-/* the parts "On this page" jumps to stop below the fixed navbar */
-.bd-content [data-toc] { scroll-margin-top: 80px; }
+/* the parts "On this page" jumps to stop below the fixed navbar, the heading as far below it as on the overview page */
+.bd-content [data-toc] { scroll-margin-top: 66px; }
 
 /* save bar, shown once something has changed (inc/footer.ftl), as on the mapping page */
 .eml-savebar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #dee2e6; box-shadow: 0 -4px 14px rgba(0, 0, 0, .06); transform: translateY(110%); transition: transform .2s; z-index: 1020; }
