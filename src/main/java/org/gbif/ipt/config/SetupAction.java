@@ -79,7 +79,9 @@ public class SetupAction extends BaseAction {
   @Getter
   private String password2;
   protected String modeSelected;
+  // the base URL as typed in the public URL step; pages load their styles and links from getBaseURL() instead
   protected String baseURL;
+  private String detectedBaseUrl;
   @Getter
   protected String proxy;
   // can't pass a literal boolean to ftl, using int instead...
@@ -121,32 +123,44 @@ public class SetupAction extends BaseAction {
     return SUCCESS;
   }
 
+  /**
+   * The address the setup pages load their styles and icons from and redirect to: the configured base URL, else one
+   * detected from the request. Never the typed one, which may be wrong or not reachable yet (see getBaseUrlInput).
+   */
   @Override
   public String getBaseURL() {
-    if (StringUtils.isBlank(baseURL)) {
-      // try to detect default values if not yet configured
-      if (StringUtils.trimToNull(cfg.getBaseUrl()) == null) {
-        Enumeration<String> headerNames = req.getHeaderNames();
-        if (headerNames != null) {
-          LOG.debug("Dumping request headers used to detect initial baseURL");
-          while (headerNames.hasMoreElements()) {
-            String header = headerNames.nextElement();
-            LOG.debug("» {}: {}", header, req.getHeader(header));
-          }
-        }
+    if (StringUtils.trimToNull(cfg.getBaseUrl()) != null) {
+      return cfg.getBaseUrl();
+    }
+    if (detectedBaseUrl == null) {
+      detectedBaseUrl = detectBaseUrl();
+    }
+    return detectedBaseUrl;
+  }
 
-        // Try to guess the current baseURL on the running server from the context
-        baseURL = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
-        if ("https".equalsIgnoreCase(req.getHeader("X-Forwarded-Proto"))) {
-          baseURL = baseURL.replaceFirst("^http://", "https://");
-        }
+  /** The base URL field's value in the public URL step: what was typed, else the detected one. */
+  public String getBaseUrlInput() {
+    return StringUtils.isBlank(baseURL) ? getBaseURL() : baseURL;
+  }
 
-        LOG.info("Auto-Detected IPT BaseURL={}", baseURL);
-      } else {
-        baseURL = cfg.getBaseUrl();
+  /** Guesses the base URL of the running server from the request. */
+  private String detectBaseUrl() {
+    Enumeration<String> headerNames = req.getHeaderNames();
+    if (headerNames != null) {
+      LOG.debug("Dumping request headers used to detect initial baseURL");
+      while (headerNames.hasMoreElements()) {
+        String header = headerNames.nextElement();
+        LOG.debug("» {}: {}", header, req.getHeader(header));
       }
     }
-    return baseURL;
+
+    String detected = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
+    if ("https".equalsIgnoreCase(req.getHeader("X-Forwarded-Proto"))) {
+      detected = detected.replaceFirst("^http://", "https://");
+    }
+
+    LOG.info("Auto-Detected IPT BaseURL={}", detected);
+    return detected;
   }
 
   @StrutsParameter(depth = 2)
@@ -168,11 +182,6 @@ public class SetupAction extends BaseAction {
     this.baseURL = baseUrlVerbatim;
   }
 
-  /** The path typed in the data directory step, shown again when it has an error. */
-  public String getDataDirPath() {
-    return dataDirPath;
-  }
-
   @StrutsParameter
   public void setDataDirPath(String dataDirPath) {
     this.dataDirPath = dataDirPath;
@@ -191,11 +200,6 @@ public class SetupAction extends BaseAction {
   @StrutsParameter
   public void setProxy(String proxy) {
     this.proxy = proxy;
-  }
-
-  /** The proxy typed in the public URL step, shown again when the step has an error. */
-  public String getProxy() {
-    return proxy;
   }
 
   @StrutsParameter
@@ -361,6 +365,10 @@ public class SetupAction extends BaseAction {
 
     // form has been submitted
     if (isHttpPost()) {
+      // the base URL is set in memory before the proxy is checked and the config saved. Once set, this step is skipped,
+      // so on any failure it's undone, or the corrected form would never be saved
+      String previousBaseUrl = cfg.getProperty(AppConfig.BASEURL);
+      boolean saved = false;
       try {
         URL burl = null;
         if (ignoreUserValidation == 0) {
@@ -374,8 +382,8 @@ public class SetupAction extends BaseAction {
           if (registryType.name().equalsIgnoreCase(MODE_PRODUCTION) && !cfg.devMode()) {
             if (URLUtils.isLocalhost(burl)) {
               addFieldError("baseURL", getText("admin.config.baseUrl.invalidBaseURL"));
-              // get the correct baseURL from context
-              baseURL = req.getRequestURL().toString().replaceAll(req.getServletPath(), "");
+              // suggest the address detected from the request instead
+              baseURL = getBaseURL();
               return INPUT;
             } else if (URLUtils.isHostName(burl)) {
               // warn the base URL is same as machine name so user ensures it is visible on the Internet
@@ -399,6 +407,7 @@ public class SetupAction extends BaseAction {
 
         // save config
         configManager.saveConfig();
+        saved = true;
 
         addActionMessage(getText("admin.config.setup2.success"));
         addActionMessage(getText("admin.config.setup2.next"));
@@ -416,6 +425,10 @@ public class SetupAction extends BaseAction {
         String msg = RegistryException.logRegistryException(e, this);
         LOG.warn("Failed to contact the GBIF Registry ({}): {}", msg, e.getMessage(), e);
         addActionError(msg);
+      } finally {
+        if (!saved) {
+          configManager.setConfigProperty(AppConfig.BASEURL, previousBaseUrl);
+        }
       }
     }
 
