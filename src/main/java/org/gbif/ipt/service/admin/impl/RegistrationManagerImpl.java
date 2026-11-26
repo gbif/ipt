@@ -529,32 +529,30 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
-  public void associateWithNetwork(String networkKey, String networkName) {
-    try {
-      Network network = registration.getNetwork();
-      if (network != null) {
-        network.setKey(networkKey);
-        network.setName(networkName);
-      } else {
-        Network n = new Network();
-        n.setName(networkName);
-        n.setKey(networkKey);
-        registration.setNetwork(n);
-      }
-
-      save();
-    } catch (IOException e) {
-      LOG.error("Failed to associate with the network");
-    }
+  public void associateWithNetwork(String networkKey, String networkName) throws IOException {
+    Network network = new Network();
+    network.setKey(networkKey);
+    network.setName(networkName);
+    setNetworkAndSave(network);
   }
 
   @Override
-  public void removeAssociationWithNetwork() {
+  public void removeAssociationWithNetwork() throws IOException {
+    setNetworkAndSave(null);
+  }
+
+  /**
+   * Sets the default network and saves; if saving fails the previous network is put back, so the page doesn't show a
+   * network that isn't stored.
+   */
+  private synchronized void setNetworkAndSave(Network network) throws IOException {
+    Network previous = registration.getNetwork();
+    registration.setNetwork(network);
     try {
-      registration.setNetwork(null);
       save();
     } catch (IOException e) {
-      LOG.error("Failed to remove association with the network");
+      registration.setNetwork(previous);
+      throw e;
     }
   }
 

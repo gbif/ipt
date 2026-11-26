@@ -147,12 +147,16 @@ public interface RegistrationManager {
   void updateAssociatedOrganisationsMetadata() throws IOException;
 
   /**
-   * Associate IPT with the network.
+   * Associate IPT with the network and save the registration.
+   *
+   * @throws IOException if the registration could not be saved
    */
-  void associateWithNetwork(String networkKey, String networkName);
+  void associateWithNetwork(String networkKey, String networkName) throws IOException;
 
   /**
-   * Remove association with the network.
+   * Remove association with the network and save the registration.
+   *
+   * @throws IOException if the registration could not be saved
    */
-  void removeAssociationWithNetwork();
+  void removeAssociationWithNetwork() throws IOException;
 }

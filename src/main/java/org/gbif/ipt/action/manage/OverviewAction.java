@@ -350,7 +350,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       registryManager.addResourceToNetwork(resource, id);
       saveResource();
       addActionMessage(getAlertText("manage.overview.networks.add.success", new String[]{networkName(id)}));
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException | RegistryException e) {
+      LOG.error("Failed to add resource {} to network {}", resource.getShortname(), id, e);
       addActionError(getText("manage.overview.networks.add.failed"));
     }
     return execute();
@@ -804,7 +805,8 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       saveResource();
 
       addActionMessage(getAlertText("manage.overview.networks.delete.success", new String[]{networkName(id)}));
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException | RegistryException e) {
+      LOG.error("Failed to remove resource {} from network {}", resource.getShortname(), id, e);
       addActionError(getText("manage.overview.networks.delete.failed"));
     }
 
@@ -1674,7 +1676,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
             // associate resource with the default IPT network
             org.gbif.ipt.model.Network defaultIptNetwork = registrationManager.getNetwork();
             if (defaultIptNetwork != null && defaultIptNetwork.getKey() != null) {
-              registryManager.addResourceToNetwork(resource, defaultIptNetwork.getKey().toString());
+              // the resource is registered either way: a network failure is only a warning
+              try {
+                registryManager.addResourceToNetwork(resource, defaultIptNetwork.getKey().toString());
+              } catch (RegistryException e) {
+                LOG.error("Failed to add resource {} to the default network", resource.getShortname(), e);
+                addActionWarning(getText("manage.overview.networks.add.failed"));
+              }
             }
           } catch (InvalidConfigException e) {
             if (e.getType() == InvalidConfigException.TYPE.INVALID_RESOURCE_MIGRATION) {

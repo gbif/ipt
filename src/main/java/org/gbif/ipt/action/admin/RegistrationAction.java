@@ -15,6 +15,7 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Ipt;
 import org.gbif.ipt.model.KeyNamePair;
 import org.gbif.ipt.model.Network;
@@ -44,8 +45,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -71,6 +71,7 @@ public class RegistrationAction extends POSTAction {
   private static final String SESSION_ORGANISATIONS_LAST_UPDATED_KEY = "organisations.lastUpdated";
   private static final String SESSION_NETWORKS_KEY = "networks";
   private static final String SESSION_NETWORKS_LAST_UPDATED_KEY = "networks.lastUpdated";
+  private static final int MAX_FAILED_NAMES = 10;
 
   private final RegistryManager registryManager;
   private final ResourceManager resourceManager;
@@ -204,7 +205,7 @@ public class RegistrationAction extends POSTAction {
       } catch (RegistryException e) {
         LOG.error("Failed to load networks", e);
         String msg = RegistryException.logRegistryException(e, this);
-        addActionWarning(getAlertText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()}) + msg);
+        addActionWarning(getAlertText("admin.networks.couldnt.load", cfg.getRegistryUrl()) + msg);
         networks = new HashMap<>();
       }
     }
@@ -311,7 +312,7 @@ public class RegistrationAction extends POSTAction {
       LOG.error(msg);
 
       // add error message that explains the root cause of the Registry error
-      msg = getAlertText("admin.registration.failed.update", new String[]{e.getMessage()});
+      msg = getAlertText("admin.registration.failed.update", e.getMessage());
       addActionError(msg);
       LOG.error(msg);
       return INPUT;
@@ -362,50 +363,89 @@ public class RegistrationAction extends POSTAction {
 
   @RequirePost
   public String associateWithNetwork() {
-    try {
-      if (cancel) {
-        return cancel();
-      }
-      if (StringUtils.isNotEmpty(networkKey)) {
-        String networkName = networks.get(networkKey);
-        registrationManager.associateWithNetwork(networkKey, networkName);
+    if (cancel) {
+      return Constants.CANCEL;
+    }
+    Network current = getNetwork();
+    String oldKey = current == null ? null : Objects.toString(current.getKey(), null);
+    String oldName = current == null ? "" : StringUtils.defaultIfBlank(current.getName(), Objects.toString(oldKey, ""));
+    String newKey = StringUtils.trimToNull(networkKey);
 
-        if (applyToExistingResources) {
-          List<Resource> resources = resourceManager.list();
-          for (Resource resource : resources) {
-            if (resource.isRegistered()) {
-              registryManager.addResourceToNetwork(resource, networkKey);
-            }
-          }
-        }
-
-        addActionMessage(getAlertText("admin.ipt.success.associateWithNetwork", new String[]{networkName}));
-      } else {
-        Network network = getNetwork();
-
-        if (network != null) {
-          String networkName = Optional.ofNullable(network.getName()).orElse("");
-          String networkKey = Optional.ofNullable(network.getKey()).map(UUID::toString).orElse("");
-          registrationManager.removeAssociationWithNetwork();
-
-          if (applyToExistingResources) {
-            List<Resource> resources = resourceManager.list();
-            for (Resource resource : resources) {
-              if (resource.isRegistered()) {
-                registryManager.removeResourceFromNetwork(resource, networkKey);
-              }
-            }
-          }
-
-          addActionMessage(getAlertText("admin.ipt.success.associationWithNetworkRemoved", new String[]{networkName}));
-        }
-      }
-    } catch (Exception e) {
+    if (newKey == null && oldKey == null) {
+      // no network before or after: nothing to change
+      return SUCCESS;
+    }
+    if (newKey != null && !networks.containsKey(newKey)) {
+      LOG.error("Network {} is not in the list of networks from the Registry", newKey);
       addActionError(getText("admin.ipt.update.failed"));
-      LOG.error("Exception caught", e);
       return INPUT;
     }
+
+    // the IPT setting first: if it can't be saved, no resource is touched
+    try {
+      if (newKey != null) {
+        registrationManager.associateWithNetwork(newKey, networks.get(newKey));
+      } else {
+        registrationManager.removeAssociationWithNetwork();
+      }
+    } catch (IOException e) {
+      LOG.error("Failed to save the default network", e);
+      addActionError(getText("admin.ipt.update.failed"));
+      return INPUT;
+    }
+
+    if (applyToExistingResources) {
+      List<String> failed = moveRegisteredResources(oldKey, newKey);
+      if (!failed.isEmpty()) {
+        // a long list would swamp the page: name the first few, the log has all of them
+        String names = failed.stream().limit(MAX_FAILED_NAMES).collect(Collectors.joining(", "))
+            + (failed.size() > MAX_FAILED_NAMES ? ", …" : "");
+        addActionWarning(getAlertText("admin.ipt.network.resourcesFailed", String.valueOf(failed.size()), names));
+      }
+    }
+
+    if (newKey != null) {
+      addActionMessage(getAlertText("admin.ipt.success.associateWithNetwork", networks.get(newKey)));
+    } else {
+      addActionMessage(getAlertText("admin.ipt.success.associationWithNetworkRemoved", oldName));
+    }
     return SUCCESS;
+  }
+
+  /**
+   * Moves every registered resource from the old default network to the new one. Each resource is checked against its
+   * current networks first, because the Registry refuses to add a resource twice or remove one that isn't there. It is
+   * added to the new network before it leaves the old one, so a failure doesn't leave it in neither. A failing resource
+   * doesn't stop the others.
+   *
+   * @param oldKey previous default network, null if there was none
+   * @param newKey new default network, null if the association was removed
+   * @return short names of the resources the Registry couldn't update
+   */
+  private List<String> moveRegisteredResources(String oldKey, String newKey) {
+    List<String> failed = new ArrayList<>();
+    for (Resource resource : resourceManager.list(PublicationStatus.REGISTERED)) {
+      // the Registry calls need the resource key
+      if (!resource.isRegistered()) {
+        continue;
+      }
+      try {
+        Set<String> inNetworks = registryManager.getResourceNetworks(resource).stream()
+            .map(n -> Objects.toString(n.getKey(), null))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+        if (newKey != null && !inNetworks.contains(newKey)) {
+          registryManager.addResourceToNetwork(resource, newKey);
+        }
+        if (oldKey != null && !oldKey.equals(newKey) && inNetworks.contains(oldKey)) {
+          registryManager.removeResourceFromNetwork(resource, oldKey);
+        }
+      } catch (Exception e) {
+        LOG.error("Failed to move resource {} from network {} to network {}", resource.getShortname(), oldKey, newKey, e);
+        failed.add(resource.getShortname());
+      }
+    }
+    return failed;
   }
 
   @Override

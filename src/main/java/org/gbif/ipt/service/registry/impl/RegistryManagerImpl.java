@@ -861,14 +861,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       } else {
         throw new RegistryException(Type.NOT_AUTHORISED, null, "Credentials should be specified");
       }
+    } catch (RegistryException e) {
+      throw e;
     } catch (IOException e) {
       throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (Exception e) {
-      if (!(e instanceof RegistryException)) {
-        String msg = "Bad registry response: " + e.getMessage();
-        LOG.error(msg, e);
-        throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
-      }
+      String msg = "Bad registry response: " + e.getMessage();
+      LOG.error(msg, e);
+      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
     }
   }
 
@@ -887,14 +887,14 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
       } else {
         throw new RegistryException(Type.NOT_AUTHORISED, null, "Credentials should be specified");
       }
+    } catch (RegistryException e) {
+      throw e;
     } catch (IOException e) {
       throw new RegistryException(Type.IO_ERROR, url, e);
     } catch (Exception e) {
-      if (!(e instanceof RegistryException)) {
-        String msg = "Bad registry response: " + e.getMessage();
-        LOG.error(msg, e);
-        throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
-      }
+      String msg = "Bad registry response: " + e.getMessage();
+      LOG.error(msg, e);
+      throw new RegistryException(RegistryException.Type.BAD_RESPONSE, url, msg);
     }
   }
 
