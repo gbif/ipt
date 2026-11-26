@@ -847,7 +847,8 @@ public class EmlValidator extends BaseValidator {
 
             // at least one collection with name filled in is required
             if (eml.getCollections().isEmpty()) {
-              ec.addActionError(i18n.getText("eml.collection.required"));
+              // shown under the list of collections
+              ec.addFieldError("eml.collections", i18n.getText("eml.collection.required"));
             }
 
             for (int index = 0; index < eml.getCollections().size(); index++) {
@@ -863,19 +864,7 @@ public class EmlValidator extends BaseValidator {
               }
             }
 
-            // TODO ensure this validation works with drop down, and bypasses default
-            for (int index = 0; index < eml.getSpecimenPreservationMethods().size(); index++) {
-              String preservationMethod = eml.getSpecimenPreservationMethods().get(index);
-
-              // collection name is required, collection id and parent collection id are NOT required
-              if (StringUtils.isBlank(preservationMethod)) {
-                ec.addFieldError(
-                    "eml.specimenPreservationMethods[" + index + "]",
-                    i18n.getText(
-                        "validation.required",
-                        i18n.getText("eml.specimenPreservationMethod")));
-              }
-            }
+            // preservation methods: one multi-select, which never posts a blank value, so there's nothing to check
 
             int index = 0;
             for (JGTICuratorialUnit jcu : eml.getJgtiCuratorialUnits()) {

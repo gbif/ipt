@@ -75,7 +75,7 @@
                 markUnsaved();
             });
 
-            // adding or removing an item of a list (macros/metadata.ftl links: ids plus*, classes remove*)
+            // adding or removing an item of a list (links: ids plus*, classes remove*)
             // only the user's clicks: pages also add an empty first item from their script (e.g. the methods page)
             $(form).on('click', 'a[id^="plus"], a[class*="remove"]', function (e) {
                 if (e.isTrigger) {

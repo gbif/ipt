@@ -1,6 +1,5 @@
 <#-- @ftlvariable name="" type="org.gbif.ipt.action.manage.MetadataAction" -->
     <#include "/WEB-INF/pages/inc/header.ftl">
-    <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/user_id_directories.ftl"/>
     <title><@s.text name='manage.metadata.basic.title'/></title>
     <script src="${baseURL}/js/jconfirmation.jquery.js"></script>

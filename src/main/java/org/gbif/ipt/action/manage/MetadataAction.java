@@ -45,7 +45,6 @@ import org.gbif.ipt.i18n.StrutsI18n;
 import org.gbif.metadata.eml.ipt.model.Address;
 import org.gbif.metadata.eml.ipt.model.Agent;
 import org.gbif.metadata.eml.ipt.model.Eml;
-import org.gbif.metadata.eml.ipt.model.JGTICuratorialUnitType;
 import org.gbif.metadata.eml.ipt.model.Party;
 import org.gbif.metadata.eml.ipt.model.TemporalCoverageType;
 import org.gbif.metadata.eml.ipt.model.UserId;
@@ -195,10 +194,6 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
   @StrutsParameter(depth = 8)
   public Eml getEml() {
     return resource.getEml();
-  }
-
-  public Map<String, String> getJGTICuratorialUnitTypeOptions() {
-    return JGTICuratorialUnitType.HTML_SELECT_MAP;
   }
 
   public String getLanguageIso3() {

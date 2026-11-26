@@ -243,6 +243,10 @@ a.tax-show-all { font-size: 0.75rem !important; color: rgb(var(--color-gbif-prim
 .ms-step .party-order { flex-direction: row; }
 .ms-step .party-order .party-icon-btn { padding: 4px; }
 .ms-steps > .border { border-radius: 8px; }
+/* the same cards on the Citations and links and Collection Data pages (js/eml-cards.js); a one-field card has its field in the header */
+.ec-inline { padding: 8px 12px; }
+.ec-inline .ms-step-head { margin-bottom: 0; }
+.ec-inline-field { flex: 1 1 auto; min-width: 0; margin-right: 4px; }
 
 /* "Add X" area at the end of a list of cards: dashed box where the next card goes, optional Copy from part on the right */
 .add-area { display: flex; align-items: stretch; margin-top: 10px; border: 1px dashed #c3c9cf; border-radius: 8px; background: #fff; transition: border-color .1s ease; }

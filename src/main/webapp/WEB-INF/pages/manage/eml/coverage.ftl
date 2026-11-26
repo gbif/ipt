@@ -1050,7 +1050,6 @@
     <link rel="stylesheet" href="${baseURL}/styles/overview.css">
     <link rel="stylesheet" href="${baseURL}/styles/eml.css">
     <#include "/WEB-INF/pages/inc/menu.ftl">
-    <#include "/WEB-INF/pages/macros/metadata.ftl"/>
     <#include "/WEB-INF/pages/macros/forms.ftl"/>
 
 <div class="container px-0">
