@@ -1,0 +1,67 @@
+/* IPT setup wizard (admin/setup_*.ftl, inc/setup_page.ftl); cards from overview.css, fields from settings.css */
+
+.su-main .st-field { max-width: 640px; }
+.su-kicker { color: #6c757d; }
+.su-tagline { font-size: 0.875rem; max-width: 46rem; }
+
+.su-main .ov-card p { font-size: 0.875rem; }
+.su-main .ov-card p:last-child { margin-bottom: 0; }
+.su-main .ov-card p.su-intro { color: #495057; margin-bottom: 12px; }
+.su-main .ov-banner { margin-bottom: 14px; }
+.su-foot { display: flex; justify-content: flex-end; margin-top: 4px; }
+/* same size as the heading buttons (page-heading.css) */
+.su-foot .top-button { min-width: 80px; margin-top: 0; padding: 4px 12px !important; line-height: 1.5; font-size: 0.8125rem !important; }
+
+/* steps: a strip above the cards, as on the publishing page (publishing.css .pub-steps) */
+.su-steps { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; background: #fff; }
+.su-s { position: relative; display: flex; gap: 8px; align-items: center; padding: 10px 12px; font-size: 0.8125rem; color: #6c757d; border-inline-end: 1px solid #dee2e6; min-width: 0; }
+.su-s:last-child { border-inline-end: 0; }
+.su-s-ic { flex: none; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; }
+.su-s-ic .material-icon { width: 20px; height: 20px; }
+.su-s-num { width: 20px; height: 20px; border-radius: 50%; background: #adb5bd; color: #fff; font-size: 0.72rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+.su-s-label { min-width: 0; }
+.su-s.done { color: #212529; }
+.su-s.done .su-s-ic { color: rgb(var(--color-gbif-success)); }
+.su-s.active { color: #212529; font-weight: 600; background: rgba(var(--color-gbif-primary), .05); }
+.su-s.active .su-s-num { background: rgb(var(--color-gbif-primary)); }
+.su-s.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgb(var(--color-gbif-primary)); }
+/* narrow screens: numbers only, the current step keeps its name */
+@media (max-width: 767.98px) {
+    .su-steps { grid-template-columns: repeat(5, auto); }
+    .su-s { justify-content: center; }
+    .su-s:not(.active) .su-s-label { display: none; }
+}
+
+/* administrator: names side by side, then email, then the passwords; as wide as the settings page grid */
+.su-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; max-width: 760px; }
+.su-grid .st-field { max-width: none; margin-bottom: 14px; }
+/* email: a row of its own (so the passwords start on the next one), the field as wide as one column */
+.su-grid .su-row { grid-column: 1 / -1; max-width: calc(50% - 10px); }
+@media (max-width: 576px) { .su-grid { grid-template-columns: 1fr; } .su-grid .su-row { max-width: none; } }
+
+/* mode: two choice cards */
+.su-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 576px) { .su-choices { grid-template-columns: 1fr; } }
+.su-choice { display: flex; gap: 10px; align-items: flex-start; border: 1px solid #ced4da; border-radius: 8px; padding: 12px 14px; cursor: pointer; margin: 0; font-size: 0.8125rem; color: #495057; }
+.su-choice:hover { border-color: #adb5bd; }
+.su-choice:has(input:checked) { border-color: rgb(var(--color-gbif-primary)); box-shadow: 0 0 0 1px rgb(var(--color-gbif-primary)); }
+.su-choice:has(input:focus-visible) { outline: 2px solid rgba(var(--color-gbif-primary), .5); outline-offset: 2px; }
+.su-choice .form-check-input { flex: none; margin-top: 2px; }
+.su-choice-title { display: block; font-size: 0.95rem; font-weight: 600; color: #212529; margin-bottom: 4px; }
+.su-choices.is-invalid .su-choice { border-color: rgb(var(--color-gbif-danger)); }
+/* the "select a mode" error goes once a mode is picked */
+.su-choices.is-invalid:has(input:checked) .su-choice { border-color: #ced4da; }
+.su-choices.is-invalid:has(input:checked) .su-choice:has(input:checked) { border-color: rgb(var(--color-gbif-primary)); }
+.su-choices:has(input:checked) + .invalid-feedback { display: none !important; }
+
+/* complete: the result line and what to do next */
+.su-done { display: flex; gap: 10px; align-items: flex-start; font-size: 0.875rem; }
+.su-done .material-icon { flex: none; width: 22px; height: 22px; }
+.su-done.ok .material-icon { color: rgb(var(--color-gbif-success)); }
+.su-done.warn .material-icon { color: rgb(var(--alert-warning-icon-color)); }
+.su-next { list-style: none; margin: 10px 0 0; padding: 0; }
+.su-next li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-top: 1px solid #f1f3f5; }
+.su-next li:first-child { border-top: 0; padding-top: 4px; }
+.su-next .material-icon { flex: none; width: 20px; height: 20px; color: rgb(var(--color-gbif-primary)); margin-top: 1px; }
+.su-next a { font-weight: 500; font-size: 0.875rem; }
+.su-next small { display: block; color: #6c757d; font-size: 0.8rem; }

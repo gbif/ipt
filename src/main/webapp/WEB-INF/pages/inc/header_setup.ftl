@@ -35,6 +35,10 @@
         }
     </style>
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/page-heading.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/overview.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/settings.css" />
+    <link rel="stylesheet" type="text/css" href="${baseURL}/styles/setup.css" />
 
     <!-- Custom CSS for customizations -->
     <link rel="stylesheet" type="text/css" href="${baseURL}/styles/custom.css" />
@@ -54,7 +58,7 @@
 
 <header>
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-gbif-main-navbar py-1 shadow-sm border-bottom">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-gbif-main-navbar py-1 border-bottom">
         <div class="container">
             <a href="${baseURL}/" rel="home" title="Logo" class="navbar-brand" >
                 <svg id="gbif-logo-setup" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 539.7 523.9" style="enable-background:new 0 0 539.7 523.9;" xml:space="preserve">

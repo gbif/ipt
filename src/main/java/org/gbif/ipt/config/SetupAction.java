@@ -168,6 +168,11 @@ public class SetupAction extends BaseAction {
     this.baseURL = baseUrlVerbatim;
   }
 
+  /** The path typed in the data directory step, shown again when it has an error. */
+  public String getDataDirPath() {
+    return dataDirPath;
+  }
+
   @StrutsParameter
   public void setDataDirPath(String dataDirPath) {
     this.dataDirPath = dataDirPath;
@@ -186,6 +191,11 @@ public class SetupAction extends BaseAction {
   @StrutsParameter
   public void setProxy(String proxy) {
     this.proxy = proxy;
+  }
+
+  /** The proxy typed in the public URL step, shown again when the step has an error. */
+  public String getProxy() {
+    return proxy;
   }
 
   @StrutsParameter
