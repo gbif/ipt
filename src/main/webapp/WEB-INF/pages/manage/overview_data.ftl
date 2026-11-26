@@ -29,7 +29,7 @@
     <#elseif src.isUrlSource()>
         <#local iconName = "link_outlined" kindLabel = "URL">
     <#elseif src.isExcelSource()>
-        <#local iconName = "grid_on_outlined" kindLabel = "XLS">
+        <#local iconName = "grid_on_outlined" kindLabel = "EXCEL">
     <#else>
         <#local iconName = "description_outlined" kindLabel = "FILE">
     </#if>
