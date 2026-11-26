@@ -31,7 +31,7 @@
                 [#list items as item]
                     [#if item?is_first]
                         [#if item?has_content]
-                            <span>[@item?interpret /]</span>
+                            <span>${item?no_esc}</span>
                         [/#if]
                         [#if !item?is_last]
                             <details class="alert-more mt-1">
@@ -39,7 +39,7 @@
                                 <ul class="mt-1 mb-0 ps-3">
                         [/#if]
                     [#else]
-                                    <li>[#if item?has_content][@item?interpret /][/#if]</li>
+                                    <li>[#if item?has_content]${item?no_esc}[/#if]</li>
                         [#if item?is_last]
                                 </ul>
                             </details>

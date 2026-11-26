@@ -220,7 +220,7 @@
                                 <#elseif isFileLike && (source.sourceType != 'URL' || source.readable)>
                                     <span><@s.text name="manage.source.rows"/>: ${source.rows?string.number} · <#t>
                                         <@s.text name="manage.source.columns"/>: ${source.getColumns()?string.number} · <#t>
-                                        <@s.text name="manage.source.size"/>: <#attempt><@source.formattedFileSize(currentLocale)?interpret /><#recover>-</#attempt> · <#t>
+                                        <@s.text name="manage.source.size"/>: <#attempt>${source.formattedFileSize(currentLocale)}<#recover>-</#attempt> · <#t>
                                         <@s.text name="manage.source.modified"/>: ${(source.lastModified?datetime?string.medium_short)!"-"}<#t>
                                     </span>
                                 <#elseif source.isSqlSource() && source.readable>

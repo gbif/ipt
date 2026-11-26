@@ -9,7 +9,7 @@
             </div>
             <div class="overflow-x-hidden pt-1">
                 [#if message?has_content]
-                <span>[@message?interpret /]</span>
+                <span>${message?no_esc}</span>
                 [/#if]
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
