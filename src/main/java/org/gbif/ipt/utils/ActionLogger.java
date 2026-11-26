@@ -36,7 +36,7 @@ public class ActionLogger {
 
   public void error(String message, String[] args) {
     if (message != null) {
-      action.addActionWarning(action.getText(message, args));
+      action.addActionWarning(action.getAlertText(message, (Object[]) args));
       log.error(action.getText(message) == null ? message : action.getText(message, args));
     }
   }
@@ -45,7 +45,7 @@ public class ActionLogger {
     if (message == null) {
       error(t);
     } else {
-      action.addActionWarning(action.getText(message, args));
+      action.addActionWarning(action.getAlertText(message, (Object[]) args));
       log.error(action.getText(message) == null ? message : action.getText(message, args), t);
     }
   }
@@ -61,7 +61,7 @@ public class ActionLogger {
 
   public void error(Throwable t) {
     if (t.getMessage() != null) {
-      action.addActionWarning(t.getMessage());
+      action.addActionWarning(BaseAction.escapeHtml(t.getMessage()));
     }
     log.error(t);
   }
@@ -75,7 +75,7 @@ public class ActionLogger {
 
   public void info(String message, String[] args) {
     if (message != null) {
-      action.addActionMessage(action.getText(message, args));
+      action.addActionMessage(action.getAlertText(message, (Object[]) args));
       log.info(action.getText(message) == null ? message : action.getText(message, args));
     }
   }
@@ -84,7 +84,7 @@ public class ActionLogger {
     if (message == null) {
       info(t);
     } else {
-      action.addActionMessage(action.getText(message, args));
+      action.addActionMessage(action.getAlertText(message, (Object[]) args));
       log.info(action.getText(message) == null ? message : action.getText(message, args), t);
     }
   }
@@ -100,7 +100,7 @@ public class ActionLogger {
 
   public void info(Throwable t) {
     if (t.getMessage() != null) {
-      action.addActionMessage(t.getMessage());
+      action.addActionMessage(BaseAction.escapeHtml(t.getMessage()));
     }
     log.info(t);
   }
@@ -114,7 +114,7 @@ public class ActionLogger {
 
   public void warn(String message, String[] args) {
     if (message != null) {
-      action.addActionWarning(action.getText(message, args));
+      action.addActionWarning(action.getAlertText(message, (Object[]) args));
       log.warn(action.getText(message) == null ? message : action.getText(message, args));
     }
   }
@@ -123,7 +123,7 @@ public class ActionLogger {
     if (message == null) {
       info(t);
     } else {
-      action.addActionWarning(action.getText(message, args));
+      action.addActionWarning(action.getAlertText(message, (Object[]) args));
       log.warn(action.getText(message) == null ? message : action.getText(message, args), t);
     }
   }
@@ -139,7 +139,7 @@ public class ActionLogger {
 
   public void warn(Throwable t) {
     if (t.getMessage() != null) {
-      action.addActionWarning(t.getMessage());
+      action.addActionWarning(BaseAction.escapeHtml(t.getMessage()));
     }
     log.warn(t);
   }

@@ -93,7 +93,7 @@ public class DataPackageMetadataAction extends ManagerBaseAction {
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata." + section.getName())}));
+      addActionMessage(getAlertText("manage.success", new String[]{getText("submenu.datapackagemetadata." + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
     } else {

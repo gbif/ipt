@@ -347,7 +347,7 @@ public class ResourceImportServiceImpl implements ResourceImportService {
           .collect(Collectors.toList());
 
       if (!missingExtensionRowTypes.isEmpty()) {
-        alog.error("manage.resource.create.rowTypes.null", new String[]{String.join("<br>", missingExtensionRowTypes)});
+        alog.error("manage.resource.create.rowTypes.null", new String[]{String.join(", ", missingExtensionRowTypes)});
         throw new ImportException("Resource references non-installed extension(s)");
       }
 

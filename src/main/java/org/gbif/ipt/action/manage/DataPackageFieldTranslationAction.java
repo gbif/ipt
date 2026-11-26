@@ -104,7 +104,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
           .findFirst()
           .orElse(null));
       automapped = count;
-      addActionMessage(getText("manage.translation.mapped.fields", new String[]{String.valueOf(count)}));
+      addActionMessage(getAlertText("manage.translation.mapped.fields", new String[]{String.valueOf(count)}));
     }
     return SUCCESS;
   }
@@ -119,7 +119,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     if (fieldMapping != null) {
       fieldMapping.setTranslation(new TreeMap<>());
       saveResource();
-      addActionMessage(getText("manage.translation.field.deleted", new String[]{field.getName()}));
+      addActionMessage(getAlertText("manage.translation.field.deleted", new String[]{field.getName()}));
     } else {
       LOG.error("User wanted to delete translation for propertyMapping field, but field was null");
     }
@@ -181,7 +181,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       return NOT_FOUND;
     }
     if (!hasActionErrors()) {
-      addActionMessage(getText("manage.translation.reloaded.field.values",
+      addActionMessage(getAlertText("manage.translation.reloaded.field.values",
           new String[]{String.valueOf(translation.getSourceValueCount()), field.getName()}));
     }
     // leaves the user on the translation page
@@ -201,17 +201,17 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
       rowLimitReached = read.rowLimitReached();
     } catch (SourceException e) {
       // if an error has occurred, bring it to the user's attention
-      addActionError(getText("manage.translation.reloaded.field.fail",
+      addActionError(getAlertText("manage.translation.reloaded.field.fail",
           new String[]{field.getName(), e.getMessage()}));
       values = Collections.emptySet();
     }
     translation.load(values, fieldMapping.getTranslation());
     if (translation.isTruncated()) {
-      addActionWarning(getText("manage.translation.values.truncated",
+      addActionWarning(getAlertText("manage.translation.values.truncated",
           new String[]{String.valueOf(ValueTranslation.MAX_DISTINCT_VALUES)}));
     } else if (rowLimitReached) {
       // an SQL source is only read up to MAX_SQL_ROWS rows: values first appearing later aren't offered
-      addActionWarning(getText("manage.translation.values.rowLimit",
+      addActionWarning(getAlertText("manage.translation.values.rowLimit",
           new String[]{String.valueOf(ValueTranslation.MAX_SQL_ROWS)}));
     }
   }
@@ -227,7 +227,7 @@ public class DataPackageFieldTranslationAction extends ManagerBaseAction {
     // save entire resource config
     saveResource();
     id = mapping.getDataPackageTableSchemaName().getName();
-    addActionMessage(getText("manage.translation.field.saved", new String[]{field.getName()}));
+    addActionMessage(getAlertText("manage.translation.field.saved", new String[]{field.getName()}));
 
     return NONE;
   }

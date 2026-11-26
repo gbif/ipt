@@ -204,7 +204,7 @@ public class RegistrationAction extends POSTAction {
       } catch (RegistryException e) {
         LOG.error("Failed to load networks", e);
         String msg = RegistryException.logRegistryException(e, this);
-        addActionWarning(getText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()}) + msg);
+        addActionWarning(getAlertText("admin.networks.couldnt.load", new String[]{cfg.getRegistryUrl()}) + msg);
         networks = new HashMap<>();
       }
     }
@@ -285,7 +285,7 @@ public class RegistrationAction extends POSTAction {
       } catch (IOException e) {
         LOG.error("The organisation association couldnt be saved: {}", e.getMessage(), e);
         addActionError(getText("admin.organisation.saveError"));
-        addActionError(e.getMessage());
+        addActionError(escapeHtml(e.getMessage()));
         return INPUT;
       }
     }
@@ -311,12 +311,12 @@ public class RegistrationAction extends POSTAction {
       LOG.error(msg);
 
       // add error message that explains the root cause of the Registry error
-      msg = getText("admin.registration.failed.update", new String[]{e.getMessage()});
+      msg = getAlertText("admin.registration.failed.update", new String[]{e.getMessage()});
       addActionError(msg);
       LOG.error(msg);
       return INPUT;
     } catch (Exception e) {
-      addActionError(e.getMessage());
+      addActionError(escapeHtml(e.getMessage()));
       LOG.error("Exception caught", e);
       return INPUT;
     }
@@ -379,7 +379,7 @@ public class RegistrationAction extends POSTAction {
           }
         }
 
-        addActionMessage(getText("admin.ipt.success.associateWithNetwork", new String[]{networkName}));
+        addActionMessage(getAlertText("admin.ipt.success.associateWithNetwork", new String[]{networkName}));
       } else {
         Network network = getNetwork();
 
@@ -397,7 +397,7 @@ public class RegistrationAction extends POSTAction {
             }
           }
 
-          addActionMessage(getText("admin.ipt.success.associationWithNetworkRemoved", new String[]{networkName}));
+          addActionMessage(getAlertText("admin.ipt.success.associationWithNetworkRemoved", new String[]{networkName}));
         }
       }
     } catch (Exception e) {

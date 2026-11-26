@@ -206,7 +206,7 @@ public class ResourceLoaderImplTest {
     when(resourcePersister.load(any(InputStream.class))).thenReturn(stored);
 
     assertThrows(InvalidConfigException.class, () -> loader.load(resourceDir, null, alog, callbacks));
-    verify(action).getText(eq("manage.resource.create.extension.null"), any(String[].class));
+    verify(action).getAlertText(eq("manage.resource.create.extension.null"), any(Object[].class));
     verify(callbacks, never()).save(any());
   }
 
@@ -221,7 +221,7 @@ public class ResourceLoaderImplTest {
     when(resourcePersister.load(any(InputStream.class))).thenReturn(stored);
 
     assertThrows(InvalidConfigException.class, () -> loader.load(resourceDir, null, alog, callbacks));
-    verify(action).getText(eq("manage.resource.create.rowType.null"), any(String[].class));
+    verify(action).getAlertText(eq("manage.resource.create.rowType.null"), any(Object[].class));
   }
 
   @Test
@@ -321,7 +321,7 @@ public class ResourceLoaderImplTest {
     assertEquals(InvalidConfigException.TYPE.INVALID_DATA_SCHEMA, e.getType());
     assertEquals("Resource uses data package type " + identifier
         + ", which isn't installed and isn't supported by the GBIF registry", ResourceManagerImpl.failureReason(e));
-    verify(action).getText(eq("manage.resource.create.dataPackageType.null"), any(String[].class));
+    verify(action).getAlertText(eq("manage.resource.create.dataPackageType.null"), any(Object[].class));
     // nothing written: a save would remove the type from the mappings
     verify(callbacks, never()).save(any());
   }
@@ -368,7 +368,7 @@ public class ResourceLoaderImplTest {
     resource.setDataPackageIdentifier("http://rs.gbif.org/data-packages/not-installed");
 
     assertThrows(InvalidConfigException.class, () -> loader.checkDataPackageTypeInstalled(resource, alog));
-    verify(action).getText(eq("manage.resource.create.dataPackageType.null"), any(String[].class));
+    verify(action).getAlertText(eq("manage.resource.create.dataPackageType.null"), any(Object[].class));
   }
 
   @Test

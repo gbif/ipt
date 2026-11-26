@@ -581,7 +581,7 @@ public class MetadataAction extends ManagerBaseAction implements UploadedFilesAw
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[]{getText("submenu." + section.getName())}));
+      addActionMessage(getAlertText("manage.success", new String[]{getText("submenu." + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
       // progress to next section, since save succeeded

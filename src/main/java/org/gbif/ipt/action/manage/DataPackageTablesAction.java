@@ -846,7 +846,7 @@ public class DataPackageTablesAction extends ManagerBaseAction {
       resource.setMappingsModified(new Date());
       saveResource();
     }
-    addActionMessage(getText("manage.tables.created", new String[] {String.valueOf(created)}));
+    addActionMessage(getAlertText("manage.tables.created", new String[] {String.valueOf(created)}));
     return SUCCESS;
   }
 

@@ -114,7 +114,7 @@ public class ManagerBaseAction extends POSTAction implements ParameterNameAware 
     try {
       resourceManager.save(resource);
     } catch (InvalidConfigException e) {
-      addActionError(e.getMessage());
+      addActionError(escapeHtml(e.getMessage()));
     }
   }
 

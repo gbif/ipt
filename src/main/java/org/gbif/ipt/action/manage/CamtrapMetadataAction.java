@@ -366,7 +366,7 @@ public class CamtrapMetadataAction extends ManagerBaseAction {
       // save date metadata was last modified
       resource.setMetadataModified(new Date());
       // Alert user of successful save
-      addActionMessage(getText("manage.success", new String[]{getText("submenu.datapackagemetadata.camtrap." + section.getName())}));
+      addActionMessage(getAlertText("manage.success", new String[]{getText("submenu.datapackagemetadata.camtrap." + section.getName())}));
       // Save resource information (resource.xml)
       resourceManager.save(resource);
 

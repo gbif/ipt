@@ -118,7 +118,7 @@ public class BaseAction extends ActionSupport
   protected void addActionExceptionWarning(Exception e) {
     String msg = e.getMessage();
     if (msg != null) {
-      warnings.add(msg);
+      warnings.add(escapeHtml(msg));
     }
   }
 
@@ -402,6 +402,30 @@ public class BaseAction extends ActionSupport
 
   public String getTextWithDynamicArgs(String key, String... args) {
     return textProvider.getText(getLocale(), key, null, args);
+  }
+
+  // what HTML treats as markup; other characters (accents, arrows) stay as they are, readable in logs reusing the text
+  private static final String[] HTML_SPECIAL = {"&", "<", ">", "\"", "'"};
+  private static final String[] HTML_ESCAPED = {"&amp;", "&lt;", "&gt;", "&quot;", "&#39;"};
+
+  /**
+   * A value for an alert's text, HTML-escaped. Alerts show their text as HTML (inc/action_alerts_list.ftl), so the
+   * message's own markup (links, emphasis) works, but values put into it (names, titles, file names, error details)
+   * must show as written.
+   *
+   * @return the escaped value, null if it's null
+   */
+  @Nullable
+  public static String escapeHtml(@Nullable Object value) {
+    return value == null ? null : StringUtils.replaceEach(value.toString(), HTML_SPECIAL, HTML_ESCAPED);
+  }
+
+  /**
+   * {@link #getText(String, String[])} for an alert's text: the arguments are HTML-escaped, see {@link #escapeHtml}.
+   */
+  public String getAlertText(String key, Object... args) {
+    String[] escaped = args == null ? new String[0] : Arrays.stream(args).map(BaseAction::escapeHtml).toArray(String[]::new);
+    return textProvider.getText(getLocale(), key, null, escaped);
   }
 
   public boolean isAdminRights() {

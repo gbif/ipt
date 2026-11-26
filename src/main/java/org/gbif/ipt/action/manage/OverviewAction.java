@@ -356,9 +356,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       saveResource();
       Optional<KeyNamePair> keyNameNetwork = getAllNetworks().stream().filter(n -> n.getKey().equals(id)).findFirst();
       if (keyNameNetwork.isPresent()) {
-        addActionMessage(getText("manage.overview.networks.add.success", new String[]{keyNameNetwork.get().getName()}));
+        addActionMessage(getAlertText("manage.overview.networks.add.success", new String[]{keyNameNetwork.get().getName()}));
       } else {
-        addActionMessage(getText("manage.overview.networks.add.success", new String[]{id}));
+        addActionMessage(getAlertText("manage.overview.networks.add.success", new String[]{id}));
       }
 
       potentialNetworks.removeIf(n -> Objects.equals(n.getKey(), id));
@@ -378,10 +378,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
     User u = userManager.get(id);
     if (u != null && !potentialManagers.contains(u)) {
-      addActionError(getText("manage.overview.manager.not.available", new String[]{id}));
+      addActionError(getAlertText("manage.overview.manager.not.available", new String[]{id}));
     } else if (u != null) {
       resource.addManager(u);
-      addActionMessage(getText("manage.overview.user.added", new String[]{u.getName()}));
+      addActionMessage(getAlertText("manage.overview.user.added", new String[]{u.getName()}));
       saveResource();
       potentialManagers.remove(u);
     }
@@ -404,7 +404,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     if (cancelled) {
       // final logging
       BigDecimal version = resource.getMetadataVersion();
-      String msg = getText("publishing.cancelled", new String[]{version.toPlainString(), resource.getShortname()});
+      String msg = getAlertText("publishing.cancelled", new String[]{version.toPlainString(), resource.getShortname()});
       LOG.warn(msg);
       addActionMessage(msg);
 
@@ -429,13 +429,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
     if (delete) {
       if (resource.getStatus().equals(PublicationStatus.DELETED)) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+        addActionWarning(getAlertText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
             resource.getStatus().toString()}));
         return INPUT;
       }
       try {
         resourceManager.deleteResourceFromIpt(resource);
-        addActionMessage(getText("manage.overview.resource.deleteFromIpt.successful", new String[]{resource.getShortname()}));
+        addActionMessage(getAlertText("manage.overview.resource.deleteFromIpt.successful", new String[]{resource.getShortname()}));
         return HOME;
       } catch (IOException e) {
         String msg = getText("manage.resource.delete.failed");
@@ -444,7 +444,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         addActionExceptionWarning(e);
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+      addActionWarning(getAlertText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
           resource.getStatus().toString()}));
     }
     return SUCCESS;
@@ -472,7 +472,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
     if (delete) {
       if (resource.getStatus().equals(PublicationStatus.DELETED)) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+        addActionWarning(getAlertText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
             resource.getStatus().toString()}));
         return INPUT;
       }
@@ -517,7 +517,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           resource.updateCitationIdentifierForDOI(); // unset DOI as citation identifier
           saveResource();
           LOG.info("Resource {} is deleted by {}", resource.toString(), getCurrentUser().getEmail());
-          addActionMessage(getText("manage.overview.resource.deleted", new String[]{resource.toString()}));
+          addActionMessage(getAlertText("manage.overview.resource.deleted", new String[]{resource.toString()}));
         } else {
           // de-register resource, and delete resource directory
           boolean registered = resource.isRegistered();
@@ -534,7 +534,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         addActionExceptionWarning(e);
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+      addActionWarning(getAlertText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
           resource.getStatus().toString()}));
     }
     return SUCCESS;
@@ -555,13 +555,13 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         if (doiData.getStatus().equals(DoiStatus.RESERVED)) {
           LOG.info("Deleting reserved DOI: {}...", doi);
           registrationManager.getDoiService().delete(doi);
-          String msg = getText("manage.overview.publishing.doi.delete.success", new String[]{doi.toString()});
+          String msg = getAlertText("manage.overview.publishing.doi.delete.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } else if (doiData.getStatus().equals(DoiStatus.REGISTERED)) {
           LOG.info("Deactivating registered DOI: {}...", doi);
           registrationManager.getDoiService().delete(doi);
-          String msg = getText("manage.overview.publishing.doi.deactivate.success", new String[]{doi.toString()});
+          String msg = getAlertText("manage.overview.publishing.doi.deactivate.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } else {
@@ -599,7 +599,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
     if (undelete) {
       if (!resource.getStatus().equals(PublicationStatus.DELETED)) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation",
+        addActionWarning(getAlertText("manage.overview.resource.invalid.operation",
             new String[]{resource.getShortname(), resource.getStatus().toString()}));
         return INPUT;
       }
@@ -689,7 +689,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
           saveResource();
           addActionMessage(
-              getText("manage.overview.resource.undeleted", new String[]{resource.getTitleAndShortname()}));
+              getAlertText("manage.overview.resource.undeleted", new String[]{resource.getTitleAndShortname()}));
           return SUCCESS;
         } catch (UndeletNotAllowedException | IllegalArgumentException e) {
           String msg = getText("manage.resource.undelete.failed");
@@ -699,11 +699,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         }
 
       } else {
-        addActionWarning(getText("manage.overview.resource.invalid.operation",
+        addActionWarning(getAlertText("manage.overview.resource.invalid.operation",
             new String[]{resource.getShortname(), resource.getStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation",
+      addActionWarning(getAlertText("manage.overview.resource.invalid.operation",
           new String[]{resource.getShortname(), resource.getStatus().toString()}));
     }
     return INPUT;
@@ -728,7 +728,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         LOG.info("Undeleting deleted DOI: {}...", doi);
         DataCiteMetadata dataCiteMetadata = DataCiteMetadataBuilder.createDataCiteMetadata(doi, resource);
         registrationManager.getDoiService().register(doi, target, dataCiteMetadata);
-        String msg = getText("manage.overview.publishing.doi.undelete.success", new String[]{doi.toString()});
+        String msg = getAlertText("manage.overview.publishing.doi.undelete.success", new String[]{doi.toString()});
         LOG.info(msg);
         addActionMessage(msg);
       } else {
@@ -796,7 +796,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
             : "manage.overview.data.deleteAllSources.doneNoMappings"));
       } else {
         for (String name : notDeleted) {
-          addActionError(getText("manage.source.deleted.couldnt", new String[] {name}));
+          addActionError(getAlertText("manage.source.deleted.couldnt", new String[] {name}));
         }
       }
     }
@@ -817,9 +817,9 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
       Optional<KeyNamePair> keyNameNetwork = getAllNetworks().stream().filter(n -> n.getKey().equals(id)).findFirst();
       if (keyNameNetwork.isPresent()) {
-        addActionMessage(getText("manage.overview.networks.delete.success", new String[]{keyNameNetwork.get().getName()}));
+        addActionMessage(getAlertText("manage.overview.networks.delete.success", new String[]{keyNameNetwork.get().getName()}));
       } else {
-        addActionMessage(getText("manage.overview.networks.delete.success", new String[]{id}));
+        addActionMessage(getAlertText("manage.overview.networks.delete.success", new String[]{id}));
       }
 
       Optional<KeyNamePair> potentialNetwork =
@@ -842,10 +842,10 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
     User u = userManager.get(id);
     if (u == null || !resource.getManagers().contains(u)) {
-      addActionError(getText("manage.overview.manager.not.available", new String[]{id}));
+      addActionError(getAlertText("manage.overview.manager.not.available", new String[]{id}));
     } else {
       resource.getManagers().remove(u);
-      addActionMessage(getText("manage.overview.user.removed", new String[]{u.getName()}));
+      addActionMessage(getAlertText("manage.overview.user.removed", new String[]{u.getName()}));
       saveResource();
       potentialManagers.add(u);
     }
@@ -978,7 +978,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           resourcePublicationManager.visibilityToPrivate(resource, this);
           if (resource.getPendingStatus() != null) {
             addActionMessage(
-                getText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
+                getAlertText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
                     + " "
                     + getText("manage.overview.changed.publication.status.republication"));
           }
@@ -986,11 +986,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           LOG.error("Cant unpublish resource {}", resource, e);
         }
       } else {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+        addActionWarning(getAlertText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
             resource.getStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation",
+      addActionWarning(getAlertText("manage.overview.resource.invalid.operation",
           new String[]{resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
@@ -1009,7 +1009,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           resource.setMakePublicDate(date);
           saveResource();
           addActionMessage(
-              getText("manage.overview.changed.publication.status.become.public", new String[]{DATE_FORMAT_UI.format(date)})
+              getAlertText("manage.overview.changed.publication.status.become.public", new String[]{DATE_FORMAT_UI.format(date)})
                   + " "
                   + getText("manage.overview.changed.publication.status.republication"));
         } catch (Exception e) {
@@ -1020,7 +1020,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           resourcePublicationManager.visibilityToPublic(resource, this);
           if (resource.getPendingStatus() != null) {
             addActionMessage(
-                getText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
+                getAlertText("manage.overview.changed.publication.status", new String[]{resource.getPendingStatus().toString()})
                     + " "
                     + getText("manage.overview.changed.publication.status.republication"));
           }
@@ -1029,7 +1029,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         }
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation",
+      addActionWarning(getAlertText("manage.overview.resource.invalid.operation",
           new String[]{resource.getShortname(), resource.getStatus().toString()}));
     }
     return execute();
@@ -1043,7 +1043,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     resource.setPendingStatus(null);
     resource.setMakePublicDate(null);
     saveResource();
-    addActionMessage(getText("manage.overview.changed.publication.status", new String[]{resource.getStatus()
+    addActionMessage(getAlertText("manage.overview.changed.publication.status", new String[]{resource.getStatus()
         .toString()}));
 
     return execute();
@@ -1087,18 +1087,18 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         LOG.info("Reserving {} for {}", doi, resource.getTitleAndShortname());
         try {
           doReserveDOI(doi, resource);
-          String msg = getText("manage.overview.publishing.doi.reserve.success", new String[]{doi.toString()});
+          String msg = getAlertText("manage.overview.publishing.doi.reserve.success", new String[]{doi.toString()});
           LOG.info(msg);
           addActionMessage(msg);
         } catch (DoiExistsException e) {
           LOG.error("Failed to reserve {} because it exists already. Trying again...", doi, e);
           reserveDoi();
         } catch (InvalidMetadataException e) {
-          String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.metadata", new String[]{doi.toString(), e.getMessage()});
+          String errorMsg = getAlertText("manage.overview.publishing.doi.reserve.failed.metadata", new String[]{doi.toString(), e.getMessage()});
           LOG.error(errorMsg, e);
           addActionError(errorMsg);
         } catch (DoiException e) {
-          String errorMsg = getText("manage.overview.publishing.doi.reserve.failed", new String[]{doi.toString(), e.getMessage()});
+          String errorMsg = getAlertText("manage.overview.publishing.doi.reserve.failed", new String[]{doi.toString(), e.getMessage()});
           LOG.error(errorMsg, e);
           addActionError(errorMsg);
         }
@@ -1120,7 +1120,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
               // the DOI is registered and should resolve to this resource's public homepage, so verify the homepage is publicly accessible
               LOG.debug("Resource {} has status={}", resource.getShortname(), resource.getStatus());
               if (!resource.isPubliclyAvailable()) {
-                String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.notPublic", new String[]{existingDoi.toString()});
+                String errorMsg = getAlertText("manage.overview.publishing.doi.reserve.failed.notPublic", new String[]{existingDoi.toString()});
                 LOG.error(errorMsg);
                 addActionError(errorMsg);
               } else {
@@ -1132,30 +1132,30 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
                   LOG.debug("Verified target URI of existing registered DOI is equal to public resource homepage URI");
                   doReuseDOI(existingDoi, resource);
                 } else {
-                  String errorMsg = getText("manage.overview.publishing.doi.reserve.failed.invalid.target", new String[]{existingDoi.toString(), homepage.toString()});
+                  String errorMsg = getAlertText("manage.overview.publishing.doi.reserve.failed.invalid.target", new String[]{existingDoi.toString(), homepage.toString()});
                   LOG.error(errorMsg);
                   addActionError(errorMsg);
                 }
               }
             } else {
-              String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed", new String[]{existingDoi.toString()});
+              String errorMsg = getAlertText("manage.overview.publishing.doi.reserve.reused.failed", new String[]{existingDoi.toString()});
               LOG.error(errorMsg);
               addActionError(errorMsg);
             }
           } catch (DoiException e) {
-            String errorMsg = getText("manage.overview.publishing.doi.reserve.reused.failed.exception", new String[]{existingDoi.toString(), e.getMessage()});
+            String errorMsg = getAlertText("manage.overview.publishing.doi.reserve.reused.failed.exception", new String[]{existingDoi.toString(), e.getMessage()});
             LOG.error(errorMsg, e);
             addActionError(errorMsg);
           }
         } else {
-          addActionError(getText("manage.overview.publishing.doi.reserve.notRreused", new String[]{existingDoi.toString(), prefixAllowed}));
+          addActionError(getAlertText("manage.overview.publishing.doi.reserve.notRreused", new String[]{existingDoi.toString(), prefixAllowed}));
         }
       } else {
-        addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+        addActionWarning(getAlertText("manage.overview.resource.doi.invalid.operation",
             new String[]{resource.getShortname(), resource.getIdentifierStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+      addActionWarning(getAlertText("manage.overview.resource.doi.invalid.operation",
           new String[]{resource.getShortname(), resource.getIdentifierStatus().toString()}));
     }
     return execute();
@@ -1174,7 +1174,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     resource.updateAlternateIdentifierForDOI();
     resource.updateCitationIdentifierForDOI(); // set DOI as citation identifier
     saveResource();
-    String msg = getText("manage.overview.publishing.doi.reserve.reused", new String[]{doi.toString()});
+    String msg = getAlertText("manage.overview.publishing.doi.reserve.reused", new String[]{doi.toString()});
     LOG.info(msg);
     addActionMessage(msg);
   }
@@ -1282,11 +1282,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           try {
             // delete reserved DOI, reassign previous DOI to resource, and update EML alternateIdentifier list
             doDeleteReservedDOI(reservedDoi, resource, assignedDoi);
-            String msg = getText("manage.overview.publishing.doi.delete.reassign.success", new String[]{reservedDoi.toString(), assignedDoi.toString()});
+            String msg = getAlertText("manage.overview.publishing.doi.delete.reassign.success", new String[]{reservedDoi.toString(), assignedDoi.toString()});
             LOG.info(msg);
             addActionMessage(msg);
           } catch (DoiException e) {
-            String errorMsg = getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
+            String errorMsg = getAlertText("manage.overview.publishing.doi.delete.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
             LOG.error(errorMsg, e);
             addActionError(errorMsg);
           }
@@ -1295,21 +1295,21 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
           try {
             // delete reserved DOI, and update EML alternateIdentifier list
             doDeleteReservedDOI(reservedDoi, resource, null);
-            String msg = getText("manage.overview.publishing.doi.delete.success", new String[]{reservedDoi.toString()});
+            String msg = getAlertText("manage.overview.publishing.doi.delete.success", new String[]{reservedDoi.toString()});
             LOG.info(msg);
             addActionMessage(msg);
           } catch (DoiException e) {
-            String errorMsg = getText("manage.overview.publishing.doi.delete.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
+            String errorMsg = getAlertText("manage.overview.publishing.doi.delete.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
             LOG.error(errorMsg, e);
             addActionError(errorMsg);
           }
         }
       } else {
-        addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+        addActionWarning(getAlertText("manage.overview.resource.doi.invalid.operation",
             new String[]{resource.getShortname(), resource.getIdentifierStatus().toString()}));
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.doi.invalid.operation",
+      addActionWarning(getAlertText("manage.overview.resource.doi.invalid.operation",
           new String[]{resource.getShortname(), resource.getIdentifierStatus().toString()}));
     }
     return execute();
@@ -1381,7 +1381,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         if (coreRowType != null) {
           Extension core = extensionManager.get(coreRowType);
           if (core == null) {
-            addActionError(getText("manage.overview.no.DwC.extension", new String[]{coreRowType}));
+            addActionError(getAlertText("manage.overview.no.DwC.extension", new String[]{coreRowType}));
           } else {
             // core always appears first in list
             potentialCores.add(core);
@@ -1523,19 +1523,19 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
             if (doiData.getStatus().compareTo(DoiStatus.RESERVED) == 0 || doiData.getStatus().compareTo(DoiStatus.REGISTERED) == 0) {
               LOG.info("Pre-publication check: successfully resolved {}", resource.getDoi().toString());
             } else {
-              String errorMsg = getText("manage.overview.publishing.doi.publish.check.registered.failed", new String[]{resource.getDoi().toString(), doiData.getStatus().toString()});
+              String errorMsg = getAlertText("manage.overview.publishing.doi.publish.check.registered.failed", new String[]{resource.getDoi().toString(), doiData.getStatus().toString()});
               LOG.error(errorMsg);
               addActionError(errorMsg);
               return INPUT;
             }
           } else {
-            String errorMsg = getText("manage.overview.publishing.doi.publish.check.existing.failed", new String[]{resource.getDoi().toString()});
+            String errorMsg = getAlertText("manage.overview.publishing.doi.publish.check.existing.failed", new String[]{resource.getDoi().toString()});
             LOG.error(errorMsg);
             addActionError(errorMsg);
             return INPUT;
           }
         } catch (DoiException e) {
-          String errorMsg = getText("manage.overview.publishing.doi.publish.check.existing.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
+          String errorMsg = getAlertText("manage.overview.publishing.doi.publish.check.existing.failed.exception", new String[]{resource.getDoi().toString(), e.getMessage()});
           LOG.error(errorMsg, e);
           addActionError(errorMsg);
           return INPUT;
@@ -1578,11 +1578,11 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         if (PublicationException.TYPE.LOCKED == e.getType()) {
           if (e.getAdditionalParameter("source") != null) {
             LOG.error("Publication exception: {}", e.getMessage());
-            addActionError(getText("manage.overview.resource.source.being.processed",
+            addActionError(getAlertText("manage.overview.resource.source.being.processed",
                 new String[]{(String) e.getAdditionalParameter("source")}));
           } else {
             LOG.error("Publication exception: resource {} is currently being published", resource.getShortname());
-            addActionError(getText("manage.overview.resource.being.published",
+            addActionError(getAlertText("manage.overview.resource.being.published",
                 new String[]{resource.getTitleAndShortname()}));
           }
         } else {
@@ -1590,7 +1590,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
               resource.getShortname(),
               e.getMessage());
           // alert user publication failed
-          addActionError(getText("publishing.failed",
+          addActionError(getAlertText("publishing.failed",
               new String[]{String.valueOf(nextVersion), resource.getShortname(), e.getMessage()}));
           // restore the previous version since publication was unsuccessful
           resourcePublicationManager.restoreVersion(resource, nextVersion, this);
@@ -1661,7 +1661,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
 
     if (PublicationStatus.PUBLIC == resource.getStatus()) {
       if (unpublish) {
-        addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+        addActionWarning(getAlertText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
             resource.getStatus().toString()}));
 
       } else {
@@ -1720,7 +1720,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         }
       }
     } else {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+      addActionWarning(getAlertText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
           resource.getStatus().toString()}));
     }
     return execute();
@@ -1863,7 +1863,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
     }
 
     if (!resource.isDwcDp() || !resource.isRegistered()) {
-      addActionWarning(getText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
+      addActionWarning(getAlertText("manage.overview.resource.invalid.operation", new String[]{resource.getShortname(),
           resource.getStatus().toString()}));
       return execute();
     }
@@ -1999,7 +1999,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
       return ERROR;
     } catch (InvalidEmlException e) {
       LOG.error("Validation failed for EML document", e);
-      addActionError(getText("manage.overview.failed.replace.eml.validation") + " " + e.getMessage());
+      addActionError(getText("manage.overview.failed.replace.eml.validation") + " " + escapeHtml(e.getMessage()));
       return ERROR;
     }
   }
@@ -2290,7 +2290,7 @@ public class OverviewAction extends ManagerBaseAction implements ReportHandler, 
         networksAvailable = true;
       } catch (RegistryException e) {
         String msg = RegistryException.logRegistryException(e, this);
-        addActionWarning(getText(
+        addActionWarning(getAlertText(
             "manage.overview.networks.registryAccessUrl",
             new String[]{cfg.getRegistryUrl()}
         ) + msg);

@@ -244,7 +244,7 @@ public class SetupAction extends BaseAction {
       } catch (InvalidConfigException e) {
         LOG.warn("Failed to setup datadir: {}", e.getMessage(), e);
         if (e.getType() == InvalidConfigException.TYPE.NON_WRITABLE_DATA_DIR) {
-          addActionError(getText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
+          addActionError(getAlertText("admin.config.setup.datadir.writable", new String[] {dataDirPath}));
         } else {
           addActionError(getText("admin.config.setup.datadir.error"));
         }
@@ -302,7 +302,7 @@ public class SetupAction extends BaseAction {
         }
       } catch (IOException e) {
         LOG.error(e);
-        addActionError(getText("admin.config.setup2.failed", new String[] {e.getMessage()}));
+        addActionError(getAlertText("admin.config.setup2.failed", new String[] {e.getMessage()}));
       } catch (AlreadyExistingException e) {
         addFieldError("user.email", getText("admin.config.setup2.nonadmin"));
       }
@@ -451,7 +451,7 @@ public class SetupAction extends BaseAction {
         configManager.loadDataDirConfig();
         logIn(setupUser);
       } catch (InvalidConfigException e) {
-        String msg = getText("admin.vocabulary.couldnt.install.defaults", new String[]{e.getMessage()});
+        String msg = getAlertText("admin.vocabulary.couldnt.install.defaults", new String[]{e.getMessage()});
         LOG.error(msg, e);
         addActionWarning(msg, e);
       } catch (RegistryException e) {
@@ -493,7 +493,7 @@ public class SetupAction extends BaseAction {
         registrationManager.save();
       } catch (Exception e) {
         LOG.error(e);
-        addActionWarning(getText("admin.error.invalidConfiguration", new String[]{e.getMessage()}), e);
+        addActionWarning(getAlertText("admin.error.invalidConfiguration", new String[]{e.getMessage()}), e);
       }
     }
     return INPUT;

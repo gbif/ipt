@@ -175,7 +175,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
       }
       // report columns that have been translated multiple times
       for (String columnName : v.getMultipleTranslationsForSameColumn()) {
-        addActionError(getText("validation.column.multipleTranslations", new String[]{columnName}));
+        addActionError(getAlertText("validation.column.multipleTranslations", new String[]{columnName}));
       }
     }
   }
@@ -247,13 +247,13 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
       return NOT_FOUND;
     }
     if (resource.deleteMapping(mapping)) {
-      addActionMessage(getText("manage.mapping.deleted", new String[]{id}));
+      addActionMessage(getAlertText("manage.mapping.deleted", new String[]{id}));
       // set mappings modified date
       resource.setMappingsModified(new Date());
       // save resource
       saveResource();
     } else {
-      addActionMessage(getText("manage.mapping.couldnt.delete", new String[]{id}));
+      addActionMessage(getAlertText("manage.mapping.couldnt.delete", new String[]{id}));
     }
     return SUCCESS;
   }
@@ -407,7 +407,7 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
           // a mapping left without a source, e.g. by the former two-step "Add mapping": back to the overview, where
           // cancel() removes it when it has no fields
           if (mapping.getFields().isEmpty()) {
-            addActionMessage(getText("manage.mapping.unfinished.removed",
+            addActionMessage(getAlertText("manage.mapping.unfinished.removed",
                 new String[] {StringUtils.defaultString(mapping.getExtension().getTitle())}));
           }
           cancel = true;
@@ -484,11 +484,11 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
         if (filled > 0 && sourceChosenNow) {
           // the "Add mapping" dialog posts the source here: save() keeps these fields, and the message goes along
           // with its redirect
-          addActionMessage(getText("manage.mapping.automaped", new String[]{String.valueOf(filled)}));
+          addActionMessage(getAlertText("manage.mapping.automaped", new String[]{String.valueOf(filled)}));
         } else if (filled > 0 && !isHttpPost()) {
           // the page is shown with fields that aren't saved (other POSTs redirect, and the message would go along)
           automappedFields = filled;
-          addActionMessage(getText("manage.mapping.automaped.unsaved", new String[]{String.valueOf(filled)}));
+          addActionMessage(getAlertText("manage.mapping.automaped.unsaved", new String[]{String.valueOf(filled)}));
         }
       }
 
@@ -535,10 +535,10 @@ public class MappingAction extends ManagerBaseAction implements ValidationErrorA
           columns = sourceManager.columns(src);
         }
         if (columns.isEmpty() && src.getName() != null) {
-          addActionWarning(getText("manage.mapping.source.no.columns", new String[]{src.getName()}));
+          addActionWarning(getAlertText("manage.mapping.source.no.columns", new String[]{src.getName()}));
         }
       } catch (Exception e) {
-        addActionError(getText("manage.mapping.source.read.failed", new String[]{src.getName()}));
+        addActionError(getAlertText("manage.mapping.source.read.failed", new String[]{src.getName()}));
       }
     }
   }

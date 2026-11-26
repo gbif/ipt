@@ -307,14 +307,14 @@ public class UserAccountsAction extends POSTAction {
         if (Reason.LAST_ADMIN == e.getReason()) {
           addActionError(getText("admin.user.deleted.lastadmin"));
         } else if (Reason.LAST_RESOURCE_MANAGER == e.getReason()) {
-          addActionError(getText("admin.user.deleted.lastmanager", new String[]{e.getMessage()}));
+          addActionError(getAlertText("admin.user.deleted.lastmanager", new String[]{e.getMessage()}));
         } else if (Reason.IS_RESOURCE_CREATOR == e.getReason()) {
-          addActionError(getText("admin.user.deleted.error.creator", new String[]{e.getMessage()}));
+          addActionError(getAlertText("admin.user.deleted.error.creator", new String[]{e.getMessage()}));
         } else {
           addActionError(getText("admin.user.deleted.error"));
         }
       } catch (IOException e) {
-        addActionError(getText("admin.user.cantSave", new String[]{e.getMessage()}));
+        addActionError(getAlertText("admin.user.cantSave", new String[]{e.getMessage()}));
       }
     }
     return INPUT;
@@ -403,14 +403,15 @@ public class UserAccountsAction extends POSTAction {
 
         String emailLink = String.format(
             EMAIL_NEW_ACCOUNT,
-            user.getEmail(),
-            user.getFirstname(),
-            cfg.getBaseUrl(),
-            user.getEmail(),
+            escapeHtml(user.getEmail()),
+            escapeHtml(user.getFirstname()),
+            escapeHtml(cfg.getBaseUrl()),
+            escapeHtml(user.getEmail()),
             encodedPassword,
             user.getRole());
 
         LOG.info("User {} has been created by {}", id, currentUser.getEmail());
+        // the link is HTML, its values escaped above
         addActionMessage(getText("admin.user.added", new String[]{emailLink}));
       } else if (resetPassword) {
         String newPassword = PasswordUtils.generatePassword();
@@ -421,14 +422,16 @@ public class UserAccountsAction extends POSTAction {
 
         String emailLink = String.format(
             EMAIL_PASSWORD_CHANGE,
-            user.getEmail(),
-            user.getFirstname(),
-            cfg.getBaseUrl(),
-            user.getEmail(),
+            escapeHtml(user.getEmail()),
+            escapeHtml(user.getFirstname()),
+            escapeHtml(cfg.getBaseUrl()),
+            escapeHtml(user.getEmail()),
             newPasswordEncoded);
 
         LOG.info("User {} password has been changed by {}", user.getEmail(), currentUser.getEmail());
-        addActionMessage(getText("admin.user.passwordChanged", new String[]{user.getEmail(), newPassword, emailLink}));
+        // the link is HTML, its values escaped above
+        addActionMessage(getText("admin.user.passwordChanged",
+            new String[]{escapeHtml(user.getEmail()), escapeHtml(newPassword), emailLink}));
       } else if (deactivate || activate) {
         // only the account status changes, any other submitted edits are ignored
         if (deactivate && id.equalsIgnoreCase(currentUser.getEmail())) {
@@ -443,10 +446,10 @@ public class UserAccountsAction extends POSTAction {
 
         if (deactivate) {
           LOG.info("User {} has been deactivated by {}", id, currentUser.getEmail());
-          addActionMessage(getText("admin.user.deactivated", new String[]{id}));
+          addActionMessage(getAlertText("admin.user.deactivated", new String[]{id}));
         } else {
           LOG.info("User {} has been activated by {}", id, currentUser.getEmail());
-          addActionMessage(getText("admin.user.activated", new String[]{id}));
+          addActionMessage(getAlertText("admin.user.activated", new String[]{id}));
         }
       } else {
         User currentStateUser = userManager.get(user.getEmail());
@@ -483,11 +486,11 @@ public class UserAccountsAction extends POSTAction {
     } catch (IOException e) {
       LOG.error("User change couldn't be saved: {}", e.getMessage(), e);
       addActionError(getText("admin.user.saveError"));
-      addActionError(e.getMessage());
+      addActionError(escapeHtml(e.getMessage()));
       return INPUT;
     } catch (AlreadyExistingException e) {
       LOG.error("User with the email address {} already exists", user.getEmail(), e);
-      addActionError(getText("admin.user.exists", new String[]{user.getEmail()}));
+      addActionError(getAlertText("admin.user.exists", new String[]{user.getEmail()}));
       // resetting user
       user = new User();
       return INPUT;

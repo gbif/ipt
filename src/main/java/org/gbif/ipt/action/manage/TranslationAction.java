@@ -112,7 +112,7 @@ public class TranslationAction extends ManagerBaseAction {
         return vc != null ? vc.getIdentifier() : null;
       });
       automapped = count;
-      addActionMessage(getText("manage.translation.mapped.terms", new String[]{String.valueOf(count)}));
+      addActionMessage(getAlertText("manage.translation.mapped.terms", new String[]{String.valueOf(count)}));
     }
     return SUCCESS;
   }
@@ -133,7 +133,7 @@ public class TranslationAction extends ManagerBaseAction {
     if (field != null) {
       field.setTranslation(new TreeMap<>());
       saveResource();
-      addActionMessage(getText("manage.translation.deleted", new String[]{field.getTerm().toString()}));
+      addActionMessage(getAlertText("manage.translation.deleted", new String[]{field.getTerm().toString()}));
     } else {
       LOG.error("User wanted to delete translation for propertyMapping field, but field was null");
     }
@@ -190,7 +190,7 @@ public class TranslationAction extends ManagerBaseAction {
       return NOT_FOUND;
     }
     if (!hasActionErrors()) {
-      addActionMessage(getText("manage.translation.reloaded.values",
+      addActionMessage(getAlertText("manage.translation.reloaded.values",
           new String[]{String.valueOf(translation.getSourceValueCount()), property.getName()}));
     }
     // leaves the user on the translation page
@@ -210,17 +210,17 @@ public class TranslationAction extends ManagerBaseAction {
       rowLimitReached = read.rowLimitReached();
     } catch (SourceException e) {
       // if an error has occurred, bring it to the user's attention
-      addActionError(getText("manage.translation.reloaded.fail",
+      addActionError(getAlertText("manage.translation.reloaded.fail",
           new String[]{property.getName(), e.getMessage()}));
       values = Collections.emptySet();
     }
     translation.load(values, field.getTranslation());
     if (translation.isTruncated()) {
-      addActionWarning(getText("manage.translation.values.truncated",
+      addActionWarning(getAlertText("manage.translation.values.truncated",
           new String[]{String.valueOf(ValueTranslation.MAX_DISTINCT_VALUES)}));
     } else if (rowLimitReached) {
       // an SQL source is only read up to MAX_SQL_ROWS rows: values first appearing later aren't offered
-      addActionWarning(getText("manage.translation.values.rowLimit",
+      addActionWarning(getAlertText("manage.translation.values.rowLimit",
           new String[]{String.valueOf(ValueTranslation.MAX_SQL_ROWS)}));
     }
   }
@@ -236,7 +236,7 @@ public class TranslationAction extends ManagerBaseAction {
     // save entire resource config
     saveResource();
     id = mapping.getExtension().getRowType();
-    addActionMessage(getText("manage.translation.saved", new String[]{field.getTerm().toString()}));
+    addActionMessage(getAlertText("manage.translation.saved", new String[]{field.getTerm().toString()}));
     return NONE;
   }
 

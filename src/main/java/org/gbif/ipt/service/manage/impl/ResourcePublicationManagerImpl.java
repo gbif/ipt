@@ -921,13 +921,14 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         action.addActionError(msg);
         LOG.error(msg);
         // add error message that explains the root cause of the Registry error to user
+        // the alert shows HTML, the exception's message goes on as plain text (publishing report, bulk publishing)
+        action.addActionError(action.getAlertText("admin.config.updateMetadata.resource.fail.registry", e.getMessage()));
         msg = action.getText("admin.config.updateMetadata.resource.fail.registry", new String[]{e.getMessage()});
-        action.addActionError(msg);
         LOG.error(msg);
         throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
       } catch (InvalidConfigException e) {
+        action.addActionError(action.getAlertText("manage.overview.failed.resource.update", e.getMessage()));
         String msg = action.getText("manage.overview.failed.resource.update", new String[]{e.getMessage()});
-        action.addActionError(msg);
         LOG.error(msg);
         throw new PublicationException(PublicationException.TYPE.REGISTRY, msg, e);
       }
@@ -1605,9 +1606,10 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         action.addActionError(msg);
       }
       // alert user version rollback was successful
+      // the alert shows HTML, the publishing report (report.ftl) plain text
       String msg = action.getText("restore.resource.success", new String[]{toRestore.toPlainString(), shortname});
       LOG.info(msg);
-      action.addActionMessage(msg);
+      action.addActionMessage(action.getAlertText("restore.resource.success", toRestore.toPlainString(), shortname));
       // update StatusReport on publishing page
       // Warning: don't retrieve status report using status() otherwise a cyclical call to isLocked results
       StatusReport report = processReports.get(shortname);
@@ -1682,9 +1684,10 @@ public class ResourcePublicationManagerImpl extends BaseManager implements Resou
         action.addActionError(msg);
       }
       // alert user version rollback was successful
+      // the alert shows HTML, the publishing report (report.ftl) plain text
       String msg = action.getText("restore.resource.success", new String[]{toRestore.toPlainString(), shortname});
       LOG.info(msg);
-      action.addActionMessage(msg);
+      action.addActionMessage(action.getAlertText("restore.resource.success", toRestore.toPlainString(), shortname));
       // update StatusReport on publishing page
       // Warning: don't retrieve status report using status() otherwise a cyclical call to isLocked results
       StatusReport report = processReports.get(shortname);

@@ -89,7 +89,9 @@ public class SetupAndCancelInterceptor extends AbstractInterceptor {
           }
         }
         // keep track of unique set of warnings coming from managers
-        for (String msg : warnings.getStartupErrors()) {
+        for (String startupError : warnings.getStartupErrors()) {
+          // plain text (paths, error details) shown in an alert, which shows HTML: escaped
+          String msg = BaseAction.escapeHtml(startupError);
           // find out if the warning has been added to the list of action warnings yet
           if (!existing.contains(StringUtils.trimToEmpty(msg))) {
             existing.add(msg);

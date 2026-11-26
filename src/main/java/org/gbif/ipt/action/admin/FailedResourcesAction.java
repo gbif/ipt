@@ -77,11 +77,11 @@ public class FailedResourcesAction extends BaseAction {
     }
     try {
       Resource resource = resourceManager.retryLoad(r, getCurrentUser());
-      addActionMessage(getText("admin.failedResources.retry.success", new String[]{resource.getShortname()}));
+      addActionMessage(getAlertText("admin.failedResources.retry.success", new String[]{resource.getShortname()}));
     } catch (IllegalArgumentException e) {
-      addActionError(getText("admin.failedResources.retry.notFound", new String[]{r}));
+      addActionError(getAlertText("admin.failedResources.retry.notFound", new String[]{r}));
     } catch (InvalidConfigException e) {
-      addActionError(getText("admin.failedResources.retry.failed", new String[]{r}));
+      addActionError(getAlertText("admin.failedResources.retry.failed", new String[]{r}));
     }
     return execute();
   }

@@ -669,7 +669,7 @@ public class ResourceImportServiceImplTest {
 
     assertEquals("BE", copied.getContributor().get(0).getCountry());
     verify(metadataReader).writeValue(new File(resourceDir, "datapackage.json"), copied);
-    verify(action).getText("manage.resource.dp.coldp.country.code", new String[] {"Belgium", "BE"});
+    verify(action).getAlertText("manage.resource.dp.coldp.country.code", "Belgium", "BE");
   }
 
   /**
@@ -700,7 +700,7 @@ public class ResourceImportServiceImplTest {
 
     service.copyDatapackageMetadata(SHORTNAME, metadataFile, COL_DP, alog);
 
-    verify(action).getText("manage.resource.dp.coldp.license.unsupported", new String[] {"CC BY-SA 4.0"});
+    verify(action).getAlertText("manage.resource.dp.coldp.license.unsupported", "CC BY-SA 4.0");
   }
 
   /**
@@ -714,8 +714,8 @@ public class ResourceImportServiceImplTest {
 
     service.createFromEml(SHORTNAME, bySa, creator, alog);
 
-    verify(action).getText("manage.resource.license.unsupported",
-        new String[] {"Creative Commons Attribution-ShareAlike (CC-BY-SA) 4.0 License"});
+    verify(action).getAlertText("manage.resource.license.unsupported",
+        "Creative Commons Attribution-ShareAlike (CC-BY-SA) 4.0 License");
   }
 
   @Test

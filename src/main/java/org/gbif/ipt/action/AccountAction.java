@@ -121,7 +121,7 @@ public class AccountAction extends POSTAction {
     } catch (IOException e) {
       addActionError(getText("admin.user.account.saveError"));
       LOG.error("The user {} account change could not be made: {}", user.getEmail(), e.getMessage(), e);
-      addActionError(e.getMessage());
+      addActionError(escapeHtml(e.getMessage()));
     }
 
     return INPUT;

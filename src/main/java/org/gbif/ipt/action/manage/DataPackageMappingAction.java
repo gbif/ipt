@@ -158,7 +158,7 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
         String action = unresolvedFieldActions.get(fieldName);
         UnresolvedFieldResult result = applyUnresolvedFieldAction(unresolved, action, fields);
         if (result == UnresolvedFieldResult.TARGET_MAPPED) {
-          addActionWarning(getText("manage.mapping.unresolved.targetMapped",
+          addActionWarning(getAlertText("manage.mapping.unresolved.targetMapped",
               new String[] {fieldName, StringUtils.removeStart(action, UNRESOLVED_MOVE_TO_PREFIX)}));
         }
         if (result == UnresolvedFieldResult.KEPT || result == UnresolvedFieldResult.TARGET_MAPPED) {
@@ -329,7 +329,7 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
         columns = sourceManager.columns(src);
       }
       if (columns.isEmpty() && src.getName() != null) {
-        addActionWarning(getText("manage.mapping.source.no.columns", new String[]{src.getName()}));
+        addActionWarning(getAlertText("manage.mapping.source.no.columns", new String[]{src.getName()}));
       }
     }
   }
@@ -481,7 +481,7 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
       saveResource();
     }
 
-    addActionMessage(getText("manage.mapping.multiple.created", new String[]{String.valueOf(newMappingsNumber)}));
+    addActionMessage(getAlertText("manage.mapping.multiple.created", new String[]{String.valueOf(newMappingsNumber)}));
 
     return SUCCESS;
   }
@@ -585,7 +585,7 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
         if (automapped > 0 && !isHttpPost()) {
           // the page is shown with fields that aren't saved: it starts with its save bar (js/mapping.js)
           automappedFields = automapped;
-          addActionMessage(getText("manage.mapping.automaped.unsaved", new String[]{String.valueOf(automapped)}));
+          addActionMessage(getAlertText("manage.mapping.automaped.unsaved", new String[]{String.valueOf(automapped)}));
         }
       }
     }
@@ -910,13 +910,13 @@ public class DataPackageMappingAction extends ManagerBaseAction implements Valid
         .orElse("unknown");
 
     if (resource.deleteMapping(mapping)) {
-      addActionMessage(getText("manage.mapping.deleted", new String[]{sourceName + " → " + tableSchemaName}));
+      addActionMessage(getAlertText("manage.mapping.deleted", new String[]{sourceName + " → " + tableSchemaName}));
       // set mappings modified date
       resource.setMappingsModified(new Date());
       // save resource
       saveResource();
     } else {
-      addActionMessage(getText("manage.mapping.couldnt.delete", new String[]{sourceName + " → " + tableSchemaName}));
+      addActionMessage(getAlertText("manage.mapping.couldnt.delete", new String[]{sourceName + " → " + tableSchemaName}));
     }
     return SUCCESS;
   }

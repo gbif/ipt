@@ -225,7 +225,7 @@ public class DataPackageSchemaAction extends POSTAction {
   public String delete() throws Exception {
     DataPackageSchema schema = schemaManager.get(id);
     if (schema == null) {
-      addActionWarning(getText("admin.dataPackages.delete.error", new String[]{id}));
+      addActionWarning(getAlertText("admin.dataPackages.delete.error", new String[]{id}));
       return SUCCESS;
     }
 
@@ -242,9 +242,9 @@ public class DataPackageSchemaAction extends POSTAction {
       }
 
       schemaManager.uninstall(schema.getIdentifier());
-      addActionMessage(getText("admin.dataPackages.delete.success", new String[]{id}));
+      addActionMessage(getAlertText("admin.dataPackages.delete.success", new String[]{id}));
     } catch (DeletionNotAllowedException | InvalidConfigException e) {
-      addActionWarning(getText("admin.dataPackages.delete.error", new String[]{id}));
+      addActionWarning(getAlertText("admin.dataPackages.delete.error", new String[]{id}));
       addActionExceptionWarning(e);
     }
     return SUCCESS;
@@ -271,10 +271,10 @@ public class DataPackageSchemaAction extends POSTAction {
         updateResourcesAfterSchemaUpdate(replacedSchema, latestCompatibleSchema);
       }
 
-      addActionMessage(getText("admin.dataPackages.update.success", new String[]{id}));
+      addActionMessage(getAlertText("admin.dataPackages.update.success", new String[]{id}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.dataPackages.update.error", new String[]{e.getMessage()}), e);
+      addActionWarning(getAlertText("admin.dataPackages.update.error", new String[]{e.getMessage()}), e);
     }
     return SUCCESS;
   }
@@ -295,7 +295,7 @@ public class DataPackageSchemaAction extends POSTAction {
     try {
       DataPackageSchema update = schemaManager.getUpdate(id);
       if (update == null) {
-        addActionMessage(getText("admin.dataPackages.update.none",
+        addActionMessage(getAlertText("admin.dataPackages.update.none",
             new String[]{Objects.toString(installed.getTitle(), installed.getName())}));
         return INPUT;
       }
@@ -306,7 +306,7 @@ public class DataPackageSchemaAction extends POSTAction {
       updateImpact = DataPackageSchemaUpdateImpact.of(installed, update, resources);
     } catch (Exception e) {
       LOG.error("Failed to get the update of data schema {}", id, e);
-      addActionWarning(getText("admin.dataPackages.update.impact.error", new String[]{id}), e);
+      addActionWarning(getAlertText("admin.dataPackages.update.impact.error", new String[]{id}), e);
       return INPUT;
     }
     return SUCCESS;
@@ -373,7 +373,7 @@ public class DataPackageSchemaAction extends POSTAction {
     } catch (RuntimeException e) {
       // saving the resource fails with an InvalidConfigException, and saving the metadata with a runtime exception
       LOG.error("Failed to save resource {} after updating data schema {}", resource.getShortname(), id, e);
-      addActionWarning(getText("admin.dataPackages.update.resource.save.error",
+      addActionWarning(getAlertText("admin.dataPackages.update.resource.save.error",
           new String[]{resource.getShortname()}), e);
     }
   }
@@ -418,13 +418,13 @@ public class DataPackageSchemaAction extends POSTAction {
       if (wrappedSchema.isPresent()) {
         schemaManager.install(wrappedSchema.get());
       } else {
-        addActionWarning(getText("admin.dataPackages.install.error", new String[]{id}));
+        addActionWarning(getAlertText("admin.dataPackages.install.error", new String[]{id}));
       }
 
-      addActionMessage(getText("admin.dataPackages.install.success", new String[]{id}));
+      addActionMessage(getAlertText("admin.dataPackages.install.success", new String[]{id}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.dataPackages.install.error", new String[]{id}), e);
+      addActionWarning(getAlertText("admin.dataPackages.install.error", new String[]{id}), e);
     }
     return SUCCESS;
   }

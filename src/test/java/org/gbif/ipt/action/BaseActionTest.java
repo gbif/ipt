@@ -23,6 +23,7 @@ import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -39,6 +40,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -152,5 +156,33 @@ public class BaseActionTest extends IptBaseTest {
     } finally {
       ActionContext.clear();
     }
+  }
+
+  /**
+   * A value for an alert is escaped, null stays null.
+   */
+  @Test
+  public void testEscapeHtml() {
+    assertEquals("&lt;img src=x onerror=alert(1)&gt; &amp; &quot;q&quot;", BaseAction.escapeHtml("<img src=x onerror=alert(1)> & \"q\""));
+    assertEquals("${7*7}", BaseAction.escapeHtml("${7*7}"));
+    assertEquals("O&#39;Brien", BaseAction.escapeHtml("O'Brien"));
+    // other characters stay as they are
+    assertEquals("Café → São Paulo", BaseAction.escapeHtml("Café → São Paulo"));
+    assertEquals("12", BaseAction.escapeHtml(12));
+    assertNull(BaseAction.escapeHtml(null));
+  }
+
+  /**
+   * An alert's arguments are escaped, the message's own markup isn't.
+   */
+  @Test
+  public void testGetAlertText() {
+    SimpleTextProvider textProvider = mock(SimpleTextProvider.class);
+    when(textProvider.getText(any(), eq("alert.key"), isNull(), any(String[].class)))
+        .thenAnswer(inv -> MessageFormat.format("<strong>{0}</strong> in {1}", inv.getArgument(3)));
+    BaseAction action = new BaseAction(textProvider, mock(AppConfig.class), mock(RegistrationManager.class));
+
+    assertEquals("<strong>&lt;b&gt;Birds&lt;/b&gt;</strong> in a&amp;b.csv", action.getAlertText("alert.key", "<b>Birds</b>", "a&b.csv"));
+    assertEquals("<strong>x</strong> in y", action.getAlertText("alert.key", "x", "y"));
   }
 }

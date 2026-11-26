@@ -147,7 +147,7 @@ public class OrganisationsAction extends POSTAction {
       }
       addActionExceptionWarning(e);
     } catch (IOException e) {
-      addActionError(getText("admin.organisation.cantSave") + ": " + e.getMessage());
+      addActionError(getText("admin.organisation.cantSave") + ": " + escapeHtml(e.getMessage()));
     }
     return INPUT;
   }
@@ -246,10 +246,10 @@ public class OrganisationsAction extends POSTAction {
     } catch (IOException e) {
       LOG.error("The organisation association couldn't be saved: {}", e.getMessage(), e);
       addActionError(getText("admin.organisation.error.save"));
-      addActionError(e.getMessage());
+      addActionError(escapeHtml(e.getMessage()));
       return INPUT;
     } catch (AlreadyExistingException e) {
-      addActionError(getText("admin.organisation.exists", new String[]{id}));
+      addActionError(getAlertText("admin.organisation.exists", new String[]{id}));
       return INPUT;
     }
   }

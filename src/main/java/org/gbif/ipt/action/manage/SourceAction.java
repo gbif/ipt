@@ -179,7 +179,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
       // check not found
       if (responseCode == 404) {
         LOG.error("Can't read URL {} : Not Found", url);
-        addActionError(getText("manage.source.url.notFound", new String[]{url}));
+        addActionError(getAlertText("manage.source.url.notFound", new String[]{url}));
         return ERROR;
       }
 
@@ -196,13 +196,13 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         // check a mime type
         if (!URLUtils.VALID_CONTENT_TYPES.contains(contentType)) {
           LOG.error("Not allowed content type: {}", contentType);
-          addActionError(getText("manage.source.url.invalidExtension", new String[]{url, extension}));
+          addActionError(getAlertText("manage.source.url.invalidExtension", new String[]{url, extension}));
           return ERROR;
         }
       }
     } catch (IOException | MimeTypeParseException e) {
       LOG.error("Failed to create a URL source: {}", e.getMessage());
-      addActionError(getText("manage.source.url.invalid", new String[]{url}));
+      addActionError(getAlertText("manage.source.url.invalid", new String[]{url}));
       return ERROR;
     }
 
@@ -240,7 +240,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
               : null;
 
           List<File> files = CompressionUtil.decompressFile(tmpDir, content, unzippedFileName);
-          addActionMessage(getText("manage.source.compressed.files", new String[]{String.valueOf(files.size())}));
+          addActionMessage(getAlertText("manage.source.compressed.files", new String[]{String.valueOf(files.size())}));
 
           // import each file from the archive
           for (File f : files) {
@@ -257,7 +257,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         } catch (IOException e) {
           LOG.error(e);
           addErrorHeader("manage.source.filesystem.error");
-          addActionError(getText("manage.source.filesystem.error", new String[]{e.getMessage()}));
+          addActionError(getAlertText("manage.source.filesystem.error", new String[]{e.getMessage()}));
           return ERROR;
         } catch (UnsupportedCompressionType e) {
           LOG.error(e);
@@ -306,9 +306,9 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
     }
 
     if (createdSourceNames.size() == 1) {
-      addActionMessage(getText("manage.overview.source.created", new String[]{createdSourceNames.get(0)}));
+      addActionMessage(getAlertText("manage.overview.source.created", new String[]{createdSourceNames.get(0)}));
     } else {
-      addActionMessage(getText("manage.overview.sources.created", new String[]{String.join(", ", createdSourceNames)}));
+      addActionMessage(getAlertText("manage.overview.sources.created", new String[]{String.join(", ", createdSourceNames)}));
     }
 
     return SUCCESS;
@@ -368,10 +368,10 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
       id = source.getName();
 
       if (replaced) {
-        addActionMessage(getText("manage.source.replaced.existing", new String[]{source.getName()}));
+        addActionMessage(getAlertText("manage.source.replaced.existing", new String[]{source.getName()}));
         alertColumnNumberChange(resource.hasMappedSource(existingSource), source.getColumns(), existingSource.getColumns());
       } else {
-        addActionMessage(getText("manage.source.added.new", new String[]{source.getName()}));
+        addActionMessage(getAlertText("manage.source.added.new", new String[]{source.getName()}));
       }
       alertEmbeddedLineBreaksRemoved(source);
       alertProblems(source);
@@ -380,9 +380,9 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
 
     } catch (ImportException e) {
       LOG.error("Cannot add source {}: {}", filename, e.getMessage(), e);
-      String message = getText("manage.source.cannot.add", new String[]{filename, e.getMessage()});
-      setErrorHeaderMessage(message);
-      addActionError(message);
+      // the header is shown as plain text (overview.ftl), the alert as HTML
+      setErrorHeaderMessage(getText("manage.source.cannot.add", new String[]{filename, e.getMessage()}));
+      addActionError(getAlertText("manage.source.cannot.add", filename, e.getMessage()));
       return null;
     }
   }
@@ -434,17 +434,17 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
       id = source.getName();
 
       if (replaced) {
-        addActionMessage(getText("manage.source.replaced.existing", new String[] {source.getName()}));
+        addActionMessage(getAlertText("manage.source.replaced.existing", new String[] {source.getName()}));
         // alert user if the number of columns changed
         alertColumnNumberChange(resource.hasMappedSource(existingSource), source.getColumns(),
             existingSource.getColumns());
       } else {
-        addActionMessage(getText("manage.source.added.new", new String[] {source.getName()}));
+        addActionMessage(getAlertText("manage.source.added.new", new String[] {source.getName()}));
       }
     } catch (ImportException e) {
       // even though we have problems with this source we'll keep it for manual corrections
       LOG.error("Cannot add URL source {}", url, e);
-      addActionError(getText("manage.source.cannot.add", new String[]{sourceName, e.getMessage()}));
+      addActionError(getAlertText("manage.source.cannot.add", new String[]{sourceName, e.getMessage()}));
     }
   }
 
@@ -488,10 +488,10 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
         .collect(Collectors.toList());
       // one problem fits in the warning with how to fix it, more are listed on the source page
       if (problems.size() == 1) {
-        addActionWarning(getText("manage.source.problem.found",
+        addActionWarning(getAlertText("manage.source.problem.found",
           new String[] {source.getName(), problemMessage(source, problems.get(0), false)}));
       } else if (problems.size() > 1) {
-        addActionWarning(getText("manage.source.problems.found", new String[] {source.getName()}));
+        addActionWarning(getAlertText("manage.source.problems.found", new String[] {source.getName()}));
       }
     }
   }
@@ -565,7 +565,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
   protected boolean alertColumnNumberChange(boolean sourceIsMapped, int number, int originalNumber) {
     if (sourceIsMapped) {
       if (originalNumber != number) {
-        addActionWarning(getText("manage.source.numColumns.changed",
+        addActionWarning(getAlertText("manage.source.numColumns.changed",
           new String[] {source.getName(), String.valueOf(originalNumber), String.valueOf(number)}));
       return true;
       }
@@ -580,12 +580,12 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
       return NOT_FOUND;
     }
     if (sourceManager.delete(resource, resource.getSource(id))) {
-      addActionMessage(getText("manage.source.deleted", new String[] {id}));
+      addActionMessage(getAlertText("manage.source.deleted", new String[] {id}));
       // set sources modified date
       resource.setSourcesModified(new Date());
       saveResource();
     } else {
-      addActionMessage(getText("manage.source.deleted.couldnt", new String[] {id}));
+      addActionMessage(getAlertText("manage.source.deleted.couldnt", new String[] {id}));
     }
     return SUCCESS;
   }
@@ -694,7 +694,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
             addActionMessage(getText("manage.source.analyze.inProcess"));
           } else if (source instanceof SqlSource) {
             // only the statement is tried, so there's no source log
-            addActionMessage(getText("manage.source.analyzed.sql",
+            addActionMessage(getAlertText("manage.source.analyzed.sql",
               new String[] {String.valueOf(source.getColumns())}));
           } else if (readingSettingsChanged && !this.analyze) {
             addActionMessage(getText("manage.source.analyzed.settingsChanged"));
@@ -702,7 +702,7 @@ public class SourceAction extends ManagerBaseAction implements UploadedFilesAwar
             addActionMessage(getText("manage.source.analyzed"));
           }
         } else {
-          addActionError(getText("manage.source.analyzed.problem", new String[] {problem}));
+          addActionError(getAlertText("manage.source.analyzed.problem", new String[] {problem}));
         }
       } else {
         result = SUCCESS;

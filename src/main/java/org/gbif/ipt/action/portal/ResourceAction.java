@@ -461,7 +461,7 @@ public class ResourceAction extends PortalBaseAction {
     // if the record count for this published version is greater than 0, but no dwca was found, it must have been
     // deleted which means that archival mode was not turned on when the proceeding version was published
     if (metadataOnly && recordsPublishedForVersion > 0 && !resource.isDwcDp()) {
-      addActionWarning(getText("portal.resource.version.notArchived.count",
+      addActionWarning(getAlertText("portal.resource.version.notArchived.count",
         new String[] {String.valueOf(recordsPublishedForVersion)}));
     }
 
@@ -571,12 +571,12 @@ public class ResourceAction extends PortalBaseAction {
       LOG.error("Metadata file version #{} for resource {} not found", getStringVersion(), shortname);
       return NOT_FOUND;
     } catch (IOException e) {
-      String msg = getText("portal.resource.metadata.error.load", new String[] {getStringVersion(), shortname});
+      String msg = getAlertText("portal.resource.metadata.error.load", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
     } catch (SAXException | ParserConfigurationException e) {
-      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), shortname});
+      String msg = getAlertText("portal.resource.eml.error.parse", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
@@ -606,7 +606,7 @@ public class ResourceAction extends PortalBaseAction {
       LOG.error("Metadata file version #{} for resource {} not found", getStringVersion(), shortname);
       return NOT_FOUND;
     } catch (IOException e) {
-      String msg = getText("portal.resource.metadata.error.load", new String[] {getStringVersion(), shortname});
+      String msg = getAlertText("portal.resource.metadata.error.load", new String[] {getStringVersion(), shortname});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
@@ -755,10 +755,10 @@ public class ResourceAction extends PortalBaseAction {
         PublicationStatus versionStatus = getPublishedVersionsPublicationStatus(resource, version);
         if (versionStatus.equals(PublicationStatus.PRIVATE)) {
           String status = getText("resource.status.private");
-          addActionWarning(getText("portal.resource.warning.notPublic", new String[] {status.toLowerCase()}));
+          addActionWarning(getAlertText("portal.resource.warning.notPublic", new String[] {status.toLowerCase()}));
         } else if (resource.getStatus().equals(PublicationStatus.DELETED)) {
           String status = getText("resource.status.deleted");
-          addActionWarning(getText("portal.resource.warning.notPublic", new String[] {status.toLowerCase()}));
+          addActionWarning(getAlertText("portal.resource.warning.notPublic", new String[] {status.toLowerCase()}));
         }
       }
       // otherwise, only published public versions can be shown
@@ -783,7 +783,7 @@ public class ResourceAction extends PortalBaseAction {
       // if the specific version requested is not the latest published version, warn user
       if (resource.getLastPublishedVersionsVersion() != null
           && version.compareTo(resource.getLastPublishedVersionsVersion()) != 0) {
-        addActionWarning(getText("portal.resource.warning.notLatest",
+        addActionWarning(getAlertText("portal.resource.warning.notLatest",
             new String[] {cfg.getBaseUrl() + "/resource?r=" + resource.getShortname()}));
       }
 
@@ -808,12 +808,12 @@ public class ResourceAction extends PortalBaseAction {
       LOG.error("Metadata file version #{} for resource {} not found", getStringVersion(), name);
       return NOT_FOUND;
     } catch (IOException e) {
-      String msg = getText("portal.resource.metadata.error.load", new String[] {getStringVersion(), name});
+      String msg = getAlertText("portal.resource.metadata.error.load", new String[] {getStringVersion(), name});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;
     } catch (SAXException | ParserConfigurationException e) {
-      String msg = getText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
+      String msg = getAlertText("portal.resource.eml.error.parse", new String[] {getStringVersion(), name});
       LOG.error(msg);
       addActionError(msg);
       return ERROR;

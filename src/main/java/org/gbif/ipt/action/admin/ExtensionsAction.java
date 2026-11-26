@@ -151,9 +151,9 @@ public class ExtensionsAction extends POSTAction {
         }
       }
       extensionManager.uninstallSafely(id);
-      addActionMessage(getText("admin.extension.delete.success", new String[]{id}));
+      addActionMessage(getAlertText("admin.extension.delete.success", new String[]{id}));
     } catch (DeletionNotAllowedException e) {
-      addActionWarning(getText("admin.extension.delete.error", new String[]{id}));
+      addActionWarning(getAlertText("admin.extension.delete.error", new String[]{id}));
       addActionExceptionWarning(e);
     }
     return SUCCESS;
@@ -204,14 +204,14 @@ public class ExtensionsAction extends POSTAction {
 
       String title = latestVersion != null ? latestVersion.getTitle() : id;
       if (migrated.isEmpty()) {
-        addActionMessage(getText("admin.extension.update.success", new String[]{title}));
+        addActionMessage(getAlertText("admin.extension.update.success", new String[]{title}));
       } else {
         String names = migrated.stream().map(this::titleOf).collect(Collectors.joining(", "));
-        addActionMessage(getText("admin.extension.update.success.resources", new String[]{title, names}));
+        addActionMessage(getAlertText("admin.extension.update.success.resources", new String[]{title, names}));
       }
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.extension.update.error", new String[]{e.getMessage()}), e);
+      addActionWarning(getAlertText("admin.extension.update.error", new String[]{e.getMessage()}), e);
     }
     return SUCCESS;
   }
@@ -236,7 +236,7 @@ public class ExtensionsAction extends POSTAction {
         if (e instanceof RegistryException) {
           errorMsg = RegistryException.logRegistryException(((RegistryException) e), this);
         }
-        addActionWarning(getText("admin.extensions.synchronise.error", new String[]{errorMsg}));
+        addActionWarning(getAlertText("admin.extensions.synchronise.error", new String[]{errorMsg}));
         LOG.error(e);
       }
     }
@@ -555,10 +555,10 @@ public class ExtensionsAction extends POSTAction {
   public String save() {
     try {
       extensionManager.install(new URL(url));
-      addActionMessage(getText("admin.extension.install.success", new String[]{url}));
+      addActionMessage(getAlertText("admin.extension.install.success", new String[]{url}));
     } catch (Exception e) {
       LOG.error(e);
-      addActionWarning(getText("admin.extension.install.error", new String[]{url}), e);
+      addActionWarning(getAlertText("admin.extension.install.error", new String[]{url}), e);
     }
     return SUCCESS;
   }

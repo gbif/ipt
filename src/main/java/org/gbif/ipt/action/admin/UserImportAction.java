@@ -154,7 +154,7 @@ public class UserImportAction extends BaseAction implements UploadedFilesAware {
         row.addError("admin.users.import.error.exists");
       } catch (IOException e) {
         LOG.error("Failed to save users during bulk import: {}", e.getMessage(), e);
-        addActionError(getText("admin.user.cantSave", new String[] {e.getMessage()}));
+        addActionError(getAlertText("admin.user.cantSave", new String[] {e.getMessage()}));
         break;
       }
     }

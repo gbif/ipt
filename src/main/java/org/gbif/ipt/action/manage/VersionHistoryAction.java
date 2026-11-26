@@ -94,7 +94,7 @@ public class VersionHistoryAction extends ManagerBaseAction {
         saveResource();
         return SUCCESS;
       } else {
-        addActionError("The version history for version " + getVersion() + " does not exist!");
+        addActionError("The version history for version " + escapeHtml(getVersion()) + " does not exist!");
       }
     }
     addActionError("The change summary for this version could not be updated. Please refresh the page and try again.");
