@@ -357,6 +357,7 @@ public class OrganisationsAction extends POSTAction {
     return cfg.getPortalUrl();
   }
 
+  @StrutsParameter
   public void setSynchronise(String synchronise) {
     this.synchronise = StringUtils.trimToNull(synchronise) != null;
   }
