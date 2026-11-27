@@ -1281,9 +1281,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
           http.get(getLoginURL(organisationKey), new UsernamePasswordCredentials(organisationKey, password));
       return HttpUtil.success(resp);
     } catch (Exception e) {
-      LOG.warn(
-        "The organisation could not be validated using key (" + organisationKey + ") and password (" + password + ")",
-        e);
+      LOG.warn("The organisation could not be validated using key ({}) and its shared token", organisationKey, e);
     }
     return false;
   }

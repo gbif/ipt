@@ -103,6 +103,11 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
       LOG.debug("Adding/updating associated organisation {} - {}", organisation.getKey(), organisation.getName());
       registration.getAssociatedOrganisations().put(organisation.getKey().toString(), organisation);
+      // the hosting organisation is the same object as its associated one, so a change (e.g. its token) reaches both
+      Organisation host = registration.getHostingOrganisation();
+      if (host != null && host != organisation && Objects.equals(host.getKey(), organisation.getKey())) {
+        registration.setHostingOrganisation(organisation);
+      }
     }
     return organisation;
   }
@@ -322,6 +327,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
 
   @Override
   public void load() throws InvalidConfigException {
+    Organisation loadedHost = null;
     try (Reader registrationReader = IptFileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
          ObjectInputStream in = xstreamV2.createObjectInputStream(registrationReader)) {
       registration.getAssociatedOrganisations().clear();
@@ -329,7 +335,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       try {
         Registration reg = (Registration) in.readObject();
         // load the organisation this IPT is registered against
-        addHostingOrganisation(reg.getHostingOrganisation());
+        loadedHost = reg.getHostingOrganisation();
+        addHostingOrganisation(loadedHost);
         addIptInstance(reg.getIpt());
 
         // load the associated organisations
@@ -360,11 +367,43 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         "Couldnt read the registration information: " + e.getMessage());
     }
 
+    useHostingOrganisationToken(loadedHost);
+
     // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
     try {
       updateAssociatedOrganisationsMetadata();
     } catch (IOException e) {
       LOG.error("Failed to update associated organisations", e);
+    }
+  }
+
+  /**
+   * The hosting organisation used to be stored as a separate copy of its associated organisation, and a token
+   * change updated only one of them. After loading, both are the associated organisation's object; when the stored
+   * tokens differ, the hosting copy's token is kept if the Registry accepts it, otherwise the associated one's.
+   *
+   * @param loadedHost the hosting organisation as read from the registration file
+   */
+  private void useHostingOrganisationToken(Organisation loadedHost) {
+    Organisation host = registration.getHostingOrganisation();
+    if (loadedHost == null || host == null || host == loadedHost || loadedHost.getKey() == null
+        || StringUtils.isBlank(loadedHost.getPassword())
+        || Objects.equals(loadedHost.getPassword(), host.getPassword())) {
+      return;
+    }
+    String key = loadedHost.getKey().toString();
+    if (StringUtils.isBlank(host.getPassword()) || registryManager.validateOrganisation(key, loadedHost.getPassword())) {
+      LOG.warn("Organisation {} ({}) had two different shared tokens; the one from the registration is kept",
+        host.getName(), key);
+      host.setPassword(loadedHost.getPassword());
+    } else if (registryManager.validateOrganisation(key, host.getPassword())) {
+      LOG.warn("Organisation {} ({}) had two different shared tokens; the one from the associated organisations is "
+        + "kept", host.getName(), key);
+    } else {
+      // neither is accepted (e.g. the Registry can't be reached): keep both copies, checked again on the next start
+      LOG.warn("Organisation {} ({}) has two different shared tokens and the Registry accepts neither; both are kept "
+        + "until the next start", host.getName(), key);
+      registration.setHostingOrganisation(loadedHost);
     }
   }
 
@@ -479,9 +518,10 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
       registration.getAssociatedOrganisations().put(entry.getKey(), o);
     }
 
-    // 2. update hosting organisation's metadata; it's normally also an associated one, so only reported when it isn't
+    // 2. update hosting organisation's metadata, unless it's the associated organisation updated above
     Organisation hostingOrganisation = registration.getHostingOrganisation();
-    if (hostingOrganisation != null && !updateOrganisationMetadata(hostingOrganisation)
+    if (hostingOrganisation != null && hostingOrganisation != get(hostingOrganisation.getKey())
+        && !updateOrganisationMetadata(hostingOrganisation)
         && notUpdated.stream().noneMatch(o -> Objects.equals(o.getKey(), hostingOrganisation.getKey()))) {
       notUpdated.add(hostingOrganisation);
     }
@@ -508,9 +548,9 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
 
     copyRegistryDetails(fromRegistry, organisation);
-    // the hosting organisation is kept as a separate copy
+    // the hosting organisation is normally the same object, a separate copy only while its tokens differ
     Organisation hosting = registration.getHostingOrganisation();
-    if (hosting != null && hosting.getKey() != null && key.equalsIgnoreCase(hosting.getKey().toString())) {
+    if (hosting != null && hosting != organisation && organisation.equals(hosting)) {
       copyRegistryDetails(fromRegistry, hosting);
     }
     save();

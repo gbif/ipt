@@ -31,6 +31,7 @@ import org.gbif.ipt.service.registry.RegistryManager;
 import org.gbif.ipt.service.registry.impl.RegistryManagerImpl;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 import org.gbif.ipt.utils.IptMockBaseTest;
+import org.gbif.ipt.utils.PBEEncrypt;
 import org.gbif.utils.ExtendedResponse;
 import org.gbif.utils.HttpClient;
 import org.gbif.utils.file.FileUtils;
@@ -54,6 +55,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.message.BasicStatusLine;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,8 +67,10 @@ import com.thoughtworks.xstream.converters.ConversionException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -80,6 +84,9 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   // Key of Zoological Museum Denmark - Organisation that resource #2's registered DOI is associated to
   private static final String RESOURCE2_ORGANISATION_KEY = "456058db-f70b-4005-97ad-e08570cf0c56";
 
+  // the hosting organisation's token in its associated organisation entry of registration2.xml
+  private static final String ASSOCIATED_TOKEN = "PsQfBTu3GJfy00mWe2MyOg=";
+
   private RegistrationManager registrationManager;
   private DataDir mockDataDir;
 
@@ -88,6 +95,10 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   // RegistrationManagerImpl deletes registration.xml and overwrites registration2.xml, so tests work on copies
   @TempDir
   Path tempDir;
+
+  private RegistryManager registryManager;
+  private HttpClient httpClient;
+  private File registrationXml2;
 
   @BeforeEach
   public void setup() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
@@ -128,8 +139,8 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     when(mockDataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V1)).thenReturn(registrationXML);
 
     // mock returning registration2.xml file
-    File registrationXML2 = copyToTempDir("config/registration2.xml");
-    when(mockDataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V2)).thenReturn(registrationXML2);
+    registrationXml2 = copyToTempDir("config/registration2.xml");
+    when(mockDataDir.configFile(RegistrationManagerImpl.PERSISTENCE_FILE_V2)).thenReturn(registrationXml2);
 
     // mock returning list of registered Organisation with local test resource
     mockHttpClient = mock(HttpClient.class);
@@ -141,6 +152,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
           Objects.requireNonNull(RegistrationManagerImplTest.class.getResourceAsStream("/responses/organisation.json")),
           StandardCharsets.UTF_8));
     when(mockHttpClient.get(anyString())).thenReturn(extResponse);
+    httpClient = mockHttpClient;
 
     // create instance of RegistryManager
     RegistryManager mockRegistryManager =
@@ -149,6 +161,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
 
     // make sure the list of organisations is fully populated
     assertNotNull(mockRegistryManager.getRegisteredOrganisation(RESOURCE1_ORGANISATION_KEY));
+    registryManager = mockRegistryManager;
 
     // create instance of manager
     registrationManager =
@@ -219,14 +232,11 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
   }
 
   /**
-   * The mocked Registry answers every request with the Academy of Natural Sciences: the Academy is updated (both
-   * the associated organisation and the hosting copy), any other organisation gets the wrong key back and keeps its
-   * details.
+   * The mocked Registry answers every request with the Academy of Natural Sciences: the Academy is updated (it's
+   * also the hosting organisation), any other organisation gets the wrong key back and keeps its details.
    */
   @Test
   public void updateOrganisationFromRegistry() throws Exception {
-    Organisation host = registrationManager.getHostingOrganisation();
-    host.setName("Stale name");
     registrationManager.get(HOSTING_ORGANISATION_KEY).setName("Stale name");
 
     assertTrue(registrationManager.updateOrganisationFromRegistry(HOSTING_ORGANISATION_KEY));
@@ -267,6 +277,106 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     } catch (DeletionNotAllowedException e) {
       assertEquals(DeletionNotAllowedException.Reason.RESOURCE_DOI_REGISTERED_WITH_ORGANISATION, e.getReason());
     }
+  }
+
+  /**
+   * The hosting organisation is the associated organisation's object, so a change on either (e.g. its token) is seen
+   * on both, also after the associated organisation is replaced by a saved copy (#3352).
+   */
+  @Test
+  public void hostingOrganisationIsTheAssociatedOne() throws Exception {
+    Organisation associated = registrationManager.get(HOSTING_ORGANISATION_KEY);
+    assertSame(associated, registrationManager.getHostingOrganisation());
+
+    registrationManager.getHostingOrganisation().setPassword("changed on Registration");
+    assertEquals("changed on Registration", registrationManager.get(HOSTING_ORGANISATION_KEY).getPassword());
+
+    Organisation saved = new Organisation(associated);
+    saved.setPassword("changed on Organizations");
+    registrationManager.addAssociatedOrganisation(saved);
+    assertSame(saved, registrationManager.getHostingOrganisation());
+    assertEquals("changed on Organizations", registrationManager.getHostingOrganisation().getPassword());
+
+    // saved twice (registration + associated organisations) and read back as one object
+    registrationManager.save();
+    RegistrationManager reloaded = new RegistrationManagerImpl(mock(AppConfig.class), mockDataDir, registryManager,
+      mock(PasswordEncrypter.class));
+    reloaded.load();
+    assertNotNull(reloaded.getHostingOrganisation());
+    assertSame(reloaded.get(HOSTING_ORGANISATION_KEY), reloaded.getHostingOrganisation());
+  }
+
+  /**
+   * Two stored copies with different tokens: the registration's token is kept when the Registry accepts it.
+   */
+  @Test
+  public void differentHostingTokenAcceptedByRegistryIsKept() throws Exception {
+    ExtendedResponse response = response(200);
+    when(httpClient.get(anyString(), any(UsernamePasswordCredentials.class))).thenReturn(response);
+
+    RegistrationManager manager = loadWithHostingToken("hostingToken");
+    assertSame(manager.get(HOSTING_ORGANISATION_KEY), manager.getHostingOrganisation());
+    assertEquals("hostingToken", manager.getHostingOrganisation().getPassword());
+  }
+
+  /**
+   * Two stored copies with different tokens: the associated organisation's token is kept when the Registry refuses
+   * the registration's one and accepts the associated one.
+   */
+  @Test
+  public void differentHostingTokenRefusedByRegistryIsDropped() throws Exception {
+    when(httpClient.get(anyString(), any(UsernamePasswordCredentials.class))).thenAnswer(invocation -> {
+      UsernamePasswordCredentials credentials = invocation.getArgument(1);
+      return response(ASSOCIATED_TOKEN.equals(credentials.getPassword()) ? 200 : 401);
+    });
+
+    RegistrationManager manager = loadWithHostingToken("hostingToken");
+    assertSame(manager.get(HOSTING_ORGANISATION_KEY), manager.getHostingOrganisation());
+    assertEquals(ASSOCIATED_TOKEN, manager.getHostingOrganisation().getPassword());
+  }
+
+  /**
+   * Two stored copies with different tokens and the Registry accepts neither (e.g. it can't be reached): both copies
+   * are kept as they are.
+   */
+  @Test
+  public void differentHostingTokensNeitherAcceptedAreBothKept() throws Exception {
+    ExtendedResponse response = response(503);
+    when(httpClient.get(anyString(), any(UsernamePasswordCredentials.class))).thenReturn(response);
+
+    RegistrationManager manager = loadWithHostingToken("hostingToken");
+    assertEquals("hostingToken", manager.getHostingOrganisation().getPassword());
+    assertEquals(ASSOCIATED_TOKEN, manager.get(HOSTING_ORGANISATION_KEY).getPassword());
+  }
+
+  private static ExtendedResponse response(int status) {
+    ExtendedResponse response = new ExtendedResponse(mock(HttpResponse.class));
+    when(response.getResponse().getStatusLine()).thenReturn(new BasicStatusLine(HttpVersion.HTTP_1_1, status, ""));
+    return response;
+  }
+
+  /**
+   * Loads the registration file with the hosting organisation's stored token changed.
+   */
+  private RegistrationManager loadWithHostingToken(String token) throws Exception {
+    // the original file: setup's load saved the copy with the mocked encrypter, which drops the tokens
+    String xml = Files.readString(FileUtils.getClasspathFile("config/registration2.xml").toPath(),
+      StandardCharsets.UTF_8);
+    int start = xml.indexOf("<hostingOrganisation>");
+    int end = xml.indexOf("</hostingOrganisation>");
+    String host = xml.substring(start, end)
+      .replaceFirst("<password>[^<]*</password>", "<password>" + token + "</password>");
+    Files.writeString(registrationXml2.toPath(), xml.substring(0, start) + host + xml.substring(end),
+      StandardCharsets.UTF_8);
+
+    // stored tokens read as written
+    PBEEncrypt cipher = mock(PBEEncrypt.class);
+    when(cipher.decrypt(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+    when(cipher.encrypt(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
+    RegistrationManager manager = new RegistrationManagerImpl(mock(AppConfig.class), mockDataDir, registryManager,
+      new PasswordEncrypter(cipher));
+    manager.load();
+    return manager;
   }
 
   /**
