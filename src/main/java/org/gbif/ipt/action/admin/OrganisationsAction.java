@@ -267,7 +267,7 @@ public class OrganisationsAction extends POSTAction {
       addActionMessage(getText("admin.organisations.synchronized"));
     } catch (IOException e) {
       LOG.error("Failed to synchronize organizations with the registry", e);
-      addActionError(getText("admin.organisation.error.save"));
+      addActionError(getText("admin.organisation.error.synchronize"));
     }
 
     return SUCCESS;

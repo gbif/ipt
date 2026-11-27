@@ -66,7 +66,13 @@
             dt.on("draw", count);
             count();
 
-            $("#og-sync").on("submit", displayProcessing);
+            // the dialog sits above the processing spinner: close it, then show the spinner and block a second submit
+            $("#og-sync").on("submit", function () {
+                var button = this.querySelector("button[type=submit]");
+                setTimeout(function () { button.disabled = true; }, 0);
+                bootstrap.Modal.getOrCreateInstance(document.getElementById("og-sync-modal")).hide();
+                displayProcessing();
+            });
         });
     </script>
 
@@ -108,9 +114,7 @@
                 <div class="ov-acts">
                     <#if registered>
                         <a id="add" href="${baseURL}/admin/organisation.do" class="btn btn-sm btn-outline-gbif-primary top-button"><@s.text name="button.add"/></a>
-                        <form id="og-sync" class="d-inline-block" action="organisationsSynchronize.do" method="post">
-                            <button type="submit" name="synchronise" value="synchronise" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.synchronise"/></button>
-                        </form>
+                        <button type="button" class="btn btn-sm btn-outline-secondary top-button" data-bs-toggle="modal" data-bs-target="#og-sync-modal"><@s.text name="button.synchronise"/></button>
                     </#if>
                     <a href="${baseURL}/admin/" class="btn btn-sm btn-outline-secondary top-button"><@s.text name="button.back"/></a>
                 </div>
@@ -202,5 +206,28 @@
             </div>
         </#if>
     </main>
+
+    <#if registered>
+    <#-- synchronize: says what comes from the Registry and what stays as set here -->
+    <div class="modal fade" id="og-sync-modal" tabindex="-1" role="alertdialog" aria-labelledby="og-sync-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered dlg-alert">
+            <form id="og-sync" class="modal-content" action="organisationsSynchronize.do" method="post">
+                <div class="modal-header">
+                    <span class="dlg-tone info" aria-hidden="true"><@icon name="autorenew"/></span>
+                    <h5 class="modal-title" id="og-sync-modal-title"><@s.text name="admin.organisations.synchronise.title"/></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<@s.text name='button.cancel'/>"></button>
+                </div>
+                <div class="modal-body text-smaller">
+                    <p><@s.text name="admin.organisations.synchronise.text"/></p>
+                    <p class="mb-0"><@s.text name="admin.organisations.synchronise.kept"/></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal"><@s.text name="button.cancel"/></button>
+                    <button type="submit" class="btn btn-sm btn-gbif-solid" name="synchronise" value="synchronise"><@s.text name="button.synchronise"/></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </#if>
 
     <#include "/WEB-INF/pages/inc/footer.ftl">
