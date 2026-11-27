@@ -66,7 +66,7 @@
                     <input class="form-control" type="password" id="password" name="password"
                            autocomplete="current-password" aria-describedby="password-feedback password-caps"
                            <#if email?has_content>autofocus</#if>>
-                    <button type="button" id="login-show-password" class="btn btn-outline-secondary" aria-controls="password" aria-pressed="false"
+                    <button type="button" id="login-show-password" class="btn btn-outline-secondary" data-show-password aria-controls="password" aria-pressed="false"
                             data-show-text="<@s.text name="login.password.show"/>" data-hide-text="<@s.text name="login.password.hide"/>"><@s.text name="login.password.show"/></button>
                     <div id="password-feedback" class="invalid-feedback"><@s.text name="login.password.required"/></div>
                 </div>
@@ -114,16 +114,6 @@
             e.preventDefault();
             forgotInfo.hidden = !forgotInfo.hidden;
             forgot.setAttribute("aria-expanded", String(!forgotInfo.hidden));
-        });
-
-        // show or hide the password
-        var show = document.getElementById("login-show-password");
-        show.addEventListener("click", function () {
-            var visible = password.type === "password";
-            password.type = visible ? "text" : "password";
-            show.textContent = visible ? show.dataset.hideText : show.dataset.showText;
-            show.setAttribute("aria-pressed", String(visible));
-            password.focus();
         });
 
         // Caps Lock warning while typing the password

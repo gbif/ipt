@@ -57,6 +57,7 @@
     <script src="${baseURL}/js/csrf.js"></script>
     <script src="${baseURL}/js/dialog.js"></script>
     <script src="${baseURL}/js/global.js"></script>
+    <script src="${baseURL}/js/show-password.js"></script>
 
     <script>
         window.addEventListener("scroll", () => {

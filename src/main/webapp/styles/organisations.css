@@ -1,0 +1,14 @@
+/* Organizations pages (admin/organisations.ftl, admin/organisation.ftl). Builds on overview.css, users.css (row menu,
+   tags, resources table) and, on the organization page, settings.css (fields, facts, notes). */
+
+.og-intro { margin-bottom: 4px; }
+.og-table .us-tag.og-active, .us-tag.og-active { background: rgba(var(--color-gbif-primary), .1); color: rgb(var(--color-gbif-primary)); margin-left: 4px; }
+
+/* organization page */
+.og-desc { font-size: 0.875rem; margin: 6px 0 4px; max-width: 760px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.og-doi { margin: 12px 0 0; padding: 0; border: 0; min-width: 0; }
+.og-doi .st-switch { margin-top: 0; }
+.og-doi .st-note { max-width: 520px; }
+.st-main .us-res { margin-top: 6px; }
+.og-card-acts { display: flex; gap: 8px; margin-top: 14px; }
+.og-own { margin-top: 12px; }

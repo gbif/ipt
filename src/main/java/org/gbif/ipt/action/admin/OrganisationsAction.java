@@ -19,7 +19,6 @@ import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Organisation;
 import org.gbif.ipt.model.Resource;
-import org.gbif.ipt.model.voc.DOIRegistrationAgency;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.RegistryException;
@@ -35,6 +34,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -69,17 +69,16 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> organisations = new ArrayList<>();
   private List<Organisation> linkedOrganisations;
   private Boolean synchronise = false;
-  private boolean organisationWithDoiRegistrationAgencyPresent = false;
-  // token change: a new shared token for an existing organisation, saved on its own (changeToken)
+  // the organisation whose DOI account is the active one, if any
+  private Organisation activeDoiOrganisation;
+  // per linked organisation key: its resources, and why it can't be removed (absent when it can)
+  private Map<String, List<Resource>> resourcesByOrganisation;
+  private Map<String, String> deleteBlocked;
+  private Map<String, Integer> resourceCounts;
+  // token card: a new shared token for an existing organisation, saved on its own (changeToken)
   private String newToken;
   // existing organisation saved without a new token: its stored token is used and not checked again
   private boolean storedToken;
-
-  private static final Map<String, DOIRegistrationAgency> DOI_REGISTRATION_AGENCIES = new HashMap<>();
-
-  static {
-    DOI_REGISTRATION_AGENCIES.put(DOIRegistrationAgency.DATACITE.name(), DOIRegistrationAgency.DATACITE);
-  }
 
   @Inject
   public OrganisationsAction(
@@ -123,13 +122,6 @@ public class OrganisationsAction extends POSTAction {
 
   private void clearCache() {
     organisations = new ArrayList<>();
-  }
-
-  /**
-   * @return a list of DOI registration agencies that the IPT supports
-   */
-  public Map<String, DOIRegistrationAgency> getDoiRegistrationAgencies() {
-    return DOI_REGISTRATION_AGENCIES;
   }
 
   @Override
@@ -215,7 +207,7 @@ public class OrganisationsAction extends POSTAction {
 
     for (Organisation org : linkedOrganisations) {
       if (org.isAgencyAccountPrimary()) {
-        organisationWithDoiRegistrationAgencyPresent = true;
+        activeDoiOrganisation = org;
         break;
       }
     }
@@ -437,6 +429,102 @@ public class OrganisationsAction extends POSTAction {
     return false;
   }
 
+  /**
+   * Fills the resources per organisation and the reasons an organisation can't be removed, with the same rules as
+   * {@link RegistrationManager#delete(String, List)}: it hosts this IPT, resources belong to it, or resources have
+   * DOIs registered with its account. All resources count, deleted ones too, since they can be restored.
+   */
+  private void loadUsage() {
+    if (resourcesByOrganisation != null) {
+      return;
+    }
+    resourcesByOrganisation = new HashMap<>();
+    deleteBlocked = new HashMap<>();
+    Map<String, List<String>> doiResources = new HashMap<>();
+    for (Resource r : resourceManager.list()) {
+      if (r.getOrganisation() != null && r.getOrganisation().getKey() != null) {
+        resourcesByOrganisation.computeIfAbsent(r.getOrganisation().getKey().toString(), k -> new ArrayList<>()).add(r);
+      }
+      if (r.getDoi() != null && r.getDoiOrganisationKey() != null) {
+        doiResources.computeIfAbsent(r.getDoiOrganisationKey().toString(), k -> new ArrayList<>()).add(r.getShortname());
+      }
+    }
+    resourcesByOrganisation.values()
+        .forEach(list -> list.sort(Comparator.comparing(r -> StringUtils.defaultIfBlank(r.getTitle(), r.getShortname()).toLowerCase())));
+
+    Organisation host = registrationManager.getHostingOrganisation();
+    String hostKey = host != null && host.getKey() != null ? host.getKey().toString() : null;
+    for (Organisation org : linkedOrganisations) {
+      String key = org.getKey().toString();
+      if (key.equals(hostKey)) {
+        deleteBlocked.put(key, getText("admin.organisation.delete.blocked.host"));
+      } else if (resourcesByOrganisation.containsKey(key)) {
+        deleteBlocked.put(key, getText("admin.organisation.delete.blocked.resources",
+            new String[] {namesOrCount(resourcesByOrganisation.get(key).stream().map(Resource::getShortname).toList())}));
+      } else if (doiResources.containsKey(key)) {
+        deleteBlocked.put(key, getText("admin.organisation.delete.blocked.doi",
+            new String[] {namesOrCount(doiResources.get(key))}));
+      }
+    }
+  }
+
+  /**
+   * A few resource names, or only their number when there are many (it goes in a menu).
+   */
+  private static String namesOrCount(List<String> names) {
+    return names.size() <= 5 ? String.join(", ", names) : String.valueOf(names.size());
+  }
+
+  /**
+   * @return number of resources per linked organisation key (absent: none)
+   */
+  public Map<String, Integer> getResourceCounts() {
+    loadUsage();
+    if (resourceCounts == null) {
+      resourceCounts = new HashMap<>();
+      resourcesByOrganisation.forEach((k, v) -> resourceCounts.put(k, v.size()));
+    }
+    return resourceCounts;
+  }
+
+  /**
+   * @return why each linked organisation can't be removed, by key (absent: it can)
+   */
+  public Map<String, String> getDeleteBlocked() {
+    loadUsage();
+    return deleteBlocked;
+  }
+
+  /**
+   * Organisation page: the resources under this organisation, by title.
+   */
+  public List<Resource> getOrganisationResources() {
+    if (organisation == null || organisation.getKey() == null) {
+      return new ArrayList<>();
+    }
+    loadUsage();
+    return resourcesByOrganisation.getOrDefault(organisation.getKey().toString(), new ArrayList<>());
+  }
+
+  /**
+   * Organisation page: why it can't be removed, null when it can.
+   */
+  public String getDeleteBlockedReason() {
+    if (organisation == null || organisation.getKey() == null) {
+      return null;
+    }
+    return getDeleteBlocked().get(organisation.getKey().toString());
+  }
+
+  public String getHostingOrganisationKey() {
+    Organisation host = registrationManager.getHostingOrganisation();
+    return host != null && host.getKey() != null ? host.getKey().toString() : null;
+  }
+
+  public Organisation getActiveDoiOrganisation() {
+    return activeDoiOrganisation;
+  }
+
   public String getPortalUrl() {
     return cfg.getPortalUrl();
   }
@@ -444,9 +532,5 @@ public class OrganisationsAction extends POSTAction {
   @StrutsParameter
   public void setSynchronise(String synchronise) {
     this.synchronise = StringUtils.trimToNull(synchronise) != null;
-  }
-
-  public boolean isOrganisationWithDoiRegistrationAgencyPresent() {
-    return organisationWithDoiRegistrationAgencyPresent;
   }
 }

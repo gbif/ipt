@@ -22,13 +22,22 @@
 </#macro>
 
 <#-- a field: label, input (or textarea), its server error, a hint -->
-<#macro field name key value="" optional=false hint="" type="text" extra="" wide=false>
+<#macro field name key value="" optional=false hint="" type="text" extra="" reveal=false wide=false>
     <div class="st-field<#if wide> rg-wide</#if>">
         <@fieldLabel for=name key=key optional=optional/>
         <#if type == "textarea">
             <textarea class="form-control form-control-sm<#if hasError(name)> is-invalid</#if>" id="${name}" name="${name}" rows="5" ${extra?no_esc}>${value}</textarea>
         <#else>
-            <input type="${type}" class="form-control form-control-sm<#if hasError(name)> is-invalid</#if>" id="${name}" name="${name}" value="${value}" spellcheck="false" ${extra?no_esc}>
+            <#if reveal>
+                <#-- Show / Hide (js/show-password.js): the field starts empty, so only what was typed is shown -->
+                <div class="input-group input-group-sm">
+                    <input type="${type}" class="form-control form-control-sm<#if hasError(name)> is-invalid</#if>" id="${name}" name="${name}" value="${value}" spellcheck="false" ${extra?no_esc}>
+                    <button type="button" class="btn btn-outline-secondary" data-show-password aria-controls="${name}" aria-pressed="false"
+                            data-show-text="<@s.text name='login.password.show'/>" data-hide-text="<@s.text name='login.password.hide'/>"><@s.text name="login.password.show"/></button>
+                </div>
+            <#else>
+                <input type="${type}" class="form-control form-control-sm<#if hasError(name)> is-invalid</#if>" id="${name}" name="${name}" value="${value}" spellcheck="false" ${extra?no_esc}>
+            </#if>
         </#if>
         <@s.fielderror cssClass="invalid-feedback d-block list-unstyled my-1" fieldName="${name}"/>
         <#if hint?has_content><div class="st-hint"><@s.text name=hint/></div></#if>
@@ -154,8 +163,8 @@
                 <form id="changeTokens" action="changeTokens.do" method="post" novalidate>
                     <input type="hidden" name="tokenChange" value="true">
                     <div class="st-grid">
-                        <@field name="hostingOrganisationToken" key="admin.organisation.password" type="password" optional=true hint="admin.registration.token.hint" extra='autocomplete="off"'/>
-                        <@field name="registeredIptPassword" key="admin.ipt.password" type="password" optional=true hint="admin.registration.iptPassword.hint" extra='autocomplete="new-password"'/>
+                        <@field name="hostingOrganisationToken" key="admin.organisation.password" type="password" reveal=true optional=true hint="admin.registration.token.hint" extra='autocomplete="off"'/>
+                        <@field name="registeredIptPassword" key="admin.ipt.password" type="password" reveal=true optional=true hint="admin.registration.iptPassword.hint" extra='autocomplete="new-password"'/>
                     </div>
                     <div class="rg-card-acts">
                         <button type="submit" id="tokens" name="tokens" value="tokens" class="btn btn-sm btn-outline-gbif-primary"><@s.text name="admin.registration.tokens.change"/></button>
@@ -210,7 +219,7 @@
                         </div>
 
                         <div class="st-grid">
-                            <@field name="organisation.password" key="admin.organisation.password" type="password" hint="admin.organisation.password.help" extra='autocomplete="off"'>
+                            <@field name="organisation.password" key="admin.organisation.password" type="password" reveal=true hint="admin.organisation.password.help" extra='autocomplete="off"'>
                                 <div id="requestDetails" class="st-hint" hidden></div>
                             </@field>
                             <@field name="organisation.alias" key="admin.organisation.alias" value=(organisation.alias)! optional=true hint="admin.registration.alias.hint"/>
@@ -240,7 +249,7 @@
                         <div class="st-grid">
                             <@field name="ipt.primaryContactName" key="admin.ipt.primaryContactName" value=(ipt.primaryContactName)! extra='maxlength="255"'/>
                             <@field name="ipt.primaryContactEmail" key="admin.ipt.primaryContactEmail" value=(ipt.primaryContactEmail)! type="email" extra='maxlength="254"'/>
-                            <@field name="ipt.wsPassword" key="admin.ipt.password" type="password" hint="admin.ipt.password.help" extra='autocomplete="new-password"'/>
+                            <@field name="ipt.wsPassword" key="admin.ipt.password" type="password" reveal=true hint="admin.ipt.password.help" extra='autocomplete="new-password"'/>
                         </div>
                         <input type="hidden" name="ipt.primaryContactType" value="technical">
                     </section>
