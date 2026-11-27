@@ -49,7 +49,9 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicStatusLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
@@ -312,8 +314,11 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
 
   @SuppressWarnings("HttpUrlsUsage")
   @Test
-  public void testGetOrganisation() throws IOException, URISyntaxException, SAXException, ParserConfigurationException {
+  public void testGetOrganisation() throws Exception {
     // mock response from Registry with local test resource
+    HttpResponse okResponse = mock(HttpResponse.class);
+    when(okResponse.getStatusLine()).thenReturn(new BasicStatusLine(HttpVersion.HTTP_1_1, 200, "OK"));
+    extResponse = new ExtendedResponse(okResponse);
     extResponse.setContent(
       IOUtils.toString(
           Objects.requireNonNull(RegistryManagerImplTest.class.getResourceAsStream("/responses/organisation.json")),
@@ -326,7 +331,7 @@ public class RegistryManagerImplTest extends IptMockBaseTest {
       new RegistryManagerImpl(mockAppConfig, mockDataDir, mockHttpClient, mockSAXParserFactory, mockConfigWarnings,
         mockSimpleTextProvider);
 
-    Organisation organisation = manager.getRegisteredOrganisation("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
+    Organisation organisation = manager.getOrganisationForUpdate("f9b67ad0-9c9b-11d9-b9db-b8a03c50a862");
     assertNotNull(organisation);
 
     // individual fields now

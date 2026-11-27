@@ -48,11 +48,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -90,7 +88,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
-  public Organisation addAssociatedOrganisation(Organisation organisation)
+  public synchronized Organisation addAssociatedOrganisation(Organisation organisation)
     throws AlreadyExistingException, InvalidConfigException {
     if (organisation != null) {
 
@@ -120,7 +118,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
    * @return organisation with activated DOI agency account if found, null otherwise
    */
   @Override
-  public Organisation findPrimaryDoiAgencyAccount() {
+  public synchronized Organisation findPrimaryDoiAgencyAccount() {
     for (Organisation organisation : registration.getAssociatedOrganisations().values()) {
       if (organisation.isAgencyAccountPrimary()) {
         return organisation;
@@ -253,7 +251,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
-  public Organisation delete(String key, List<Resource> resources) throws DeletionNotAllowedException {
+  public synchronized Organisation delete(String key, List<Resource> resources) throws DeletionNotAllowedException {
     Organisation org = get(key);
     if (org != null) {
       for (Resource resource : resources) {
@@ -280,7 +278,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
-  public Organisation get(String key) {
+  public synchronized Organisation get(String key) {
     if (key == null) {
       return null;
     }
@@ -288,7 +286,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
-  public Organisation get(UUID key) {
+  public synchronized Organisation get(UUID key) {
     if (key == null) {
       return null;
     }
@@ -311,7 +309,7 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
-  public List<Organisation> list() {
+  public synchronized List<Organisation> list() {
     return registration.getAssociatedOrganisations().values().stream()
         .filter(Organisation::isCanHost)
         .sorted(ORG_BY_NAME_ORD)
@@ -319,14 +317,14 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
   }
 
   @Override
-  public List<Organisation> listAll() {
+  public synchronized List<Organisation> listAll() {
     return registration.getAssociatedOrganisations().values().stream()
         .sorted(ORG_BY_NAME_ORD)
         .collect(Collectors.toList());
   }
 
   @Override
-  public void load() throws InvalidConfigException {
+  public synchronized void load() throws InvalidConfigException {
     Organisation loadedHost = null;
     try (Reader registrationReader = IptFileUtils.getUtf8Reader(dataDir.configFile(PERSISTENCE_FILE_V2));
          ObjectInputStream in = xstreamV2.createObjectInputStream(registrationReader)) {
@@ -367,14 +365,8 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         "Couldnt read the registration information: " + e.getMessage());
     }
 
+    // the organisations' details are updated from the Registry in the background, see OrganisationRegistryUpdater
     useHostingOrganisationToken(loadedHost);
-
-    // it could be organisations have changed their name or node in the Registry, so update all organisation metadata
-    try {
-      updateAssociatedOrganisationsMetadata();
-    } catch (IOException e) {
-      LOG.error("Failed to update associated organisations", e);
-    }
   }
 
   /**
@@ -497,47 +489,14 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     }
   }
 
-  /**
-   * Update the metadata of each organization that has been added to the IPT with the latest version coming from the
-   * Registry.
-   */
-  @Override
-  public List<Organisation> updateAssociatedOrganisationsMetadata() throws IOException {
-    List<Organisation> notUpdated = new ArrayList<>();
-
-    // 1. update associated organisations' metadata; the default "No organisation" isn't in the Registry
-    for (Map.Entry<String, Organisation> entry : registration.getAssociatedOrganisations().entrySet()) {
-      Organisation o = entry.getValue();
-      if (Constants.DEFAULT_ORG_KEY.equals(o.getKey())) {
-        continue;
-      }
-      if (!updateOrganisationMetadata(o)) {
-        notUpdated.add(o);
-      }
-      // replace organisation in list of associated organisations now
-      registration.getAssociatedOrganisations().put(entry.getKey(), o);
-    }
-
-    // 2. update hosting organisation's metadata, unless it's the associated organisation updated above
-    Organisation hostingOrganisation = registration.getHostingOrganisation();
-    if (hostingOrganisation != null && hostingOrganisation != get(hostingOrganisation.getKey())
-        && !updateOrganisationMetadata(hostingOrganisation)
-        && notUpdated.stream().noneMatch(o -> Objects.equals(o.getKey(), hostingOrganisation.getKey()))) {
-      notUpdated.add(hostingOrganisation);
-    }
-
-    // ensure changes are persisted to registration2.xml
-    save();
-    return notUpdated;
-  }
-
   @Override
   public boolean updateOrganisationFromRegistry(String key) throws RegistryException, IOException {
-    Organisation organisation = registration.getAssociatedOrganisations().get(key);
+    Organisation organisation = get(key);
     if (organisation == null) {
       throw new IllegalArgumentException("Organisation " + key + " is not associated with this IPT");
     }
 
+    // the Registry call (up to 30 s) is made without the lock, so saving organisations doesn't wait for it
     Organisation fromRegistry = registryManager.getOrganisationForUpdate(key);
     // the Registry answers with the organisation asked for, and it has at least a name
     if (fromRegistry == null || fromRegistry.getKey() == null || !key.equalsIgnoreCase(fromRegistry.getKey().toString())
@@ -546,7 +505,18 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
         organisation.getName(), key);
       return false;
     }
+    return applyRegistryDetails(key, fromRegistry);
+  }
 
+  /**
+   * Copies the Registry's details into the organisation and saves, unless it was removed in the meantime.
+   */
+  private synchronized boolean applyRegistryDetails(String key, Organisation fromRegistry) throws IOException {
+    Organisation organisation = registration.getAssociatedOrganisations().get(key);
+    if (organisation == null) {
+      LOG.debug("Organisation {} was removed while it was being updated from the Registry", key);
+      return false;
+    }
     copyRegistryDetails(fromRegistry, organisation);
     // the hosting organisation is normally the same object, a separate copy only while its tokens differ
     Organisation hosting = registration.getHostingOrganisation();
@@ -579,43 +549,6 @@ public class RegistrationManagerImpl extends BaseManager implements Registration
     to.setPrimaryContactEmail(StringUtils.trimToNull(from.getPrimaryContactEmail()));
     to.setPrimaryContactPhone(StringUtils.trimToNull(from.getPrimaryContactPhone()));
     to.setPrimaryContactType(StringUtils.trimToNull(from.getPrimaryContactType()));
-  }
-
-  /**
-   * For a single organization, update its metadata. Only updates the metadata for an organisation coming from the
-   * registry, not the metadata set by the IPT administrator like can host data, DOI configuration, etc.
-   *
-   * @param organisation Organisation
-   * @return true if the organisation was updated, false if it couldn't be retrieved from the Registry
-   */
-  private boolean updateOrganisationMetadata(Organisation organisation) {
-    if (organisation != null) {
-      // the organization key
-      String key = (organisation.getKey() == null) ? null : organisation.getKey().toString();
-
-      // retrieve the latest copy of the organisation from the Registry
-      Organisation o = registryManager.getRegisteredOrganisation(key);
-
-      if (o != null) {
-
-        String oKey = (o.getKey() == null) ? null : o.getKey().toString();
-        String oName = StringUtils.trimToNull(o.getName());
-
-        // sanity check - only the key must be exactly the same, and at least the name must not be null
-        if (oKey != null && oKey.equalsIgnoreCase(key) && oName != null) {
-          copyRegistryDetails(o, organisation);
-          LOG.debug("Organisation ({}) updated with latest metadata from Registry", key);
-          return true;
-        } else {
-          LOG.debug("Update of organisation failed: organisation retrieved from Registry was missing name");
-        }
-      } else {
-        LOG.debug("Update of organisation failed: organisation retrieved from Registry was null");
-      }
-    } else {
-      LOG.debug("Update of organisation failed: organisation was null");
-    }
-    return false;
   }
 
   @Override

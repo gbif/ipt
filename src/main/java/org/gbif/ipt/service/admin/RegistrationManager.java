@@ -156,13 +156,6 @@ public interface RegistrationManager {
   boolean updateOrganisationFromRegistry(String key) throws RegistryException, IOException;
 
   /**
-   * Update (from the Registry) metadata for all associated organizations in the IPT.
-   *
-   * @return the organizations that couldn't be updated (e.g. the Registry couldn't be reached), empty if all were
-   */
-  List<Organisation> updateAssociatedOrganisationsMetadata() throws IOException;
-
-  /**
    * Associate IPT with the network and save the registration.
    *
    * @throws IOException if the registration could not be saved

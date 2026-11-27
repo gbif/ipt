@@ -277,6 +277,14 @@
     <constructor-arg ref="httpClient"/>
   </bean>
 
+  <!-- associated organisations' details updated from the GBIF Registry in the background, once after start-up -->
+  <bean id="organisationRegistryUpdater" class="org.gbif.ipt.service.admin.impl.OrganisationRegistryUpdater"
+        init-method="start" destroy-method="stop">
+    <constructor-arg ref="dataDir"/>
+    <constructor-arg ref="registrationManager"/>
+    <constructor-arg ref="resourceManager"/>
+  </bean>
+
   <!-- health checks: GBIF services and public access run in the background about twice a day -->
   <bean id="healthService" class="org.gbif.ipt.service.admin.impl.HealthServiceImpl"
         init-method="start" destroy-method="stop">

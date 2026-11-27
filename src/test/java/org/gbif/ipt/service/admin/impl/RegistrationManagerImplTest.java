@@ -15,7 +15,6 @@ package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
-import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Organisation;
@@ -47,7 +46,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -72,7 +70,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class RegistrationManagerImplTest extends IptMockBaseTest {
@@ -160,7 +161,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
         mockSimpleTextProvider);
 
     // make sure the list of organisations is fully populated
-    assertNotNull(mockRegistryManager.getRegisteredOrganisation(RESOURCE1_ORGANISATION_KEY));
+    assertNotNull(mockRegistryManager.getOrganisationForUpdate(RESOURCE1_ORGANISATION_KEY));
     registryManager = mockRegistryManager;
 
     // create instance of manager
@@ -193,42 +194,15 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     }
   }
 
-  @Test
-  public void updateOrganisationNamesOnLoad() {
-    // Hosting organisation name: changed from "Old Name Academy of Natural Sciences" as per latest registry response
-    // mocked from organisation/<key>.json
-    Organisation host = registrationManager.getHostingOrganisation();
-    assertEquals(HOSTING_ORGANISATION_KEY, host.getKey().toString());
-    assertEquals("New Name Academy of Natural Sciences", host.getName());
-    assertEquals(HOSTING_ORGANISATION_KEY, host.getKey().toString());
-
-    // Associated organisation name: changed from "Old Name Academy of Natural Sciences" as per latest registry
-    // response mocked from organisation/<key>.json
-    Organisation associated = registrationManager.get(RESOURCE1_ORGANISATION_KEY);
-    assertEquals("New Name Academy of Natural Sciences", associated.getName());
-    assertEquals(RESOURCE1_ORGANISATION_KEY, associated.getKey().toString());
-  }
-
   /**
-   * The mocked Registry answers every request with the Academy of Natural Sciences, so the other associated
-   * organisations come back with the wrong key and are reported as not updated. The hosting organisation is the
-   * Academy itself, so it's updated and not reported.
+   * Loading doesn't call the Registry: the stored details are kept, the background update changes them later.
    */
   @Test
-  public void updateAssociatedOrganisationsMetadataReportsNotUpdated() throws IOException {
-    List<String> notUpdated = registrationManager.updateAssociatedOrganisationsMetadata().stream()
-      .map(o -> o.getKey().toString())
-      .sorted()
-      .collect(Collectors.toList());
-
-    List<String> expected = registrationManager.list().stream()
-      .map(o -> o.getKey().toString())
-      .filter(key -> !key.equals(HOSTING_ORGANISATION_KEY) && !key.equals(Constants.DEFAULT_ORG_KEY.toString()))
-      .sorted()
-      .collect(Collectors.toList());
-
-    assertFalse(expected.isEmpty());
-    assertEquals(expected, notUpdated);
+  public void loadDoesNotCallRegistry() throws Exception {
+    clearInvocations(httpClient);
+    registrationManager.load();
+    verify(httpClient, never()).get(anyString());
+    assertEquals("Old Name Academy of Natural Sciences", registrationManager.get(RESOURCE1_ORGANISATION_KEY).getName());
   }
 
   /**

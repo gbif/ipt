@@ -672,39 +672,6 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   /**
-   * {@inheritDoc}
-   */
-  @Override
-  public Organisation getRegisteredOrganisation(String key) {
-    Organisation organisation = null;
-    if (StringUtils.isNotBlank(key)) {
-      try {
-        organisation =
-          gson.fromJson(requestHttpGetFromRegistry(getOrganisationUri(key)).getContent(), new TypeToken<Organisation>() {
-          }.getType());
-      } catch (RegistryException e) {
-        // log as specific error message as possible about why the Registry error occurred
-        String msg = RegistryException.logRegistryException(e, baseAction);
-        // add startup error message about Registry error
-        warnings.addStartupError(msg);
-        LOG.error(msg);
-
-        // add startup error message that explains the consequence of the Registry error
-        msg = baseAction.getText("admin.organisation.couldnt.load", new String[] {key, cfg.getRegistryUrl()});
-        warnings.addStartupError(msg);
-        LOG.error(msg);
-      } catch (JsonSyntaxException e) {
-        // add startup error message that explains the consequence of the error
-        String msg = baseAction.getText("admin.organisation.couldnt.load", new String[] {key, cfg.getRegistryUrl()});
-        warnings.addStartupError(msg);
-        LOG.error(msg);
-      }
-    }
-
-    return organisation;
-  }
-
-  /**
    * Returns the Organisations url
    */
   private String getOrganisationsURL() {

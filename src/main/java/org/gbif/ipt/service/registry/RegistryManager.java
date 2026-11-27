@@ -106,19 +106,8 @@ public interface RegistryManager {
   List<Organisation> getOrganisations();
 
   /**
-   * Retrieves an Organisation from the Registry using its key.
-   *
-   * @param key Organisation key
-   *
-   * @return a single Organisation, or null if no organisation was retrieved
-   *
-   * @throws RegistryException if the Organisation couldn't be retrieved
-   */
-  Organisation getRegisteredOrganisation(String key);
-
-  /**
-   * Retrieves an Organisation from the Registry to update its details in the IPT. Unlike
-   * {@link #getRegisteredOrganisation(String)} it says why it failed, and adds no startup errors.
+   * Retrieves an Organisation from the Registry to update its details in the IPT. Failures are thrown, not added
+   * as startup errors.
    *
    * @param key Organisation key
    *
