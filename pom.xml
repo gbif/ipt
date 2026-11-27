@@ -79,7 +79,7 @@
     <jaxb-impl.version>4.0.9</jaxb-impl.version>
     <jaxb-runtime.version>4.0.9</jaxb-runtime.version>
     <jetty-maven-plugin.version>12.1.15</jetty-maven-plugin.version>
-    <json-schema-validator.version>2.0.4</json-schema-validator.version>
+    <json-schema-validator.version>2.0.8</json-schema-validator.version>
     <jsp-api.version>2.0</jsp-api.version>
     <jsr305.version>3.0.2</jsr305.version>
     <jsoup.version>1.24.1</jsoup.version>
