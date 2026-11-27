@@ -181,6 +181,7 @@
                         <@s.hidden name="id" id="id" required="true" />
                         <!-- preserve other fields -->
                         <@s.hidden name="organisation.nodeName" id="organisation.nodeName" value=organisation.nodeName! />
+                        <@s.hidden name="organisation.nodeContactEmail" id="organisation.nodeContactEmail" value=organisation.nodeContactEmail! />
                         <@s.hidden name="organisation.nodeKey" id="organisation.nodeKey" value=organisation.nodeKey!  />
                         <@s.hidden name="organisation.primaryContactPhone" id="organisation.primaryContactPhone" value=organisation.primaryContactPhone!  />
                         <@s.hidden name="organisation.primaryContactEmail" id="organisation.primaryContactEmail" value=organisation.primaryContactEmail!  />
@@ -237,7 +238,7 @@
 
                 <div class="row g-3 mt-1">
                     <div class="col-lg-6">
-                        <@input name="organisation.password" value=organisation.password! i18nkey="admin.organisation.password" type="password" requiredField=true />
+                        <@input name="organisation.password" value="" i18nkey="admin.organisation.password" type="password" requiredField=true />
                     </div>
                 </div>
 
@@ -261,7 +262,7 @@
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >
-                        <@input name="organisation.agencyAccountPassword" value=organisation.agencyAccountPassword! i18nkey="admin.organisation.doiRegistrationAgency.password" help="i18n" type="password"/>
+                        <@input name="organisation.agencyAccountPassword" value="" i18nkey="admin.organisation.doiRegistrationAgency.password" help="i18n" type="password"/>
                     </div>
 
                     <div class="col-lg-6 doiAgencyField" <#if !organisation.doiRegistrationAgency??>style="display: none;"</#if> >

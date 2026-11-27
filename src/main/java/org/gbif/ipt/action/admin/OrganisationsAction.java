@@ -44,6 +44,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
+import org.apache.struts2.ActionContext;
+import org.apache.struts2.ActionInvocation;
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -68,6 +70,10 @@ public class OrganisationsAction extends POSTAction {
   private List<Organisation> linkedOrganisations;
   private Boolean synchronise = false;
   private boolean organisationWithDoiRegistrationAgencyPresent = false;
+  // token change: a new shared token for an existing organisation, saved on its own (changeToken)
+  private String newToken;
+  // existing organisation saved without a new token: its stored token is used and not checked again
+  private boolean storedToken;
 
   private static final Map<String, DOIRegistrationAgency> DOI_REGISTRATION_AGENCIES = new HashMap<>();
 
@@ -144,10 +150,17 @@ public class OrganisationsAction extends POSTAction {
         addActionError(getText("admin.organisation.deleted.cant.resources"));
       } else if (e.getReason().equals(DeletionNotAllowedException.Reason.IPT_REGISTERED_WITH_ORGANISATION)) {
         addActionError(getText("admin.organisation.deleted.cant.ipt"));
+      } else if (e.getReason().equals(DeletionNotAllowedException.Reason.RESOURCE_DOI_REGISTERED_WITH_ORGANISATION)) {
+        addActionError(getText("admin.organisation.deleted.cant.doi"));
       }
       addActionExceptionWarning(e);
     } catch (IOException e) {
       addActionError(getText("admin.organisation.cantSave") + ": " + escapeHtml(e.getMessage()));
+    }
+    // the organisation page is shown again: a delete post carries only the id
+    Organisation fromDisk = registrationManager.getFromDisk(id);
+    if (fromDisk != null) {
+      organisation = new Organisation(fromDisk);
     }
     return INPUT;
   }
@@ -211,7 +224,8 @@ public class OrganisationsAction extends POSTAction {
       //  if no id was submitted we wanted to create a new organisation
       organisation = new Organisation();
     } else {
-      if (!isHttpPost()) {
+      // the token change posts only the token: the page shown on a refusal needs the organisation
+      if (!isHttpPost() || isTokenChange()) {
         // load existing organisation from disk
         Organisation fromDisk = registrationManager.getFromDisk(id);
         if (fromDisk != null) {
@@ -290,7 +304,19 @@ public class OrganisationsAction extends POSTAction {
 
   @Override
   public void validate() {
+    if (isHttpPost() && isTokenChange()) {
+      String token = StringUtils.trimToNull(newToken);
+      if (token == null) {
+        addFieldError("newToken", getText("admin.organisation.token.empty"));
+      } else if (id == null) {
+        addActionError(getText("admin.organisation.error.save"));
+      } else if (!registryManager.validateOrganisation(id, token)) {
+        addFieldError("newToken", getText("validation.organisation.password.invalid"));
+      }
+      return;
+    }
     if (isHttpPost() && !cancel && !delete & !synchronise) {
+      useStoredSecrets();
       boolean validated = true;
       if (organisation.isAgencyAccountPrimary()) {
         // ensure only one DOI account is selected as primary!
@@ -304,7 +330,7 @@ public class OrganisationsAction extends POSTAction {
         }
       }
       // if organisation doesn't validate prevent DOI account from being selected as primary!
-      if (!organisationValidation.validate(this, organisation)) {
+      if (!organisationValidation.validate(this, organisation, !storedToken)) {
         validated = false;
       } else {
         if (organisation.isAgencyAccountPrimary()) {
@@ -321,6 +347,64 @@ public class OrganisationsAction extends POSTAction {
         organisation.setAgencyAccountPrimary(false);
       }
     }
+  }
+
+  /**
+   * The page never shows the stored shared token or DataCite password: for an existing organisation an empty one
+   * means "keep the stored one". The DataCite password is kept only while the account fields are sent (the DOI
+   * switch is on), so turning the switch off still clears the account.
+   */
+  private void useStoredSecrets() {
+    if (id == null || organisation == null) {
+      return;
+    }
+    Organisation fromDisk = registrationManager.getFromDisk(id);
+    if (fromDisk == null) {
+      return;
+    }
+    if (StringUtils.isBlank(organisation.getPassword())) {
+      organisation.setPassword(fromDisk.getPassword());
+      storedToken = true;
+    }
+    boolean accountSent = organisation.getDoiRegistrationAgency() != null
+        || StringUtils.isNotBlank(organisation.getAgencyAccountUsername());
+    if (accountSent && StringUtils.isBlank(organisation.getAgencyAccountPassword())) {
+      organisation.setAgencyAccountPassword(fromDisk.getAgencyAccountPassword());
+    }
+  }
+
+  /**
+   * Saves a new shared token for an existing organisation, checked with the Registry in {@link #validate()}.
+   */
+  @RequirePost
+  public String changeToken() {
+    Organisation stored = registrationManager.get(id);
+    if (stored == null) {
+      return NOT_FOUND;
+    }
+    try {
+      stored.setPassword(StringUtils.trimToNull(newToken));
+      registrationManager.save();
+      addActionMessage(getText("admin.organisation.token.changed"));
+      return SUCCESS;
+    } catch (IOException e) {
+      LOG.error("The organisation token couldn't be saved: {}", e.getMessage(), e);
+      addActionError(getText("admin.organisation.error.save"));
+      return INPUT;
+    }
+  }
+
+  /**
+   * @return true when this request is the token change (organisationToken.do), which validates only the token
+   */
+  private boolean isTokenChange() {
+    ActionInvocation invocation = ActionContext.getContext() == null ? null : ActionContext.getContext().getActionInvocation();
+    return invocation != null && invocation.getProxy() != null && "changeToken".equals(invocation.getProxy().getMethod());
+  }
+
+  @StrutsParameter
+  public void setNewToken(String newToken) {
+    this.newToken = newToken;
   }
 
   /**

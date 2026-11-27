@@ -161,6 +161,10 @@
       <result name="cancel" type="redirect">${baseURL}/admin/organisations.do</result>
       <result type="redirect">${baseURL}/admin/organisations.do</result>
     </action>
+    <action name="organisationToken" class="org.gbif.ipt.action.admin.OrganisationsAction" method="changeToken">
+      <result name="input">/WEB-INF/pages/admin/organisation.ftl</result>
+      <result type="redirect">${baseURL}/admin/organisation.do?id=${id}</result>
+    </action>
 
     <!-- DELETE ARCHIVED VERSION -->
     <action name="deleteVersion" class="org.gbif.ipt.action.admin.DeleteVersionAction">

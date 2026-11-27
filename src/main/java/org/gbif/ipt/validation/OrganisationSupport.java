@@ -61,6 +61,14 @@ public class OrganisationSupport {
    * @param organisation organisation
    */
   public boolean validate(BaseAction action, Organisation organisation) {
+    return validate(action, organisation, true);
+  }
+
+  /**
+   * @param checkToken false to skip asking the Registry whether the shared token is right: an organisation saved
+   * with its stored, already checked token
+   */
+  public boolean validate(BaseAction action, Organisation organisation, boolean checkToken) {
     boolean valid = true;
     if (organisation.getKey() == null || organisation.getKey().toString().length() < 1) {
       valid = false;
@@ -73,7 +81,7 @@ public class OrganisationSupport {
     }
 
     // validate if the key+password combination validates to true
-    if (organisation.getKey() != null && organisation.getPassword() != null) {
+    if (checkToken && organisation.getKey() != null && organisation.getPassword() != null) {
       if (organisation.getKey().toString().length() > 0 && organisation.getPassword().length() > 0) {
         if (!registryManager.validateOrganisation(organisation.getKey().toString(), organisation.getPassword())) {
           valid = false;
