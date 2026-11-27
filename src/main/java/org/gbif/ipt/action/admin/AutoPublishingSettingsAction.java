@@ -15,13 +15,18 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.InvalidConfigException;
 import org.gbif.ipt.service.admin.ConfigManager;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.manage.ResourceManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
 import java.io.Serial;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,20 +47,29 @@ public class AutoPublishingSettingsAction extends POSTAction {
   private static final Logger LOG = LogManager.getLogger(AutoPublishingSettingsAction.class);
 
   private final ConfigManager configManager;
+  private final ResourceManager resourceManager;
 
   @Getter
   private boolean autoPublishingEnabled;
   @Getter
   private boolean autoPublishingAdminOnly;
+  /** Resources with a schedule, as the scheduled publications page lists them. */
+  @Getter
+  private int scheduledCount;
+  /** The scheduled resource that publishes next, or null if none has a next publication date. */
+  @Getter
+  private Resource nextScheduled;
 
   @Inject
   public AutoPublishingSettingsAction(
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager regManager,
-      ConfigManager configManager) {
+      ConfigManager configManager,
+      ResourceManager resourceManager) {
     super(textProvider, cfg, regManager);
     this.configManager = configManager;
+    this.resourceManager = resourceManager;
   }
 
   @Override
@@ -66,6 +80,12 @@ public class AutoPublishingSettingsAction extends POSTAction {
       autoPublishingEnabled = cfg.isAutoPublishingEnabled();
       autoPublishingAdminOnly = cfg.isAutoPublishingAdminOnly();
     }
+    List<Resource> scheduled = resourceManager.list().stream().filter(Resource::usesAutoPublishing).toList();
+    scheduledCount = scheduled.size();
+    nextScheduled = scheduled.stream()
+        .filter(r -> Objects.nonNull(r.getNextPublished()))
+        .min(Comparator.comparing(Resource::getNextPublished))
+        .orElse(null);
   }
 
   @Override
@@ -73,7 +93,7 @@ public class AutoPublishingSettingsAction extends POSTAction {
     boolean previousEnabled = cfg.isAutoPublishingEnabled();
     boolean previousAdminOnly = cfg.isAutoPublishingAdminOnly();
 
-    // The admin-only checkbox is hidden while auto-publishing is off, so whatever it submits is not
+    // The admin-only switch is disabled while auto-publishing is off, so whatever it submits is not
     // a deliberate choice. Keep the stored preference so it survives switching auto-publishing off and on.
     if (!autoPublishingEnabled) {
       autoPublishingAdminOnly = previousAdminOnly;

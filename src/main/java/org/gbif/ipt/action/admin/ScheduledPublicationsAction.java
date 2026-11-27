@@ -15,10 +15,13 @@ package org.gbif.ipt.action.admin;
 
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.model.User;
 import org.gbif.ipt.service.admin.RegistrationManager;
+import org.gbif.ipt.service.admin.VocabulariesManager;
 import org.gbif.ipt.service.manage.ResourceManager;
+import org.gbif.ipt.service.manage.ResourcePublicationManager;
 import org.gbif.ipt.struts2.SimpleTextProvider;
 
 import jakarta.inject.Inject;
@@ -27,8 +30,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Admin-only overview of all resources that have scheduled (auto) publishing enabled.
@@ -40,47 +46,68 @@ public class ScheduledPublicationsAction extends POSTAction {
   private static final long serialVersionUID = 1L;
 
   private final ResourceManager resourceManager;
+  private final ResourcePublicationManager publicationManager;
+  private final VocabulariesManager vocabManager;
 
+  @Getter
   private List<ScheduledPublicationView> scheduledResources = new ArrayList<>();
+  @Getter
+  private int suspendedCount;
 
   @Inject
   public ScheduledPublicationsAction(
       SimpleTextProvider textProvider,
       AppConfig cfg,
       RegistrationManager regManager,
-      ResourceManager resourceManager) {
+      ResourceManager resourceManager,
+      ResourcePublicationManager publicationManager,
+      VocabulariesManager vocabManager) {
     super(textProvider, cfg, regManager);
     this.resourceManager = resourceManager;
+    this.publicationManager = publicationManager;
+    this.vocabManager = vocabManager;
   }
 
   @Override
   public String execute() {
+    Map<String, String> frequencies =
+        vocabManager.getI18nVocab(Constants.VOCAB_URI_UPDATE_FREQUENCIES, getLocaleLanguage(), false);
+    Date now = new Date();
+    // as on the manage home page: suspended only means something while auto-publishing is on; otherwise all are paused
+    boolean iptAutoPublishing = cfg.isAutoPublishingEnabled();
     scheduledResources = resourceManager.list().stream()
-        .filter(ScheduledPublicationsAction::isAutoPublishEnabled)
-        .map(ScheduledPublicationsAction::toView)
+        .filter(Resource::usesAutoPublishing)
+        .map(r -> toView(r, frequencies, iptAutoPublishing && publicationManager.hasMaxProcessFailures(r, false), now))
         .sorted(Comparator.comparing(ScheduledPublicationView::getNextPublished,
             Comparator.nullsLast(Comparator.naturalOrder())))
-        .collect(Collectors.toList());
+        .toList();
+    suspendedCount = (int) scheduledResources.stream().filter(ScheduledPublicationView::isSuspended).count();
     return SUCCESS;
   }
 
-  /**
-   * A resource counts as scheduled when it has an update frequency set
-   * (verify against Resource#usesAutoPublishing() or equivalent in your IPT version).
-   */
-  static boolean isAutoPublishEnabled(Resource r) {
-    return r.usesAutoPublishing();
+  public boolean isAutoPublishingEnabled() {
+    return cfg.isAutoPublishingEnabled();
   }
 
-  static ScheduledPublicationView toView(Resource r) {
+  public boolean isAutoPublishingAdminOnly() {
+    return cfg.isAutoPublishingAdminOnly();
+  }
+
+  static ScheduledPublicationView toView(Resource r, Map<String, String> frequencies, boolean suspended, Date now) {
     ScheduledPublicationView v = new ScheduledPublicationView();
     v.setShortname(r.getShortname());
     v.setTitle(r.getTitle());
     v.setManagers(managerNames(r));
-    v.setFrequency(r.getUpdateFrequency() == null ? null : r.getUpdateFrequency().getIdentifier());
+    if (r.getUpdateFrequency() != null) {
+      String id = r.getUpdateFrequency().getIdentifier();
+      v.setFrequency(frequencies.getOrDefault(id, id));
+    }
     v.setLastPublished(r.getLastPublished());
     v.setNextPublished(r.getNextPublished());
     v.setRecordsPublished(r.getRecordsPublished());
+    v.setSuspended(suspended);
+    // a next date in the past means the scheduled run didn't happen (or hasn't finished yet)
+    v.setOverdue(!suspended && r.getNextPublished() != null && r.getNextPublished().before(now));
     return v;
   }
 
@@ -101,40 +128,20 @@ public class ScheduledPublicationsAction extends POSTAction {
     return String.join(", ", names);
   }
 
-  public List<ScheduledPublicationView> getScheduledResources() {
-    return scheduledResources;
-  }
-
   /** Flat, read-only view object for the template. */
+  @Getter
+  @Setter
   public static class ScheduledPublicationView {
-
     private String shortname;
     private String title;
     private String managers;
+    /** The frequency's label in the page language, e.g. "Monthly". */
     private String frequency;
     private Date lastPublished;
     private Date nextPublished;
     private long recordsPublished;
-
-    public String getShortname() { return shortname; }
-    public void setShortname(String shortname) { this.shortname = shortname; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getManagers() { return managers; }
-    public void setManagers(String managers) { this.managers = managers; }
-
-    public String getFrequency() { return frequency; }
-    public void setFrequency(String frequency) { this.frequency = frequency; }
-
-    public Date getLastPublished() { return lastPublished; }
-    public void setLastPublished(Date lastPublished) { this.lastPublished = lastPublished; }
-
-    public Date getNextPublished() { return nextPublished; }
-    public void setNextPublished(Date nextPublished) { this.nextPublished = nextPublished; }
-
-    public long getRecordsPublished() { return recordsPublished; }
-    public void setRecordsPublished(long recordsPublished) { this.recordsPublished = recordsPublished; }
+    /** Stopped after too many failed attempts in a row; publishing by hand resumes it. */
+    private boolean suspended;
+    private boolean overdue;
   }
 }

@@ -1,0 +1,33 @@
+/* Auto-publishing settings + Scheduled publications (admin). Builds on overview.css (.ov-card, .ov-banner). */
+
+.ap-page .ov-card { padding: 16px 20px; }
+.ap-page .ov-card .ov-sub { margin-bottom: 12px; }
+
+/* switches with their hint under the label */
+.ap-switch { margin: 0; }
+.ap-switch .form-check-label { font-weight: 500; font-size: 0.875rem; }
+.ap-hint { font-size: 0.8rem; color: #6c757d; margin-top: 2px; max-width: 46rem; }
+.ap-sub { margin-top: 14px; }
+.ap-switch .form-check-input:disabled ~ .form-check-label,
+.ap-switch .form-check-input:disabled ~ .ap-hint { opacity: .55; }
+
+/* one line of state, as on the admin home cards */
+.ap-state { font-size: 0.875rem; margin: 4px 0 12px; }
+.ap-ok { margin: 0; font-size: 0.875rem; color: #495057; display: flex; align-items: center; gap: 6px; }
+.ap-ok .material-icon { color: rgb(var(--color-gbif-primary)); font-size: 1.1rem; }
+
+/* the scheduled resources: the shared .ov-table (overview.css) */
+.ap-name { min-width: 14rem; }
+/* as the shortname on bulk publishing (.bp-sn) and manage home (.mh-shortname) */
+.ap-shortname { font-size: 0.75rem; color: #6c757d; overflow-wrap: anywhere; }
+.ap-managers { color: #495057; min-width: 10rem; }
+.ap-muted { color: #6c757d; }
+/* paused while auto-publishing is off for the whole IPT: the date stays, it just won't happen */
+.ap-paused { text-decoration: line-through; }
+.ap-status { display: inline-flex; align-items: center; gap: 4px; }
+.ap-status .material-icon { font-size: 1rem; }
+.ap-status.bad { color: rgb(var(--color-gbif-danger)); cursor: help; }
+.ap-status.warn .material-icon { color: rgb(var(--alert-warning-icon-color)); }
+/* the frequency opens the resource's publishing settings */
+.ap-page a.ap-link { color: #212529 !important; text-decoration: underline !important; text-decoration-color: rgba(73, 80, 87, .4) !important; text-underline-offset: 2px; }
+.ap-page a.ap-link:hover { color: rgb(var(--color-gbif-primary)) !important; }
