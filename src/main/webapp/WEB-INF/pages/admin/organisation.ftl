@@ -245,10 +245,11 @@
                         <div class="st-hint"><@s.text name="admin.organisation.doi.associated.help"/></div>
                     </div>
 
-                    <#-- independent of the association, as before; off: the account isn't sent, so saving clears it -->
+                    <#-- independent of the association, as before; off: the account isn't sent, so saving clears it (refused while it has DOIs) -->
                     <div class="form-check form-switch st-switch og-own">
                         <input class="form-check-input" type="checkbox" role="switch" id="og-own-account"<#if ownAccount> checked</#if> data-toggles="og-account" aria-controls="og-account">
                         <label class="form-check-label" for="og-own-account"><@s.text name="admin.organisation.doi.has"/></label>
+                        <@s.fielderror cssClass="invalid-feedback d-block list-unstyled my-1" fieldName="organisation.doiAccount"/>
                     </div>
 
                     <fieldset id="og-account" class="og-doi"<#if !ownAccount> hidden disabled</#if>>

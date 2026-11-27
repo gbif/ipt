@@ -13,7 +13,6 @@
  */
 package org.gbif.ipt.action.admin;
 
-import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.action.POSTAction;
 import org.gbif.ipt.config.AppConfig;
 import org.gbif.ipt.config.Constants;
@@ -357,27 +356,52 @@ public class OrganisationsAction extends POSTAction {
       // if organisation doesn't validate prevent DOI account from being selected as primary!
       if (!organisationValidation.validate(this, organisation, !storedToken)) {
         validated = false;
-      } else {
-        if (organisation.isAgencyAccountPrimary()) {
-          // if organisation validated, and this account has been selected as the primary DOI account,
-          // make sure all existing DOIs comply with this account as its being saved
-          if (isAnotherAccountInUseAlready(organisation)) {
-            validated = false;
-          }
-        }
       }
 
       // be sure to deactivate account as primary DOI account in case validation failed
       if (!validated) {
         organisation.setAgencyAccountPrimary(false);
       }
+      refuseAccountRemovalWithDois();
     }
+  }
+
+  /**
+   * Turning the DataCite account off clears it on save. Refuse that while resources (deleted ones too, since they can
+   * be restored) have DOIs registered with it, as Remove does: those DOIs could no longer be updated or deleted. The
+   * page is shown again with the stored account.
+   */
+  private void refuseAccountRemovalWithDois() {
+    if (id == null || organisation == null || organisation.getDoiRegistrationAgency() != null) {
+      return;
+    }
+    Organisation fromDisk = registrationManager.getFromDisk(id);
+    if (fromDisk == null || fromDisk.getDoiRegistrationAgency() == null) {
+      return;
+    }
+    List<String> withDois = new ArrayList<>();
+    for (Resource r : resourceManager.list()) {
+      if (r.getDoi() != null && fromDisk.getKey().equals(r.getDoiOrganisationKey())) {
+        withDois.add(r.getShortname());
+      }
+    }
+    if (withDois.isEmpty()) {
+      return;
+    }
+    addFieldError("organisation.doiAccount",
+        getText("admin.organisation.doiAccount.removeBlocked", new String[] {namesOrCount(withDois)}));
+    organisation.setDoiRegistrationAgency(fromDisk.getDoiRegistrationAgency());
+    organisation.setDoiPrefix(fromDisk.getDoiPrefix());
+    organisation.setAgencyAccountUsername(fromDisk.getAgencyAccountUsername());
+    organisation.setAgencyAccountPassword(fromDisk.getAgencyAccountPassword());
+    organisation.setAgencyAccountPrimary(fromDisk.isAgencyAccountPrimary());
   }
 
   /**
    * The page never shows the stored shared token or DataCite password: for an existing organisation an empty one
    * means "keep the stored one". The DataCite password is kept only while the account fields are sent (the DOI
-   * switch is on), so turning the switch off still clears the account.
+   * switch is on), so turning the switch off still clears the account, unless resources have DOIs registered with it
+   * ({@link #refuseAccountRemovalWithDois()}).
    */
   private void useStoredSecrets() {
     if (id == null || organisation == null) {
@@ -437,36 +461,6 @@ public class OrganisationsAction extends POSTAction {
   @StrutsParameter
   public void setNewToken(String newToken) {
     this.newToken = newToken;
-  }
-
-  /**
-   * Make sure all DOIs in this IPT correspond to the account being saved. Otherwise, the user could switch the
-   * account type from EZID to DataCite, and render all DataCite DOIs unable to be updated.
-   * <p>
-   * (Support for EZID was removed in version 2.4.0.)
-   *
-   * @return true if DOIs assigned using another account are found in the IPT, false otherwise
-   */
-  protected boolean isAnotherAccountInUseAlready(Organisation organisation) {
-    // iterate through all resources, including deleted ones since they can be undeleted
-    for (Resource resource : resourceManager.list()) {
-      DOI doi = resource.getDoi();
-      // clone organisation being saved to new organisation to compare against organisation on disk
-      Organisation fromDisk = registrationManager.getFromDisk(organisation.getKey().toString());
-      if (doi != null && fromDisk != null) {
-        // the doi agency account must be the same
-        if (organisation.getDoiRegistrationAgency() != null && fromDisk.getDoiRegistrationAgency() != null) {
-          if (!organisation.getDoiRegistrationAgency().equals(fromDisk.getDoiRegistrationAgency())) {
-            String msg = getText("admin.organisation.doiAccount.differentTypeInUse",
-                new String[]{fromDisk.getDoiRegistrationAgency().toString().toLowerCase(), doi.toString()});
-            LOG.error(msg);
-            addActionError(msg);
-            return true;
-          }
-        }
-      }
-    }
-    return false;
   }
 
   /**
