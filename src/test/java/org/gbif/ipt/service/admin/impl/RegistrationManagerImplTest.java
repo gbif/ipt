@@ -15,6 +15,7 @@ package org.gbif.ipt.service.admin.impl;
 
 import org.gbif.api.model.common.DOI;
 import org.gbif.ipt.config.AppConfig;
+import org.gbif.ipt.config.Constants;
 import org.gbif.ipt.config.ConfigWarnings;
 import org.gbif.ipt.config.DataDir;
 import org.gbif.ipt.model.Organisation;
@@ -45,12 +46,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
+import org.apache.http.message.BasicStatusLine;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -59,8 +63,10 @@ import org.xml.sax.SAXException;
 import com.thoughtworks.xstream.converters.ConversionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -128,6 +134,7 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     // mock returning list of registered Organisation with local test resource
     mockHttpClient = mock(HttpClient.class);
     mockResponse = mock(HttpResponse.class);
+    when(mockResponse.getStatusLine()).thenReturn(new BasicStatusLine(HttpVersion.HTTP_1_1, 200, "OK"));
     extResponse = new ExtendedResponse(mockResponse);
     extResponse.setContent(
       IOUtils.toString(
@@ -187,6 +194,52 @@ public class RegistrationManagerImplTest extends IptMockBaseTest {
     Organisation associated = registrationManager.get(RESOURCE1_ORGANISATION_KEY);
     assertEquals("New Name Academy of Natural Sciences", associated.getName());
     assertEquals(RESOURCE1_ORGANISATION_KEY, associated.getKey().toString());
+  }
+
+  /**
+   * The mocked Registry answers every request with the Academy of Natural Sciences, so the other associated
+   * organisations come back with the wrong key and are reported as not updated. The hosting organisation is the
+   * Academy itself, so it's updated and not reported.
+   */
+  @Test
+  public void updateAssociatedOrganisationsMetadataReportsNotUpdated() throws IOException {
+    List<String> notUpdated = registrationManager.updateAssociatedOrganisationsMetadata().stream()
+      .map(o -> o.getKey().toString())
+      .sorted()
+      .collect(Collectors.toList());
+
+    List<String> expected = registrationManager.list().stream()
+      .map(o -> o.getKey().toString())
+      .filter(key -> !key.equals(HOSTING_ORGANISATION_KEY) && !key.equals(Constants.DEFAULT_ORG_KEY.toString()))
+      .sorted()
+      .collect(Collectors.toList());
+
+    assertFalse(expected.isEmpty());
+    assertEquals(expected, notUpdated);
+  }
+
+  /**
+   * The mocked Registry answers every request with the Academy of Natural Sciences: the Academy is updated (both
+   * the associated organisation and the hosting copy), any other organisation gets the wrong key back and keeps its
+   * details.
+   */
+  @Test
+  public void updateOrganisationFromRegistry() throws Exception {
+    Organisation host = registrationManager.getHostingOrganisation();
+    host.setName("Stale name");
+    registrationManager.get(HOSTING_ORGANISATION_KEY).setName("Stale name");
+
+    assertTrue(registrationManager.updateOrganisationFromRegistry(HOSTING_ORGANISATION_KEY));
+    assertEquals("New Name Academy of Natural Sciences", registrationManager.get(HOSTING_ORGANISATION_KEY).getName());
+    assertEquals("New Name Academy of Natural Sciences", registrationManager.getHostingOrganisation().getName());
+
+    Organisation other = registrationManager.get(RESOURCE2_ORGANISATION_KEY);
+    String otherName = other.getName();
+    assertFalse(registrationManager.updateOrganisationFromRegistry(RESOURCE2_ORGANISATION_KEY));
+    assertEquals(otherName, registrationManager.get(RESOURCE2_ORGANISATION_KEY).getName());
+
+    assertThrows(IllegalArgumentException.class,
+      () -> registrationManager.updateOrganisationFromRegistry("00000000-0000-0000-0000-000000000001"));
   }
 
   /**

@@ -117,6 +117,26 @@ public interface RegistryManager {
   Organisation getRegisteredOrganisation(String key);
 
   /**
+   * Retrieves an Organisation from the Registry to update its details in the IPT. Unlike
+   * {@link #getRegisteredOrganisation(String)} it says why it failed, and adds no startup errors.
+   *
+   * @param key Organisation key
+   *
+   * @return the Organisation, or null if the Registry doesn't know the key
+   *
+   * @throws RegistryException if the Registry couldn't be reached or its response couldn't be read
+   */
+  Organisation getOrganisationForUpdate(String key) throws RegistryException;
+
+  /**
+   * @param key Organisation key
+   *
+   * @return true if the GBIF API marks the organisation as deleted, for example after a merge; false if it doesn't or
+   * the API couldn't be asked
+   */
+  boolean isOrganisationDeleted(String key);
+
+  /**
    * Gets list of all registered vocabularies from the Registry.
    *
    * @return list of vocabularies, or an empty list if none were retrieved from valid response

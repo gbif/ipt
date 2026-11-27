@@ -21,6 +21,7 @@ import org.gbif.ipt.model.Resource;
 import org.gbif.ipt.service.AlreadyExistingException;
 import org.gbif.ipt.service.DeletionNotAllowedException;
 import org.gbif.ipt.service.InvalidConfigException;
+import org.gbif.ipt.service.RegistryException;
 
 import java.io.IOException;
 import java.util.List;
@@ -142,9 +143,24 @@ public interface RegistrationManager {
   void encryptRegistration();
 
   /**
-   * Update (from the Registry) metadata for all associated organizations in the IPT.
+   * Updates one associated organization's details (name, description, homepage, node, primary contact) from the
+   * Registry and saves them. Settings made in the IPT, like alias, token and DOI account, stay as they are.
+   *
+   * @param key the organization's key
+   *
+   * @return false if the Registry doesn't know the organization: its details stay as they were
+   *
+   * @throws RegistryException if the Registry couldn't be reached or its response couldn't be read
+   * @throws IOException if the updated details couldn't be saved
    */
-  void updateAssociatedOrganisationsMetadata() throws IOException;
+  boolean updateOrganisationFromRegistry(String key) throws RegistryException, IOException;
+
+  /**
+   * Update (from the Registry) metadata for all associated organizations in the IPT.
+   *
+   * @return the organizations that couldn't be updated (e.g. the Registry couldn't be reached), empty if all were
+   */
+  List<Organisation> updateAssociatedOrganisationsMetadata() throws IOException;
 
   /**
    * Associate IPT with the network and save the registration.

@@ -117,7 +117,7 @@
             <form id="organisationsForm" action="organisation.do" method="post" novalidate>
 <#if existing>
                 <input type="hidden" name="id" value="${orgKey}">
-                <#-- Registry details, kept as they are: Synchronize on the list page refreshes them -->
+                <#-- Registry details, kept as they are: "Update from the Registry" refreshes them -->
                 <input type="hidden" name="organisation.key" value="${orgKey}">
                 <input type="hidden" name="organisation.name" value="${organisation.name!}">
                 <input type="hidden" name="organisation.description" value="${organisation.description!}">
@@ -166,7 +166,9 @@
                             </@fact>
                         </#if>
                     </div>
-                    <div class="st-hint mt-2"><@s.text name="admin.organisation.registry.sync"/></div>
+                    <div class="st-hint mt-2"><@s.text name="admin.organisation.registry.sync"/>
+                        <a href="${baseURL}/admin/organisationUpdate.do?id=${orgKey}" class="text-nowrap" data-post><@icon name="autorenew" class="link-icon-primary"/> <@s.text name="admin.organisation.update"/></a>
+                    </div>
                 </section>
 <#else>
                 <input type="hidden" id="organisation.name" name="organisation.name" value="${organisation.name!}">

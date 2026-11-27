@@ -53,6 +53,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
@@ -77,6 +78,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.xml.sax.SAXException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -95,6 +98,7 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
   }
 
   private final RegistryEntryHandler newRegistryEntryHandler = new RegistryEntryHandler();
+  private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
   private static final String SERVICE_TYPE_EML = "EML";
   private static final String SERVICE_TYPE_CAMTRAP_DP = "CAMTRAP_DP";
   private static final String SERVICE_TYPE_COLDP = "COLDP";
@@ -627,6 +631,50 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * {@inheritDoc}
    */
   @Override
+  public Organisation getOrganisationForUpdate(String key) throws RegistryException {
+    String url = getOrganisationUri(key);
+    // an unknown key gives a 404 with an empty body, so the content isn't required here
+    ExtendedResponse resp = requestHttpGetFromRegistry(url, false);
+    int status = resp.getStatusCode();
+    if (status == HttpURLConnection.HTTP_NOT_FOUND) {
+      return null;
+    }
+    if (status >= HttpURLConnection.HTTP_INTERNAL_ERROR) {
+      throw new RegistryException(Type.SITE_DOWN, url, "Registry responded with HTTP " + status);
+    }
+    if (status != HttpURLConnection.HTTP_OK) {
+      throw new RegistryException(Type.BAD_RESPONSE, url, "Registry responded with HTTP " + status);
+    }
+    try {
+      return gson.fromJson(resp.getContent(), Organisation.class);
+    } catch (JsonParseException e) {
+      throw new RegistryException(Type.BAD_RESPONSE, url, e);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isOrganisationDeleted(String key) {
+    String url = cfg.getApiUrl() + "/organization/" + key;
+    try {
+      ExtendedResponse resp = http.get(url);
+      if (resp == null || resp.getStatusCode() != HttpURLConnection.HTTP_OK || resp.getContent() == null) {
+        return false;
+      }
+      JsonNode deleted = JSON_MAPPER.readTree(resp.getContent()).get("deleted");
+      return deleted != null && !deleted.isNull();
+    } catch (Exception e) {
+      LOG.warn("Couldn't check whether organisation {} is deleted in the GBIF Registry: {}", key, e.getMessage());
+      return false;
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
   public Organisation getRegisteredOrganisation(String key) {
     Organisation organisation = null;
     if (StringUtils.isNotBlank(key)) {
@@ -907,14 +955,20 @@ public class RegistryManagerImpl extends BaseManager implements RegistryManager 
    * @throws RegistryException (with RegistryException.type) if the content was null or an exception occurred
    */
   private ExtendedResponse requestHttpGetFromRegistry(String url) throws RegistryException {
+    return requestHttpGetFromRegistry(url, true);
+  }
+
+  /**
+   * @param requireContent true to refuse a response without content, false to leave checking it to the caller
+   */
+  private ExtendedResponse requestHttpGetFromRegistry(String url, boolean requireContent) throws RegistryException {
     try {
       ExtendedResponse resp = http.get(url);
-      if (resp.getContent() != null) {
-        return resp;
-      } else {
+      if (resp == null || (requireContent && resp.getContent() == null)) {
         throw new RegistryException(Type.BAD_RESPONSE, url, "Response content is null");
       }
-    } catch (RegistryException e) { // The one thrown 2 lines above
+      return resp;
+    } catch (RegistryException e) { // the one thrown above
       throw e;
     } catch (ClassCastException e) {
       throw new RegistryException(Type.BAD_RESPONSE, url, e);

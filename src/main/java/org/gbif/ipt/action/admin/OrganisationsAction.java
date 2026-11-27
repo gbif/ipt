@@ -68,7 +68,8 @@ public class OrganisationsAction extends POSTAction {
   private Organisation organisation;
   private List<Organisation> organisations = new ArrayList<>();
   private List<Organisation> linkedOrganisations;
-  private Boolean synchronise = false;
+  // the update from the Registry was asked from the list, so it returns there
+  private boolean fromList;
   // the organisation whose DOI account is the active one, if any
   private Organisation activeDoiOrganisation;
   // per linked organisation key: its resources, and why it can't be removed (absent when it can)
@@ -260,17 +261,49 @@ public class OrganisationsAction extends POSTAction {
     }
   }
 
+  /**
+   * Updates one organization's details from the Registry, then returns to the page it was asked from.
+   */
   @RequirePost
-  public String synchronize() {
-    try {
-      registrationManager.updateAssociatedOrganisationsMetadata();
-      addActionMessage(getText("admin.organisations.synchronized"));
-    } catch (IOException e) {
-      LOG.error("Failed to synchronize organizations with the registry", e);
-      addActionError(getText("admin.organisation.error.synchronize"));
+  public String updateFromRegistry() {
+    if (id == null || registrationManager.get(id) == null) {
+      return NOT_FOUND;
     }
-
+    try {
+      if (registrationManager.updateOrganisationFromRegistry(id)) {
+        Organisation updated = registrationManager.get(id);
+        resourceManager.updateOrganisationNameForResources(updated);
+        if (registryManager.isOrganisationDeleted(id)) {
+          addActionWarning(getAlertText("admin.organisation.update.deleted", label(updated)));
+        } else {
+          addActionMessage(getAlertText("admin.organisation.update.done", label(updated)));
+        }
+      } else {
+        addActionWarning(getAlertText("admin.organisation.update.notFound", label(registrationManager.get(id))));
+      }
+    } catch (RegistryException e) {
+      LOG.error("Failed to update organisation {} from the Registry", id, e);
+      addActionError(getAlertText("admin.organisation.update.unreachable", label(registrationManager.get(id))));
+    } catch (IOException e) {
+      LOG.error("Failed to save organisation {} after updating it from the Registry", id, e);
+      addActionError(getText("admin.organisation.error.save"));
+    }
     return SUCCESS;
+  }
+
+  /**
+   * @return the organization's name as the pages show it: its alias, else its name, else its key
+   */
+  private static String label(Organisation organisation) {
+    return StringUtils.firstNonBlank(organisation.getAlias(), organisation.getName(),
+      String.valueOf(organisation.getKey()));
+  }
+
+  /**
+   * @return where the update from the Registry returns to: the list, or the organization's page
+   */
+  public String getUpdateReturnUrl() {
+    return fromList ? "organisations.do" : "organisation.do?id=" + id;
   }
 
   /**
@@ -307,7 +340,7 @@ public class OrganisationsAction extends POSTAction {
       }
       return;
     }
-    if (isHttpPost() && !cancel && !delete & !synchronise) {
+    if (isHttpPost() && !cancel && !delete && !isMethod("updateFromRegistry")) {
       useStoredSecrets();
       boolean validated = true;
       if (organisation.isAgencyAccountPrimary()) {
@@ -390,8 +423,15 @@ public class OrganisationsAction extends POSTAction {
    * @return true when this request is the token change (organisationToken.do), which validates only the token
    */
   private boolean isTokenChange() {
+    return isMethod("changeToken");
+  }
+
+  /**
+   * @return true if this request runs the given action method
+   */
+  private boolean isMethod(String method) {
     ActionInvocation invocation = ActionContext.getContext() == null ? null : ActionContext.getContext().getActionInvocation();
-    return invocation != null && invocation.getProxy() != null && "changeToken".equals(invocation.getProxy().getMethod());
+    return invocation != null && invocation.getProxy() != null && method.equals(invocation.getProxy().getMethod());
   }
 
   @StrutsParameter
@@ -530,7 +570,7 @@ public class OrganisationsAction extends POSTAction {
   }
 
   @StrutsParameter
-  public void setSynchronise(String synchronise) {
-    this.synchronise = StringUtils.trimToNull(synchronise) != null;
+  public void setFromList(boolean fromList) {
+    this.fromList = fromList;
   }
 }
