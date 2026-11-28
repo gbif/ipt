@@ -23,7 +23,7 @@
     "jszip": "3.10.1",
     "leaflet": "1.9.4",
     "prosemirror-commands": "1.7.2",
-    "prosemirror-history": "1.5.1",
+    "prosemirror-history": "1.5.2",
     "prosemirror-inputrules": "1.5.1",
     "prosemirror-keymap": "1.2.3",
     "prosemirror-model": "1.25.12",
