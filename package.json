@@ -29,7 +29,7 @@
     "prosemirror-model": "1.25.12",
     "prosemirror-schema-list": "1.6.0",
     "prosemirror-state": "1.4.4",
-    "prosemirror-transform": "1.12.4",
+    "prosemirror-transform": "1.12.7",
     "prosemirror-view": "1.42.9",
     "select2": "4.0.13"
   },
