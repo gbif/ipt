@@ -20,7 +20,7 @@
     "datatables.net-responsive-dt": "4.1.1",
     "html5sortable": "0.13.3",
     "jquery": "3.7.1",
-    "jszip": "3.10.1",
+    "jszip": "3.10.2",
     "leaflet": "1.9.4",
     "prosemirror-commands": "1.7.2",
     "prosemirror-history": "1.5.1",
